@@ -22,6 +22,7 @@ class CrossingsController extends AppController
      */
     public function index()
     {
+        $this->paginate['contain'] = ['MotherTrees'];
         $crossings = $this->paginate($this->Crossings);
 
         $this->set(compact('crossings'));
@@ -38,7 +39,7 @@ class CrossingsController extends AppController
     public function view($id = null)
     {
         $crossing = $this->Crossings->get($id, [
-            'contain' => ['Varieties', 'Trees', 'Batches']
+            'contain' => ['Varieties', 'MotherTrees', 'Batches']
         ]);
 
         $this->set('crossing', $crossing);

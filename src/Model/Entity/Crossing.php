@@ -9,25 +9,14 @@ use Cake\ORM\TableRegistry;
  *
  * @property int $id
  * @property string $code
- * @property bool $planed
- * @property \Cake\I18n\Time $date_pollen_harvested
- * @property \Cake\I18n\Time $date_impregnated
- * @property \Cake\I18n\Time $date_fruit_harvested
- * @property int $numb_portions
- * @property int $numb_flowers
- * @property int $numb_seeds
- * @property string $target
- * @property string $note
- * @property bool $deleted
- * @property bool $locked
  * @property int $mother_variety_id
  * @property int $father_variety_id
- * @property int $mother_tree_id
+ * @property \Cake\I18n\Time $deleted
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  *
  * @property \App\Model\Entity\Variety $variety
- * @property \App\Model\Entity\Tree $tree
+ * @property \App\Model\Entity\MotherTree[] $mother_trees
  * @property \App\Model\Entity\Batch[] $batches
  */
 class Crossing extends Entity

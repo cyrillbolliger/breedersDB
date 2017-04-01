@@ -14,7 +14,7 @@ use App\Model\Rule\IsNotReferredBy;
  *
  * @property \Cake\ORM\Association\BelongsTo $Varieties
  * @property \Cake\ORM\Association\BelongsTo $Varieties
- * @property \Cake\ORM\Association\BelongsTo $Trees
+ * @property \Cake\ORM\Association\HasMany $MotherTrees
  * @property \Cake\ORM\Association\HasMany $Batches
  *
  * @method \App\Model\Entity\Crossing get($primaryKey, $options = [])
@@ -53,10 +53,10 @@ class CrossingsTable extends Table
         $this->belongsTo('Varieties', [
             'foreignKey' => 'father_variety_id'
         ]);
-        $this->belongsTo('Trees', [
-            'foreignKey' => 'mother_tree_id'
-        ]);
         $this->hasMany('Batches', [
+            'foreignKey' => 'crossing_id'
+        ]);
+        $this->hasMany('MotherTrees', [
             'foreignKey' => 'crossing_id'
         ]);
     }
@@ -81,60 +81,9 @@ class CrossingsTable extends Table
                 'rule' => function($value, $context) {
                     return (bool) preg_match('/^[a-zA-Z0-9]{4,8}$/', $value);
                 },
-                'message' => __('Input not valid. The code must only contain alphanumerical characters (whitout umlauts). Length between four and aight characters.'),
+                'message' => __('Input not valid. The code must only contain alphanumerical characters (without umlauts). Length between four and eight characters.'),
             ]);
-                
-        $validator
-            ->integer('mother_tree_id')
-            ->allowEmpty('mother_tree_id')
-            ->add('mother_tree_id', 'custom', [
-                'rule' => function($value, $context) {
-                    if ( empty($context['data']['mother_variety_id'] ) ) {
-                        // well if there is no mother variety there is nothing to validate
-                        return true;
-                    }
-                    $tree_convar = $this->Trees->getConvar($value);
-                    $variety_convar = $this->Varieties->getConvar($context['data']['mother_variety_id']);
-                    return $tree_convar === $variety_convar;
-                },
-                'message' => __('The convar of the mother tree must match the convar of the mother variety.'),
-            ]);
-                
-        $validator
-            ->boolean('planed')
-            ->requirePresence('planed', 'create')
-            ->notEmpty('planed');
-
-        $validator
-            ->localizedTime('date_pollen_harvested', 'date')
-            ->allowEmpty('date_pollen_harvested');
-
-        $validator
-            ->localizedTime('date_impregnated', 'date')
-            ->allowEmpty('date_impregnated');
-
-        $validator
-            ->localizedTime('date_fruit_harvested', 'date')
-            ->allowEmpty('date_fruit_harvested');
-
-        $validator
-            ->integer('numb_portions')
-            ->allowEmpty('numb_portions');
-
-        $validator
-            ->integer('numb_flowers')
-            ->allowEmpty('numb_flowers');
-
-        $validator
-            ->integer('numb_seeds')
-            ->allowEmpty('numb_seeds');
-
-        $validator
-            ->allowEmpty('target');
-
-        $validator
-            ->allowEmpty('note');
-
+        
         return $validator;
     }
 
@@ -151,9 +100,9 @@ class CrossingsTable extends Table
         $rules->add($rules->isUnique(['code'], __('This code has already been used. Please use a unique code.')));
         $rules->add($rules->existsIn(['mother_variety_id'], 'Varieties'));
         $rules->add($rules->existsIn(['father_variety_id'], 'Varieties'));
-        $rules->add($rules->existsIn(['mother_tree_id'], 'Trees'));
         
         $rules->addDelete(new IsNotReferredBy(['Batches' => 'crossing_id']),'isNotReferredBy');
+        $rules->addDelete(new IsNotReferredBy(['MotherTrees' => 'crossing_id']),'isNotReferredBy');
 
         return $rules;
     }

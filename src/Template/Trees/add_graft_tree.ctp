@@ -14,9 +14,8 @@
             echo $this->Form->input('publicid');
             echo $this->Form->input('date_grafted', [
                 'empty' => true, 
-                'type' => 'text', 
-                'class' => 'datepicker',
-                'class' => $tree->dirty('date_grafted') ? 'brain-prefilled': '',
+                'type' => 'text',
+                'class' => 'datepicker '.($tree->dirty('date_grafted') ? 'brain-prefilled': ''),
             ]);
             echo $this->Form->input('rootstock_id', [
                 'options' => $rootstocks,
@@ -31,8 +30,7 @@
             echo $this->Form->input('date_planted', [
                 'empty' => true, 
                 'type' => 'text', 
-                'class' => 'datepicker',
-                'class' => $tree->dirty('date_planted') ? 'brain-prefilled': '',
+                'class' => 'datepicker '.($tree->dirty('date_planted') ? 'brain-prefilled': ''),
             ]);
             echo $this->Form->input('row_id', [
                 'options' => $rows,

@@ -30,6 +30,9 @@ class BrainComponent extends Component
             'date',
             'author',
             'mark_form_id',
+            'date_pollen_harvested',
+            'date_impregnated',
+            'date_fruit_harvested',
         ];
     
     /**

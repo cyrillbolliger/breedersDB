@@ -162,7 +162,7 @@ class TreesTable extends Table
 
         // fill public id with leading zeros
         if ( isset( $data['publicid']) ) {
-            $data['publicid'] = $this->_fillPublicId($data['publicid']);
+            $data['publicid'] = $this->fillPublicId($data['publicid']);
         }
         
         // set experiment site
@@ -204,7 +204,7 @@ class TreesTable extends Table
      * @return Cake\ORM\Query
      */
     public function getByPublicId(string $publicid) {
-        $publicid = $this->_fillPublicId($publicid);
+        $publicid = $this->fillPublicId($publicid);
         
         return $this->find()
                 ->contain(['Varieties', 'Rootstocks', 'Graftings', 'Rows', 'ExperimentSites'])
@@ -225,7 +225,7 @@ class TreesTable extends Table
             $publicid = false;
         } else {
             // if publicid
-            $publicid = $this->_fillPublicId($term);
+            $publicid = $this->fillPublicId($term);
         }
         
         $varieties = $this->Varieties->searchConvars($term)->toArray();
@@ -262,7 +262,7 @@ class TreesTable extends Table
      * @param string $publicid
      * @return string
      */
-    protected function _fillPublicId(string $publicid ) {
+    public function fillPublicId(string $publicid ) {
         // if publicid doesn't contain a #
         if ( 0 !== strpos($publicid, '#') ) {
             return sprintf('%08d', $publicid);
