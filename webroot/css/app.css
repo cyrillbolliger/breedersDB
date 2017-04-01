@@ -1,0 +1,120 @@
+/*
+    Created on : 18.01.2017, 18:05:06
+    Author     : cyrillbolliger
+*/
+
+/* ------ top-nav ------ */
+ul.top-nav {
+     float: left;
+     font-size: 1em;
+}
+
+ul.top-nav li {
+     float: left;
+}
+
+ul.top-nav li a {
+     display: block;
+     line-height: 2.8125rem;
+     padding: 0 0.9375rem;
+     color: #ffffff;
+     height: 100%;
+}
+
+ul.top-nav li a:hover {
+    background: #308e97;
+}
+
+ul.meta-nav li>a {
+     color: #B7E3EC;
+}
+
+/* ------ fields ------ */
+input[type="text"].datepicker {
+     width: 272px;
+}
+
+.select2-container {
+     margin-bottom: 1rem;
+}
+
+input[type="text"].brain-prefilled,
+select.brain-prefilled,
+select.brain-prefilled + span span.select2-selection {
+     background-color: #B7E3EC;
+}
+
+.brain_prefilled_msg {
+     font-size: 0.8em;
+     color: #bbb;
+     padding-left: 1em;
+}
+
+/* ------ table ------ */
+input.filter {
+     background-color: #F2FCFF;
+}
+
+input.filter:focus {
+     background-color: #E5FBFF;
+}
+
+div.searching {
+     color: #bbb;
+}
+
+table .id {
+     width: 4em;
+     opacity: 0.5;
+}
+
+table td {
+    word-break: normal;
+}
+
+/* -------- sortable -------- */
+.sortable_element {
+    margin: 0;
+}
+
+.sortable_element:hover {
+    background-color: #fafafa;
+    transition: background-color 0.2s;
+}
+
+.sortable_handle:hover {
+    color: #1798A5;
+    cursor: ns-resize;
+}
+
+/* -------- buttons -------- */
+.single-icon {
+    width: 1em;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.delete_button {
+    padding: 0.5em;
+    width: 2em;
+}
+
+.delete_button:hover {
+    color: #1798A5;
+    cursor: pointer;
+}
+
+/* --------- Marks --------- */
+.mark_form_fields_adder {
+    margin-top: 1em;
+}
+
+.mark_data_preview {
+     width: 40%;
+}
+
+.mark_data_preview ul {
+     margin: 0;
+     list-style: none;
+     font-size: 1em;
+}
