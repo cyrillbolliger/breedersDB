@@ -109,7 +109,7 @@ class VarietiesTable extends Table
         $rules->add($rules->existsIn(['batch_id'], 'Batches'));
         $rules->add($rules->isUnique(
             ['code', 'batch_id'],
-            __('This code hase already been used.')
+            __('This code has already been used.')
         ));
         
         $rules->addDelete(new IsNotReferredBy(['Trees' => 'variety_id']),'isNotReferredBy');

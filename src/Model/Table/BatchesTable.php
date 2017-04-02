@@ -78,7 +78,7 @@ class BatchesTable extends Table
                 'rule' => function($value, $context) {
                     return (bool) preg_match('/^(\d{2}[A-Z]|000)$/', $value);
                 },
-                'message' => __('Input not valid. The code must match the folowing pattern: "NumberNumberUppercaseletter". Example: 17A'),
+                'message' => __('Input not valid. The code must match the following pattern: "NumberNumberUppercaseletter". Example: 17A'),
             ]);
 
         $validator
