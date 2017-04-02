@@ -132,6 +132,10 @@ class BatchesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['id']));
+        $rules->add($rules->isUnique(
+            ['code', 'crossing_id'],
+            __('A batch with this code and this crossing already exists.')
+        ));
         $rules->add($rules->existsIn(['crossing_id'], 'Crossings'));
         
         $rules->addDelete(new IsNotReferredBy(['Varieties' => 'batch_id']),'isNotReferredBy');
