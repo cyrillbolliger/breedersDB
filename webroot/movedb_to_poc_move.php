@@ -243,6 +243,8 @@ function rows($oldtbl, $newtbl, $old, $new) {
     foreach ($data as $key => $d) {
         if ($d['deleted']) {
             $data[$key]['deleted'] = date("Y-m-d H:i:s");
+        } else {
+            $data[$key]['deleted'] = null;
         }
     }
     
@@ -342,6 +344,12 @@ function trees($oldtbl, $newtbl, $old, $new) {
             $data[$key]['experiment_site_id'] = 2;
         } else {
             $data[$key]['experiment_site_id'] = 1;
+        }
+        // format publicid
+        if ( 0 !== strpos($d['publicid'], '#') ) {
+            $data[$key]['publicid'] = sprintf('%08d', $d['publicid']);
+        } else {
+            $data[$key]['publicid'] = '#' . sprintf('%08d', substr($d['publicid'],1));
         }
         // Remove 9999 tree
         if (3250 == ($d['id'])) {
