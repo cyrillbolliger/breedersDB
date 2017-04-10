@@ -39,7 +39,7 @@ class CrossingsController extends AppController
     public function view($id = null)
     {
         $crossing = $this->Crossings->get($id, [
-            'contain' => ['Varieties', 'MotherTrees', 'Batches']
+            'contain' => ['Varieties', 'MotherTrees', 'Batches', 'MotherTrees.Trees']
         ]);
 
         $this->set('crossing', $crossing);

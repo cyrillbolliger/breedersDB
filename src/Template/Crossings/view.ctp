@@ -65,17 +65,22 @@
                 <tr>
                     <th scope="col" class="id"><?= __('Id') ?></th>
                     <th scope="col"><?= __('Code') ?></th>
-                    <th scope="col"><?= __('Date Sowed') ?></th>
-                    <th scope="col"><?= __('Numb Seeds Sowed') ?></th>
-                    <th scope="col"><?= __('Seed Tray') ?></th>
-                    <th scope="col"><?= __('Date Planted') ?></th>
-                    <th scope="col"><?= __('Patch') ?></th>
+                    <th scope="col"><?= __('Publicid') ?></th>
+                    <th scope="col"><?= __('Planed') ?></th>
+                    <th scope="col"><?= __('Numb Portions') ?></th>
+                    <th scope="col"><?= __('Numb Flowers') ?></th>
+                    <th scope="col"><?= __('Numb Seeds') ?></th>
                     <th scope="col" class="actions"><?= __('Actions') ?></th>
                 </tr>
                 <?php foreach ($crossing->mother_trees as $mother_tree): ?>
                     <tr>
                         <td class="id"><?= h($mother_tree->id) ?></td>
                         <td><?= h($mother_tree->code) ?></td>
+                        <td><?= $mother_tree->has('tree') ? h($mother_tree->tree->publicid) : __('Mother tree not set.') ?></td>
+                        <td><?= h($mother_tree->planed) ?></td>
+                        <td><?= $this->Number->format($mother_tree->numb_portions) ?></td>
+                        <td><?= $this->Number->format($mother_tree->numb_flowers) ?></td>
+                        <td><?= $this->Number->format($mother_tree->numb_seeds) ?></td>
                         <td class="actions">
                             <?= $this->Html->link(__('View'), ['controller' => 'MotherTrees', 'action' => 'view', $mother_tree->id]) ?>
                             <?= $this->Html->link(__('Edit'), ['controller' => 'MotherTrees', 'action' => 'edit', $mother_tree->id]) ?>
