@@ -5,7 +5,7 @@
         <th scope="col"><?= __('Property') ?></th>
         <th scope="col"><?= __('Value') ?></th>
         <th scope="col"><?= __('Author') ?></th>
-        <th scope="col"><?= __('Marked on') ?></th>
+        <th scope="col"><?= __('Marked object') ?></th>
         <th scope="col"><?= __('Exceptional') ?></th>
         <th scope="col" class="actions"><?= __('Actions') ?></th>
     </tr>
