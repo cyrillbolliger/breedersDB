@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2017-04-01 22:14+0200\n"
-"PO-Revision-Date: 2017-04-01 22:17+0200\n"
+"POT-Creation-Date: 2017-04-10 15:19+0200\n"
+"PO-Revision-Date: 2017-04-10 15:21+0200\n"
 "Last-Translator: Cyrill Bolliger <bolliger@gmx.ch>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -406,11 +406,15 @@ msgstr "Ungültige Argumente."
 
 #: Model/Table/BatchesTable.php:81
 msgid ""
-"Input not valid. The code must match the folowing pattern: "
+"Input not valid. The code must match the following pattern: "
 "\"NumberNumberUppercaseletter\". Example: 17A"
 msgstr ""
 "Eingabe nicht gültig. Der Code muss dem folgenden Muster entsprechen: "
 "\"NummerNummerGrossbuchstabe\". Beispiel: 17A"
+
+#: Model/Table/BatchesTable.php:137
+msgid "A batch with this code and this crossing already exists."
+msgstr "Ein Los mit diesem Code und dieser Kreuzung ist bereits vorhanden."
 
 #: Model/Table/CrossingsTable.php:84
 msgid ""
@@ -533,8 +537,8 @@ msgid "Input not valid. The publicid must only contain numbers."
 msgstr "Eingabe nicht gültig. Die Publicid darf nur Zahlen enthalten."
 
 #: Model/Table/VarietiesTable.php:112
-msgid "This code hase already been used."
-msgstr "Dieser Code wurde bereits verwendet."
+msgid "A variety with this code and the same batch already exists."
+msgstr "Eine Sorte mit diesem und dem gleichen Los ist bereits vorhanden."
 
 #: Template/Batches/add.ctp:8
 msgid "Add Batch"
@@ -605,12 +609,12 @@ msgstr "Id"
 msgid "Crossing"
 msgstr "Kreuzung"
 
-#: Template/Batches/view.ctp:16 Template/Crossings/view.ctp:35;68
+#: Template/Batches/view.ctp:16 Template/Crossings/view.ctp:35
 #: Template/_Crossings/view.ctp:75
 msgid "Date Sowed"
 msgstr "Datum Aussaht"
 
-#: Template/Batches/view.ctp:20 Template/Crossings/view.ctp:36;69
+#: Template/Batches/view.ctp:20 Template/Crossings/view.ctp:36
 #: Template/_Crossings/view.ctp:76
 msgid "Numb Seeds Sowed"
 msgstr "Anzahl ausgesäte Samen"
@@ -619,12 +623,12 @@ msgstr "Anzahl ausgesäte Samen"
 msgid "Numb Sprouts Grown"
 msgstr "Anzahl gewachsener Sprossen"
 
-#: Template/Batches/view.ctp:28 Template/Crossings/view.ctp:37;70
+#: Template/Batches/view.ctp:28 Template/Crossings/view.ctp:37
 #: Template/_Crossings/view.ctp:77
 msgid "Seed Tray"
 msgstr "Saatschale"
 
-#: Template/Batches/view.ctp:32 Template/Crossings/view.ctp:38;71
+#: Template/Batches/view.ctp:32 Template/Crossings/view.ctp:38
 #: Template/Trees/view.ctp:44 Template/_Crossings/view.ctp:78
 msgid "Date Planted"
 msgstr "Pflanzdatum"
@@ -633,7 +637,7 @@ msgstr "Pflanzdatum"
 msgid "Numb Sprouts Planted"
 msgstr "Anzahl ausgepflanzter Sprossen"
 
-#: Template/Batches/view.ctp:40 Template/Crossings/view.ctp:39;72
+#: Template/Batches/view.ctp:40 Template/Crossings/view.ctp:39
 #: Template/_Crossings/view.ctp:79
 msgid "Patch"
 msgstr "Beet"
@@ -698,7 +702,7 @@ msgstr "Convar"
 msgid "Actions"
 msgstr "Aktionen"
 
-#: Template/Batches/view.ctp:70 Template/Crossings/view.ctp:52;80
+#: Template/Batches/view.ctp:70 Template/Crossings/view.ctp:52;85
 #: Template/Element/Batch/index_table.ctp:25
 #: Template/Element/Crossing/index_table.ctp:26
 #: Template/Element/Mark/index_table.ctp:37 Template/Element/Mark/list.ctp:41
@@ -720,7 +724,7 @@ msgstr "Aktionen"
 msgid "View"
 msgstr "Anzeigen"
 
-#: Template/Batches/view.ctp:71 Template/Crossings/view.ctp:53;81
+#: Template/Batches/view.ctp:71 Template/Crossings/view.ctp:53;86
 #: Template/Element/Batch/index_table.ctp:26
 #: Template/Element/Crossing/index_table.ctp:27
 #: Template/Element/Mark/index_table.ctp:38 Template/Element/Mark/list.ctp:42
@@ -743,7 +747,7 @@ msgstr "Anzeigen"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: Template/Batches/view.ctp:72 Template/Crossings/view.ctp:54;82
+#: Template/Batches/view.ctp:72 Template/Crossings/view.ctp:54;87
 #: Template/Element/Batch/index_table.ctp:27
 #: Template/Element/Crossing/index_table.ctp:28
 #: Template/Element/Mark/index_table.ctp:39 Template/Element/Mark/list.ctp:43
@@ -765,7 +769,7 @@ msgstr "Bearbeiten"
 msgid "Delete"
 msgstr "Löschen"
 
-#: Template/Batches/view.ctp:72 Template/Crossings/view.ctp:54;82
+#: Template/Batches/view.ctp:72 Template/Crossings/view.ctp:54;87
 #: Template/Element/Batch/index_table.ctp:27
 #: Template/Element/Crossing/index_table.ctp:28
 #: Template/Element/Mark/list.ctp:43
@@ -826,6 +830,37 @@ msgstr "Code"
 #: Template/Crossings/view.ctp:62
 msgid "Related Mother Trees"
 msgstr "Verwandte Mutterbäume"
+
+#: Template/Crossings/view.ctp:68 Template/Element/MotherTree/index_table.ctp:6
+#: Template/Element/Tree/get_tree.ctp:4
+#: Template/Element/Tree/related_table.ctp:4
+msgid "Publicid"
+msgstr "Publicid"
+
+#: Template/Crossings/view.ctp:69 Template/MotherTrees/view.ctp:21
+#: Template/_Crossings/view.ctp:20
+msgid "Planed"
+msgstr "Geplant"
+
+#: Template/Crossings/view.ctp:70 Template/MotherTrees/view.ctp:25
+#: Template/_Crossings/view.ctp:28
+msgid "Numb Portions"
+msgstr "Anz. Portionen"
+
+#: Template/Crossings/view.ctp:71 Template/MotherTrees/view.ctp:29
+#: Template/_Crossings/view.ctp:32
+msgid "Numb Flowers"
+msgstr "Anz. Blüten"
+
+#: Template/Crossings/view.ctp:72 Template/MotherTrees/view.ctp:33
+#: Template/_Crossings/view.ctp:36
+msgid "Numb Seeds"
+msgstr "Anz. Samen"
+
+#: Template/Crossings/view.ctp:79
+#: Template/Element/MotherTree/index_table.ctp:20
+msgid "Mother tree not set."
+msgstr "Kein Mutterbaum gesetzt."
 
 #: Template/Element/nothing_found.ctp:2
 msgid "Nothing found..."
@@ -1038,8 +1073,8 @@ msgid "Author"
 msgstr "Autor"
 
 #: Template/Element/Mark/list.ctp:8
-msgid "Marked on"
-msgstr "Bewerted am"
+msgid "Marked object"
+msgstr "Bewertetes Objekt"
 
 #: Template/Element/Mark/list.ctp:9
 msgid "Exceptional"
@@ -1108,12 +1143,6 @@ msgstr "Scanner-Codes auflisten"
 #: Template/Element/MarkScannerCode/index_table.ctp:21
 msgid "Are you sure you want to delete {0} (id: {1})?"
 msgstr "{0} wirklich löschen (id: {1})?"
-
-#: Template/Element/MotherTree/index_table.ctp:6
-#: Template/Element/Tree/get_tree.ctp:4
-#: Template/Element/Tree/related_table.ctp:4
-msgid "Publicid"
-msgstr "Publicid"
 
 #: Template/Element/Row/nav.ctp:3
 msgid "List Rows"
@@ -1540,26 +1569,10 @@ msgstr "Mutterbaum:"
 msgid "Mother Tree"
 msgstr "Mutterbaum"
 
-#: Template/MotherTrees/view.ctp:21 Template/_Crossings/view.ctp:20
-msgid "Planed"
-msgstr "Geplant"
-
 #: Template/MotherTrees/view.ctp:22 Template/ScionsBundles/view.ctp:29
 #: Template/Trees/view.ctp:29;53 Template/_Crossings/view.ctp:21
 msgid "No"
 msgstr "Nein"
-
-#: Template/MotherTrees/view.ctp:25 Template/_Crossings/view.ctp:28
-msgid "Numb Portions"
-msgstr "Anz. Portionen"
-
-#: Template/MotherTrees/view.ctp:29 Template/_Crossings/view.ctp:32
-msgid "Numb Flowers"
-msgstr "Anz. Blüten"
-
-#: Template/MotherTrees/view.ctp:33 Template/_Crossings/view.ctp:36
-msgid "Numb Seeds"
-msgstr "Anz. Samen"
 
 #: Template/MotherTrees/view.ctp:37 Template/_Crossings/view.ctp:40
 msgid "Date Pollen Harvested"
@@ -1804,6 +1817,9 @@ msgstr "Felder des Bewertungsformulars"
 #: Template/_MarkFormFields/view.ctp:5
 msgid "Delete Mark Form Field"
 msgstr "Feld des Bewertungsformulars löschen"
+
+#~ msgid "This code hase already been used."
+#~ msgstr "Dieser Code wurde bereits verwendet."
 
 #~ msgid "email"
 #~ msgstr "E-Mail"
