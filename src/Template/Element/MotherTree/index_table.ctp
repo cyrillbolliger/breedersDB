@@ -17,7 +17,7 @@
         <tr>
             <td class="id"><?= h($motherTree->id) ?></td>
             <td><?= h($motherTree->code) ?></td>
-            <td><?= h($motherTree->tree->publicid) ?></td>
+            <td><?= $motherTree->has('tree') ? h($motherTree->tree->publicid) : __('Mother tree not set.') ?></td>
             <td><?= h($motherTree->planed) ?></td>
             <td><?= $this->Number->format($motherTree->numb_portions) ?></td>
             <td><?= $this->Number->format($motherTree->numb_flowers) ?></td>
