@@ -59,8 +59,6 @@ class RootstocksTable extends Table
         $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name');
-        
-        $rules->addDelete(new IsNotReferredBy(['Trees' => 'rootstock_id']),'isNotReferredBy');
 
         return $validator;
     }
@@ -76,6 +74,7 @@ class RootstocksTable extends Table
     {
         $rules->add($rules->isUnique(['id']));
         $rules->add($rules->isUnique(['name']));
+        $rules->addDelete(new IsNotReferredBy(['Trees' => 'rootstock_id']),'isNotReferredBy');
 
         return $rules;
     }
