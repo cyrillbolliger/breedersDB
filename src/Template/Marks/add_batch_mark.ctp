@@ -11,7 +11,7 @@
                 'options' => $batches,
                 'required' => 'required',
                 'class' => 'select2batch_id',
-                'label' => 'Crossing.Batch',
+                'label' => __('Crossing.Batch'),
             ]);
             
             echo $this->element('Mark/basic_mark_form');
