@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2017-04-10 15:19+0200\n"
-"PO-Revision-Date: 2017-04-10 15:21+0200\n"
+"POT-Creation-Date: 2017-04-14 16:40+0200\n"
+"PO-Revision-Date: 2017-04-14 16:42+0200\n"
 "Last-Translator: Cyrill Bolliger <bolliger@gmx.ch>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0\n"
+"X-Generator: Poedit 2.0.1\n"
 
 #: Controller/AppController.php:89
 msgctxt "time format"
@@ -412,7 +412,7 @@ msgstr ""
 "Eingabe nicht gültig. Der Code muss dem folgenden Muster entsprechen: "
 "\"NummerNummerGrossbuchstabe\". Beispiel: 17A"
 
-#: Model/Table/BatchesTable.php:137
+#: Model/Table/BatchesTable.php:132
 msgid "A batch with this code and this crossing already exists."
 msgstr "Ein Los mit diesem Code und dieser Kreuzung ist bereits vorhanden."
 
@@ -429,6 +429,14 @@ msgid "This code has already been used. Please use a unique code."
 msgstr ""
 "Dieser Code wurde bereits verwendet. Bitte wähle einen unverwechselbaren "
 "Code."
+
+#: Model/Table/CrossingsTable.php:105
+msgid ""
+"A crossing with the same mother variety and the same father variety already "
+"exists."
+msgstr ""
+"Eine Kreuzung mit der gleichen Muttersorte und der gleichen Vatersorte ist "
+"bereits vorhanden."
 
 #: Model/Table/MarkFormPropertiesTable.php:90 Model/Table/MarkFormsTable.php:76
 msgid "This name has already been used."
@@ -536,7 +544,7 @@ msgstr "Diese Nummer wurde bereits verwendet."
 msgid "Input not valid. The publicid must only contain numbers."
 msgstr "Eingabe nicht gültig. Die Publicid darf nur Zahlen enthalten."
 
-#: Model/Table/VarietiesTable.php:112
+#: Model/Table/VarietiesTable.php:109
 msgid "A variety with this code and the same batch already exists."
 msgstr "Eine Sorte mit diesem und dem gleichen Los ist bereits vorhanden."
 
@@ -545,7 +553,7 @@ msgid "Add Batch"
 msgstr "Los hinzufügen"
 
 #: Template/Batches/add.ctp:33 Template/Batches/edit.ctp:33
-#: Template/Crossings/add.ctp:22 Template/Crossings/edit.ctp:22
+#: Template/Crossings/add.ctp:24 Template/Crossings/edit.ctp:22
 #: Template/Element/Mark/basic_mark_form.ctp:36
 #: Template/Element/Tree/eliminate_form.ctp:20
 #: Template/Element/Tree/plant_form.ctp:27 Template/ExperimentSites/add.ctp:12
@@ -559,16 +567,14 @@ msgstr "Los hinzufügen"
 #: Template/Marks/edit.ctp:37 Template/MotherTrees/add.ctp:51
 #: Template/MotherTrees/edit.ctp:40 Template/Rootstocks/add.ctp:12
 #: Template/Rootstocks/edit.ctp:12 Template/Rows/add.ctp:17
-#: Template/Rows/edit.ctp:22 Template/ScionsBundles/add.ctp:28
-#: Template/ScionsBundles/edit.ctp:28 Template/Trees/add.ctp:52
+#: Template/Rows/edit.ctp:22 Template/ScionsBundles/add.ctp:30
+#: Template/ScionsBundles/edit.ctp:30 Template/Trees/add.ctp:52
 #: Template/Trees/add_genuine_seedling.ctp:28
 #: Template/Trees/add_graft_tree.ctp:44 Template/Trees/edit.ctp:56
 #: Template/Users/add.ctp:14 Template/Users/edit.ctp:14
 #: Template/Varieties/add_breeder_variety.ctp:23
 #: Template/Varieties/add_official_variety.ctp:29
-#: Template/Varieties/edit.ctp:23 Template/_Crossings/add.ctp:48
-#: Template/_Crossings/edit.ctp:48 Template/_MarkFormFields/add.ctp:21
-#: Template/_MarkFormFields/edit.ctp:27
+#: Template/Varieties/edit.ctp:23
 msgid "Submit"
 msgstr "Absenden"
 
@@ -600,8 +606,7 @@ msgstr "Los:"
 #: Template/Marks/view.ctp:21;54 Template/MotherTrees/view.ctp:9
 #: Template/Rootstocks/view.ctp:8 Template/Rows/view.ctp:8
 #: Template/ScionsBundles/view.ctp:8 Template/Trees/view.ctp:8
-#: Template/Varieties/view.ctp:9;42 Template/_Crossings/view.ctp:8;73
-#: Template/_MarkFormFields/view.ctp:26
+#: Template/Varieties/view.ctp:9;42
 msgid "Id"
 msgstr "Id"
 
@@ -610,12 +615,10 @@ msgid "Crossing"
 msgstr "Kreuzung"
 
 #: Template/Batches/view.ctp:16 Template/Crossings/view.ctp:35
-#: Template/_Crossings/view.ctp:75
 msgid "Date Sowed"
-msgstr "Datum Aussaht"
+msgstr "Datum Aussaat"
 
 #: Template/Batches/view.ctp:20 Template/Crossings/view.ctp:36
-#: Template/_Crossings/view.ctp:76
 msgid "Numb Seeds Sowed"
 msgstr "Anzahl ausgesäte Samen"
 
@@ -624,12 +627,11 @@ msgid "Numb Sprouts Grown"
 msgstr "Anzahl gewachsener Sprossen"
 
 #: Template/Batches/view.ctp:28 Template/Crossings/view.ctp:37
-#: Template/_Crossings/view.ctp:77
 msgid "Seed Tray"
 msgstr "Saatschale"
 
 #: Template/Batches/view.ctp:32 Template/Crossings/view.ctp:38
-#: Template/Trees/view.ctp:44 Template/_Crossings/view.ctp:78
+#: Template/Trees/view.ctp:44
 msgid "Date Planted"
 msgstr "Pflanzdatum"
 
@@ -638,7 +640,6 @@ msgid "Numb Sprouts Planted"
 msgstr "Anzahl ausgepflanzter Sprossen"
 
 #: Template/Batches/view.ctp:40 Template/Crossings/view.ctp:39
-#: Template/_Crossings/view.ctp:79
 msgid "Patch"
 msgstr "Beet"
 
@@ -647,8 +648,7 @@ msgstr "Beet"
 #: Template/Marks/view.ctp:41 Template/MotherTrees/view.ctp:49
 #: Template/Rows/view.ctp:20 Template/ScionsBundles/view.ctp:32
 #: Template/Trees/view.ctp:56 Template/Users/view.ctp:16
-#: Template/Varieties/view.ctp:25 Template/_Crossings/view.ctp:52
-#: Template/_MarkFormFields/view.ctp:34
+#: Template/Varieties/view.ctp:25
 msgid "Created"
 msgstr "Erstellt"
 
@@ -659,14 +659,13 @@ msgstr "Erstellt"
 #: Template/Marks/view.ctp:45;58 Template/MotherTrees/view.ctp:53
 #: Template/Rows/view.ctp:24 Template/ScionsBundles/view.ctp:36
 #: Template/Trees/view.ctp:60 Template/Users/view.ctp:20
-#: Template/Varieties/view.ctp:29;47 Template/_Crossings/view.ctp:56
-#: Template/_MarkFormFields/view.ctp:38
+#: Template/Varieties/view.ctp:29;47
 msgid "Modified"
 msgstr "Geändert"
 
 #: Template/Batches/view.ctp:53 Template/Element/Tree/related_table.ctp:8
 #: Template/MotherTrees/view.ctp:62 Template/ScionsBundles/view.ctp:41
-#: Template/Trees/view.ctp:65 Template/_Crossings/view.ctp:65
+#: Template/Trees/view.ctp:65
 msgid "Note"
 msgstr "Bemerkung"
 
@@ -696,9 +695,7 @@ msgstr "Convar"
 #: Template/MarkFormPropertyTypes/index.ctp:11
 #: Template/MarkFormPropertyTypes/view.ctp:24 Template/Marks/view.ctp:59
 #: Template/Rootstocks/index.ctp:11 Template/Users/index.ctp:14
-#: Template/Varieties/view.ctp:48 Template/_Crossings/view.ctp:80
-#: Template/_MarkFormFields/add.ctp:3 Template/_MarkFormFields/edit.ctp:3
-#: Template/_MarkFormFields/index.ctp:3;22 Template/_MarkFormFields/view.ctp:3
+#: Template/Varieties/view.ctp:48
 msgid "Actions"
 msgstr "Aktionen"
 
@@ -720,7 +717,6 @@ msgstr "Aktionen"
 #: Template/MarkFormPropertyTypes/index.ctp:20
 #: Template/MarkFormPropertyTypes/view.ctp:32 Template/Rootstocks/index.ctp:20
 #: Template/Users/index.ctp:26 Template/Varieties/view.ctp:59
-#: Template/_Crossings/view.ctp:92 Template/_MarkFormFields/index.ctp:35
 msgid "View"
 msgstr "Anzeigen"
 
@@ -742,8 +738,7 @@ msgstr "Anzeigen"
 #: Template/MarkFormPropertyTypes/index.ctp:21
 #: Template/MarkFormPropertyTypes/view.ctp:33 Template/Marks/view.ctp:73
 #: Template/Rootstocks/index.ctp:21 Template/Users/index.ctp:27
-#: Template/Varieties/view.ctp:60 Template/_Crossings/view.ctp:93
-#: Template/_MarkFormFields/index.ctp:36
+#: Template/Varieties/view.ctp:60
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -764,8 +759,7 @@ msgstr "Bearbeiten"
 #: Template/MarkFormPropertyTypes/index.ctp:22
 #: Template/MarkFormPropertyTypes/view.ctp:34 Template/Marks/view.ctp:74
 #: Template/Rootstocks/index.ctp:22 Template/Users/index.ctp:28
-#: Template/Varieties/view.ctp:61 Template/_Crossings/view.ctp:94
-#: Template/_MarkFormFields/edit.ctp:5 Template/_MarkFormFields/index.ctp:37
+#: Template/Varieties/view.ctp:61
 msgid "Delete"
 msgstr "Löschen"
 
@@ -785,28 +779,35 @@ msgstr "Löschen"
 #: Template/MarkFormPropertyTypes/index.ctp:22
 #: Template/MarkFormPropertyTypes/view.ctp:34 Template/Marks/view.ctp:74
 #: Template/Rootstocks/index.ctp:22 Template/Varieties/view.ctp:61
-#: Template/_Crossings/view.ctp:94
 msgid "Are you sure you want to delete \"{0}\" (id: {1})?"
 msgstr "\"{0}\" wirklich löschen (id: {0})?"
 
-#: Template/Crossings/add.ctp:7 Template/_Crossings/add.ctp:7
+#: Template/Crossings/add.ctp:7
 msgid "Add Crossing"
 msgstr "Kreuzung hinzufügen"
 
-#: Template/Crossings/edit.ctp:7 Template/_Crossings/edit.ctp:7
+#: Template/Crossings/add.ctp:14
+msgid "Mother Variety"
+msgstr "Muttersorte"
+
+#: Template/Crossings/add.ctp:20
+msgid "Father Variety"
+msgstr "Vatersorte"
+
+#: Template/Crossings/edit.ctp:7
 msgid "Edit Crossing"
 msgstr "Kreuzung bearbeiten"
 
 #: Template/Crossings/index.ctp:13 Template/Element/top_nav.ctp:2
-#: Template/Element/Crossing/nav.ctp:2 Template/_Crossings/index.ctp:13
+#: Template/Element/Crossing/nav.ctp:2
 msgid "Crossings"
 msgstr "Kreuzungen"
 
-#: Template/Crossings/index.ctp:15 Template/_Crossings/index.ctp:15
+#: Template/Crossings/index.ctp:15
 msgid "Filter by code..."
 msgstr "Nach Code filtern..."
 
-#: Template/Crossings/view.ctp:5 Template/_Crossings/view.ctp:5
+#: Template/Crossings/view.ctp:5
 msgid "Crossing:"
 msgstr "Kreuzung:"
 
@@ -818,12 +819,12 @@ msgstr "Muttersorte"
 msgid "Father variety"
 msgstr "Vatersorte"
 
-#: Template/Crossings/view.ctp:29 Template/_Crossings/view.ctp:69
+#: Template/Crossings/view.ctp:29
 msgid "Related Batches"
 msgstr "Verwandte Lose"
 
 #: Template/Crossings/view.ctp:34;67 Template/MarkScannerCodes/view.ctp:20
-#: Template/Varieties/view.ctp:43 Template/_Crossings/view.ctp:74
+#: Template/Varieties/view.ctp:43
 msgid "Code"
 msgstr "Code"
 
@@ -838,22 +839,18 @@ msgid "Publicid"
 msgstr "Publicid"
 
 #: Template/Crossings/view.ctp:69 Template/MotherTrees/view.ctp:21
-#: Template/_Crossings/view.ctp:20
 msgid "Planed"
 msgstr "Geplant"
 
 #: Template/Crossings/view.ctp:70 Template/MotherTrees/view.ctp:25
-#: Template/_Crossings/view.ctp:28
 msgid "Numb Portions"
 msgstr "Anz. Portionen"
 
 #: Template/Crossings/view.ctp:71 Template/MotherTrees/view.ctp:29
-#: Template/_Crossings/view.ctp:32
 msgid "Numb Flowers"
 msgstr "Anz. Blüten"
 
 #: Template/Crossings/view.ctp:72 Template/MotherTrees/view.ctp:33
-#: Template/_Crossings/view.ctp:36
 msgid "Numb Seeds"
 msgstr "Anz. Samen"
 
@@ -894,7 +891,10 @@ msgid "Marks"
 msgstr "Bewertungen"
 
 #: Template/Element/Batch/index_table.ctp:5
+#: Template/Marks/add_batch_mark.ctp:14
+#: Template/Varieties/add_breeder_variety.ctp:14
 #: Template/Varieties/add_official_variety.ctp:18
+#: Template/Varieties/edit.ctp:14
 msgid "Crossing.Batch"
 msgstr "Kreuzung.Sorte"
 
@@ -911,7 +911,7 @@ msgstr "Kreuzung.Sorte"
 #: Template/Element/Variety/index_table.ctp:31
 #: Template/ExperimentSites/index.ctp:30 Template/Graftings/index.ctp:30
 #: Template/MarkFormPropertyTypes/index.ctp:30 Template/Rootstocks/index.ctp:30
-#: Template/Users/index.ctp:36 Template/_MarkFormFields/index.ctp:45
+#: Template/Users/index.ctp:36
 msgid "first"
 msgstr "erste"
 
@@ -928,7 +928,7 @@ msgstr "erste"
 #: Template/Element/Variety/index_table.ctp:32
 #: Template/ExperimentSites/index.ctp:31 Template/Graftings/index.ctp:31
 #: Template/MarkFormPropertyTypes/index.ctp:31 Template/Rootstocks/index.ctp:31
-#: Template/Users/index.ctp:37 Template/_MarkFormFields/index.ctp:46
+#: Template/Users/index.ctp:37
 msgid "previous"
 msgstr "zurück"
 
@@ -945,7 +945,7 @@ msgstr "zurück"
 #: Template/Element/Variety/index_table.ctp:34
 #: Template/ExperimentSites/index.ctp:33 Template/Graftings/index.ctp:33
 #: Template/MarkFormPropertyTypes/index.ctp:33 Template/Rootstocks/index.ctp:33
-#: Template/Users/index.ctp:39 Template/_MarkFormFields/index.ctp:48
+#: Template/Users/index.ctp:39
 msgid "next"
 msgstr "weiter"
 
@@ -962,7 +962,7 @@ msgstr "weiter"
 #: Template/Element/Variety/index_table.ctp:35
 #: Template/ExperimentSites/index.ctp:34 Template/Graftings/index.ctp:34
 #: Template/MarkFormPropertyTypes/index.ctp:34 Template/Rootstocks/index.ctp:34
-#: Template/Users/index.ctp:40 Template/_MarkFormFields/index.ctp:49
+#: Template/Users/index.ctp:40
 msgid "last"
 msgstr "letzte"
 
@@ -979,7 +979,7 @@ msgstr "letzte"
 #: Template/Element/Variety/index_table.ctp:37
 #: Template/ExperimentSites/index.ctp:36 Template/Graftings/index.ctp:36
 #: Template/MarkFormPropertyTypes/index.ctp:36 Template/Rootstocks/index.ctp:36
-#: Template/Users/index.ctp:42 Template/_MarkFormFields/index.ctp:51
+#: Template/Users/index.ctp:42
 msgid ""
 "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} "
 "total"
@@ -1245,6 +1245,10 @@ msgstr "Offset"
 msgid "Read"
 msgstr "Lesen"
 
+#: Template/Element/Tree/index_table.ctp:24
+msgid "eliminated"
+msgstr "eliminiert"
+
 #: Template/Element/Tree/nav.ctp:3
 msgid "List Trees"
 msgstr "Bäume auflisten"
@@ -1298,8 +1302,8 @@ msgid "Select Experiment Site"
 msgstr "Versuchsort auswählen"
 
 #: Template/ExperimentSites/select.ctp:5
-msgid "Select"
-msgstr "Auswählen"
+msgid "Ok"
+msgstr "OK"
 
 #: Template/ExperimentSites/view.ctp:5
 msgid "Experiment Site:"
@@ -1429,7 +1433,6 @@ msgid "Related Mark Forms"
 msgstr "Verwandte Bewertungsformulare"
 
 #: Template/MarkFormProperties/view.ctp:52 Template/Marks/view.ctp:33
-#: Template/_MarkFormFields/view.ctp:18
 msgid "Mark Form"
 msgstr "Bewertungsformular"
 
@@ -1469,11 +1472,11 @@ msgstr "Bewertungsformular:"
 msgid "Form Fields"
 msgstr "Felder des Bewertungsformulars"
 
-#: Template/MarkForms/view.ctp:26 Template/_MarkFormFields/view.ctp:22
+#: Template/MarkForms/view.ctp:26
 msgid "Mark Form Property"
 msgstr "Eigenschaft des Bewertungsformulars"
 
-#: Template/MarkForms/view.ctp:27 Template/_MarkFormFields/view.ctp:30
+#: Template/MarkForms/view.ctp:27
 msgid "Priority"
 msgstr "Priorität"
 
@@ -1508,7 +1511,7 @@ msgstr "Publicid eingeben..."
 
 #: Template/Marks/add_tree_mark_by_scanner.ctp:13
 msgid "Mark Tree by Scanner"
-msgstr "Baum bewerten (Scanner)"
+msgstr "Baum bewerten mit Scanner"
 
 #: Template/Marks/add_tree_mark_by_scanner.ctp:15
 msgid "Fill out form then scan tree and marks in here"
@@ -1545,7 +1548,6 @@ msgstr "Ausserplanmässige Bewertung"
 
 #: Template/Marks/view.ctp:64 Template/MotherTrees/view.ctp:22
 #: Template/ScionsBundles/view.ctp:29 Template/Trees/view.ctp:29;53
-#: Template/_Crossings/view.ctp:21
 msgid "Yes"
 msgstr "Ja"
 
@@ -1565,28 +1567,28 @@ msgstr "Nach Code oder Publicid filtern..."
 msgid "Mother Tree:"
 msgstr "Mutterbaum:"
 
-#: Template/MotherTrees/view.ctp:13 Template/_Crossings/view.ctp:24
+#: Template/MotherTrees/view.ctp:13
 msgid "Mother Tree"
 msgstr "Mutterbaum"
 
 #: Template/MotherTrees/view.ctp:22 Template/ScionsBundles/view.ctp:29
-#: Template/Trees/view.ctp:29;53 Template/_Crossings/view.ctp:21
+#: Template/Trees/view.ctp:29;53
 msgid "No"
 msgstr "Nein"
 
-#: Template/MotherTrees/view.ctp:37 Template/_Crossings/view.ctp:40
+#: Template/MotherTrees/view.ctp:37
 msgid "Date Pollen Harvested"
 msgstr "Datum Pollenernte"
 
-#: Template/MotherTrees/view.ctp:41 Template/_Crossings/view.ctp:44
+#: Template/MotherTrees/view.ctp:41
 msgid "Date Impregnated"
 msgstr "Datum Befruchtung"
 
-#: Template/MotherTrees/view.ctp:45 Template/_Crossings/view.ctp:48
+#: Template/MotherTrees/view.ctp:45
 msgid "Date Fruit Harvested"
 msgstr "Datum Fruchternte"
 
-#: Template/MotherTrees/view.ctp:58 Template/_Crossings/view.ctp:61
+#: Template/MotherTrees/view.ctp:58
 msgid "Target"
 msgstr "Ziel"
 
@@ -1630,6 +1632,11 @@ msgstr "Reiserbündel hinzufügen"
 msgid "List of publicids of the descent trees, separeted by a comma"
 msgstr "Liste der Publicids der abstammenden Bäume, separiert durch ein Komma"
 
+#: Template/ScionsBundles/add.ctp:25 Template/ScionsBundles/edit.ctp:25
+#: Template/ScionsBundles/view.ctp:28
+msgid "Reserved for external partners"
+msgstr "Reserviert für externe Partner"
+
 #: Template/ScionsBundles/edit.ctp:7
 msgid "Edit Scions Bundle"
 msgstr "Reiserbündel bearbeiten"
@@ -1649,10 +1656,6 @@ msgstr "Anz. Reiser"
 #: Template/ScionsBundles/view.ctp:24 Template/Varieties/view.ctp:45
 msgid "Date Scions Harvest"
 msgstr "Datum Reiserernte"
-
-#: Template/ScionsBundles/view.ctp:28 Template/Varieties/view.ctp:46
-msgid "External Use"
-msgstr "Externer gebrauch"
 
 #: Template/Settings/index.ctp:7
 msgid "See and edit settings in the menu on the left hand side."
@@ -1760,63 +1763,51 @@ msgstr "Beschreibung"
 msgid "Related Scions Bundles"
 msgstr "Verwandte Reiserbündel"
 
-#: Template/_Crossings/view.ctp:12
-msgid "Mother"
-msgstr "Mutter"
+#: Template/Varieties/view.ctp:46
+msgid "External Use"
+msgstr "Externer gebrauch"
 
-#: Template/_Crossings/view.ctp:16
-msgid "Father"
-msgstr "Vater"
+#~ msgid "Select"
+#~ msgstr "Auswählen"
 
-#: Template/_MarkFormFields/add.ctp:4 Template/_MarkFormFields/edit.ctp:10
-#: Template/_MarkFormFields/view.ctp:6
-msgid "List Mark Form Fields"
-msgstr "Felder des Bewertungsformulars auflisten"
+#~ msgid "Mother"
+#~ msgstr "Mutter"
 
-#: Template/_MarkFormFields/add.ctp:5 Template/_MarkFormFields/edit.ctp:11
-#: Template/_MarkFormFields/index.ctp:5 Template/_MarkFormFields/view.ctp:8
-msgid "List Mark Forms"
-msgstr "Bewertungsformular auflisten"
+#~ msgid "Father"
+#~ msgstr "Vater"
 
-#: Template/_MarkFormFields/add.ctp:6 Template/_MarkFormFields/edit.ctp:12
-#: Template/_MarkFormFields/index.ctp:6 Template/_MarkFormFields/view.ctp:9
-msgid "New Mark Form"
-msgstr "Neues Bewertungsformular"
+#~ msgid "List Mark Form Fields"
+#~ msgstr "Felder des Bewertungsformulars auflisten"
 
-#: Template/_MarkFormFields/add.ctp:7 Template/_MarkFormFields/edit.ctp:13
-#: Template/_MarkFormFields/index.ctp:7 Template/_MarkFormFields/view.ctp:10
-msgid "List Mark Form Properties"
-msgstr "Eigenschaften des Bewertungsformulars auflisten"
+#~ msgid "List Mark Forms"
+#~ msgstr "Bewertungsformular auflisten"
 
-#: Template/_MarkFormFields/add.ctp:8 Template/_MarkFormFields/edit.ctp:14
-#: Template/_MarkFormFields/index.ctp:8 Template/_MarkFormFields/view.ctp:11
-msgid "New Mark Form Property"
-msgstr "Neue Eigenschaft des Bewertungsformulars"
+#~ msgid "New Mark Form"
+#~ msgstr "Neues Bewertungsformular"
 
-#: Template/_MarkFormFields/add.ctp:14
-msgid "Add Mark Form Field"
-msgstr "Feld des Bewertungsformulars hinzufügen"
+#~ msgid "List Mark Form Properties"
+#~ msgstr "Eigenschaften des Bewertungsformulars auflisten"
 
-#: Template/_MarkFormFields/edit.ctp:7 Template/_MarkFormFields/index.ctp:37
-#: Template/_MarkFormFields/view.ctp:5
-msgid "Are you sure you want to delete # {0}?"
-msgstr "{0} wirklich löschen?"
+#~ msgid "New Mark Form Property"
+#~ msgstr "Neue Eigenschaft des Bewertungsformulars"
 
-#: Template/_MarkFormFields/edit.ctp:20 Template/_MarkFormFields/view.ctp:4
-msgid "Edit Mark Form Field"
-msgstr "Feld des Bewertungsformulars bearbeiten"
+#~ msgid "Add Mark Form Field"
+#~ msgstr "Feld des Bewertungsformulars hinzufügen"
 
-#: Template/_MarkFormFields/index.ctp:4 Template/_MarkFormFields/view.ctp:7
-msgid "New Mark Form Field"
-msgstr "Neues Feld des Bewertungsformulars"
+#~ msgid "Are you sure you want to delete # {0}?"
+#~ msgstr "{0} wirklich löschen?"
 
-#: Template/_MarkFormFields/index.ctp:12
-msgid "Mark Form Fields"
-msgstr "Felder des Bewertungsformulars"
+#~ msgid "Edit Mark Form Field"
+#~ msgstr "Feld des Bewertungsformulars bearbeiten"
 
-#: Template/_MarkFormFields/view.ctp:5
-msgid "Delete Mark Form Field"
-msgstr "Feld des Bewertungsformulars löschen"
+#~ msgid "New Mark Form Field"
+#~ msgstr "Neues Feld des Bewertungsformulars"
+
+#~ msgid "Mark Form Fields"
+#~ msgstr "Felder des Bewertungsformulars"
+
+#~ msgid "Delete Mark Form Field"
+#~ msgstr "Feld des Bewertungsformulars löschen"
 
 #~ msgid "This code hase already been used."
 #~ msgstr "Dieser Code wurde bereits verwendet."
