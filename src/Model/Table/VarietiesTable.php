@@ -90,9 +90,6 @@ class VarietiesTable extends Table
         $validator
             ->allowEmpty('description');
 
-        $validator
-            ->boolean('deleted');
-
         return $validator;
     }
 
