@@ -74,9 +74,27 @@ function mark_values($oldtbl, $newtbl, $old, $new) {
         
         $data = translate($column_names, $rows);
         
+        // adapt certain values to the standard of agroscope
+        $values_to_transform = [35,12,34];
+        $transformation_rule = [
+            1 => 9,
+            2 => 8,
+            3 => 7,
+            4 => 6,
+            5 => 5,
+            6 => 4,
+            7 => 3,
+            8 => 2,
+            9 => 1,
+        ];
+        
         foreach ($data as $key => $d) {
             if (empty($d['value'])) {
                 unset($data[$key]);
+            } else {
+                if (in_array($d['mark_form_property_id'],$values_to_transform)) {
+                    $data[$key]['value'] = $transformation_rule[(int)$d['value']];
+                }
             }
         }
         
