@@ -276,6 +276,9 @@ function varieties($oldtbl, $newtbl, $old, $new) {
         if (array_key_exists($d['batch_id'], $doubles)) {
             $data[$key]['batch_id'] = $doubles[$d['batch_id']];
         }
+        if (200 == $data[$key]['batch_id']) { // SORTE.000
+            $data[$key]['batch_id'] = 1;
+        }
     }
     
     truncate($new, $newtbl, true);
@@ -308,6 +311,9 @@ function batches($oldtbl, $newtbl, $old, $new) {
     foreach ($data as $key => $d) {
         if (258 == $d['crossing_id']) {
             $data[$key]['crossing_id'] = 1;
+        }
+        if (200 == $d['id']) { // SORTE.000
+            $data[$key]['id'] = 1;
         }
         if (array_key_exists($d['id'], $doubles)) {
             unset($data[$key]);
