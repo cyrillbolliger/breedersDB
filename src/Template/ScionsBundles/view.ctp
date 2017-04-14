@@ -25,7 +25,7 @@
             <td><?= h($scionsBundle->date_scions_harvest) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('External Use') ?></th>
+            <th scope="row"><?= __('Reserved for external partners') ?></th>
             <td><?= $scionsBundle->external_use ? __('Yes') : __('No'); ?></td>
         </tr>
         <tr>

@@ -21,7 +21,9 @@
             echo $this->Form->input('descents_publicid_list', [
                 'label' => __('List of publicids of the descent trees, separeted by a comma')
             ]);
-            echo $this->Form->input('external_use');
+            echo $this->Form->input('external_use', [
+                'label' => __('Reserved for external partners'),
+            ]);
             echo $this->Form->input('note');
         ?>
     </fieldset>

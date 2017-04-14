@@ -11,11 +11,13 @@
                 'options' => $mother_varieties, 
                 'required' => 'required',
                 'class' => 'select2convar',
+                'label' => __('Mother Variety'),
             ]);
             echo $this->Form->input('father_variety_id', [
                 'options' => $father_varieties, 
                 'empty' => true,
                 'class' => 'select2convar',
+                'label' => __('Father Variety'),
             ]);
         ?>
     </fieldset>
