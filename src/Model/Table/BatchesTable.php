@@ -109,11 +109,6 @@ class BatchesTable extends Table
 
         $validator
             ->allowEmpty('note');
-
-        $validator
-            ->boolean('deleted')
-            ->requirePresence('deleted', 'create')
-            ->notEmpty('deleted');
         
         $validator
             ->integer('crossing_id')
