@@ -100,6 +100,10 @@ class CrossingsTable extends Table
         $rules->add($rules->isUnique(['code'], __('This code has already been used. Please use a unique code.')));
         $rules->add($rules->existsIn(['mother_variety_id'], 'Varieties'));
         $rules->add($rules->existsIn(['father_variety_id'], 'Varieties'));
+        $rules->add($rules->isUnique(
+            ['mother_variety_id', 'father_variety_id'],
+            __('A crossing with the same mother variety and the same father variety already exists.')
+        ));
         
         $rules->addDelete(new IsNotReferredBy(['Batches' => 'crossing_id']),'isNotReferredBy');
         $rules->addDelete(new IsNotReferredBy(['MotherTrees' => 'crossing_id']),'isNotReferredBy');
