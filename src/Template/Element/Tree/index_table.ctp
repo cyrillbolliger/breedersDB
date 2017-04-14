@@ -21,7 +21,7 @@
         <td><?= $tree->has('row') ? $this->Html->link($tree->row->id, ['controller' => 'Rows', 'action' => 'view', $tree->row->id]) : '' ?></td>
         <td><?= $this->Number->format($tree->offset) ?></td>
         <td><?= $tree->note ? $this->Html->link(__('Read'), ['action' => 'view', $tree->id]) : '' ?></td>
-        <td><?= $tree->date_eliminated ? 'eliminated' : '' ?></td>
+        <td><?= $tree->date_eliminated ? __('eliminated') : '' ?></td>
         <td><?= h($tree->modified) ?></td>
         <td class="actions">
             <?= $this->Html->link(__('View'), ['action' => 'view', $tree->id]) ?>
