@@ -34,3 +34,7 @@
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
 </div>
+
+<script>
+    Marks.initNewField();
+</script>

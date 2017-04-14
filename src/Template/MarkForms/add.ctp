@@ -8,7 +8,7 @@
         <?= $this->Form->input('name'); ?>
         <fieldset>
             <legend><?= __('Fields') ?></legend>
-            <div class="mark_form_fields">
+            <div class="mark_form_fields sortable">
                 <?php
                     if ( ! empty($markForm->mark_form_fields) ) {
                         foreach($markForm->mark_form_fields as $markFormField) {
