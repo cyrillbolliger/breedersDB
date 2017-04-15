@@ -3,6 +3,11 @@
 </nav>
 <div class="trees view large-9 medium-8 columns content">
     <h3><?= __('Tree:') . ' ' . h($tree->publicid) ?></h3>
+    <?= $this->Html->link(
+        __('Print label'),
+        ['action' => 'print', $tree->id, 'view', $tree->id],
+        ['class'=>'button']);
+    ?>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Id') ?></th>

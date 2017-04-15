@@ -27,6 +27,7 @@ function General() {
           this.selectTree();
           this.instantiateFilter();
           this.instantiatePrefillMarker();
+          this.instantiatePrintButtons();
           Varieties.selectBatchId();
           Varieties.setCodeFromOfficialName();
           Trees.get();
@@ -274,6 +275,18 @@ function General() {
         audio.play();
 
         return audio;
+    };
+
+    this.instantiatePrintButtons = function() {
+        $('.button.zpl_print').click(function() {
+            var printWindow = window.open();
+            printWindow.document.open('text/plain')
+            printWindow.document.write($(this).attr('data-zpl'));
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+        });
     };
 }
 

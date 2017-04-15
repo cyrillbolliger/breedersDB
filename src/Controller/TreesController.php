@@ -79,7 +79,7 @@ class TreesController extends AppController
             if ($this->Trees->save($tree)) {
                 $this->Flash->success(__('The tree has been saved.'));
 
-                return $this->redirect(['action' => 'add']);
+                return $this->redirect(['action' => 'print', $tree->id, 'add']);
             } else {
                 $this->Flash->error(__('The tree could not be saved. Please, try again.'));
                 
@@ -115,7 +115,7 @@ class TreesController extends AppController
             if ($this->Trees->save($tree)) {
                 $this->Flash->success(__('The tree has been saved.'));
 
-                return $this->redirect(['action' => 'addGenuineSeedling']);
+                return $this->redirect(['action' => 'print', $tree->id, 'addGenuineSeedling']);
             } else {
                 $this->Flash->error(__('The tree could not be saved. Please, try again.'));
                                 
@@ -151,7 +151,7 @@ class TreesController extends AppController
             if ($this->Trees->save($tree)) {
                 $this->Flash->success(__('The tree has been saved.'));
 
-                return $this->redirect(['action' => 'addGraftTree']);
+                return $this->redirect(['action' => 'print', $tree->id, 'addGraftTree']);
             } else {
                 $this->Flash->error(__('The tree could not be saved. Please, try again.'));
                 
@@ -365,5 +365,25 @@ class TreesController extends AppController
         
         $this->set(['data' => $return]);
         $this->render('/Element/ajaxreturn');
+    }
+    
+    /**
+     * Show the print dialog
+     *
+     * @param int $tree_id
+     * @param string $caller action to redirect after printing
+     * @param mixed $params for action
+     */
+    public function print(int $tree_id, string $caller, $params = null) {
+        $zpl = $this->Trees->getLabelZpl($tree_id);
+        
+        $this->set([
+            'zpl' => $zpl,
+            'controller' => 'Trees',
+            'action' => $caller,
+            'params' => $params,
+            'nav' => 'Tree/nav'
+        ]);
+        $this->render('/Element/print');
     }
 }

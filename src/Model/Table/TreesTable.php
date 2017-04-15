@@ -298,4 +298,21 @@ class TreesTable extends Table
         
         return $tree->convar;
     }
+    
+    /**
+     * Return label to print in Zebra Printing Language
+     *
+     * @param int $id
+     * @return string
+     */
+    public function getLabelZpl(int $id) {
+        $tree = $this->get($id, ['contain'=>['Varieties']]);
+        if (1 === $tree->variety_id ) {
+            $convar = $tree->variety->code;
+        } else {
+            $convar = $tree->convar;
+        }
+        return "^XA^BY3,2,100^FO25,30^BC^FD".$tree->publicid."^FS^CFA,30^FO40,190^FD".$convar."^FS^XZ";
+        
+    }
 }
