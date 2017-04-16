@@ -73,7 +73,7 @@ class MarkScannerCodesController extends AppController
                         ['escape'=>false]
                 );
 
-                return $this->redirect(['action' => 'add']);
+                return $this->redirect(['action' => 'print', $markScannerCode->id, 'add']);
             } else {
                 $this->Flash->error(__('The mark scanner code could not be saved. Please, try again.'));
             }
@@ -175,5 +175,45 @@ class MarkScannerCodesController extends AppController
         
         $this->set(['data' => $entries]);
         $this->render('/Element/ajaxreturn');
+    }
+    
+    /**
+     * Show the print dialog
+     *
+     * @param int $id
+     * @param string $caller action to redirect after printing
+     * @param mixed $params for action
+     */
+    public function print(int $id, string $caller, $params = null) {
+        $zpl = $this->MarkScannerCodes->getLabelZpl($id);
+        
+        $this->set([
+            'zpl' => $zpl,
+            'controller' => 'MarkScannerCodes',
+            'action' => $caller,
+            'params' => $params,
+            'nav' => 'Mark/nav'
+        ]);
+        $this->render('/Element/print');
+    }
+    
+    /**
+     * Show the print dialog
+     *
+     * @param int $id
+     * @param string $caller action to redirect after printing
+     * @param mixed $params for action
+     */
+    public function printSubmit() {
+        $zpl = $this->MarkScannerCodes->getSubmitLabelZpl();
+        
+        $this->set([
+            'zpl' => $zpl,
+            'controller' => 'MarkScannerCodes',
+            'action' => 'index',
+            'params' => null,
+            'nav' => 'Mark/nav'
+        ]);
+        $this->render('/Element/print');
     }
 }

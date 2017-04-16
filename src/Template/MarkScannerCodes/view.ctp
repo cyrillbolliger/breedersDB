@@ -2,7 +2,12 @@
     <?= $this->element('Mark/nav'); ?>
 </nav>
 <div class="markScannerCodes view large-9 medium-8 columns content">
-    <h3><?= __('Scanner Code:').' '.h($markScannerCode->id) ?></h3>
+    <h3><?= __('Scanner Code:').' '.h($markScannerCode->code) ?></h3>
+    <?= $this->Html->link(
+        __('Print label'),
+        ['action' => 'print', $markScannerCode->id, 'view', $markScannerCode->id],
+        ['class'=>'button']);
+    ?>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Id') ?></th>

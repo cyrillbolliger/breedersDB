@@ -110,7 +110,7 @@ class MarkScannerCodesTable extends Table
      * Return query filtered by given search term searching the mark form property type
      * 
      * @param string $term
-     * @return Cake\ORM\Query
+     * @return \Cake\ORM\Query
      */
     public function filter(string $term) {
         $query = $this->find()
@@ -119,5 +119,29 @@ class MarkScannerCodesTable extends Table
             $query->where(['mark_form_property_id' => (int) $term]);
         }
         return $query;
-    }   
+    }
+    
+    /**
+     * Return label to print in Zebra Printing Language
+     *
+     * @param int $id
+     * @return string
+     */
+    public function getLabelZpl(int $id) {
+        $entity = $this->get($id, ['contain'=>['MarkFormProperties']]);
+        $description = $entity->mark_form_property->name.": ".$entity->mark_value;
+        return "^XA^BY3,2,100^FO240,30^BC^FD".$entity->code."^FS^CFA,30^FO255,190^FD".$description."^FS^XZ";
+        
+    }
+    
+    /**
+     * Return label to print in Zebra Printing Language
+     */
+    public function getSubmitLabelZpl() {
+        $code = "SUBMIT";
+        $description = "SUBMIT";
+        return "^XA^BY3,2,100^FO240,30^BC^FD".$code."^FS^CFA,30^FO255,190^FD".$description."^FS^XZ";
+    }
+    
+    
 }
