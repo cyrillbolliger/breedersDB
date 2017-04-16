@@ -43,6 +43,8 @@ class MarkScannerCodesTable extends Table
             'foreignKey' => 'mark_form_property_id',
             'joinType' => 'INNER'
         ]);
+    
+        $this->addBehavior('Printable');
     }
 
     /**
@@ -130,8 +132,8 @@ class MarkScannerCodesTable extends Table
     public function getLabelZpl(int $id) {
         $entity = $this->get($id, ['contain'=>['MarkFormProperties']]);
         $description = $entity->mark_form_property->name.": ".$entity->mark_value;
-        return "^XA^BY3,2,100^FO240,30^BC^FD".$entity->code."^FS^CFA,30^FO255,190^FD".$description."^FS^XZ";
-        
+        $code = $entity->code;
+        return $this->getZPL($code, $description);
     }
     
     /**
@@ -140,7 +142,7 @@ class MarkScannerCodesTable extends Table
     public function getSubmitLabelZpl() {
         $code = "SUBMIT";
         $description = "SUBMIT";
-        return "^XA^BY3,2,100^FO240,30^BC^FD".$code."^FS^CFA,30^FO255,190^FD".$description."^FS^XZ";
+        return $this->getZPL($code, $description);
     }
     
     

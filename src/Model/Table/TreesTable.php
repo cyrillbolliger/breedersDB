@@ -49,6 +49,7 @@ class TreesTable extends Table
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Printable');
 
         $this->belongsTo('Varieties', [
             'foreignKey' => 'variety_id',
@@ -307,12 +308,9 @@ class TreesTable extends Table
      */
     public function getLabelZpl(int $id) {
         $tree = $this->get($id, ['contain'=>['Varieties']]);
-        if (1 === $tree->variety_id ) {
-            $convar = $tree->variety->code;
-        } else {
-            $convar = $tree->convar;
-        }
-        return "^XA^BY3,2,100^FO240,30^BC^FD".$tree->publicid."^FS^CFA,30^FO255,190^FD".$convar."^FS^XZ";
+        $code = $tree->publicid;
+        $description = 1 === $tree->variety_id ? $tree->variety->code : $tree->convar;
+        return $this->getZPL($code, $description);
         
     }
 }
