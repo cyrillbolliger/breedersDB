@@ -312,7 +312,7 @@ class TreesTable extends Table
         } else {
             $convar = $tree->convar;
         }
-        return "^XA^BY3,2,100^FO25,30^BC^FD".$tree->publicid."^FS^CFA,30^FO40,190^FD".$convar."^FS^XZ";
+        return "^XA^BY3,2,100^FO240,30^BC^FD".$tree->publicid."^FS^CFA,30^FO255,190^FD".$convar."^FS^XZ";
         
     }
 }
