@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2017-04-17 19:39+0200\n"
-"PO-Revision-Date: 2017-04-17 19:45+0200\n"
+"PO-Revision-Date: 2017-04-17 22:28+0200\n"
 "Last-Translator: Cyrill Bolliger <bolliger@gmx.ch>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -1158,7 +1158,7 @@ msgstr "Scanner-Codes auflisten"
 
 #: Template/Element/Mark/nav.ctp:21
 msgid "Print submit form label"
-msgstr "„Formular absenden“ Label drucken"
+msgstr "«Formular absenden» Etikette drucken"
 
 #: Template/Element/MarkFormProperty/index_table.ctp:6
 #: Template/MarkFormProperties/add.ctp:17
