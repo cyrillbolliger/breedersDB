@@ -230,6 +230,10 @@ function marks($oldtbl, $newtbl, $old, $new) {
         if (3250 == ($d['tree_id'])) {
             unset($data[$key]);
         }
+        // tree with missing variety
+        if (2422 == $d['id']) {
+            unset($data[$key]);
+        }
         // Faulty mark
         if (29 == $d['id']){
             unset($data[$key]);
@@ -379,6 +383,10 @@ function trees($oldtbl, $newtbl, $old, $new) {
         if (3250 == ($d['id'])) {
             unset($data[$key]);
         }
+        // tree with missing variety
+        if (2422 == $d['id']) {
+            unset($data[$key]);
+        }
     }
     
     truncate($new, $newtbl, true);
@@ -415,6 +423,10 @@ function mother_trees($oldtbl, $newtbl, $old, $new) {
         }
         // Remove 9999 tree
         if (3250 == ($d['tree_id'])) {
+            unset($data[$key]);
+        }
+        // tree with missing variety
+        if (2422 == $d['id']) {
             unset($data[$key]);
         }
     }
