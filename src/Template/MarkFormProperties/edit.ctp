@@ -9,12 +9,12 @@
             echo $this->Form->input('name');
             echo $this->Form->input('mark_form_property_type_id', [
                 'options' => $markFormPropertyTypes,
-                'label' => __('Property type'),
+                'label' => __('Property Type'),
             ]);
             echo $this->Form->input('field_type', [
                 'options' => $fieldTypes,
                 'class'   => 'mark_field_type',
-                'label' => __('Data type'),
+                'label' => __('Data Type'),
             ]);
             echo $this->Form->input('min', [
                 'type' => 'number',
@@ -22,7 +22,7 @@
                 'class' => 'mark_validation_rule mark_validation_rule_min',
                 'required' => 'required',
                 'value' => isset( $markFormProperty->validation_rule['min'] ) ? $markFormProperty->validation_rule['min'] : '',
-                'label' => __('Minimum value'),
+                'label' => __('Minimum Value'),
             ]);
             $this->Form->unlockField('min');
             echo $this->Form->input('max', [
@@ -31,7 +31,7 @@
                 'class' => 'mark_validation_rule mark_validation_rule_max',
                 'required' => 'required',
                 'value' => isset( $markFormProperty->validation_rule['max'] ) ? $markFormProperty->validation_rule['max'] : '',
-                'label' => __('Maximum value'),
+                'label' => __('Maximum Value'),
             ]);
             $this->Form->unlockField('max');
             echo $this->Form->input('step', [

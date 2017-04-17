@@ -18,13 +18,13 @@
         </tr>
         <?php if (isset($markFormProperty->validation_rule['min'])): ?>
             <tr>
-                <th scope="row"><?= __('Minimum value') ?></th>
+                <th scope="row"><?= __('Minimum Value') ?></th>
                 <td><?= h($markFormProperty->validation_rule['min']) ?></td>
             </tr>
         <?php endif; ?>
         <?php if (isset($markFormProperty->validation_rule['max'])): ?>
             <tr>
-                <th scope="row"><?= __('Maximum value') ?></th>
+                <th scope="row"><?= __('Maximum Value') ?></th>
                 <td><?= h($markFormProperty->validation_rule['max']) ?></td>
             </tr>
         <?php endif; ?>
