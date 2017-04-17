@@ -47,7 +47,7 @@
         </tr>
     </table>
     <div class="related">
-        <h4><?= __('Mark Values') ?></h4>
+        <h4><?= __('Values') ?></h4>
         <?php if (!empty($mark->mark_values)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>

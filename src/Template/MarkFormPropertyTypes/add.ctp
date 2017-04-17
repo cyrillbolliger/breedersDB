@@ -4,7 +4,7 @@
 <div class="markFormPropertyTypes form large-9 medium-8 columns content">
     <?= $this->Form->create($markFormPropertyType) ?>
     <fieldset>
-        <legend><?= __('Add Mark Form Property Type') ?></legend>
+        <legend><?= __('Add Mark Property Type') ?></legend>
         <?php
             echo $this->Form->input('name');
         ?>

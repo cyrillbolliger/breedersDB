@@ -2,7 +2,7 @@
     <?= $this->element('Setting/nav'); ?>
 </nav>
 <div class="markFormPropertyTypes view large-9 medium-8 columns content">
-    <h3><?= __('Mark Form Property Type:').' '.h($markFormPropertyType->name) ?></h3>
+    <h3><?= __('Mark Property Type:').' '.h($markFormPropertyType->name) ?></h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Id') ?></th>
@@ -14,7 +14,7 @@
         </tr>
     </table>
     <div class="related">
-        <h4><?= __('Related Mark Form Properties') ?></h4>
+        <h4><?= __('Related Mark Properties') ?></h4>
         <?php if (!empty($markFormPropertyType->mark_form_properties)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>

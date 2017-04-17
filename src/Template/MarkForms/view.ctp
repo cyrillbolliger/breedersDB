@@ -23,7 +23,7 @@
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col" class="id"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Mark Form Property') ?></th>
+                <th scope="col"><?= __('Mark Property') ?></th>
                 <th scope="col"><?= __('Priority') ?></th>
                 <th scope="col"><?= __('Modified') ?></th>
             </tr>
