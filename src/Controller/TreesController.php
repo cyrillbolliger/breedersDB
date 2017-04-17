@@ -14,6 +14,7 @@ class TreesController extends AppController
     
     public $paginate = [
         'order' => ['modified' => 'desc'],
+        'limit' => 20,
     ];
     
     public function initialize()
@@ -32,10 +33,39 @@ class TreesController extends AppController
     {
         $this->paginate['contain'] = [
             'Varieties', 
-            'Rootstocks', 
-            'Graftings', 
-            'Rows', 
-            'ExperimentSites'
+            'Rows',
+            'Varieties.Batches',
+            'Varieties.Batches.Crossings',
+        ];
+        
+        $this->paginate['sortWhitelist'] = [
+            'convar',
+            'publicid',
+            'row',
+            'offset',
+            'note',
+            'date_eliminated',
+            'modified'
+        ];
+        
+        $this->paginate['fields'] = [
+            'id',
+            'publicid',
+            'convar' => $this->Trees
+                ->find()
+                ->func()
+                ->concat([
+                    'Crossings.code' => 'literal',
+                    'Batches.code' => 'literal',
+                    'Varieties.code' => 'literal',
+                ]),
+            'row' => 'Rows.code',
+            'offset',
+            'note',
+            'date_eliminated',
+            'modified',
+            'variety_id',
+            'row_id',
         ];
         
         $trees = $this->paginate($this->Trees);

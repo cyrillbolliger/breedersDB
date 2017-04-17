@@ -1,13 +1,13 @@
 <table cellpadding="0" cellspacing="0">
 <thead>
     <tr>
-        <th scope="col" class="id"><?= $this->Paginator->sort('id') ?></th>
+        <th scope="col" class="id"><?= __('id') ?></th>
         <th scope="col"><?= $this->Paginator->sort('publicid') ?></th>
         <th scope="col"><?= $this->Paginator->sort('convar') ?></th>
         <th scope="col"><?= $this->Paginator->sort('row') ?></th>
         <th scope="col"><?= $this->Paginator->sort('offset') ?></th>
         <th scope="col"><?= $this->Paginator->sort('note') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('eliminated') ?></th>
+        <th scope="col"><?= $this->Paginator->sort('date_eliminated', __('Eliminated')) ?></th>
         <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
         <th scope="col" class="actions"><?= __('Actions') ?></th>
     </tr>
@@ -17,8 +17,8 @@
     <tr>
         <td class="id"><?= $this->Number->format($tree->id) ?></td>
         <td><?= h($tree->publicid) ?></td>
-        <td><?= $tree->has('Convar') ? $this->Html->link($tree->convar, ['controller' => 'Varieties', 'action' => 'view', $tree->variety->id]) : '' ?></td>
-        <td><?= $tree->has('row') ? $this->Html->link($tree->row->id, ['controller' => 'Rows', 'action' => 'view', $tree->row->id]) : '' ?></td>
+        <td><?= $tree->has('Convar') ? $this->Html->link($tree->convar, ['controller' => 'Varieties', 'action' => 'view', $tree->variety_id]) : '' ?></td>
+        <td><?= $tree->has('row') ? $this->Html->link($tree->row, ['controller' => 'Rows', 'action' => 'view', $tree->row_id]) : '' ?></td>
         <td><?= $this->Number->format($tree->offset) ?></td>
         <td><?= $tree->note ? $this->Html->link(__('Read'), ['action' => 'view', $tree->id]) : '' ?></td>
         <td><?= $tree->date_eliminated ? __('eliminated') : '' ?></td>
