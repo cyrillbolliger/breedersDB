@@ -72,6 +72,12 @@ table td {
     word-break: normal;
 }
 
+.index_inline_list ul {
+    margin: 0;
+    list-style: none;
+    font-size: 1em;
+}
+
 /* -------- sortable -------- */
 .sortable_element {
     margin: 0;
@@ -113,12 +119,6 @@ table td {
     margin-top: 1em;
 }
 
-.mark_data_preview {
+.marks .index_inline_list {
      width: 40%;
-}
-
-.mark_data_preview ul {
-     margin: 0;
-     list-style: none;
-     font-size: 1em;
 }
