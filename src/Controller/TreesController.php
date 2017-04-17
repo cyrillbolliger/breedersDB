@@ -343,6 +343,44 @@ class TreesController extends AppController
      */
     public function filter() {
         $allowed_fields = ['publicid','convar'];
+    
+        $this->paginate['contain'] = [
+            'Varieties',
+            'Rows',
+            'Varieties.Batches',
+            'Varieties.Batches.Crossings',
+        ];
+    
+        $this->paginate['sortWhitelist'] = [
+            'convar',
+            'publicid',
+            'row',
+            'offset',
+            'note',
+            'date_eliminated',
+            'modified',
+            'id'
+        ];
+    
+        $this->paginate['fields'] = [
+            'id',
+            'publicid',
+            'convar' => $this->Trees
+                ->find()
+                ->func()
+                ->concat([
+                    'Crossings.code' => 'literal',
+                    'Batches.code' => 'literal',
+                    'Varieties.code' => 'literal',
+                ]),
+            'row' => 'Rows.code',
+            'offset',
+            'note',
+            'date_eliminated',
+            'modified',
+            'variety_id',
+            'row_id',
+        ];
                 
         if ( $this->request->is('get') 
                 && $this->request->is('ajax') 
