@@ -20,7 +20,7 @@
             <tr>
                 <td class="id"><?= h($crossing->id) ?></td>
                 <td><?= h($crossing->code) ?></td>
-                <td><?= $list ?></td>
+                <td class="index_inline_list"><?= $list ?></td>
                 <td><?= h($crossing->modified) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $crossing->id]) ?>

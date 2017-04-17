@@ -3,7 +3,7 @@
         <tr>
             <th scope="col" class="id"><?= $this->Paginator->sort('id') ?></th>
             <th scope="col"><?= __('Object'); ?></th>
-            <th scope="col" class="mark_data_preview"><?= __('Marks') ?></th>
+            <th scope="col" class="index_inline_list"><?= __('Marks') ?></th>
             <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
@@ -31,7 +31,7 @@
             <tr>
                 <td class="id"><?= $this->Number->format($mark->id) ?></td>
                 <td><?= $object ?></td>
-                <td class="mark_data_preview"><?= $mark_data ?></td>
+                <td class="index_inline_list"><?= $mark_data ?></td>
                 <td><?= h($mark->modified) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $mark->id]) ?>
