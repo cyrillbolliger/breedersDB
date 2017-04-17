@@ -1,7 +1,7 @@
 <table cellpadding="0" cellspacing="0">
 <thead>
     <tr>
-        <th scope="col" class="id"><?= __('id') ?></th>
+        <th scope="col" class="id"><?= $this->Paginator->sort('id') ?></th>
         <th scope="col"><?= $this->Paginator->sort('publicid') ?></th>
         <th scope="col"><?= $this->Paginator->sort('convar') ?></th>
         <th scope="col"><?= $this->Paginator->sort('row') ?></th>

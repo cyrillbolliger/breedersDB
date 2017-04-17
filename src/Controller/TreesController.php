@@ -44,7 +44,8 @@ class TreesController extends AppController
             'offset',
             'note',
             'date_eliminated',
-            'modified'
+            'modified',
+            'id'
         ];
         
         $this->paginate['fields'] = [

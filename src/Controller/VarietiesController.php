@@ -46,6 +46,7 @@ class VarietiesController extends AppController
             'official_name',
             'created',
             'modified',
+            'id',
         ];
     
         $this->paginate['fields'] = [
