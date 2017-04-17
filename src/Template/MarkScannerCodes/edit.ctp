@@ -13,7 +13,10 @@
                 'name' => 'mark_value',
                 'markValue' => $markScannerCode->mark_value,
             ]);
-            echo $this->Form->input('mark_form_property_id', ['options' => $markFormProperties]);
+            echo $this->Form->input('mark_form_property_id', [
+                    'options' => $markFormProperties,
+                    'label' => __('Property'),
+            ]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

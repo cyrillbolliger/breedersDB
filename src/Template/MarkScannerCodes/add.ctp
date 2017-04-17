@@ -4,7 +4,7 @@
 <div class="markScannerCodes form large-9 medium-8 columns content">
     <?= $this->Form->create($markScannerCode) ?>
     <fieldset>
-        <legend><?= __('Add Mark Scanner Code') ?></legend>
+        <legend><?= __('Add Scanner Code') ?></legend>
         <?php
             echo $this->Form->input('mark_form_property_id', [
                'options' => $markFormProperties,
@@ -16,7 +16,7 @@
             ?><div id="mark_value_wrapper"><?php
                 echo $this->Form->unlockField('mark_value');
                 echo $this->Form->input('mark_value', [
-                    'label' => __('Mark value'),
+                    'label' => __('Value'),
                     'class' => 'replace_me',
                     'disabled' => 'disabled',
                 ]);
