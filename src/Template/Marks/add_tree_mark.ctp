@@ -15,7 +15,7 @@
     <fieldset>
         <legend><?= __('Mark Tree') ?></legend>
         <div>
-             <input type="text" class="get_tree" data-filter='<?= $filter ?>' placeholder="<?= __('Enter publicid...') ?>">
+             <input type="text" class="get_tree" autofocus="autofocus" data-filter='<?= $filter ?>' placeholder="<?= __('Enter publicid...') ?>">
         </div>
         <div id="tree_container" class=""></div>
         

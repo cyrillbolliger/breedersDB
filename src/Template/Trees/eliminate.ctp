@@ -13,7 +13,7 @@
 <div class="large-9 medium-8 columns content">
     <h3><?= __('Eliminate Tree') ?></h3>
     <div>
-         <input type="text" class="get_tree" data-filter='<?= $filter ?>' placeholder="<?= __('Enter publicid...') ?>">
+         <input type="text" class="get_tree" autofocus="autofocus" data-filter='<?= $filter ?>' placeholder="<?= __('Enter publicid...') ?>">
     </div>
 </div>
 

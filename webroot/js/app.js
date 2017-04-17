@@ -602,10 +602,14 @@ function Marks() {
      */
     this.unlockScannerField = function() {
         if ($('#mark-form-id').val()) {
-            $('.scanner_mark_field').removeAttr('disabled');
+            $('.scanner_mark_field')
+                .removeAttr('disabled')
+                .focus();
         } else {
             $('#mark-form-id').change(function(){
-                $('.scanner_mark_field').removeAttr('disabled');
+                $('.scanner_mark_field')
+                    .removeAttr('disabled')
+                    .focus();
             });
         }
     };
