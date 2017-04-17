@@ -29,6 +29,34 @@ class BatchesController extends AppController
     public function index()
     {
         $this->paginate['contain'] = ['Crossings'];
+    
+        $this->paginate['sortWhitelist'] = [
+            'crossing_batch',
+            'date_sowed',
+            'seed_tray',
+            'date_planted',
+            'patch',
+            'modified',
+            'id',
+        ];
+    
+        $this->paginate['fields'] = [
+            'id',
+            'crossing_batch' => $this->Batches
+                ->find()
+                ->func()
+                ->concat([
+                    'Crossings.code' => 'literal',
+                    'Batches.code' => 'literal',
+                ]),
+            'date_sowed',
+            'seed_tray',
+            'date_planted',
+            'patch',
+            'code',
+            'Crossings.code',
+        ];
+        
         $batches = $this->paginate($this->Batches);
 
         $this->set(compact('batches'));
