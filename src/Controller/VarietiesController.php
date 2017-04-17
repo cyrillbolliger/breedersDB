@@ -38,7 +38,34 @@ class VarietiesController extends AppController
     {
         $this->paginate['contain'] = [
             'Batches',
+            'Batches.Crossings',
         ];
+    
+        $this->paginate['sortWhitelist'] = [
+            'convar',
+            'official_name',
+            'created',
+            'modified',
+        ];
+    
+        $this->paginate['fields'] = [
+            'id',
+            'convar' => $this->Varieties
+                ->find()
+                ->func()
+                ->concat([
+                    'Crossings.code' => 'literal',
+                    'Batches.code' => 'literal',
+                    'Varieties.code' => 'literal',
+                ]),
+            'official_name',
+            'created',
+            'modified',
+            'Batches.crossing_id',
+            'Batches.code',
+            'code'
+        ];
+        
         $varieties = $this->paginate($this->Varieties);
 
         $this->set(compact('varieties'));
