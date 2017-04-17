@@ -3,8 +3,8 @@
         <tr>
             <th scope="col" class="id"><?= $this->Paginator->sort('id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('field_type') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('mark_form_property_type_id') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('field_type', __('Data type')) ?></th>
+            <th scope="col"><?= $this->Paginator->sort('mark_form_property_type_id', __('Property type')) ?></th>
             <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>

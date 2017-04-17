@@ -4,21 +4,24 @@
 <div class="markFormProperties form large-9 medium-8 columns content">
     <?= $this->Form->create($markFormProperty) ?>
     <fieldset>
-        <legend><?= __('Add Mark Form Property') ?></legend>
+        <legend><?= __('Add Property') ?></legend>
         <?php
             echo $this->Form->input('name');
             echo $this->Form->input('mark_form_property_type_id', [
-                'options' => $markFormPropertyTypes
+                'options' => $markFormPropertyTypes,
+                'label' => __('Property type'),
             ]);
             echo $this->Form->input('field_type', [
                 'options' => $fieldTypes,
-                'class'   => 'mark_field_type'
+                'class'   => 'mark_field_type',
+                'label' => __('Data type'),
             ]);
             echo $this->Form->input('min', [
                 'type' => 'number',
                 'step' => 'any',
                 'class' => 'mark_validation_rule mark_validation_rule_min',
                 'required' => 'required',
+                'label' => __('Minimum value'),
             ]);
             $this->Form->unlockField('min');
             echo $this->Form->input('max', [
@@ -26,6 +29,7 @@
                 'step' => 'any',
                 'class' => 'mark_validation_rule mark_validation_rule_max',
                 'required' => 'required',
+                'label' => __('Maximum value'),
             ]);
             $this->Form->unlockField('max');
             echo $this->Form->input('step', [
@@ -37,7 +41,7 @@
             $this->Form->unlockField('step');
             ?>
             <fieldset>
-                <legend><?= __('This property may be used to mark') ?></legend>
+                <legend><?= __('This property serves to mark:') ?></legend>
                 <?php
                 echo $this->Form->input('tree_property', ['label' => __('Trees')]);
                 echo $this->Form->input('variety_property', ['label' => __('Varieties')]);

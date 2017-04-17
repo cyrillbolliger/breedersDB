@@ -9,22 +9,22 @@
             <td><?= $this->Number->format($markFormProperty->id) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Mark Form Property Type') ?></th>
+            <th scope="row"><?= __('Property Type') ?></th>
             <td><?= $markFormProperty->has('mark_form_property_type') ? $this->Html->link($markFormProperty->mark_form_property_type->name, ['controller' => 'MarkFormPropertyTypes', 'action' => 'view', $markFormProperty->mark_form_property_type->id]) : '' ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Field Type') ?></th>
+            <th scope="row"><?= __('Data Type') ?></th>
             <td><?= h($markFormProperty->field_type) ?></td>
         </tr>
         <?php if (isset($markFormProperty->validation_rule['min'])): ?>
             <tr>
-                <th scope="row"><?= __('Min value') ?></th>
+                <th scope="row"><?= __('Minimum value') ?></th>
                 <td><?= h($markFormProperty->validation_rule['min']) ?></td>
             </tr>
         <?php endif; ?>
         <?php if (isset($markFormProperty->validation_rule['max'])): ?>
             <tr>
-                <th scope="row"><?= __('Max value') ?></th>
+                <th scope="row"><?= __('Maximum value') ?></th>
                 <td><?= h($markFormProperty->validation_rule['max']) ?></td>
             </tr>
         <?php endif; ?>
