@@ -66,37 +66,48 @@ function General() {
       */
      this.instantiateFilter = function() {
           var $filter = $('.filter').first();
-          var $table = $('#index_table').first();
+          var $target = $('#index_table').first();
 
           $filter.on('keyup paste change', function() {
-               var params = $filter.data('filter');
-               $.ajax({
-                    url: webroot + params.controller + '/' + params.action,
-                    data: {
-                         fields : params.fields,
-                         term : $filter.val(),
-                         sort : self.getUrlParameter('sort'),
-                         direction : self.getUrlParameter('direction')
-                    },
-                    success: function(resp) {
-                         var $tbody = $(resp).find('tbody');
-                         var $paginator = $(resp).siblings('div.paginator');
-
-                         if ( $tbody.length && $paginator.length ) {
-                              $table.find('tbody').html($tbody.html());
-                              $table.find('.paginator').html($paginator.html());
-                         } else {
-                              $table.find('tbody').html(resp);
-                         }
-                    },
-                    dataType: 'html',
-                    beforeSend: function(xhr){
-                         xhr.setRequestHeader('X-CSRF-Token', csrfToken);
-                         $table.find('tbody').html(searching);
-                    }
-               });
+              // search for the data
+              self.getFilteredData($filter.val(), $filter.data('filter'), $target);
           });
      };
+
+    /**
+     * make an ajax call and fetch the filtered data
+     *
+     * @param term String with the filter criteria (search term)
+     * @param params Object {controller: String, action: String, fields: Array}
+     * @param $target jQuery object where the results will be displayed
+     */
+    this.getFilteredData = function(term, params, $target) {
+        $.ajax({
+            url: webroot + params.controller + '/' + params.action,
+            data: {
+                fields : params.fields,
+                term : term,
+                sort : self.getUrlParameter('sort'),
+                direction : self.getUrlParameter('direction')
+            },
+            success: function(resp) {
+                var $tbody = $(resp).find('tbody');
+                var $paginator = $(resp).siblings('div.paginator');
+
+                if ( $tbody.length && $paginator.length ) {
+                    $target.find('tbody').html($tbody.html());
+                    $target.find('.paginator').html($paginator.html());
+                } else {
+                    $target.find('tbody').html(resp);
+                }
+            },
+            dataType: 'html',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+                $target.find('tbody').html(trans.searching);
+            }
+        });
+    };
 
      /*
       * load and configure the convar select field.
