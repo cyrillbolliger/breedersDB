@@ -14,7 +14,6 @@ class TreesController extends AppController
     
     public $paginate = [
         'order' => ['modified' => 'desc'],
-        'limit' => 20,
     ];
     
     public function initialize()
