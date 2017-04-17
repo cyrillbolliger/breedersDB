@@ -43,7 +43,7 @@ try {
 
 
 //move('LoseKreuzungen','crossings');
-//move('Kreuzungen','mother_trees'); // dont move!
+//move('Kreuzungen','mother_trees'); // don't move! we have to start clean here
 //move('Baeume','trees');
 //move('Lose','batches');
 //move('Klon', 'varieties');
