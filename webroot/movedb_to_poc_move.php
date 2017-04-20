@@ -287,6 +287,7 @@ function varieties($oldtbl, $newtbl, $old, $new) {
         'registration' => 'Zulassung',
         'description' => 'Beschrieb',
         'batch_id' => 'LosID',
+        'acronym' => 'Abkürzung',
     ];
     
     $data = translate($column_names, $rows);
