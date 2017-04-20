@@ -3,7 +3,8 @@
 </nav>
 <div class="marks form large-9 medium-8 columns content">
     <?= $this->Form->create($mark) ?>
-    <legend><?= __('Edit Mark') ?></legend>
+    <fieldset>
+        <legend><?= __('Edit Mark') ?></legend>
         <?= $this->element('Tree/get_tree', ['tree' => $mark->tree]); ?>
         <?php
             $this->Form->unlockField('tree_id');
@@ -28,8 +29,10 @@
     <fieldset>
         <?php if (!empty($marks)): ?>
             <?php foreach ($marks as $mark_type => $mark_values): ?>
-                <legend><?= h($mark_type) ?></legend>
-                <?= $this->element('Mark/list', ['markValues' => $mark_values]); ?>
+                <?php if ( ! empty($mark_values->toArray()) ) : ?>
+                    <legend><?= h($mark_type) ?></legend>
+                    <?= $this->element('Mark/list', ['markValues' => $mark_values]); ?>
+                <?php endif; ?>
             <?php endforeach; ?>
         <?php endif; ?>
     </fieldset>
