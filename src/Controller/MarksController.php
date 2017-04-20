@@ -267,6 +267,10 @@ class MarksController extends AppController
                 'Trees.Rows',
                 'Trees.ExperimentSites',
                 'Trees.Varieties',
+                'Varieties',
+                'Varieties.Batches',
+                'Batches',
+                'Batches.Crossings',
             ]
         ]);
         

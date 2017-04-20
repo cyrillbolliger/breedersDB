@@ -5,9 +5,29 @@
     <?= $this->Form->create($mark) ?>
     <fieldset>
         <legend><?= __('Edit Mark') ?></legend>
-        <?= $this->element('Tree/get_tree', ['tree' => $mark->tree]); ?>
         <?php
-            $this->Form->unlockField('tree_id');
+            if ( $mark->tree ) {
+                echo $this->element('Tree/get_tree', ['tree' => $mark->tree]);
+                $this->Form->unlockField('tree_id');
+            }
+            
+            if ( $mark->batch ) {
+                echo $this->Form->input('batch_id', [
+                    'options' => [$mark->batch->id => $mark->batch->crossing_batch],
+                    'required' => 'required',
+                    'class' => 'select2batch_id',
+                    'label' => __('Crossing.Batch'),
+                ]);
+            }
+
+            if ( $mark->variety ) {
+                echo $this->Form->input('variety_id', [
+                    'options' => [$mark->variety->id => $mark->variety->convar],
+                    'required' => 'required',
+                    'class' => 'select2convar select2convar_add',
+                ]);
+            }
+            
             echo $this->Form->input('date', [
                 'type' => 'text', 
                 'class' => $mark->dirty('date') ? 'datepicker brain-prefilled': 'datepicker',
