@@ -13,7 +13,9 @@
                 'options' => $crossings,
                 'required' => 'required',
             ]);
-            echo $this->Form->input('code');
+            echo $this->Form->input('code', [
+                'label' => 'Identification'
+            ]);
             echo $this->Form->input('planed');
             echo $this->Form->input('date_pollen_harvested', [
                 'empty' => true,

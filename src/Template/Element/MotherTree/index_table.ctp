@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th scope="col" class="id"><?= $this->Paginator->sort('id') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('code') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('code', __('Identification')) ?></th>
             <th scope="col"><?= __('Publicid') ?></th>
             <th scope="col"><?= $this->Paginator->sort('planed') ?></th>
             <th scope="col"><?= $this->Paginator->sort('numb_portions') ?></th>
