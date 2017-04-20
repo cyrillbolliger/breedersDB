@@ -131,6 +131,10 @@ class RowsController extends AppController
                 $direction = empty($this->request->query['direction']) ? 'asc' : $this->request->query['direction'];
                 $this->paginate['order'] = [ $sort => $direction ];
             }
+            if ( ! empty($this->request->query['page']) ) {
+                $this->paginate['page'] = $this->request->query['page'];
+            }
+            
         } else {
             throw new Exception(__('Direct access not allowed.'));
         }
