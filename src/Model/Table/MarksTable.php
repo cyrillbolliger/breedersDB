@@ -153,11 +153,13 @@ class MarksTable extends Table
                 
         if ( isset( $input['mark_form_fields']['mark_form_properties'] )) {
             foreach( $input['mark_form_fields']['mark_form_properties'] as $mark_form_property_id => $value ) {
-                $mark_values[] = [
-                    'value' => $value['mark_values']['value'],
-                    'mark_form_property_id' => $mark_form_property_id,
-                    'exceptional_mark' => $this->_isMarkExceptional($input['mark_form_id'], $mark_form_property_id),
-                ];
+                if ( '' !== $value['mark_values']['value'] ) {
+                    $mark_values[] = [
+                        'value' => $value['mark_values']['value'],
+                        'mark_form_property_id' => $mark_form_property_id,
+                        'exceptional_mark' => $this->_isMarkExceptional($input['mark_form_id'], $mark_form_property_id),
+                    ];
+                }
             }
         }
         
