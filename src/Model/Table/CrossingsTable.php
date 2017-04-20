@@ -13,7 +13,6 @@ use App\Model\Rule\IsNotReferredBy;
  * Crossings Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Varieties
- * @property \Cake\ORM\Association\BelongsTo $Varieties
  * @property \Cake\ORM\Association\HasMany $MotherTrees
  * @property \Cake\ORM\Association\HasMany $Batches
  *
@@ -115,7 +114,7 @@ class CrossingsTable extends Table
      * Return query filtered by given search term searching the code
      * 
      * @param string $term
-     * @return Cake\ORM\Query
+     * @return \Cake\ORM\Query
      */
     public function filterCodes(string $term) {
         
