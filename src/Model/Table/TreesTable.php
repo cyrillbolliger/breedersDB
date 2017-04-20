@@ -152,7 +152,7 @@ class TreesTable extends Table
         $rules->add($rules->existsIn(['row_id'], 'Rows'));
         $rules->add($rules->existsIn(['experiment_site_id'], 'ExperimentSites'));
         
-        $rules->addDelete(new IsNotReferredBy(['Crossings' => 'mother_tree_id']),'isNotReferredBy');
+        $rules->addDelete(new IsNotReferredBy(['MotherTrees' => 'tree_id']),'isNotReferredBy');
         $rules->addDelete(new IsNotReferredBy(['Marks' => 'tree_id']),'isNotReferredBy');
         
         return $rules;
