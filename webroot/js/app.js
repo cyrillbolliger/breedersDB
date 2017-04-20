@@ -658,6 +658,7 @@ function Marks() {
                     General.beep('error');
                 }
                 $searching.hide();
+                $('.scanner_mark_field').first().focus();
             },
             dataType: 'html',
             beforeSend: function(xhr){
@@ -678,10 +679,12 @@ function Marks() {
             success: function(resp) {
                 self.setMark($.parseJSON(resp));
                 $searching.hide();
+                $('.scanner_mark_field').first().focus();
             },
             error: function() {
                 General.beep('error');
                 $searching.hide();
+                $('.scanner_mark_field').first().focus();
             },
             dataType: 'html',
             beforeSend: function(xhr){
