@@ -4,6 +4,8 @@ var Trees = new Trees();
 var Marks = new Marks();
 
 var searching;
+var last_search_term;
+var search_timer;
 
 /**
  * handles all the general stuff
@@ -67,11 +69,67 @@ function General() {
      this.instantiateFilter = function() {
           var $filter = $('.filter').first();
           var $target = $('#index_table').first();
+          var $sort   = $target.find('th > a');
+          var $paginate = $target.find('.pagination a');
 
+          // filter the data when inputing to the filter field
+          $filter.off('keyup paste change');
           $filter.on('keyup paste change', function() {
-              // search for the data
-              self.getFilteredData($filter.val(), $filter.data('filter'), $target);
+              // prevent searching twice the same
+              if ( $filter.val() === last_search_term ) {
+                  return;
+              } else {
+                  last_search_term = $filter.val();
+              }
+
+              // wait for typing
+              var wait = 250; // milliseconds
+              clearTimeout(search_timer);
+              search_timer = setTimeout(function() {
+                  // search for the data
+                  self.getFilteredData($filter.val(), $filter.data('filter'), $target, null);
+              }, wait);
           });
+
+          // make ordering work with filters
+          $sort.off('click');
+          $sort.click(function(e) {
+              var $link = $(this);
+              var href = $link.attr('href');
+              var order = null === href.match('direction=asc') ? 'asc' : 'desc';
+              var new_href = href.replace(/direction=\w+/, 'direction=' + order);
+
+              // prevent default
+              e.preventDefault();
+
+              // set new link
+              $link.attr('href', new_href);
+
+              // set order classes
+              $sort.removeClass('asc desc');
+              $link.addClass(order);
+
+              // get new data
+              self.getFilteredData($filter.val(), $filter.data('filter'), $target, href);
+          });
+
+          // mage pagination work with filters
+         $paginate.off('click');
+         $paginate.click(function(e) {
+             var $link = $(this);
+             var href = $link.attr('href');
+
+             // return if no href is set
+             if ( "" === href ) {
+                 return;
+             }
+
+             // prevent default
+             e.preventDefault();
+
+             // get new data
+             self.getFilteredData($filter.val(), $filter.data('filter'), $target, href);
+         });
      };
 
     /**
@@ -81,14 +139,17 @@ function General() {
      * @param params Object {controller: String, action: String, fields: Array}
      * @param $target jQuery object where the results will be displayed
      */
-    this.getFilteredData = function(term, params, $target) {
+    this.getFilteredData = function(term, params, $target, url) {
+        url = null === url ? window.location : url;
+
         $.ajax({
             url: webroot + params.controller + '/' + params.action,
             data: {
                 fields : params.fields,
                 term : term,
-                sort : self.getUrlParameter('sort'),
-                direction : self.getUrlParameter('direction')
+                sort : self.getUrlParameter('sort', url ),
+                direction : self.getUrlParameter('direction', url ),
+                page : self.getUrlParameter('page', url )
             },
             success: function(resp) {
                 var $tbody = $(resp).find('tbody');
@@ -97,6 +158,7 @@ function General() {
                 if ( $tbody.length && $paginator.length ) {
                     $target.find('tbody').html($tbody.html());
                     $target.find('.paginator').html($paginator.html());
+                    self.instantiateFilter();
                 } else {
                     $target.find('tbody').html(resp);
                 }
@@ -233,11 +295,13 @@ function General() {
      /**
       * get url get param value
       *
-      * @param {string} sParam
-      * @returns {appL#4.General.getUrlParameter.sParameterName|Boolean}
+      * @param String sParam
+      * @param String url
+      * @returns String|Boolean
       */
-     this.getUrlParameter = function(sParam) {
-          var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+     this.getUrlParameter = function(sParam, url) {
+          var args = url.toString().split("?")[1],
+              sPageURL = decodeURIComponent(args),
               sURLVariables = sPageURL.split('&'),
               sParameterName,
               i;
@@ -246,7 +310,7 @@ function General() {
               sParameterName = sURLVariables[i].split('=');
 
               if (sParameterName[0] === sParam) {
-                  return sParameterName[1] === undefined ? true : sParameterName[1];
+                  return sParameterName[1] === undefined ? false : sParameterName[1];
               }
           }
      };
