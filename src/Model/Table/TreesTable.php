@@ -309,7 +309,7 @@ class TreesTable extends Table
     public function getLabelZpl(int $id) {
         $tree = $this->get($id, ['contain'=>['Varieties']]);
         $code = $tree->publicid;
-        $description = 1 === $tree->variety_id ? $tree->variety->code : $tree->convar;
+        $description = 1 === $tree->variety->batch_id ? $tree->variety->code : $tree->convar;
         return $this->getZPL($code, $description);
         
     }
