@@ -63,8 +63,13 @@ div.searching {
      color: #bbb;
 }
 
+table,
+.index table,
+.related table {
+    table-layout: auto;
+}
+
 table .id {
-     width: 4em;
      opacity: 0.5;
 }
 
