@@ -3,7 +3,7 @@
         <tr>
             <th scope="col" class="id"><?= $this->Paginator->sort('id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('variety_id') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('code') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('code', __('Identification')) ?></th>
             <th scope="col"><?= $this->Paginator->sort('numb_scions') ?></th>
             <th scope="col"><?= $this->Paginator->sort('date_scions_harvest') ?></th>
             <th scope="col"><?= $this->Paginator->sort('external_use') ?></th>

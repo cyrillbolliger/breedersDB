@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th scope="col" class="id"><?= $this->Paginator->sort('id') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('code') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('code', __('Name')) ?></th>
             <th scope="col"><?= $this->Paginator->sort('date_created') ?></th>
             <th scope="col"><?= $this->Paginator->sort('date_eliminated') ?></th>
             <th scope="col"><?= $this->Paginator->sort('modified') ?></th>

@@ -11,7 +11,9 @@
                 'required' => 'required',
                 'class' => 'select2convar',
             ]);
-            echo $this->Form->input('code');
+            echo $this->Form->input('code', [
+                'label' => __('Identification'),
+            ]);
             echo $this->Form->input('numb_scions');
             echo $this->Form->input('date_scions_harvest', [
                 'empty' => true, 

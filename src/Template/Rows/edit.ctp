@@ -6,7 +6,9 @@
     <fieldset>
         <legend><?= __('Edit Row') ?></legend>
         <?php
-            echo $this->Form->input('code');
+            echo $this->Form->input('code', [
+                'label' => __('Name'),
+            ]);
             echo $this->Form->input('date_created', [
                 'empty' => true, 
                 'type' => 'text', 

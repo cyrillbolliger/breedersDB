@@ -2,7 +2,7 @@
     <?= $this->element('Row/nav'); ?>
 </nav>
 <div class="rows view large-9 medium-8 columns content">
-    <h3><?= h($row->code) ?></h3>
+    <h3><?= __('Row:').' '.h($row->code) ?></h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Id') ?></th>
