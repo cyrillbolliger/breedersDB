@@ -82,6 +82,10 @@ table td {
     word-break: normal;
 }
 
+table .actions {
+    width: 7em;
+}
+
 .index_inline_list ul {
     margin: 0;
     list-style: none;
@@ -122,6 +126,21 @@ table td {
 
 .button {
     background: #966600;
+}
+
+.view-icon,
+.edit-icon,
+.delete-icon {
+    padding: 0.25rem 0.25rem 0;
+    line-height: 1rem;
+    width: 1.4rem;
+}
+
+.view-icon:hover,
+.edit-icon:hover,
+.delete-icon:hover {
+    padding: 0 0;
+    font-size: 1.4rem;
 }
 
 /* --------- Marks --------- */
