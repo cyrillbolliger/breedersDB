@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2017-04-17 17:38+0000\n"
+"POT-Creation-Date: 2017-04-21 13:10+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -45,17 +45,17 @@ msgstr ""
 msgid "The batch could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/BatchesController.php:174
-#: Controller/CrossingsController.php:167
-#: Controller/MarkFormPropertiesController.php:168
-#: Controller/MarkFormsController.php:167
-#: Controller/MarkScannerCodesController.php:152;173
-#: Controller/MarksController.php:352
-#: Controller/MotherTreesController.php:153
-#: Controller/RowsController.php:135
-#: Controller/ScionsBundlesController.php:147
-#: Controller/TreesController.php:297;360;385
-#: Controller/VarietiesController.php:218;237;256;282
+#: Controller/BatchesController.php:178
+#: Controller/CrossingsController.php:171
+#: Controller/MarkFormPropertiesController.php:172
+#: Controller/MarkFormsController.php:171
+#: Controller/MarkScannerCodesController.php:156;177
+#: Controller/MarksController.php:360
+#: Controller/MotherTreesController.php:157
+#: Controller/RowsController.php:139
+#: Controller/ScionsBundlesController.php:151
+#: Controller/TreesController.php:297;402;427
+#: Controller/VarietiesController.php:218;237;256;286
 msgid "Direct access not allowed."
 msgstr ""
 
@@ -216,11 +216,11 @@ msgstr ""
 msgid "The mark value could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MarksController.php:114;170;220;276
+#: Controller/MarksController.php:114;170;220;280
 msgid "The mark has been saved."
 msgstr ""
 
-#: Controller/MarksController.php:118;174;224;280
+#: Controller/MarksController.php:118;174;224;284
 msgid "The mark could not be saved."
 msgstr ""
 
@@ -240,11 +240,11 @@ msgstr ""
 msgid "Please select a batch."
 msgstr ""
 
-#: Controller/MarksController.php:303
+#: Controller/MarksController.php:307
 msgid "The mark has been deleted."
 msgstr ""
 
-#: Controller/MarksController.php:305
+#: Controller/MarksController.php:309
 msgid "The mark could not be deleted. Please, try again."
 msgstr ""
 
@@ -376,16 +376,16 @@ msgstr ""
 msgid "A batch with this code and this crossing already exists."
 msgstr ""
 
-#: Model/Table/CrossingsTable.php:84
+#: Model/Table/CrossingsTable.php:83
 msgid "Input not valid. The code must only contain alphanumerical characters (without umlauts). Length between four and eight characters."
 msgstr ""
 
-#: Model/Table/CrossingsTable.php:100
-#: Model/Table/MotherTreesTable.php:140
+#: Model/Table/CrossingsTable.php:99
+#: Model/Table/MotherTreesTable.php:144
 msgid "This code has already been used. Please use a unique code."
 msgstr ""
 
-#: Model/Table/CrossingsTable.php:105
+#: Model/Table/CrossingsTable.php:104
 msgid "A crossing with the same mother variety and the same father variety already exists."
 msgstr ""
 
@@ -468,11 +468,7 @@ msgstr ""
 msgid "Tree and variety must not be selected"
 msgstr ""
 
-#: Model/Table/MotherTreesTable.php:74
-msgid "The publicid must not be empty."
-msgstr ""
-
-#: Model/Table/MotherTreesTable.php:89
+#: Model/Table/MotherTreesTable.php:93
 msgid "The variety of the mother tree must match the mother variety of the crossing."
 msgstr ""
 
@@ -512,9 +508,9 @@ msgstr ""
 #: Template/MarkScannerCodes/add.ctp:30
 #: Template/MarkScannerCodes/edit.ctp:22
 #: Template/MarkValues/edit.ctp:13
-#: Template/Marks/edit.ctp:37
-#: Template/MotherTrees/add.ctp:51
-#: Template/MotherTrees/edit.ctp:40
+#: Template/Marks/edit.ctp:60
+#: Template/MotherTrees/add.ctp:53
+#: Template/MotherTrees/edit.ctp:42
 #: Template/Rootstocks/add.ctp:12
 #: Template/Rootstocks/edit.ctp:12
 #: Template/Rows/add.ctp:17
@@ -934,6 +930,7 @@ msgstr ""
 
 #: Template/Element/Batch/index_table.ctp:5
 #: Template/Marks/add_batch_mark.ctp:14
+#: Template/Marks/edit.ctp:19
 #: Template/Varieties/add_breeder_variety.ctp:14
 #: Template/Varieties/add_official_variety.ctp:18
 #: Template/Varieties/edit.ctp:14
@@ -1097,7 +1094,7 @@ msgstr ""
 #: Template/Element/Mark/index_table.ctp:15
 #: Template/Element/Mark/list.ctp:16
 #: Template/Marks/view.ctp:7
-#: Template/Trees/view.ctp:5
+#: Template/Trees/view.ctp:10
 msgid "Tree:"
 msgstr ""
 
@@ -1156,7 +1153,8 @@ msgid "Mark Tree (Scanner)"
 msgstr ""
 
 #: Template/Element/Mark/nav.ctp:5
-msgid "Mark Varienty"
+#: Template/Marks/add_variety_mark.ctp:8
+msgid "Mark Variety"
 msgstr ""
 
 #: Template/Element/Mark/nav.ctp:6
@@ -1205,7 +1203,7 @@ msgstr ""
 msgid "List Scanner Codes"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:21
+#: Template/Element/Mark/nav.ctp:20
 msgid "Print submit form label"
 msgstr ""
 
@@ -1225,6 +1223,10 @@ msgstr ""
 
 #: Template/Element/MarkScannerCode/index_table.ctp:21
 msgid "Are you sure you want to delete {0} (id: {1})?"
+msgstr ""
+
+#: Template/Element/MotherTree/index_table.ctp:5
+msgid "Identification"
 msgstr ""
 
 #: Template/Element/Row/nav.ctp:3
@@ -1592,13 +1594,13 @@ msgstr ""
 msgid "Filter by property"
 msgstr ""
 
-#: Template/MarkScannerCodes/view.ctp:5
-msgid "Scanner Code:"
+#: Template/MarkScannerCodes/view.ctp:6
+#: Template/Trees/view.ctp:6
+msgid "Print label"
 msgstr ""
 
-#: Template/MarkScannerCodes/view.ctp:7
-#: Template/Trees/view.ctp:7
-msgid "Print label"
+#: Template/MarkScannerCodes/view.ctp:10
+msgid "Scanner Code:"
 msgstr ""
 
 #: Template/MarkValues/edit.ctp:7
@@ -1624,11 +1626,7 @@ msgstr ""
 msgid "Please wait..."
 msgstr ""
 
-#: Template/Marks/add_variety_mark.ctp:8
-msgid "Mark Variety"
-msgstr ""
-
-#: Template/Marks/edit.ctp:6
+#: Template/Marks/edit.ctp:7
 msgid "Edit Mark"
 msgstr ""
 

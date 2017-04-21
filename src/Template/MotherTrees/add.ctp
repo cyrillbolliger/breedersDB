@@ -25,7 +25,7 @@
                     'required' => 'required',
             ]);
             echo $this->Form->input('code', [
-                    'label' => 'Identification'
+                    'label' => __('Identification'),
             ]);
             echo $this->Form->input('planed');
             echo $this->Form->input('date_pollen_harvested', [
