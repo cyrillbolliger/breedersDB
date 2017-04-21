@@ -73,7 +73,9 @@ table .id {
      opacity: 0.5;
 }
 
-table thead tr th, table thead tr td {
+table thead tr th,
+table thead tr td,
+.related table tr th {
     font-size: 0.8em;
     color: #666;
 }
