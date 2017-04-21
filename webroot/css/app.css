@@ -130,6 +130,10 @@ table .actions {
     background: #966600;
 }
 
+.print-button {
+    float: right;
+}
+
 .view-icon,
 .edit-icon,
 .delete-icon {
