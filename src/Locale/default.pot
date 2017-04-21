@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2017-04-21 13:10+0000\n"
+"POT-Creation-Date: 2017-04-21 13:20+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -513,10 +513,10 @@ msgstr ""
 #: Template/MotherTrees/edit.ctp:42
 #: Template/Rootstocks/add.ctp:12
 #: Template/Rootstocks/edit.ctp:12
-#: Template/Rows/add.ctp:17
-#: Template/Rows/edit.ctp:22
-#: Template/ScionsBundles/add.ctp:30
-#: Template/ScionsBundles/edit.ctp:30
+#: Template/Rows/add.ctp:19
+#: Template/Rows/edit.ctp:24
+#: Template/ScionsBundles/add.ctp:32
+#: Template/ScionsBundles/edit.ctp:32
 #: Template/Trees/add.ctp:52
 #: Template/Trees/add_genuine_seedling.ctp:28
 #: Template/Trees/add_graft_tree.ctp:44
@@ -1226,7 +1226,22 @@ msgid "Are you sure you want to delete {0} (id: {1})?"
 msgstr ""
 
 #: Template/Element/MotherTree/index_table.ctp:5
+#: Template/Element/ScionsBundle/index_table.ctp:6
+#: Template/MotherTrees/add.ctp:28
+#: Template/MotherTrees/edit.ctp:17
+#: Template/ScionsBundles/add.ctp:15
+#: Template/ScionsBundles/edit.ctp:15
 msgid "Identification"
+msgstr ""
+
+#: Template/Element/Row/index_table.ctp:5
+#: Template/ExperimentSites/view.ctp:12
+#: Template/Graftings/view.ctp:12
+#: Template/MarkFormPropertyTypes/view.ctp:12;22
+#: Template/Rootstocks/view.ctp:12
+#: Template/Rows/add.ctp:10
+#: Template/Rows/edit.ctp:10
+msgid "Name"
 msgstr ""
 
 #: Template/Element/Row/nav.ctp:3
@@ -1403,13 +1418,6 @@ msgstr ""
 
 #: Template/ExperimentSites/view.ctp:5
 msgid "Experiment Site:"
-msgstr ""
-
-#: Template/ExperimentSites/view.ctp:12
-#: Template/Graftings/view.ctp:12
-#: Template/MarkFormPropertyTypes/view.ctp:12;22
-#: Template/Rootstocks/view.ctp:12
-msgid "Name"
 msgstr ""
 
 #: Template/ExperimentSites/view.ctp:17
@@ -1707,6 +1715,10 @@ msgstr ""
 msgid "Filter by code or convar..."
 msgstr ""
 
+#: Template/Rows/view.ctp:5
+msgid "Row:"
+msgstr ""
+
 #: Template/Rows/view.ctp:12
 msgid "Date Created"
 msgstr ""
@@ -1720,13 +1732,13 @@ msgstr ""
 msgid "Add Scions Bundle"
 msgstr ""
 
-#: Template/ScionsBundles/add.ctp:22
-#: Template/ScionsBundles/edit.ctp:22
+#: Template/ScionsBundles/add.ctp:24
+#: Template/ScionsBundles/edit.ctp:24
 msgid "List of publicids of the descent trees, separeted by a comma"
 msgstr ""
 
-#: Template/ScionsBundles/add.ctp:25
-#: Template/ScionsBundles/edit.ctp:25
+#: Template/ScionsBundles/add.ctp:27
+#: Template/ScionsBundles/edit.ctp:27
 #: Template/ScionsBundles/view.ctp:28
 msgid "Reserved for external partners"
 msgstr ""

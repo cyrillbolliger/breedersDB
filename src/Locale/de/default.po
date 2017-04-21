@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2017-04-21 15:11+0200\n"
-"PO-Revision-Date: 2017-04-21 15:11+0200\n"
+"POT-Creation-Date: 2017-04-21 15:20+0200\n"
+"PO-Revision-Date: 2017-04-21 15:20+0200\n"
 "Last-Translator: Cyrill Bolliger <bolliger@gmx.ch>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -562,9 +562,9 @@ msgstr "Los hinzufügen"
 #: Template/MarkScannerCodes/edit.ctp:22 Template/MarkValues/edit.ctp:13
 #: Template/Marks/edit.ctp:60 Template/MotherTrees/add.ctp:53
 #: Template/MotherTrees/edit.ctp:42 Template/Rootstocks/add.ctp:12
-#: Template/Rootstocks/edit.ctp:12 Template/Rows/add.ctp:17
-#: Template/Rows/edit.ctp:22 Template/ScionsBundles/add.ctp:30
-#: Template/ScionsBundles/edit.ctp:30 Template/Trees/add.ctp:52
+#: Template/Rootstocks/edit.ctp:12 Template/Rows/add.ctp:19
+#: Template/Rows/edit.ctp:24 Template/ScionsBundles/add.ctp:32
+#: Template/ScionsBundles/edit.ctp:32 Template/Trees/add.ctp:52
 #: Template/Trees/add_genuine_seedling.ctp:28
 #: Template/Trees/add_graft_tree.ctp:44 Template/Trees/edit.ctp:56
 #: Template/Users/add.ctp:14 Template/Users/edit.ctp:14
@@ -1175,8 +1175,18 @@ msgid "Are you sure you want to delete {0} (id: {1})?"
 msgstr "{0} wirklich löschen (id: {1})?"
 
 #: Template/Element/MotherTree/index_table.ctp:5
+#: Template/Element/ScionsBundle/index_table.ctp:6
+#: Template/MotherTrees/add.ctp:28 Template/MotherTrees/edit.ctp:17
+#: Template/ScionsBundles/add.ctp:15 Template/ScionsBundles/edit.ctp:15
 msgid "Identification"
 msgstr "Kennzeichnung"
+
+#: Template/Element/Row/index_table.ctp:5 Template/ExperimentSites/view.ctp:12
+#: Template/Graftings/view.ctp:12 Template/MarkFormPropertyTypes/view.ctp:12;22
+#: Template/Rootstocks/view.ctp:12 Template/Rows/add.ctp:10
+#: Template/Rows/edit.ctp:10
+msgid "Name"
+msgstr "Name"
 
 #: Template/Element/Row/nav.ctp:3
 msgid "List Rows"
@@ -1343,12 +1353,6 @@ msgstr "OK"
 #: Template/ExperimentSites/view.ctp:5
 msgid "Experiment Site:"
 msgstr "Versuchsort:"
-
-#: Template/ExperimentSites/view.ctp:12 Template/Graftings/view.ctp:12
-#: Template/MarkFormPropertyTypes/view.ctp:12;22
-#: Template/Rootstocks/view.ctp:12
-msgid "Name"
-msgstr "Name"
 
 #: Template/ExperimentSites/view.ctp:17 Template/Graftings/view.ctp:17
 #: Template/Rootstocks/view.ctp:17 Template/Rows/view.ctp:29
@@ -1637,6 +1641,10 @@ msgstr "Zeile bearbeiten"
 msgid "Filter by code or convar..."
 msgstr "Nach Convar oder Code filtern..."
 
+#: Template/Rows/view.ctp:5
+msgid "Row:"
+msgstr "Zeile:"
+
 #: Template/Rows/view.ctp:12
 msgid "Date Created"
 msgstr "Erstellt am"
@@ -1649,11 +1657,11 @@ msgstr "Eliminierungsdatum"
 msgid "Add Scions Bundle"
 msgstr "Reiserbündel hinzufügen"
 
-#: Template/ScionsBundles/add.ctp:22 Template/ScionsBundles/edit.ctp:22
+#: Template/ScionsBundles/add.ctp:24 Template/ScionsBundles/edit.ctp:24
 msgid "List of publicids of the descent trees, separeted by a comma"
 msgstr "Liste der Publicids der abstammenden Bäume, separiert durch ein Komma"
 
-#: Template/ScionsBundles/add.ctp:25 Template/ScionsBundles/edit.ctp:25
+#: Template/ScionsBundles/add.ctp:27 Template/ScionsBundles/edit.ctp:27
 #: Template/ScionsBundles/view.ctp:28
 msgid "Reserved for external partners"
 msgstr "Reserviert für externe Partner"
