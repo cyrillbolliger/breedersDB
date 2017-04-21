@@ -29,9 +29,9 @@
                 <td><?= h($markFormProperties->name) ?></td>
                 <td><?= h($markFormProperties->modified) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'MarkFormProperties', 'action' => 'view', $markFormProperties->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'MarkFormProperties', 'action' => 'edit', $markFormProperties->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'MarkFormProperties', 'action' => 'delete', $markFormProperties->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $markFormPropertyType->name, $markFormProperties->id)]) ?>
+                    <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['controller' => 'MarkFormProperties', 'action' => 'view', $markFormProperties->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+                    <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['controller' => 'MarkFormProperties', 'action' => 'edit', $markFormProperties->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+                    <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['controller' => 'MarkFormProperties', 'action' => 'delete', $markFormProperties->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $markFormPropertyType->name, $markFormProperties->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

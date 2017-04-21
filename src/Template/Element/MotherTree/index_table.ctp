@@ -24,9 +24,9 @@
             <td><?= $this->Number->format($motherTree->numb_seeds) ?></td>
             <td><?= h($motherTree->modified) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view', $motherTree->id]) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $motherTree->id]) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $motherTree->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $motherTree->code, $motherTree->id)]) ?>
+                <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['action' => 'view', $motherTree->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+                <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['action' => 'edit', $motherTree->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+                <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['action' => 'delete', $motherTree->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $motherTree->code, $motherTree->id)]) ?>
             </td>
         </tr>
         <?php endforeach; ?>

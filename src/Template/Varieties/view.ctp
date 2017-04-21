@@ -56,9 +56,9 @@
                 <td><?= h($scionsBundles->external_use) ?></td>
                 <td><?= h($scionsBundles->modified) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'ScionsBundles', 'action' => 'view', $scionsBundles->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'ScionsBundles', 'action' => 'edit', $scionsBundles->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'ScionsBundles', 'action' => 'delete', $scionsBundles->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $scionsBundles->code, $scionsBundles->id)]) ?>
+                    <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['controller' => 'ScionsBundles', 'action' => 'view', $scionsBundles->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+                    <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['controller' => 'ScionsBundles', 'action' => 'edit', $scionsBundles->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+                    <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['controller' => 'ScionsBundles', 'action' => 'delete', $scionsBundles->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $scionsBundles->code, $scionsBundles->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

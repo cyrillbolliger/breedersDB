@@ -67,9 +67,9 @@
                 <td class="id"><?= h($varieties->id) ?></td>
                 <td><?= h($batch->crossing_batch.'.'.$varieties->code) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Varieties', 'action' => 'view', $varieties->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Varieties', 'action' => 'edit', $varieties->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Varieties', 'action' => 'delete', $varieties->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?',$batch->crossing_batch.'.'.$varieties->code, $varieties->id)]) ?>
+                    <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['controller' => 'Varieties', 'action' => 'view', $varieties->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+                    <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['controller' => 'Varieties', 'action' => 'edit', $varieties->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+                    <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['controller' => 'Varieties', 'action' => 'delete', $varieties->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?',$batch->crossing_batch.'.'.$varieties->code, $varieties->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

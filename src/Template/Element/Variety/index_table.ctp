@@ -18,9 +18,9 @@
             <td><?= h($variety->created) ?></td>
             <td><?= h($variety->modified) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view', $variety->id]) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $variety->id]) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $variety->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $variety->convar, $variety->id)]) ?>
+                <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['action' => 'view', $variety->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+                <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['action' => 'edit', $variety->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+                <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['action' => 'delete', $variety->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $variety->convar, $variety->id)]) ?>
             </td>
         </tr>
         <?php endforeach; ?>

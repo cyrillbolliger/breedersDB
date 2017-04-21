@@ -70,8 +70,8 @@
                 <td><?= $exceptional ?></td>
                 <td><?= h($markValues->modified) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'MarkValues', 'action' => 'edit', $markValues->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'MarkValues', 'action' => 'delete', $markValues->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $markValues->mark_form_property->name, $markValues->id)]) ?>
+                    <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['controller' => 'MarkValues', 'action' => 'edit', $markValues->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+                    <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['controller' => 'MarkValues', 'action' => 'delete', $markValues->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $markValues->mark_form_property->name, $markValues->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

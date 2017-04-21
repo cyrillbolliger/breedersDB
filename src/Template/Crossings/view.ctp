@@ -49,9 +49,9 @@
                 <td><?= h($batches->date_planted) ?></td>
                 <td><?= h($batches->patch) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Batches', 'action' => 'view', $batches->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Batches', 'action' => 'edit', $batches->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Batches', 'action' => 'delete', $batches->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $batches->code, $batches->id)]) ?>
+                    <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['controller' => 'Batches', 'action' => 'view', $batches->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+                    <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['controller' => 'Batches', 'action' => 'edit', $batches->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+                    <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['controller' => 'Batches', 'action' => 'delete', $batches->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $batches->code, $batches->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -82,9 +82,9 @@
                         <td><?= $this->Number->format($mother_tree->numb_flowers) ?></td>
                         <td><?= $this->Number->format($mother_tree->numb_seeds) ?></td>
                         <td class="actions">
-                            <?= $this->Html->link(__('View'), ['controller' => 'MotherTrees', 'action' => 'view', $mother_tree->id]) ?>
-                            <?= $this->Html->link(__('Edit'), ['controller' => 'MotherTrees', 'action' => 'edit', $mother_tree->id]) ?>
-                            <?= $this->Form->postLink(__('Delete'), ['controller' => 'Batches', 'action' => 'delete', $mother_tree->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $mother_tree->code, $mother_tree->id)]) ?>
+                            <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['controller' => 'MotherTrees', 'action' => 'view', $mother_tree->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+                            <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['controller' => 'MotherTrees', 'action' => 'edit', $mother_tree->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+                            <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['controller' => 'Batches', 'action' => 'delete', $mother_tree->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $mother_tree->code, $mother_tree->id)]) ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

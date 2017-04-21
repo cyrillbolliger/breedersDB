@@ -22,9 +22,9 @@
             <td><?= h($scionsBundle->external_use) ?></td>
             <td><?= h($scionsBundle->modified) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view', $scionsBundle->id]) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $scionsBundle->id]) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $scionsBundle->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $scionsBundle->code, $scionsBundle->id)]) ?>
+                <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['action' => 'view', $scionsBundle->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+                <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['action' => 'edit', $scionsBundle->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+                <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['action' => 'delete', $scionsBundle->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $scionsBundle->code, $scionsBundle->id)]) ?>
             </td>
         </tr>
         <?php endforeach; ?>

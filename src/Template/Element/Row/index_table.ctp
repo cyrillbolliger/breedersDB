@@ -18,9 +18,9 @@
             <td><?= h($row->date_eliminated) ?></td>
             <td><?= h($row->modified) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view', $row->id]) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $row->id]) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $row->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $row->code, $row->id)]) ?>
+                <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['action' => 'view', $row->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+                <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['action' => 'edit', $row->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+                <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['action' => 'delete', $row->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $row->code, $row->id)]) ?>
             </td>
         </tr>
         <?php endforeach; ?>

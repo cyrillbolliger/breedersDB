@@ -34,9 +34,9 @@
                 <td class="index_inline_list"><?= $mark_data ?></td>
                 <td><?= h($mark->modified) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $mark->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $mark->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $mark->id], ['confirm' => __('Are you sure you want to delete the Mark with the id {0}?', $mark->id)]) ?>
+                    <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['action' => 'view', $mark->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+                    <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['action' => 'edit', $mark->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+                    <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['action' => 'delete', $mark->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete the Mark with the id {0}?', $mark->id)]) ?>
                 </td>
             </tr>
         <?php endforeach; ?>

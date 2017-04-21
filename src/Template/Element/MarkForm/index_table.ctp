@@ -14,9 +14,9 @@
             <td><?= h($markForm->name) ?></td>
             <td><?= h($markForm->modified) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view', $markForm->id]) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $markForm->id]) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $markForm->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $markForm->name, $markForm->id)]) ?>
+                <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['action' => 'view', $markForm->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+                <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['action' => 'edit', $markForm->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+                <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['action' => 'delete', $markForm->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $markForm->name, $markForm->id)]) ?>
             </td>
         </tr>
         <?php endforeach; ?>

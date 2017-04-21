@@ -59,8 +59,8 @@
                 <td><?= h($markFormFields->mark_form->name) ?></td>
                 <td><?= h($markFormFields->mark_form->modified) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'MarkForms', 'action' => 'view', $markFormFields->mark_form->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'MarkForms', 'action' => 'edit', $markFormFields->mark_form->id]) ?>
+                    <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['controller' => 'MarkForms', 'action' => 'view', $markFormFields->mark_form->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+                    <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['controller' => 'MarkForms', 'action' => 'edit', $markFormFields->mark_form->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

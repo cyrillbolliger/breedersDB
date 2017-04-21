@@ -24,9 +24,9 @@
         <td><?= $tree->date_eliminated ? __('eliminated') : '' ?></td>
         <td><?= h($tree->modified) ?></td>
         <td class="actions">
-            <?= $this->Html->link(__('View'), ['action' => 'view', $tree->id]) ?>
-            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $tree->id]) ?>
-            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $tree->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $tree->publicid, $tree->id)]) ?>
+            <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['action' => 'view', $tree->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+            <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['action' => 'edit', $tree->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+            <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['action' => 'delete', $tree->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $tree->publicid, $tree->id)]) ?>
         </td>
     </tr>
     <?php endforeach; ?>
@@ -42,3 +42,5 @@
     </ul>
     <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
 </div>
+
+

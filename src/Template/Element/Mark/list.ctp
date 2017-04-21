@@ -38,9 +38,9 @@
         <td><?= $markedOn ?></td>
         <td><?= h($mark_value->exceptional_mark ? __('True') : '') ?></td>
         <td class="actions">
-            <?= $this->Html->link(__('View'), ['controller' => 'Marks', 'action' => 'view', $mark_value->mark->id]) ?>
-            <?= $this->Html->link(__('Edit'), ['controller' => 'MarkValues', 'action' => 'edit', $mark_value->id]) ?>
-            <?= $this->Form->postLink(__('Delete'), ['controller' => 'MarkValues', 'action' => 'delete', $mark_value->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $mark_value->mark_form_property->name, $mark_value->id)]) ?>
+            <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['controller' => 'Marks', 'action' => 'view', $mark_value->mark->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+            <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['controller' => 'MarkValues', 'action' => 'edit', $mark_value->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+            <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['controller' => 'MarkValues', 'action' => 'delete', $mark_value->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $mark_value->mark_form_property->name, $mark_value->id)]) ?>
         </td>
     </tr>
     <?php endforeach; ?>

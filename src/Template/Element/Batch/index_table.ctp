@@ -22,9 +22,9 @@
             <td><?= h($batch->patch) ?></td>
             <td><?= h($batch->modified) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view', $batch->id]) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $batch->id]) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $batch->id], ['confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $batch->crossing_batch, $batch->id)]) ?>
+                <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>', ['action' => 'view', $batch->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
+                <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>', ['action' => 'edit', $batch->id], ['escapeTitle' => false, 'alt' => __('Edit')]) ?>
+                <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>', ['action' => 'delete', $batch->id], ['escapeTitle' => false, 'alt' => __('Delete'), 'confirm' => __('Are you sure you want to delete "{0}" (id: {1})?', $batch->crossing_batch, $batch->id)]) ?>
             </td>
         </tr>
         <?php endforeach; ?>
