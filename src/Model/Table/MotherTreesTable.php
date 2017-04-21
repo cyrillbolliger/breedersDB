@@ -71,13 +71,17 @@ class MotherTreesTable extends Table
     
         $validator
             ->integer('tree_id')
-            ->requirePresence('tree_id', 'create', __('The publicid must not be empty.'));
+            ->allowEmpty('tree_id');
         
         $validator
             ->integer('crossing_id')
             ->requirePresence('crossing_id')
             ->add('crossing_id', 'custom', [
                 'rule' => function($value, $context) {
+                    if (empty($context['data']['tree_id'])) {
+                        // there is nothing to validate
+                        return true;
+                    }
                     $crossing = $this->Crossings->get($value);
                     $tree = $this->Trees->get($context['data']['tree_id']);
                     if ( empty($crossing->mother_variety_id) || empty($tree->variety_id)) {
