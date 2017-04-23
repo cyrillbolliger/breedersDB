@@ -94,6 +94,12 @@ table .actions {
     font-size: 1em;
 }
 
+/* --------- pagination --------- */
+.paginator p {
+    text-align: center;
+    font-size: 0.875rem;
+}
+
 /* -------- sortable -------- */
 .sortable_element {
     margin: 0;
@@ -140,6 +146,7 @@ table .actions {
     padding: 0.25rem 0.25rem 0;
     line-height: 1rem;
     width: 1.4rem;
+    transition: 0.1s;
 }
 
 .view-icon:hover,
@@ -147,6 +154,7 @@ table .actions {
 .delete-icon:hover {
     padding: 0 0;
     font-size: 1.4rem;
+    color: #0078a0;
 }
 
 /* --------- Marks --------- */
