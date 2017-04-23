@@ -4,6 +4,7 @@
             <th scope="col" class="id"><?= $this->Paginator->sort('id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('convar') ?></th>
             <th scope="col"><?= $this->Paginator->sort('official_name') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('acronym') ?></th>
             <th scope="col"><?= $this->Paginator->sort('created') ?></th>
             <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -15,6 +16,7 @@
             <td class="id"><?= $this->Number->format($variety->id) ?></td>
             <td><?= h($variety->convar) ?></td>
             <td><?= h($variety->official_name) ?></td>
+            <td><?= h($variety->acronym) ?></td>
             <td><?= h($variety->created) ?></td>
             <td><?= h($variety->modified) ?></td>
             <td class="actions">

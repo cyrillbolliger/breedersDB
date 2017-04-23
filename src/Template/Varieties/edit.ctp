@@ -7,7 +7,7 @@
     <fieldset>
         <legend><?= __('Edit Variety') ?></legend>
         <?php
-            echo $this->Form->input('batch_id', [
+        echo $this->Form->input('batch_id', [
             'options' => $batches,
             'required' => 'required',
             'class' => 'select2batch_id',
@@ -15,6 +15,7 @@
         ]);
         echo $this->Form->input('code');
         echo $this->Form->input('official_name');
+        echo $this->Form->input('acronym');
         echo $this->Form->input('plant_breeder');
         echo $this->Form->input('registration');
         echo $this->Form->input('description');

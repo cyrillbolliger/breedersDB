@@ -11,6 +11,7 @@
                 'required' => 'required',
                 'class' => 'official_name',
             ]);
+            echo $this->Form->input('acronym');
             echo $this->Form->input('batch_id', [
                 'options' => array( '1' => 'SORTE.000'),
                 'required' => '',

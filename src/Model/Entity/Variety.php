@@ -10,6 +10,7 @@ use Cake\ORM\TableRegistry;
  * @property int $id
  * @property string $code
  * @property string $official_name
+ * @property string $variety
  * @property string $plant_breeder
  * @property string $registration
  * @property string $description
