@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2017-04-21 15:20+0200\n"
-"PO-Revision-Date: 2017-04-21 15:20+0200\n"
+"POT-Creation-Date: 2017-04-27 16:31+0200\n"
+"PO-Revision-Date: 2017-04-27 16:31+0200\n"
 "Last-Translator: Cyrill Bolliger <bolliger@gmx.ch>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -15,17 +15,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.0.1\n"
 
-#: Controller/AppController.php:89
+#: Controller/AppController.php:93
 msgctxt "time format"
 msgid "HH:mm"
 msgstr "HH:mm"
 
-#: Controller/AppController.php:90
+#: Controller/AppController.php:94;98;100
 msgctxt "date format"
 msgid "dd.MM.yyyy"
 msgstr "dd.MM.yyyy"
 
-#: Controller/AppController.php:91
+#: Controller/AppController.php:95;97;99
 msgctxt "datetime format"
 msgid "dd.MM.yyyy HH:mm"
 msgstr "dd.MM.yyyy HH:mm"
@@ -425,6 +425,7 @@ msgstr ""
 "Umlaute) enthalten. Länge zwischen vier und acht Zeichen."
 
 #: Model/Table/CrossingsTable.php:99 Model/Table/MotherTreesTable.php:144
+#: Model/Table/RowsTable.php:89 Model/Table/ScionsBundlesTable.php:100
 msgid "This code has already been used. Please use a unique code."
 msgstr ""
 "Dieser Code wurde bereits verwendet. Bitte wähle einen unverwechselbaren "
@@ -437,6 +438,15 @@ msgid ""
 msgstr ""
 "Eine Kreuzung mit der gleichen Muttersorte und der gleichen Vatersorte ist "
 "bereits vorhanden."
+
+#: Model/Table/ExperimentSitesTable.php:76 Model/Table/GraftingsTable.php:76
+#: Model/Table/MarkFormPropertiesTable.php:191
+#: Model/Table/MarkFormPropertyTypesTable.php:76
+#: Model/Table/MarkFormsTable.php:92 Model/Table/RootstocksTable.php:76
+msgid "This name has already been used. Please use a unique name."
+msgstr ""
+"Dieser Name wurde bereits verwendet. Bitte wähle einen unverwechselbaren "
+"Namen."
 
 #: Model/Table/MarkFormPropertiesTable.php:90 Model/Table/MarkFormsTable.php:76
 msgid "This name has already been used."
@@ -464,23 +474,23 @@ msgstr ""
 msgid "Select at least one domain"
 msgstr "Wähle mindestens eine Domäne"
 
-#: Model/Table/MarkFormPropertiesTable.php:231
+#: Model/Table/MarkFormPropertiesTable.php:233
 msgid "Integer"
 msgstr "Ganzzahl"
 
-#: Model/Table/MarkFormPropertiesTable.php:232
+#: Model/Table/MarkFormPropertiesTable.php:234
 msgid "Floating-point number"
 msgstr "Gleitkommazahl"
 
-#: Model/Table/MarkFormPropertiesTable.php:233
+#: Model/Table/MarkFormPropertiesTable.php:235
 msgid "Text ( < 255 characters)"
 msgstr "Text (< 255 Zeichen)"
 
-#: Model/Table/MarkFormPropertiesTable.php:234
+#: Model/Table/MarkFormPropertiesTable.php:236
 msgid "Boolean"
 msgstr "Boole'scher Wert"
 
-#: Model/Table/MarkFormPropertiesTable.php:235 Template/Element/Mark/list.ctp:4
+#: Model/Table/MarkFormPropertiesTable.php:237 Template/Element/Mark/list.ctp:4
 #: Template/Marks/view.ctp:25
 msgid "Date"
 msgstr "Datum"
@@ -569,8 +579,8 @@ msgstr "Los hinzufügen"
 #: Template/Trees/add_graft_tree.ctp:44 Template/Trees/edit.ctp:56
 #: Template/Users/add.ctp:14 Template/Users/edit.ctp:14
 #: Template/Varieties/add_breeder_variety.ctp:23
-#: Template/Varieties/add_official_variety.ctp:29
-#: Template/Varieties/edit.ctp:23
+#: Template/Varieties/add_official_variety.ctp:30
+#: Template/Varieties/edit.ctp:24
 msgid "Submit"
 msgstr "Absenden"
 
@@ -685,7 +695,7 @@ msgstr "Convar"
 #: Template/Element/ScionsBundle/index_table.ctp:11
 #: Template/Element/Tree/index_table.ctp:12
 #: Template/Element/Tree/related_table.ctp:11
-#: Template/Element/Variety/index_table.ctp:9
+#: Template/Element/Variety/index_table.ctp:10
 #: Template/ExperimentSites/index.ctp:11 Template/Graftings/index.ctp:11
 #: Template/MarkFormProperties/view.ctp:54
 #: Template/MarkFormPropertyTypes/index.ctp:11
@@ -707,7 +717,7 @@ msgstr "Aktionen"
 #: Template/Element/ScionsBundle/index_table.ctp:25
 #: Template/Element/Tree/index_table.ctp:27
 #: Template/Element/Tree/related_table.ctp:24
-#: Template/Element/Variety/index_table.ctp:21
+#: Template/Element/Variety/index_table.ctp:23
 #: Template/ExperimentSites/index.ctp:20 Template/Graftings/index.ctp:20
 #: Template/MarkFormProperties/view.ctp:62
 #: Template/MarkFormPropertyTypes/index.ctp:20
@@ -728,7 +738,7 @@ msgstr "Anzeigen"
 #: Template/Element/ScionsBundle/index_table.ctp:26
 #: Template/Element/Tree/index_table.ctp:28
 #: Template/Element/Tree/related_table.ctp:25
-#: Template/Element/Variety/index_table.ctp:22
+#: Template/Element/Variety/index_table.ctp:24
 #: Template/ExperimentSites/index.ctp:21 Template/Graftings/index.ctp:21
 #: Template/MarkFormProperties/view.ctp:63
 #: Template/MarkFormPropertyTypes/index.ctp:21
@@ -750,7 +760,7 @@ msgstr "Bearbeiten"
 #: Template/Element/ScionsBundle/index_table.ctp:27
 #: Template/Element/Tree/index_table.ctp:29
 #: Template/Element/Tree/related_table.ctp:26
-#: Template/Element/Variety/index_table.ctp:23
+#: Template/Element/Variety/index_table.ctp:25
 #: Template/ExperimentSites/index.ctp:22 Template/Graftings/index.ctp:22
 #: Template/MarkFormPropertyTypes/index.ctp:22
 #: Template/MarkFormPropertyTypes/view.ctp:34 Template/Marks/view.ctp:74
@@ -770,7 +780,7 @@ msgstr "Löschen"
 #: Template/Element/ScionsBundle/index_table.ctp:27
 #: Template/Element/Tree/index_table.ctp:29
 #: Template/Element/Tree/related_table.ctp:26
-#: Template/Element/Variety/index_table.ctp:23
+#: Template/Element/Variety/index_table.ctp:25
 #: Template/ExperimentSites/index.ctp:22 Template/Graftings/index.ctp:22
 #: Template/MarkFormPropertyTypes/index.ctp:22
 #: Template/MarkFormPropertyTypes/view.ctp:34 Template/Marks/view.ctp:74
@@ -904,7 +914,7 @@ msgstr "Bewertungen"
 #: Template/Element/Batch/index_table.ctp:5
 #: Template/Marks/add_batch_mark.ctp:14 Template/Marks/edit.ctp:19
 #: Template/Varieties/add_breeder_variety.ctp:14
-#: Template/Varieties/add_official_variety.ctp:18
+#: Template/Varieties/add_official_variety.ctp:19
 #: Template/Varieties/edit.ctp:14
 msgid "Crossing.Batch"
 msgstr "Kreuzung.Sorte"
@@ -919,7 +929,7 @@ msgstr "Kreuzung.Sorte"
 #: Template/Element/Row/index_table.ctp:31
 #: Template/Element/ScionsBundle/index_table.ctp:35
 #: Template/Element/Tree/index_table.ctp:37
-#: Template/Element/Variety/index_table.ctp:31
+#: Template/Element/Variety/index_table.ctp:33
 #: Template/ExperimentSites/index.ctp:30 Template/Graftings/index.ctp:30
 #: Template/MarkFormPropertyTypes/index.ctp:30 Template/Rootstocks/index.ctp:30
 #: Template/Users/index.ctp:36
@@ -936,7 +946,7 @@ msgstr "erste"
 #: Template/Element/Row/index_table.ctp:32
 #: Template/Element/ScionsBundle/index_table.ctp:36
 #: Template/Element/Tree/index_table.ctp:38
-#: Template/Element/Variety/index_table.ctp:32
+#: Template/Element/Variety/index_table.ctp:34
 #: Template/ExperimentSites/index.ctp:31 Template/Graftings/index.ctp:31
 #: Template/MarkFormPropertyTypes/index.ctp:31 Template/Rootstocks/index.ctp:31
 #: Template/Users/index.ctp:37
@@ -953,7 +963,7 @@ msgstr "zurück"
 #: Template/Element/Row/index_table.ctp:34
 #: Template/Element/ScionsBundle/index_table.ctp:38
 #: Template/Element/Tree/index_table.ctp:40
-#: Template/Element/Variety/index_table.ctp:34
+#: Template/Element/Variety/index_table.ctp:36
 #: Template/ExperimentSites/index.ctp:33 Template/Graftings/index.ctp:33
 #: Template/MarkFormPropertyTypes/index.ctp:33 Template/Rootstocks/index.ctp:33
 #: Template/Users/index.ctp:39
@@ -970,7 +980,7 @@ msgstr "weiter"
 #: Template/Element/Row/index_table.ctp:35
 #: Template/Element/ScionsBundle/index_table.ctp:39
 #: Template/Element/Tree/index_table.ctp:41
-#: Template/Element/Variety/index_table.ctp:35
+#: Template/Element/Variety/index_table.ctp:37
 #: Template/ExperimentSites/index.ctp:34 Template/Graftings/index.ctp:34
 #: Template/MarkFormPropertyTypes/index.ctp:34 Template/Rootstocks/index.ctp:34
 #: Template/Users/index.ctp:40
@@ -987,7 +997,7 @@ msgstr "letzte"
 #: Template/Element/Row/index_table.ctp:37
 #: Template/Element/ScionsBundle/index_table.ctp:41
 #: Template/Element/Tree/index_table.ctp:43
-#: Template/Element/Variety/index_table.ctp:37
+#: Template/Element/Variety/index_table.ctp:39
 #: Template/ExperimentSites/index.ctp:36 Template/Graftings/index.ctp:36
 #: Template/MarkFormPropertyTypes/index.ctp:36 Template/Rootstocks/index.ctp:36
 #: Template/Users/index.ctp:42
