@@ -17,6 +17,10 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Database\Type;
+use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
+use Cake\I18n\FrozenTime;
+use Cake\I18n\Time;
 
 /**
  * Application Controller
@@ -89,6 +93,11 @@ class AppController extends Controller
         Type::build('time')->useLocaleParser()->setLocaleFormat(__x('time format','HH:mm'));
         Type::build('date')->useLocaleParser()->setLocaleFormat(__x('date format','dd.MM.yyyy'));
         Type::build('datetime')->useLocaleParser()->setLocaleFormat(__x('datetime format','dd.MM.yyyy HH:mm'));
+    
+        FrozenTime::setToStringFormat(__x('datetime format','dd.MM.yyyy HH:mm'));
+        FrozenDate::setToStringFormat(__x('date format','dd.MM.yyyy'));
+        Time::setToStringFormat(__x('datetime format','dd.MM.yyyy HH:mm'));
+        Date::setToStringFormat(__x('date format','dd.MM.yyyy'));
     }
     
     /**
