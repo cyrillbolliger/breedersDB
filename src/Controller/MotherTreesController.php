@@ -71,8 +71,8 @@ class MotherTreesController extends AppController
             }
         }
         $motherTree = $this->Brain->remember($motherTree);
-        $crossings = $this->MotherTrees->Crossings->find('list', ['limit' => 200]);
-        $trees = $this->MotherTrees->Trees->find('list', ['limit' => 200]);
+        $crossings = $this->MotherTrees->Crossings->find('list');
+        $trees = $this->MotherTrees->Trees->find('list');
         $this->set(compact('motherTree', 'crossings', 'trees'));
         $this->set('_serialize', ['motherTree']);
     }
@@ -105,8 +105,8 @@ class MotherTreesController extends AppController
             }
         }
         $motherTree = $this->Brain->remember($motherTree);
-        $crossings = $this->MotherTrees->Crossings->find('list', ['limit' => 200]);
-        $trees = $this->MotherTrees->Trees->find('list', ['limit' => 200]);
+        $crossings = $this->MotherTrees->Crossings->find('list');
+        $trees = $this->MotherTrees->Trees->find('list');
         $this->set(compact('motherTree', 'crossings', 'trees'));
         $this->set('_serialize', ['motherTree']);
     }
