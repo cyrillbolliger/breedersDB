@@ -186,7 +186,9 @@ class MarkFormPropertiesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->isUnique(['id']));
         $rules->add($rules->existsIn(['mark_form_property_type_id'], 'MarkFormPropertyTypes'));
+        $rules->add($rules->isUnique(['name'], __('This name has already been used. Please use a unique name.')));
 
         $rules->addDelete(new IsNotReferredBy(['MarkFormFields' => 'mark_form_property_id']),'isNotReferredBy');
         $rules->addDelete(new IsNotReferredBy(['MarkValues' => 'mark_form_property_id']),'isNotReferredBy');

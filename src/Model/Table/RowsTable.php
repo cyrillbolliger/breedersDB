@@ -86,6 +86,7 @@ class RowsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['id']));
+        $rules->add($rules->isUnique(['code'], __('This code has already been used. Please use a unique code.')));
         
         $rules->addDelete(new IsNotReferredBy(['Trees' => 'row_id']),'isNotReferredBy');
 

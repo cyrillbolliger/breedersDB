@@ -73,7 +73,7 @@ class RootstocksTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['id']));
-        $rules->add($rules->isUnique(['name']));
+        $rules->add($rules->isUnique(['name'], __('This name has already been used. Please use a unique name.')));
         $rules->addDelete(new IsNotReferredBy(['Trees' => 'rootstock_id']),'isNotReferredBy');
 
         return $rules;

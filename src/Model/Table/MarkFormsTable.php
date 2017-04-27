@@ -89,6 +89,7 @@ class MarkFormsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['id']));
+        $rules->add($rules->isUnique(['name'], __('This name has already been used. Please use a unique name.')));
 
         $rules->addDelete(new IsNotReferredBy(['Marks' => 'mark_form_id']),'isNotReferredBy');
         $rules->addDelete(new IsNotReferredBy(['MarkFormFields' => 'mark_form_id']),'isNotReferredBy');

@@ -97,7 +97,7 @@ class ScionsBundlesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['id']));
-        $rules->add($rules->isUnique(['code']));
+        $rules->add($rules->isUnique(['code'], __('This code has already been used. Please use a unique code.')));
         $rules->add($rules->existsIn(['variety_id'], 'Varieties'));
 
         return $rules;
