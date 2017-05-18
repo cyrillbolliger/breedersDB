@@ -105,7 +105,7 @@ class MarkScannerCodesController extends AppController
                 $this->Flash->error(__('The mark scanner code could not be saved. Please, try again.'));
             }
         }
-        $markFormProperties = $this->MarkScannerCodes->MarkFormProperties->find('list', ['limit' => 200]);
+        $markFormProperties = $this->MarkScannerCodes->MarkFormProperties->find('list');
         $this->set(compact('markScannerCode', 'markFormProperties'));
         $this->set('_serialize', ['markScannerCode']);
     }

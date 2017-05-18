@@ -120,10 +120,10 @@ class TreesController extends AppController
         }
         
         $tree = $this->Brain->remember($tree);
-        $rootstocks = $this->Trees->Rootstocks->find('list', ['limit' => 200]);
-        $graftings = $this->Trees->Graftings->find('list', ['limit' => 200]);
+        $rootstocks = $this->Trees->Rootstocks->find('list');
+        $graftings = $this->Trees->Graftings->find('list');
         $rows = $this->Trees->Rows->find('list');
-        $experimentSites = $this->Trees->ExperimentSites->find('list', ['limit' => 200]);
+        $experimentSites = $this->Trees->ExperimentSites->find('list');
         $this->set(compact('tree', 'varieties', 'rootstocks', 'graftings', 'rows', 'experimentSites'));
         $this->set('_serialize', ['tree']);
     }
@@ -156,10 +156,10 @@ class TreesController extends AppController
         }
         
         $tree = $this->Brain->remember($tree);
-        $rootstocks = $this->Trees->Rootstocks->find('list', ['limit' => 200]);
-        $graftings = $this->Trees->Graftings->find('list', ['limit' => 200]);
+        $rootstocks = $this->Trees->Rootstocks->find('list');
+        $graftings = $this->Trees->Graftings->find('list');
         $rows = $this->Trees->Rows->find('list');
-        $experimentSites = $this->Trees->ExperimentSites->find('list', ['limit' => 200]);
+        $experimentSites = $this->Trees->ExperimentSites->find('list');
         $this->set(compact('tree', 'varieties', 'rootstocks', 'graftings', 'rows', 'experimentSites'));
         $this->set('_serialize', ['tree']);
     }
@@ -192,10 +192,10 @@ class TreesController extends AppController
         }
         
         $tree = $this->Brain->remember($tree);
-        $rootstocks = $this->Trees->Rootstocks->find('list', ['limit' => 200]);
-        $graftings = $this->Trees->Graftings->find('list', ['limit' => 200]);
+        $rootstocks = $this->Trees->Rootstocks->find('list');
+        $graftings = $this->Trees->Graftings->find('list');
         $rows = $this->Trees->Rows->find('list');
-        $experimentSites = $this->Trees->ExperimentSites->find('list', ['limit' => 200]);
+        $experimentSites = $this->Trees->ExperimentSites->find('list');
         $this->set(compact('tree', 'varieties', 'rootstocks', 'graftings', 'rows', 'experimentSites'));
         $this->set('_serialize', ['tree']);
     }
@@ -231,10 +231,10 @@ class TreesController extends AppController
             $varieties = $this->Trees->Varieties->getConvarList($tree->variety_id);
         }
         
-        $rootstocks = $this->Trees->Rootstocks->find('list', ['limit' => 200]);
-        $graftings = $this->Trees->Graftings->find('list', ['limit' => 200]);
+        $rootstocks = $this->Trees->Rootstocks->find('list');
+        $graftings = $this->Trees->Graftings->find('list');
         $rows = $this->Trees->Rows->find('list');
-        $experimentSites = $this->Trees->ExperimentSites->find('list', ['limit' => 200]);
+        $experimentSites = $this->Trees->ExperimentSites->find('list');
         $this->set(compact('tree', 'varieties', 'rootstocks', 'graftings', 'rows', 'experimentSites'));
         $this->set('_serialize', ['tree']);
     }

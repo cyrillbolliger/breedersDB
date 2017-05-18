@@ -62,8 +62,8 @@ class MarkFormFieldsController extends AppController
                 $this->Flash->error(__('The mark form field could not be saved. Please, try again.'));
             }
         }
-        $markForms = $this->MarkFormFields->MarkForms->find('list', ['limit' => 200]);
-        $markFormProperties = $this->MarkFormFields->MarkFormProperties->find('list', ['limit' => 200]);
+        $markForms = $this->MarkFormFields->MarkForms->find('list');
+        $markFormProperties = $this->MarkFormFields->MarkFormProperties->find('list');
         $this->set(compact('markFormField', 'markForms', 'markFormProperties'));
         $this->set('_serialize', ['markFormField']);
     }
@@ -90,8 +90,8 @@ class MarkFormFieldsController extends AppController
                 $this->Flash->error(__('The mark form field could not be saved. Please, try again.'));
             }
         }
-        $markForms = $this->MarkFormFields->MarkForms->find('list', ['limit' => 200]);
-        $markFormProperties = $this->MarkFormFields->MarkFormProperties->find('list', ['limit' => 200]);
+        $markForms = $this->MarkFormFields->MarkForms->find('list');
+        $markFormProperties = $this->MarkFormFields->MarkFormProperties->find('list');
         $this->set(compact('markFormField', 'markForms', 'markFormProperties'));
         $this->set('_serialize', ['markFormField']);
     }

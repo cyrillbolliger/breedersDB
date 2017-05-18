@@ -65,7 +65,7 @@ class MarkFormPropertiesController extends AppController
             }
         }
         $fieldTypes = $this->MarkFormProperties->getFieldTypes();
-        $markFormPropertyTypes = $this->MarkFormProperties->MarkFormPropertyTypes->find('list', ['limit' => 200]);
+        $markFormPropertyTypes = $this->MarkFormProperties->MarkFormPropertyTypes->find('list');
         $this->set(compact('markFormProperty', 'markFormPropertyTypes', 'fieldTypes'));
         $this->set('_serialize', ['markFormProperty']);
     }
@@ -93,7 +93,7 @@ class MarkFormPropertiesController extends AppController
             }
         }
         $fieldTypes = $this->MarkFormProperties->getFieldTypes();
-        $markFormPropertyTypes = $this->MarkFormProperties->MarkFormPropertyTypes->find('list', ['limit' => 200]);
+        $markFormPropertyTypes = $this->MarkFormProperties->MarkFormPropertyTypes->find('list');
         $this->set(compact('markFormProperty', 'markFormPropertyTypes', 'fieldTypes'));
         $this->set('_serialize', ['markFormProperty']);
     }
