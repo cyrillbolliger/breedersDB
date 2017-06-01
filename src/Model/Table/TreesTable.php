@@ -310,7 +310,7 @@ class TreesTable extends Table
         $tree = $this->get($id, ['contain'=>['Varieties']]);
         $code = $tree->publicid;
         $description = 1 === $tree->variety->batch_id ? $tree->variety->code : $tree->convar;
-        return $this->getZPL($code, $description);
+        return $this->getZPL($description, $code);
         
     }
 }

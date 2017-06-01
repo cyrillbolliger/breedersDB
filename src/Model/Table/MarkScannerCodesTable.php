@@ -133,7 +133,7 @@ class MarkScannerCodesTable extends Table
         $entity = $this->get($id, ['contain'=>['MarkFormProperties']]);
         $description = $entity->mark_form_property->name.": ".$entity->mark_value;
         $code = $entity->code;
-        return $this->getZPL($code, $description);
+        return $this->getZPL($description, $code);
     }
     
     /**
@@ -142,7 +142,7 @@ class MarkScannerCodesTable extends Table
     public function getSubmitLabelZpl() {
         $code = "SUBMIT";
         $description = "SUBMIT";
-        return $this->getZPL($code, $description);
+        return $this->getZPL($description, $code);
     }
     
     
