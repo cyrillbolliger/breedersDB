@@ -2,6 +2,11 @@
     <?= $this->element('Batch/nav'); ?>
 </nav>
 <div class="batches view large-9 medium-8 columns content">
+	<?= $this->Html->link(
+		__('Print label'),
+		['action' => 'print', $batch->id, 'view', $batch->id],
+		['class'=>'button print-button']);
+	?>
     <h3><?= __('Batch:').' '.h($batch->crossing_batch) ?></h3>
     <table class="vertical-table">
         <tr>

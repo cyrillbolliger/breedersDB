@@ -45,6 +45,7 @@ class BatchesTable extends Table
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
+	    $this->addBehavior('Printable');
 
         $this->belongsTo('Crossings', [
             'foreignKey' => 'crossing_id',
@@ -196,4 +197,17 @@ class BatchesTable extends Table
         
         return [$id => $batch->crossing_batch];
     }
+	
+	/**
+	 * Return label to print in Zebra Printing Language
+	 *
+	 * @param int $id
+	 * @return string
+	 */
+	public function getLabelZpl(int $id) {
+		$batch = $this->get($id, ['contain'=>['Crossings']]);
+		$description = $batch->crossing_batch;
+		return $this->getZPL($description);
+		
+	}
 }

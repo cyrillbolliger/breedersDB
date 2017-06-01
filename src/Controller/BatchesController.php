@@ -94,8 +94,8 @@ class BatchesController extends AppController
             $batch = $this->Batches->patchEntity($batch, $this->request->data);
             if ($this->Batches->save($batch)) {
                 $this->Flash->success(__('The batch has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+	
+	            return $this->redirect(['action' => 'print', $batch->id, 'index']);
             } else {
                 $this->Flash->error(__('The batch could not be saved. Please, try again.'));
             }
@@ -187,4 +187,24 @@ class BatchesController extends AppController
             $this->render('/Element/nothing_found');
         }
     }
+	
+	/**
+	 * Show the print dialog
+	 *
+	 * @param int $batch_id
+	 * @param string $caller action to redirect after printing
+	 * @param mixed $params for action
+	 */
+	public function print(int $batch_id, string $caller, $params = null) {
+		$zpl = $this->Batches->getLabelZpl($batch_id);
+		
+		$this->set([
+			'zpl' => $zpl,
+			'controller' => 'Batches',
+			'action' => $caller,
+			'params' => $params,
+			'nav' => 'Batch/nav'
+		]);
+		$this->render('/Element/print');
+	}
 }
