@@ -10,11 +10,11 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Mother variety') ?></th>
-            <td><?= $crossing->mother_variety_id ? $this->Html->link($crossing->mother_convar, ['controller' => 'Varieties', 'action' => 'view', $crossing->mother_variety_id]) : '' ?></td>
+            <td><?= $crossing->mother_variety_id ? $this->Html->link($mother_variety->convar, ['controller' => 'Varieties', 'action' => 'view', $crossing->mother_variety_id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Father variety') ?></th>
-            <td><?= $crossing->father_variety_id ? $this->Html->link($crossing->father_convar, ['controller' => 'Varieties', 'action' => 'view', $crossing->father_variety_id]) : '' ?></td>
+            <td><?= $crossing->father_variety_id ? $this->Html->link($father_variety->convar, ['controller' => 'Varieties', 'action' => 'view', $crossing->father_variety_id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Created') ?></th>

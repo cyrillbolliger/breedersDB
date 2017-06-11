@@ -39,10 +39,21 @@ class CrossingsController extends AppController
     public function view($id = null)
     {
         $crossing = $this->Crossings->get($id, [
-            'contain' => ['Varieties', 'MotherTrees', 'Batches', 'MotherTrees.Trees']
+            'contain' => ['MotherTrees', 'Batches', 'MotherTrees.Trees']
         ]);
+	
+	    if ($crossing->mother_variety_id) {
+		    $mother_variety = $this->Crossings->Varieties->get($crossing->mother_variety_id, [
+		    	'contain' => ['Batches']
+		    ]);
+	    }
+	    if ($crossing->father_variety_id) {
+		    $father_variety = $this->Crossings->Varieties->get($crossing->father_variety_id, [
+			    'contain' => ['Batches']
+		    ]);
+	    }
 
-        $this->set('crossing', $crossing);
+	    $this->set(compact('crossing', 'mother_variety', 'father_variety'));
         $this->set('_serialize', ['crossing']);
     }
 
