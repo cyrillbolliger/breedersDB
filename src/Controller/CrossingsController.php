@@ -181,7 +181,7 @@ class CrossingsController extends AppController
         } else {
             throw new Exception(__('Direct access not allowed.'));
         }
-        
+	    
         if ( $entries->count() ) {
             $crossings = $this->paginate($entries);
             $this->set(compact('crossings'));

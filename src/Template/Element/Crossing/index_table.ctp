@@ -11,11 +11,15 @@
     <tbody>
         <?php foreach ($crossings as $crossing): ?>
             <?php
-                $list = '<ul>';
-                foreach ($crossing->mother_trees as $mother_tree) {
-                    $list .= '<li>'.$this->Html->link(h($mother_tree->code), ['controller' => 'MotherTrees', 'action' => 'view', $mother_tree->id]).'</li>';
+                if ($crossing->mother_trees){
+                    $list = '<ul>';
+                    foreach ($crossing->mother_trees as $mother_tree) {
+                        $list .= '<li>'.$this->Html->link(h($mother_tree->code), ['controller' => 'MotherTrees', 'action' => 'view', $mother_tree->id]).'</li>';
+                    }
+                    $list .= '</ul>';
+                } else {
+                    $list = "";
                 }
-                $list .= '</ul>';
             ?>
             <tr>
                 <td class="id"><?= h($crossing->id) ?></td>
