@@ -6,19 +6,19 @@
     <fieldset>
         <legend><?= __('Edit Row') ?></legend>
         <?php
-            echo $this->Form->input('code', [
-                'label' => __('Name'),
-            ]);
-            echo $this->Form->input('date_created', [
-                'empty' => true, 
-                'type' => 'text', 
-                'class' => 'datepicker',
-            ]);
-            echo $this->Form->input('date_eliminated', [
-                'empty' => true, 
-                'type' => 'text', 
-                'class' => 'datepicker',
-            ]);
+        echo $this->Form->input('code', [
+            'label' => __('Name'),
+        ]);
+        echo $this->Form->input('date_created', [
+            'empty' => true,
+            'type'  => 'text',
+            'class' => 'datepicker',
+        ]);
+        echo $this->Form->input('date_eliminated', [
+            'empty' => true,
+            'type'  => 'text',
+            'class' => 'datepicker',
+        ]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

@@ -6,13 +6,13 @@
     <?= $this->Form->create($mark) ?>
     <fieldset>
         <legend><?= __('Mark Batch') ?></legend>
-        <?php
-            echo $this->Form->input('batch_id', [
-                'options' => $batches,
-                'required' => 'required',
-                'class' => 'select2batch_id',
-                'label' => __('Crossing.Batch'),
-            ]);
-            
-            echo $this->element('Mark/basic_mark_form');
+<?php
+echo $this->Form->input('batch_id', [
+    'options'  => $batches,
+    'required' => 'required',
+    'class'    => 'select2batch_id',
+    'label'    => __('Crossing.Batch'),
+]);
+
+echo $this->element('Mark/basic_mark_form');
 ?>

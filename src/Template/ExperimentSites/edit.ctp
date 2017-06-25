@@ -6,7 +6,7 @@
     <fieldset>
         <legend><?= __('Edit Experiment Site') ?></legend>
         <?php
-            echo $this->Form->input('name');
+        echo $this->Form->input('name');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

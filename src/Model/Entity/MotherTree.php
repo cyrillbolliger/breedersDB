@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -29,7 +30,7 @@ use Cake\ORM\TableRegistry;
  */
 class MotherTree extends Entity
 {
-
+    
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -40,7 +41,7 @@ class MotherTree extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
+        '*'  => true,
         'id' => false
     ];
 }

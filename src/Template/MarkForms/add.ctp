@@ -10,22 +10,23 @@
             <legend><?= __('Fields') ?></legend>
             <div class="mark_form_fields sortable">
                 <?php
-                    if ( ! empty($markForm->mark_form_fields) ) {
-                        foreach($markForm->mark_form_fields as $markFormField) {
-                            echo $this->element('Mark/field_edit_form_mode', ['markFormProperty' => $markFormField->mark_form_property]);
-                        }
+                if ( ! empty($markForm->mark_form_fields)) {
+                    foreach ($markForm->mark_form_fields as $markFormField) {
+                        echo $this->element('Mark/field_edit_form_mode',
+                            ['markFormProperty' => $markFormField->mark_form_property]);
                     }
+                }
                 ?>
             </div>
             <div class="mark_form_fields_adder">
                 <?php
-                    echo $this->Form->input('mark_form_properties', [
-                        'options' => $markFormProperties,
-                        'class'   => 'add_mark_form_field',
-                        'label'   => __('Add mark field to form'),
-                        'empty'   => true,
-                        'data-mode'=> 'field_edit_form_mode',
-                    ]);
+                echo $this->Form->input('mark_form_properties', [
+                    'options'   => $markFormProperties,
+                    'class'     => 'add_mark_form_field',
+                    'label'     => __('Add mark field to form'),
+                    'empty'     => true,
+                    'data-mode' => 'field_edit_form_mode',
+                ]);
                 ?>
             </div>
         </fieldset>

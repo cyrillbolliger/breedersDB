@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -24,7 +25,7 @@ use Cake\ORM\TableRegistry;
  */
 class ScionsBundle extends Entity
 {
-
+    
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -35,16 +36,18 @@ class ScionsBundle extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
+        '*'  => true,
         'id' => false
     ];
     
-    protected function _getConvar() {
+    protected function _getConvar()
+    {
         $Crossings = TableRegistry::get('Crossings');
-        $Batches = TableRegistry::get('Batches');
-        $variety = $this->variety;
-        $batch = $Batches->get($variety->batch_id);
-        $crossing = $Crossings->get($batch->crossing_id);
-        return $crossing->code .'.'. $batch->code .'.'. $variety->code;
+        $Batches   = TableRegistry::get('Batches');
+        $variety   = $this->variety;
+        $batch     = $Batches->get($variety->batch_id);
+        $crossing  = $Crossings->get($batch->crossing_id);
+        
+        return $crossing->code . '.' . $batch->code . '.' . $variety->code;
     }
 }

@@ -12,6 +12,7 @@
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 use Cake\Core\Configure;
@@ -28,7 +29,7 @@ use Cake\View\Exception\MissingTemplateException;
  */
 class PagesController extends AppController
 {
-
+    
     /**
      * Displays a view
      *
@@ -40,24 +41,24 @@ class PagesController extends AppController
     public function display()
     {
         $path = func_get_args();
-
+        
         $count = count($path);
-        if (!$count) {
+        if ( ! $count) {
             return $this->redirect('/');
         }
         if (in_array('..', $path, true) || in_array('.', $path, true)) {
             throw new ForbiddenException();
         }
         $page = $subpage = null;
-
-        if (!empty($path[0])) {
+        
+        if ( ! empty($path[0])) {
             $page = $path[0];
         }
-        if (!empty($path[1])) {
+        if ( ! empty($path[1])) {
             $subpage = $path[1];
         }
         $this->set(compact('page', 'subpage'));
-
+        
         try {
             $this->render(implode('/', $path));
         } catch (MissingTemplateException $e) {

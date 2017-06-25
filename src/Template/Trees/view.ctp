@@ -5,7 +5,7 @@
     <?= $this->Html->link(
         __('Print label'),
         ['action' => 'print', $tree->id, 'view', $tree->id],
-        ['class'=>'button print-button']);
+        ['class' => 'button print-button']);
     ?>
     <h3><?= __('Tree:') . ' ' . h($tree->publicid) ?></h3>
     <table class="vertical-table">
@@ -15,15 +15,18 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Variety') ?></th>
-            <td><?= $tree->has('variety') ? $this->Html->link($tree->convar, ['controller' => 'Varieties', 'action' => 'view', $tree->variety->id]) : '' ?></td>
+            <td><?= $tree->has('variety') ? $this->Html->link($tree->convar,
+                    ['controller' => 'Varieties', 'action' => 'view', $tree->variety->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Experiment Site') ?></th>
-            <td><?= $tree->has('experiment_site') ? $this->Html->link($tree->experiment_site->name, ['controller' => 'ExperimentSites', 'action' => 'view', $tree->experiment_site->id]) : '' ?></td>
+            <td><?= $tree->has('experiment_site') ? $this->Html->link($tree->experiment_site->name,
+                    ['controller' => 'ExperimentSites', 'action' => 'view', $tree->experiment_site->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Row') ?></th>
-            <td><?= $tree->has('row') ? $this->Html->link($tree->row->code, ['controller' => 'Rows', 'action' => 'view', $tree->row->id]) : '' ?></td>
+            <td><?= $tree->has('row') ? $this->Html->link($tree->row->code,
+                    ['controller' => 'Rows', 'action' => 'view', $tree->row->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Offset') ?></th>
@@ -39,11 +42,13 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Rootstock') ?></th>
-            <td><?= $tree->has('rootstock') ? $this->Html->link($tree->rootstock->name, ['controller' => 'Rootstocks', 'action' => 'view', $tree->rootstock->id]) : '' ?></td>
+            <td><?= $tree->has('rootstock') ? $this->Html->link($tree->rootstock->name,
+                    ['controller' => 'Rootstocks', 'action' => 'view', $tree->rootstock->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Grafting') ?></th>
-            <td><?= $tree->has('grafting') ? $this->Html->link($tree->grafting->name, ['controller' => 'Graftings', 'action' => 'view', $tree->grafting->id]) : '' ?></td>
+            <td><?= $tree->has('grafting') ? $this->Html->link($tree->grafting->name,
+                    ['controller' => 'Graftings', 'action' => 'view', $tree->grafting->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Date Planted') ?></th>
@@ -71,7 +76,7 @@
         <?= $this->Text->autoParagraph(h($tree->note)); ?>
     </div>
     <div class="related">
-        <?php if (!empty($marks)): ?>
+        <?php if ( ! empty($marks)): ?>
             <?php foreach ($marks as $mark_type => $mark_values): ?>
                 <?php if ($mark_values->count()): ?>
                     <h4><?= h($mark_type) ?></h4>

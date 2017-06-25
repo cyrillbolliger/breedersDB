@@ -8,10 +8,10 @@
         <legend><?= __('Edit Variety') ?></legend>
         <?php
         echo $this->Form->input('batch_id', [
-            'options' => $batches,
+            'options'  => $batches,
             'required' => 'required',
-            'class' => 'select2batch_id',
-            'label' => __('Crossing.Batch'),
+            'class'    => 'select2batch_id',
+            'label'    => __('Crossing.Batch'),
         ]);
         echo $this->Form->input('code');
         echo $this->Form->input('official_name');

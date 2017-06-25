@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -21,7 +22,7 @@ use Cake\ORM\TableRegistry;
  */
 class Crossing extends Entity
 {
-
+    
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -32,23 +33,27 @@ class Crossing extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
+        '*'  => true,
         'id' => false
     ];
     
-    protected function _getMotherConvar() {
+    protected function _getMotherConvar()
+    {
         $Varieties = TableRegistry::get('Varieties');
-        $Batches = TableRegistry::get('Batches');
-        $variety = $Varieties->get($this->mother_variety_id);
-        $batch = $Batches->get($variety->batch_id);
-        return $this->code .'.'. $batch->code .'.'. $variety->code;
+        $Batches   = TableRegistry::get('Batches');
+        $variety   = $Varieties->get($this->mother_variety_id);
+        $batch     = $Batches->get($variety->batch_id);
+        
+        return $this->code . '.' . $batch->code . '.' . $variety->code;
     }
     
-    protected function _getFatherConvar() {
+    protected function _getFatherConvar()
+    {
         $Varieties = TableRegistry::get('Varieties');
-        $Batches = TableRegistry::get('Batches');
-        $variety = $Varieties->get($this->father_variety_id);
-        $batch = $Batches->get($variety->batch_id);
-        return $this->code .'.'. $batch->code .'.'. $variety->code;
+        $Batches   = TableRegistry::get('Batches');
+        $variety   = $Varieties->get($this->father_variety_id);
+        $batch     = $Batches->get($variety->batch_id);
+        
+        return $this->code . '.' . $batch->code . '.' . $variety->code;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -13,7 +14,7 @@ use Cake\ORM\Entity;
  */
 class Rootstock extends Entity
 {
-
+    
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -24,7 +25,7 @@ class Rootstock extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
+        '*'  => true,
         'id' => false
     ];
 }

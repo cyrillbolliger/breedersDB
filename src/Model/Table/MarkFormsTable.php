@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -26,23 +27,24 @@ use App\Model\Rule\IsNotReferredBy;
  */
 class MarkFormsTable extends Table
 {
-
+    
     /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
-
+        
         $this->table('mark_forms');
         $this->displayField('name');
         $this->primaryKey('id');
-
+        
         $this->addBehavior('Timestamp');
-
+        
         $this->hasMany('MarkFormFields', [
             'foreignKey' => 'mark_form_id'
         ]);
@@ -53,11 +55,12 @@ class MarkFormsTable extends Table
             'joinTable' => 'MarkFormFields'
         ]);
     }
-
+    
     /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
@@ -66,49 +69,52 @@ class MarkFormsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
+        
         $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name')
             ->add('name', 'unique', [
-                'rule' => 'validateUnique',
+                'rule'     => 'validateUnique',
                 'provider' => 'table',
-                'message' => __('This name has already been used.'),
+                'message'  => __('This name has already been used.'),
             ]);
-
+        
         return $validator;
     }
-
+    
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     *
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['id']));
         $rules->add($rules->isUnique(['name'], __('This name has already been used. Please use a unique name.')));
-
-        $rules->addDelete(new IsNotReferredBy(['Marks' => 'mark_form_id']),'isNotReferredBy');
-        $rules->addDelete(new IsNotReferredBy(['MarkFormFields' => 'mark_form_id']),'isNotReferredBy');
-
+        
+        $rules->addDelete(new IsNotReferredBy(['Marks' => 'mark_form_id']), 'isNotReferredBy');
+        $rules->addDelete(new IsNotReferredBy(['MarkFormFields' => 'mark_form_id']), 'isNotReferredBy');
+        
         return $rules;
     }
-
+    
     /**
      * Return query filtered by given search term searching the name
      *
      * @param string $term
+     *
      * @return Cake\ORM\Query
      */
-    public function filter(string $term) {
+    public function filter(string $term)
+    {
         $where = trim($term);
-
+        
         $query = $this->find()
-                ->where(['name LIKE' => '%'.$where.'%']);
-
+                      ->where(['name LIKE' => '%' . $where . '%']);
+        
         return $query;
     }
 }

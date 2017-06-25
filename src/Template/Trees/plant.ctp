@@ -3,17 +3,19 @@
 </nav>
 
 <?php $filter = json_encode([
-             'controller' => 'trees',
-             'action' => 'getTree',
-             'element' => 'plant_form',
-             'fields' => [
-                 'publicid'
-             ]]); ?>
+    'controller' => 'trees',
+    'action'     => 'getTree',
+    'element'    => 'plant_form',
+    'fields'     => [
+        'publicid'
+    ]
+]); ?>
 
 <div class="large-9 medium-8 columns content">
     <h3><?= __('Plant Tree') ?></h3>
     <div>
-         <input type="text" class="get_tree" autofocus="autofocus" data-filter='<?= $filter ?>' placeholder="<?= __('Enter publicid...') ?>">
+        <input type="text" class="get_tree" autofocus="autofocus" data-filter='<?= $filter ?>'
+               placeholder="<?= __('Enter publicid...') ?>">
     </div>
 </div>
 

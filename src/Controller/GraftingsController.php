@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -10,7 +11,7 @@ use App\Controller\AppController;
  */
 class GraftingsController extends AppController
 {
-
+    
     /**
      * Index method
      *
@@ -19,15 +20,16 @@ class GraftingsController extends AppController
     public function index()
     {
         $graftings = $this->paginate($this->Graftings);
-
+        
         $this->set(compact('graftings'));
         $this->set('_serialize', ['graftings']);
     }
-
+    
     /**
      * View method
      *
      * @param string|null $id Grafting id.
+     *
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -36,11 +38,11 @@ class GraftingsController extends AppController
         $grafting = $this->Graftings->get($id, [
             'contain' => ['Trees']
         ]);
-
+        
         $this->set('grafting', $grafting);
         $this->set('_serialize', ['grafting']);
     }
-
+    
     /**
      * Add method
      *
@@ -53,7 +55,7 @@ class GraftingsController extends AppController
             $grafting = $this->Graftings->patchEntity($grafting, $this->request->data);
             if ($this->Graftings->save($grafting)) {
                 $this->Flash->success(__('The grafting has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The grafting could not be saved. Please, try again.'));
@@ -62,11 +64,12 @@ class GraftingsController extends AppController
         $this->set(compact('grafting'));
         $this->set('_serialize', ['grafting']);
     }
-
+    
     /**
      * Edit method
      *
      * @param string|null $id Grafting id.
+     *
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -79,7 +82,7 @@ class GraftingsController extends AppController
             $grafting = $this->Graftings->patchEntity($grafting, $this->request->data);
             if ($this->Graftings->save($grafting)) {
                 $this->Flash->success(__('The grafting has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The grafting could not be saved. Please, try again.'));
@@ -88,11 +91,12 @@ class GraftingsController extends AppController
         $this->set(compact('grafting'));
         $this->set('_serialize', ['grafting']);
     }
-
+    
     /**
      * Delete method
      *
      * @param string|null $id Grafting id.
+     *
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -105,7 +109,7 @@ class GraftingsController extends AppController
         } else {
             $this->Flash->error(__('The grafting could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
 }

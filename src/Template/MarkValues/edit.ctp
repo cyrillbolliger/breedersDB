@@ -6,8 +6,12 @@
     <fieldset>
         <legend><?= __('Edit Mark Value') ?></legend>
         <?php
-            echo $this->element('Mark/field', ['markFormProperty' => $markValue->mark_form_property, 'required' => false, 'markValue' => $markValue->value]);
-            echo $this->Form->input('exceptional_mark');
+        echo $this->element('Mark/field', [
+            'markFormProperty' => $markValue->mark_form_property,
+            'required'         => false,
+            'markValue'        => $markValue->value
+        ]);
+        echo $this->Form->input('exceptional_mark');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

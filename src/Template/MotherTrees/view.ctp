@@ -3,7 +3,7 @@
 </nav>
 
 <div class="motherTrees view large-9 medium-8 columns content">
-    <h3><?= __('Mother Tree:').' '.h($motherTree->code) ?></h3>
+    <h3><?= __('Mother Tree:') . ' ' . h($motherTree->code) ?></h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Id') ?></th>
@@ -11,11 +11,13 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Mother Tree') ?></th>
-            <td><?= $motherTree->has('tree') ? $this->Html->link(h($motherTree->tree->publicid), ['controller' => 'Trees', 'action' => 'view', $motherTree->tree->id]) : '' ?></td>
+            <td><?= $motherTree->has('tree') ? $this->Html->link(h($motherTree->tree->publicid),
+                    ['controller' => 'Trees', 'action' => 'view', $motherTree->tree->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Crossing') ?></th>
-            <td><?= $motherTree->has('crossing') ? $this->Html->link(h($motherTree->crossing->code), ['controller' => 'Crossings', 'action' => 'view', $motherTree->crossing->id]) : '' ?></td>
+            <td><?= $motherTree->has('crossing') ? $this->Html->link(h($motherTree->crossing->code),
+                    ['controller' => 'Crossings', 'action' => 'view', $motherTree->crossing->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Planed') ?></th>

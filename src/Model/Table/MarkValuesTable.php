@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -25,37 +26,39 @@ use Cake\Validation\Validation;
  */
 class MarkValuesTable extends Table
 {
-
+    
     /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
-
+        
         $this->table('mark_values');
         $this->displayField('id');
         $this->primaryKey('id');
-
+        
         $this->addBehavior('Timestamp');
-
+        
         $this->belongsTo('MarkFormProperties', [
             'foreignKey' => 'mark_form_property_id',
-            'joinType' => 'INNER'
+            'joinType'   => 'INNER'
         ]);
         $this->belongsTo('Marks', [
             'foreignKey' => 'mark_id',
-            'joinType' => 'INNER'
+            'joinType'   => 'INNER'
         ]);
     }
-
+    
     /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
@@ -64,30 +67,31 @@ class MarkValuesTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
+        
         $validator
             ->requirePresence('value', 'create')
             ->notEmpty('value')
             ->add('value', 'custom', [
-                'rule' => function($value, $context) {
+                'rule'    => function ($value, $context) {
                     return $this->_validateValue($value, $context);
                 },
                 'message' => __('The validation rules of this data type has been violated. Please check data type again.'),
             ]);
-
+        
         $validator
             ->boolean('exceptional_mark')
             ->requirePresence('exceptional_mark', 'create')
             ->notEmpty('exceptional_mark');
-
+        
         return $validator;
     }
-
+    
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     *
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules)
@@ -95,30 +99,30 @@ class MarkValuesTable extends Table
         $rules->add($rules->isUnique(['id']));
         $rules->add($rules->existsIn(['mark_form_property_id'], 'MarkFormProperties'));
         $rules->add($rules->existsIn(['mark_id'], 'Marks'));
-
+        
         return $rules;
     }
     
-    protected function _validateValue($value, $context) 
+    protected function _validateValue($value, $context)
     {
-        $mark_form_property = $this->MarkFormProperties->get($context['data']['mark_form_property_id']);        
+        $mark_form_property = $this->MarkFormProperties->get($context['data']['mark_form_property_id']);
         if ($mark_form_property) {
             switch ($mark_form_property->field_type) {
                 case 'INTEGER':
-                    return Validation::isInteger($value) 
-                        && (int) $value >= (int) $mark_form_property->validation_rule['min']
-                        && (int) $value <= (int) $mark_form_property->validation_rule['max'];
+                    return Validation::isInteger($value)
+                           && (int)$value >= (int)$mark_form_property->validation_rule['min']
+                           && (int)$value <= (int)$mark_form_property->validation_rule['max'];
                     break;
                 
                 case 'FLOAT':
                     return Validation::decimal($value)
-                        && (float) $value >= (float) $mark_form_property->validation_rule['min']
-                        && (float) $value <= (float) $mark_form_property->validation_rule['max'];
+                           && (float)$value >= (float)$mark_form_property->validation_rule['min']
+                           && (float)$value <= (float)$mark_form_property->validation_rule['max'];
                     break;
                 
                 case 'VARCHAR':
                     return Validation::notBlank($value)
-                        && Validation::maxLength($value, 255);
+                           && Validation::maxLength($value, 255);
                     break;
                 
                 case 'BOOLEAN':

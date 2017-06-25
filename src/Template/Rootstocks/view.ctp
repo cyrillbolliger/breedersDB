@@ -2,7 +2,7 @@
     <?= $this->element('Setting/nav'); ?>
 </nav>
 <div class="rootstocks view large-9 medium-8 columns content">
-    <h3><?= __('Rootstock:') .' '. h($rootstock->name) ?></h3>
+    <h3><?= __('Rootstock:') . ' ' . h($rootstock->name) ?></h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Id') ?></th>
@@ -15,7 +15,7 @@
     </table>
     <div class="related">
         <h4><?= __('Related Trees') ?></h4>
-        <?php if (!empty($rootstock->trees)): ?>
+        <?php if ( ! empty($rootstock->trees)): ?>
             <?= $this->element('Tree/related_table', ['trees' => $rootstock->trees]); ?>
         <?php endif; ?>
     </div>

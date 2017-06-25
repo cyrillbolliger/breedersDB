@@ -1,8 +1,8 @@
 <?php
-if (!isset($channel)):
+if ( ! isset($channel)):
     $channel = [];
 endif;
-if (!isset($channel['title'])):
+if ( ! isset($channel['title'])):
     $channel['title'] = $this->fetch('title');
 endif;
 

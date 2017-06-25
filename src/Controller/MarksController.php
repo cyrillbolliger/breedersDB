@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -11,7 +12,7 @@ use Cake\Event\Event;
  */
 class MarksController extends AppController
 {
-
+    
     public $paginate = [
         'order' => ['modified' => 'desc'],
     ];
@@ -23,9 +24,10 @@ class MarksController extends AppController
         $this->loadComponent('MarksReader');
     }
     
-    public function beforeFilter(Event $event){
+    public function beforeFilter(Event $event)
+    {
         parent::beforeFilter($event);
-
+        
         // since we add fields dynamically, we have to unlock them in the security component
         $this->unlockDynamicallyAddedFields();
     }
@@ -33,11 +35,13 @@ class MarksController extends AppController
     /**
      * Unlock the dynamically added fields in the security component
      */
-    public function unlockDynamicallyAddedFields() {
-        if ( ! empty($this->request->data['mark_form_fields']['mark_form_properties']) ) {
+    public function unlockDynamicallyAddedFields()
+    {
+        if ( ! empty($this->request->data['mark_form_fields']['mark_form_properties'])) {
             $ids = array_keys($this->request->data['mark_form_fields']['mark_form_properties']);
-            foreach ( $ids as $id ) {
-                $this->Security->config('unlockedFields', ['mark_form_fields.mark_form_properties.'.$id.'.mark_values.value']);
+            foreach ($ids as $id) {
+                $this->Security->config('unlockedFields',
+                    ['mark_form_fields.mark_form_properties.' . $id . '.mark_values.value']);
             }
         }
     }
@@ -50,7 +54,7 @@ class MarksController extends AppController
     public function index()
     {
         $this->paginate['contain'] = [
-            'Trees', 
+            'Trees',
             'Varieties',
             'Varieties.Batches',
             'Batches',
@@ -58,24 +62,25 @@ class MarksController extends AppController
             'MarkValues',
             'MarkValues.MarkFormProperties'
         ];
-        $marks = $this->paginate($this->Marks);
+        $marks                     = $this->paginate($this->Marks);
         
         $types = $this->Marks->MarkValues->MarkFormProperties->MarkFormPropertyTypes
-                ->find('list')
-                ->order(['name'=>'asc'])
-                ->toArray();
+            ->find('list')
+            ->order(['name' => 'asc'])
+            ->toArray();
         
-        $all[0] = __('(all)');
+        $all[0]                   = __('(all)');
         $mark_form_property_types = $all + $types;
         
         $this->set(compact('marks', 'mark_form_property_types'));
         $this->set('_serialize', ['marks']);
     }
-
+    
     /**
      * View method
      *
      * @param string|null $id Mark id.
+     *
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -83,21 +88,21 @@ class MarksController extends AppController
     {
         $mark = $this->Marks->get($id, [
             'contain' => [
-                'MarkForms', 
-                'Trees', 
+                'MarkForms',
+                'Trees',
                 'Varieties',
                 'Varieties.Batches',
-                'Batches', 
+                'Batches',
                 'Batches.Crossings' => ['joinType' => 'LEFT'],
-                'MarkValues', 
+                'MarkValues',
                 'MarkValues.MarkFormProperties'
             ]
         ]);
-
+        
         $this->set('mark', $mark);
         $this->set('_serialize', ['mark']);
     }
-
+    
     /**
      * Add method
      *
@@ -112,15 +117,15 @@ class MarksController extends AppController
             $mark->dirty('mark_values', true);
             if ($this->Marks->save($mark)) {
                 $this->Flash->success(__('The mark has been saved.'));
-
+                
                 return $this->redirect($this->referer());
             } else {
                 $this->Flash->error(__('The mark could not be saved.'));
                 $errors = $mark->errors();
-                if( ! empty( $errors['tree_id'] ) ) {
+                if ( ! empty($errors['tree_id'])) {
                     $this->Flash->error(__('Please select a tree by public id.'));
                 }
-                if( ! empty( $errors['mark_values'] ) ) {
+                if ( ! empty($errors['mark_values'])) {
                     $this->Flash->error(__('One of the mark values violates the validation rules. Please check data types.'));
                 }
             }
@@ -128,21 +133,21 @@ class MarksController extends AppController
         
         $mark = $this->Brain->remember($mark);
         
-        if ( ! empty($mark->mark_form_id) ) {
+        if ( ! empty($mark->mark_form_id)) {
             $markFormFields = $this->Marks->MarkForms->MarkFormFields->find()
-                    ->contain(['MarkFormProperties'])
-                    ->where(['mark_form_id' => $mark->mark_form_id])
-                    ->order(['priority' => 'asc']);
+                                                                     ->contain(['MarkFormProperties'])
+                                                                     ->where(['mark_form_id' => $mark->mark_form_id])
+                                                                     ->order(['priority' => 'asc']);
         } else {
             $markFormFields = null;
         }
         
-        $markForms = $this->Marks->MarkForms->find('list');
+        $markForms          = $this->Marks->MarkForms->find('list');
         $markFormProperties = $this->Marks->MarkForms->MarkFormFields->MarkFormProperties->find('list');
         $this->set(compact('mark', 'markForms', 'markFormProperties', 'markFormFields'));
         $this->set('_serialize', ['mark']);
     }
-
+    
     /**
      * Add method
      *
@@ -160,7 +165,7 @@ class MarksController extends AppController
      */
     public function addVarietyMark()
     {
-        $mark = $this->Marks->newEntity();
+        $mark      = $this->Marks->newEntity();
         $varieties = array();
         if ($this->request->is('post')) {
             $data = $this->Marks->prepareToSaveAssociated($this->request->data);
@@ -168,15 +173,15 @@ class MarksController extends AppController
             $mark->dirty('mark_values', true);
             if ($this->Marks->save($mark)) {
                 $this->Flash->success(__('The mark has been saved.'));
-
+                
                 return $this->redirect(['action' => 'addVarietyMark']);
             } else {
                 $this->Flash->error(__('The mark could not be saved.'));
                 $errors = $mark->errors();
-                if( ! empty( $errors['variety_id'] ) ) {
+                if ( ! empty($errors['variety_id'])) {
                     $this->Flash->error(__('Please select a variety.'));
                 }
-                if( ! empty( $errors['mark_values'] ) ) {
+                if ( ! empty($errors['mark_values'])) {
                     $this->Flash->error(__('One of the mark values violates the validation rules. Please check data types.'));
                 }
                 
@@ -188,16 +193,16 @@ class MarksController extends AppController
         
         $mark = $this->Brain->remember($mark);
         
-        if ( ! empty($mark->mark_form_id) ) {
+        if ( ! empty($mark->mark_form_id)) {
             $markFormFields = $this->Marks->MarkForms->MarkFormFields->find()
-                    ->contain(['MarkFormProperties'])
-                    ->where(['mark_form_id' => $mark->mark_form_id])
-                    ->order(['priority' => 'asc']);
+                                                                     ->contain(['MarkFormProperties'])
+                                                                     ->where(['mark_form_id' => $mark->mark_form_id])
+                                                                     ->order(['priority' => 'asc']);
         } else {
             $markFormFields = null;
         }
         
-        $markForms = $this->Marks->MarkForms->find('list');
+        $markForms          = $this->Marks->MarkForms->find('list');
         $markFormProperties = $this->Marks->MarkForms->MarkFormFields->MarkFormProperties->find('list');
         $this->set(compact('mark', 'varieties', 'markForms', 'markFormProperties', 'markFormFields'));
         $this->set('_serialize', ['mark']);
@@ -210,7 +215,7 @@ class MarksController extends AppController
      */
     public function addBatchMark()
     {
-        $mark = $this->Marks->newEntity();
+        $mark    = $this->Marks->newEntity();
         $batches = array();
         if ($this->request->is('post')) {
             $data = $this->Marks->prepareToSaveAssociated($this->request->data);
@@ -218,15 +223,15 @@ class MarksController extends AppController
             $mark->dirty('mark_values', true);
             if ($this->Marks->save($mark)) {
                 $this->Flash->success(__('The mark has been saved.'));
-
+                
                 return $this->redirect(['action' => 'addBatchMark']);
             } else {
                 $this->Flash->error(__('The mark could not be saved.'));
                 $errors = $mark->errors();
-                if( ! empty( $errors['batch_id'] ) ) {
+                if ( ! empty($errors['batch_id'])) {
                     $this->Flash->error(__('Please select a batch.'));
                 }
-                if( ! empty( $errors['mark_values'] ) ) {
+                if ( ! empty($errors['mark_values'])) {
                     $this->Flash->error(__('One of the mark values violates the validation rules. Please check data types.'));
                 }
                 
@@ -236,25 +241,26 @@ class MarksController extends AppController
         
         $mark = $this->Brain->remember($mark);
         
-        if ( ! empty($mark->mark_form_id) ) {
+        if ( ! empty($mark->mark_form_id)) {
             $markFormFields = $this->Marks->MarkForms->MarkFormFields->find()
-                    ->contain(['MarkFormProperties'])
-                    ->where(['mark_form_id' => $mark->mark_form_id])
-                    ->order(['priority' => 'asc']);
+                                                                     ->contain(['MarkFormProperties'])
+                                                                     ->where(['mark_form_id' => $mark->mark_form_id])
+                                                                     ->order(['priority' => 'asc']);
         } else {
             $markFormFields = null;
         }
         
-        $markForms = $this->Marks->MarkForms->find('list');
+        $markForms          = $this->Marks->MarkForms->find('list');
         $markFormProperties = $this->Marks->MarkForms->MarkFormFields->MarkFormProperties->find('list');
         $this->set(compact('mark', 'markForms', 'markFormProperties', 'markFormFields', 'batches'));
         $this->set('_serialize', ['mark']);
     }
-
+    
     /**
      * Edit method
      *
      * @param string|null $id Mark id.
+     *
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -269,7 +275,7 @@ class MarksController extends AppController
                 'Trees.Varieties',
                 'Varieties',
                 'Varieties.Batches',
-	            'Varieties.Batches.Crossings',
+                'Varieties.Batches.Crossings',
                 'Batches',
                 'Batches.Crossings',
             ]
@@ -279,24 +285,25 @@ class MarksController extends AppController
             $mark = $this->Marks->patchEntity($mark, $this->request->data);
             if ($this->Marks->save($mark)) {
                 $this->Flash->success(__('The mark has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The mark could not be saved.'));
             }
         }
         
-        $marks = $this->MarksReader->get($mark->tree_id, $mark->variety_id, $mark->batch_id, $id);
-        $markForms = $this->Marks->MarkForms->find('list');
+        $marks              = $this->MarksReader->get($mark->tree_id, $mark->variety_id, $mark->batch_id, $id);
+        $markForms          = $this->Marks->MarkForms->find('list');
         $markFormProperties = $this->Marks->MarkForms->MarkFormFields->MarkFormProperties->find('list');
         $this->set(compact('mark', 'markForms', 'markFormProperties', 'markFormFields', 'marks'));
         $this->set('_serialize', ['mark']);
     }
-
+    
     /**
      * Delete method
      *
      * @param string|null $id Mark id.
+     *
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -309,51 +316,52 @@ class MarksController extends AppController
         } else {
             $this->Flash->error(__('The mark could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
     
     /**
      * Display form fields of form with the given id
-     * 
+     *
      * @param int $id
      */
-    public function getFormFields($id = null) 
+    public function getFormFields($id = null)
     {
-        if ( ! empty($id) ) {
+        if ( ! empty($id)) {
             $markFormFields = $this->Marks->MarkForms->MarkFormFields->find()
-                    ->contain(['MarkFormProperties'])
-                    ->where(['mark_form_id' => $id])
-                    ->order(['priority' => 'asc']);
+                                                                     ->contain(['MarkFormProperties'])
+                                                                     ->where(['mark_form_id' => $id])
+                                                                     ->order(['priority' => 'asc']);
         } else {
             $markFormFields = null;
         }
         
         $this->set('markFormFields', $markFormFields);
         $this->set('_serialize', ['markFormFields']);
-
+        
         $this->render('/Element/Mark/fields');
     }
     
     /**
      * Return filtered index table
      */
-    public function filter() {
+    public function filter()
+    {
         $allowed_fields = ['mark_form_property_type_id'];
-                
-        if ( $this->request->is('get') 
-                && $this->request->is('ajax') 
-                && ! empty($this->request->query['fields'])
-                && array_intersect($allowed_fields, $this->request->query['fields']))
-        {             
+        
+        if ($this->request->is('get')
+            && $this->request->is('ajax')
+            && ! empty($this->request->query['fields'])
+            && array_intersect($allowed_fields, $this->request->query['fields'])
+        ) {
             $entries = $this->Marks->filter($this->request->query['term']);
             
-            if ( ! empty($this->request->query['sort']) ) {
-                $sort = $this->request->query['sort'];
-                $direction = empty($this->request->query['direction']) ? 'asc' : $this->request->query['direction'];
-                $this->paginate['order'] = [ $sort => $direction ];
+            if ( ! empty($this->request->query['sort'])) {
+                $sort                    = $this->request->query['sort'];
+                $direction               = empty($this->request->query['direction']) ? 'asc' : $this->request->query['direction'];
+                $this->paginate['order'] = [$sort => $direction];
             }
-            if ( ! empty($this->request->query['page']) ) {
+            if ( ! empty($this->request->query['page'])) {
                 $this->paginate['page'] = $this->request->query['page'];
             }
             
@@ -361,7 +369,7 @@ class MarksController extends AppController
             throw new Exception(__('Direct access not allowed.'));
         }
         
-        if ( $entries ) {
+        if ($entries) {
             $marks = $this->paginate($entries);
             $this->set(compact('marks'));
             $this->set('_serialize', ['marks']);

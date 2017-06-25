@@ -12,6 +12,7 @@
  * @since         3.0.4
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\View;
 
 use Cake\Event\EventManager;
@@ -25,7 +26,7 @@ use Cake\Network\Response;
  */
 class AjaxView extends AppView
 {
-
+    
     /**
      * The name of the layout file to render the view inside of. The name
      * specified is the filename of the layout in /src/Template/Layout without
@@ -34,7 +35,7 @@ class AjaxView extends AppView
      * @var string
      */
     public $layout = 'ajax';
-
+    
     /**
      * Initialization hook method.
      *
@@ -43,7 +44,7 @@ class AjaxView extends AppView
     public function initialize()
     {
         parent::initialize();
-
+        
         $this->response->type('ajax');
     }
 }

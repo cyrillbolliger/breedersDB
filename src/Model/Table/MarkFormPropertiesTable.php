@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -9,7 +10,6 @@ use App\Model\Rule\IsNotReferredBy;
 use Cake\Event\Event;
 use ArrayObject;
 use Cake\Database\Schema\Table as Schema;
-
 
 
 /**
@@ -31,10 +31,11 @@ use Cake\Database\Schema\Table as Schema;
  */
 class MarkFormPropertiesTable extends Table
 {
-
+    
     protected function _initializeSchema(Schema $schema)
     {
         $schema->columnType('validation_rule', 'json');
+        
         return $schema;
     }
     
@@ -42,21 +43,22 @@ class MarkFormPropertiesTable extends Table
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
-
+        
         $this->table('mark_form_properties');
         $this->displayField('name');
         $this->primaryKey('id');
-
+        
         $this->addBehavior('Timestamp');
-
+        
         $this->belongsTo('MarkFormPropertyTypes', [
             'foreignKey' => 'mark_form_property_type_id',
-            'joinType' => 'INNER'
+            'joinType'   => 'INNER'
         ]);
         $this->hasMany('MarkFormFields', [
             'foreignKey' => 'mark_form_property_id'
@@ -68,11 +70,12 @@ class MarkFormPropertiesTable extends Table
             'foreignKey' => 'mark_form_property_id'
         ]);
     }
-
+    
     /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
@@ -80,27 +83,27 @@ class MarkFormPropertiesTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-
+        
         $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name')
             ->add('name', 'unique', [
-                'rule' => 'validateUnique',
+                'rule'     => 'validateUnique',
                 'provider' => 'table',
-                'message' => __('This name has already been used.'),
+                'message'  => __('This name has already been used.'),
             ]);
-
+        
         $validator
             ->requirePresence('field_type', 'create')
             ->notEmpty('field_type');
-
+        
         $validator
             ->requirePresence('validation_rule', 'create')
             ->allowEmpty('validation_rule');
-
+        
         $validator
             ->add('min', 'custom', [
-                'rule' => function($value, $context) {
+                'rule'    => function ($value, $context) {
                     if (in_array($context['data']['field_type'], ['INTEGER', 'FLOAT'])) {
                         return $value < $context['data']['max'];
                     } else {
@@ -109,10 +112,10 @@ class MarkFormPropertiesTable extends Table
                 },
                 'message' => __('The min value is required and must be smaller than the max value'),
             ]);
-
+        
         $validator
             ->add('max', 'custom', [
-                'rule' => function($value, $context) {
+                'rule'    => function ($value, $context) {
                     if (in_array($context['data']['field_type'], ['INTEGER', 'FLOAT'])) {
                         return $value > $context['data']['min'];
                     } else {
@@ -121,10 +124,10 @@ class MarkFormPropertiesTable extends Table
                 },
                 'message' => __('The max value is required and must be greater than the max value'),
             ]);
-
+        
         $validator
             ->add('step', 'custom', [
-                'rule' => function($value, $context) {
+                'rule'    => function ($value, $context) {
                     if (in_array($context['data']['field_type'], ['INTEGER', 'FLOAT'])) {
                         return ($value > 0) && ($value <= ($context['data']['max'] - $context['data']['min']));
                     } else {
@@ -133,10 +136,10 @@ class MarkFormPropertiesTable extends Table
                 },
                 'message' => __('The step value is required and must be greater than zero and smaller or equal to the difference between the max and the min value.'),
             ]);
-
+        
         $validator
             ->add('tree_property', 'custom', [
-                'rule' => function($value, $context) {
+                'rule'    => function ($value, $context) {
                     if ($value) {
                         return true;
                     } else {
@@ -145,10 +148,10 @@ class MarkFormPropertiesTable extends Table
                 },
                 'message' => __('Select at least one domain'),
             ]);
-
+        
         $validator
             ->add('variety_property', 'custom', [
-                'rule' => function($value, $context) {
+                'rule'    => function ($value, $context) {
                     if ($value) {
                         return true;
                     } else {
@@ -157,10 +160,10 @@ class MarkFormPropertiesTable extends Table
                 },
                 'message' => __('Select at least one domain'),
             ]);
-
+        
         $validator
             ->add('batch_property', 'custom', [
-                'rule' => function($value, $context) {
+                'rule'    => function ($value, $context) {
                     if ($value) {
                         return true;
                     } else {
@@ -169,19 +172,20 @@ class MarkFormPropertiesTable extends Table
                 },
                 'message' => __('Select at least one domain'),
             ]);
-
+        
         $validator
             ->requirePresence('mark_form_property_type_id', 'create')
             ->notEmpty('mark_form_property_type_id');
-
+        
         return $validator;
     }
-
+    
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     *
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules)
@@ -189,39 +193,41 @@ class MarkFormPropertiesTable extends Table
         $rules->add($rules->isUnique(['id']));
         $rules->add($rules->existsIn(['mark_form_property_type_id'], 'MarkFormPropertyTypes'));
         $rules->add($rules->isUnique(['name'], __('This name has already been used. Please use a unique name.')));
-
-        $rules->addDelete(new IsNotReferredBy(['MarkFormFields' => 'mark_form_property_id']),'isNotReferredBy');
-        $rules->addDelete(new IsNotReferredBy(['MarkValues' => 'mark_form_property_id']),'isNotReferredBy');
-        $rules->addDelete(new IsNotReferredBy(['MarkScannerCodes' => 'mark_form_property_id']),'isNotReferredBy');
-
+        
+        $rules->addDelete(new IsNotReferredBy(['MarkFormFields' => 'mark_form_property_id']), 'isNotReferredBy');
+        $rules->addDelete(new IsNotReferredBy(['MarkValues' => 'mark_form_property_id']), 'isNotReferredBy');
+        $rules->addDelete(new IsNotReferredBy(['MarkScannerCodes' => 'mark_form_property_id']), 'isNotReferredBy');
+        
         return $rules;
     }
-
+    
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
         $data['validation_rule'] = $this->buildValidationRuleFieldData($data);
     }
-
+    
     /**
      * Return a JSON with the validation rules
      *
      * @param  ArrayObject $data the request data
+     *
      * @return String JSON object with the validation rule
      */
-    public function buildValidationRuleFieldData(ArrayObject $data) {
+    public function buildValidationRuleFieldData(ArrayObject $data)
+    {
         $validation_rule = array();
-                
-        if ( in_array($data['field_type'], ['INTEGER', 'FLOAT']) ) {
+        
+        if (in_array($data['field_type'], ['INTEGER', 'FLOAT'])) {
             $validation_rule = [
-                'min' => isset( $data['min'] ) ? $data['min'] : PHP_INT_MIN,
-                'max' => isset( $data['max'] ) ? $data['max'] : PHP_INT_MAX,
-                'step' => isset( $data['step'] ) ? $data['step'] : 1,
+                'min'  => isset($data['min']) ? $data['min'] : PHP_INT_MIN,
+                'max'  => isset($data['max']) ? $data['max'] : PHP_INT_MAX,
+                'step' => isset($data['step']) ? $data['step'] : 1,
             ];
         }
-
+        
         return $validation_rule;
     }
-
+    
     /**
      * Return array with field type as key and description as value
      *
@@ -237,20 +243,22 @@ class MarkFormPropertiesTable extends Table
             'DATE'    => __('Date'),
         ];
     }
-
+    
     /**
      * Return query filtered by given search term searching the name
      *
      * @param string $term
+     *
      * @return Cake\ORM\Query
      */
-    public function filter(string $term) {
+    public function filter(string $term)
+    {
         $where = trim($term);
-
+        
         $query = $this->find()
-                ->contain(['MarkFormPropertyTypes'])
-                ->where(['MarkFormProperties.name LIKE' => '%'.$where.'%']);
-
+                      ->contain(['MarkFormPropertyTypes'])
+                      ->where(['MarkFormProperties.name LIKE' => '%' . $where . '%']);
+        
         return $query;
     }
 }

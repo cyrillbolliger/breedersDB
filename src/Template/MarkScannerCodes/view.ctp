@@ -5,9 +5,9 @@
     <?= $this->Html->link(
         __('Print label'),
         ['action' => 'print', $markScannerCode->id, 'view', $markScannerCode->id],
-        ['class'=>'button print-button']);
+        ['class' => 'button print-button']);
     ?>
-    <h3><?= __('Scanner Code:').' '.h($markScannerCode->code) ?></h3>
+    <h3><?= __('Scanner Code:') . ' ' . h($markScannerCode->code) ?></h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Id') ?></th>
@@ -15,7 +15,12 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Property') ?></th>
-            <td><?= $markScannerCode->has('mark_form_property') ? $this->Html->link($markScannerCode->mark_form_property->name, ['controller' => 'MarkFormProperties', 'action' => 'view', $markScannerCode->mark_form_property->id]) : '' ?></td>
+            <td><?= $markScannerCode->has('mark_form_property') ? $this->Html->link($markScannerCode->mark_form_property->name,
+                    [
+                        'controller' => 'MarkFormProperties',
+                        'action'     => 'view',
+                        $markScannerCode->mark_form_property->id
+                    ]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Value') ?></th>

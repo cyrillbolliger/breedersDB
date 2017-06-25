@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -10,7 +11,7 @@ use App\Controller\AppController;
  */
 class MarkFormPropertyTypesController extends AppController
 {
-
+    
     /**
      * Index method
      *
@@ -19,15 +20,16 @@ class MarkFormPropertyTypesController extends AppController
     public function index()
     {
         $markFormPropertyTypes = $this->paginate($this->MarkFormPropertyTypes);
-
+        
         $this->set(compact('markFormPropertyTypes'));
         $this->set('_serialize', ['markFormPropertyTypes']);
     }
-
+    
     /**
      * View method
      *
      * @param string|null $id Mark Form Property Type id.
+     *
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -36,11 +38,11 @@ class MarkFormPropertyTypesController extends AppController
         $markFormPropertyType = $this->MarkFormPropertyTypes->get($id, [
             'contain' => ['MarkFormProperties']
         ]);
-
+        
         $this->set('markFormPropertyType', $markFormPropertyType);
         $this->set('_serialize', ['markFormPropertyType']);
     }
-
+    
     /**
      * Add method
      *
@@ -50,10 +52,11 @@ class MarkFormPropertyTypesController extends AppController
     {
         $markFormPropertyType = $this->MarkFormPropertyTypes->newEntity();
         if ($this->request->is('post')) {
-            $markFormPropertyType = $this->MarkFormPropertyTypes->patchEntity($markFormPropertyType, $this->request->data);
+            $markFormPropertyType = $this->MarkFormPropertyTypes->patchEntity($markFormPropertyType,
+                $this->request->data);
             if ($this->MarkFormPropertyTypes->save($markFormPropertyType)) {
                 $this->Flash->success(__('The mark form property type has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The mark form property type could not be saved. Please, try again.'));
@@ -62,11 +65,12 @@ class MarkFormPropertyTypesController extends AppController
         $this->set(compact('markFormPropertyType'));
         $this->set('_serialize', ['markFormPropertyType']);
     }
-
+    
     /**
      * Edit method
      *
      * @param string|null $id Mark Form Property Type id.
+     *
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -76,10 +80,11 @@ class MarkFormPropertyTypesController extends AppController
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $markFormPropertyType = $this->MarkFormPropertyTypes->patchEntity($markFormPropertyType, $this->request->data);
+            $markFormPropertyType = $this->MarkFormPropertyTypes->patchEntity($markFormPropertyType,
+                $this->request->data);
             if ($this->MarkFormPropertyTypes->save($markFormPropertyType)) {
                 $this->Flash->success(__('The mark form property type has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The mark form property type could not be saved. Please, try again.'));
@@ -88,11 +93,12 @@ class MarkFormPropertyTypesController extends AppController
         $this->set(compact('markFormPropertyType'));
         $this->set('_serialize', ['markFormPropertyType']);
     }
-
+    
     /**
      * Delete method
      *
      * @param string|null $id Mark Form Property Type id.
+     *
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -105,7 +111,7 @@ class MarkFormPropertyTypesController extends AppController
         } else {
             $this->Flash->error(__('The mark form property type could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
 }

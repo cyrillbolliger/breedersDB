@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -30,15 +31,16 @@ class MotherTreesController extends AppController
         $this->paginate['contain'] = ['Crossings', 'Trees'];
         
         $motherTrees = $this->paginate($this->MotherTrees);
-
+        
         $this->set(compact('motherTrees'));
         $this->set('_serialize', ['motherTrees']);
     }
-
+    
     /**
      * View method
      *
      * @param string|null $id Mother Tree id.
+     *
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -47,11 +49,11 @@ class MotherTreesController extends AppController
         $motherTree = $this->MotherTrees->get($id, [
             'contain' => ['Crossings', 'Trees']
         ]);
-
+        
         $this->set('motherTree', $motherTree);
         $this->set('_serialize', ['motherTree']);
     }
-
+    
     /**
      * Add method
      *
@@ -64,23 +66,24 @@ class MotherTreesController extends AppController
             $motherTree = $this->MotherTrees->patchEntity($motherTree, $this->request->data);
             if ($this->MotherTrees->save($motherTree)) {
                 $this->Flash->success(__('The mother tree has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The mother tree could not be saved. Please, try again.'));
             }
         }
         $motherTree = $this->Brain->remember($motherTree);
-        $crossings = $this->MotherTrees->Crossings->find('list');
-        $trees = $this->MotherTrees->Trees->find('list');
+        $crossings  = $this->MotherTrees->Crossings->find('list');
+        $trees      = $this->MotherTrees->Trees->find('list');
         $this->set(compact('motherTree', 'crossings', 'trees'));
         $this->set('_serialize', ['motherTree']);
     }
-
+    
     /**
      * Edit method
      *
      * @param string|null $id Mother Tree id.
+     *
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -98,23 +101,24 @@ class MotherTreesController extends AppController
             $motherTree = $this->MotherTrees->patchEntity($motherTree, $this->request->data);
             if ($this->MotherTrees->save($motherTree)) {
                 $this->Flash->success(__('The mother tree has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The mother tree could not be saved. Please, try again.'));
             }
         }
         $motherTree = $this->Brain->remember($motherTree);
-        $crossings = $this->MotherTrees->Crossings->find('list');
-        $trees = $this->MotherTrees->Trees->find('list');
+        $crossings  = $this->MotherTrees->Crossings->find('list');
+        $trees      = $this->MotherTrees->Trees->find('list');
         $this->set(compact('motherTree', 'crossings', 'trees'));
         $this->set('_serialize', ['motherTree']);
     }
-
+    
     /**
      * Delete method
      *
      * @param string|null $id Mother Tree id.
+     *
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -127,29 +131,30 @@ class MotherTreesController extends AppController
         } else {
             $this->Flash->error(__('The mother tree could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
     
     /**
      * Return filtered index table
      */
-    public function filter() {
-        $allowed_fields = ['code','publicid'];
+    public function filter()
+    {
+        $allowed_fields = ['code', 'publicid'];
         
-        if ( $this->request->is('get')
+        if ($this->request->is('get')
             && $this->request->is('ajax')
             && ! empty($this->request->query['fields'])
-            && array_intersect($allowed_fields, $this->request->query['fields']))
-        {
+            && array_intersect($allowed_fields, $this->request->query['fields'])
+        ) {
             $entries = $this->MotherTrees->filterCodes($this->request->query['term']);
             
-            if ( ! empty($this->request->query['sort']) ) {
-                $sort = $this->request->query['sort'];
-                $direction = empty($this->request->query['direction']) ? 'asc' : $this->request->query['direction'];
-                $this->paginate['order'] = [ $sort => $direction ];
+            if ( ! empty($this->request->query['sort'])) {
+                $sort                    = $this->request->query['sort'];
+                $direction               = empty($this->request->query['direction']) ? 'asc' : $this->request->query['direction'];
+                $this->paginate['order'] = [$sort => $direction];
             }
-            if ( ! empty($this->request->query['page']) ) {
+            if ( ! empty($this->request->query['page'])) {
                 $this->paginate['page'] = $this->request->query['page'];
             }
             
@@ -157,7 +162,7 @@ class MotherTreesController extends AppController
             throw new Exception(__('Direct access not allowed.'));
         }
         
-        if ( $entries->count() ) {
+        if ($entries->count()) {
             $motherTrees = $this->paginate($entries);
             $this->set(compact('motherTrees'));
             $this->set('_serialize', ['motherTrees']);

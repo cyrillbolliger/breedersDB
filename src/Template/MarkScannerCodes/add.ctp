@@ -6,25 +6,26 @@
     <fieldset>
         <legend><?= __('Add Scanner Code') ?></legend>
         <?php
-            echo $this->Form->input('mark_form_property_id', [
-               'options' => $markFormProperties,
-               'required' => 'required',
-               'label' => __('Property'),
-               'class' => 'select_property',
-               'empty' => true,
+        echo $this->Form->input('mark_form_property_id', [
+            'options'  => $markFormProperties,
+            'required' => 'required',
+            'label'    => __('Property'),
+            'class'    => 'select_property',
+            'empty'    => true,
+        ]);
+        ?>
+        <div id="mark_value_wrapper"><?php
+            echo $this->Form->unlockField('mark_value');
+            echo $this->Form->input('mark_value', [
+                'label'    => __('Value'),
+                'class'    => 'replace_me',
+                'disabled' => 'disabled',
             ]);
-            ?><div id="mark_value_wrapper"><?php
-                echo $this->Form->unlockField('mark_value');
-                echo $this->Form->input('mark_value', [
-                    'label' => __('Value'),
-                    'class' => 'replace_me',
-                    'disabled' => 'disabled',
-                ]);
             ?></div><?php
-            echo $this->Form->input('code', [
-                'value' => '(auto)',
-                'disabled' => 'disabled'
-            ]);
+        echo $this->Form->input('code', [
+            'value'    => '(auto)',
+            'disabled' => 'disabled'
+        ]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

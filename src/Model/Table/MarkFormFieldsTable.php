@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -24,37 +25,39 @@ use Cake\Validation\Validator;
  */
 class MarkFormFieldsTable extends Table
 {
-
+    
     /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
-
+        
         $this->table('mark_form_fields');
         $this->displayField('id');
         $this->primaryKey('id');
-
+        
         $this->addBehavior('Timestamp');
-
+        
         $this->belongsTo('MarkForms', [
             'foreignKey' => 'mark_form_id',
-            'joinType' => 'INNER'
+            'joinType'   => 'INNER'
         ]);
         $this->belongsTo('MarkFormProperties', [
             'foreignKey' => 'mark_form_property_id',
-            'joinType' => 'INNER'
+            'joinType'   => 'INNER'
         ]);
     }
-
+    
     /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
@@ -63,20 +66,21 @@ class MarkFormFieldsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
+        
         $validator
             ->integer('priority')
             ->requirePresence('priority', 'create')
             ->notEmpty('priority');
-
+        
         return $validator;
     }
-
+    
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     *
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules)
@@ -84,7 +88,7 @@ class MarkFormFieldsTable extends Table
         $rules->add($rules->isUnique(['id']));
         $rules->add($rules->existsIn(['mark_form_id'], 'MarkForms'));
         $rules->add($rules->existsIn(['mark_form_property_id'], 'MarkFormProperties'));
-
+        
         return $rules;
     }
 }

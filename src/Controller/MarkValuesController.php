@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -14,6 +15,7 @@ class MarkValuesController extends AppController
      * Edit method
      *
      * @param string|null $id Mark Value id.
+     *
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -27,8 +29,8 @@ class MarkValuesController extends AppController
             $markValue = $this->MarkValues->patchEntity($markValue, $this->request->data);
             if ($this->MarkValues->save($markValue)) {
                 $this->Flash->success(__('The mark value has been saved.'));
-
-                return $this->redirect(['controller'=>'Marks', 'action' => 'index']);
+                
+                return $this->redirect(['controller' => 'Marks', 'action' => 'index']);
             } else {
                 $this->Flash->error(__('The mark value could not be saved. Please, try again.'));
             }
@@ -36,11 +38,12 @@ class MarkValuesController extends AppController
         $this->set(compact('markValue'));
         $this->set('_serialize', ['markValue']);
     }
-
+    
     /**
      * Delete method
      *
      * @param string|null $id Mark Value id.
+     *
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -53,22 +56,23 @@ class MarkValuesController extends AppController
         } else {
             $this->Flash->error(__('The mark value could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect($this->referer());
     }
     
     /**
      * Put data in the correct format
      */
-    protected function _prepareValues($markValue) {
-        if ( isset($this->request->data['mark_form_fields']['mark_form_properties']) ) {
-
+    protected function _prepareValues($markValue)
+    {
+        if (isset($this->request->data['mark_form_fields']['mark_form_properties'])) {
+            
             $key = array_keys($this->request->data['mark_form_fields']['mark_form_properties'])[0];
-
+            
             $value = $this->request->data['mark_form_fields']['mark_form_properties'][$key]['mark_values']['value'];
             unset($this->request->data['mark_form_fields']);
-
-            $this->request->data['value'] = $value;
+            
+            $this->request->data['value']                 = $value;
             $this->request->data['mark_form_property_id'] = $markValue->mark_form_property_id;
         }
     }

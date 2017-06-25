@@ -6,12 +6,12 @@
     <?= $this->Form->create($mark) ?>
     <fieldset>
         <legend><?= __('Mark Variety') ?></legend>
-        <?php
-            echo $this->Form->input('variety_id', [
-                'options' => $varieties, 
-                'required' => 'required',
-                'class' => 'select2convar select2convar_add',
-            ]);
-            
-            echo $this->element('Mark/basic_mark_form');
+<?php
+echo $this->Form->input('variety_id', [
+    'options'  => $varieties,
+    'required' => 'required',
+    'class'    => 'select2convar select2convar_add',
+]);
+
+echo $this->element('Mark/basic_mark_form');
 ?>

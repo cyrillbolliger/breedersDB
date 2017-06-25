@@ -12,6 +12,7 @@
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 use Cake\Controller\Controller;
@@ -32,7 +33,7 @@ use Cake\I18n\Time;
  */
 class AppController extends Controller
 {
-
+    
     /**
      * Initialization hook method.
      *
@@ -45,10 +46,10 @@ class AppController extends Controller
     public function initialize()
     {
         parent::initialize();
-
+        
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
-
+        
         /*
          * Enable the following components for recommended CakePHP security settings.
          * see http://book.cakephp.org/3.0/en/controllers/components/security.html
@@ -58,10 +59,10 @@ class AppController extends Controller
         
         // needed for Xety/Cake3CookieAuth
         $this->loadComponent('Cookie');
-                
+        
         $this->loadComponent('Auth', [
-            'authorize'=> 'Controller',
-            'authenticate' => [
+            'authorize'            => 'Controller',
+            'authenticate'         => [
                 'Form' => [
                     'fields' => [
                         'username' => 'email',
@@ -70,44 +71,45 @@ class AppController extends Controller
                 ],
                 'Xety/Cake3CookieAuth.Cookie'
             ],
-            'loginAction' => [
+            'loginAction'          => [
                 'controller' => 'Users',
-                'action' => 'login'
+                'action'     => 'login'
             ],
-            'loginRedirect' => [
+            'loginRedirect'        => [
                 'controller' => 'ExperimentSites',
-                'action' => 'select'
+                'action'     => 'select'
             ],
-            'logoutRedirect' => [
+            'logoutRedirect'       => [
                 'controller' => 'Users',
-                'action' => 'login'
+                'action'     => 'login'
             ],
             'unauthorizedRedirect' => $this->referer() // If unauthorized, return them to page they were just on
         ]);
-
+        
         // Allow the display action so our pages controller
         // continues to work.
         $this->Auth->allow(['display']);
         
         // Set format to accept localized date, time and datetime input
-        Type::build('time')->useLocaleParser()->setLocaleFormat(__x('time format','HH:mm'));
-        Type::build('date')->useLocaleParser()->setLocaleFormat(__x('date format','dd.MM.yyyy'));
-        Type::build('datetime')->useLocaleParser()->setLocaleFormat(__x('datetime format','dd.MM.yyyy HH:mm'));
-    
-        FrozenTime::setToStringFormat(__x('datetime format','dd.MM.yyyy HH:mm'));
-        FrozenDate::setToStringFormat(__x('date format','dd.MM.yyyy'));
-        Time::setToStringFormat(__x('datetime format','dd.MM.yyyy HH:mm'));
-        Date::setToStringFormat(__x('date format','dd.MM.yyyy'));
+        Type::build('time')->useLocaleParser()->setLocaleFormat(__x('time format', 'HH:mm'));
+        Type::build('date')->useLocaleParser()->setLocaleFormat(__x('date format', 'dd.MM.yyyy'));
+        Type::build('datetime')->useLocaleParser()->setLocaleFormat(__x('datetime format', 'dd.MM.yyyy HH:mm'));
+        
+        FrozenTime::setToStringFormat(__x('datetime format', 'dd.MM.yyyy HH:mm'));
+        FrozenDate::setToStringFormat(__x('date format', 'dd.MM.yyyy'));
+        Time::setToStringFormat(__x('datetime format', 'dd.MM.yyyy HH:mm'));
+        Date::setToStringFormat(__x('date format', 'dd.MM.yyyy'));
     }
     
     /**
      * Set default access roules
-     * 
+     *
      * @param type $user
+     *
      * @return boolean
      */
     public function isAuthorized($user)
-    {   
+    {
         // grant access to everything for users with level 0
         if (isset($user['level']) && 0 === $user['level']) {
             return true;
@@ -117,27 +119,29 @@ class AppController extends Controller
         // controller by overwriting this method
         return false;
     }
-
+    
     /**
      * Before render callback.
      *
      * @param \Cake\Event\Event $event The beforeRender event.
+     *
      * @return \Cake\Network\Response|null|void
      */
     public function beforeRender(Event $event)
     {
-        if (!array_key_exists('_serialize', $this->viewVars) &&
-            in_array($this->response->type(), ['application/json', 'application/xml'])
+        if ( ! array_key_exists('_serialize', $this->viewVars) &&
+             in_array($this->response->type(), ['application/json', 'application/xml'])
         ) {
             $this->set('_serialize', true);
         }
     }
     
-    public function beforeFilter(Event $event) {
+    public function beforeFilter(Event $event)
+    {
         parent::beforeFilter($event);
         
         // Automaticaly login
-        if ( ! $this->Auth->user() && $this->Cookie->read('CookieAuth') ) {
+        if ( ! $this->Auth->user() && $this->Cookie->read('CookieAuth')) {
             
             $user = $this->Auth->identify();
             if ($user) {
@@ -151,9 +155,9 @@ class AppController extends Controller
          *  redirect to experiment site selection if none is stored in session
          */
         $controller = $this->request->params['controller'];
-        $action = $this->request->params['action'];
-        $arg1 = isset( $this->request->params['pass'][0] ) ? $this->request->params['pass'][0] : null;
-        $session = $this->request->session();
+        $action     = $this->request->params['action'];
+        $arg1       = isset($this->request->params['pass'][0]) ? $this->request->params['pass'][0] : null;
+        $session    = $this->request->session();
         
         // exclude this controllers an actions form redirect
         $excluded = [
@@ -161,19 +165,20 @@ class AppController extends Controller
                 'ExperimentSites',
                 'Users',
             ],
-            'actions' => [
+            'actions'     => [
                 'select',
                 'login',
             ],
         ];
-                
-        if( ! in_array($controller, $excluded['controllers'])  && ! in_array($action, $excluded['actions']) ){
+        
+        if ( ! in_array($controller, $excluded['controllers']) && ! in_array($action, $excluded['actions'])) {
             // if no experiment site is stored in session
-            if ( empty( $session->read('experiment_site_id') ) ) {
+            if (empty($session->read('experiment_site_id'))) {
                 // keep intended desination route
                 $session->write('redirect_after_action', ['controller' => $controller, 'action' => $action, $arg1]);
+                
                 // and redirect user to select an experiment site
-                return $this->redirect([ 'controller' => 'ExperimentSites', 'action' => 'select' ]);
+                return $this->redirect(['controller' => 'ExperimentSites', 'action' => 'select']);
             }
         }
     }

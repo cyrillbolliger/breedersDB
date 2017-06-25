@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -26,32 +27,34 @@ use App\Model\Rule\IsNotReferredBy;
 class RowsTable extends Table
 {
     use SoftDeleteTrait;
-
+    
     /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
-
+        
         $this->table('rows');
         $this->displayField('code');
         $this->primaryKey('id');
-
+        
         $this->addBehavior('Timestamp');
-
+        
         $this->hasMany('Trees', [
             'foreignKey' => 'row_id'
         ]);
     }
-
+    
     /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
@@ -60,27 +63,28 @@ class RowsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
+        
         $validator
             ->requirePresence('code', 'create')
             ->notEmpty('code');
-
+        
         $validator
-            ->localizedTime('date_created','date')
+            ->localizedTime('date_created', 'date')
             ->allowEmpty('date_created');
-
+        
         $validator
-            ->localizedTime('date_eliminated','date')
+            ->localizedTime('date_eliminated', 'date')
             ->allowEmpty('date_eliminated');
-
+        
         return $validator;
     }
-
+    
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     *
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules)
@@ -88,21 +92,23 @@ class RowsTable extends Table
         $rules->add($rules->isUnique(['id']));
         $rules->add($rules->isUnique(['code'], __('This code has already been used. Please use a unique code.')));
         
-        $rules->addDelete(new IsNotReferredBy(['Trees' => 'row_id']),'isNotReferredBy');
-
+        $rules->addDelete(new IsNotReferredBy(['Trees' => 'row_id']), 'isNotReferredBy');
+        
         return $rules;
     }
     
     /**
      * Return query filtered by given search term searching the code
-     * 
+     *
      * @param string $term
+     *
      * @return Cake\ORM\Query
      */
-    public function filter(string $term) {
+    public function filter(string $term)
+    {
         
         $query = $this->find()
-                ->where(['code LIKE'=>'%'.$term.'%']);
+                      ->where(['code LIKE' => '%' . $term . '%']);
         
         return $query;
     }

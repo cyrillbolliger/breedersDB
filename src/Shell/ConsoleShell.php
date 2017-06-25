@@ -12,6 +12,7 @@
  * @since     3.0.0
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Shell;
 
 use Cake\Console\ConsoleOptionParser;
@@ -24,7 +25,7 @@ use Psy\Shell as PsyShell;
  */
 class ConsoleShell extends Shell
 {
-
+    
     /**
      * Start the shell and interactive console.
      *
@@ -32,7 +33,7 @@ class ConsoleShell extends Shell
      */
     public function main()
     {
-        if (!class_exists('Psy\Shell')) {
+        if ( ! class_exists('Psy\Shell')) {
             $this->err('<error>Unable to load Psy\Shell.</error>');
             $this->err('');
             $this->err('Make sure you have installed psysh as a dependency,');
@@ -42,23 +43,23 @@ class ConsoleShell extends Shell
             $this->err('');
             $this->err('<info>$ php composer.phar require --dev psy/psysh</info>');
             $this->err('');
-
+            
             return self::CODE_ERROR;
         }
-
+        
         $this->out("You can exit with <info>`CTRL-C`</info> or <info>`exit`</info>");
         $this->out('');
-
+        
         Log::drop('debug');
         Log::drop('error');
         $this->_io->setLoggers(false);
         restore_error_handler();
         restore_exception_handler();
-
+        
         $psy = new PsyShell();
         $psy->run();
     }
-
+    
     /**
      * Display help for this console.
      *
@@ -75,7 +76,7 @@ class ConsoleShell extends Shell
             "\n\n" .
             'You will need to have psysh installed for this Shell to work.'
         );
-
+        
         return $parser;
     }
 }

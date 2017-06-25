@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -24,33 +25,35 @@ use Cake\Event\Event;
  */
 class MarkScannerCodesTable extends Table
 {
-
+    
     /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
-
+        
         $this->table('mark_scanner_codes');
         $this->displayField('id');
         $this->primaryKey('id');
-
+        
         $this->belongsTo('MarkFormProperties', [
             'foreignKey' => 'mark_form_property_id',
-            'joinType' => 'INNER'
+            'joinType'   => 'INNER'
         ]);
-    
+        
         $this->addBehavior('Printable');
     }
-
+    
     /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
@@ -58,23 +61,24 @@ class MarkScannerCodesTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-
+        
         $validator
             ->requirePresence('code', 'create')
             ->notEmpty('code');
-
+        
         $validator
             ->requirePresence('mark_value', 'create')
             ->notEmpty('mark_value');
-
+        
         return $validator;
     }
-
+    
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     *
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules)
@@ -86,7 +90,7 @@ class MarkScannerCodesTable extends Table
             ['mark_form_property_id', 'mark_value'],
             __('A code with this property and this value does already exist.')
         ));
-
+        
         return $rules;
     }
     
@@ -96,13 +100,13 @@ class MarkScannerCodesTable extends Table
     public function getNextFreeCode()
     {
         $query = $this->find()
-                ->order(['code'=>'DESC'])
-                ->first();
+                      ->order(['code' => 'DESC'])
+                      ->first();
         
-        if ( empty($query->code) ){
+        if (empty($query->code)) {
             $code = 1;
         } else {
-            $code = ((int) preg_replace('/\D/', '', $query->code)) + 1;
+            $code = ((int)preg_replace('/\D/', '', $query->code)) + 1;
         }
         
         return sprintf('M%05d', $code);
@@ -110,16 +114,19 @@ class MarkScannerCodesTable extends Table
     
     /**
      * Return query filtered by given search term searching the mark form property type
-     * 
+     *
      * @param string $term
+     *
      * @return \Cake\ORM\Query
      */
-    public function filter(string $term) {
+    public function filter(string $term)
+    {
         $query = $this->find()
-                ->contain(['MarkFormProperties']);
+                      ->contain(['MarkFormProperties']);
         if ($term) {
-            $query->where(['mark_form_property_id' => (int) $term]);
+            $query->where(['mark_form_property_id' => (int)$term]);
         }
+        
         return $query;
     }
     
@@ -127,21 +134,26 @@ class MarkScannerCodesTable extends Table
      * Return label to print in Zebra Printing Language
      *
      * @param int $id
+     *
      * @return string
      */
-    public function getLabelZpl(int $id) {
-        $entity = $this->get($id, ['contain'=>['MarkFormProperties']]);
-        $description = $entity->mark_form_property->name.": ".$entity->mark_value;
-        $code = $entity->code;
+    public function getLabelZpl(int $id)
+    {
+        $entity      = $this->get($id, ['contain' => ['MarkFormProperties']]);
+        $description = $entity->mark_form_property->name . ": " . $entity->mark_value;
+        $code        = $entity->code;
+        
         return $this->getZPL($description, $code);
     }
     
     /**
      * Return label to print in Zebra Printing Language
      */
-    public function getSubmitLabelZpl() {
-        $code = "SUBMIT";
+    public function getSubmitLabelZpl()
+    {
+        $code        = "SUBMIT";
         $description = "SUBMIT";
+        
         return $this->getZPL($description, $code);
     }
     

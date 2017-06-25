@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -10,7 +11,7 @@ use App\Controller\AppController;
  */
 class ExperimentSitesController extends AppController
 {
-
+    
     /**
      * Index method
      *
@@ -19,15 +20,16 @@ class ExperimentSitesController extends AppController
     public function index()
     {
         $experimentSites = $this->paginate($this->ExperimentSites);
-
+        
         $this->set(compact('experimentSites'));
         $this->set('_serialize', ['experimentSites']);
     }
-
+    
     /**
      * View method
      *
      * @param string|null $id Experiment Site id.
+     *
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -36,11 +38,11 @@ class ExperimentSitesController extends AppController
         $experimentSite = $this->ExperimentSites->get($id, [
             'contain' => ['Trees']
         ]);
-
+        
         $this->set('experimentSite', $experimentSite);
         $this->set('_serialize', ['experimentSite']);
     }
-
+    
     /**
      * Add method
      *
@@ -53,7 +55,7 @@ class ExperimentSitesController extends AppController
             $experimentSite = $this->ExperimentSites->patchEntity($experimentSite, $this->request->data);
             if ($this->ExperimentSites->save($experimentSite)) {
                 $this->Flash->success(__('The experiment site has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The experiment site could not be saved. Please, try again.'));
@@ -62,11 +64,12 @@ class ExperimentSitesController extends AppController
         $this->set(compact('experimentSite'));
         $this->set('_serialize', ['experimentSite']);
     }
-
+    
     /**
      * Edit method
      *
      * @param string|null $id Experiment Site id.
+     *
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -79,7 +82,7 @@ class ExperimentSitesController extends AppController
             $experimentSite = $this->ExperimentSites->patchEntity($experimentSite, $this->request->data);
             if ($this->ExperimentSites->save($experimentSite)) {
                 $this->Flash->success(__('The experiment site has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The experiment site could not be saved. Please, try again.'));
@@ -88,11 +91,12 @@ class ExperimentSitesController extends AppController
         $this->set(compact('experimentSite'));
         $this->set('_serialize', ['experimentSite']);
     }
-
+    
     /**
      * Delete method
      *
      * @param string|null $id Experiment Site id.
+     *
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -105,33 +109,35 @@ class ExperimentSitesController extends AppController
         } else {
             $this->Flash->error(__('The experiment site could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
     
     /**
      * Select method
      */
-    public function select() {
+    public function select()
+    {
         // if site was selected        
         if ($this->request->is('post') && ! empty($this->request->data['experiment_site_id'])) {
             
             // get site data
-            $id = (int) $this->request->data['experiment_site_id'];
-            $experimentSite = $this->ExperimentSites->get( $id );
+            $id             = (int)$this->request->data['experiment_site_id'];
+            $experimentSite = $this->ExperimentSites->get($id);
             
             // add the site to the session
             $session = $this->request->session();
-            $session->write('experiment_site_id', (int) $id);
-            $session->write('experiment_site_name', $experimentSite->name );
+            $session->write('experiment_site_id', (int)$id);
+            $session->write('experiment_site_name', $experimentSite->name);
             
             // and redirect the user
-            if ( $session->read('redirect_after_action') ) {
+            if ($session->read('redirect_after_action')) {
                 $redirect = $this->redirect($session->read('redirect_after_action'));
                 $session->delete('redirect_after_action');
             } else {
                 $redirect = $this->redirect(['controller' => 'Trees', 'action' => 'index']);
             }
+            
             return $redirect;
         }
         

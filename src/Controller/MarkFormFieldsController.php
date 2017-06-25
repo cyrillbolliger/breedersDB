@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -10,7 +11,7 @@ use App\Controller\AppController;
  */
 class MarkFormFieldsController extends AppController
 {
-
+    
     /**
      * Index method
      *
@@ -22,15 +23,16 @@ class MarkFormFieldsController extends AppController
             'contain' => ['MarkForms', 'MarkFormProperties']
         ];
         $markFormFields = $this->paginate($this->MarkFormFields);
-
+        
         $this->set(compact('markFormFields'));
         $this->set('_serialize', ['markFormFields']);
     }
-
+    
     /**
      * View method
      *
      * @param string|null $id Mark Form Field id.
+     *
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -39,11 +41,11 @@ class MarkFormFieldsController extends AppController
         $markFormField = $this->MarkFormFields->get($id, [
             'contain' => ['MarkForms', 'MarkFormProperties']
         ]);
-
+        
         $this->set('markFormField', $markFormField);
         $this->set('_serialize', ['markFormField']);
     }
-
+    
     /**
      * Add method
      *
@@ -56,22 +58,23 @@ class MarkFormFieldsController extends AppController
             $markFormField = $this->MarkFormFields->patchEntity($markFormField, $this->request->data);
             if ($this->MarkFormFields->save($markFormField)) {
                 $this->Flash->success(__('The mark form field has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The mark form field could not be saved. Please, try again.'));
             }
         }
-        $markForms = $this->MarkFormFields->MarkForms->find('list');
+        $markForms          = $this->MarkFormFields->MarkForms->find('list');
         $markFormProperties = $this->MarkFormFields->MarkFormProperties->find('list');
         $this->set(compact('markFormField', 'markForms', 'markFormProperties'));
         $this->set('_serialize', ['markFormField']);
     }
-
+    
     /**
      * Edit method
      *
      * @param string|null $id Mark Form Field id.
+     *
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -84,22 +87,23 @@ class MarkFormFieldsController extends AppController
             $markFormField = $this->MarkFormFields->patchEntity($markFormField, $this->request->data);
             if ($this->MarkFormFields->save($markFormField)) {
                 $this->Flash->success(__('The mark form field has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The mark form field could not be saved. Please, try again.'));
             }
         }
-        $markForms = $this->MarkFormFields->MarkForms->find('list');
+        $markForms          = $this->MarkFormFields->MarkForms->find('list');
         $markFormProperties = $this->MarkFormFields->MarkFormProperties->find('list');
         $this->set(compact('markFormField', 'markForms', 'markFormProperties'));
         $this->set('_serialize', ['markFormField']);
     }
-
+    
     /**
      * Delete method
      *
      * @param string|null $id Mark Form Field id.
+     *
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -112,7 +116,7 @@ class MarkFormFieldsController extends AppController
         } else {
             $this->Flash->error(__('The mark form field could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
 }

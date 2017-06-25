@@ -3,16 +3,19 @@
 </nav>
 
 <?php $filter = json_encode([
-             'controller' => 'trees',
-             'action' => 'filter',
-             'fields' => [
-                 'publicid', 'convar'
-             ]]); ?>
+    'controller' => 'trees',
+    'action'     => 'filter',
+    'fields'     => [
+        'publicid',
+        'convar'
+    ]
+]); ?>
 
 <div class="trees index large-9 medium-8 columns content">
     <h3><?= __('Trees') ?></h3>
     <div>
-         <input type="text" class="filter" data-filter='<?= $filter ?>' placeholder="<?= __('Filter by publicid or convar...') ?>">
+        <input type="text" class="filter" data-filter='<?= $filter ?>'
+               placeholder="<?= __('Filter by publicid or convar...') ?>">
     </div>
     <div id="index_table">
         <?= $this->element('Tree/index_table'); ?>

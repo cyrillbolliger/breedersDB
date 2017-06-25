@@ -12,6 +12,7 @@
  * @since     3.3.0
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App;
 
 use Cake\Core\Configure;
@@ -32,6 +33,7 @@ class Application extends BaseApplication
      * Setup the middleware your application will use.
      *
      * @param \Cake\Http\MiddlewareQueue $middleware The middleware queue to setup.
+     *
      * @return \Cake\Http\MiddlewareQueue The updated middleware.
      */
     public function middleware($middleware)
@@ -40,13 +42,11 @@ class Application extends BaseApplication
             // Catch any exceptions in the lower layers,
             // and make an error page/response
             ->add(new ErrorHandlerMiddleware(Configure::read('Error.exceptionRenderer')))
-
             // Handle plugin/theme assets like CakePHP normally does.
             ->add(new AssetMiddleware())
-
             // Apply routing
             ->add(new RoutingMiddleware());
-
+        
         return $middleware;
     }
 }

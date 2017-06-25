@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -28,7 +29,7 @@ use Cake\ORM\Entity;
  */
 class Batch extends Entity
 {
-
+    
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -39,16 +40,17 @@ class Batch extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
+        '*'  => true,
         'id' => false
     ];
-
+    
     /**
      * Get virtual property
-     * 
+     *
      * @return string
      */
-    protected function _getCrossingBatch() {
-        return $this->crossing->code .'.'. $this->code;
+    protected function _getCrossingBatch()
+    {
+        return $this->crossing->code . '.' . $this->code;
     }
 }

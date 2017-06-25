@@ -2,7 +2,7 @@
     <?= $this->element('ScionsBundle/nav'); ?>
 </nav>
 <div class="scionsBundles view large-9 medium-8 columns content">
-    <h3><?= __('Scions Bundle:') .' '. h($scionsBundle->code) ?></h3>
+    <h3><?= __('Scions Bundle:') . ' ' . h($scionsBundle->code) ?></h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Id') ?></th>
@@ -14,7 +14,8 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Variety') ?></th>
-            <td><?= $scionsBundle->has('variety') ? $this->Html->link($scionsBundle->convar, ['controller' => 'Varieties', 'action' => 'view', $scionsBundle->variety->id]) : '' ?></td>
+            <td><?= $scionsBundle->has('variety') ? $this->Html->link($scionsBundle->convar,
+                    ['controller' => 'Varieties', 'action' => 'view', $scionsBundle->variety->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Numb Scions') ?></th>

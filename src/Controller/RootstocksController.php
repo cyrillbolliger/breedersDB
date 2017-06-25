@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -10,7 +11,7 @@ use App\Controller\AppController;
  */
 class RootstocksController extends AppController
 {
-
+    
     /**
      * Index method
      *
@@ -19,15 +20,16 @@ class RootstocksController extends AppController
     public function index()
     {
         $rootstocks = $this->paginate($this->Rootstocks);
-
+        
         $this->set(compact('rootstocks'));
         $this->set('_serialize', ['rootstocks']);
     }
-
+    
     /**
      * View method
      *
      * @param string|null $id Rootstock id.
+     *
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -36,11 +38,11 @@ class RootstocksController extends AppController
         $rootstock = $this->Rootstocks->get($id, [
             'contain' => ['Trees']
         ]);
-
+        
         $this->set('rootstock', $rootstock);
         $this->set('_serialize', ['rootstock']);
     }
-
+    
     /**
      * Add method
      *
@@ -53,7 +55,7 @@ class RootstocksController extends AppController
             $rootstock = $this->Rootstocks->patchEntity($rootstock, $this->request->data);
             if ($this->Rootstocks->save($rootstock)) {
                 $this->Flash->success(__('The rootstock has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The rootstock could not be saved. Please, try again.'));
@@ -62,11 +64,12 @@ class RootstocksController extends AppController
         $this->set(compact('rootstock'));
         $this->set('_serialize', ['rootstock']);
     }
-
+    
     /**
      * Edit method
      *
      * @param string|null $id Rootstock id.
+     *
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -79,7 +82,7 @@ class RootstocksController extends AppController
             $rootstock = $this->Rootstocks->patchEntity($rootstock, $this->request->data);
             if ($this->Rootstocks->save($rootstock)) {
                 $this->Flash->success(__('The rootstock has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The rootstock could not be saved. Please, try again.'));
@@ -88,11 +91,12 @@ class RootstocksController extends AppController
         $this->set(compact('rootstock'));
         $this->set('_serialize', ['rootstock']);
     }
-
+    
     /**
      * Delete method
      *
      * @param string|null $id Rootstock id.
+     *
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -105,7 +109,7 @@ class RootstocksController extends AppController
         } else {
             $this->Flash->error(__('The rootstock could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
 }

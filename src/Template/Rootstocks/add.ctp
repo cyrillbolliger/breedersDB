@@ -6,7 +6,7 @@
     <fieldset>
         <legend><?= __('Add Rootstock') ?></legend>
         <?php
-            echo $this->Form->input('name');
+        echo $this->Form->input('name');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
