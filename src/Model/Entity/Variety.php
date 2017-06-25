@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -26,7 +27,7 @@ use Cake\ORM\TableRegistry;
  */
 class Variety extends Entity
 {
-
+    
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -37,15 +38,22 @@ class Variety extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
+        '*'  => true,
         'id' => false
     ];
     
-    protected $_virtual = ['convar'];
-
-    protected function _getConvar() {
-        $Crossings = TableRegistry::get('Crossings');
+    protected $_virtual = ['convar', 'breeder_variety_code'];
+    
+    protected function _getConvar()
+    {
+        $Crossings     = TableRegistry::get('Crossings');
         $crossing_code = $Crossings->get($this->batch->crossing_id)->code;
-        return $crossing_code .'.'. $this->batch->code .'.'. $this->code;
+        
+        return $crossing_code . '.' . $this->batch->code . '.' . $this->code;
+    }
+    
+    protected function _getBreederVarietyCode()
+    {
+        return COMPANY_ABBREV . sprintf('%0' . BREEDER_VARIETY_CODE_NUM_LENGTH . 'd', $this->id);
     }
 }

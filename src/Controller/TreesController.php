@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -31,7 +32,7 @@ class TreesController extends AppController
     public function index()
     {
         $this->paginate['contain'] = [
-            'Varieties', 
+            'Varieties',
             'Rows',
             'Varieties.Batches',
             'Varieties.Batches.Crossings',
@@ -56,10 +57,10 @@ class TreesController extends AppController
                 ->func()
                 ->concat([
                     'Crossings.code' => 'literal',
-                    'Batches.code' => 'literal',
+                    'Batches.code'   => 'literal',
                     'Varieties.code' => 'literal',
                 ]),
-            'row' => 'Rows.code',
+            'row'    => 'Rows.code',
             'offset',
             'note',
             'date_eliminated',
@@ -69,21 +70,22 @@ class TreesController extends AppController
         ];
         
         $trees = $this->paginate($this->Trees);
-
+        
         $this->set(compact('trees'));
         $this->set('_serialize', ['trees']);
     }
-
+    
     /**
      * View method
      *
      * @param string|null $id Tree id.
+     *
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
-        $tree = $this->Trees->get($id, [
+        $tree  = $this->Trees->get($id, [
             'contain' => ['Varieties', 'Rootstocks', 'Graftings', 'Rows', 'ExperimentSites', 'Marks']
         ]);
         $marks = $this->MarksReader->get($id, $tree->variety_id);
@@ -91,7 +93,7 @@ class TreesController extends AppController
         $this->set('marks', $marks);
         $this->set('_serialize', ['tree']);
     }
-
+    
     /**
      * Add method
      *
@@ -99,16 +101,17 @@ class TreesController extends AppController
      */
     public function add()
     {
-        $tree = $this->Trees->newEntity();
+        $tree      = $this->Trees->newEntity();
         $varieties = array();
         
         if ($this->request->is('post')) {
-            $session = $this->request->session();
-            $experiment_site_id = (int) $session->read('experiment_site_id');
-            $tree = $this->Trees->patchEntity($tree, $this->request->data, [ 'experiment_site_id' => $experiment_site_id ]);
+            $session            = $this->request->session();
+            $experiment_site_id = (int)$session->read('experiment_site_id');
+            $tree               = $this->Trees->patchEntity($tree, $this->request->data,
+                ['experiment_site_id' => $experiment_site_id]);
             if ($this->Trees->save($tree)) {
                 $this->Flash->success(__('The tree has been saved.'));
-
+                
                 return $this->redirect(['action' => 'print', $tree->id, 'add']);
             } else {
                 $this->Flash->error(__('The tree could not be saved. Please, try again.'));
@@ -119,10 +122,10 @@ class TreesController extends AppController
             }
         }
         
-        $tree = $this->Brain->remember($tree);
-        $rootstocks = $this->Trees->Rootstocks->find('list');
-        $graftings = $this->Trees->Graftings->find('list');
-        $rows = $this->Trees->Rows->find('list');
+        $tree            = $this->Brain->remember($tree);
+        $rootstocks      = $this->Trees->Rootstocks->find('list');
+        $graftings       = $this->Trees->Graftings->find('list');
+        $rows            = $this->Trees->Rows->find('list');
         $experimentSites = $this->Trees->ExperimentSites->find('list');
         $this->set(compact('tree', 'varieties', 'rootstocks', 'graftings', 'rows', 'experimentSites'));
         $this->set('_serialize', ['tree']);
@@ -135,30 +138,31 @@ class TreesController extends AppController
      */
     public function addGenuineSeedling()
     {
-        $tree = $this->Trees->newEntity();
+        $tree      = $this->Trees->newEntity();
         $varieties = array();
         
         if ($this->request->is('post')) {
-            $session = $this->request->session();
-            $experiment_site_id = (int) $session->read('experiment_site_id');
-            $tree = $this->Trees->patchEntity($tree, $this->request->data, [ 'experiment_site_id' => $experiment_site_id ]);
+            $session            = $this->request->session();
+            $experiment_site_id = (int)$session->read('experiment_site_id');
+            $tree               = $this->Trees->patchEntity($tree, $this->request->data,
+                ['experiment_site_id' => $experiment_site_id]);
             if ($this->Trees->save($tree)) {
                 $this->Flash->success(__('The tree has been saved.'));
-
+                
                 return $this->redirect(['action' => 'print', $tree->id, 'addGenuineSeedling']);
             } else {
                 $this->Flash->error(__('The tree could not be saved. Please, try again.'));
-                                
+                
                 if ($tree->variety_id) {
                     $varieties = $this->Trees->Varieties->getConvarList($tree->variety_id);
                 }
             }
         }
         
-        $tree = $this->Brain->remember($tree);
-        $rootstocks = $this->Trees->Rootstocks->find('list');
-        $graftings = $this->Trees->Graftings->find('list');
-        $rows = $this->Trees->Rows->find('list');
+        $tree            = $this->Brain->remember($tree);
+        $rootstocks      = $this->Trees->Rootstocks->find('list');
+        $graftings       = $this->Trees->Graftings->find('list');
+        $rows            = $this->Trees->Rows->find('list');
         $experimentSites = $this->Trees->ExperimentSites->find('list');
         $this->set(compact('tree', 'varieties', 'rootstocks', 'graftings', 'rows', 'experimentSites'));
         $this->set('_serialize', ['tree']);
@@ -171,16 +175,17 @@ class TreesController extends AppController
      */
     public function addGraftTree()
     {
-        $tree = $this->Trees->newEntity();
+        $tree      = $this->Trees->newEntity();
         $varieties = array();
         
         if ($this->request->is('post')) {
-            $session = $this->request->session();
-            $experiment_site_id = (int) $session->read('experiment_site_id');
-            $tree = $this->Trees->patchEntity($tree, $this->request->data, [ 'experiment_site_id' => $experiment_site_id ]);
+            $session            = $this->request->session();
+            $experiment_site_id = (int)$session->read('experiment_site_id');
+            $tree               = $this->Trees->patchEntity($tree, $this->request->data,
+                ['experiment_site_id' => $experiment_site_id]);
             if ($this->Trees->save($tree)) {
                 $this->Flash->success(__('The tree has been saved.'));
-
+                
                 return $this->redirect(['action' => 'print', $tree->id, 'addGraftTree']);
             } else {
                 $this->Flash->error(__('The tree could not be saved. Please, try again.'));
@@ -191,19 +196,20 @@ class TreesController extends AppController
             }
         }
         
-        $tree = $this->Brain->remember($tree);
-        $rootstocks = $this->Trees->Rootstocks->find('list');
-        $graftings = $this->Trees->Graftings->find('list');
-        $rows = $this->Trees->Rows->find('list');
+        $tree            = $this->Brain->remember($tree);
+        $rootstocks      = $this->Trees->Rootstocks->find('list');
+        $graftings       = $this->Trees->Graftings->find('list');
+        $rows            = $this->Trees->Rows->find('list');
         $experimentSites = $this->Trees->ExperimentSites->find('list');
         $this->set(compact('tree', 'varieties', 'rootstocks', 'graftings', 'rows', 'experimentSites'));
         $this->set('_serialize', ['tree']);
     }
-
+    
     /**
      * Edit method
      *
      * @param string|null $id Tree id.
+     *
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -216,11 +222,11 @@ class TreesController extends AppController
         $varieties = array();
         
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $this->request->data = $this->Trees->prefixPublicidOnElimination($id, $this->request->data );
-            $tree = $this->Trees->patchEntity($tree, $this->request->data);
+            $this->request->data = $this->Trees->prefixPublicidOnElimination($id, $this->request->data);
+            $tree                = $this->Trees->patchEntity($tree, $this->request->data);
             if ($this->Trees->save($tree)) {
                 $this->Flash->success(__('The tree has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The tree could not be saved. Please, try again.'));
@@ -231,9 +237,9 @@ class TreesController extends AppController
             $varieties = $this->Trees->Varieties->getConvarList($tree->variety_id);
         }
         
-        $rootstocks = $this->Trees->Rootstocks->find('list');
-        $graftings = $this->Trees->Graftings->find('list');
-        $rows = $this->Trees->Rows->find('list');
+        $rootstocks      = $this->Trees->Rootstocks->find('list');
+        $graftings       = $this->Trees->Graftings->find('list');
+        $rows            = $this->Trees->Rows->find('list');
         $experimentSites = $this->Trees->ExperimentSites->find('list');
         $this->set(compact('tree', 'varieties', 'rootstocks', 'graftings', 'rows', 'experimentSites'));
         $this->set('_serialize', ['tree']);
@@ -241,27 +247,29 @@ class TreesController extends AppController
     
     /**
      * Update method
-     * 
+     *
      * @param string|null $id Tree id.
+     *
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function update($id = null)
     {
         $tree = $this->Trees->get($id);
-                
+        
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $session = $this->request->session();
-            $experiment_site_id = (int) $session->read('experiment_site_id');
-            $this->request->data = $this->Trees->prefixPublicidOnElimination($id, $this->request->data );
-            $tree = $this->Trees->patchEntity($tree, $this->request->data, [ 'experiment_site_id' => $experiment_site_id ]);
+            $session             = $this->request->session();
+            $experiment_site_id  = (int)$session->read('experiment_site_id');
+            $this->request->data = $this->Trees->prefixPublicidOnElimination($id, $this->request->data);
+            $tree                = $this->Trees->patchEntity($tree, $this->request->data,
+                ['experiment_site_id' => $experiment_site_id]);
             if ($this->Trees->save($tree)) {
                 $this->Flash->success(__('The tree has been saved.'));
             } else {
                 $this->Flash->error(__('The tree could not be saved. Please, try again.'));
             }
         }
-
+        
         return $this->redirect($this->referer());
     }
     
@@ -284,34 +292,35 @@ class TreesController extends AppController
     /**
      * Return tree
      */
-    public function getTree() {
+    public function getTree()
+    {
         $allowed_fields = ['publicid'];
-                
-        if ( $this->request->is('get') 
-                && $this->request->is('ajax') 
-                && ! empty($this->request->query['fields'])
-                && array_intersect($allowed_fields, $this->request->query['fields']))
-        {             
+        
+        if ($this->request->is('get')
+            && $this->request->is('ajax')
+            && ! empty($this->request->query['fields'])
+            && array_intersect($allowed_fields, $this->request->query['fields'])
+        ) {
             $entries = $this->Trees->getByPublicId($this->request->query['term']);
         } else {
             throw new Exception(__('Direct access not allowed.'));
         }
         
-        if ( $entries ) {
+        if ($entries) {
             $tree = $entries;
             if ($tree->variety_id) {
                 $varieties = $this->Trees->Varieties->getConvarList($tree->variety_id);
             }
-            $rootstocks = $this->Trees->Rootstocks->find('list');
-            $graftings = $this->Trees->Graftings->find('list');
-            $rows = $this->Trees->Rows->find('list');
+            $rootstocks      = $this->Trees->Rootstocks->find('list');
+            $graftings       = $this->Trees->Graftings->find('list');
+            $rows            = $this->Trees->Rows->find('list');
             $experimentSites = $this->Trees->ExperimentSites->find('list');
             
             $tree = $this->Brain->remember($tree);
             $this->set(compact('tree', 'varieties', 'rootstocks', 'graftings', 'rows', 'experimentSites'));
             $this->set('_serialize', ['tree']);
             
-            $this->render('/Element/Tree/'.(string)$this->request->query['element']);
+            $this->render('/Element/Tree/' . (string)$this->request->query['element']);
         } else {
             $this->response->statusCode(204);
             $this->render('/Element/nothing_found');
@@ -322,6 +331,7 @@ class TreesController extends AppController
      * Delete method
      *
      * @param string|null $id Tree id.
+     *
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -334,23 +344,24 @@ class TreesController extends AppController
         } else {
             $this->Flash->error(__('The tree could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
     
     /**
      * Return filtered index table
      */
-    public function filter() {
-        $allowed_fields = ['publicid','convar'];
-    
+    public function filter()
+    {
+        $allowed_fields = ['publicid', 'convar'];
+        
         $this->paginate['contain'] = [
             'Varieties',
             'Rows',
             'Varieties.Batches',
             'Varieties.Batches.Crossings',
         ];
-    
+        
         $this->paginate['sortWhitelist'] = [
             'convar',
             'publicid',
@@ -361,7 +372,7 @@ class TreesController extends AppController
             'modified',
             'id'
         ];
-    
+        
         $this->paginate['fields'] = [
             'id',
             'publicid',
@@ -370,10 +381,10 @@ class TreesController extends AppController
                 ->func()
                 ->concat([
                     'Crossings.code' => 'literal',
-                    'Batches.code' => 'literal',
+                    'Batches.code'   => 'literal',
                     'Varieties.code' => 'literal',
                 ]),
-            'row' => 'Rows.code',
+            'row'    => 'Rows.code',
             'offset',
             'note',
             'date_eliminated',
@@ -381,20 +392,20 @@ class TreesController extends AppController
             'variety_id',
             'row_id',
         ];
-                
-        if ( $this->request->is('get') 
-                && $this->request->is('ajax') 
-                && ! empty($this->request->query['fields'])
-                && array_intersect($allowed_fields, $this->request->query['fields']))
-        {   
+        
+        if ($this->request->is('get')
+            && $this->request->is('ajax')
+            && ! empty($this->request->query['fields'])
+            && array_intersect($allowed_fields, $this->request->query['fields'])
+        ) {
             $entries = $this->Trees->filter($this->request->query['term']);
             
-            if ( ! empty($this->request->query['sort']) ) {
-                $sort = $this->request->query['sort'];
-                $direction = empty($this->request->query['direction']) ? 'asc' : $this->request->query['direction'];
-                $this->paginate['order'] = [ $sort => $direction ];
+            if ( ! empty($this->request->query['sort'])) {
+                $sort                    = $this->request->query['sort'];
+                $direction               = empty($this->request->query['direction']) ? 'asc' : $this->request->query['direction'];
+                $this->paginate['order'] = [$sort => $direction];
             }
-            if ( ! empty($this->request->query['page']) ) {
+            if ( ! empty($this->request->query['page'])) {
                 $this->paginate['page'] = $this->request->query['page'];
             }
             
@@ -402,7 +413,7 @@ class TreesController extends AppController
             throw new Exception(__('Direct access not allowed.'));
         }
         
-        if ( $entries ) {
+        if ($entries) {
             $trees = $this->paginate($entries);
             $this->set(compact('trees'));
             $this->set('_serialize', ['trees']);
@@ -416,21 +427,22 @@ class TreesController extends AppController
      * Return list with code (convar) as value and id as key.
      * Must be called as ajax get request.
      */
-    public function searchTrees() {
-
-        if ( $this->request->is('get') 
-                && $this->request->is('ajax') 
-                && ! empty($this->request->query['term']))
-        {   
-            $entries = $this->Trees->filter($this->request->query['term']);            
+    public function searchTrees()
+    {
+        
+        if ($this->request->is('get')
+            && $this->request->is('ajax')
+            && ! empty($this->request->query['term'])
+        ) {
+            $entries = $this->Trees->filter($this->request->query['term']);
         } else {
             throw new Exception(__('Direct access not allowed.'));
         }
         
         $return = array();
-        if ( $entries ) {
+        if ($entries) {
             foreach ($entries as $entry) {
-                $tree = $this->Trees->getIdPublicidAndConvarList($entry->id);
+                $tree               = $this->Trees->getIdPublicidAndConvarList($entry->id);
                 $return[$entry->id] = $tree[$entry->id];
             }
         }
@@ -446,15 +458,17 @@ class TreesController extends AppController
      * @param string $caller action to redirect after printing
      * @param mixed $params for action
      */
-    public function print(int $tree_id, string $caller, $params = null) {
-        $zpl = $this->Trees->getLabelZpl($tree_id);
+    public function print(int $tree_id, string $caller, $params = null)
+    {
+        $convar_zpl               = $this->Trees->getLabelZpl($tree_id,'convar');
+        $breeder_variety_code_zpl = $this->Trees->getLabelZpl($tree_id,'breeder_variety_code');
         
         $this->set([
-            'zpl' => $zpl,
+            'zpl'        => [__('Regular') => $convar_zpl, __('Anonymous') => $breeder_variety_code_zpl],
             'controller' => 'Trees',
-            'action' => $caller,
-            'params' => $params,
-            'nav' => 'Tree/nav'
+            'action'     => $caller,
+            'params'     => $params,
+            'nav'        => 'Tree/nav'
         ]);
         $this->render('/Element/print');
     }

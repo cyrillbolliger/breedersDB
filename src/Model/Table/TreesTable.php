@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -31,29 +32,30 @@ use App\Model\Rule\IsNotReferredBy;
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class TreesTable extends Table
-{   
+{
     use SoftDeleteTrait;
-
+    
     /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
-
+        
         $this->table('trees');
         $this->displayField('publicid');
         $this->primaryKey('id');
-
+        
         $this->addBehavior('Timestamp');
         $this->addBehavior('Printable');
-
+        
         $this->belongsTo('Varieties', [
             'foreignKey' => 'variety_id',
-            'joinType' => 'INNER'
+            'joinType'   => 'INNER'
         ]);
         $this->belongsTo('Rootstocks', [
             'foreignKey' => 'rootstock_id'
@@ -71,11 +73,12 @@ class TreesTable extends Table
             'foreignKey' => 'tree_id'
         ]);
     }
-
+    
     /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
@@ -84,62 +87,63 @@ class TreesTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
+        
         $validator
             ->requirePresence('publicid', 'create')
             ->notEmpty('publicid')
             ->add('publicid', 'unique', [
-                'rule' => 'validateUnique', 
+                'rule'     => 'validateUnique',
                 'provider' => 'table',
-                'message' => __('This number has already been used.'),
+                'message'  => __('This number has already been used.'),
             ])
             ->add('publicid', 'custom', [
-                'rule' => function($value, $context) {
-                    return (bool) preg_match('/^#?\d{8}$/', $value);
+                'rule'    => function ($value, $context) {
+                    return (bool)preg_match('/^#?\d{8}$/', $value);
                 },
                 'message' => __('Input not valid. The publicid must only contain numbers.'),
             ]);
-
+        
         $validator
             ->localizedTime('date_grafted', 'date')
             ->allowEmpty('date_grafted');
-
+        
         $validator
             ->localizedTime('date_planted', 'date')
             ->allowEmpty('date_planted');
-
+        
         $validator
             ->localizedTime('date_eliminated', 'date')
             ->allowEmpty('date_eliminated');
-
+        
         $validator
             ->boolean('genuine_seedling')
             ->notEmpty('genuine_seedling');
-
+        
         $validator
             ->boolean('migrated_tree')
             ->notEmpty('migrated_tree');
-
+        
         $validator
             ->numeric('offset')
             ->allowEmpty('offset');
-
+        
         $validator
             ->allowEmpty('note');
         
         $validator
-            ->integer('experiment_site_id')    
+            ->integer('experiment_site_id')
             ->requirePresence('experiment_site_id', 'create')
             ->notEmpty('experiment_site_id');
         
         return $validator;
     }
-
+    
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     *
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules)
@@ -152,76 +156,100 @@ class TreesTable extends Table
         $rules->add($rules->existsIn(['row_id'], 'Rows'));
         $rules->add($rules->existsIn(['experiment_site_id'], 'ExperimentSites'));
         
-        $rules->addDelete(new IsNotReferredBy(['MotherTrees' => 'tree_id']),'isNotReferredBy');
-        $rules->addDelete(new IsNotReferredBy(['Marks' => 'tree_id']),'isNotReferredBy');
+        $rules->addDelete(new IsNotReferredBy(['MotherTrees' => 'tree_id']), 'isNotReferredBy');
+        $rules->addDelete(new IsNotReferredBy(['Marks' => 'tree_id']), 'isNotReferredBy');
         
         return $rules;
     }
     
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
-
+        
         // fill public id with leading zeros
-        if ( isset( $data['publicid']) ) {
+        if (isset($data['publicid'])) {
             $data['publicid'] = $this->fillPublicId($data['publicid']);
         }
         
         // set experiment site
-        if ( ! isset( $data['experiment_site_id'] )) {
+        if ( ! isset($data['experiment_site_id'])) {
             $data['experiment_site_id'] = $options['experiment_site_id'];
         }
         
         // create new variety if crossing_batch was given instead of variety_id
-        if ( isset( $data['variety_id'] ) ) {
-            if ( preg_match('/^[a-zA-Z0-9]{4,8}\.\d{2}[A-Z]$/', $data['variety_id']) ) {
+        if (isset($data['variety_id'])) {
+            if (preg_match('/^[a-zA-Z0-9]{4,8}\.\d{2}[A-Z]$/', $data['variety_id'])) {
                 $data['variety_id'] = $this->Varieties->addNewFromCrossingBatch($data['variety_id']);
             }
         }
     }
     
     /**
+     * fills up missing zeros in given publicid
+     *
+     * @param string $publicid
+     *
+     * @return string
+     */
+    public function fillPublicId(string $publicid)
+    {
+        // if publicid doesn't contain a #
+        if (0 !== strpos($publicid, '#')) {
+            return sprintf('%08d', $publicid);
+        } else {
+            return '#' . sprintf('%08d', substr($publicid, 1));
+        }
+    }
+    
+    /**
      * prefix the public id with a # if elimination date was set
-     * 
+     *
      * @param int $id
      * @param array $data
+     *
      * @return array
      */
-    public function prefixPublicidOnElimination(int $id, array $data) {
-        if ( ! empty( $data['date_eliminated'] ) ) {
+    public function prefixPublicidOnElimination(int $id, array $data)
+    {
+        if ( ! empty($data['date_eliminated'])) {
             if ( ! isset($data['publicid'])) {
                 $data['publicid'] = $this->get($id)->publicid;
             }
-            if ( 0 !== strpos($data['publicid'], '#') ) {
+            if (0 !== strpos($data['publicid'], '#')) {
                 $data['publicid'] = '#' . $data['publicid'];
             }
         }
+        
         return $data;
     }
     
     /**
      * Return tree query of tree with given publicid
-     * 
+     *
      * @param string $publicid
+     *
      * @return Cake\ORM\Query
      */
-    public function getByPublicId(string $publicid) {
+    public function getByPublicId(string $publicid)
+    {
         $publicid = $this->fillPublicId($publicid);
         
         return $this->find()
-                ->contain(['Varieties', 'Rootstocks', 'Graftings', 'Rows', 'ExperimentSites'])
-                ->where(['publicid'=>$publicid])
-                ->first();
+                    ->contain(['Varieties', 'Rootstocks', 'Graftings', 'Rows', 'ExperimentSites'])
+                    ->where(['publicid' => $publicid])
+                    ->first();
     }
     
     /**
      * Return query filtered by given search term searching the convar and publicid
-     * 
+     *
      * @param string $term
+     *
      * @return Cake\ORM\Query
      */
-    public function filter(string $term) {
+    public function filter(string $term)
+    {
         // if not a public id
-        if ( preg_match('/\.|[a-zA-z]|.{9,}/', $term) ) {
+        if (preg_match('/\.|[a-zA-z]|.{9,}/', $term)) {
             // set publicid to false
             $publicid = false;
         } else {
@@ -229,60 +257,47 @@ class TreesTable extends Table
             $publicid = $this->fillPublicId($term);
         }
         
-        $varieties = $this->Varieties->searchConvars($term)->toArray();
+        $varieties   = $this->Varieties->searchConvars($term)->toArray();
         $variety_ids = array_keys($varieties);
         
         $where = array();
-        if ( $publicid ) {
-            $where[] = ['publicid'=>$publicid];
+        if ($publicid) {
+            $where[] = ['publicid' => $publicid];
         }
         
-        if ( ! empty( $variety_ids ) ) {
-            $where[] = ['variety_id IN'=>$variety_ids];
+        if ( ! empty($variety_ids)) {
+            $where[] = ['variety_id IN' => $variety_ids];
         }
         
         // if nothing was found
-        if ( empty( $where ) ) {
+        if (empty($where)) {
             return null;
         }
         
         $query = $this->find()
-                ->contain(['Varieties', 'Rootstocks', 'Graftings', 'Rows', 'ExperimentSites'])
-                ->where($where[0]);
+                      ->contain(['Varieties', 'Rootstocks', 'Graftings', 'Rows', 'ExperimentSites'])
+                      ->where($where[0]);
         
-        if ( 2 == count($where) ) {
+        if (2 == count($where)) {
             $query->orWhere($where[1]);
         }
-                
+        
         return $query;
     }
     
     /**
-     * fills up missing zeros in given publicid
-     * 
-     * @param string $publicid
-     * @return string
-     */
-    public function fillPublicId(string $publicid ) {
-        // if publicid doesn't contain a #
-        if ( 0 !== strpos($publicid, '#') ) {
-            return sprintf('%08d', $publicid);
-        } else {
-            return '#' . sprintf('%08d', substr($publicid,1));
-        }
-    }
-    
-    /**
      * return an array with the id as key and 'publicid (convar)' as value
-     * 
+     *
      * @param int $id
+     *
      * @return array|null
      */
-    public function getIdPublicidAndConvarList(int $id) {
-        $tree = $this->get($id, ['contain'=>['Varieties']]);
+    public function getIdPublicidAndConvarList(int $id)
+    {
+        $tree = $this->get($id, ['contain' => ['Varieties']]);
         
         if ($tree) {
-            return [$id => $tree->publicid .' ('.$tree->convar.')'];
+            return [$id => $tree->publicid . ' (' . $tree->convar . ')'];
         } else {
             return null;
         }
@@ -290,12 +305,14 @@ class TreesTable extends Table
     
     /**
      * Return convar of tree by given id
-     * 
+     *
      * @param int $id
+     *
      * @return string
      */
-    public function getConvar(int $id) {
-        $tree = $this->get($id, ['contain'=>['Varieties']]);
+    public function getConvar(int $id)
+    {
+        $tree = $this->get($id, ['contain' => ['Varieties']]);
         
         return $tree->convar;
     }
@@ -303,14 +320,22 @@ class TreesTable extends Table
     /**
      * Return label to print in Zebra Printing Language
      *
-     * @param int $id
+     * @param int $id tree id
+     * @param string $property
+     *
      * @return string
      */
-    public function getLabelZpl(int $id) {
-        $tree = $this->get($id, ['contain'=>['Varieties']]);
+    public function getLabelZpl(int $id, string $property)
+    {
+        $tree = $this->get($id, ['contain' => ['Varieties']]);
         $code = $tree->publicid;
-        $description = 1 === $tree->variety->batch_id ? $tree->variety->code : $tree->convar;
-        return $this->getZPL($description, $code);
         
+        if ('breeder_variety_code' == $property) {
+            $description = $tree->variety->breeder_variety_code;
+        } else {
+            $description = 1 === $tree->variety->batch_id ? $tree->variety->code : $tree->convar;
+        }
+        
+        return $this->getZPL($description, $code);
     }
 }

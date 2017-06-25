@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -34,21 +35,22 @@ class VarietiesTable extends Table
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
-
+        
         $this->table('varieties');
         $this->displayField('code');
         $this->primaryKey('id');
-
+        
         $this->addBehavior('Timestamp');
-
+        
         $this->belongsTo('Batches', [
             'foreignKey' => 'batch_id',
-            'joinType' => 'INNER'
+            'joinType'   => 'INNER'
         ]);
         $this->hasMany('ScionsBundles', [
             'foreignKey' => 'variety_id'
@@ -60,11 +62,12 @@ class VarietiesTable extends Table
             'foreignKey' => 'variety_id'
         ]);
     }
-
+    
     /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
@@ -73,31 +76,32 @@ class VarietiesTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
+        
         $validator
             ->requirePresence('code', 'create')
             ->notEmpty('code');
-
+        
         $validator
             ->allowEmpty('official_name');
-
+        
         $validator
             ->allowEmpty('plant_breeder');
-
+        
         $validator
             ->allowEmpty('registration');
-
+        
         $validator
             ->allowEmpty('description');
-
+        
         return $validator;
     }
-
+    
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     *
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules)
@@ -109,44 +113,84 @@ class VarietiesTable extends Table
             __('A variety with this code and the same batch already exists.')
         ));
         
-        $rules->addDelete(new IsNotReferredBy(['Trees' => 'variety_id']),'isNotReferredBy');
-        $rules->addDelete(new IsNotReferredBy(['ScionsBundles' => 'variety_id']),'isNotReferredBy');
-        $rules->addDelete(new IsNotReferredBy(['Crossings' => 'mother_variety_id']),'isNotReferredBy');
-        $rules->addDelete(new IsNotReferredBy(['Crossings' => 'father_variety_id']),'isNotReferredBy');
-        $rules->addDelete(new IsNotReferredBy(['Marks' => 'variety_id']),'isNotReferredBy');
+        $rules->addDelete(new IsNotReferredBy(['Trees' => 'variety_id']), 'isNotReferredBy');
+        $rules->addDelete(new IsNotReferredBy(['ScionsBundles' => 'variety_id']), 'isNotReferredBy');
+        $rules->addDelete(new IsNotReferredBy(['Crossings' => 'mother_variety_id']), 'isNotReferredBy');
+        $rules->addDelete(new IsNotReferredBy(['Crossings' => 'father_variety_id']), 'isNotReferredBy');
+        $rules->addDelete(new IsNotReferredBy(['Marks' => 'variety_id']), 'isNotReferredBy');
         
         return $rules;
     }
     
     /**
-     * Return next unused code number for a breeder variety with the given batch_id
-     * 
-     * @param int $batch_id
-     * @return string
+     * Return query filtered by given search term searching the convar and breeder_variety_code
+     *
+     * @param string $term
+     *
+     * @return Cake\ORM\Query
      */
-    public function getNextFreeCode(int $batch_id) {
-        $query = $this->find()
-                ->where(['batch_id'=>$batch_id])
-                ->order(['code'=>'DESC'])
-                ->first();
+    public function filter(string $term)
+    {
+        $is_breeder_variety_code = preg_match('/^' . COMPANY_ABBREV . '\d+$/i', $term);
         
-        if ( empty($query->code) ){
-            $return = '001';
+        if ($is_breeder_variety_code) {
+            $query = $this->filterBreederVarietyCode($term);
         } else {
-            $return = (string) sprintf('%03d', (int) $query->code + 1);
+            $query = $this->filterConvars($term);
         }
         
-        return $return;
+        return $query;
+    }
+    
+    /**
+     * Return query filtered by given search term searching the breeder variety code
+     *
+     * @param string $term
+     *
+     * @return Cake\ORM\Query
+     */
+    public function filterBreederVarietyCode(string $term)
+    {
+        $tmp = str_ireplace(COMPANY_ABBREV, '', $term);
+        $id  = ltrim($tmp, '0');
+        
+        return $this->find()
+                    ->contain('Batches')
+                    ->where(['Varieties.id' => $id]);
+    }
+    
+    /**
+     * Return query filtered by given search term searching the convar
+     *
+     * @param string $term
+     *
+     * @return Cake\ORM\Query
+     */
+    public function filterConvars(string $term)
+    {
+        $list = $this->searchConvars($term)->toArray();
+        $ids  = array_keys($list);
+        
+        // if nothing was found
+        if (empty($ids)) {
+            return null;
+        }
+        
+        return $this->find()
+                    ->contain('Batches')
+                    ->where(['Varieties.id IN' => $ids]);
     }
     
     /**
      * Return list with the id of the variety as key and the convar as value
      * filtered by the given search term
-     * 
+     *
      * @param string $term
+     *
      * @return Cake\ORM\Query
      */
-    public function searchConvars(string $term) {
+    public function searchConvars(string $term)
+    {
         $query = $this->find('list')->contain([
             'Batches',
             'Batches.Crossings',
@@ -155,66 +199,48 @@ class VarietiesTable extends Table
         $concat = $query->func()->concat([
             'Crossings.code' => 'identifier',
             '.',
-            'Batches.code' => 'identifier',
+            'Batches.code'   => 'identifier',
             '.',
             'Varieties.code' => 'identifier'
         ]);
         
         $query->select([
-                    'Varieties.id',
-                    'code' => $concat
-                ]);
-
+            'Varieties.id',
+            'code' => $concat
+        ]);
+        
         $search = explode('.', trim($term));
-        if ( 3 === count($search) ) {
-            $query->where(['Crossings.code LIKE' => '%'.$search[0].'%'])
-                    ->andWhere(['Batches.code LIKE' => '%'.$search[1].'%'])
-                    ->andWhere(['Varieties.code LIKE' => '%'.$search[2].'%']);
-        } elseif ( 2 === count($search) ) {
-            $query->where(['Crossings.code LIKE' => '%'.$search[0].'%'])
-                    ->andWhere(['Batches.code LIKE' => '%'.$search[1].'%']);
+        if (3 === count($search)) {
+            $query->where(['Crossings.code LIKE' => '%' . $search[0] . '%'])
+                  ->andWhere(['Batches.code LIKE' => '%' . $search[1] . '%'])
+                  ->andWhere(['Varieties.code LIKE' => '%' . $search[2] . '%']);
+        } elseif (2 === count($search)) {
+            $query->where(['Crossings.code LIKE' => '%' . $search[0] . '%'])
+                  ->andWhere(['Batches.code LIKE' => '%' . $search[1] . '%']);
         } else {
-            $query->where(['Crossings.code LIKE' => '%'.$search[0].'%']);
+            $query->where(['Crossings.code LIKE' => '%' . $search[0] . '%']);
         }
         
         return $query;
     }
     
     /**
-     * Return query filtered by given search term searching the convar
-     * 
-     * @param string $term
-     * @return Cake\ORM\Query
-     */
-    public function filterConvars(string $term) {
-        $list = $this->searchConvars($term)->toArray();
-        $ids = array_keys($list);
-        
-        // if nothing was found
-        if ( empty($ids) ) {
-            return null;
-        }
-        
-        return $this->find()
-                ->contain('Batches')
-                ->where(['Varieties.id IN' => $ids]);
-    }
-    
-    /**
      * get id => convar list from given id
-     * 
+     *
      * @param int $id
+     *
      * @return array
      */
-    public function getConvarList(int $id) {
+    public function getConvarList(int $id)
+    {
         $variety = $this->get($id, [
             'contain' => ['Batches', 'Batches.Crossings'],
-            'fields' => ['id', 'Varieties.code', 'Batches.code', 'Crossings.code']
+            'fields'  => ['id', 'Varieties.code', 'Batches.code', 'Crossings.code']
         ]);
         
         $varieties = [
             [
-                $id => $variety->batch->crossing->code .'.'. $variety->batch->code .'.'. $variety->code,
+                $id => $variety->batch->crossing->code . '.' . $variety->batch->code . '.' . $variety->code,
             ],
         ];
         
@@ -223,22 +249,24 @@ class VarietiesTable extends Table
     
     /**
      * Add a new variety from the given crossing batch string
-     * 
+     *
      * @param string $crossing_batch
+     *
      * @return boolean
      */
-    public function addNewFromCrossingBatch(string $crossing_batch) {
+    public function addNewFromCrossingBatch(string $crossing_batch)
+    {
         // get batch
-        $batch = $this->Batches->searchCrossingBatchs($crossing_batch)->toArray();
+        $batch    = $this->Batches->searchCrossingBatchs($crossing_batch)->toArray();
         $batch_id = key($batch);
         // get next free variety code
         $code = $this->getNextFreeCode($batch_id);
-
+        
         // create entity
-        $variety = $this->newEntity();
-        $variety->code = $code;
+        $variety           = $this->newEntity();
+        $variety->code     = $code;
         $variety->batch_id = $batch_id;
-
+        
         // persist variety
         if ($this->save($variety)) {
             return $variety->id;
@@ -248,13 +276,38 @@ class VarietiesTable extends Table
     }
     
     /**
-     * Return convar by given id
-     * 
-     * @param int $id
+     * Return next unused code number for a breeder variety with the given batch_id
+     *
+     * @param int $batch_id
+     *
      * @return string
      */
-    public function getConvar(int $id) {
-        $variety = $this->get($id, ['contain'=>['Batches']]);
+    public function getNextFreeCode(int $batch_id)
+    {
+        $query = $this->find()
+                      ->where(['batch_id' => $batch_id])
+                      ->order(['code' => 'DESC'])
+                      ->first();
+        
+        if (empty($query->code)) {
+            $return = '001';
+        } else {
+            $return = (string)sprintf('%03d', (int)$query->code + 1);
+        }
+        
+        return $return;
+    }
+    
+    /**
+     * Return convar by given id
+     *
+     * @param int $id
+     *
+     * @return string
+     */
+    public function getConvar(int $id)
+    {
+        $variety = $this->get($id, ['contain' => ['Batches']]);
         
         return $variety->convar;
     }

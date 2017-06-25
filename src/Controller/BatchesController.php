@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -29,7 +30,7 @@ class BatchesController extends AppController
     public function index()
     {
         $this->paginate['contain'] = ['Crossings'];
-    
+        
         $this->paginate['sortWhitelist'] = [
             'crossing_batch',
             'date_sowed',
@@ -39,7 +40,7 @@ class BatchesController extends AppController
             'modified',
             'id',
         ];
-    
+        
         $this->paginate['fields'] = [
             'id',
             'crossing_batch' => $this->Batches
@@ -47,7 +48,7 @@ class BatchesController extends AppController
                 ->func()
                 ->concat([
                     'Crossings.code' => 'literal',
-                    'Batches.code' => 'literal',
+                    'Batches.code'   => 'literal',
                 ]),
             'date_sowed',
             'seed_tray',
@@ -58,15 +59,16 @@ class BatchesController extends AppController
         ];
         
         $batches = $this->paginate($this->Batches);
-
+        
         $this->set(compact('batches'));
         $this->set('_serialize', ['batches']);
     }
-
+    
     /**
      * View method
      *
      * @param string|null $id Batch id.
+     *
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -81,7 +83,7 @@ class BatchesController extends AppController
         $this->set('batch', $batch);
         $this->set('_serialize', ['batch']);
     }
-
+    
     /**
      * Add method
      *
@@ -94,21 +96,22 @@ class BatchesController extends AppController
             $batch = $this->Batches->patchEntity($batch, $this->request->data);
             if ($this->Batches->save($batch)) {
                 $this->Flash->success(__('The batch has been saved.'));
-	
-	            return $this->redirect(['action' => 'print', $batch->id, 'index']);
+                
+                return $this->redirect(['action' => 'print', $batch->id, 'index']);
             } else {
                 $this->Flash->error(__('The batch could not be saved. Please, try again.'));
             }
         }
-        $crossings = $this->Batches->Crossings->find('list')->where(['id <>'=>1]);
+        $crossings = $this->Batches->Crossings->find('list')->where(['id <>' => 1]);
         $this->set(compact('batch', 'crossings'));
         $this->set('_serialize', ['batch']);
     }
-
+    
     /**
      * Edit method
      *
      * @param string|null $id Batch id.
+     *
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -121,21 +124,22 @@ class BatchesController extends AppController
             $batch = $this->Batches->patchEntity($batch, $this->request->data);
             if ($this->Batches->save($batch)) {
                 $this->Flash->success(__('The batch has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The batch could not be saved. Please, try again.'));
             }
         }
-        $crossings = $this->Batches->Crossings->find('list')->where(['id <>'=>1]);
+        $crossings = $this->Batches->Crossings->find('list')->where(['id <>' => 1]);
         $this->set(compact('batch', 'crossings'));
         $this->set('_serialize', ['batch']);
     }
-
+    
     /**
      * Delete method
      *
      * @param string|null $id Batch id.
+     *
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -148,29 +152,30 @@ class BatchesController extends AppController
         } else {
             $this->Flash->error(__('The batch could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
     
     /**
      * Return filtered index table
      */
-    public function filter() {
+    public function filter()
+    {
         $allowed_fields = ['crossing_batch'];
-                
-        if ( $this->request->is('get') 
-                && $this->request->is('ajax') 
-                && ! empty($this->request->query['fields'])
-                && array_intersect($allowed_fields, $this->request->query['fields']))
-        {             
+        
+        if ($this->request->is('get')
+            && $this->request->is('ajax')
+            && ! empty($this->request->query['fields'])
+            && array_intersect($allowed_fields, $this->request->query['fields'])
+        ) {
             $entries = $this->Batches->filterCrossingBatches($this->request->query['term']);
             
-            if ( ! empty($this->request->query['sort']) ) {
-                $sort = $this->request->query['sort'];
-                $direction = empty($this->request->query['direction']) ? 'asc' : $this->request->query['direction'];
-                $this->paginate['order'] = [ $sort => $direction ];
+            if ( ! empty($this->request->query['sort'])) {
+                $sort                    = $this->request->query['sort'];
+                $direction               = empty($this->request->query['direction']) ? 'asc' : $this->request->query['direction'];
+                $this->paginate['order'] = [$sort => $direction];
             }
-            if ( ! empty($this->request->query['page']) ) {
+            if ( ! empty($this->request->query['page'])) {
                 $this->paginate['page'] = $this->request->query['page'];
             }
             
@@ -178,7 +183,7 @@ class BatchesController extends AppController
             throw new Exception(__('Direct access not allowed.'));
         }
         
-        if ( $entries ) {
+        if ($entries) {
             $batches = $this->paginate($entries);
             $this->set(compact('batches'));
             $this->set('_serialize', ['batches']);
@@ -187,24 +192,25 @@ class BatchesController extends AppController
             $this->render('/Element/nothing_found');
         }
     }
-	
-	/**
-	 * Show the print dialog
-	 *
-	 * @param int $batch_id
-	 * @param string $caller action to redirect after printing
-	 * @param mixed $params for action
-	 */
-	public function print(int $batch_id, string $caller, $params = null) {
-		$zpl = $this->Batches->getLabelZpl($batch_id);
-		
-		$this->set([
-			'zpl' => $zpl,
-			'controller' => 'Batches',
-			'action' => $caller,
-			'params' => $params,
-			'nav' => 'Batch/nav'
-		]);
-		$this->render('/Element/print');
-	}
+    
+    /**
+     * Show the print dialog
+     *
+     * @param int $batch_id
+     * @param string $caller action to redirect after printing
+     * @param mixed $params for action
+     */
+    public function print(int $batch_id, string $caller, $params = null)
+    {
+        $zpl = $this->Batches->getLabelZpl($batch_id);
+        
+        $this->set([
+            'zpl'        => [__('Regular') => $zpl],
+            'controller' => 'Batches',
+            'action'     => $caller,
+            'params'     => $params,
+            'nav'        => 'Batch/nav'
+        ]);
+        $this->render('/Element/print');
+    }
 }

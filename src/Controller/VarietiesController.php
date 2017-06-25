@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -12,7 +13,7 @@ use \Cake\Event\Event;
  */
 class VarietiesController extends AppController
 {
-
+    
     public $paginate = [
         'order' => ['modified' => 'desc'],
     ];
@@ -23,7 +24,8 @@ class VarietiesController extends AppController
         $this->loadComponent('MarksReader');
     }
     
-    public function beforeFilter(Event $event) {
+    public function beforeFilter(Event $event)
+    {
         parent::beforeFilter($event);
         
         $this->Security->config('unlockedFields', ['code', 'batch_id']);
@@ -40,7 +42,7 @@ class VarietiesController extends AppController
             'Batches',
             'Batches.Crossings',
         ];
-    
+        
         $this->paginate['sortWhitelist'] = [
             'convar',
             'official_name',
@@ -48,7 +50,7 @@ class VarietiesController extends AppController
             'modified',
             'id',
         ];
-    
+        
         $this->paginate['fields'] = [
             'id',
             'convar' => $this->Varieties
@@ -56,7 +58,7 @@ class VarietiesController extends AppController
                 ->func()
                 ->concat([
                     'Crossings.code' => 'literal',
-                    'Batches.code' => 'literal',
+                    'Batches.code'   => 'literal',
                     'Varieties.code' => 'literal',
                 ]),
             'official_name',
@@ -68,15 +70,16 @@ class VarietiesController extends AppController
         ];
         
         $varieties = $this->paginate($this->Varieties);
-
+        
         $this->set(compact('varieties'));
         $this->set('_serialize', ['varieties']);
     }
-
+    
     /**
      * View method
      *
      * @param string|null $id Variety id.
+     *
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -86,14 +89,16 @@ class VarietiesController extends AppController
             'contain' => ['Batches', 'ScionsBundles', 'Trees', 'Marks']
         ]);
         
-        $tree_ids = array_map(function($tree) {return $tree->id;}, $variety->trees);
-
+        $tree_ids = array_map(function ($tree) {
+            return $tree->id;
+        }, $variety->trees);
+        
         $marks = $this->MarksReader->get($tree_ids, $id);
         $this->set('variety', $variety);
         $this->set('marks', $marks);
         $this->set('_serialize', ['variety']);
     }
-
+    
     /**
      * Add method
      *
@@ -107,11 +112,11 @@ class VarietiesController extends AppController
             $variety = $this->Varieties->patchEntity($variety, $this->request->data);
             if ($this->Varieties->save($variety)) {
                 $this->Flash->success(__('The variety has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The variety could not be saved. Please, try again.'));
-            
+                
                 $batches = $this->Varieties->Batches->getCrossingBatchList($variety->batch_id);
             }
         }
@@ -135,7 +140,7 @@ class VarietiesController extends AppController
             $variety = $this->Varieties->patchEntity($variety, $this->request->data);
             if ($this->Varieties->save($variety)) {
                 $this->Flash->success(__('The variety has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The variety could not be saved. Please, try again.'));
@@ -145,11 +150,12 @@ class VarietiesController extends AppController
         $this->set(compact('variety'));
         $this->set('_serialize', ['variety']);
     }
-
+    
     /**
      * Edit method
      *
      * @param string|null $id Variety id.
+     *
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -162,7 +168,7 @@ class VarietiesController extends AppController
             $variety = $this->Varieties->patchEntity($variety, $this->request->data);
             if ($this->Varieties->save($variety)) {
                 $this->Flash->success(__('The variety has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The variety could not be saved. Please, try again.'));
@@ -170,23 +176,24 @@ class VarietiesController extends AppController
         }
         $batch = $this->Varieties->Batches->get($variety->batch_id, [
             'contain' => ['Crossings'],
-            'fields' => ['id', 'Crossings.code', 'Batches.code']
+            'fields'  => ['id', 'Crossings.code', 'Batches.code']
         ]);
         
         $batches = [
             [
-                $batch->id => $batch->crossing->code .'.'. $batch->code,
+                $batch->id => $batch->crossing->code . '.' . $batch->code,
             ],
         ];
         
         $this->set(compact('variety', 'batches'));
         $this->set('_serialize', ['variety']);
     }
-
+    
     /**
      * Delete method
      *
      * @param string|null $id Variety id.
+     *
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -207,12 +214,13 @@ class VarietiesController extends AppController
      * Return list with crossing.batch as value and batch_id as key.
      * Must be called as ajax get request.
      */
-    public function searchCrossingBatchs() {
-
-        if ( $this->request->is('get') 
-                && $this->request->is('ajax') 
-                && ! empty($this->request->query['term']))
-        {   
+    public function searchCrossingBatchs()
+    {
+        
+        if ($this->request->is('get')
+            && $this->request->is('ajax')
+            && ! empty($this->request->query['term'])
+        ) {
             $return = $this->Varieties->Batches->searchCrossingBatchs($this->request->query['term']);
         } else {
             throw new Exception(__('Direct access not allowed.'));
@@ -226,12 +234,13 @@ class VarietiesController extends AppController
      * Return list with convar as value and id as key.
      * Must be called as ajax get request.
      */
-    public function searchConvars() {
-
-        if ( $this->request->is('get') 
-                && $this->request->is('ajax') 
-                && ! empty($this->request->query['term']))
-        {   
+    public function searchConvars()
+    {
+        
+        if ($this->request->is('get')
+            && $this->request->is('ajax')
+            && ! empty($this->request->query['term'])
+        ) {
             $return = $this->Varieties->searchConvars($this->request->query['term']);
         } else {
             throw new Exception(__('Direct access not allowed.'));
@@ -245,13 +254,14 @@ class VarietiesController extends AppController
      * Return next free code respectiong given batch_id.
      * Must be called as ajax get request.
      */
-    public function getNextFreeCode() {
+    public function getNextFreeCode()
+    {
         
-        if ( $this->request->is('get') 
-                && $this->request->is('ajax') 
-                && ! empty($this->request->query['batch_id']))
-        {   
-            $return = $this->Varieties->getNextFreeCode((int) $this->request->query['batch_id']);
+        if ($this->request->is('get')
+            && $this->request->is('ajax')
+            && ! empty($this->request->query['batch_id'])
+        ) {
+            $return = $this->Varieties->getNextFreeCode((int)$this->request->query['batch_id']);
         } else {
             throw new Exception(__('Direct access not allowed.'));
         }
@@ -263,22 +273,23 @@ class VarietiesController extends AppController
     /**
      * Return filtered index table
      */
-    public function filter() {
-        $allowed_fields = ['convar'];
-                
-        if ( $this->request->is('get') 
-                && $this->request->is('ajax') 
-                && ! empty($this->request->query['fields'])
-                && array_intersect($allowed_fields, $this->request->query['fields']))
-        {             
-            $entries = $this->Varieties->filterConvars($this->request->query['term']);
+    public function filter()
+    {
+        $allowed_fields = ['convar', 'breeder_variety_code'];
+        
+        if ($this->request->is('get')
+            && $this->request->is('ajax')
+            && ! empty($this->request->query['fields'])
+            && array_intersect($allowed_fields, $this->request->query['fields'])
+        ) {
+            $entries = $this->Varieties->filter($this->request->query['term']);
             
-            if ( ! empty($this->request->query['sort']) ) {
-                $sort = $this->request->query['sort'];
-                $direction = empty($this->request->query['direction']) ? 'asc' : $this->request->query['direction'];
-                $this->paginate['order'] = [ $sort => $direction ];
+            if ( ! empty($this->request->query['sort'])) {
+                $sort                    = $this->request->query['sort'];
+                $direction               = empty($this->request->query['direction']) ? 'asc' : $this->request->query['direction'];
+                $this->paginate['order'] = [$sort => $direction];
             }
-            if ( ! empty($this->request->query['page']) ) {
+            if ( ! empty($this->request->query['page'])) {
                 $this->paginate['page'] = $this->request->query['page'];
             }
             
@@ -286,7 +297,7 @@ class VarietiesController extends AppController
             throw new Exception(__('Direct access not allowed.'));
         }
         
-        if ( $entries ) {
+        if ($entries) {
             $varieties = $this->paginate($entries);
             $this->set(compact('varieties'));
             $this->set('_serialize', ['varieties']);

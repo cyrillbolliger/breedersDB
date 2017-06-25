@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2017-04-27 14:30+0000\n"
+"POT-Creation-Date: 2017-06-25 21:41+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,484 +14,498 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Controller/AppController.php:93
+#: Controller/AppController.php:94
 msgctxt "time format"
 msgid "HH:mm"
 msgstr ""
 
-#: Controller/AppController.php:94;98;100
+#: Controller/AppController.php:95;99;101
 msgctxt "date format"
 msgid "dd.MM.yyyy"
 msgstr ""
 
-#: Controller/AppController.php:95;97;99
+#: Controller/AppController.php:96;98;100
 msgctxt "datetime format"
 msgid "dd.MM.yyyy HH:mm"
 msgstr ""
 
-#: Controller/BatchesController.php:96;123
+#: Controller/BatchesController.php:98;126
 msgid "The batch has been saved."
 msgstr ""
 
-#: Controller/BatchesController.php:100;127
+#: Controller/BatchesController.php:102;130
 msgid "The batch could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/BatchesController.php:147
+#: Controller/BatchesController.php:151
 msgid "The batch has been deleted."
 msgstr ""
 
-#: Controller/BatchesController.php:149
+#: Controller/BatchesController.php:153
 msgid "The batch could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/BatchesController.php:178
-#: Controller/CrossingsController.php:171
-#: Controller/MarkFormPropertiesController.php:172
-#: Controller/MarkFormsController.php:171
-#: Controller/MarkScannerCodesController.php:156;177
-#: Controller/MarksController.php:360
-#: Controller/MotherTreesController.php:157
-#: Controller/RowsController.php:139
-#: Controller/ScionsBundlesController.php:151
-#: Controller/TreesController.php:297;402;427
-#: Controller/VarietiesController.php:218;237;256;286
+#: Controller/BatchesController.php:183
+#: Controller/CrossingsController.php:187
+#: Controller/MarkFormPropertiesController.php:178
+#: Controller/MarkFormsController.php:179
+#: Controller/MarkScannerCodesController.php:161;183
+#: Controller/MarksController.php:369
+#: Controller/MotherTreesController.php:162
+#: Controller/RowsController.php:144
+#: Controller/ScionsBundlesController.php:156
+#: Controller/TreesController.php:306;413;439
+#: Controller/VarietiesController.php:226;246;266;297
 msgid "Direct access not allowed."
 msgstr ""
 
-#: Controller/CrossingsController.php:64;106
+#: Controller/BatchesController.php:208
+#: Controller/MarkScannerCodesController.php:202;223
+#: Controller/TreesController.php:467
+msgid "Regular"
+msgstr ""
+
+#: Controller/CrossingsController.php:77;120
 msgid "The crossing has been saved."
 msgstr ""
 
-#: Controller/CrossingsController.php:68
+#: Controller/CrossingsController.php:81
 msgid "The crossing could not be saved. Please try again."
 msgstr ""
 
-#: Controller/CrossingsController.php:110
+#: Controller/CrossingsController.php:124
 msgid "The crossing could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/CrossingsController.php:140
+#: Controller/CrossingsController.php:155
 msgid "The crossing has been deleted."
 msgstr ""
 
-#: Controller/CrossingsController.php:142
+#: Controller/CrossingsController.php:157
 msgid "The crossing could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/ExperimentSitesController.php:55;81
+#: Controller/ExperimentSitesController.php:57;84
 msgid "The experiment site has been saved."
 msgstr ""
 
-#: Controller/ExperimentSitesController.php:59;85
+#: Controller/ExperimentSitesController.php:61;88
 msgid "The experiment site could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/ExperimentSitesController.php:104
+#: Controller/ExperimentSitesController.php:108
 msgid "The experiment site has been deleted."
 msgstr ""
 
-#: Controller/ExperimentSitesController.php:106
+#: Controller/ExperimentSitesController.php:110
 msgid "The experiment site could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/GraftingsController.php:55;81
+#: Controller/GraftingsController.php:57;84
 msgid "The grafting has been saved."
 msgstr ""
 
-#: Controller/GraftingsController.php:59;85
+#: Controller/GraftingsController.php:61;88
 msgid "The grafting could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/GraftingsController.php:104
+#: Controller/GraftingsController.php:108
 msgid "The grafting has been deleted."
 msgstr ""
 
-#: Controller/GraftingsController.php:106
+#: Controller/GraftingsController.php:110
 msgid "The grafting could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormFieldsController.php:58;86
+#: Controller/MarkFormFieldsController.php:60;89
 msgid "The mark form field has been saved."
 msgstr ""
 
-#: Controller/MarkFormFieldsController.php:62;90
+#: Controller/MarkFormFieldsController.php:64;93
 msgid "The mark form field could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormFieldsController.php:111
+#: Controller/MarkFormFieldsController.php:115
 msgid "The mark form field has been deleted."
 msgstr ""
 
-#: Controller/MarkFormFieldsController.php:113
+#: Controller/MarkFormFieldsController.php:117
 msgid "The mark form field could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormPropertiesController.php:60;88
+#: Controller/MarkFormPropertiesController.php:62;91
 msgid "The mark form property has been saved."
 msgstr ""
 
-#: Controller/MarkFormPropertiesController.php:64;92
+#: Controller/MarkFormPropertiesController.php:66;95
 msgid "The mark form property could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormPropertiesController.php:113
+#: Controller/MarkFormPropertiesController.php:117
 msgid "The mark form property has been deleted."
 msgstr ""
 
-#: Controller/MarkFormPropertiesController.php:115
+#: Controller/MarkFormPropertiesController.php:119
 msgid "The mark form property could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormPropertyTypesController.php:55;81
+#: Controller/MarkFormPropertyTypesController.php:58;86
 msgid "The mark form property type has been saved."
 msgstr ""
 
-#: Controller/MarkFormPropertyTypesController.php:59;85
+#: Controller/MarkFormPropertyTypesController.php:62;90
 msgid "The mark form property type could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormPropertyTypesController.php:104
+#: Controller/MarkFormPropertyTypesController.php:110
 msgid "The mark form property type has been deleted."
 msgstr ""
 
-#: Controller/MarkFormPropertyTypesController.php:106
+#: Controller/MarkFormPropertyTypesController.php:112
 msgid "The mark form property type could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormsController.php:83;116
+#: Controller/MarkFormsController.php:88;122
 msgid "The mark form has been saved."
 msgstr ""
 
-#: Controller/MarkFormsController.php:87;120
+#: Controller/MarkFormsController.php:92;126
 msgid "The mark form could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormsController.php:140
+#: Controller/MarkFormsController.php:147
 msgid "The mark form has been deleted."
 msgstr ""
 
-#: Controller/MarkFormsController.php:142
+#: Controller/MarkFormsController.php:149
 msgid "The mark form could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MarkScannerCodesController.php:30
-#: Controller/MarksController.php:68
+#: Controller/MarkScannerCodesController.php:31
+#: Controller/MarksController.php:72
 msgid "(all)"
 msgstr ""
 
-#: Controller/MarkScannerCodesController.php:68
+#: Controller/MarkScannerCodesController.php:70
 msgid "{0}: {1} has been saved."
 msgstr ""
 
-#: Controller/MarkScannerCodesController.php:78;105
+#: Controller/MarkScannerCodesController.php:80;108
 msgid "The mark scanner code could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/MarkScannerCodesController.php:101
+#: Controller/MarkScannerCodesController.php:104
 msgid "The mark scanner code has been saved."
 msgstr ""
 
-#: Controller/MarkScannerCodesController.php:125
+#: Controller/MarkScannerCodesController.php:129
 msgid "The mark scanner code has been deleted."
 msgstr ""
 
-#: Controller/MarkScannerCodesController.php:127
+#: Controller/MarkScannerCodesController.php:131
 msgid "The mark scanner code could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MarkValuesController.php:29
+#: Controller/MarkValuesController.php:31
 msgid "The mark value has been saved."
 msgstr ""
 
-#: Controller/MarkValuesController.php:33
+#: Controller/MarkValuesController.php:35
 msgid "The mark value could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/MarkValuesController.php:52
+#: Controller/MarkValuesController.php:55
 msgid "The mark value has been deleted."
 msgstr ""
 
-#: Controller/MarkValuesController.php:54
+#: Controller/MarkValuesController.php:57
 msgid "The mark value could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MarksController.php:114;170;220;280
+#: Controller/MarksController.php:119;175;225;287
 msgid "The mark has been saved."
 msgstr ""
 
-#: Controller/MarksController.php:118;174;224;284
+#: Controller/MarksController.php:123;179;229;291
 msgid "The mark could not be saved."
 msgstr ""
 
-#: Controller/MarksController.php:121
+#: Controller/MarksController.php:126
 msgid "Please select a tree by public id."
 msgstr ""
 
-#: Controller/MarksController.php:124;180;230
+#: Controller/MarksController.php:129;185;235
 msgid "One of the mark values violates the validation rules. Please check data types."
 msgstr ""
 
-#: Controller/MarksController.php:177
+#: Controller/MarksController.php:182
 msgid "Please select a variety."
 msgstr ""
 
-#: Controller/MarksController.php:227
+#: Controller/MarksController.php:232
 msgid "Please select a batch."
 msgstr ""
 
-#: Controller/MarksController.php:307
+#: Controller/MarksController.php:315
 msgid "The mark has been deleted."
 msgstr ""
 
-#: Controller/MarksController.php:309
+#: Controller/MarksController.php:317
 msgid "The mark could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MotherTreesController.php:66;100
+#: Controller/MotherTreesController.php:68;103
 msgid "The mother tree has been saved."
 msgstr ""
 
-#: Controller/MotherTreesController.php:70;104
+#: Controller/MotherTreesController.php:72;107
 msgid "The mother tree could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/MotherTreesController.php:126
+#: Controller/MotherTreesController.php:130
 msgid "The mother tree has been deleted."
 msgstr ""
 
-#: Controller/MotherTreesController.php:128
+#: Controller/MotherTreesController.php:132
 msgid "The mother tree could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/RootstocksController.php:55;81
+#: Controller/RootstocksController.php:57;84
 msgid "The rootstock has been saved."
 msgstr ""
 
-#: Controller/RootstocksController.php:59;85
+#: Controller/RootstocksController.php:61;88
 msgid "The rootstock could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/RootstocksController.php:104
+#: Controller/RootstocksController.php:108
 msgid "The rootstock has been deleted."
 msgstr ""
 
-#: Controller/RootstocksController.php:106
+#: Controller/RootstocksController.php:110
 msgid "The rootstock could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/RowsController.php:59;85
+#: Controller/RowsController.php:61;88
 msgid "The row has been saved."
 msgstr ""
 
-#: Controller/RowsController.php:63;89
+#: Controller/RowsController.php:65;92
 msgid "The row could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/RowsController.php:108
+#: Controller/RowsController.php:112
 msgid "The row has been deleted."
 msgstr ""
 
-#: Controller/RowsController.php:110
+#: Controller/RowsController.php:114
 msgid "The row could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/ScionsBundlesController.php:64;95
+#: Controller/ScionsBundlesController.php:66;98
 msgid "The scions bundle has been saved."
 msgstr ""
 
-#: Controller/ScionsBundlesController.php:68;99
+#: Controller/ScionsBundlesController.php:70;102
 msgid "The scions bundle could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/ScionsBundlesController.php:120
+#: Controller/ScionsBundlesController.php:124
 msgid "The scions bundle has been deleted."
 msgstr ""
 
-#: Controller/ScionsBundlesController.php:122
+#: Controller/ScionsBundlesController.php:126
 msgid "The scions bundle could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/TreesController.php:110;146;182;222;259
+#: Controller/TreesController.php:113;150;187;228;267
 msgid "The tree has been saved."
 msgstr ""
 
-#: Controller/TreesController.php:114;150;186;226;261
+#: Controller/TreesController.php:117;154;191;232;269
 msgid "The tree could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/TreesController.php:333
+#: Controller/TreesController.php:343
 msgid "The tree has been deleted."
 msgstr ""
 
-#: Controller/TreesController.php:335
+#: Controller/TreesController.php:345
 msgid "The tree could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/UsersController.php:55;81
+#: Controller/TreesController.php:467
+msgid "Anonymous"
+msgstr ""
+
+#: Controller/UsersController.php:57;84
 msgid "The user has been saved."
 msgstr ""
 
-#: Controller/UsersController.php:59;85
+#: Controller/UsersController.php:61;88
 msgid "The user could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/UsersController.php:104
+#: Controller/UsersController.php:108
 msgid "The user has been deleted."
 msgstr ""
 
-#: Controller/UsersController.php:106
+#: Controller/UsersController.php:110
 msgid "The user could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/UsersController.php:134
+#: Controller/UsersController.php:139
 msgid "Your username or password is incorrect."
 msgstr ""
 
-#: Controller/VarietiesController.php:109;137;164
+#: Controller/VarietiesController.php:114;142;170
 msgid "The variety has been saved."
 msgstr ""
 
-#: Controller/VarietiesController.php:113;141;168
+#: Controller/VarietiesController.php:118;146;174
 msgid "The variety could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/VarietiesController.php:198
+#: Controller/VarietiesController.php:205
 msgid "The variety has been deleted."
 msgstr ""
 
-#: Controller/VarietiesController.php:200
+#: Controller/VarietiesController.php:207
 msgid "The variety could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/Component/MarksReaderComponent.php:61
+#: Controller/Component/MarksReaderComponent.php:63
 msgid "Invalid arguments."
 msgstr ""
 
-#: Model/Table/BatchesTable.php:81
+#: Model/Behavior/PrintableBehavior.php:18
+msgid "No printable content given."
+msgstr ""
+
+#: Model/Table/BatchesTable.php:85
 msgid "Input not valid. The code must match the following pattern: \"NumberNumberUppercaseletter\". Example: 17A"
 msgstr ""
 
-#: Model/Table/BatchesTable.php:132
+#: Model/Table/BatchesTable.php:137
 msgid "A batch with this code and this crossing already exists."
 msgstr ""
 
-#: Model/Table/CrossingsTable.php:83
+#: Model/Table/CrossingsTable.php:86
 msgid "Input not valid. The code must only contain alphanumerical characters (without umlauts). Length between four and eight characters."
 msgstr ""
 
-#: Model/Table/CrossingsTable.php:99
-#: Model/Table/MotherTreesTable.php:144
-#: Model/Table/RowsTable.php:89
-#: Model/Table/ScionsBundlesTable.php:100
+#: Model/Table/CrossingsTable.php:103
+#: Model/Table/MotherTreesTable.php:149
+#: Model/Table/RowsTable.php:93
+#: Model/Table/ScionsBundlesTable.php:104
 msgid "This code has already been used. Please use a unique code."
 msgstr ""
 
-#: Model/Table/CrossingsTable.php:104
+#: Model/Table/CrossingsTable.php:108
 msgid "A crossing with the same mother variety and the same father variety already exists."
 msgstr ""
 
-#: Model/Table/ExperimentSitesTable.php:76
-#: Model/Table/GraftingsTable.php:76
-#: Model/Table/MarkFormPropertiesTable.php:191
-#: Model/Table/MarkFormPropertyTypesTable.php:76
-#: Model/Table/MarkFormsTable.php:92
-#: Model/Table/RootstocksTable.php:76
+#: Model/Table/ExperimentSitesTable.php:80
+#: Model/Table/GraftingsTable.php:80
+#: Model/Table/MarkFormPropertiesTable.php:195
+#: Model/Table/MarkFormPropertyTypesTable.php:80
+#: Model/Table/MarkFormsTable.php:96
+#: Model/Table/RootstocksTable.php:80
 msgid "This name has already been used. Please use a unique name."
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:90
-#: Model/Table/MarkFormsTable.php:76
+#: Model/Table/MarkFormPropertiesTable.php:93
+#: Model/Table/MarkFormsTable.php:79
 msgid "This name has already been used."
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:110
+#: Model/Table/MarkFormPropertiesTable.php:113
 msgid "The min value is required and must be smaller than the max value"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:122
+#: Model/Table/MarkFormPropertiesTable.php:125
 msgid "The max value is required and must be greater than the max value"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:134
+#: Model/Table/MarkFormPropertiesTable.php:137
 msgid "The step value is required and must be greater than zero and smaller or equal to the difference between the max and the min value."
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:146;158;170
+#: Model/Table/MarkFormPropertiesTable.php:149;161;173
 msgid "Select at least one domain"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:233
+#: Model/Table/MarkFormPropertiesTable.php:239
 msgid "Integer"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:234
+#: Model/Table/MarkFormPropertiesTable.php:240
 msgid "Floating-point number"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:235
+#: Model/Table/MarkFormPropertiesTable.php:241
 msgid "Text ( < 255 characters)"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:236
+#: Model/Table/MarkFormPropertiesTable.php:242
 msgid "Boolean"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:237
+#: Model/Table/MarkFormPropertiesTable.php:243
 #: Template/Element/Mark/list.ctp:4
-#: Template/Marks/view.ctp:25
+#: Template/Marks/view.ctp:28
 msgid "Date"
 msgstr ""
 
-#: Model/Table/MarkScannerCodesTable.php:84
+#: Model/Table/MarkScannerCodesTable.php:88
 msgid "This code already exists."
 msgstr ""
 
-#: Model/Table/MarkScannerCodesTable.php:87
+#: Model/Table/MarkScannerCodesTable.php:91
 msgid "A code with this property and this value does already exist."
 msgstr ""
 
-#: Model/Table/MarkValuesTable.php:75
+#: Model/Table/MarkValuesTable.php:78
 msgid "The validation rules of this data type has been violated. Please check data type again."
 msgstr ""
 
-#: Model/Table/MarksTable.php:87
+#: Model/Table/MarksTable.php:90
 msgid "Please select a tree"
 msgstr ""
 
-#: Model/Table/MarksTable.php:94
+#: Model/Table/MarksTable.php:97
 msgid "Variety and batch must not be selected"
 msgstr ""
 
-#: Model/Table/MarksTable.php:98
+#: Model/Table/MarksTable.php:101
 msgid "Please select a variety"
 msgstr ""
 
-#: Model/Table/MarksTable.php:105
+#: Model/Table/MarksTable.php:108
 msgid "Tree and batch must not be selected"
 msgstr ""
 
-#: Model/Table/MarksTable.php:109
+#: Model/Table/MarksTable.php:112
 msgid "Please select a batch"
 msgstr ""
 
-#: Model/Table/MarksTable.php:116
+#: Model/Table/MarksTable.php:119
 msgid "Tree and variety must not be selected"
 msgstr ""
 
-#: Model/Table/MotherTreesTable.php:93
+#: Model/Table/MotherTreesTable.php:97
 msgid "The variety of the mother tree must match the mother variety of the crossing."
 msgstr ""
 
-#: Model/Table/TreesTable.php:94
+#: Model/Table/TreesTable.php:97
 msgid "This number has already been used."
 msgstr ""
 
-#: Model/Table/TreesTable.php:100
+#: Model/Table/TreesTable.php:103
 msgid "Input not valid. The publicid must only contain numbers."
 msgstr ""
 
-#: Model/Table/VarietiesTable.php:109
+#: Model/Table/VarietiesTable.php:113
 msgid "A variety with this code and the same batch already exists."
 msgstr ""
 
@@ -514,13 +528,13 @@ msgstr ""
 #: Template/MarkFormProperties/edit.ctp:55
 #: Template/MarkFormPropertyTypes/add.ctp:12
 #: Template/MarkFormPropertyTypes/edit.ctp:12
-#: Template/MarkForms/add.ctp:33
-#: Template/MarkForms/edit.ctp:34
-#: Template/MarkScannerCodes/add.ctp:30
+#: Template/MarkForms/add.ctp:34
+#: Template/MarkForms/edit.ctp:35
+#: Template/MarkScannerCodes/add.ctp:31
 #: Template/MarkScannerCodes/edit.ctp:22
-#: Template/MarkValues/edit.ctp:13
+#: Template/MarkValues/edit.ctp:17
 #: Template/Marks/edit.ctp:60
-#: Template/MotherTrees/add.ctp:53
+#: Template/MotherTrees/add.ctp:55
 #: Template/MotherTrees/edit.ctp:42
 #: Template/Rootstocks/add.ctp:12
 #: Template/Rootstocks/edit.ctp:12
@@ -544,7 +558,7 @@ msgstr ""
 msgid "Edit Batch"
 msgstr ""
 
-#: Template/Batches/index.ctp:13
+#: Template/Batches/index.ctp:14
 #: Template/Element/top_nav.ctp:3
 #: Template/Element/Batch/nav.ctp:2
 #: Template/MarkFormProperties/add.ctp:48
@@ -552,124 +566,130 @@ msgstr ""
 msgid "Batches"
 msgstr ""
 
-#: Template/Batches/index.ctp:15
+#: Template/Batches/index.ctp:17
 msgid "Filter by Crossing.Batch..."
 msgstr ""
 
-#: Template/Batches/view.ctp:5
-#: Template/Element/Mark/index_table.ctp:19
-#: Template/Marks/view.ctp:11
+#: Template/Batches/view.ctp:6
+#: Template/MarkScannerCodes/view.ctp:6
+#: Template/Trees/view.ctp:6
+msgid "Print label"
+msgstr ""
+
+#: Template/Batches/view.ctp:10
+#: Template/Element/Mark/index_table.ctp:21
+#: Template/Marks/view.ctp:13
 msgid "Batch:"
 msgstr ""
 
-#: Template/Batches/view.ctp:8;61
-#: Template/Crossings/view.ctp:8;33;66
+#: Template/Batches/view.ctp:13;67
+#: Template/Crossings/view.ctp:8;35;78
 #: Template/Element/Mark/list.ctp:3
 #: Template/Element/Tree/related_table.ctp:3
 #: Template/ExperimentSites/view.ctp:8
 #: Template/Graftings/view.ctp:8
-#: Template/MarkFormProperties/view.ctp:8;51
+#: Template/MarkFormProperties/view.ctp:8;56
 #: Template/MarkFormPropertyTypes/view.ctp:8;21
 #: Template/MarkForms/view.ctp:8;25
 #: Template/MarkScannerCodes/view.ctp:13
-#: Template/Marks/view.ctp:21;54
+#: Template/Marks/view.ctp:24;58
 #: Template/MotherTrees/view.ctp:9
 #: Template/Rootstocks/view.ctp:8
 #: Template/Rows/view.ctp:8
 #: Template/ScionsBundles/view.ctp:8
 #: Template/Trees/view.ctp:13
-#: Template/Varieties/view.ctp:9;42
+#: Template/Varieties/view.ctp:9;46
 msgid "Id"
 msgstr ""
 
-#: Template/Batches/view.ctp:12
-#: Template/MotherTrees/view.ctp:17
+#: Template/Batches/view.ctp:17
+#: Template/MotherTrees/view.ctp:18
 msgid "Crossing"
 msgstr ""
 
-#: Template/Batches/view.ctp:16
-#: Template/Crossings/view.ctp:35
+#: Template/Batches/view.ctp:22
+#: Template/Crossings/view.ctp:37
 msgid "Date Sowed"
 msgstr ""
 
-#: Template/Batches/view.ctp:20
-#: Template/Crossings/view.ctp:36
+#: Template/Batches/view.ctp:26
+#: Template/Crossings/view.ctp:38
 msgid "Numb Seeds Sowed"
 msgstr ""
 
-#: Template/Batches/view.ctp:24
+#: Template/Batches/view.ctp:30
 msgid "Numb Sprouts Grown"
 msgstr ""
 
-#: Template/Batches/view.ctp:28
-#: Template/Crossings/view.ctp:37
+#: Template/Batches/view.ctp:34
+#: Template/Crossings/view.ctp:39
 msgid "Seed Tray"
 msgstr ""
 
-#: Template/Batches/view.ctp:32
-#: Template/Crossings/view.ctp:38
-#: Template/Trees/view.ctp:49
+#: Template/Batches/view.ctp:38
+#: Template/Crossings/view.ctp:40
+#: Template/Trees/view.ctp:54
 msgid "Date Planted"
 msgstr ""
 
-#: Template/Batches/view.ctp:36
+#: Template/Batches/view.ctp:42
 msgid "Numb Sprouts Planted"
 msgstr ""
 
-#: Template/Batches/view.ctp:40
-#: Template/Crossings/view.ctp:39
+#: Template/Batches/view.ctp:46
+#: Template/Crossings/view.ctp:41
 msgid "Patch"
 msgstr ""
 
-#: Template/Batches/view.ctp:44
-#: Template/Crossings/view.ctp:20
-#: Template/MarkFormProperties/view.ctp:38
+#: Template/Batches/view.ctp:50
+#: Template/Crossings/view.ctp:22
+#: Template/MarkFormProperties/view.ctp:43
 #: Template/MarkForms/view.ctp:12
-#: Template/Marks/view.ctp:41
-#: Template/MotherTrees/view.ctp:49
+#: Template/Marks/view.ctp:45
+#: Template/MotherTrees/view.ctp:51
 #: Template/Rows/view.ctp:20
-#: Template/ScionsBundles/view.ctp:32
-#: Template/Trees/view.ctp:61
+#: Template/ScionsBundles/view.ctp:33
+#: Template/Trees/view.ctp:66
 #: Template/Users/view.ctp:16
-#: Template/Varieties/view.ctp:25
+#: Template/Varieties/view.ctp:29
 msgid "Created"
 msgstr ""
 
-#: Template/Batches/view.ctp:48
-#: Template/Crossings/view.ctp:24
+#: Template/Batches/view.ctp:54
+#: Template/Crossings/view.ctp:26
 #: Template/Element/Tree/related_table.ctp:10
-#: Template/MarkFormProperties/view.ctp:42;53
+#: Template/MarkFormProperties/view.ctp:47;58
 #: Template/MarkFormPropertyTypes/view.ctp:23
 #: Template/MarkForms/view.ctp:16;28
-#: Template/Marks/view.ctp:45;58
-#: Template/MotherTrees/view.ctp:53
+#: Template/Marks/view.ctp:49;62
+#: Template/MotherTrees/view.ctp:55
 #: Template/Rows/view.ctp:24
-#: Template/ScionsBundles/view.ctp:36
-#: Template/Trees/view.ctp:65
+#: Template/ScionsBundles/view.ctp:37
+#: Template/Trees/view.ctp:70
 #: Template/Users/view.ctp:20
-#: Template/Varieties/view.ctp:29;47
+#: Template/Varieties/view.ctp:33;51
 msgid "Modified"
 msgstr ""
 
-#: Template/Batches/view.ctp:53
+#: Template/Batches/view.ctp:59
 #: Template/Element/Tree/related_table.ctp:8
-#: Template/MotherTrees/view.ctp:62
-#: Template/ScionsBundles/view.ctp:41
-#: Template/Trees/view.ctp:70
+#: Template/MotherTrees/view.ctp:64
+#: Template/ScionsBundles/view.ctp:42
+#: Template/Trees/view.ctp:75
 msgid "Note"
 msgstr ""
 
-#: Template/Batches/view.ctp:57
+#: Template/Batches/view.ctp:63
 msgid "Related Varieties"
 msgstr ""
 
-#: Template/Batches/view.ctp:62
+#: Template/Batches/view.ctp:68
 #: Template/Element/Tree/related_table.ctp:5
 msgid "Convar"
 msgstr ""
 
-#: Template/Batches/view.ctp:63
-#: Template/Crossings/view.ctp:40;73
+#: Template/Batches/view.ctp:69
+#: Template/Crossings/view.ctp:42;85
 #: Template/Element/Batch/index_table.ctp:11
 #: Template/Element/Crossing/index_table.ctp:8
 #: Template/Element/Mark/index_table.ctp:8
@@ -685,115 +705,115 @@ msgstr ""
 #: Template/Element/Variety/index_table.ctp:10
 #: Template/ExperimentSites/index.ctp:11
 #: Template/Graftings/index.ctp:11
-#: Template/MarkFormProperties/view.ctp:54
+#: Template/MarkFormProperties/view.ctp:59
 #: Template/MarkFormPropertyTypes/index.ctp:11
 #: Template/MarkFormPropertyTypes/view.ctp:24
-#: Template/Marks/view.ctp:59
+#: Template/Marks/view.ctp:63
 #: Template/Rootstocks/index.ctp:11
 #: Template/Users/index.ctp:14
-#: Template/Varieties/view.ctp:48
+#: Template/Varieties/view.ctp:52
 msgid "Actions"
 msgstr ""
 
-#: Template/Batches/view.ctp:70
-#: Template/Crossings/view.ctp:52;85
-#: Template/Element/Batch/index_table.ctp:25
-#: Template/Element/Crossing/index_table.ctp:26
-#: Template/Element/Mark/index_table.ctp:37
-#: Template/Element/Mark/list.ctp:41
-#: Template/Element/MarkForm/index_table.ctp:17
-#: Template/Element/MarkFormProperty/index_table.ctp:21
-#: Template/Element/MarkScannerCode/index_table.ctp:19
-#: Template/Element/MotherTree/index_table.ctp:27
-#: Template/Element/Row/index_table.ctp:21
-#: Template/Element/ScionsBundle/index_table.ctp:25
-#: Template/Element/Tree/index_table.ctp:27
-#: Template/Element/Tree/related_table.ctp:24
-#: Template/Element/Variety/index_table.ctp:23
-#: Template/ExperimentSites/index.ctp:20
-#: Template/Graftings/index.ctp:20
-#: Template/MarkFormProperties/view.ctp:62
-#: Template/MarkFormPropertyTypes/index.ctp:20
-#: Template/MarkFormPropertyTypes/view.ctp:32
-#: Template/Rootstocks/index.ctp:20
-#: Template/Users/index.ctp:26
-#: Template/Varieties/view.ctp:59
-msgid "View"
-msgstr ""
-
-#: Template/Batches/view.ctp:71
-#: Template/Crossings/view.ctp:53;86
+#: Template/Batches/view.ctp:78
+#: Template/Crossings/view.ctp:56;99
 #: Template/Element/Batch/index_table.ctp:26
-#: Template/Element/Crossing/index_table.ctp:27
-#: Template/Element/Mark/index_table.ctp:38
-#: Template/Element/Mark/list.ctp:42
+#: Template/Element/Crossing/index_table.ctp:32
+#: Template/Element/Mark/index_table.ctp:42
+#: Template/Element/Mark/list.ctp:45
 #: Template/Element/MarkForm/index_table.ctp:18
 #: Template/Element/MarkFormProperty/index_table.ctp:22
-#: Template/Element/MarkScannerCode/index_table.ctp:20
+#: Template/Element/MarkScannerCode/index_table.ctp:25
 #: Template/Element/MotherTree/index_table.ctp:28
 #: Template/Element/Row/index_table.ctp:22
-#: Template/Element/ScionsBundle/index_table.ctp:26
-#: Template/Element/Tree/index_table.ctp:28
-#: Template/Element/Tree/related_table.ctp:25
+#: Template/Element/ScionsBundle/index_table.ctp:27
+#: Template/Element/Tree/index_table.ctp:30
+#: Template/Element/Tree/related_table.ctp:26
 #: Template/Element/Variety/index_table.ctp:24
 #: Template/ExperimentSites/index.ctp:21
 #: Template/Graftings/index.ctp:21
-#: Template/MarkFormProperties/view.ctp:63
-#: Template/MarkFormPropertyTypes/index.ctp:21
-#: Template/MarkFormPropertyTypes/view.ctp:33
-#: Template/Marks/view.ctp:73
+#: Template/MarkFormProperties/view.ctp:69
+#: Template/MarkFormPropertyTypes/index.ctp:22
+#: Template/MarkFormPropertyTypes/view.ctp:34
 #: Template/Rootstocks/index.ctp:21
 #: Template/Users/index.ctp:27
-#: Template/Varieties/view.ctp:60
+#: Template/Varieties/view.ctp:65
+msgid "View"
+msgstr ""
+
+#: Template/Batches/view.ctp:81
+#: Template/Crossings/view.ctp:59;102
+#: Template/Element/Batch/index_table.ctp:28
+#: Template/Element/Crossing/index_table.ctp:34
+#: Template/Element/Mark/index_table.ctp:44
+#: Template/Element/Mark/list.ctp:48
+#: Template/Element/MarkForm/index_table.ctp:20
+#: Template/Element/MarkFormProperty/index_table.ctp:24
+#: Template/Element/MarkScannerCode/index_table.ctp:27
+#: Template/Element/MotherTree/index_table.ctp:30
+#: Template/Element/Row/index_table.ctp:24
+#: Template/Element/ScionsBundle/index_table.ctp:29
+#: Template/Element/Tree/index_table.ctp:32
+#: Template/Element/Tree/related_table.ctp:29
+#: Template/Element/Variety/index_table.ctp:26
+#: Template/ExperimentSites/index.ctp:23
+#: Template/Graftings/index.ctp:23
+#: Template/MarkFormProperties/view.ctp:72
+#: Template/MarkFormPropertyTypes/index.ctp:25
+#: Template/MarkFormPropertyTypes/view.ctp:37
+#: Template/Marks/view.ctp:80
+#: Template/Rootstocks/index.ctp:23
+#: Template/Users/index.ctp:29
+#: Template/Varieties/view.ctp:68
 msgid "Edit"
 msgstr ""
 
-#: Template/Batches/view.ctp:72
-#: Template/Crossings/view.ctp:54;87
-#: Template/Element/Batch/index_table.ctp:27
-#: Template/Element/Crossing/index_table.ctp:28
-#: Template/Element/Mark/index_table.ctp:39
-#: Template/Element/Mark/list.ctp:43
-#: Template/Element/MarkForm/index_table.ctp:19
-#: Template/Element/MarkFormProperty/index_table.ctp:23
-#: Template/Element/MarkScannerCode/index_table.ctp:21
-#: Template/Element/MotherTree/index_table.ctp:29
-#: Template/Element/Row/index_table.ctp:23
-#: Template/Element/ScionsBundle/index_table.ctp:27
-#: Template/Element/Tree/index_table.ctp:29
-#: Template/Element/Tree/related_table.ctp:26
-#: Template/Element/Variety/index_table.ctp:25
-#: Template/ExperimentSites/index.ctp:22
-#: Template/Graftings/index.ctp:22
-#: Template/MarkFormPropertyTypes/index.ctp:22
-#: Template/MarkFormPropertyTypes/view.ctp:34
-#: Template/Marks/view.ctp:74
-#: Template/Rootstocks/index.ctp:22
-#: Template/Users/index.ctp:28
-#: Template/Varieties/view.ctp:61
+#: Template/Batches/view.ctp:85
+#: Template/Crossings/view.ctp:63;106
+#: Template/Element/Batch/index_table.ctp:32
+#: Template/Element/Crossing/index_table.ctp:38
+#: Template/Element/Mark/index_table.ctp:48
+#: Template/Element/Mark/list.ctp:52
+#: Template/Element/MarkForm/index_table.ctp:24
+#: Template/Element/MarkFormProperty/index_table.ctp:28
+#: Template/Element/MarkScannerCode/index_table.ctp:31
+#: Template/Element/MotherTree/index_table.ctp:34
+#: Template/Element/Row/index_table.ctp:28
+#: Template/Element/ScionsBundle/index_table.ctp:33
+#: Template/Element/Tree/index_table.ctp:36
+#: Template/Element/Tree/related_table.ctp:33
+#: Template/Element/Variety/index_table.ctp:30
+#: Template/ExperimentSites/index.ctp:27
+#: Template/Graftings/index.ctp:27
+#: Template/MarkFormPropertyTypes/index.ctp:29
+#: Template/MarkFormPropertyTypes/view.ctp:41
+#: Template/Marks/view.ctp:84
+#: Template/Rootstocks/index.ctp:27
+#: Template/Users/index.ctp:33
+#: Template/Varieties/view.ctp:72
 msgid "Delete"
 msgstr ""
 
-#: Template/Batches/view.ctp:72
-#: Template/Crossings/view.ctp:54;87
-#: Template/Element/Batch/index_table.ctp:27
-#: Template/Element/Crossing/index_table.ctp:28
-#: Template/Element/Mark/list.ctp:43
-#: Template/Element/MarkForm/index_table.ctp:19
-#: Template/Element/MarkFormProperty/index_table.ctp:23
-#: Template/Element/MotherTree/index_table.ctp:29
-#: Template/Element/Row/index_table.ctp:23
-#: Template/Element/ScionsBundle/index_table.ctp:27
-#: Template/Element/Tree/index_table.ctp:29
-#: Template/Element/Tree/related_table.ctp:26
-#: Template/Element/Variety/index_table.ctp:25
-#: Template/ExperimentSites/index.ctp:22
-#: Template/Graftings/index.ctp:22
-#: Template/MarkFormPropertyTypes/index.ctp:22
-#: Template/MarkFormPropertyTypes/view.ctp:34
-#: Template/Marks/view.ctp:74
-#: Template/Rootstocks/index.ctp:22
-#: Template/Varieties/view.ctp:61
+#: Template/Batches/view.ctp:86
+#: Template/Crossings/view.ctp:64;107
+#: Template/Element/Batch/index_table.ctp:33
+#: Template/Element/Crossing/index_table.ctp:39
+#: Template/Element/Mark/list.ctp:53
+#: Template/Element/MarkForm/index_table.ctp:25
+#: Template/Element/MarkFormProperty/index_table.ctp:29
+#: Template/Element/MotherTree/index_table.ctp:35
+#: Template/Element/Row/index_table.ctp:29
+#: Template/Element/ScionsBundle/index_table.ctp:34
+#: Template/Element/Tree/index_table.ctp:37
+#: Template/Element/Tree/related_table.ctp:34
+#: Template/Element/Variety/index_table.ctp:31
+#: Template/ExperimentSites/index.ctp:28
+#: Template/Graftings/index.ctp:28
+#: Template/MarkFormPropertyTypes/index.ctp:30
+#: Template/MarkFormPropertyTypes/view.ctp:42
+#: Template/Marks/view.ctp:85
+#: Template/Rootstocks/index.ctp:28
+#: Template/Varieties/view.ctp:73
 msgid "Are you sure you want to delete \"{0}\" (id: {1})?"
 msgstr ""
 
@@ -813,13 +833,13 @@ msgstr ""
 msgid "Edit Crossing"
 msgstr ""
 
-#: Template/Crossings/index.ctp:13
+#: Template/Crossings/index.ctp:14
 #: Template/Element/top_nav.ctp:2
 #: Template/Element/Crossing/nav.ctp:2
 msgid "Crossings"
 msgstr ""
 
-#: Template/Crossings/index.ctp:15
+#: Template/Crossings/index.ctp:16
 msgid "Filter by code..."
 msgstr ""
 
@@ -831,52 +851,52 @@ msgstr ""
 msgid "Mother variety"
 msgstr ""
 
-#: Template/Crossings/view.ctp:16
+#: Template/Crossings/view.ctp:17
 msgid "Father variety"
 msgstr ""
 
-#: Template/Crossings/view.ctp:29
+#: Template/Crossings/view.ctp:31
 msgid "Related Batches"
 msgstr ""
 
-#: Template/Crossings/view.ctp:34;67
-#: Template/MarkScannerCodes/view.ctp:25
-#: Template/Varieties/view.ctp:43
+#: Template/Crossings/view.ctp:36;79
+#: Template/MarkScannerCodes/view.ctp:30
+#: Template/Varieties/view.ctp:47
 msgid "Code"
 msgstr ""
 
-#: Template/Crossings/view.ctp:62
+#: Template/Crossings/view.ctp:74
 msgid "Related Mother Trees"
 msgstr ""
 
-#: Template/Crossings/view.ctp:68
+#: Template/Crossings/view.ctp:80
 #: Template/Element/MotherTree/index_table.ctp:6
 #: Template/Element/Tree/get_tree.ctp:4
 #: Template/Element/Tree/related_table.ctp:4
 msgid "Publicid"
 msgstr ""
 
-#: Template/Crossings/view.ctp:69
-#: Template/MotherTrees/view.ctp:21
+#: Template/Crossings/view.ctp:81
+#: Template/MotherTrees/view.ctp:23
 msgid "Planed"
 msgstr ""
 
-#: Template/Crossings/view.ctp:70
-#: Template/MotherTrees/view.ctp:25
+#: Template/Crossings/view.ctp:82
+#: Template/MotherTrees/view.ctp:27
 msgid "Numb Portions"
 msgstr ""
 
-#: Template/Crossings/view.ctp:71
-#: Template/MotherTrees/view.ctp:29
+#: Template/Crossings/view.ctp:83
+#: Template/MotherTrees/view.ctp:31
 msgid "Numb Flowers"
 msgstr ""
 
-#: Template/Crossings/view.ctp:72
-#: Template/MotherTrees/view.ctp:33
+#: Template/Crossings/view.ctp:84
+#: Template/MotherTrees/view.ctp:35
 msgid "Numb Seeds"
 msgstr ""
 
-#: Template/Crossings/view.ctp:79
+#: Template/Crossings/view.ctp:91
 #: Template/Element/MotherTree/index_table.ctp:20
 msgid "Mother tree not set."
 msgstr ""
@@ -889,26 +909,15 @@ msgstr ""
 msgid "Print a label?"
 msgstr ""
 
-#: Template/Element/print.ctp:7
-#: Template/Marks/view.ctp:64
-#: Template/MotherTrees/view.ctp:22
-#: Template/ScionsBundles/view.ctp:29
-#: Template/Trees/view.ctp:34;58
-msgid "Yes"
-msgstr ""
-
-#: Template/Element/print.ctp:12
-#: Template/MotherTrees/view.ctp:22
-#: Template/ScionsBundles/view.ctp:29
-#: Template/Trees/view.ctp:34;58
-msgid "No"
+#: Template/Element/print.ctp:16
+msgid "Don't print"
 msgstr ""
 
 #: Template/Element/top_nav.ctp:4
 #: Template/Element/Variety/nav.ctp:2
 #: Template/MarkFormProperties/add.ctp:47
 #: Template/MarkFormProperties/edit.ctp:50
-#: Template/Varieties/index.ctp:13
+#: Template/Varieties/index.ctp:15
 msgid "Varieties"
 msgstr ""
 
@@ -916,26 +925,26 @@ msgstr ""
 #: Template/Element/Tree/nav.ctp:2
 #: Template/MarkFormProperties/add.ctp:46
 #: Template/MarkFormProperties/edit.ctp:49
-#: Template/Trees/index.ctp:13
+#: Template/Trees/index.ctp:15
 msgid "Trees"
 msgstr ""
 
 #: Template/Element/top_nav.ctp:6
 #: Template/Element/ScionsBundle/nav.ctp:2
-#: Template/ScionsBundles/index.ctp:13
+#: Template/ScionsBundles/index.ctp:15
 msgid "Scions Bundles"
 msgstr ""
 
 #: Template/Element/top_nav.ctp:7
 #: Template/Element/Row/nav.ctp:2
-#: Template/Rows/index.ctp:13
+#: Template/Rows/index.ctp:14
 msgid "Rows"
 msgstr ""
 
 #: Template/Element/top_nav.ctp:8
 #: Template/Element/Mark/index_table.ctp:6
 #: Template/Element/Mark/nav.ctp:2
-#: Template/Marks/index.ctp:13
+#: Template/Marks/index.ctp:14
 msgid "Marks"
 msgstr ""
 
@@ -948,98 +957,98 @@ msgstr ""
 msgid "Crossing.Batch"
 msgstr ""
 
-#: Template/Element/Batch/index_table.ctp:35
-#: Template/Element/Crossing/index_table.ctp:36
-#: Template/Element/Mark/index_table.ctp:47
-#: Template/Element/MarkForm/index_table.ctp:27
-#: Template/Element/MarkFormProperty/index_table.ctp:31
-#: Template/Element/MarkScannerCode/index_table.ctp:29
-#: Template/Element/MotherTree/index_table.ctp:37
-#: Template/Element/Row/index_table.ctp:31
-#: Template/Element/ScionsBundle/index_table.ctp:35
-#: Template/Element/Tree/index_table.ctp:37
-#: Template/Element/Variety/index_table.ctp:33
-#: Template/ExperimentSites/index.ctp:30
-#: Template/Graftings/index.ctp:30
-#: Template/MarkFormPropertyTypes/index.ctp:30
-#: Template/Rootstocks/index.ctp:30
-#: Template/Users/index.ctp:36
+#: Template/Element/Batch/index_table.ctp:43
+#: Template/Element/Crossing/index_table.ctp:49
+#: Template/Element/Mark/index_table.ctp:58
+#: Template/Element/MarkForm/index_table.ctp:35
+#: Template/Element/MarkFormProperty/index_table.ctp:39
+#: Template/Element/MarkScannerCode/index_table.ctp:42
+#: Template/Element/MotherTree/index_table.ctp:45
+#: Template/Element/Row/index_table.ctp:38
+#: Template/Element/ScionsBundle/index_table.ctp:44
+#: Template/Element/Tree/index_table.ctp:47
+#: Template/Element/Variety/index_table.ctp:41
+#: Template/ExperimentSites/index.ctp:38
+#: Template/Graftings/index.ctp:38
+#: Template/MarkFormPropertyTypes/index.ctp:40
+#: Template/Rootstocks/index.ctp:38
+#: Template/Users/index.ctp:43
 msgid "first"
 msgstr ""
 
-#: Template/Element/Batch/index_table.ctp:36
-#: Template/Element/Crossing/index_table.ctp:37
-#: Template/Element/Mark/index_table.ctp:48
-#: Template/Element/MarkForm/index_table.ctp:28
-#: Template/Element/MarkFormProperty/index_table.ctp:32
-#: Template/Element/MarkScannerCode/index_table.ctp:30
-#: Template/Element/MotherTree/index_table.ctp:38
-#: Template/Element/Row/index_table.ctp:32
-#: Template/Element/ScionsBundle/index_table.ctp:36
-#: Template/Element/Tree/index_table.ctp:38
-#: Template/Element/Variety/index_table.ctp:34
-#: Template/ExperimentSites/index.ctp:31
-#: Template/Graftings/index.ctp:31
-#: Template/MarkFormPropertyTypes/index.ctp:31
-#: Template/Rootstocks/index.ctp:31
-#: Template/Users/index.ctp:37
+#: Template/Element/Batch/index_table.ctp:44
+#: Template/Element/Crossing/index_table.ctp:50
+#: Template/Element/Mark/index_table.ctp:59
+#: Template/Element/MarkForm/index_table.ctp:36
+#: Template/Element/MarkFormProperty/index_table.ctp:40
+#: Template/Element/MarkScannerCode/index_table.ctp:43
+#: Template/Element/MotherTree/index_table.ctp:46
+#: Template/Element/Row/index_table.ctp:39
+#: Template/Element/ScionsBundle/index_table.ctp:45
+#: Template/Element/Tree/index_table.ctp:48
+#: Template/Element/Variety/index_table.ctp:42
+#: Template/ExperimentSites/index.ctp:39
+#: Template/Graftings/index.ctp:39
+#: Template/MarkFormPropertyTypes/index.ctp:41
+#: Template/Rootstocks/index.ctp:39
+#: Template/Users/index.ctp:44
 msgid "previous"
 msgstr ""
 
-#: Template/Element/Batch/index_table.ctp:38
-#: Template/Element/Crossing/index_table.ctp:39
-#: Template/Element/Mark/index_table.ctp:50
-#: Template/Element/MarkForm/index_table.ctp:30
-#: Template/Element/MarkFormProperty/index_table.ctp:34
-#: Template/Element/MarkScannerCode/index_table.ctp:32
-#: Template/Element/MotherTree/index_table.ctp:40
-#: Template/Element/Row/index_table.ctp:34
-#: Template/Element/ScionsBundle/index_table.ctp:38
-#: Template/Element/Tree/index_table.ctp:40
-#: Template/Element/Variety/index_table.ctp:36
-#: Template/ExperimentSites/index.ctp:33
-#: Template/Graftings/index.ctp:33
-#: Template/MarkFormPropertyTypes/index.ctp:33
-#: Template/Rootstocks/index.ctp:33
-#: Template/Users/index.ctp:39
+#: Template/Element/Batch/index_table.ctp:46
+#: Template/Element/Crossing/index_table.ctp:52
+#: Template/Element/Mark/index_table.ctp:61
+#: Template/Element/MarkForm/index_table.ctp:38
+#: Template/Element/MarkFormProperty/index_table.ctp:42
+#: Template/Element/MarkScannerCode/index_table.ctp:45
+#: Template/Element/MotherTree/index_table.ctp:48
+#: Template/Element/Row/index_table.ctp:41
+#: Template/Element/ScionsBundle/index_table.ctp:47
+#: Template/Element/Tree/index_table.ctp:50
+#: Template/Element/Variety/index_table.ctp:44
+#: Template/ExperimentSites/index.ctp:41
+#: Template/Graftings/index.ctp:41
+#: Template/MarkFormPropertyTypes/index.ctp:43
+#: Template/Rootstocks/index.ctp:41
+#: Template/Users/index.ctp:46
 msgid "next"
 msgstr ""
 
-#: Template/Element/Batch/index_table.ctp:39
-#: Template/Element/Crossing/index_table.ctp:40
-#: Template/Element/Mark/index_table.ctp:51
-#: Template/Element/MarkForm/index_table.ctp:31
-#: Template/Element/MarkFormProperty/index_table.ctp:35
-#: Template/Element/MarkScannerCode/index_table.ctp:33
-#: Template/Element/MotherTree/index_table.ctp:41
-#: Template/Element/Row/index_table.ctp:35
-#: Template/Element/ScionsBundle/index_table.ctp:39
-#: Template/Element/Tree/index_table.ctp:41
-#: Template/Element/Variety/index_table.ctp:37
-#: Template/ExperimentSites/index.ctp:34
-#: Template/Graftings/index.ctp:34
-#: Template/MarkFormPropertyTypes/index.ctp:34
-#: Template/Rootstocks/index.ctp:34
-#: Template/Users/index.ctp:40
+#: Template/Element/Batch/index_table.ctp:47
+#: Template/Element/Crossing/index_table.ctp:53
+#: Template/Element/Mark/index_table.ctp:62
+#: Template/Element/MarkForm/index_table.ctp:39
+#: Template/Element/MarkFormProperty/index_table.ctp:43
+#: Template/Element/MarkScannerCode/index_table.ctp:46
+#: Template/Element/MotherTree/index_table.ctp:49
+#: Template/Element/Row/index_table.ctp:42
+#: Template/Element/ScionsBundle/index_table.ctp:48
+#: Template/Element/Tree/index_table.ctp:51
+#: Template/Element/Variety/index_table.ctp:45
+#: Template/ExperimentSites/index.ctp:42
+#: Template/Graftings/index.ctp:42
+#: Template/MarkFormPropertyTypes/index.ctp:44
+#: Template/Rootstocks/index.ctp:42
+#: Template/Users/index.ctp:47
 msgid "last"
 msgstr ""
 
-#: Template/Element/Batch/index_table.ctp:41
-#: Template/Element/Crossing/index_table.ctp:42
-#: Template/Element/Mark/index_table.ctp:53
-#: Template/Element/MarkForm/index_table.ctp:33
-#: Template/Element/MarkFormProperty/index_table.ctp:37
-#: Template/Element/MarkScannerCode/index_table.ctp:35
-#: Template/Element/MotherTree/index_table.ctp:43
-#: Template/Element/Row/index_table.ctp:37
-#: Template/Element/ScionsBundle/index_table.ctp:41
-#: Template/Element/Tree/index_table.ctp:43
-#: Template/Element/Variety/index_table.ctp:39
-#: Template/ExperimentSites/index.ctp:36
-#: Template/Graftings/index.ctp:36
-#: Template/MarkFormPropertyTypes/index.ctp:36
-#: Template/Rootstocks/index.ctp:36
-#: Template/Users/index.ctp:42
+#: Template/Element/Batch/index_table.ctp:49
+#: Template/Element/Crossing/index_table.ctp:55
+#: Template/Element/Mark/index_table.ctp:64
+#: Template/Element/MarkForm/index_table.ctp:41
+#: Template/Element/MarkFormProperty/index_table.ctp:45
+#: Template/Element/MarkScannerCode/index_table.ctp:48
+#: Template/Element/MotherTree/index_table.ctp:51
+#: Template/Element/Row/index_table.ctp:44
+#: Template/Element/ScionsBundle/index_table.ctp:50
+#: Template/Element/Tree/index_table.ctp:53
+#: Template/Element/Variety/index_table.ctp:47
+#: Template/ExperimentSites/index.ctp:44
+#: Template/Graftings/index.ctp:44
+#: Template/MarkFormPropertyTypes/index.ctp:46
+#: Template/Rootstocks/index.ctp:44
+#: Template/Users/index.ctp:49
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 
@@ -1064,7 +1073,7 @@ msgid "New Crossing"
 msgstr ""
 
 #: Template/Element/Crossing/nav.ctp:6
-#: Template/MotherTrees/index.ctp:13
+#: Template/MotherTrees/index.ctp:15
 msgid "Mother Trees"
 msgstr ""
 
@@ -1083,13 +1092,13 @@ msgid "Fields"
 msgstr ""
 
 #: Template/Element/Mark/basic_mark_form.ctp:29
-#: Template/MarkForms/add.ctp:25
-#: Template/MarkForms/edit.ctp:26
+#: Template/MarkForms/add.ctp:26
+#: Template/MarkForms/edit.ctp:27
 msgid "Add mark field to form"
 msgstr ""
 
 #: Template/Element/Mark/field.ctp:22
-#: Template/Element/Mark/list.ctp:39
+#: Template/Element/Mark/list.ctp:41
 msgid "True"
 msgstr ""
 
@@ -1098,7 +1107,7 @@ msgid "False"
 msgstr ""
 
 #: Template/Element/Mark/index_table.ctp:5
-#: Template/Marks/view.ctp:37
+#: Template/Marks/view.ctp:41
 msgid "Object"
 msgstr ""
 
@@ -1109,14 +1118,14 @@ msgstr ""
 msgid "Tree:"
 msgstr ""
 
-#: Template/Element/Mark/index_table.ctp:17
-#: Template/Element/Mark/list.ctp:20
-#: Template/Marks/view.ctp:9
+#: Template/Element/Mark/index_table.ctp:18
+#: Template/Element/Mark/list.ctp:21
+#: Template/Marks/view.ctp:10
 #: Template/Varieties/view.ctp:6
 msgid "Variety:"
 msgstr ""
 
-#: Template/Element/Mark/index_table.ctp:39
+#: Template/Element/Mark/index_table.ctp:49
 msgid "Are you sure you want to delete the Mark with the id {0}?"
 msgstr ""
 
@@ -1125,20 +1134,20 @@ msgstr ""
 #: Template/MarkScannerCodes/add.ctp:12
 #: Template/MarkScannerCodes/edit.ctp:18
 #: Template/MarkScannerCodes/view.ctp:17
-#: Template/Marks/view.ctp:55
+#: Template/Marks/view.ctp:59
 msgid "Property"
 msgstr ""
 
 #: Template/Element/Mark/list.ctp:6
 #: Template/Element/MarkScannerCode/index_table.ctp:7
-#: Template/MarkScannerCodes/add.ctp:19
-#: Template/MarkScannerCodes/view.ctp:21
-#: Template/Marks/view.ctp:56
+#: Template/MarkScannerCodes/add.ctp:20
+#: Template/MarkScannerCodes/view.ctp:26
+#: Template/Marks/view.ctp:60
 msgid "Value"
 msgstr ""
 
 #: Template/Element/Mark/list.ctp:7
-#: Template/Marks/view.ctp:29
+#: Template/Marks/view.ctp:32
 msgid "Author"
 msgstr ""
 
@@ -1150,12 +1159,12 @@ msgstr ""
 msgid "Exceptional"
 msgstr ""
 
-#: Template/Element/Mark/list.ctp:24
+#: Template/Element/Mark/list.ctp:26
 msgid "Batch"
 msgstr ""
 
 #: Template/Element/Mark/nav.ctp:3
-#: Template/Marks/add_tree_mark.ctp:16
+#: Template/Marks/add_tree_mark.ctp:17
 msgid "Mark Tree"
 msgstr ""
 
@@ -1163,65 +1172,65 @@ msgstr ""
 msgid "Mark Tree (Scanner)"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:5
+#: Template/Element/Mark/nav.ctp:6
 #: Template/Marks/add_variety_mark.ctp:8
 msgid "Mark Variety"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:6
+#: Template/Element/Mark/nav.ctp:7
 #: Template/Marks/add_batch_mark.ctp:8
 msgid "Mark Batch"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:7
+#: Template/Element/Mark/nav.ctp:8
 msgid "List Marks"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:9
+#: Template/Element/Mark/nav.ctp:10
 msgid "Forms"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:10
+#: Template/Element/Mark/nav.ctp:11
 msgid "New Form"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:11
+#: Template/Element/Mark/nav.ctp:12
 msgid "List Forms"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:13
+#: Template/Element/Mark/nav.ctp:14
 msgid "Properties"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:14
+#: Template/Element/Mark/nav.ctp:15
 msgid "New Property"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:15
+#: Template/Element/Mark/nav.ctp:16
 msgid "List Properties"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:17
-#: Template/MarkScannerCodes/index.ctp:13
+#: Template/Element/Mark/nav.ctp:19
+#: Template/MarkScannerCodes/index.ctp:14
 msgid "Scanner Codes"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:18
+#: Template/Element/Mark/nav.ctp:20
 msgid "New Scanner Code"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:19
+#: Template/Element/Mark/nav.ctp:21
 msgid "List Scanner Codes"
 msgstr ""
 
-#: Template/Element/Mark/nav.ctp:20
+#: Template/Element/Mark/nav.ctp:23
 msgid "Print submit form label"
 msgstr ""
 
 #: Template/Element/MarkFormProperty/index_table.ctp:6
 #: Template/MarkFormProperties/add.ctp:17
 #: Template/MarkFormProperties/edit.ctp:17
-#: Template/MarkFormProperties/view.ctp:16
+#: Template/MarkFormProperties/view.ctp:21
 msgid "Data Type"
 msgstr ""
 
@@ -1232,13 +1241,13 @@ msgstr ""
 msgid "Property Type"
 msgstr ""
 
-#: Template/Element/MarkScannerCode/index_table.ctp:21
+#: Template/Element/MarkScannerCode/index_table.ctp:32
 msgid "Are you sure you want to delete {0} (id: {1})?"
 msgstr ""
 
 #: Template/Element/MotherTree/index_table.ctp:5
 #: Template/Element/ScionsBundle/index_table.ctp:6
-#: Template/MotherTrees/add.ctp:28
+#: Template/MotherTrees/add.ctp:30
 #: Template/MotherTrees/edit.ctp:17
 #: Template/ScionsBundles/add.ctp:15
 #: Template/ScionsBundles/edit.ctp:15
@@ -1306,33 +1315,33 @@ msgstr ""
 msgid "List Experiment Sites"
 msgstr ""
 
-#: Template/Element/Setting/nav.ctp:12
+#: Template/Element/Setting/nav.ctp:13
 msgid "New Experiment Site"
 msgstr ""
 
-#: Template/Element/Setting/nav.ctp:14
+#: Template/Element/Setting/nav.ctp:15
 #: Template/MarkFormPropertyTypes/index.ctp:5
 msgid "Mark Property Types"
 msgstr ""
 
-#: Template/Element/Setting/nav.ctp:15
+#: Template/Element/Setting/nav.ctp:16
 msgid "List Property Types"
 msgstr ""
 
-#: Template/Element/Setting/nav.ctp:16
+#: Template/Element/Setting/nav.ctp:18
 msgid "New Property Type"
 msgstr ""
 
-#: Template/Element/Setting/nav.ctp:18
+#: Template/Element/Setting/nav.ctp:21
 #: Template/Users/index.ctp:5
 msgid "Users"
 msgstr ""
 
-#: Template/Element/Setting/nav.ctp:19
+#: Template/Element/Setting/nav.ctp:22
 msgid "List Users"
 msgstr ""
 
-#: Template/Element/Setting/nav.ctp:20
+#: Template/Element/Setting/nav.ctp:23
 msgid "New User"
 msgstr ""
 
@@ -1343,19 +1352,19 @@ msgid "Variety"
 msgstr ""
 
 #: Template/Element/Tree/get_tree.ctp:6
-#: Template/Trees/view.ctp:21
+#: Template/Trees/view.ctp:22
 msgid "Experiment Site"
 msgstr ""
 
 #: Template/Element/Tree/get_tree.ctp:7
 #: Template/Element/Tree/related_table.ctp:6
-#: Template/Trees/view.ctp:25
+#: Template/Trees/view.ctp:27
 msgid "Row"
 msgstr ""
 
 #: Template/Element/Tree/get_tree.ctp:8
 #: Template/Element/Tree/related_table.ctp:7
-#: Template/Trees/view.ctp:29
+#: Template/Trees/view.ctp:32
 msgid "Offset"
 msgstr ""
 
@@ -1364,12 +1373,12 @@ msgstr ""
 msgid "Eliminated"
 msgstr ""
 
-#: Template/Element/Tree/index_table.ctp:23
+#: Template/Element/Tree/index_table.ctp:25
 #: Template/Element/Tree/related_table.ctp:20
 msgid "Read"
 msgstr ""
 
-#: Template/Element/Tree/index_table.ctp:24
+#: Template/Element/Tree/index_table.ctp:26
 msgid "eliminated"
 msgstr ""
 
@@ -1390,12 +1399,12 @@ msgid "New Graft Tree"
 msgstr ""
 
 #: Template/Element/Tree/nav.ctp:7
-#: Template/Trees/plant.ctp:14
+#: Template/Trees/plant.ctp:15
 msgid "Plant Tree"
 msgstr ""
 
 #: Template/Element/Tree/nav.ctp:8
-#: Template/Trees/eliminate.ctp:14
+#: Template/Trees/eliminate.ctp:15
 msgid "Eliminate Tree"
 msgstr ""
 
@@ -1435,7 +1444,7 @@ msgstr ""
 #: Template/Graftings/view.ctp:17
 #: Template/Rootstocks/view.ctp:17
 #: Template/Rows/view.ctp:29
-#: Template/Varieties/view.ctp:69
+#: Template/Varieties/view.ctp:83
 msgid "Related Trees"
 msgstr ""
 
@@ -1467,24 +1476,24 @@ msgstr ""
 msgid "Automatically prefilled"
 msgstr ""
 
-#: Template/Layout/default.ctp:52
+#: Template/Layout/default.ctp:53
 msgid "{0} matching elements for this mark were found."
 msgstr ""
 
-#: Template/Layout/default.ctp:53
+#: Template/Layout/default.ctp:54
 msgid "No tree could be found"
 msgstr ""
 
-#: Template/Layout/default.ctp:66
+#: Template/Layout/default.ctp:67
 msgid "Location: {0}"
 msgstr ""
 
-#: Template/Layout/default.ctp:68
+#: Template/Layout/default.ctp:70
 #: Template/Settings/index.ctp:6
 msgid "Settings"
 msgstr ""
 
-#: Template/Layout/default.ctp:69
+#: Template/Layout/default.ctp:71
 msgid "Logout"
 msgstr ""
 
@@ -1512,13 +1521,13 @@ msgstr ""
 
 #: Template/MarkFormProperties/add.ctp:24
 #: Template/MarkFormProperties/edit.ctp:25
-#: Template/MarkFormProperties/view.ctp:21
+#: Template/MarkFormProperties/view.ctp:26
 msgid "Minimum Value"
 msgstr ""
 
 #: Template/MarkFormProperties/add.ctp:32
 #: Template/MarkFormProperties/edit.ctp:34
-#: Template/MarkFormProperties/view.ctp:27
+#: Template/MarkFormProperties/view.ctp:32
 msgid "Maximum Value"
 msgstr ""
 
@@ -1531,12 +1540,12 @@ msgstr ""
 msgid "Add Mark Form Property"
 msgstr ""
 
-#: Template/MarkFormProperties/index.ctp:13
+#: Template/MarkFormProperties/index.ctp:14
 msgid "Mark Form Properties"
 msgstr ""
 
-#: Template/MarkFormProperties/index.ctp:15
-#: Template/MarkForms/index.ctp:15
+#: Template/MarkFormProperties/index.ctp:16
+#: Template/MarkForms/index.ctp:16
 msgid "Filter by name..."
 msgstr ""
 
@@ -1544,16 +1553,16 @@ msgstr ""
 msgid "Mark Form Property:"
 msgstr ""
 
-#: Template/MarkFormProperties/view.ctp:33
+#: Template/MarkFormProperties/view.ctp:38
 msgid "Step"
 msgstr ""
 
-#: Template/MarkFormProperties/view.ctp:47
+#: Template/MarkFormProperties/view.ctp:52
 msgid "Related Mark Forms"
 msgstr ""
 
-#: Template/MarkFormProperties/view.ctp:52
-#: Template/Marks/view.ctp:33
+#: Template/MarkFormProperties/view.ctp:57
+#: Template/Marks/view.ctp:36
 msgid "Mark Form"
 msgstr ""
 
@@ -1581,7 +1590,7 @@ msgstr ""
 msgid "Edit Mark Form"
 msgstr ""
 
-#: Template/MarkForms/index.ctp:13
+#: Template/MarkForms/index.ctp:14
 msgid "Mark Forms"
 msgstr ""
 
@@ -1609,13 +1618,8 @@ msgstr ""
 msgid "Edit Scanner Code"
 msgstr ""
 
-#: Template/MarkScannerCodes/index.ctp:17
+#: Template/MarkScannerCodes/index.ctp:18
 msgid "Filter by property"
-msgstr ""
-
-#: Template/MarkScannerCodes/view.ctp:6
-#: Template/Trees/view.ctp:6
-msgid "Print label"
 msgstr ""
 
 #: Template/MarkScannerCodes/view.ctp:10
@@ -1626,10 +1630,10 @@ msgstr ""
 msgid "Edit Mark Value"
 msgstr ""
 
-#: Template/Marks/add_tree_mark.ctp:18
-#: Template/MotherTrees/add.ctp:18
-#: Template/Trees/eliminate.ctp:16
-#: Template/Trees/plant.ctp:16
+#: Template/Marks/add_tree_mark.ctp:20
+#: Template/MotherTrees/add.ctp:20
+#: Template/Trees/eliminate.ctp:18
+#: Template/Trees/plant.ctp:18
 msgid "Enter publicid..."
 msgstr ""
 
@@ -1637,11 +1641,11 @@ msgstr ""
 msgid "Mark Tree by Scanner"
 msgstr ""
 
-#: Template/Marks/add_tree_mark_by_scanner.ctp:15
+#: Template/Marks/add_tree_mark_by_scanner.ctp:16
 msgid "Fill out form then scan tree and marks in here"
 msgstr ""
 
-#: Template/Marks/add_tree_mark_by_scanner.ctp:17
+#: Template/Marks/add_tree_mark_by_scanner.ctp:18
 msgid "Please wait..."
 msgstr ""
 
@@ -1649,23 +1653,30 @@ msgstr ""
 msgid "Edit Mark"
 msgstr ""
 
-#: Template/Marks/index.ctp:17
+#: Template/Marks/index.ctp:18
 msgid "Filter by mark type"
 msgstr ""
 
-#: Template/Marks/view.ctp:18
+#: Template/Marks/view.ctp:21
 msgid "Mark:"
 msgstr ""
 
-#: Template/Marks/view.ctp:50
+#: Template/Marks/view.ctp:54
 msgid "Values"
 msgstr ""
 
-#: Template/Marks/view.ctp:57
+#: Template/Marks/view.ctp:61
 msgid "Exceptional Mark"
 msgstr ""
 
-#: Template/MotherTrees/add.ctp:16
+#: Template/Marks/view.ctp:69
+#: Template/MotherTrees/view.ctp:24
+#: Template/ScionsBundles/view.ctp:30
+#: Template/Trees/view.ctp:37;63
+msgid "Yes"
+msgstr ""
+
+#: Template/MotherTrees/add.ctp:17
 msgid "Add Mother Tree"
 msgstr ""
 
@@ -1673,7 +1684,7 @@ msgstr ""
 msgid "Edit Mother Tree"
 msgstr ""
 
-#: Template/MotherTrees/index.ctp:15
+#: Template/MotherTrees/index.ctp:18
 msgid "Filter by code oder publicid..."
 msgstr ""
 
@@ -1685,19 +1696,25 @@ msgstr ""
 msgid "Mother Tree"
 msgstr ""
 
-#: Template/MotherTrees/view.ctp:37
+#: Template/MotherTrees/view.ctp:24
+#: Template/ScionsBundles/view.ctp:30
+#: Template/Trees/view.ctp:37;63
+msgid "No"
+msgstr ""
+
+#: Template/MotherTrees/view.ctp:39
 msgid "Date Pollen Harvested"
 msgstr ""
 
-#: Template/MotherTrees/view.ctp:41
+#: Template/MotherTrees/view.ctp:43
 msgid "Date Impregnated"
 msgstr ""
 
-#: Template/MotherTrees/view.ctp:45
+#: Template/MotherTrees/view.ctp:47
 msgid "Date Fruit Harvested"
 msgstr ""
 
-#: Template/MotherTrees/view.ctp:58
+#: Template/MotherTrees/view.ctp:60
 msgid "Target"
 msgstr ""
 
@@ -1721,8 +1738,8 @@ msgstr ""
 msgid "Edit Row"
 msgstr ""
 
-#: Template/Rows/index.ctp:15
-#: Template/ScionsBundles/index.ctp:15
+#: Template/Rows/index.ctp:17
+#: Template/ScionsBundles/index.ctp:18
 msgid "Filter by code or convar..."
 msgstr ""
 
@@ -1735,7 +1752,7 @@ msgid "Date Created"
 msgstr ""
 
 #: Template/Rows/view.ctp:16
-#: Template/Trees/view.ctp:53
+#: Template/Trees/view.ctp:58
 msgid "Date Eliminated"
 msgstr ""
 
@@ -1750,7 +1767,7 @@ msgstr ""
 
 #: Template/ScionsBundles/add.ctp:27
 #: Template/ScionsBundles/edit.ctp:27
-#: Template/ScionsBundles/view.ctp:28
+#: Template/ScionsBundles/view.ctp:29
 msgid "Reserved for external partners"
 msgstr ""
 
@@ -1766,13 +1783,13 @@ msgstr ""
 msgid "Descents Publicid List"
 msgstr ""
 
-#: Template/ScionsBundles/view.ctp:20
-#: Template/Varieties/view.ctp:44
+#: Template/ScionsBundles/view.ctp:21
+#: Template/Varieties/view.ctp:48
 msgid "Numb Scions"
 msgstr ""
 
-#: Template/ScionsBundles/view.ctp:24
-#: Template/Varieties/view.ctp:45
+#: Template/ScionsBundles/view.ctp:25
+#: Template/Varieties/view.ctp:49
 msgid "Date Scions Harvest"
 msgstr ""
 
@@ -1796,27 +1813,27 @@ msgstr ""
 msgid "Edit Tree"
 msgstr ""
 
-#: Template/Trees/index.ctp:15
+#: Template/Trees/index.ctp:18
 msgid "Filter by publicid or convar..."
 msgstr ""
 
-#: Template/Trees/view.ctp:33
+#: Template/Trees/view.ctp:36
 msgid "Genuine Seedling"
 msgstr ""
 
-#: Template/Trees/view.ctp:37
+#: Template/Trees/view.ctp:40
 msgid "Date Grafted"
 msgstr ""
 
-#: Template/Trees/view.ctp:41
+#: Template/Trees/view.ctp:44
 msgid "Rootstock"
 msgstr ""
 
-#: Template/Trees/view.ctp:45
+#: Template/Trees/view.ctp:49
 msgid "Grafting"
 msgstr ""
 
-#: Template/Trees/view.ctp:57
+#: Template/Trees/view.ctp:62
 msgid "Migrated Tree"
 msgstr ""
 
@@ -1828,7 +1845,7 @@ msgstr ""
 msgid "Edit User"
 msgstr ""
 
-#: Template/Users/index.ctp:28
+#: Template/Users/index.ctp:34
 msgid "Are you sure you want to delete this user: {0}?"
 msgstr ""
 
@@ -1856,8 +1873,8 @@ msgstr ""
 msgid "Edit Variety"
 msgstr ""
 
-#: Template/Varieties/index.ctp:15
-msgid "Filter by convar..."
+#: Template/Varieties/index.ctp:18
+msgid "Filter by convar or breeder variety code..."
 msgstr ""
 
 #: Template/Varieties/view.ctp:13
@@ -1865,22 +1882,26 @@ msgid "Official Name"
 msgstr ""
 
 #: Template/Varieties/view.ctp:17
-msgid "Plant Breeder"
+msgid "Breeder Variety Code"
 msgstr ""
 
 #: Template/Varieties/view.ctp:21
+msgid "Plant Breeder"
+msgstr ""
+
+#: Template/Varieties/view.ctp:25
 msgid "Registration"
 msgstr ""
 
-#: Template/Varieties/view.ctp:34
+#: Template/Varieties/view.ctp:38
 msgid "Description"
 msgstr ""
 
-#: Template/Varieties/view.ctp:38
+#: Template/Varieties/view.ctp:42
 msgid "Related Scions Bundles"
 msgstr ""
 
-#: Template/Varieties/view.ctp:46
+#: Template/Varieties/view.ctp:50
 msgid "External Use"
 msgstr ""
 
