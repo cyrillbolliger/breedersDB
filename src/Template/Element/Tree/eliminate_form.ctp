@@ -12,8 +12,7 @@ echo $this->Form->input('publicid', [
 echo $this->Form->input('date_eliminated', [
     'required' => 'required',
     'type'     => 'text',
-    'class'    => 'datepicker',
-    'class'    => $tree->dirty('date_eliminated') ? 'brain-prefilled' : '',
+    'class'    => $tree->dirty('date_eliminated') ? 'datepicker brain-prefilled' : 'datepicker',
 ]);
 echo $this->Form->input('note');
 ?>
