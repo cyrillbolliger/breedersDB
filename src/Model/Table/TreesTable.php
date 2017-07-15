@@ -171,7 +171,7 @@ class TreesTable extends Table
         }
         
         // set experiment site
-        if ( ! isset($data['experiment_site_id'])) {
+        if ( ! isset($data['experiment_site_id']) && isset($options['experiment_site_id'])) {
             $data['experiment_site_id'] = $options['experiment_site_id'];
         }
         

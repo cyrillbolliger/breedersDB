@@ -261,8 +261,7 @@ class TreesController extends AppController
             $session             = $this->request->session();
             $experiment_site_id  = (int)$session->read('experiment_site_id');
             $this->request->data = $this->Trees->prefixPublicidOnElimination($id, $this->request->data);
-            $tree                = $this->Trees->patchEntity($tree, $this->request->data,
-                ['experiment_site_id' => $experiment_site_id]);
+            $tree                = $this->Trees->patchEntity($tree, $this->request->data);
             if ($this->Trees->save($tree)) {
                 $this->Flash->success(__('The tree has been saved.'));
             } else {
