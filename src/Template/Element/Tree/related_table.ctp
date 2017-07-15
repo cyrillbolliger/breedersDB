@@ -17,7 +17,7 @@
             <td><?= h($tree->convar) ?></td>
             <td><?= h($tree->row_code) ?></td>
             <td><?= h($tree->offset) ?></td>
-            <td><?= $tree->note ? $this->Html->link(__('Read'), ['action' => 'view', $tree->id]) : '' ?></td>
+            <td><?= $tree->note ? $this->Html->link(__('Read'), ['controller' => 'trees', 'action' => 'view', $tree->id]) : '' ?></td>
             <td><?= $tree->date_eliminated ? 'eliminated' : '' ?></td>
             <td><?= h($tree->modified) ?></td>
             <td class="actions">
