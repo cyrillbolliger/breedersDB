@@ -12,7 +12,7 @@
         <tr>
             <td class="id"><?= $this->Number->format($markForm->id) ?></td>
             <td><?= h($markForm->name) ?></td>
-            <td><?= h($markForm->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($markForm->modified)) ?></td>
             <td class="actions">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $markForm->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>

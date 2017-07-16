@@ -48,11 +48,11 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($batch->created) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($batch->created)) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($batch->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($batch->modified)) ?></td>
         </tr>
     </table>
     <div class="row">

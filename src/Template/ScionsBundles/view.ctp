@@ -31,11 +31,11 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($scionsBundle->created) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($scionsBundle->created)) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($scionsBundle->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($scionsBundle->modified)) ?></td>
         </tr>
     </table>
     <div class="row">

@@ -43,11 +43,11 @@ if ($mark->has('tree')) {
         </tr>
         <tr>
             <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($mark->created) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($mark->created)) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($mark->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($mark->modified)) ?></td>
         </tr>
     </table>
     <div class="related">
@@ -73,7 +73,7 @@ if ($mark->has('tree')) {
                         <td><?= h($markValues->mark_form_property->name) ?></td>
                         <td><?= h($value) ?></td>
                         <td><?= $exceptional ?></td>
-                        <td><?= h($markValues->modified) ?></td>
+                        <td><?= h($this->LocalizedTime->getUserTime($markValues->modified)) ?></td>
                         <td class="actions">
                             <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',
                                 ['controller' => 'MarkValues', 'action' => 'edit', $markValues->id],

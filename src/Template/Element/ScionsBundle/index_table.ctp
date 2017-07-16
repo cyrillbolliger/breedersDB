@@ -21,7 +21,7 @@
             <td><?= $this->Number->format($scionsBundle->numb_scions) ?></td>
             <td><?= h($scionsBundle->date_scions_harvest) ?></td>
             <td><?= h($scionsBundle->external_use) ?></td>
-            <td><?= h($scionsBundle->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($scionsBundle->modified)) ?></td>
             <td class="actions">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $scionsBundle->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>

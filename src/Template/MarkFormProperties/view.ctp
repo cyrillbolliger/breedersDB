@@ -41,11 +41,11 @@
         <?php endif; ?>
         <tr>
             <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($markFormProperty->created) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($markFormProperty->created)) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($markFormProperty->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($markFormProperty->modified)) ?></td>
         </tr>
     </table>
     <div class="related">
@@ -62,7 +62,7 @@
                     <tr>
                         <td class="id"><?= h($markFormFields->mark_form->id) ?></td>
                         <td><?= h($markFormFields->mark_form->name) ?></td>
-                        <td><?= h($markFormFields->mark_form->modified) ?></td>
+                        <td><?= h($this->LocalizedTime->getUserTime($markFormFields->mark_form->modified)) ?></td>
                         <td class="actions">
                             <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                                 ['controller' => 'MarkForms', 'action' => 'view', $markFormFields->mark_form->id],

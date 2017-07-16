@@ -20,8 +20,8 @@
                 <td class="id"><?= h($user->id) ?></td>
                 <td><?= h($user->email) ?></td>
                 <td><?= $this->Number->format($user->level) ?></td>
-                <td><?= h($user->created) ?></td>
-                <td><?= h($user->modified) ?></td>
+                <td><?= h($this->LocalizedTime->getUserTime($user->created)) ?></td>
+                <td><?= h($this->LocalizedTime->getUserTime($user->modified)) ?></td>
                 <td class="actions">
                     <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                         ['action' => 'view', $user->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>

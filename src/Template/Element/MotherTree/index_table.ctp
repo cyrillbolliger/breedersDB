@@ -22,7 +22,7 @@
             <td><?= $this->Number->format($motherTree->numb_portions) ?></td>
             <td><?= $this->Number->format($motherTree->numb_flowers) ?></td>
             <td><?= $this->Number->format($motherTree->numb_seeds) ?></td>
-            <td><?= h($motherTree->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($motherTree->modified)) ?></td>
             <td class="actions">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $motherTree->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>

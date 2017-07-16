@@ -10,11 +10,11 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($markForm->created) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($markForm->created)) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($markForm->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($markForm->modified)) ?></td>
         </tr>
     </table>
     <div class="related">
@@ -32,7 +32,7 @@
                         <td class="id"><?= h($markFormFields->id) ?></td>
                         <td><?= h($markFormFields->mark_form_property->name ?? '') ?></td>
                         <td><?= h($markFormFields->priority) ?></td>
-                        <td><?= h($markFormFields->modified) ?></td>
+                        <td><?= h($this->LocalizedTime->getUserTime($markFormFields->modified)) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table>

@@ -18,11 +18,11 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($row->created) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($row->created)) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($row->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($row->modified)) ?></td>
         </tr>
     </table>
     <div class="related">

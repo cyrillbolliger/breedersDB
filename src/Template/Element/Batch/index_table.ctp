@@ -20,7 +20,7 @@
             <td><?= h($batch->seed_tray) ?></td>
             <td><?= h($batch->date_planted) ?></td>
             <td><?= h($batch->patch) ?></td>
-            <td><?= h($batch->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($batch->modified)) ?></td>
             <td class="actions">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $batch->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>

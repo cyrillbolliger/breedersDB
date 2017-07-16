@@ -19,7 +19,7 @@
             <td><?= h($tree->offset) ?></td>
             <td><?= $tree->note ? $this->Html->link(__('Read'), ['controller' => 'trees', 'action' => 'view', $tree->id]) : '' ?></td>
             <td><?= $tree->date_eliminated ? 'eliminated' : '' ?></td>
-            <td><?= h($tree->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($tree->modified)) ?></td>
             <td class="actions">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['controller' => 'Trees', 'action' => 'view', $tree->id],

@@ -181,5 +181,12 @@ class AppController extends Controller
                 return $this->redirect(['controller' => 'ExperimentSites', 'action' => 'select']);
             }
         }
+        
+        /**
+         * write users time zone to session
+         */
+        if (empty($session->read('time_zone'))) {
+            $session->write('time_zone', $this->Auth->user('time_zone'));
+        }
     }
 }

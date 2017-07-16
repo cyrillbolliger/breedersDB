@@ -17,8 +17,8 @@
             <td><?= h($variety->convar) ?></td>
             <td><?= h($variety->official_name) ?></td>
             <td><?= h($variety->acronym) ?></td>
-            <td><?= h($variety->created) ?></td>
-            <td><?= h($variety->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($variety->created)) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($variety->modified)) ?></td>
             <td class="actions">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $variety->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>

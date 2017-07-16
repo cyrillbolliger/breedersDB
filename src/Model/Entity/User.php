@@ -12,6 +12,7 @@ use Cake\ORM\Entity;
  * @property string $email
  * @property string $password
  * @property int $level
+ * @property string $time_zone
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  */

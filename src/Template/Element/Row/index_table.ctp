@@ -16,7 +16,7 @@
             <td><?= h($row->code) ?></td>
             <td><?= h($row->date_created) ?></td>
             <td><?= h($row->date_eliminated) ?></td>
-            <td><?= h($row->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($row->modified)) ?></td>
             <td class="actions">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $row->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>

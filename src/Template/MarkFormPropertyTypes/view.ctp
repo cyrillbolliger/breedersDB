@@ -27,7 +27,7 @@
                     <tr>
                         <td class="id"><?= h($markFormProperties->id) ?></td>
                         <td><?= h($markFormProperties->name) ?></td>
-                        <td><?= h($markFormProperties->modified) ?></td>
+                        <td><?= h($this->LocalizedTime->getUserTime($markFormProperties->modified)) ?></td>
                         <td class="actions">
                             <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                                 ['controller' => 'MarkFormProperties', 'action' => 'view', $markFormProperties->id],

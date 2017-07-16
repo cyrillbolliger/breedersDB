@@ -26,7 +26,7 @@
             <td class="id"><?= h($crossing->id) ?></td>
             <td><?= h($crossing->code) ?></td>
             <td class="index_inline_list"><?= $list ?></td>
-            <td><?= h($crossing->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($crossing->modified)) ?></td>
             <td class="actions">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $crossing->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>

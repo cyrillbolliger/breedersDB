@@ -20,11 +20,11 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($crossing->created) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($crossing->created)) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($crossing->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($crossing->modified)) ?></td>
         </tr>
     </table>
     <div class="related">

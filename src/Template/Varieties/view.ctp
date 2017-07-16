@@ -27,11 +27,11 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($variety->created) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($variety->created)) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($variety->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($variety->modified)) ?></td>
         </tr>
     </table>
     <div class="row">
@@ -58,7 +58,7 @@
                         <td><?= h($scionsBundles->numb_scions) ?></td>
                         <td><?= h($scionsBundles->date_scions_harvest) ?></td>
                         <td><?= h($scionsBundles->external_use) ?></td>
-                        <td><?= h($scionsBundles->modified) ?></td>
+                        <td><?= h($this->LocalizedTime->getUserTime($scionsBundles->modified)) ?></td>
                         <td class="actions">
                             <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                                 ['controller' => 'ScionsBundles', 'action' => 'view', $scionsBundles->id],

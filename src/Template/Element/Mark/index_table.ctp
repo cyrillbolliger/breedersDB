@@ -36,7 +36,7 @@
             <td class="id"><?= $this->Number->format($mark->id) ?></td>
             <td><?= $object ?></td>
             <td class="index_inline_list"><?= $mark_data ?></td>
-            <td><?= h($mark->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($mark->modified)) ?></td>
             <td class="actions">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $mark->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>

@@ -24,7 +24,7 @@
             <td><?= $this->Number->format($tree->offset) ?></td>
             <td><?= $tree->note ? $this->Html->link(__('Read'), ['action' => 'view', $tree->id]) : '' ?></td>
             <td><?= $tree->date_eliminated ? __('eliminated') : '' ?></td>
-            <td><?= h($tree->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($tree->modified)) ?></td>
             <td class="actions">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $tree->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>

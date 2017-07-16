@@ -64,11 +64,11 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($tree->created) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($tree->created)) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($tree->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($tree->modified)) ?></td>
         </tr>
     </table>
     <div class="row">

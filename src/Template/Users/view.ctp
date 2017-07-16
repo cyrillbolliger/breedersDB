@@ -13,12 +13,16 @@
             <td><?= $this->Number->format($user->level) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Time zone') ?></th>
+            <td><?= h($user->time_zone) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($user->created) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($user->created)) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($user->modified) ?></td>
+            <td><?= h($this->LocalizedTime->getUserTime($user->modified)) ?></td>
         </tr>
     </table>
 </div>
