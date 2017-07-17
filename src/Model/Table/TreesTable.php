@@ -95,6 +95,10 @@ class TreesTable extends Table
                 'rule'     => 'validateUnique',
                 'provider' => 'table',
                 'message'  => __('This number has already been used.'),
+                'on' => function($context) {
+                    // only apply rule on publicids without the # prefix (the # means the tree is eliminated)
+                    return preg_match("/^\d+$/", $context['data']['publicid']);
+                }
             ])
             ->add('publicid', 'custom', [
                 'rule'    => function ($value, $context) {
@@ -149,7 +153,6 @@ class TreesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['id']));
-        $rules->add($rules->isUnique(['publicid']));
         $rules->add($rules->existsIn(['variety_id'], 'Varieties'));
         $rules->add($rules->existsIn(['rootstock_id'], 'Rootstocks'));
         $rules->add($rules->existsIn(['grafting_id'], 'Graftings'));
