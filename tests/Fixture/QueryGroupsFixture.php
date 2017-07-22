@@ -21,6 +21,7 @@ class QueryGroupsFixture extends TestFixture
         'code' => ['type' => 'string', 'length' => 120, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+            'id_UNIQUE' => ['type' => 'unique', 'columns' => ['id'], 'length' => []],
             'code_UNIQUE' => ['type' => 'unique', 'columns' => ['code'], 'length' => []],
         ],
         '_options' => [

@@ -24,7 +24,8 @@ class QueriesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.queries'
+        'app.queries',
+        'app.query_groups'
     ];
 
     /**
