@@ -6,6 +6,7 @@
     <fieldset>
         <legend><?= __('Edit Mark Form') ?></legend>
         <?= $this->Form->input('name'); ?>
+        <?= $this->Form->input('description'); ?>
         <fieldset>
             <legend><?= __('Fields') ?></legend>
             <div class="mark_form_fields sortable">

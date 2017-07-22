@@ -3,6 +3,7 @@
     <tr>
         <th scope="col" class="id"><?= $this->Paginator->sort('id') ?></th>
         <th scope="col"><?= $this->Paginator->sort('name') ?></th>
+        <th scope="col"><?= $this->Paginator->sort('description') ?></th>
         <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
         <th scope="col" class="actions noprint"><?= __('Actions') ?></th>
     </tr>
@@ -12,6 +13,7 @@
         <tr>
             <td class="id"><?= $this->Number->format($markForm->id) ?></td>
             <td><?= h($markForm->name) ?></td>
+            <td><?= $markForm->description ? $this->Html->link(__('Read'), ['action' => 'view', $markForm->id]) : '' ?></td>
             <td><?= h($this->LocalizedTime->getUserTime($markForm->modified)) ?></td>
             <td class="actions noprint">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',

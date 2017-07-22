@@ -17,6 +17,10 @@
             <td><?= h($this->LocalizedTime->getUserTime($markForm->modified)) ?></td>
         </tr>
     </table>
+    <div class="row">
+        <h4><?= __('Description') ?></h4>
+        <?= $this->Text->autoParagraph(h($markForm->description)); ?>
+    </div>
     <div class="related">
         <h4><?= __('Form Fields') ?></h4>
         <?php if ( ! empty($markForm->mark_form_fields)): ?>
