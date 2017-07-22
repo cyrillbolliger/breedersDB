@@ -19,6 +19,7 @@
             'type'  => 'text',
             'class' => 'datepicker',
         ]);
+        echo $this->Form->input('note');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

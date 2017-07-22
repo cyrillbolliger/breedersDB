@@ -75,6 +75,9 @@ class RowsTable extends Table
         $validator
             ->localizedTime('date_eliminated', 'date')
             ->allowEmpty('date_eliminated');
+    
+        $validator
+            ->allowEmpty('note');
         
         return $validator;
     }

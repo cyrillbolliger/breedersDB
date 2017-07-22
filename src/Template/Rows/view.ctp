@@ -25,6 +25,10 @@
             <td><?= h($this->LocalizedTime->getUserTime($row->modified)) ?></td>
         </tr>
     </table>
+    <div class="row">
+        <h4><?= __('Note') ?></h4>
+        <?= $this->Text->autoParagraph(h($row->note)); ?>
+    </div>
     <div class="related">
         <h4><?= __('Related Trees') ?></h4>
         <?php if ( ! empty($row->trees)): ?>

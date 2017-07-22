@@ -3,6 +3,7 @@
     <tr>
         <th scope="col" class="id"><?= $this->Paginator->sort('id') ?></th>
         <th scope="col"><?= $this->Paginator->sort('code', __('Name')) ?></th>
+        <th scope="col"><?= $this->Paginator->sort('note') ?></th>
         <th scope="col"><?= $this->Paginator->sort('date_created') ?></th>
         <th scope="col"><?= $this->Paginator->sort('date_eliminated') ?></th>
         <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
@@ -14,6 +15,7 @@
         <tr>
             <td class="id"><?= $this->Number->format($row->id) ?></td>
             <td><?= h($row->code) ?></td>
+            <td><?= $row->note ? $this->Html->link(__('Read'), ['action' => 'view', $row->id]) : '' ?></td>
             <td><?= h($row->date_created) ?></td>
             <td><?= h($row->date_eliminated) ?></td>
             <td><?= h($this->LocalizedTime->getUserTime($row->modified)) ?></td>
