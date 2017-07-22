@@ -45,10 +45,6 @@
         content: none;
     }
 
-    input.filter, ul.toolbar {
-        display: none;
-    }
-
     .noprint {
         display: none;
     }
