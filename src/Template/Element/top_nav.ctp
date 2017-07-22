@@ -6,4 +6,5 @@
     <li><?= $this->Html->link(__('Scions Bundles'), ['controller' => 'ScionsBundles', 'action' => 'index']) ?></li>
     <li><?= $this->Html->link(__('Rows'), ['controller' => 'Rows', 'action' => 'index']) ?></li>
     <li><?= $this->Html->link(__('Marks'), ['controller' => 'Marks', 'action' => 'index']) ?></li>
+    <li><?= $this->Html->link(__('Queries'), ['controller' => 'Queries', 'action' => 'index']) ?></li>
 </ul>
