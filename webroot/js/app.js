@@ -113,22 +113,25 @@ function General() {
             self.getFilteredData($filter.val(), $filter.data('filter'), $target, href);
         });
 
-        // mage pagination work with filters
+        // make pagination work with filters
         $paginate.off('click');
-        $paginate.click(function (e) {
+        $paginate.each(function () {
             var $link = $(this);
-            var href = $link.attr('href');
 
-            // return if no href is set
-            if ("" === href) {
-                return;
-            }
+            $link.click(function (e) {
+                var href = $link.attr('href');
 
-            // prevent default
-            e.preventDefault();
+                // prevent default
+                e.preventDefault();
 
-            // get new data
-            self.getFilteredData($filter.val(), $filter.data('filter'), $target, href);
+                // return if no href is set
+                if ("" === href) {
+                    return;
+                }
+
+                // get new data
+                self.getFilteredData($filter.val(), $filter.data('filter'), $target, href);
+            });
         });
     };
 
@@ -142,13 +145,16 @@ function General() {
     this.getFilteredData = function (term, params, $target, url) {
         url = null === url ? window.location : url;
 
+        var sort = self.getUrlParameter('sort', url);
+        var direction = self.getUrlParameter('direction', url);
+
         $.ajax({
             url: webroot + params.controller + '/' + params.action,
             data: {
                 fields: params.fields,
                 term: term,
-                sort: self.getUrlParameter('sort', url),
-                direction: self.getUrlParameter('direction', url),
+                sort: sort,
+                direction: direction,
                 page: self.getUrlParameter('page', url)
             },
             success: function (resp) {
@@ -158,6 +164,7 @@ function General() {
                 if ($tbody.length && $paginator.length) {
                     $target.find('tbody').html($tbody.html());
                     $target.find('.paginator').html($paginator.html());
+                    self.addPaginatorSortQueryString(sort, direction, $target.find('.paginator'));
                     self.instantiateFilter();
                 } else {
                     $target.find('tbody').html(resp);
@@ -170,6 +177,23 @@ function General() {
             }
         });
     };
+
+    this.addPaginatorSortQueryString = function (sort, direction, $paginator) {
+        $paginator.find('a').each(function () {
+            var link = $(this).attr('href');
+            var new_link;
+
+            // disable empty links
+            if (!link) {
+                return;
+            }
+
+            new_link = link.replace('&sort=', '');
+            new_link = link.replace('&direction=', '');
+            new_link = link + '&sort=' + sort + '&direction=' + direction;
+            $(this).attr('href', new_link);
+        });
+    }
 
     /*
      * load and configure the convar select field.
