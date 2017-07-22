@@ -9,6 +9,8 @@ use Cake\Validation\Validator;
 /**
  * Queries Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $QueryGroups
+ *
  * @method \App\Model\Entity\Query get($primaryKey, $options = [])
  * @method \App\Model\Entity\Query newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Query[] newEntities(array $data, array $options = [])
@@ -37,6 +39,11 @@ class QueriesTable extends Table
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->belongsTo('QueryGroups', [
+            'foreignKey' => 'query_group_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -49,7 +56,8 @@ class QueriesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('id', 'create')
+            ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->requirePresence('code', 'create')
@@ -74,7 +82,9 @@ class QueriesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->isUnique(['id']));
         $rules->add($rules->isUnique(['code']));
+        $rules->add($rules->existsIn(['query_group_id'], 'QueryGroups'));
 
         return $rules;
     }

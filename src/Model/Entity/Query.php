@@ -10,8 +10,11 @@ use Cake\ORM\Entity;
  * @property string $code
  * @property string $query
  * @property string $description
+ * @property int $query_group_id
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
+ *
+ * @property \App\Model\Entity\QueryGroup $query_group
  */
 class Query extends Entity
 {

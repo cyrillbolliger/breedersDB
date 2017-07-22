@@ -9,6 +9,8 @@ use Cake\Validation\Validator;
 /**
  * QueryGroups Model
  *
+ * @property \Cake\ORM\Association\HasMany $Queries
+ *
  * @method \App\Model\Entity\QueryGroup get($primaryKey, $options = [])
  * @method \App\Model\Entity\QueryGroup newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\QueryGroup[] newEntities(array $data, array $options = [])
@@ -33,6 +35,10 @@ class QueryGroupsTable extends Table
         $this->table('query_groups');
         $this->displayField('id');
         $this->primaryKey('id');
+
+        $this->hasMany('Queries', [
+            'foreignKey' => 'query_group_id'
+        ]);
     }
 
     /**
@@ -45,7 +51,8 @@ class QueryGroupsTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('id', 'create')
+            ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->requirePresence('code', 'create')
@@ -64,6 +71,7 @@ class QueryGroupsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->isUnique(['id']));
         $rules->add($rules->isUnique(['code']));
 
         return $rules;
