@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use App\Model\Rule\IsNotReferredBy;
 
 /**
  * QueryGroups Model
@@ -73,6 +74,8 @@ class QueryGroupsTable extends Table
     {
         $rules->add($rules->isUnique(['id']));
         $rules->add($rules->isUnique(['code']));
+    
+        $rules->addDelete(new IsNotReferredBy(['Queries' => 'query_group_id']), 'isNotReferredBy');
 
         return $rules;
     }
