@@ -18,10 +18,11 @@ class QueriesController extends AppController
      */
     public function index()
     {
-        $queries = $this->paginate($this->Queries);
-
-        $this->set(compact('queries'));
-        $this->set('_serialize', ['queries']);
+        $this->loadModel('QueryGroups');
+        $queryGroups = $this->QueryGroups->find('all')->contain('Queries')->order('code');
+        
+        $this->set(compact('queryGroups'));
+        $this->set('_serialize', ['queryGroups']);
     }
 
     /**

@@ -12,36 +12,6 @@ class QueryGroupsController extends AppController
 {
 
     /**
-     * Index method
-     *
-     * @return \Cake\Network\Response|null
-     */
-    public function index()
-    {
-        $queryGroups = $this->paginate($this->QueryGroups);
-
-        $this->set(compact('queryGroups'));
-        $this->set('_serialize', ['queryGroups']);
-    }
-
-    /**
-     * View method
-     *
-     * @param string|null $id Query Group id.
-     * @return \Cake\Network\Response|null
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $queryGroup = $this->QueryGroups->get($id, [
-            'contain' => []
-        ]);
-
-        $this->set('queryGroup', $queryGroup);
-        $this->set('_serialize', ['queryGroup']);
-    }
-
-    /**
      * Add method
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
@@ -54,13 +24,14 @@ class QueryGroupsController extends AppController
             if ($this->QueryGroups->save($queryGroup)) {
                 $this->Flash->success(__('The query group has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'Queries', 'action' => 'index']);
             } else {
                 $this->Flash->error(__('The query group could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('queryGroup'));
-        $this->set('_serialize', ['queryGroup']);
+        $queryGroups = $this->QueryGroups->find('all')->contain('Queries')->order('code');
+        $this->set(compact('queryGroup', 'queryGroups'));
+        $this->set('_serialize', ['queryGroup', 'queryGroups']);
     }
 
     /**
@@ -80,12 +51,13 @@ class QueryGroupsController extends AppController
             if ($this->QueryGroups->save($queryGroup)) {
                 $this->Flash->success(__('The query group has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'Queries', 'action' => 'index']);
             } else {
                 $this->Flash->error(__('The query group could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('queryGroup'));
+        $queryGroups = $this->QueryGroups->find('all')->contain('Queries')->order('code');
+        $this->set(compact('queryGroup', 'queryGroups'));
         $this->set('_serialize', ['queryGroup']);
     }
 
@@ -106,6 +78,6 @@ class QueryGroupsController extends AppController
             $this->Flash->error(__('The query group could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Queries', 'action' => 'index']);
     }
 }

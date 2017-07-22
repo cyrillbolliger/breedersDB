@@ -171,4 +171,23 @@ table .actions {
     line-height: 1.5rem;
     padding: 2rem 0.875rem 0;
 }
+
+.side-nav li a.nav-action-icon {
+    padding: 0;
+    display: none;
+}
+
+.side-nav li a.nav-action-icon:focus,
+.side-nav li a.nav-action-icon:hover {
+    background-color: transparent;
+}
+
+.side-nav li:hover a.nav-action-icon {
+    display: inline-block;
+}
+
+.side-nav li a.nav-title-link {
+    padding: 0;
+    font-style: italic;
+    color: #1798A5;
 }
