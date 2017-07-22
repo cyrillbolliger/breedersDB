@@ -179,12 +179,19 @@ function General() {
         });
     };
 
+    /**
+     * Decorate the links in the $paginator jquery object with the sorting field and direction
+     *
+     * @param sort
+     * @param direction
+     * @param $paginator
+     */
     this.addPaginatorSortQueryString = function (sort, direction, $paginator) {
         $paginator.find('a').each(function () {
             var link = $(this).attr('href');
             var new_link;
 
-            // disable empty links
+            // disable for empty links
             if (!link) {
                 return;
             }
