@@ -165,3 +165,10 @@ table .actions {
 .marks .index_inline_list {
      width: 40%;
 }
+
+/* --------- Side nav ------- */
+.side-nav li.heading {
+    line-height: 1.5rem;
+    padding: 2rem 0.875rem 0;
+}
+}
