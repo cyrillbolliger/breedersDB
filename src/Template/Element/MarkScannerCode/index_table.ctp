@@ -5,7 +5,7 @@
         <th scope="col"><?= $this->Paginator->sort('code') ?></th>
         <th scope="col"><?= $this->Paginator->sort('mark_form_property_id', __('Property')) ?></th>
         <th scope="col"><?= $this->Paginator->sort('mark_value', __('Value')) ?></th>
-        <th scope="col" class="actions"><?= __('Actions') ?></th>
+        <th scope="col" class="actions noprint"><?= __('Actions') ?></th>
     </tr>
     </thead>
     <tbody>
@@ -20,7 +20,7 @@
                         $markScannerCode->mark_form_property->id
                     ]) : '' ?></td>
             <td><?= h($markScannerCode->mark_value) ?></td>
-            <td class="actions">
+            <td class="actions noprint">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $markScannerCode->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
                 <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',

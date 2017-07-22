@@ -4,7 +4,7 @@
         <th scope="col" class="id"><?= $this->Paginator->sort('id') ?></th>
         <th scope="col"><?= $this->Paginator->sort('name') ?></th>
         <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-        <th scope="col" class="actions"><?= __('Actions') ?></th>
+        <th scope="col" class="actions noprint"><?= __('Actions') ?></th>
     </tr>
     </thead>
     <tbody>
@@ -13,7 +13,7 @@
             <td class="id"><?= $this->Number->format($markForm->id) ?></td>
             <td><?= h($markForm->name) ?></td>
             <td><?= h($this->LocalizedTime->getUserTime($markForm->modified)) ?></td>
-            <td class="actions">
+            <td class="actions noprint">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $markForm->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
                 <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',

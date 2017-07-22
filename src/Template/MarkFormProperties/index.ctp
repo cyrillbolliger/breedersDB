@@ -13,7 +13,7 @@
 <div class="markFormProperties index large-9 medium-8 columns content">
     <h3><?= __('Mark Form Properties') ?></h3>
     <div>
-        <input type="text" class="filter" data-filter='<?= $filter ?>' placeholder="<?= __('Filter by name...') ?>">
+        <input type="text" class="filter noprint" data-filter='<?= $filter ?>' placeholder="<?= __('Filter by name...') ?>">
     </div>
     <div id="index_table">
         <?= $this->element('MarkFormProperty/index_table'); ?>

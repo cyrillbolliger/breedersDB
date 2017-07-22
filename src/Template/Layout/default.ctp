@@ -29,6 +29,7 @@
     <?= $this->Html->css('select2.min.css') ?>
     <?= $this->Html->css('font-awesome.min.css') ?>
     <?= $this->Html->css('app.css') ?>
+    <?= $this->Html->css('print.css') ?>
     
     <?= $this->Html->script('jquery-3.1.1.min.js') ?>
     <?= $this->Html->script('jquery-ui.min.js') ?>

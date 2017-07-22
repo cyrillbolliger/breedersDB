@@ -9,7 +9,7 @@
         <th scope="col"><?= $this->Paginator->sort('note') ?></th>
         <th scope="col"><?= $this->Paginator->sort('date_eliminated', __('Eliminated')) ?></th>
         <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-        <th scope="col" class="actions"><?= __('Actions') ?></th>
+        <th scope="col" class="actions noprint"><?= __('Actions') ?></th>
     </tr>
     </thead>
     <tbody>
@@ -25,7 +25,7 @@
             <td><?= $tree->note ? $this->Html->link(__('Read'), ['action' => 'view', $tree->id]) : '' ?></td>
             <td><?= $tree->date_eliminated ? __('eliminated') : '' ?></td>
             <td><?= h($this->LocalizedTime->getUserTime($tree->modified)) ?></td>
-            <td class="actions">
+            <td class="actions noprint">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $tree->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
                 <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',

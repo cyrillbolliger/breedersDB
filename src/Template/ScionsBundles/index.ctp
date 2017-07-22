@@ -14,7 +14,7 @@
 <div class="scionsBundles index large-9 medium-8 columns content">
     <h3><?= __('Scions Bundles') ?></h3>
     <div>
-        <input type="text" class="filter" data-filter='<?= $filter ?>'
+        <input type="text" class="filter noprint" data-filter='<?= $filter ?>'
                placeholder="<?= __('Filter by code or convar...') ?>">
     </div>
     <div id="index_table">

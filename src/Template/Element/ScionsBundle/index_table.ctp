@@ -8,7 +8,7 @@
         <th scope="col"><?= $this->Paginator->sort('date_scions_harvest') ?></th>
         <th scope="col"><?= $this->Paginator->sort('external_use') ?></th>
         <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-        <th scope="col" class="actions"><?= __('Actions') ?></th>
+        <th scope="col" class="actions noprint"><?= __('Actions') ?></th>
     </tr>
     </thead>
     <tbody>
@@ -22,7 +22,7 @@
             <td><?= h($scionsBundle->date_scions_harvest) ?></td>
             <td><?= h($scionsBundle->external_use) ?></td>
             <td><?= h($this->LocalizedTime->getUserTime($scionsBundle->modified)) ?></td>
-            <td class="actions">
+            <td class="actions noprint">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $scionsBundle->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
                 <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',

@@ -5,7 +5,7 @@
         <th scope="col"><?= __('Object'); ?></th>
         <th scope="col" class="index_inline_list"><?= __('Marks') ?></th>
         <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-        <th scope="col" class="actions"><?= __('Actions') ?></th>
+        <th scope="col" class="actions noprint"><?= __('Actions') ?></th>
     </tr>
     </thead>
     <tbody>
@@ -37,7 +37,7 @@
             <td><?= $object ?></td>
             <td class="index_inline_list"><?= $mark_data ?></td>
             <td><?= h($this->LocalizedTime->getUserTime($mark->modified)) ?></td>
-            <td class="actions">
+            <td class="actions norint">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $mark->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
                 <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',

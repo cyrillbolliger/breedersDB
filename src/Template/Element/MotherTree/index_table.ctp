@@ -9,7 +9,7 @@
         <th scope="col"><?= $this->Paginator->sort('numb_flowers') ?></th>
         <th scope="col"><?= $this->Paginator->sort('numb_seeds') ?></th>
         <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-        <th scope="col" class="actions"><?= __('Actions') ?></th>
+        <th scope="col" class="actions noprint"><?= __('Actions') ?></th>
     </tr>
     </thead>
     <tbody>
@@ -23,7 +23,7 @@
             <td><?= $this->Number->format($motherTree->numb_flowers) ?></td>
             <td><?= $this->Number->format($motherTree->numb_seeds) ?></td>
             <td><?= h($this->LocalizedTime->getUserTime($motherTree->modified)) ?></td>
-            <td class="actions">
+            <td class="actions noprint">
                 <?= $this->Html->link('<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
                     ['action' => 'view', $motherTree->id], ['escapeTitle' => false, 'alt' => __('View')]) ?>
                 <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',
