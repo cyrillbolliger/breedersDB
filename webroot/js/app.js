@@ -97,6 +97,7 @@ function General() {
             var $link = $(this);
             var href = $link.attr('href');
             var order = null === href.match('direction=asc') ? 'asc' : 'desc';
+            var anti_order = order === 'asc' ? 'desc' : 'asc';
             var new_href = href.replace(/direction=\w+/, 'direction=' + order);
 
             // prevent default
@@ -107,7 +108,7 @@ function General() {
 
             // set order classes
             $sort.removeClass('asc desc');
-            $link.addClass(order);
+            $link.addClass(anti_order);
 
             // get new data
             self.getFilteredData($filter.val(), $filter.data('filter'), $target, href);
