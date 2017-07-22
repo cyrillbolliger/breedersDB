@@ -60,8 +60,10 @@ class QueriesController extends AppController
                 $this->Flash->error(__('The query could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('query'));
-        $this->set('_serialize', ['query']);
+        
+        $query_groups = $this->Queries->QueryGroups->find('list')->order('code');
+        $this->set(compact('query', 'query_groups'));
+        $this->set('_serialize', ['query', 'query_groups']);
     }
 
     /**
@@ -86,8 +88,9 @@ class QueriesController extends AppController
                 $this->Flash->error(__('The query could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('query'));
-        $this->set('_serialize', ['query']);
+        $query_groups = $this->Queries->QueryGroups->find('list')->order('code');
+        $this->set(compact('query', 'query_groups'));
+        $this->set('_serialize', ['query', 'query_groups']);
     }
 
     /**

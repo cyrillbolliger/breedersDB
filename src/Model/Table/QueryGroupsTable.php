@@ -34,7 +34,7 @@ class QueryGroupsTable extends Table
         parent::initialize($config);
 
         $this->table('query_groups');
-        $this->displayField('id');
+        $this->displayField('code');
         $this->primaryKey('id');
 
         $this->hasMany('Queries', [
