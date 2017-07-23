@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -10,7 +11,7 @@ use App\Controller\AppController;
  */
 class QueriesController extends AppController
 {
-
+    
     /**
      * Index method
      *
@@ -24,11 +25,12 @@ class QueriesController extends AppController
         $this->set(compact('queryGroups'));
         $this->set('_serialize', ['queryGroups']);
     }
-
+    
     /**
      * View method
      *
      * @param string|null $id Query id.
+     *
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -37,11 +39,11 @@ class QueriesController extends AppController
         $query = $this->Queries->get($id, [
             'contain' => []
         ]);
-
+        
         $this->set('query', $query);
         $this->set('_serialize', ['query']);
     }
-
+    
     /**
      * Add method
      *
@@ -54,22 +56,29 @@ class QueriesController extends AppController
             $query = $this->Queries->patchEntity($query, $this->request->data);
             if ($this->Queries->save($query)) {
                 $this->Flash->success(__('The query has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The query could not be saved. Please, try again.'));
             }
         }
         
-        $query_groups = $this->Queries->QueryGroups->find('list')->order('code');
-        $this->set(compact('query', 'query_groups'));
-        $this->set('_serialize', ['query', 'query_groups']);
+        $views       = $this->Queries->getViewNames();
+        $view_fields = $this->Queries->getTranslatedFieldsOf(array_keys($views));
+        
+        $this->loadModel('QueryGroups');
+        $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
+        $query_groups = $this->QueryGroups->find('list')->order('code');
+        
+        $this->set(compact('query', 'query_groups', 'queryGroups', 'views', 'view_fields'));
+        $this->set('_serialize', ['query', 'query_groups', 'queryGroups', 'views', 'view_fields']);
     }
-
+    
     /**
      * Edit method
      *
      * @param string|null $id Query id.
+     *
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -82,21 +91,26 @@ class QueriesController extends AppController
             $query = $this->Queries->patchEntity($query, $this->request->data);
             if ($this->Queries->save($query)) {
                 $this->Flash->success(__('The query has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The query could not be saved. Please, try again.'));
             }
         }
-        $query_groups = $this->Queries->QueryGroups->find('list')->order('code');
-        $this->set(compact('query', 'query_groups'));
-        $this->set('_serialize', ['query', 'query_groups']);
+        
+        $this->loadModel('QueryGroups');
+        $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
+        $query_groups = $this->QueryGroups->find('list')->order('code');
+        
+        $this->set(compact('query', 'query_groups', 'queryGroups'));
+        $this->set('_serialize', ['query', 'query_groups', 'queryGroups']);
     }
-
+    
     /**
      * Delete method
      *
      * @param string|null $id Query id.
+     *
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -109,7 +123,7 @@ class QueriesController extends AppController
         } else {
             $this->Flash->error(__('The query could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
 }

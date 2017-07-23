@@ -200,3 +200,9 @@ table .actions {
     font-style: italic;
     color: rgba(21, 132, 143, 0.5)
 }
+
+/* -------- Queries -------- */
+.field-selector-container {
+    display: none;
+    margin-left: 2rem;
+}

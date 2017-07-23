@@ -2,6 +2,7 @@ var General = new General();
 var Varieties = new Varieties();
 var Trees = new Trees();
 var Marks = new Marks();
+var Queries = new Queries();
 
 var searching;
 var last_search_term;
@@ -39,6 +40,7 @@ function General() {
         Marks.applyValidationRules();
         Marks.byScanner();
         Marks.unlockScannerField();
+        Queries.init();
     };
 
     /*
@@ -848,6 +850,59 @@ function Marks() {
     };
 }
 
+/**
+ * handles all the queries stuff
+ */
+function Queries() {
+
+    /**
+     * having our class always accessible can get handy
+     */
+    var self = this;
+
+    /**
+     * gets called on startup
+     */
+    this.init = function () {
+        self.bindViewSelectorEvents();
+        self.setViewSelectorInitState();
+    };
+
+    /**
+     * set visibility of the field selector on startup
+     */
+    this.setViewSelectorInitState = function() {
+        $('.view-selector').each(function () {
+            self.setFieldVisibilityFrom($(this));
+        });
+    };
+
+    /**
+     * set visibility of the field selector on click
+     */
+    this.bindViewSelectorEvents = function () {
+        $('.view-selector').click(function () {
+            self.setFieldVisibilityFrom($(this));
+        });
+    };
+
+    /**
+     * set visibility of fields corresponding to its switch
+     *
+     * @param $switch jQuery object of a checkbox with name of the view
+     */
+    this.setFieldVisibilityFrom = function ($switch) {
+        var name = $switch.attr('name');
+        var $target = $('.' + name + '-field-selector-container');
+        var state = $switch.is(':checked');
+
+        if (state) {
+            $target.show();
+        } else {
+            $target.hide();
+        }
+    };
+}
 
 /**
  * fires after DOM is loaded

@@ -5,10 +5,15 @@
     <?= $this->Form->create($query) ?>
     <fieldset>
         <legend><?= __('Add Query') ?></legend>
+        <?= $this->element('Query/builder'); ?>
         <?php
-            echo $this->Form->input('code');
-            echo $this->Form->input('query');
-            echo $this->Form->input('description');
+        echo $this->Form->input('code');
+        echo $this->Form->input('query');
+        echo $this->Form->input('description');
+        echo $this->Form->input('query_group_id', [
+            'options'  => $query_groups,
+            'required' => 'required',
+        ]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
