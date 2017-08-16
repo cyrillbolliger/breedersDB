@@ -871,7 +871,7 @@ function Queries() {
     /**
      * set visibility of the field selector on startup
      */
-    this.setViewSelectorInitState = function() {
+    this.setViewSelectorInitState = function () {
         $('.view-selector').each(function () {
             self.setFieldVisibilityFrom($(this));
         });
@@ -981,10 +981,7 @@ if (!String.prototype.format) {
     String.prototype.format = function () {
         var args = arguments;
         return this.replace(/{(\d+)}/g, function (match, number) {
-            return typeof args[number] != 'undefined'
-                ? args[number]
-                : match
-                ;
+            return typeof args[number] != 'undefined' ? args[number] : match;
         });
     };
 }
