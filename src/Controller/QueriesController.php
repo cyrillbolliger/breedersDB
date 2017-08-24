@@ -70,12 +70,17 @@ class QueriesController extends AppController
         $views       = $this->Queries->getViewNames();
         $view_fields = $this->Queries->getTranslatedFieldsOf(array_keys($views));
         
+        $associations = array();
+        foreach(array_keys($views) as $view_name) {
+            $associations[$view_name] = $this->Queries->getAssociationsOf($view_name);
+        }
+        
         $this->loadModel('QueryGroups');
         $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
         $query_groups = $this->QueryGroups->find('list')->order('code');
         
-        $this->set(compact('query', 'query_groups', 'queryGroups', 'views', 'view_fields'));
-        $this->set('_serialize', ['query', 'query_groups', 'queryGroups', 'views', 'view_fields']);
+        $this->set(compact('query', 'query_groups', 'queryGroups', 'views', 'view_fields', 'associations'));
+        $this->set('_serialize', ['query', 'query_groups', 'queryGroups', 'views', 'view_fields', 'associations']);
     }
     
     /**

@@ -52,7 +52,8 @@
             delete_element: '<?= __x('after the : the name of the element to delete is inserted',
                 'Are you sure you want to delete:')?>',
             matching_elements: '<?= __('{0} matching elements for this mark were found.') ?>',
-            no_tree_found: '<?= __('No tree could be found') ?>'
+            no_tree_found: '<?= __('No tree could be found') ?>',
+            impossible_selection: "<?= __x('Query builder. {0} is replaced by the table name.',"{0} will be deselected as well, since they aren't connected to the other selected entities.") ?>"
         };
     </script>
 </head>

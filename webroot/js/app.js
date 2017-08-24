@@ -878,11 +878,121 @@ function Queries() {
     };
 
     /**
-     * set visibility of the field selector on click
+     * set field selector on click events
      */
     this.bindViewSelectorEvents = function () {
         $('.view-selector').click(function () {
             self.setFieldVisibilityFrom($(this));
+            self.enableAssociated();
+        });
+    };
+
+    /**
+     * Check if non connected entities are selected and deselect them if found.
+     * Inform the user with an alert.
+     *
+     * @param $checked jQuery
+     */
+    this.validateAssociations = function ($checked) {
+        var input = [];
+        var valid = [];
+        var $invalid;
+        var possible;
+        var in_input;
+        var i = 0;
+        var name;
+
+        // if none is checked exit
+        if (0 === $checked.length) {
+            return;
+        }
+
+        $checked.each(function () {
+            input.push($(this).attr('name'));
+        });
+
+        valid.push(input.shift());
+
+        while (i < valid.length) {
+            possible = query_builder_associations[valid[i]].map(function(el) {
+                return el.replace(/Table$/, '');
+            });
+            for (var j = 0; j < possible.length; j++) {
+                in_input = $.inArray(possible[j], input);
+                if (0 <= in_input && -1 === $.inArray(possible[j], valid)) {
+                    valid.push(possible[j]);
+                    input.splice(in_input, 1);
+                }
+            }
+            i++;
+        }
+
+        // the elements remaining in 'input' are invalid
+        $.each(input, function(idx, invalid) {
+            $invalid = $('input[name="' + invalid + '"]');
+            $invalid.prop('checked', false);
+            self.setFieldVisibilityFrom($invalid);
+            self.enableCheckbox($invalid, false);
+            name = $('label[for="' + $invalid.filter(':checkbox').attr('id') + '"]').text();
+            alert(String(trans.impossible_selection).format(name));
+        });
+    };
+
+    /**
+     * Enable or disable table selector checkboxes regarding their associations
+     */
+    this.enableAssociated = function () {
+        var enable = [];
+        var tmp;
+        var $checked = $('.view-selector:checked');
+        var $view_selectors = $('.view-selector');
+
+        // disable all to start clean
+        self.enableCheckbox($view_selectors, false);
+
+        // if none is checked enable all and exit
+        if (0 === $checked.length) {
+            self.enableCheckbox($view_selectors, true);
+            return;
+        }
+
+        // mark invalid associations
+        self.validateAssociations($checked);
+
+        // put all names of associated checkboxes into the 'enable' array
+        $checked.each(function () {
+            tmp = $(this).attr('name');
+            enable.push(tmp);
+            $.each(query_builder_associations[tmp], function (idx, val) {
+                enable.push(val);
+            });
+        });
+
+        // enable associated checkboxes
+        $.each(enable, function (idx, val) {
+            tmp = val.replace(/Table$/, '');
+            self.enableCheckbox($('input[name="' + tmp + '"]'), true);
+        });
+
+    };
+
+    /**
+     * Enable or disable given checkboxes and set '.disabled-checkbox' class to its labels
+     *
+     * @param $elements jQuery object with the checkboxes to enable/disable
+     * @param enable boolean
+     */
+    this.enableCheckbox = function ($elements, enable) {
+        var $el;
+        $elements.each(function () {
+            $el = $(this);
+            if (enable) {
+                $el.removeAttr('disabled');
+                $('label[for="' + $el.attr('id') + '"]').removeClass('disabled-checkbox');
+            } else {
+                $el.attr('disabled', 'disabled');
+                $('label[for="' + $el.attr('id') + '"]').addClass('disabled-checkbox');
+            }
         });
     };
 

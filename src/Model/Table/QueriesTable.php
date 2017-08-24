@@ -262,13 +262,15 @@ class QueriesTable extends Table
     {
         $associated = array();
         
-        $table = TableRegistry::get($table_name);
-        $has   = $table->associations();
+        $tmp = TableRegistry::get($table_name);
+        $has   = $tmp->associations();
         
         foreach ($has as $table => $properties) {
-            $associated[] = [$table_name => $table];
+            // use the way over the reflection class to retrive the camel cased name
+            $reflection = new \ReflectionClass(TableRegistry::get($table));
+            $associated[] = $reflection->getShortName();
         }
         
-        debug($associated);
+        return $associated;
     }
 }

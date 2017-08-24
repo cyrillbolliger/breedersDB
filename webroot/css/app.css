@@ -206,3 +206,8 @@ table .actions {
     display: none;
     margin-left: 2rem;
 }
+
+.disabled-checkbox {
+    text-decoration: line-through;
+    color: #aaa;
+}

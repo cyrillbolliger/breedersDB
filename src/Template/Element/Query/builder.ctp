@@ -18,3 +18,8 @@ foreach ($views as $view_key => $view_name) {
     }
     echo '</div>';
 }
+
+?>
+<script>
+    var query_builder_associations = $.parseJSON('<?= json_encode($associations)?>');
+</script>
