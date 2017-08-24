@@ -39,9 +39,13 @@ class QueriesController extends AppController
         $query = $this->Queries->get($id, [
             'contain' => []
         ]);
-        
-        $this->set('query', $query);
-        $this->set('_serialize', ['query']);
+    
+        $this->loadModel('QueryGroups');
+        $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
+        $query_groups = $this->QueryGroups->find('list')->order('code');
+    
+        $this->set(compact('query', 'query_groups', 'queryGroups'));
+        $this->set('_serialize', ['query', 'query_groups', 'queryGroups']);
     }
     
     /**
