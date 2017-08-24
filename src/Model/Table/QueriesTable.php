@@ -242,10 +242,49 @@ class QueriesTable extends Table
             'VarietiesView.batch_id'                   => __('Varieties -> Batch Id'),
         ];
         
-        if (! key_exists($key, $translations)) {
+        if ( ! key_exists($key, $translations)) {
             throw new \Cake\Core\Exception\Exception("Field translation not found: $key");
         }
         
         return $translations[$key];
+    }
+    
+    /**
+     * Return associative array with names of the views to query as keys and its translated names as values
+     *
+     * @return array
+     */
+    public function getViewNames()
+    {
+        return [
+            'BatchesView'       => __('Batches'),
+            'CrossingsView'     => __('Crossings'),
+            'MarksView'         => __('Marks'),
+            'MotherTreesView'   => __('Mother Trees'),
+            'ScionsBundlesView' => __('Scions Bundles'),
+            'TreesView'         => __('Trees'),
+            'VarietiesView'     => __('Varieties'),
+        ];
+    }
+    
+    /**
+     * Return array of associations from given table
+     *
+     * @param string $table_name
+     *
+     * @return array of associations
+     */
+    public function getAssociationsOf(string $table_name)
+    {
+        $associated = array();
+        
+        $table = TableRegistry::get($table_name);
+        $has   = $table->associations();
+        
+        foreach ($has as $table => $properties) {
+            $associated[] = [$table_name => $table];
+        }
+        
+        debug($associated);
     }
 }
