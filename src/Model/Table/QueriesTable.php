@@ -120,24 +120,6 @@ class QueriesTable extends Table
     }
     
     /**
-     * Return associative array with names of the views to query as keys and its translated names as values
-     *
-     * @return array
-     */
-    public function getViewNames()
-    {
-        return [
-            'BatchesView'       => __('Batches'),
-            'CrossingsView'     => __('Crossings'),
-            'MarksView'         => __('Marks'),
-            'MotherTreesView'   => __('Mother Trees'),
-            'ScionsBundlesView' => __('Scions Bundles'),
-            'TreesView'         => __('Trees'),
-            'VarietiesView'     => __('Varieties'),
-        ];
-    }
-    
-    /**
      * Return associative array with field names as keys and its type as value from given tables names
      *
      * @param array $tables
@@ -181,6 +163,7 @@ class QueriesTable extends Table
             'CrossingsView.code'                       => __('Crossing -> Code'),
             'CrossingsView.mother_variety'             => __('Crossing -> Mother Variety'),
             'CrossingsView.father_variety'             => __('Crossing -> Father Variety'),
+            'MarksView.id'                             => __('Mark -> Id'),
             'MarksView.date'                           => __('Mark -> Date'),
             'MarksView.author'                         => __('Mark -> Author'),
             'MarksView.tree_id'                        => __('Mark -> Tree Id'),
