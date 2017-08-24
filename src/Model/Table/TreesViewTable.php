@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \Cake\ORM\Association\BelongsTo $VarietiesView
  * @property \Cake\ORM\Association\HasMany $MarksView
+ * @property \Cake\ORM\Association\HasMany $MotherTreesView
  *
  * @method \App\Model\Entity\TreesView get($primaryKey, $options = [])
  * @method \App\Model\Entity\TreesView newEntity($data = null, array $options = [])
@@ -42,6 +43,9 @@ class TreesViewTable extends Table
             'joinType'   => 'INNER'
         ]);
         $this->hasMany('MarksView', [
+            'foreignKey' => 'tree_id'
+        ]);
+        $this->hasMany('MotherTreesView', [
             'foreignKey' => 'tree_id'
         ]);
     }
