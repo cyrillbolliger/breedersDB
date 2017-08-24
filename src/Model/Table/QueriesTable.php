@@ -186,6 +186,7 @@ class QueriesTable extends Table
             'MotherTreesView.numb_seeds'               => __('Mother Tree -> Numb Seeds'),
             'MotherTreesView.target'                   => __('Mother Tree -> Target'),
             'MotherTreesView.note'                     => __('Mother Tree -> Note'),
+            'MotherTreesView.convar'                   => __('Mother Tree -> Convar'),
             'MotherTreesView.publicid'                 => __('Mother Tree -> Publicid'),
             'MotherTreesView.offset'                   => __('Mother Tree -> Offset'),
             'MotherTreesView.row'                      => __('Mother Tree -> Row'),
