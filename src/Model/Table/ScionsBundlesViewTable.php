@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * ScionsBundlesView Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Varieties
+ * @property \Cake\ORM\Association\BelongsTo $VarietiesView
  *
  * @method \App\Model\Entity\ScionsBundlesView get($primaryKey, $options = [])
  * @method \App\Model\Entity\ScionsBundlesView newEntity($data = null, array $options = [])
@@ -33,8 +33,10 @@ class ScionsBundlesViewTable extends Table
         parent::initialize($config);
 
         $this->table('scions_bundles_view');
+        $this->displayField('code');
+        $this->primaryKey('id');
 
-        $this->belongsTo('Varieties', [
+        $this->belongsTo('VarietiesView', [
             'foreignKey' => 'variety_id',
             'joinType' => 'INNER'
         ]);

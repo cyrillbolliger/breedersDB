@@ -9,6 +9,10 @@ use Cake\Validation\Validator;
 /**
  * CrossingsView Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $VarietiesView
+ * @property \Cake\ORM\Association\HasMany $MotherTreesView
+ * @property \Cake\ORM\Association\HasMany $BatchesView
+ *
  * @method \App\Model\Entity\CrossingsView get($primaryKey, $options = [])
  * @method \App\Model\Entity\CrossingsView newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\CrossingsView[] newEntities(array $data, array $options = [])
@@ -31,6 +35,21 @@ class CrossingsViewTable extends Table
         parent::initialize($config);
 
         $this->table('crossings_view');
+        $this->displayField('code');
+        $this->primaryKey('id');
+    
+        $this->belongsTo('VarietiesView', [
+            'foreignKey' => 'mother_variety_id'
+        ]);
+        $this->belongsTo('VarietiesView', [
+            'foreignKey' => 'father_variety_id'
+        ]);
+        $this->hasMany('BatchesView', [
+            'foreignKey' => 'crossing_id'
+        ]);
+        $this->hasMany('MotherTreesView', [
+            'foreignKey' => 'crossing_id'
+        ]);
     }
 
     /**

@@ -9,8 +9,8 @@ use Cake\Validation\Validator;
 /**
  * MotherTreesView Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Trees
- * @property \Cake\ORM\Association\BelongsTo $Crossings
+ * @property \Cake\ORM\Association\BelongsTo $TreesView
+ * @property \Cake\ORM\Association\BelongsTo $CrossingsView
  *
  * @method \App\Model\Entity\MotherTreesView get($primaryKey, $options = [])
  * @method \App\Model\Entity\MotherTreesView newEntity($data = null, array $options = [])
@@ -34,11 +34,13 @@ class MotherTreesViewTable extends Table
         parent::initialize($config);
 
         $this->table('mother_trees_view');
+        $this->displayField('code');
+        $this->primaryKey('id');
 
-        $this->belongsTo('Trees', [
+        $this->belongsTo('TreesView', [
             'foreignKey' => 'tree_id'
         ]);
-        $this->belongsTo('Crossings', [
+        $this->belongsTo('CrossingsView', [
             'foreignKey' => 'crossing_id',
             'joinType' => 'INNER'
         ]);

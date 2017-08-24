@@ -9,9 +9,9 @@ use Cake\Validation\Validator;
 /**
  * MarksView Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Trees
- * @property \Cake\ORM\Association\BelongsTo $Varieties
- * @property \Cake\ORM\Association\BelongsTo $Batches
+ * @property \Cake\ORM\Association\BelongsTo $TreesView
+ * @property \Cake\ORM\Association\BelongsTo $VarietiesView
+ * @property \Cake\ORM\Association\BelongsTo $BatchesView
  *
  * @method \App\Model\Entity\MarksView get($primaryKey, $options = [])
  * @method \App\Model\Entity\MarksView newEntity($data = null, array $options = [])
@@ -36,14 +36,15 @@ class MarksViewTable extends Table
 
         $this->table('marks_view');
         $this->displayField('name');
+        $this->primaryKey('id');
 
-        $this->belongsTo('Trees', [
+        $this->belongsTo('TreesView', [
             'foreignKey' => 'tree_id'
         ]);
-        $this->belongsTo('Varieties', [
+        $this->belongsTo('VarietiesView', [
             'foreignKey' => 'variety_id'
         ]);
-        $this->belongsTo('Batches', [
+        $this->belongsTo('BatchesView', [
             'foreignKey' => 'batch_id'
         ]);
     }

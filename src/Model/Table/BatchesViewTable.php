@@ -9,7 +9,9 @@ use Cake\Validation\Validator;
 /**
  * BatchesView Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Crossings
+ * @property \Cake\ORM\Association\BelongsTo $CrossingsView
+ * @property \Cake\ORM\Association\HasMany $MarksView
+ * @property \Cake\ORM\Association\HasMany $VarietiesView
  *
  * @method \App\Model\Entity\BatchesView get($primaryKey, $options = [])
  * @method \App\Model\Entity\BatchesView newEntity($data = null, array $options = [])
@@ -33,10 +35,18 @@ class BatchesViewTable extends Table
         parent::initialize($config);
 
         $this->table('batches_view');
+        $this->displayField('code');
+        $this->primaryKey('id');
 
-        $this->belongsTo('Crossings', [
+        $this->belongsTo('CrossingsView', [
             'foreignKey' => 'crossing_id',
             'joinType' => 'INNER'
+        ]);
+        $this->hasMany('MarksView', [
+            'foreignKey' => 'batch_id'
+        ]);
+        $this->hasMany('VarietiesView', [
+            'foreignKey' => 'batch_id'
         ]);
     }
 

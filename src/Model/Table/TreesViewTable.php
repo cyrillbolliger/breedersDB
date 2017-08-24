@@ -9,7 +9,8 @@ use Cake\Validation\Validator;
 /**
  * TreesView Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Varieties
+ * @property \Cake\ORM\Association\BelongsTo $VarietiesView
+ * @property \Cake\ORM\Association\HasMany $MarksView
  *
  * @method \App\Model\Entity\TreesView get($primaryKey, $options = [])
  * @method \App\Model\Entity\TreesView newEntity($data = null, array $options = [])
@@ -33,10 +34,15 @@ class TreesViewTable extends Table
         parent::initialize($config);
 
         $this->table('trees_view');
-
-        $this->belongsTo('Varieties', [
+        $this->displayField('publicid');
+        $this->primaryKey('id');
+    
+        $this->belongsTo('VarietiesView', [
             'foreignKey' => 'variety_id',
-            'joinType' => 'INNER'
+            'joinType'   => 'INNER'
+        ]);
+        $this->hasMany('MarksView', [
+            'foreignKey' => 'tree_id'
         ]);
     }
 

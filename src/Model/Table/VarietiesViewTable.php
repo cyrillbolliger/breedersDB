@@ -9,7 +9,9 @@ use Cake\Validation\Validator;
 /**
  * VarietiesView Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Batches
+ * @property \Cake\ORM\Association\BelongsTo $BatchesView
+ * @property \Cake\ORM\Association\HasMany $ScionsBundlesView
+ * @property \Cake\ORM\Association\HasMany $TreesView
  *
  * @method \App\Model\Entity\VarietiesView get($primaryKey, $options = [])
  * @method \App\Model\Entity\VarietiesView newEntity($data = null, array $options = [])
@@ -33,10 +35,22 @@ class VarietiesViewTable extends Table
         parent::initialize($config);
 
         $this->table('varieties_view');
-
-        $this->belongsTo('Batches', [
+    
+        $this->displayField('code');
+        $this->primaryKey('id');
+        
+        $this->belongsTo('BatchesView', [
             'foreignKey' => 'batch_id',
-            'joinType' => 'INNER'
+            'joinType'   => 'INNER'
+        ]);
+        $this->hasMany('ScionsBundlesView', [
+            'foreignKey' => 'variety_id'
+        ]);
+        $this->hasMany('TreesView', [
+            'foreignKey' => 'variety_id'
+        ]);
+        $this->hasMany('MarksView', [
+            'foreignKey' => 'variety_id'
         ]);
     }
 
