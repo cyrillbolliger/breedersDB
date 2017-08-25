@@ -7,6 +7,10 @@
         <legend><?= __('Edit Query') ?></legend>
         <?php
             echo $this->Form->input('code');
+            echo $this->Form->input('query_group_id', [
+                'options'  => $query_groups,
+                'required' => 'required',
+            ]);
             echo $this->Form->input('query');
             echo $this->Form->input('description');
         ?>

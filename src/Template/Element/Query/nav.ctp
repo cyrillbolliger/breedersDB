@@ -33,7 +33,7 @@
         <?php endforeach; ?>
         <li>
             <?= $this->Html->link(__('New Query'),
-                ['controller' => 'Queries', 'action' => 'add'],
+                ['controller' => 'Queries', 'action' => 'add', $queryGroup->id],
                 ['class' => 'add-nav-item']); ?>
         </li>
     <?php endforeach; ?>

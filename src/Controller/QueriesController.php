@@ -53,7 +53,7 @@ class QueriesController extends AppController
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($query_group_id)
     {
         $query = $this->Queries->newEntity();
         if ($this->request->is('post')) {
@@ -79,8 +79,8 @@ class QueriesController extends AppController
         $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
         $query_groups = $this->QueryGroups->find('list')->order('code');
         
-        $this->set(compact('query', 'query_groups', 'queryGroups', 'views', 'view_fields', 'associations'));
-        $this->set('_serialize', ['query', 'query_groups', 'queryGroups', 'views', 'view_fields', 'associations']);
+        $this->set(compact('query_group_id', 'query', 'query_groups', 'queryGroups', 'views', 'view_fields', 'associations'));
+        $this->set('_serialize', ['query_group_id', 'query', 'query_groups', 'queryGroups', 'views', 'view_fields', 'associations']);
     }
     
     /**
