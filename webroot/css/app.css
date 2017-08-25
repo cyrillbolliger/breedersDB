@@ -157,6 +157,16 @@ table .actions {
     color: #0078a0;
 }
 
+/* --------- Legends ------- */
+.sub-legend-h2, .sub-legend-h3 {
+    width: auto;
+}
+
+.sub-legend-h3 {
+    border-bottom-width: 1px;
+    font-weight: normal;
+}
+
 /* --------- Marks --------- */
 .mark_form_fields_adder {
     margin-top: 1em;
