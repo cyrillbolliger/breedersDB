@@ -51,6 +51,8 @@ class QueriesController extends AppController
     /**
      * Add method
      *
+     * @param int $query_group_id Query group the query will be added to
+     *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add($query_group_id)
