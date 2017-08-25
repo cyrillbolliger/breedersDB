@@ -866,6 +866,34 @@ function Queries() {
     this.init = function () {
         self.bindViewSelectorEvents();
         self.setViewSelectorInitState();
+        self.bindRootViewSelectorEvents();
+        self.setRootViewSelectorInitState();
+    };
+
+    /**
+     * set visibility of the field selector on startup
+     * respecting the selection of the main table selector
+     */
+    this.setRootViewSelectorInitState = function () {
+        $('#root-view').trigger('change');
+    };
+
+    /**
+     * bind main table selector events
+     */
+    this.bindRootViewSelectorEvents = function () {
+        $('#root-view').on('change', function() {
+            $el = $('input[name="'+$(this).val()+'"].view-selector');
+            $el.prop('checked', true);
+            $('input.view-selector')
+                .prop('disabled', false)
+                .removeClass('root_view_lock');
+            $el
+                .prop('disabled', true)
+                .addClass('root_view_lock');
+            $el.trigger('change');
+            $('label[for="' + $el.attr('id') + '"]').removeClass('disabled-checkbox');
+        });
     };
 
     /**
@@ -881,7 +909,7 @@ function Queries() {
      * set field selector on click events
      */
     this.bindViewSelectorEvents = function () {
-        $('.view-selector').click(function () {
+        $('.view-selector').on('click change',function () {
             self.setFieldVisibilityFrom($(this));
             self.enableAssociated();
         });
@@ -901,6 +929,7 @@ function Queries() {
         var in_input;
         var i = 0;
         var name;
+        var root_view;
 
         // if none is checked exit
         if (0 === $checked.length) {
@@ -911,12 +940,15 @@ function Queries() {
             input.push($(this).attr('name'));
         });
 
+        // root view must be first to be always valid
+        root_view = $('#root-view').val();
+        input.splice(input.indexOf(root_view),1);
+        input.unshift(root_view);
+
         valid.push(input.shift());
 
         while (i < valid.length) {
-            possible = query_builder_associations[valid[i]].map(function(el) {
-                return el.replace(/Table$/, '');
-            });
+            possible = query_builder_associations[valid[i]];
             for (var j = 0; j < possible.length; j++) {
                 in_input = $.inArray(possible[j], input);
                 if (0 <= in_input && -1 === $.inArray(possible[j], valid)) {
@@ -959,6 +991,9 @@ function Queries() {
         // mark invalid associations
         self.validateAssociations($checked);
 
+        // query again because it may have changed
+        $checked = $('.view-selector:checked');
+
         // put all names of associated checkboxes into the 'enable' array
         $checked.each(function () {
             tmp = $(this).attr('name');
@@ -970,8 +1005,7 @@ function Queries() {
 
         // enable associated checkboxes
         $.each(enable, function (idx, val) {
-            tmp = val.replace(/Table$/, '');
-            self.enableCheckbox($('input[name="' + tmp + '"]'), true);
+            self.enableCheckbox($('input[name="' + val + '"]'), true);
         });
 
     };
@@ -985,12 +1019,12 @@ function Queries() {
     this.enableCheckbox = function ($elements, enable) {
         var $el;
         $elements.each(function () {
-            $el = $(this);
+            $el = $(this).not('.root_view_lock');
             if (enable) {
-                $el.removeAttr('disabled');
+                $el.prop('disabled', false);
                 $('label[for="' + $el.attr('id') + '"]').removeClass('disabled-checkbox');
             } else {
-                $el.attr('disabled', 'disabled');
+                $el.prop('disabled', true);
                 $('label[for="' + $el.attr('id') + '"]').addClass('disabled-checkbox');
             }
         });

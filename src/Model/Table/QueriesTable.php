@@ -143,7 +143,7 @@ class QueriesTable extends Table
      * @param string $key
      *
      * @return string
-     * @throws Exception if given key doesn't exist in translations array
+     * @throws \Cake\Core\Exception\Exception if given key doesn't exist in translations array
      */
     public function translateFields(string $key)
     {
@@ -227,10 +227,61 @@ class QueriesTable extends Table
         ];
         
         if ( ! key_exists($key, $translations)) {
-            throw new \Cake\Core\Exception\Exception("Field translation not found: $key");
+            throw new Exception("Field translation not found: $key");
         }
         
         return $translations[$key];
+    }
+    
+    /**
+     * Return array of associations from given table
+     *
+     * @param string $table_name
+     *
+     * @return array of associations
+     */
+    public function getAssociationsOf(string $table_name)
+    {
+        $associated = array();
+        
+        $tmp = TableRegistry::get($table_name);
+        $has = $tmp->associations();
+        
+        foreach ($has as $table => $properties) {
+            // use the way over the reflection class to retrieve the camel cased name
+            $reflection   = new \ReflectionClass(TableRegistry::get($table));
+            $associated[] = preg_replace("/Table$/",'', $reflection->getShortName());
+        }
+        
+        return $associated;
+    }
+    
+    /**
+     * Return patched entity with the query data merged as json into the query field.
+     * The other fields are patched normally.
+     *
+     * @param $entity
+     * @param $request
+     *
+     * @return mixed
+     */
+    public function patchEntityWithQueryData($entity, $request)
+    {
+        $data['root_view'] = $request['root_view'];
+        unset($request['root_view']);
+        
+        $views = array_keys($this->getViewNames());
+        $query = array();
+        
+        foreach ($views as $view) {
+            $query[$view] = $request[$view];
+            unset($request[$view]);
+        }
+        
+        $data['fields'] = $query;
+        $request['query'] = json_encode($data);
+        
+        return $this->patchEntity($entity, $request);
     }
     
     /**
@@ -251,26 +302,44 @@ class QueriesTable extends Table
         ];
     }
     
-    /**
-     * Return array of associations from given table
-     *
-     * @param string $table_name
-     *
-     * @return array of associations
-     */
-    public function getAssociationsOf(string $table_name)
+    public function queryViews($query)
     {
-        $associated = array();
+        $fields    = $this->_parseQuery($query->fields, 'field');
+        $tables    = $this->_parseQuery($query->fields, 'table');
+        $rootTable = $query->root_view;
+    
+        $this->Root = TableRegistry::get($rootTable);
         
-        $tmp = TableRegistry::get($table_name);
-        $has   = $tmp->associations();
+        // get associated tables
+        //build query
         
-        foreach ($has as $table => $properties) {
-            // use the way over the reflection class to retrive the camel cased name
-            $reflection = new \ReflectionClass(TableRegistry::get($table));
-            $associated[] = $reflection->getShortName();
+    }
+    
+    /**
+     * Return array with fields (dot notation) or tables
+     *
+     * @param \stdClass $query
+     * @param string $type
+     *
+     * @return array
+     */
+    private function _parseQuery(\stdClass $query, string $type)
+    {
+        $return = array();
+        $views  = array_keys($this->getViewNames());
+        
+        foreach ($views as $view) {
+            foreach ($query->$view as $key => $value) {
+                if ($value) {
+                    if ('table' == $type) {
+                        $return[] = $view;
+                    } else {
+                        $return[] = $view . '.' . $key;
+                    }
+                }
+            }
         }
         
-        return $associated;
+        return array_unique($return);
     }
 }

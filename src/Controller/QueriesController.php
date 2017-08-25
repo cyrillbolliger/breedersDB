@@ -39,11 +39,13 @@ class QueriesController extends AppController
         $query = $this->Queries->get($id, [
             'contain' => []
         ]);
-    
+        
+        $results = $this->Queries->queryViews(json_decode($query->query));
+        
         $this->loadModel('QueryGroups');
         $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
         $query_groups = $this->QueryGroups->find('list')->order('code');
-    
+        
         $this->set(compact('query', 'query_groups', 'queryGroups'));
         $this->set('_serialize', ['query', 'query_groups', 'queryGroups']);
     }
@@ -59,7 +61,7 @@ class QueriesController extends AppController
     {
         $query = $this->Queries->newEntity();
         if ($this->request->is('post')) {
-            $query = $this->Queries->patchEntity($query, $this->request->data);
+            $query = $this->Queries->patchEntityWithQueryData($query, $this->request->data);
             if ($this->Queries->save($query)) {
                 $this->Flash->success(__('The query has been saved.'));
                 
@@ -69,11 +71,13 @@ class QueriesController extends AppController
             }
         }
         
-        $views       = $this->Queries->getViewNames();
-        $view_fields = $this->Queries->getTranslatedFieldsOf(array_keys($views));
+        $views             = $this->Queries->getViewNames();
+        $view_fields       = $this->Queries->getTranslatedFieldsOf(array_keys($views));
+        $default_root_view = 'MarksView';
+        $root_view         = $default_root_view;
         
         $associations = array();
-        foreach(array_keys($views) as $view_name) {
+        foreach (array_keys($views) as $view_name) {
             $associations[$view_name] = $this->Queries->getAssociationsOf($view_name);
         }
         
@@ -81,8 +85,27 @@ class QueriesController extends AppController
         $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
         $query_groups = $this->QueryGroups->find('list')->order('code');
         
-        $this->set(compact('query_group_id', 'query', 'query_groups', 'queryGroups', 'views', 'view_fields', 'associations'));
-        $this->set('_serialize', ['query_group_id', 'query', 'query_groups', 'queryGroups', 'views', 'view_fields', 'associations']);
+        $this->set(compact(
+            'default_root_view',
+            'root_view',
+            'query_group_id',
+            'query',
+            'query_groups',
+            'queryGroups',
+            'views',
+            'view_fields',
+            'associations'));
+        $this->set('_serialize', [
+            'default_root_view',
+            'root_view',
+            'query_group_id',
+            'query',
+            'query_groups',
+            'queryGroups',
+            'views',
+            'view_fields',
+            'associations'
+        ]);
     }
     
     /**
@@ -99,7 +122,7 @@ class QueriesController extends AppController
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $query = $this->Queries->patchEntity($query, $this->request->data);
+            $query = $this->Queries->patchEntityWithQueryData($query, $this->request->data);
             if ($this->Queries->save($query)) {
                 $this->Flash->success(__('The query has been saved.'));
                 

@@ -1,7 +1,22 @@
+<legend class="sub-legend-h2"><?= __('Search Query') ?></legend>
+&nbsp;
+
 <?php
 
+echo $this->Form->input('root_view', [
+    'label'   => __('Main table'),
+    'options' => $views,
+    'default' => $default_root_view,
+]);
 
+?>
+
+<legend class="sub-legend-h3"><?= __('Select columns shown in the results') ?></legend>
+&nbsp;
+
+<?php
 foreach ($views as $view_key => $view_name) {
+    $this->Form->unlockField($view_key);
     echo $this->Form->input($view_key, [
         'label' => $view_name,
         'type'  => 'checkbox',
