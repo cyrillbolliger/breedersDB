@@ -23,7 +23,7 @@
                     ['controller' => 'Queries', 'action' => 'edit', $query->id],
                     ['escapeTitle' => false, 'alt' => __('Edit'), 'class' => 'nav-action-icon']) ?>
                 <?= $this->Form->postLink('<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>',
-                    ['controller' => 'Queries', 'action' => 'delete', $queryGroup->id], [
+                    ['controller' => 'Queries', 'action' => 'delete', $query->id], [
                         'escapeTitle' => false,
                         'alt'         => __('Delete'),
                         'confirm'     => __('Are you sure you want to delete this query: {0}?', $query->code),
