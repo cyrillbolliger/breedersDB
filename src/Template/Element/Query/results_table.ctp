@@ -10,24 +10,7 @@
     <?php foreach ($results as $result): ?>
         <tr>
             <?php foreach ($columns as $column_key => $column_translation): ?>
-                <?php
-                    $path = explode('.', $column_key);
-                    $class_path = '\App\Model\Entity\\'.$path[0];
-                    $class = new $class_path();
-                    if ( $result instanceof $class ) {
-                        $cell = $result->{$path[1]};
-                    } else {
-                        $cell = $result;
-                        foreach($path as $p) {
-                            $property = \Cake\Utility\Inflector::underscore($p);
-                            $cell = $cell->$property;
-                            if (null === $cell) {
-                                break;
-                            }
-                        }
-                    }
-                ?>
-                <td><?= h($cell); ?></td>
+                <td class="index_inline_list"><?= $this->DataExtractor->getCell($column_key, $result); ?></td>
             <?php endforeach; ?>
         </tr>
     <?php endforeach; ?>

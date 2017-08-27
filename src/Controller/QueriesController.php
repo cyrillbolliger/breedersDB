@@ -44,9 +44,8 @@ class QueriesController extends AppController
         
         $q = $this->Queries->buildViewQuery($query->query);
         $results = $this->paginate($q);
-        
-        $tmp = $this->Queries->getViewQueryColumns($query->query);
-        $columns = $this->Queries->getTranslatedFieldsFromList($tmp);
+    
+        $columns = $this->Queries->getViewQueryColumns($query->query);
         
         $this->loadModel('QueryGroups');
         $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');

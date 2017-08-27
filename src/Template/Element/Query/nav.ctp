@@ -17,7 +17,7 @@
         </li>
         <?php foreach ($queryGroup->queries as $query): ?>
             <li class="editable-nav-item">
-                <?= $this->Html->link(h($query->code),
+                <?= $this->Html->link($query->code,
                     ['controller' => 'Queries', 'action' => 'view', $query->id]) ?>
                 <?= $this->Html->link('<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',
                     ['controller' => 'Queries', 'action' => 'edit', $query->id],

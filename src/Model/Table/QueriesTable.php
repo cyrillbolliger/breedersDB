@@ -120,21 +120,6 @@ class QueriesTable extends Table
     }
     
     /**
-     * Return associative array with view.field as key and its translated name as value.
-     *
-     * @param array $list
-     *
-     * @return array
-     */
-    public function getTranslatedFieldsFromList( array $list) {
-        $fields = [];
-        foreach ($list as $item) {
-            $fields[$item] = $this->translateFields($item);
-        }
-        return $fields;
-    }
-    
-    /**
      * Return associative array with field names as keys and its type as value from given tables names
      *
      * @param array $tables
@@ -295,7 +280,7 @@ class QueriesTable extends Table
     }
     
     /**
-     * Return columns from given query data.
+     * Return columns from given query data with dot noted key and translated value
      *
      * The $query_data must be a stdClass with at least the properties:
      * - fields : result of the query builder field selection as stdClass
@@ -304,37 +289,19 @@ class QueriesTable extends Table
      *
      * @return array
      */
-    public function getViewQueryColumns($query_data) {
-        return $this->_parseQuery($query_data->fields, 'field');
-    }
-    
-    /**
-     * Return query from given query data.
-     *
-     * The $query_data must be a stdClass with at least the properties:
-     * - root_view : the FROM table
-     * - fields : result of the query builder field selection as stdClass
-     *
-     * @param $query_data
-     *
-     * @return Query
-     */
-    public function buildViewQuery($query_data)
+    public function getViewQueryColumns($query_data)
     {
-        $fields = $this->_parseQuery($query_data->fields, 'field');
-        $tables = $this->_parseQuery($query_data->fields, 'table');
+        $tmp = $this->_parseQuery($query_data->fields, 'field');
+        $tmp = $this->_getTranslatedFieldsFromList($tmp);
         
-        $root         = $query_data->root_view;
-        $associations = $this->_buildAssociationsForContainStatement($root, $tables);
-        
-        $rootTable  = TableRegistry::get($root);
-        $query_data = $rootTable->find('all')->select($fields);
-        
-        foreach ( $associations as $association) {
-            $query_data->contain($association);
+        // get recursively dot notated keys
+        $return = [];
+        foreach ($tmp as $key => $value) {
+            $dot_key          = $this->_getDottedFieldPath($key);
+            $return[$dot_key] = $value;
         }
         
-        return $query_data;
+        return $return;
     }
     
     /**
@@ -366,6 +333,73 @@ class QueriesTable extends Table
     }
     
     /**
+     * Return associative array with view.field as key and its translated name as value.
+     *
+     * @param array $list
+     *
+     * @return array
+     */
+    private function _getTranslatedFieldsFromList(array $list)
+    {
+        $fields = [];
+        foreach ($list as $item) {
+            $fields[$item] = $this->translateFields($item);
+        }
+        
+        return $fields;
+    }
+    
+    /**
+     * Return fully qualified dot path of given key.
+     * IMPORTANT: make sure this method gets called AFTER $this->buildViewQuery()
+     *
+     * @param string $key
+     *
+     * @return string
+     */
+    private function _getDottedFieldPath(string $key) : string
+    {
+        $table = explode('.', $key)[0];
+        foreach ($this->viewQueryAssociations as $association) {
+            $path = $this->viewQueryRoot . '.' . $association;
+            $pos  = strpos($path, $table);
+            if ($pos) {
+                return substr($path, 0, $pos) . $key;
+            }
+        }
+        
+        return $key;
+    }
+    
+    /**
+     * Return query from given query data.
+     *
+     * The $query_data must be a stdClass with at least the properties:
+     * - root_view : the FROM table
+     * - fields : result of the query builder field selection as stdClass
+     *
+     * @param $query_data
+     *
+     * @return Query
+     */
+    public function buildViewQuery($query_data)
+    {
+        $tables = $this->_parseQuery($query_data->fields, 'table');
+        
+        // keep in memory for later use
+        $this->viewQueryRoot         = $query_data->root_view;
+        $associations                = $this->_buildAssociationsForContainStatement($this->viewQueryRoot, $tables);
+        $this->viewQueryAssociations = $associations;
+        
+        $rootTable = TableRegistry::get($this->viewQueryRoot);
+        $query     = $rootTable
+            ->find('all')
+            ->contain($associations);
+        
+        return $query;
+    }
+    
+    /**
      * Return 1-dim array with association paths of $tables in dot notation starting from root.
      *
      * @param string $root
@@ -377,7 +411,7 @@ class QueriesTable extends Table
     {
         $associations = $this->_getAssociationsRecursive($root, $tables);
         
-        if ( empty($associations) ) {
+        if (empty($associations)) {
             return [];
         }
         
@@ -462,18 +496,17 @@ class QueriesTable extends Table
      * Recursive walk array and build a dot path of its keys.
      *
      * @param $array
-     * @param string $base
      *
      * @return array
      */
-    private function _getDottedArrayPath($array, string $base = ''): array
+    private function _getDottedArrayPath($array): array
     {
         $return = [];
-        foreach ($array as $key => $value) {
-            if ( ! is_array($value)) {
-                $return[] = trim($base . '.' . $key, '.');
+        foreach ($array as $base => $child) {
+            if ( ! is_array($child)) {
+                $return[] = $base;
             } else {
-                $return = $return + $this->_getDottedArrayPath($value, $key);
+                $return[] = trim($base . '.' . implode('.', $this->_getDottedArrayPath($child)), '.');
             }
         }
         

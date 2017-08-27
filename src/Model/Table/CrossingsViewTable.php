@@ -37,13 +37,7 @@ class CrossingsViewTable extends Table
         $this->table('crossings_view');
         $this->displayField('code');
         $this->primaryKey('id');
-    
-        $this->belongsTo('VarietiesView', [
-            'foreignKey' => 'mother_variety_id'
-        ]);
-        $this->belongsTo('VarietiesView', [
-            'foreignKey' => 'father_variety_id'
-        ]);
+        
         $this->hasMany('BatchesView', [
             'foreignKey' => 'crossing_id'
         ]);
