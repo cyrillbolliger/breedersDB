@@ -40,14 +40,20 @@ class QueriesController extends AppController
             'contain' => []
         ]);
         
-        $results = $this->Queries->queryViews(json_decode($query->query));
+        $query->query = json_decode($query->query);
+        
+        $q = $this->Queries->buildViewQuery($query->query);
+        $results = $this->paginate($q);
+        
+        $tmp = $this->Queries->getViewQueryColumns($query->query);
+        $columns = $this->Queries->getTranslatedFieldsFromList($tmp);
         
         $this->loadModel('QueryGroups');
         $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
         $query_groups = $this->QueryGroups->find('list')->order('code');
         
-        $this->set(compact('query', 'query_groups', 'queryGroups'));
-        $this->set('_serialize', ['query', 'query_groups', 'queryGroups']);
+        $this->set(compact('query', 'query_groups', 'queryGroups', 'results', 'columns'));
+        $this->set('_serialize', ['query', 'query_groups', 'queryGroups', 'results', 'columns']);
     }
     
     /**

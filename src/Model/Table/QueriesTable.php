@@ -120,6 +120,21 @@ class QueriesTable extends Table
     }
     
     /**
+     * Return associative array with view.field as key and its translated name as value.
+     *
+     * @param array $list
+     *
+     * @return array
+     */
+    public function getTranslatedFieldsFromList( array $list) {
+        $fields = [];
+        foreach ($list as $item) {
+            $fields[$item] = $this->translateFields($item);
+        }
+        return $fields;
+    }
+    
+    /**
      * Return associative array with field names as keys and its type as value from given tables names
      *
      * @param array $tables
@@ -234,29 +249,6 @@ class QueriesTable extends Table
     }
     
     /**
-     * Return array of associations from given table
-     *
-     * @param string $table_name
-     *
-     * @return array of associations
-     */
-    public function getAssociationsOf(string $table_name)
-    {
-        $associated = array();
-        
-        $tmp = TableRegistry::get($table_name);
-        $has = $tmp->associations();
-        
-        foreach ($has as $table => $properties) {
-            // use the way over the reflection class to retrieve the camel cased name
-            $reflection   = new \ReflectionClass(TableRegistry::get($table));
-            $associated[] = preg_replace("/Table$/",'', $reflection->getShortName());
-        }
-        
-        return $associated;
-    }
-    
-    /**
      * Return patched entity with the query data merged as json into the query field.
      * The other fields are patched normally.
      *
@@ -278,7 +270,7 @@ class QueriesTable extends Table
             unset($request[$view]);
         }
         
-        $data['fields'] = $query;
+        $data['fields']   = $query;
         $request['query'] = json_encode($data);
         
         return $this->patchEntity($entity, $request);
@@ -302,17 +294,47 @@ class QueriesTable extends Table
         ];
     }
     
-    public function queryViews($query)
-    {
-        $fields    = $this->_parseQuery($query->fields, 'field');
-        $tables    = $this->_parseQuery($query->fields, 'table');
-        $rootTable = $query->root_view;
+    /**
+     * Return columns from given query data.
+     *
+     * The $query_data must be a stdClass with at least the properties:
+     * - fields : result of the query builder field selection as stdClass
+     *
+     * @param $query_data
+     *
+     * @return array
+     */
+    public function getViewQueryColumns($query_data) {
+        return $this->_parseQuery($query_data->fields, 'field');
+    }
     
-        $this->Root = TableRegistry::get($rootTable);
+    /**
+     * Return query from given query data.
+     *
+     * The $query_data must be a stdClass with at least the properties:
+     * - root_view : the FROM table
+     * - fields : result of the query builder field selection as stdClass
+     *
+     * @param $query_data
+     *
+     * @return Query
+     */
+    public function buildViewQuery($query_data)
+    {
+        $fields = $this->_parseQuery($query_data->fields, 'field');
+        $tables = $this->_parseQuery($query_data->fields, 'table');
         
-        // get associated tables
-        //build query
+        $root         = $query_data->root_view;
+        $associations = $this->_buildAssociationsForContainStatement($root, $tables);
         
+        $rootTable  = TableRegistry::get($root);
+        $query_data = $rootTable->find('all')->select($fields);
+        
+        foreach ( $associations as $association) {
+            $query_data->contain($association);
+        }
+        
+        return $query_data;
     }
     
     /**
@@ -323,7 +345,7 @@ class QueriesTable extends Table
      *
      * @return array
      */
-    private function _parseQuery(\stdClass $query, string $type)
+    private function _parseQuery(\stdClass $query, string $type): array
     {
         $return = array();
         $views  = array_keys($this->getViewNames());
@@ -341,5 +363,120 @@ class QueriesTable extends Table
         }
         
         return array_unique($return);
+    }
+    
+    /**
+     * Return 1-dim array with association paths of $tables in dot notation starting from root.
+     *
+     * @param string $root
+     * @param array $tables
+     *
+     * @return array
+     */
+    private function _buildAssociationsForContainStatement(string $root, array $tables)
+    {
+        $associations = $this->_getAssociationsRecursive($root, $tables);
+        
+        if ( empty($associations) ) {
+            return [];
+        }
+        
+        return $this->_getDottedArrayPath($associations);
+    }
+    
+    /**
+     * Return nested array of associations of all $tables starting at the root.
+     * The key represent the association. Leafs have null values.
+     *
+     * @param string $root
+     * @param array $tables
+     *
+     * @return array|null
+     */
+    private function _getAssociationsRecursive(string $root, array $tables)
+    {
+        $tables = array_diff($tables, [$root]);
+        
+        if (empty($tables)) {
+            return null;
+        }
+        
+        $associations = array();
+        $return       = array();
+        
+        foreach ($this->getAssociationsOf($root) as $association) {
+            $key = array_search($association, $tables);
+            if (false !== $key) {
+                $associations[] = $tables[$key];
+                unset($tables[$key]);
+            }
+        }
+        
+        if (empty($associations)) {
+            return null;
+        }
+        
+        foreach ($associations as $key => $association) {
+            $return[$association] = $this->_getAssociationsRecursive($association, $tables);
+        }
+        
+        return $return;
+    }
+    
+    /**
+     * Return array of associations from given table
+     *
+     * @param string $table_name
+     * @param boolean $hasManyOnly only return has many associations
+     *
+     * @return array of associations
+     */
+    public function getAssociationsOf(string $table_name, $hasManyOnly = false)
+    {
+        $associated = array();
+        
+        $tmp = TableRegistry::get($table_name);
+        $has = $tmp->associations();
+        
+        $tables = array();
+        foreach ($has as $table => $properties) {
+            $tables[] = $table;
+        }
+        
+        if ($hasManyOnly) {
+            foreach ($tables as $table) {
+                if ( ! $has->get($table) instanceof \Cake\ORM\Association\HasMany) {
+                    unset($tables[array_search($table, $tables)]);
+                }
+            }
+        }
+        
+        foreach ($tables as $table) {
+            $associated[] = $has->get($table)->name();
+        }
+        
+        return $associated;
+    }
+    
+    /**
+     * Recursive walk array and build a dot path of its keys.
+     *
+     * @param $array
+     * @param string $base
+     *
+     * @return array
+     */
+    private function _getDottedArrayPath($array, string $base = ''): array
+    {
+        $return = [];
+        foreach ($array as $key => $value) {
+            if ( ! is_array($value)) {
+                $return[] = trim($base . '.' . $key, '.');
+            } else {
+                $return = $return + $this->_getDottedArrayPath($value, $key);
+            }
+        }
+        
+        return $return;
     }
 }

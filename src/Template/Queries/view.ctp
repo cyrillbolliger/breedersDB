@@ -23,10 +23,14 @@
     </table>
     <div class="row">
         <h4><?= __('Query') ?></h4>
-        <?= $this->Text->autoParagraph(h($query->query)); ?>
+        <?php //debug(($query->query)); ?>
     </div>
     <div class="row">
         <h4><?= __('Description') ?></h4>
         <?= $this->Text->autoParagraph(h($query->description)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('Results') ?></h4>
+        <?= $this->element('Query/results_table'); ?>
     </div>
 </div>
