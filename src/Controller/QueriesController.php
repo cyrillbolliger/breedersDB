@@ -171,7 +171,8 @@ class QueriesController extends AppController
             'default_root_view',
             'view_fields',
             'active_views',
-            'active_fields'
+            'active_fields',
+            'associations'
         ));
         $this->set('_serialize', [
             'query',
@@ -182,6 +183,7 @@ class QueriesController extends AppController
             'view_fields',
             'active_views',
             'active_fields',
+            'associations'
         ]);
     }
     
