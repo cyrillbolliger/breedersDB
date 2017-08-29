@@ -70,7 +70,7 @@ class QueriesController extends AppController
             if ($this->Queries->save($query)) {
                 $this->Flash->success(__('The query has been saved.'));
                 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $query->id]);
             } else {
                 $this->Flash->error(__('The query could not be saved. Please, try again.'));
             }
@@ -80,6 +80,9 @@ class QueriesController extends AppController
         $view_fields       = $this->Queries->getTranslatedFieldsOf(array_keys($views));
         $default_root_view = 'MarksView';
         $root_view         = $default_root_view;
+        
+        $active_views = array(); // ToDo: Get good defaults
+        $active_fields = array(); // ToDo: Get good defaults
         
         $associations = array();
         foreach (array_keys($views) as $view_name) {
@@ -99,7 +102,10 @@ class QueriesController extends AppController
             'queryGroups',
             'views',
             'view_fields',
-            'associations'));
+            'associations',
+            'active_views',
+            'active_fields'
+        ));
         $this->set('_serialize', [
             'default_root_view',
             'root_view',
@@ -109,7 +115,9 @@ class QueriesController extends AppController
             'queryGroups',
             'views',
             'view_fields',
-            'associations'
+            'associations',
+            'active_views',
+            'active_fields'
         ]);
     }
     
@@ -131,7 +139,7 @@ class QueriesController extends AppController
             if ($this->Queries->save($query)) {
                 $this->Flash->success(__('The query has been saved.'));
                 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $id]);
             } else {
                 $this->Flash->error(__('The query could not be saved. Please, try again.'));
             }
