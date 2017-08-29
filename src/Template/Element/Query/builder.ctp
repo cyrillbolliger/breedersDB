@@ -18,9 +18,10 @@ echo $this->Form->input('root_view', [
 foreach ($views as $view_key => $view_name) {
     $this->Form->unlockField($view_key);
     echo $this->Form->input($view_key, [
-        'label' => $view_name,
-        'type'  => 'checkbox',
-        'class' => 'view-selector ' . $view_key . '-view-selector',
+        'label'   => $view_name,
+        'type'    => 'checkbox',
+        'class'   => 'view-selector ' . $view_key . '-view-selector',
+        'checked' => in_array($view_key, $active_views),
     ]);
     echo '<div class="field-selector-container ' . $view_key . '-field-selector-container">';
     foreach ($view_fields[$view_key] as $field_key => $field_name) {
@@ -29,6 +30,7 @@ foreach ($views as $view_key => $view_name) {
             'type'     => 'checkbox',
             'class'    => 'field-selector ' . $field_key . '-field-selector',
             'required' => false,
+            'checked'  => in_array($field_key, $active_fields),
         ]);
     }
     echo '</div>';

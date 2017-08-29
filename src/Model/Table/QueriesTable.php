@@ -291,7 +291,7 @@ class QueriesTable extends Table
      */
     public function getViewQueryColumns($query_data)
     {
-        $tmp = $this->_parseQuery($query_data->fields, 'field');
+        $tmp = $this->getActiveFields($query_data);
         $tmp = $this->_getTranslatedFieldsFromList($tmp);
         
         // get recursively dot notated keys
@@ -305,7 +305,7 @@ class QueriesTable extends Table
     }
     
     /**
-     * Return array with fields (dot notation) or tables
+     * Return array with fields or tables
      *
      * @param \stdClass $query
      * @param string $type
@@ -321,8 +321,10 @@ class QueriesTable extends Table
             foreach ($query->$view as $key => $value) {
                 if ($value) {
                     if ('table' == $type) {
+                        // tables
                         $return[] = $view;
                     } else {
+                        // fields
                         $return[] = $view . '.' . $key;
                     }
                 }
@@ -511,5 +513,33 @@ class QueriesTable extends Table
         }
         
         return $return;
+    }
+    
+    /**
+     * Return active tables from given query data.
+     *
+     * The $query_data must be a stdClass with at least the properties:
+     * - fields : result of the query builder field selection as stdClass
+     *
+     * @param $query_data
+     *
+     * @return array
+     */
+    public function getActiveViewTables($query_data) {
+        return $this->_parseQuery($query_data->fields, 'table');
+    }
+    
+    /**
+     * Return active fields from given query data.
+     *
+     * The $query_data must be a stdClass with at least the properties:
+     * - fields : result of the query builder field selection as stdClass
+     *
+     * @param $query_data
+     *
+     * @return array
+     */
+    public function getActiveFields($query_data) {
+        return $this->_parseQuery($query_data->fields, 'field');
     }
 }

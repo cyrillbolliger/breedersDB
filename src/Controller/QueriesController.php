@@ -37,7 +37,7 @@ class QueriesController extends AppController
     public function view($id = null)
     {
         $query = $this->Queries->get($id, [
-            'contain' => []
+            'contain' => ['QueryGroups']
         ]);
         
         $query->query = json_decode($query->query);
@@ -136,13 +136,45 @@ class QueriesController extends AppController
                 $this->Flash->error(__('The query could not be saved. Please, try again.'));
             }
         }
+    
+        $q = json_decode($query->query);
+        
+        $views             = $this->Queries->getViewNames();
+        $view_fields       = $this->Queries->getTranslatedFieldsOf(array_keys($views));
+        $default_root_view = $q->root_view;
+        
+        $active_views = $this->Queries->getActiveViewTables($q);
+        $active_fields = $this->Queries->getActiveFields($q);
+        
+        $associations = array();
+        foreach (array_keys($views) as $view_name) {
+            $associations[$view_name] = $this->Queries->getAssociationsOf($view_name);
+        }
         
         $this->loadModel('QueryGroups');
         $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
         $query_groups = $this->QueryGroups->find('list')->order('code');
         
-        $this->set(compact('query', 'query_groups', 'queryGroups'));
-        $this->set('_serialize', ['query', 'query_groups', 'queryGroups']);
+        $this->set(compact(
+            'query',
+            'query_groups',
+            'queryGroups',
+            'views',
+            'default_root_view',
+            'view_fields',
+            'active_views',
+            'active_fields'
+        ));
+        $this->set('_serialize', [
+            'query',
+            'query_groups',
+            'queryGroups',
+            'views',
+            'default_root_view',
+            'view_fields',
+            'active_views',
+            'active_fields',
+        ]);
     }
     
     /**

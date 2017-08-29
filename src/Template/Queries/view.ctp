@@ -2,15 +2,15 @@
     <?= $this->element('Query/nav'); ?>
 </nav>
 <div class="queries view large-9 medium-8 columns content">
-    <h3><?= h($query->id) ?></h3>
+    <h3><?= __('Query:') .' '. h($query->code) ?></h3>
     <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Code') ?></th>
-            <td><?= h($query->code) ?></td>
-        </tr>
         <tr>
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($query->id) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Query Group') ?></th>
+            <td><?= $query->has('query_group') ? $query->query_group->code : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Created') ?></th>

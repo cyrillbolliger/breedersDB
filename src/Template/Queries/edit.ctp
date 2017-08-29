@@ -11,8 +11,8 @@
                 'options'  => $query_groups,
                 'required' => 'required',
             ]);
-            echo $this->Form->input('query');
             echo $this->Form->input('description');
+            echo $this->element('Query/builder');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
