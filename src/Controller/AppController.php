@@ -22,6 +22,7 @@ use Cake\I18n\FrozenDate;
 use Cake\I18n\Date;
 use Cake\I18n\FrozenTime;
 use Cake\I18n\Time;
+use Cake\Core\Configure;
 
 /**
  * Application Controller
@@ -133,6 +134,13 @@ class AppController extends Controller
              in_array($this->response->type(), ['application/json', 'application/xml'])
         ) {
             $this->set('_serialize', true);
+        }
+        
+        // This is done here instead of the bootstrap to not affect the debug kit
+        if (Configure::read('debug')) {
+            Configure::write('App.cssBaseUrl', 'dev/'.Configure::read('App.cssBaseUrl'));
+            Configure::write('App.jsBaseUrl', 'dev/'.Configure::read('App.jsBaseUrl'));
+            Configure::write('App.imgBaseUrl', 'dev/'.Configure::read('App.imgBaseUrl'));
         }
     }
     

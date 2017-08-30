@@ -1,0 +1,22 @@
+{
+  "name": "poc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "directories": {},
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-browserify": "^0.5.1"
+  },
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "jquery-ui": "^1.12.1",
+    "select2": "^4.0.3"
+  },
+  "browser": {
+    "jquery-ui": "./node_modules/jquery-ui/ui/widgets/datepicker.js"
+  }
+}

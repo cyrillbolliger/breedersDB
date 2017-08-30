@@ -1,0 +1,223 @@
+/*
+    Created on : 18.01.2017, 18:05:06
+    Author     : cyrillbolliger
+*/
+
+/* ------ top-nav ------ */
+ul.top-nav {
+    float: left;
+    font-size: 1em;
+}
+
+ul.top-nav li {
+    float: left;
+}
+
+ul.top-nav li a {
+    display: block;
+    line-height: 2.8125rem;
+    padding: 0 0.9375rem;
+    color: #ffffff;
+    height: 100%;
+}
+
+ul.top-nav li a:hover {
+    background: #308e97;
+}
+
+ul.meta-nav li > a {
+    color: #B7E3EC;
+}
+
+/* ------ fields ------ */
+input[type="text"].datepicker {
+    width: 272px;
+}
+
+.select2-container {
+    margin-bottom: 1rem;
+}
+
+input[type="text"].brain-prefilled,
+select.brain-prefilled,
+select.brain-prefilled + span span.select2-selection {
+    background-color: #B7E3EC;
+}
+
+.brain_prefilled_msg {
+    font-size: 0.8em;
+    color: #bbb;
+    padding-left: 1em;
+}
+
+/* ------ table ------ */
+input.filter {
+    background-color: #F2FCFF;
+}
+
+input.filter:focus {
+    background-color: #E5FBFF;
+}
+
+div.searching {
+    color: #bbb;
+}
+
+table,
+.index table,
+.related table {
+    table-layout: auto;
+}
+
+table .id {
+    opacity: 0.5;
+}
+
+table thead tr th,
+table thead tr td,
+.related table tr th {
+    font-size: 0.8em;
+    color: #666;
+}
+
+table td {
+    word-break: normal;
+}
+
+table .actions {
+    width: 7em;
+}
+
+.index_inline_list ul {
+    margin: 0;
+    list-style: none;
+    font-size: 1em;
+}
+
+/* --------- pagination --------- */
+.paginator p {
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+/* -------- sortable -------- */
+.sortable_element {
+    margin: 0;
+}
+
+.sortable_element:hover {
+    background-color: #fafafa;
+    transition: background-color 0.2s;
+}
+
+.sortable_handle:hover {
+    color: #1798A5;
+    cursor: ns-resize;
+}
+
+/* -------- buttons -------- */
+.single-icon {
+    width: 1em;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.delete_button {
+    padding: 0.5em;
+    width: 2em;
+}
+
+.delete_button:hover {
+    color: #1798A5;
+    cursor: pointer;
+}
+
+.button {
+    background: #966600;
+}
+
+.print-button {
+    float: right;
+}
+
+.view-icon,
+.edit-icon,
+.delete-icon {
+    padding: 0.25rem 0.25rem 0;
+    line-height: 1rem;
+    width: 1.4rem;
+    transition: 0.1s;
+}
+
+.view-icon:hover,
+.edit-icon:hover,
+.delete-icon:hover {
+    padding: 0 0;
+    font-size: 1.4rem;
+    color: #0078a0;
+}
+
+/* --------- Legends ------- */
+.sub-legend-h2, .sub-legend-h3 {
+    width: auto;
+}
+
+.sub-legend-h3 {
+    border-bottom-width: 1px;
+    font-weight: normal;
+}
+
+/* --------- Marks --------- */
+.mark_form_fields_adder {
+    margin-top: 1em;
+}
+
+.marks .index_inline_list {
+    width: 40%;
+}
+
+/* --------- Side nav ------- */
+.side-nav li.editable-nav-item a {
+    display: inline-block;
+}
+
+.side-nav li.heading {
+    line-height: 1.5rem;
+    padding: 2rem 0.875rem 0;
+}
+
+.side-nav li a.nav-action-icon {
+    padding: 0;
+    display: none;
+    color: rgba(21, 132, 143, 0.5);
+}
+
+.side-nav li a.nav-action-icon:focus,
+.side-nav li a.nav-action-icon:hover {
+    background-color: transparent;
+}
+
+.side-nav li:hover a.nav-action-icon {
+    display: inline-block;
+}
+
+.side-nav li a.nav-title-link {
+    padding: 0;
+    color: #1798A5;
+}
+
+.side-nav li a.add-nav-item {
+    font-style: italic;
+    color: rgba(21, 132, 143, 0.5)
+}
+
+/* -------- Queries -------- */
+.field-selector-container {
+    display: none;
+    margin-left: 2rem;
+}
+
+.disabled-checkbox {
+    text-decoration: line-through;
+    color: #aaa;
+}

@@ -31,9 +31,6 @@
     <?= $this->Html->css('app.css') ?>
     <?= $this->Html->css('print.css') ?>
     
-    <?= $this->Html->script('jquery-3.1.1.min.js') ?>
-    <?= $this->Html->script('jquery-ui.min.js') ?>
-    <?= $this->Html->script('select2.min.js') ?>
     <?= $this->Html->script('app.js') ?>
     
     <?= $this->fetch('meta') ?>
