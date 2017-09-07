@@ -222,7 +222,8 @@ function MarksModule(General) {
             data: {
                 fields: ['publicid'],
                 element: 'get_tree',
-                term: val
+                term: val,
+                printable: 'with_date'
             },
             success: function (resp, status) {
                 if ('success' == status) {

@@ -316,7 +316,13 @@ class TreesController extends AppController
             $experimentSites = $this->Trees->ExperimentSites->find('list');
             
             $tree = $this->Brain->remember($tree);
-            $this->set(compact('tree', 'varieties', 'rootstocks', 'graftings', 'rows', 'experimentSites'));
+            
+            $zpl = null;
+            if (! empty($this->request->query['printable']) && $this->request->query['printable'] != false) {
+                $zpl = $this->Trees->getLabelZpl($tree->id, 'convar', true, $this->request->session()->read('time_zone'));
+            }
+            
+            $this->set(compact('zpl','printable','tree', 'varieties', 'rootstocks', 'graftings', 'rows', 'experimentSites'));
             $this->set('_serialize', ['tree']);
             
             $this->render('/Element/Tree/' . (string)$this->request->query['element']);

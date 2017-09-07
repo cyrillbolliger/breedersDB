@@ -205,7 +205,13 @@ class BatchesController extends AppController
         $zpl = $this->Batches->getLabelZpl($batch_id);
         
         $this->set([
-            'zpl'        => [__('Regular') => $zpl],
+            'buttons'    => [
+                'regular'   => [
+                    'label' => __('Regular'),
+                    'zpl'   => $zpl,
+                ],
+            ],
+            'focus'      => 'regular',
             'controller' => 'Batches',
             'action'     => $caller,
             'params'     => $params,

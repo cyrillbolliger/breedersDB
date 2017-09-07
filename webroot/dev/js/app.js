@@ -27320,7 +27320,7 @@ function GeneralModule() {
     };
 
     this.instantiatePrintButtons = function () {
-        $('.button.zpl_print').click(function () {
+        $('.zpl_print').click(function (event) {
             var printWindow = window.open();
             printWindow.document.open('text/plain')
             printWindow.document.write($(this).attr('data-zpl'));
@@ -27328,6 +27328,9 @@ function GeneralModule() {
             printWindow.focus();
             printWindow.print();
             printWindow.close();
+            if ($(this).hasClass('prevent_default')) {
+                event.preventDefault();
+            }
         });
     };
 }
@@ -27558,7 +27561,8 @@ function MarksModule(General) {
             data: {
                 fields: ['publicid'],
                 element: 'get_tree',
-                term: val
+                term: val,
+                printable: 'with_date'
             },
             success: function (resp, status) {
                 if ('success' == status) {
@@ -27687,6 +27691,7 @@ module.exports = MarksModule;
  * handles all the queries stuff
  */
 function QueriesModule(General) {
+    "use strict";
 
     /**
      * having our class always accessible can get handy
@@ -27720,6 +27725,7 @@ function QueriesModule(General) {
      * bind main table selector events
      */
     this.bindRootViewSelectorEvents = function () {
+        var $el;
         $('#root-view').on('change', function() {
             $el = $('input[name="'+$(this).val()+'"].view-selector');
             $el.prop('checked', true);
@@ -27912,6 +27918,7 @@ function TreesModule(General) {
     this.get = function () {
         var $filter = $('.get_tree').first();
         var $container = $('#tree_container').first();
+        var printable = $filter.hasClass('get_printable_tree_with_date') ? 'with_date' : false;
 
         $filter.on('keyup paste', function () {
             var params = $filter.data('filter');
@@ -27920,7 +27927,8 @@ function TreesModule(General) {
                 data: {
                     fields: params.fields,
                     element: params.element,
-                    term: $filter.val()
+                    term: $filter.val(),
+                    printable: printable
                 },
                 success: function (resp, status) {
                     if ('success' == status) {

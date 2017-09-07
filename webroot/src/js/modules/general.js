@@ -394,7 +394,7 @@ function GeneralModule() {
     };
 
     this.instantiatePrintButtons = function () {
-        $('.button.zpl_print').click(function () {
+        $('.zpl_print').click(function (event) {
             var printWindow = window.open();
             printWindow.document.open('text/plain')
             printWindow.document.write($(this).attr('data-zpl'));
@@ -402,6 +402,9 @@ function GeneralModule() {
             printWindow.focus();
             printWindow.print();
             printWindow.close();
+            if ($(this).hasClass('prevent_default')) {
+                event.preventDefault();
+            }
         });
     };
 }

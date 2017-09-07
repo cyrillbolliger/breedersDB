@@ -5,11 +5,13 @@ namespace App\Model\Table;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Cake\Event\Event;
 use ArrayObject;
 use SoftDelete\Model\Table\SoftDeleteTrait;
 use App\Model\Rule\IsNotReferredBy;
+Use Cake\I18n\Time;
 
 /**
  * Trees Model
@@ -325,10 +327,12 @@ class TreesTable extends Table
      *
      * @param int $id tree id
      * @param string $property
+     * @param bool $with_date
+     * @param string $timezone
      *
      * @return string
      */
-    public function getLabelZpl(int $id, string $property)
+    public function getLabelZpl(int $id, string $property, bool $with_date = false, $timezone = null)
     {
         $tree = $this->get($id, ['contain' => ['Varieties']]);
         $code = $tree->publicid;
@@ -339,6 +343,12 @@ class TreesTable extends Table
             $description = 1 === $tree->variety->batch_id ? $tree->variety->code : $tree->convar;
         }
         
-        return $this->getZPL($description, $code);
+        $date = null;
+        if ($with_date) {
+            $now = Time::now();
+            $date = $now->i18nFormat([\IntlDateFormatter::MEDIUM, -1], $timezone);
+        }
+        
+        return $this->getZPL($description, $code, $date);
     }
 }

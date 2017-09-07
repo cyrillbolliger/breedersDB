@@ -22,6 +22,7 @@ function TreesModule(General) {
     this.get = function () {
         var $filter = $('.get_tree').first();
         var $container = $('#tree_container').first();
+        var printable = $filter.hasClass('get_printable_tree_with_date') ? 'with_date' : false;
 
         $filter.on('keyup paste', function () {
             var params = $filter.data('filter');
@@ -30,7 +31,8 @@ function TreesModule(General) {
                 data: {
                     fields: params.fields,
                     element: params.element,
-                    term: $filter.val()
+                    term: $filter.val(),
+                    printable: printable
                 },
                 success: function (resp, status) {
                     if ('success' == status) {
