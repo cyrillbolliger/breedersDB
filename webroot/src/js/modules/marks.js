@@ -2,6 +2,7 @@
  * handles all the marks stuff
  */
 function MarksModule(General) {
+    "use strict";
 
     /**
      * having our class always accessible can get handy
@@ -118,7 +119,7 @@ function MarksModule(General) {
             .off('click')
             .click(function () {
                 var del = confirm(trans.delete_element + ' ' + $(this).prev().find('label').first().text() + '?');
-                if (del == true) {
+                if (del === true) {
                     $(this).parents('.deletable_element').remove();
                 }
             });
@@ -198,13 +199,10 @@ function MarksModule(General) {
     this.byScanner = function () {
         var $scanner = $('.scanner_mark_field').first();
 
-        var params = $scanner.data('filter');
-
         $scanner.bindWithDelay('keyup paste', function () {
             if (0 < $scanner.val().length) {
                 self.processScannerCode($scanner);
             }
-
         }, 200);
     };
 
@@ -226,7 +224,7 @@ function MarksModule(General) {
                 printable: 'with_date'
             },
             success: function (resp, status) {
-                if ('success' == status) {
+                if ('success' === status) {
                     $container.html(resp);
                     self.General.beep('success');
                 } else {
@@ -306,6 +304,7 @@ function MarksModule(General) {
         var $form = $('form');
         var $inputs = $form.find('input, select, textarea');
         var valid = true;
+        var $tree_id = $('#tree_id');
 
         $inputs.each(function () {
             if (!$(this)[0].checkValidity()) {
@@ -313,7 +312,7 @@ function MarksModule(General) {
             }
         });
 
-        if (0 == $('#tree_id').length || '' == $('#tree_id').val()) {
+        if (0 === $tree_id.length || '' === $tree_id.val()) {
             valid = false;
         }
 
@@ -324,7 +323,7 @@ function MarksModule(General) {
         } else {
             self.General.beep('error');
         }
-    }
+    };
 
     /**
      * detect what was scanned and call correct action (get tree, set mark, submit form)

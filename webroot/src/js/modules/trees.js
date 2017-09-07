@@ -2,6 +2,7 @@
  * handles all the trees stuff
  */
 function TreesModule(General) {
+    "use strict";
 
     /**
      * having our class always accessible can get handy
@@ -35,7 +36,7 @@ function TreesModule(General) {
                     printable: printable
                 },
                 success: function (resp, status) {
-                    if ('success' == status) {
+                    if ('success' === status) {
                         $container.html(resp);
                         self.General.beep('success');
                     } else {

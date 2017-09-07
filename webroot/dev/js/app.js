@@ -26933,6 +26933,7 @@ var QueriesModule = require('./queries.js');
  * handles all the general stuff
  */
 function GeneralModule() {
+    "use strict";
 
     /**
      * having our class always accessible can get handy
@@ -27079,6 +27080,7 @@ function GeneralModule() {
      * @param term String with the filter criteria (search term)
      * @param params Object {controller: String, action: String, fields: Array}
      * @param $target jQuery object where the results will be displayed
+     * @param url String
      */
     this.getFilteredData = function (term, params, $target, url) {
         url = null === url ? window.location : url;
@@ -27138,7 +27140,7 @@ function GeneralModule() {
             new_link = link + '&sort=' + sort + '&direction=' + direction;
             $(this).attr('href', new_link);
         });
-    }
+    };
 
     /*
      * load and configure the convar select field.
@@ -27264,8 +27266,8 @@ function GeneralModule() {
     /**
      * get url get param value
      *
-     * @param String sParam
-     * @param String url
+     * @param sParam String
+     * @param url String
      * @returns String|Boolean
      */
     this.getUrlParameter = function (sParam, url) {
@@ -27322,7 +27324,7 @@ function GeneralModule() {
     this.instantiatePrintButtons = function () {
         $('.zpl_print').click(function (event) {
             var printWindow = window.open();
-            printWindow.document.open('text/plain')
+            printWindow.document.open('text/plain');
             printWindow.document.write($(this).attr('data-zpl'));
             printWindow.document.close();
             printWindow.focus();
@@ -27341,6 +27343,7 @@ module.exports = GeneralModule;
  * handles all the marks stuff
  */
 function MarksModule(General) {
+    "use strict";
 
     /**
      * having our class always accessible can get handy
@@ -27457,7 +27460,7 @@ function MarksModule(General) {
             .off('click')
             .click(function () {
                 var del = confirm(trans.delete_element + ' ' + $(this).prev().find('label').first().text() + '?');
-                if (del == true) {
+                if (del === true) {
                     $(this).parents('.deletable_element').remove();
                 }
             });
@@ -27537,13 +27540,10 @@ function MarksModule(General) {
     this.byScanner = function () {
         var $scanner = $('.scanner_mark_field').first();
 
-        var params = $scanner.data('filter');
-
         $scanner.bindWithDelay('keyup paste', function () {
             if (0 < $scanner.val().length) {
                 self.processScannerCode($scanner);
             }
-
         }, 200);
     };
 
@@ -27565,7 +27565,7 @@ function MarksModule(General) {
                 printable: 'with_date'
             },
             success: function (resp, status) {
-                if ('success' == status) {
+                if ('success' === status) {
                     $container.html(resp);
                     self.General.beep('success');
                 } else {
@@ -27645,6 +27645,7 @@ function MarksModule(General) {
         var $form = $('form');
         var $inputs = $form.find('input, select, textarea');
         var valid = true;
+        var $tree_id = $('#tree_id');
 
         $inputs.each(function () {
             if (!$(this)[0].checkValidity()) {
@@ -27652,7 +27653,7 @@ function MarksModule(General) {
             }
         });
 
-        if (0 == $('#tree_id').length || '' == $('#tree_id').val()) {
+        if (0 === $tree_id.length || '' === $tree_id.val()) {
             valid = false;
         }
 
@@ -27663,7 +27664,7 @@ function MarksModule(General) {
         } else {
             self.General.beep('error');
         }
-    }
+    };
 
     /**
      * detect what was scanned and call correct action (get tree, set mark, submit form)
@@ -27898,6 +27899,7 @@ module.exports = QueriesModule;
  * handles all the trees stuff
  */
 function TreesModule(General) {
+    "use strict";
 
     /**
      * having our class always accessible can get handy
@@ -27931,7 +27933,7 @@ function TreesModule(General) {
                     printable: printable
                 },
                 success: function (resp, status) {
-                    if ('success' == status) {
+                    if ('success' === status) {
                         $container.html(resp);
                         self.General.beep('success');
                     } else {
@@ -27957,6 +27959,7 @@ module.exports = TreesModule;
  * handles all the varieties stuff
  */
 function VarietiesModule(General) {
+    "use strict";
 
     /**
      * having our class always accessible can get handy
@@ -28026,17 +28029,18 @@ function VarietiesModule(General) {
         var $form = $official_name.parents('form');
         var $code = $form.find('#code').first();
         var $batch_id = $form.find('#batch-id');
+        var name = '';
 
         $official_name.on('keyup paste change', function () {
             $code.val(function () {
-                return $official_name.val()
-                    .trim()
-                    .replace(/[^äöüa-zA-Z0-9-_]/ug, '_')
-                    .toLowerCase();
+                name = $official_name.val();
+                name = name.trim();
+                name = name.replace(/[^äöüa-zA-Z0-9-_]/g, '_');
+                return name.toLowerCase();
             });
         });
 
-        $form.on('submit', function (event) {
+        $form.on('submit', function () {
             $code.removeAttr('disabled');
             $batch_id.removeAttr('disabled');
         });

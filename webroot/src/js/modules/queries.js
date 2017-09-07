@@ -2,6 +2,7 @@
  * handles all the queries stuff
  */
 function QueriesModule(General) {
+    "use strict";
 
     /**
      * having our class always accessible can get handy
@@ -35,6 +36,7 @@ function QueriesModule(General) {
      * bind main table selector events
      */
     this.bindRootViewSelectorEvents = function () {
+        var $el;
         $('#root-view').on('change', function() {
             $el = $('input[name="'+$(this).val()+'"].view-selector');
             $el.prop('checked', true);

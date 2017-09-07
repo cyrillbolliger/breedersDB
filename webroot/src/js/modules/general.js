@@ -7,6 +7,7 @@ var QueriesModule = require('./queries.js');
  * handles all the general stuff
  */
 function GeneralModule() {
+    "use strict";
 
     /**
      * having our class always accessible can get handy
@@ -153,6 +154,7 @@ function GeneralModule() {
      * @param term String with the filter criteria (search term)
      * @param params Object {controller: String, action: String, fields: Array}
      * @param $target jQuery object where the results will be displayed
+     * @param url String
      */
     this.getFilteredData = function (term, params, $target, url) {
         url = null === url ? window.location : url;
@@ -212,7 +214,7 @@ function GeneralModule() {
             new_link = link + '&sort=' + sort + '&direction=' + direction;
             $(this).attr('href', new_link);
         });
-    }
+    };
 
     /*
      * load and configure the convar select field.
@@ -338,8 +340,8 @@ function GeneralModule() {
     /**
      * get url get param value
      *
-     * @param String sParam
-     * @param String url
+     * @param sParam String
+     * @param url String
      * @returns String|Boolean
      */
     this.getUrlParameter = function (sParam, url) {
@@ -396,7 +398,7 @@ function GeneralModule() {
     this.instantiatePrintButtons = function () {
         $('.zpl_print').click(function (event) {
             var printWindow = window.open();
-            printWindow.document.open('text/plain')
+            printWindow.document.open('text/plain');
             printWindow.document.write($(this).attr('data-zpl'));
             printWindow.document.close();
             printWindow.focus();

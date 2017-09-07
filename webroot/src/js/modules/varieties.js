@@ -2,6 +2,7 @@
  * handles all the varieties stuff
  */
 function VarietiesModule(General) {
+    "use strict";
 
     /**
      * having our class always accessible can get handy
@@ -71,17 +72,18 @@ function VarietiesModule(General) {
         var $form = $official_name.parents('form');
         var $code = $form.find('#code').first();
         var $batch_id = $form.find('#batch-id');
+        var name = '';
 
         $official_name.on('keyup paste change', function () {
             $code.val(function () {
-                return $official_name.val()
-                    .trim()
-                    .replace(/[^äöüa-zA-Z0-9-_]/ug, '_')
-                    .toLowerCase();
+                name = $official_name.val();
+                name = name.trim();
+                name = name.replace(/[^äöüa-zA-Z0-9-_]/g, '_');
+                return name.toLowerCase();
             });
         });
 
-        $form.on('submit', function (event) {
+        $form.on('submit', function () {
             $code.removeAttr('disabled');
             $batch_id.removeAttr('disabled');
         });
