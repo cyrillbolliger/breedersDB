@@ -192,6 +192,9 @@ function MarksModule(General) {
         }
     };
 
+    /**
+     * process scanner input
+     */
     this.byScanner = function () {
         var $scanner = $('.scanner_mark_field').first();
 
@@ -205,6 +208,11 @@ function MarksModule(General) {
         }, 200);
     };
 
+    /**
+     * search tree from given value
+     *
+     * @param val
+     */
     this.getTree = function (val) {
         var $container = $('#tree_container').first();
         var $searching = $('#searching').first();
@@ -235,6 +243,11 @@ function MarksModule(General) {
         });
     };
 
+    /**
+     * Get mark from given code and set correct value
+     *
+     * @param val
+     */
     this.getScannerMark = function (val) {
         var $searching = $('#searching').first();
 
@@ -261,6 +274,11 @@ function MarksModule(General) {
         });
     };
 
+    /**
+     * Set mark value from server response of scanner code request
+     *
+     * @param data
+     */
     this.setMark = function (data) {
         var input_id = '#mark-form-fields-mark-form-properties-' + data.mark_form_property_id + '-mark-values-value';
         var radio_id = '#mark-form-fields-mark-form-properties-' + data.mark_form_property_id + '-mark-values-value-' + data.mark_value;
@@ -280,6 +298,9 @@ function MarksModule(General) {
         }
     };
 
+    /**
+     * Submit form
+     */
     this.submitForm = function () {
         var $form = $('form');
         var $inputs = $form.find('input, select, textarea');
@@ -304,6 +325,11 @@ function MarksModule(General) {
         }
     }
 
+    /**
+     * detect what was scanned and call correct action (get tree, set mark, submit form)
+     *
+     * @param $scanner
+     */
     this.processScannerCode = function ($scanner) {
         var val = $scanner.val();
 

@@ -1,4 +1,6192 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+// doT.js
+// 2011-2014, Laura Doktorova, https://github.com/olado/doT
+// Licensed under the MIT license.
+
+(function () {
+	"use strict";
+
+	var doT = {
+		name: "doT",
+		version: "1.1.1",
+		templateSettings: {
+			evaluate:    /\{\{([\s\S]+?(\}?)+)\}\}/g,
+			interpolate: /\{\{=([\s\S]+?)\}\}/g,
+			encode:      /\{\{!([\s\S]+?)\}\}/g,
+			use:         /\{\{#([\s\S]+?)\}\}/g,
+			useParams:   /(^|[^\w$])def(?:\.|\[[\'\"])([\w$\.]+)(?:[\'\"]\])?\s*\:\s*([\w$\.]+|\"[^\"]+\"|\'[^\']+\'|\{[^\}]+\})/g,
+			define:      /\{\{##\s*([\w\.$]+)\s*(\:|=)([\s\S]+?)#\}\}/g,
+			defineParams:/^\s*([\w$]+):([\s\S]+)/,
+			conditional: /\{\{\?(\?)?\s*([\s\S]*?)\s*\}\}/g,
+			iterate:     /\{\{~\s*(?:\}\}|([\s\S]+?)\s*\:\s*([\w$]+)\s*(?:\:\s*([\w$]+))?\s*\}\})/g,
+			varname:	"it",
+			strip:		true,
+			append:		true,
+			selfcontained: false,
+			doNotSkipEncoded: false
+		},
+		template: undefined, //fn, compile template
+		compile:  undefined, //fn, for express
+		log: true
+	}, _globals;
+
+	doT.encodeHTMLSource = function(doNotSkipEncoded) {
+		var encodeHTMLRules = { "&": "&#38;", "<": "&#60;", ">": "&#62;", '"': "&#34;", "'": "&#39;", "/": "&#47;" },
+			matchHTML = doNotSkipEncoded ? /[&<>"'\/]/g : /&(?!#?\w+;)|<|>|"|'|\//g;
+		return function(code) {
+			return code ? code.toString().replace(matchHTML, function(m) {return encodeHTMLRules[m] || m;}) : "";
+		};
+	};
+
+	_globals = (function(){ return this || (0,eval)("this"); }());
+
+	/* istanbul ignore else */
+	if (typeof module !== "undefined" && module.exports) {
+		module.exports = doT;
+	} else if (typeof define === "function" && define.amd) {
+		define(function(){return doT;});
+	} else {
+		_globals.doT = doT;
+	}
+
+	var startend = {
+		append: { start: "'+(",      end: ")+'",      startencode: "'+encodeHTML(" },
+		split:  { start: "';out+=(", end: ");out+='", startencode: "';out+=encodeHTML(" }
+	}, skip = /$^/;
+
+	function resolveDefs(c, block, def) {
+		return ((typeof block === "string") ? block : block.toString())
+		.replace(c.define || skip, function(m, code, assign, value) {
+			if (code.indexOf("def.") === 0) {
+				code = code.substring(4);
+			}
+			if (!(code in def)) {
+				if (assign === ":") {
+					if (c.defineParams) value.replace(c.defineParams, function(m, param, v) {
+						def[code] = {arg: param, text: v};
+					});
+					if (!(code in def)) def[code]= value;
+				} else {
+					new Function("def", "def['"+code+"']=" + value)(def);
+				}
+			}
+			return "";
+		})
+		.replace(c.use || skip, function(m, code) {
+			if (c.useParams) code = code.replace(c.useParams, function(m, s, d, param) {
+				if (def[d] && def[d].arg && param) {
+					var rw = (d+":"+param).replace(/'|\\/g, "_");
+					def.__exp = def.__exp || {};
+					def.__exp[rw] = def[d].text.replace(new RegExp("(^|[^\\w$])" + def[d].arg + "([^\\w$])", "g"), "$1" + param + "$2");
+					return s + "def.__exp['"+rw+"']";
+				}
+			});
+			var v = new Function("def", "return " + code)(def);
+			return v ? resolveDefs(c, v, def) : v;
+		});
+	}
+
+	function unescape(code) {
+		return code.replace(/\\('|\\)/g, "$1").replace(/[\r\t\n]/g, " ");
+	}
+
+	doT.template = function(tmpl, c, def) {
+		c = c || doT.templateSettings;
+		var cse = c.append ? startend.append : startend.split, needhtmlencode, sid = 0, indv,
+			str  = (c.use || c.define) ? resolveDefs(c, tmpl, def || {}) : tmpl;
+
+		str = ("var out='" + (c.strip ? str.replace(/(^|\r|\n)\t* +| +\t*(\r|\n|$)/g," ")
+					.replace(/\r|\n|\t|\/\*[\s\S]*?\*\//g,""): str)
+			.replace(/'|\\/g, "\\$&")
+			.replace(c.interpolate || skip, function(m, code) {
+				return cse.start + unescape(code) + cse.end;
+			})
+			.replace(c.encode || skip, function(m, code) {
+				needhtmlencode = true;
+				return cse.startencode + unescape(code) + cse.end;
+			})
+			.replace(c.conditional || skip, function(m, elsecase, code) {
+				return elsecase ?
+					(code ? "';}else if(" + unescape(code) + "){out+='" : "';}else{out+='") :
+					(code ? "';if(" + unescape(code) + "){out+='" : "';}out+='");
+			})
+			.replace(c.iterate || skip, function(m, iterate, vname, iname) {
+				if (!iterate) return "';} } out+='";
+				sid+=1; indv=iname || "i"+sid; iterate=unescape(iterate);
+				return "';var arr"+sid+"="+iterate+";if(arr"+sid+"){var "+vname+","+indv+"=-1,l"+sid+"=arr"+sid+".length-1;while("+indv+"<l"+sid+"){"
+					+vname+"=arr"+sid+"["+indv+"+=1];out+='";
+			})
+			.replace(c.evaluate || skip, function(m, code) {
+				return "';" + unescape(code) + "out+='";
+			})
+			+ "';return out;")
+			.replace(/\n/g, "\\n").replace(/\t/g, '\\t').replace(/\r/g, "\\r")
+			.replace(/(\s|;|\}|^|\{)out\+='';/g, '$1').replace(/\+''/g, "");
+			//.replace(/(\s|;|\}|^|\{)out\+=''\+/g,'$1out+=');
+
+		if (needhtmlencode) {
+			if (!c.selfcontained && _globals && !_globals._encodeHTML) _globals._encodeHTML = doT.encodeHTMLSource(c.doNotSkipEncoded);
+			str = "var encodeHTML = typeof _encodeHTML !== 'undefined' ? _encodeHTML : ("
+				+ doT.encodeHTMLSource.toString() + "(" + (c.doNotSkipEncoded || '') + "));"
+				+ str;
+		}
+		try {
+			return new Function(c.varname, str);
+		} catch (e) {
+			/* istanbul ignore else */
+			if (typeof console !== "undefined") console.log("Could not create a template function: " + str);
+			throw e;
+		}
+	};
+
+	doT.compile = function(tmpl, def) {
+		return doT.template(tmpl, null, def);
+	};
+}());
+
+},{}],2:[function(require,module,exports){
+/*!
+ * jQuery QueryBuilder 2.4.4
+ * Copyright 2014-2017 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * Licensed under MIT (http://opensource.org/licenses/MIT)
+ */
+(function(root, factory) {
+    if (typeof define == 'function' && define.amd) {
+        define(['jquery', 'dot/doT', 'jquery-extendext'], factory);
+    }
+    else if (typeof module === 'object' && module.exports) {
+        module.exports = factory(require('jquery'), require('dot/doT'), require('jquery-extendext'));
+    }
+    else {
+        factory(root.jQuery, root.doT);
+    }
+}(this, function($, doT) {
+"use strict";
+
+/**
+ * @typedef {object} Filter
+ * @memberof QueryBuilder
+ * @description See {@link http://querybuilder.js.org/index.html#filters}
+ */
+
+/**
+ * @typedef {object} Operator
+ * @memberof QueryBuilder
+ * @description See {@link http://querybuilder.js.org/index.html#operators}
+ */
+
+/**
+ * @param {jQuery} $el
+ * @param {object} options - see {@link http://querybuilder.js.org/#options}
+ * @constructor
+ * @fires QueryBuilder.afterInit
+ */
+var QueryBuilder = function($el, options) {
+    $el[0].queryBuilder = this;
+
+    /**
+     * Element container
+     * @member {jQuery}
+     * @readonly
+     */
+    this.$el = $el;
+
+    /**
+     * Configuration object
+     * @member {object}
+     * @readonly
+     */
+    this.settings = $.extendext(true, 'replace', {}, QueryBuilder.DEFAULTS, options);
+
+    /**
+     * Internal model
+     * @member {Model}
+     * @readonly
+     */
+    this.model = new Model();
+
+    /**
+     * Internal status
+     * @member {object}
+     * @property {string} id - id of the container
+     * @property {boolean} generated_id - if the container id has been generated
+     * @property {int} group_id - current group id
+     * @property {int} rule_id - current rule id
+     * @property {boolean} has_optgroup - if filters have optgroups
+     * @property {boolean} has_operator_optgroup - if operators have optgroups
+     * @readonly
+     * @private
+     */
+    this.status = {
+        id: null,
+        generated_id: false,
+        group_id: 0,
+        rule_id: 0,
+        has_optgroup: false,
+        has_operator_optgroup: false
+    };
+
+    /**
+     * List of filters
+     * @member {QueryBuilder.Filter[]}
+     * @readonly
+     */
+    this.filters = this.settings.filters;
+
+    /**
+     * List of icons
+     * @member {object.<string, string>}
+     * @readonly
+     */
+    this.icons = this.settings.icons;
+
+    /**
+     * List of operators
+     * @member {QueryBuilder.Operator[]}
+     * @readonly
+     */
+    this.operators = this.settings.operators;
+
+    /**
+     * List of templates
+     * @member {object.<string, function>}
+     * @readonly
+     */
+    this.templates = this.settings.templates;
+
+    /**
+     * Plugins configuration
+     * @member {object.<string, object>}
+     * @readonly
+     */
+    this.plugins = this.settings.plugins;
+
+    /**
+     * Translations object
+     * @member {object}
+     * @readonly
+     */
+    this.lang = null;
+
+    // translations : english << 'lang_code' << custom
+    if (QueryBuilder.regional['en'] === undefined) {
+        Utils.error('Config', '"i18n/en.js" not loaded.');
+    }
+    this.lang = $.extendext(true, 'replace', {}, QueryBuilder.regional['en'], QueryBuilder.regional[this.settings.lang_code], this.settings.lang);
+
+    // "allow_groups" can be boolean or int
+    if (this.settings.allow_groups === false) {
+        this.settings.allow_groups = 0;
+    }
+    else if (this.settings.allow_groups === true) {
+        this.settings.allow_groups = -1;
+    }
+
+    // init templates
+    Object.keys(this.templates).forEach(function(tpl) {
+        if (!this.templates[tpl]) {
+            this.templates[tpl] = QueryBuilder.templates[tpl];
+        }
+        if (typeof this.templates[tpl] == 'string') {
+            this.templates[tpl] = doT.template(this.templates[tpl]);
+        }
+    }, this);
+
+    // ensure we have a container id
+    if (!this.$el.attr('id')) {
+        this.$el.attr('id', 'qb_' + Math.floor(Math.random() * 99999));
+        this.status.generated_id = true;
+    }
+    this.status.id = this.$el.attr('id');
+
+    // INIT
+    this.$el.addClass('query-builder form-inline');
+
+    this.filters = this.checkFilters(this.filters);
+    this.operators = this.checkOperators(this.operators);
+    this.bindEvents();
+    this.initPlugins();
+
+    /**
+     * When the initilization is done, just before creating the root group
+     * @event afterInit
+     * @memberof QueryBuilder
+     */
+    this.trigger('afterInit');
+
+    if (options.rules) {
+        this.setRules(options.rules);
+        delete this.settings.rules;
+    }
+    else {
+        this.setRoot(true);
+    }
+};
+
+$.extend(QueryBuilder.prototype, /** @lends QueryBuilder.prototype */ {
+    /**
+     * Triggers an event on the builder container
+     * @param {string} type
+     * @returns {$.Event}
+     */
+    trigger: function(type) {
+        var event = new $.Event(this._tojQueryEvent(type), {
+            builder: this
+        });
+
+        this.$el.triggerHandler(event, Array.prototype.slice.call(arguments, 1));
+
+        return event;
+    },
+
+    /**
+     * Triggers an event on the builder container and returns the modified value
+     * @param {string} type
+     * @param {*} value
+     * @returns {*}
+     */
+    change: function(type, value) {
+        var event = new $.Event(this._tojQueryEvent(type, true), {
+            builder: this,
+            value: value
+        });
+
+        this.$el.triggerHandler(event, Array.prototype.slice.call(arguments, 2));
+
+        return event.value;
+    },
+
+    /**
+     * Attaches an event listener on the builder container
+     * @param {string} type
+     * @param {function} cb
+     * @returns {QueryBuilder}
+     */
+    on: function(type, cb) {
+        this.$el.on(this._tojQueryEvent(type), cb);
+        return this;
+    },
+
+    /**
+     * Removes an event listener from the builder container
+     * @param {string} type
+     * @param {function} [cb]
+     * @returns {QueryBuilder}
+     */
+    off: function(type, cb) {
+        this.$el.off(this._tojQueryEvent(type), cb);
+        return this;
+    },
+
+    /**
+     * Attaches an event listener called once on the builder container
+     * @param {string} type
+     * @param {function} cb
+     * @returns {QueryBuilder}
+     */
+    once: function(type, cb) {
+        this.$el.one(this._tojQueryEvent(type), cb);
+        return this;
+    },
+
+    /**
+     * Appends `.queryBuilder` and optionally `.filter` to the events names
+     * @param {string} name
+     * @param {boolean} [filter=false]
+     * @returns {string}
+     * @private
+     */
+    _tojQueryEvent: function(name, filter) {
+        return name.split(' ').map(function(type) {
+            return type + '.queryBuilder' + (filter ? '.filter' : '');
+        }).join(' ');
+    }
+});
+
+
+/**
+ * Allowed types and their internal representation
+ * @type {object.<string, string>}
+ * @readonly
+ * @private
+ */
+QueryBuilder.types = {
+    'string':   'string',
+    'integer':  'number',
+    'double':   'number',
+    'date':     'datetime',
+    'time':     'datetime',
+    'datetime': 'datetime',
+    'boolean':  'boolean'
+};
+
+/**
+ * Allowed inputs
+ * @type {string[]}
+ * @readonly
+ * @private
+ */
+QueryBuilder.inputs = [
+    'text',
+    'number',
+    'textarea',
+    'radio',
+    'checkbox',
+    'select'
+];
+
+/**
+ * Runtime modifiable options with `setOptions` method
+ * @type {string[]}
+ * @readonly
+ * @private
+ */
+QueryBuilder.modifiable_options = [
+    'display_errors',
+    'allow_groups',
+    'allow_empty',
+    'default_condition',
+    'default_filter'
+];
+
+/**
+ * CSS selectors for common components
+ * @type {object.<string, string>}
+ * @readonly
+ */
+QueryBuilder.selectors = {
+    group_container:      '.rules-group-container',
+    rule_container:       '.rule-container',
+    filter_container:     '.rule-filter-container',
+    operator_container:   '.rule-operator-container',
+    value_container:      '.rule-value-container',
+    error_container:      '.error-container',
+    condition_container:  '.rules-group-header .group-conditions',
+
+    rule_header:          '.rule-header',
+    group_header:         '.rules-group-header',
+    group_actions:        '.group-actions',
+    rule_actions:         '.rule-actions',
+
+    rules_list:           '.rules-group-body>.rules-list',
+
+    group_condition:      '.rules-group-header [name$=_cond]',
+    rule_filter:          '.rule-filter-container [name$=_filter]',
+    rule_operator:        '.rule-operator-container [name$=_operator]',
+    rule_value:           '.rule-value-container [name*=_value_]',
+
+    add_rule:             '[data-add=rule]',
+    delete_rule:          '[data-delete=rule]',
+    add_group:            '[data-add=group]',
+    delete_group:         '[data-delete=group]'
+};
+
+/**
+ * Template strings (see template.js)
+ * @type {object.<string, string>}
+ * @readonly
+ */
+QueryBuilder.templates = {};
+
+/**
+ * Localized strings (see i18n/)
+ * @type {object.<string, object>}
+ * @readonly
+ */
+QueryBuilder.regional = {};
+
+/**
+ * Default operators
+ * @type {object.<string, object>}
+ * @readonly
+ */
+QueryBuilder.OPERATORS = {
+    equal:            { type: 'equal',            nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean'] },
+    not_equal:        { type: 'not_equal',        nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean'] },
+    in:               { type: 'in',               nb_inputs: 1, multiple: true,  apply_to: ['string', 'number', 'datetime'] },
+    not_in:           { type: 'not_in',           nb_inputs: 1, multiple: true,  apply_to: ['string', 'number', 'datetime'] },
+    less:             { type: 'less',             nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime'] },
+    less_or_equal:    { type: 'less_or_equal',    nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime'] },
+    greater:          { type: 'greater',          nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime'] },
+    greater_or_equal: { type: 'greater_or_equal', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime'] },
+    between:          { type: 'between',          nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime'] },
+    not_between:      { type: 'not_between',      nb_inputs: 2, multiple: false, apply_to: ['number', 'datetime'] },
+    begins_with:      { type: 'begins_with',      nb_inputs: 1, multiple: false, apply_to: ['string'] },
+    not_begins_with:  { type: 'not_begins_with',  nb_inputs: 1, multiple: false, apply_to: ['string'] },
+    contains:         { type: 'contains',         nb_inputs: 1, multiple: false, apply_to: ['string'] },
+    not_contains:     { type: 'not_contains',     nb_inputs: 1, multiple: false, apply_to: ['string'] },
+    ends_with:        { type: 'ends_with',        nb_inputs: 1, multiple: false, apply_to: ['string'] },
+    not_ends_with:    { type: 'not_ends_with',    nb_inputs: 1, multiple: false, apply_to: ['string'] },
+    is_empty:         { type: 'is_empty',         nb_inputs: 0, multiple: false, apply_to: ['string'] },
+    is_not_empty:     { type: 'is_not_empty',     nb_inputs: 0, multiple: false, apply_to: ['string'] },
+    is_null:          { type: 'is_null',          nb_inputs: 0, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean'] },
+    is_not_null:      { type: 'is_not_null',      nb_inputs: 0, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean'] }
+};
+
+/**
+ * Default configuration
+ * @type {object}
+ * @readonly
+ */
+QueryBuilder.DEFAULTS = {
+    filters: [],
+    plugins: [],
+
+    sort_filters: false,
+    display_errors: true,
+    allow_groups: -1,
+    allow_empty: false,
+    conditions: ['AND', 'OR'],
+    default_condition: 'AND',
+    inputs_separator: ' , ',
+    select_placeholder: '------',
+    display_empty_filter: true,
+    default_filter: null,
+    optgroups: {},
+
+    default_rule_flags: {
+        filter_readonly: false,
+        operator_readonly: false,
+        value_readonly: false,
+        no_delete: false
+    },
+
+    default_group_flags: {
+        condition_readonly: false,
+        no_add_rule: false,
+        no_add_group: false,
+        no_delete: false
+    },
+
+    templates: {
+        group: null,
+        rule: null,
+        filterSelect: null,
+        operatorSelect: null
+    },
+
+    lang_code: 'en',
+    lang: {},
+
+    operators: [
+        'equal',
+        'not_equal',
+        'in',
+        'not_in',
+        'less',
+        'less_or_equal',
+        'greater',
+        'greater_or_equal',
+        'between',
+        'not_between',
+        'begins_with',
+        'not_begins_with',
+        'contains',
+        'not_contains',
+        'ends_with',
+        'not_ends_with',
+        'is_empty',
+        'is_not_empty',
+        'is_null',
+        'is_not_null'
+    ],
+
+    icons: {
+        add_group:    'glyphicon glyphicon-plus-sign',
+        add_rule:     'glyphicon glyphicon-plus',
+        remove_group: 'glyphicon glyphicon-remove',
+        remove_rule:  'glyphicon glyphicon-remove',
+        error:        'glyphicon glyphicon-warning-sign'
+    }
+};
+
+
+/**
+ * @module plugins
+ */
+
+/**
+ * Definition of available plugins
+ * @type {object.<String, object>}
+ */
+QueryBuilder.plugins = {};
+
+/**
+ * Gets or extends the default configuration
+ * @param {object} [options] - new configuration
+ * @returns {undefined|object} nothing or configuration object (copy)
+ */
+QueryBuilder.defaults = function(options) {
+    if (typeof options == 'object') {
+        $.extendext(true, 'replace', QueryBuilder.DEFAULTS, options);
+    }
+    else if (typeof options == 'string') {
+        if (typeof QueryBuilder.DEFAULTS[options] == 'object') {
+            return $.extend(true, {}, QueryBuilder.DEFAULTS[options]);
+        }
+        else {
+            return QueryBuilder.DEFAULTS[options];
+        }
+    }
+    else {
+        return $.extend(true, {}, QueryBuilder.DEFAULTS);
+    }
+};
+
+/**
+ * Registers a new plugin
+ * @param {string} name
+ * @param {function} fct - init function
+ * @param {object} [def] - default options
+ */
+QueryBuilder.define = function(name, fct, def) {
+    QueryBuilder.plugins[name] = {
+        fct: fct,
+        def: def || {}
+    };
+};
+
+/**
+ * Adds new methods to QueryBuilder prototype
+ * @param {object.<string, function>} methods
+ */
+QueryBuilder.extend = function(methods) {
+    $.extend(QueryBuilder.prototype, methods);
+};
+
+/**
+ * Initializes plugins for an instance
+ * @throws ConfigError
+ * @private
+ */
+QueryBuilder.prototype.initPlugins = function() {
+    if (!this.plugins) {
+        return;
+    }
+
+    if ($.isArray(this.plugins)) {
+        var tmp = {};
+        this.plugins.forEach(function(plugin) {
+            tmp[plugin] = null;
+        });
+        this.plugins = tmp;
+    }
+
+    Object.keys(this.plugins).forEach(function(plugin) {
+        if (plugin in QueryBuilder.plugins) {
+            this.plugins[plugin] = $.extend(true, {},
+                QueryBuilder.plugins[plugin].def,
+                this.plugins[plugin] || {}
+            );
+
+            QueryBuilder.plugins[plugin].fct.call(this, this.plugins[plugin]);
+        }
+        else {
+            Utils.error('Config', 'Unable to find plugin "{0}"', plugin);
+        }
+    }, this);
+};
+
+/**
+ * Returns the config of a plugin, if the plugin is not loaded, returns the default config.
+ * @param {string} name
+ * @param {string} [property]
+ * @throws ConfigError
+ * @returns {*}
+ */
+QueryBuilder.prototype.getPluginOptions = function(name, property) {
+    var plugin;
+    if (this.plugins && this.plugins[name]) {
+        plugin = this.plugins[name];
+    }
+    else if (QueryBuilder.plugins[name]) {
+        plugin = QueryBuilder.plugins[name].def;
+    }
+
+    if (plugin) {
+        if (property) {
+            return plugin[property];
+        }
+        else {
+            return plugin;
+        }
+    }
+    else {
+        Utils.error('Config', 'Unable to find plugin "{0}"', name);
+    }
+};
+
+
+/**
+ * Checks the configuration of each filter
+ * @param {QueryBuilder.Filter[]} filters
+ * @returns {QueryBuilder.Filter[]}
+ * @throws ConfigError
+ */
+QueryBuilder.prototype.checkFilters = function(filters) {
+    var definedFilters = [];
+
+    if (!filters || filters.length === 0) {
+        Utils.error('Config', 'Missing filters list');
+    }
+
+    filters.forEach(function(filter, i) {
+        if (!filter.id) {
+            Utils.error('Config', 'Missing filter {0} id', i);
+        }
+        if (definedFilters.indexOf(filter.id) != -1) {
+            Utils.error('Config', 'Filter "{0}" already defined', filter.id);
+        }
+        definedFilters.push(filter.id);
+
+        if (!filter.type) {
+            filter.type = 'string';
+        }
+        else if (!QueryBuilder.types[filter.type]) {
+            Utils.error('Config', 'Invalid type "{0}"', filter.type);
+        }
+
+        if (!filter.input) {
+            filter.input = QueryBuilder.types[filter.type] === 'number' ? 'number' : 'text';
+        }
+        else if (typeof filter.input != 'function' && QueryBuilder.inputs.indexOf(filter.input) == -1) {
+            Utils.error('Config', 'Invalid input "{0}"', filter.input);
+        }
+
+        if (filter.operators) {
+            filter.operators.forEach(function(operator) {
+                if (typeof operator != 'string') {
+                    Utils.error('Config', 'Filter operators must be global operators types (string)');
+                }
+            });
+        }
+
+        if (!filter.field) {
+            filter.field = filter.id;
+        }
+        if (!filter.label) {
+            filter.label = filter.field;
+        }
+
+        if (!filter.optgroup) {
+            filter.optgroup = null;
+        }
+        else {
+            this.status.has_optgroup = true;
+
+            // register optgroup if needed
+            if (!this.settings.optgroups[filter.optgroup]) {
+                this.settings.optgroups[filter.optgroup] = filter.optgroup;
+            }
+        }
+
+        switch (filter.input) {
+            case 'radio':
+            case 'checkbox':
+                if (!filter.values || filter.values.length < 1) {
+                    Utils.error('Config', 'Missing filter "{0}" values', filter.id);
+                }
+                break;
+
+            case 'select':
+                if (filter.placeholder) {
+                    if (filter.placeholder_value === undefined) {
+                        filter.placeholder_value = -1;
+                    }
+                    Utils.iterateOptions(filter.values, function(key) {
+                        if (key == filter.placeholder_value) {
+                            Utils.error('Config', 'Placeholder of filter "{0}" overlaps with one of its values', filter.id);
+                        }
+                    });
+                }
+                break;
+        }
+    }, this);
+
+    if (this.settings.sort_filters) {
+        if (typeof this.settings.sort_filters == 'function') {
+            filters.sort(this.settings.sort_filters);
+        }
+        else {
+            var self = this;
+            filters.sort(function(a, b) {
+                return self.translate(a.label).localeCompare(self.translate(b.label));
+            });
+        }
+    }
+
+    if (this.status.has_optgroup) {
+        filters = Utils.groupSort(filters, 'optgroup');
+    }
+
+    return filters;
+};
+
+/**
+ * Checks the configuration of each operator
+ * @param {QueryBuilder.Operator[]} operators
+ * @returns {QueryBuilder.Operator[]}
+ * @throws ConfigError
+ */
+QueryBuilder.prototype.checkOperators = function(operators) {
+    var definedOperators = [];
+
+    operators.forEach(function(operator, i) {
+        if (typeof operator == 'string') {
+            if (!QueryBuilder.OPERATORS[operator]) {
+                Utils.error('Config', 'Unknown operator "{0}"', operator);
+            }
+
+            operators[i] = operator = $.extendext(true, 'replace', {}, QueryBuilder.OPERATORS[operator]);
+        }
+        else {
+            if (!operator.type) {
+                Utils.error('Config', 'Missing "type" for operator {0}', i);
+            }
+
+            if (QueryBuilder.OPERATORS[operator.type]) {
+                operators[i] = operator = $.extendext(true, 'replace', {}, QueryBuilder.OPERATORS[operator.type], operator);
+            }
+
+            if (operator.nb_inputs === undefined || operator.apply_to === undefined) {
+                Utils.error('Config', 'Missing "nb_inputs" and/or "apply_to" for operator "{0}"', operator.type);
+            }
+        }
+
+        if (definedOperators.indexOf(operator.type) != -1) {
+            Utils.error('Config', 'Operator "{0}" already defined', operator.type);
+        }
+        definedOperators.push(operator.type);
+
+        if (!operator.optgroup) {
+            operator.optgroup = null;
+        }
+        else {
+            this.status.has_operator_optgroup = true;
+
+            // register optgroup if needed
+            if (!this.settings.optgroups[operator.optgroup]) {
+                this.settings.optgroups[operator.optgroup] = operator.optgroup;
+            }
+        }
+    }, this);
+
+    if (this.status.has_operator_optgroup) {
+        operators = Utils.groupSort(operators, 'optgroup');
+    }
+
+    return operators;
+};
+
+/**
+ * Adds all events listeners to the builder
+ * @private
+ */
+QueryBuilder.prototype.bindEvents = function() {
+    var self = this;
+    var Selectors = QueryBuilder.selectors;
+
+    // group condition change
+    this.$el.on('change.queryBuilder', Selectors.group_condition, function() {
+        if ($(this).is(':checked')) {
+            var $group = $(this).closest(Selectors.group_container);
+            self.getModel($group).condition = $(this).val();
+        }
+    });
+
+    // rule filter change
+    this.$el.on('change.queryBuilder', Selectors.rule_filter, function() {
+        var $rule = $(this).closest(Selectors.rule_container);
+        self.getModel($rule).filter = self.getFilterById($(this).val());
+    });
+
+    // rule operator change
+    this.$el.on('change.queryBuilder', Selectors.rule_operator, function() {
+        var $rule = $(this).closest(Selectors.rule_container);
+        self.getModel($rule).operator = self.getOperatorByType($(this).val());
+    });
+
+    // add rule button
+    this.$el.on('click.queryBuilder', Selectors.add_rule, function() {
+        var $group = $(this).closest(Selectors.group_container);
+        self.addRule(self.getModel($group));
+    });
+
+    // delete rule button
+    this.$el.on('click.queryBuilder', Selectors.delete_rule, function() {
+        var $rule = $(this).closest(Selectors.rule_container);
+        self.deleteRule(self.getModel($rule));
+    });
+
+    if (this.settings.allow_groups !== 0) {
+        // add group button
+        this.$el.on('click.queryBuilder', Selectors.add_group, function() {
+            var $group = $(this).closest(Selectors.group_container);
+            self.addGroup(self.getModel($group));
+        });
+
+        // delete group button
+        this.$el.on('click.queryBuilder', Selectors.delete_group, function() {
+            var $group = $(this).closest(Selectors.group_container);
+            self.deleteGroup(self.getModel($group));
+        });
+    }
+
+    // model events
+    this.model.on({
+        'drop': function(e, node) {
+            node.$el.remove();
+            self.refreshGroupsConditions();
+        },
+        'add': function(e, parent, node, index) {
+            if (index === 0) {
+                node.$el.prependTo(parent.$el.find('>' + QueryBuilder.selectors.rules_list));
+            }
+            else {
+                node.$el.insertAfter(parent.rules[index - 1].$el);
+            }
+            self.refreshGroupsConditions();
+        },
+        'move': function(e, node, group, index) {
+            node.$el.detach();
+
+            if (index === 0) {
+                node.$el.prependTo(group.$el.find('>' + QueryBuilder.selectors.rules_list));
+            }
+            else {
+                node.$el.insertAfter(group.rules[index - 1].$el);
+            }
+            self.refreshGroupsConditions();
+        },
+        'update': function(e, node, field, value, oldValue) {
+            if (node instanceof Rule) {
+                switch (field) {
+                    case 'error':
+                        self.updateError(node);
+                        break;
+
+                    case 'flags':
+                        self.applyRuleFlags(node);
+                        break;
+
+                    case 'filter':
+                        self.updateRuleFilter(node, oldValue);
+                        break;
+
+                    case 'operator':
+                        self.updateRuleOperator(node, oldValue);
+                        break;
+
+                    case 'value':
+                        self.updateRuleValue(node);
+                        break;
+                }
+            }
+            else {
+                switch (field) {
+                    case 'error':
+                        self.updateError(node);
+                        break;
+
+                    case 'flags':
+                        self.applyGroupFlags(node);
+                        break;
+
+                    case 'condition':
+                        self.updateGroupCondition(node);
+                        break;
+                }
+            }
+        }
+    });
+};
+
+/**
+ * Creates the root group
+ * @param {boolean} [addRule=true] - adds a default empty rule
+ * @param {object} [data] - group custom data
+ * @param {object} [flags] - flags to apply to the group
+ * @returns {Group} root group
+ * @fires QueryBuilder.afterAddGroup
+ */
+QueryBuilder.prototype.setRoot = function(addRule, data, flags) {
+    addRule = (addRule === undefined || addRule === true);
+
+    var group_id = this.nextGroupId();
+    var $group = $(this.getGroupTemplate(group_id, 1));
+
+    this.$el.append($group);
+    this.model.root = new Group(null, $group);
+    this.model.root.model = this.model;
+
+    this.model.root.data = data;
+    this.model.root.__.flags = $.extend({}, this.settings.default_group_flags, flags);
+
+    this.trigger('afterAddGroup', this.model.root);
+
+    this.model.root.condition = this.settings.default_condition;
+
+    if (addRule) {
+        this.addRule(this.model.root);
+    }
+
+    return this.model.root;
+};
+
+/**
+ * Adds a new group
+ * @param {Group} parent
+ * @param {boolean} [addRule=true] - adds a default empty rule
+ * @param {object} [data] - group custom data
+ * @param {object} [flags] - flags to apply to the group
+ * @returns {Group}
+ * @fires QueryBuilder.beforeAddGroup
+ * @fires QueryBuilder.afterAddGroup
+ */
+QueryBuilder.prototype.addGroup = function(parent, addRule, data, flags) {
+    addRule = (addRule === undefined || addRule === true);
+
+    var level = parent.level + 1;
+
+    /**
+     * Just before adding a group, can be prevented.
+     * @event beforeAddGroup
+     * @memberof QueryBuilder
+     * @param {Group} parent
+     * @param {boolean} addRule - if an empty rule will be added in the group
+     * @param {int} level - nesting level of the group, 1 is the root group
+     */
+    var e = this.trigger('beforeAddGroup', parent, addRule, level);
+    if (e.isDefaultPrevented()) {
+        return null;
+    }
+
+    var group_id = this.nextGroupId();
+    var $group = $(this.getGroupTemplate(group_id, level));
+    var model = parent.addGroup($group);
+
+    model.data = data;
+    model.__.flags = $.extend({}, this.settings.default_group_flags, flags);
+
+    /**
+     * Just after adding a group
+     * @event afterAddGroup
+     * @memberof QueryBuilder
+     * @param {Group} group
+     */
+    this.trigger('afterAddGroup', model);
+
+    model.condition = this.settings.default_condition;
+
+    if (addRule) {
+        this.addRule(model);
+    }
+
+    return model;
+};
+
+/**
+ * Tries to delete a group. The group is not deleted if at least one rule is flagged `no_delete`.
+ * @param {Group} group
+ * @returns {boolean} if the group has been deleted
+ * @fires QueryBuilder.beforeDeleteGroup
+ * @fires QueryBuilder.afterDeleteGroup
+ */
+QueryBuilder.prototype.deleteGroup = function(group) {
+    if (group.isRoot()) {
+        return false;
+    }
+
+    /**
+     * Just before deleting a group, can be prevented
+     * @event beforeDeleteGroup
+     * @memberof QueryBuilder
+     * @param {Group} parent
+     */
+    var e = this.trigger('beforeDeleteGroup', group);
+    if (e.isDefaultPrevented()) {
+        return false;
+    }
+
+    var del = true;
+
+    group.each('reverse', function(rule) {
+        del &= this.deleteRule(rule);
+    }, function(group) {
+        del &= this.deleteGroup(group);
+    }, this);
+
+    if (del) {
+        group.drop();
+
+        /**
+         * Just after deleting a group
+         * @event afterDeleteGroup
+         * @memberof QueryBuilder
+         */
+        this.trigger('afterDeleteGroup');
+    }
+
+    return del;
+};
+
+/**
+ * Performs actions when a group's condition changes
+ * @param {Group} group
+ * @fires QueryBuilder.afterUpdateGroupCondition
+ * @private
+ */
+QueryBuilder.prototype.updateGroupCondition = function(group) {
+    group.$el.find('>' + QueryBuilder.selectors.group_condition).each(function() {
+        var $this = $(this);
+        $this.prop('checked', $this.val() === group.condition);
+        $this.parent().toggleClass('active', $this.val() === group.condition);
+    });
+
+    /**
+     * After the group condition has been modified
+     * @event afterUpdateGroupCondition
+     * @memberof QueryBuilder
+     * @param {Group} group
+     */
+    this.trigger('afterUpdateGroupCondition', group);
+};
+
+/**
+ * Updates the visibility of conditions based on number of rules inside each group
+ * @private
+ */
+QueryBuilder.prototype.refreshGroupsConditions = function() {
+    (function walk(group) {
+        if (!group.flags || (group.flags && !group.flags.condition_readonly)) {
+            group.$el.find('>' + QueryBuilder.selectors.group_condition).prop('disabled', group.rules.length <= 1)
+                .parent().toggleClass('disabled', group.rules.length <= 1);
+        }
+
+        group.each(null, function(group) {
+            walk(group);
+        }, this);
+    }(this.model.root));
+};
+
+/**
+ * Adds a new rule
+ * @param {Group} parent
+ * @param {object} [data] - rule custom data
+ * @param {object} [flags] - flags to apply to the rule
+ * @returns {Rule}
+ * @fires QueryBuilder.beforeAddRule
+ * @fires QueryBuilder.afterAddRule
+ * @fires QueryBuilder.changer:getDefaultFilter
+ */
+QueryBuilder.prototype.addRule = function(parent, data, flags) {
+    /**
+     * Just before adding a rule, can be prevented
+     * @event beforeAddRule
+     * @memberof QueryBuilder
+     * @param {Group} parent
+     */
+    var e = this.trigger('beforeAddRule', parent);
+    if (e.isDefaultPrevented()) {
+        return null;
+    }
+
+    var rule_id = this.nextRuleId();
+    var $rule = $(this.getRuleTemplate(rule_id));
+    var model = parent.addRule($rule);
+
+    if (data !== undefined) {
+        model.data = data;
+    }
+
+    model.__.flags = $.extend({}, this.settings.default_rule_flags, flags);
+
+    /**
+     * Just after adding a rule
+     * @event afterAddRule
+     * @memberof QueryBuilder
+     * @param {Rule} rule
+     */
+    this.trigger('afterAddRule', model);
+
+    this.createRuleFilters(model);
+
+    if (this.settings.default_filter || !this.settings.display_empty_filter) {
+        /**
+         * Modifies the default filter for a rule
+         * @event changer:getDefaultFilter
+         * @memberof QueryBuilder
+         * @param {QueryBuilder.Filter} filter
+         * @param {Rule} rule
+         * @returns {QueryBuilder.Filter}
+         */
+        model.filter = this.change('getDefaultFilter',
+            this.getFilterById(this.settings.default_filter || this.filters[0].id),
+            model
+        );
+    }
+
+    return model;
+};
+
+/**
+ * Tries to delete a rule
+ * @param {Rule} rule
+ * @returns {boolean} if the rule has been deleted
+ * @fires QueryBuilder.beforeDeleteRule
+ * @fires QueryBuilder.afterDeleteRule
+ */
+QueryBuilder.prototype.deleteRule = function(rule) {
+    if (rule.flags.no_delete) {
+        return false;
+    }
+
+    /**
+     * Just before deleting a rule, can be prevented
+     * @event beforeDeleteRule
+     * @memberof QueryBuilder
+     * @param {Rule} rule
+     */
+    var e = this.trigger('beforeDeleteRule', rule);
+    if (e.isDefaultPrevented()) {
+        return false;
+    }
+
+    rule.drop();
+
+    /**
+     * Just after deleting a rule
+     * @event afterDeleteRule
+     * @memberof QueryBuilder
+     */
+    this.trigger('afterDeleteRule');
+
+    return true;
+};
+
+/**
+ * Creates the filters for a rule
+ * @param {Rule} rule
+ * @fires QueryBuilder.changer:getRuleFilters
+ * @fires QueryBuilder.afterCreateRuleFilters
+ * @private
+ */
+QueryBuilder.prototype.createRuleFilters = function(rule) {
+    /**
+     * Modifies the list a filters available for a rule
+     * @event changer:getRuleFilters
+     * @memberof QueryBuilder
+     * @param {QueryBuilder.Filter[]} filters
+     * @param {Rule} rule
+     * @returns {QueryBuilder.Filter[]}
+     */
+    var filters = this.change('getRuleFilters', this.filters, rule);
+    var $filterSelect = $(this.getRuleFilterSelect(rule, filters));
+
+    rule.$el.find(QueryBuilder.selectors.filter_container).html($filterSelect);
+
+    /**
+     * After creating the dropdown for filters
+     * @event afterCreateRuleFilters
+     * @memberof QueryBuilder
+     * @param {Rule} rule
+     */
+    this.trigger('afterCreateRuleFilters', rule);
+};
+
+/**
+ * Creates the operators for a rule and init the rule operator
+ * @param {Rule} rule
+ * @fires QueryBuilder.afterCreateRuleOperators
+ * @private
+ */
+QueryBuilder.prototype.createRuleOperators = function(rule) {
+    var $operatorContainer = rule.$el.find(QueryBuilder.selectors.operator_container).empty();
+
+    if (!rule.filter) {
+        return;
+    }
+
+    var operators = this.getOperators(rule.filter);
+    var $operatorSelect = $(this.getRuleOperatorSelect(rule, operators));
+
+    $operatorContainer.html($operatorSelect);
+
+    // set the operator without triggering update event
+    rule.__.operator = operators[0];
+
+    /**
+     * After creating the dropdown for operators
+     * @event afterCreateRuleOperators
+     * @memberof QueryBuilder
+     * @param {Rule} rule
+     * @param {QueryBuilder.Operator[]} operators - allowed operators for this rule
+     */
+    this.trigger('afterCreateRuleOperators', rule, operators);
+};
+
+/**
+ * Creates the main input for a rule
+ * @param {Rule} rule
+ * @fires QueryBuilder.afterCreateRuleInput
+ * @private
+ */
+QueryBuilder.prototype.createRuleInput = function(rule) {
+    var $valueContainer = rule.$el.find(QueryBuilder.selectors.value_container).empty();
+
+    rule.__.value = undefined;
+
+    if (!rule.filter || !rule.operator || rule.operator.nb_inputs === 0) {
+        return;
+    }
+
+    var self = this;
+    var $inputs = $();
+    var filter = rule.filter;
+
+    for (var i = 0; i < rule.operator.nb_inputs; i++) {
+        var $ruleInput = $(this.getRuleInput(rule, i));
+        if (i > 0) $valueContainer.append(this.settings.inputs_separator);
+        $valueContainer.append($ruleInput);
+        $inputs = $inputs.add($ruleInput);
+    }
+
+    $valueContainer.show();
+
+    $inputs.on('change ' + (filter.input_event || ''), function() {
+        if (!this._updating_input) {
+            rule._updating_value = true;
+            rule.value = self.getRuleInputValue(rule);
+            rule._updating_value = false;
+        }
+    });
+
+    if (filter.plugin) {
+        $inputs[filter.plugin](filter.plugin_config || {});
+    }
+
+    /**
+     * After creating the input for a rule and initializing optional plugin
+     * @event afterCreateRuleInput
+     * @memberof QueryBuilder
+     * @param {Rule} rule
+     */
+    this.trigger('afterCreateRuleInput', rule);
+
+    if (filter.default_value !== undefined) {
+        rule.value = filter.default_value;
+    }
+    else {
+        rule._updating_value = true;
+        rule.value = self.getRuleInputValue(rule);
+        rule._updating_value = false;
+    }
+};
+
+/**
+ * Performs action when a rule's filter changes
+ * @param {Rule} rule
+ * @param {object} previousFilter
+ * @fires QueryBuilder.afterUpdateRuleFilter
+ * @private
+ */
+QueryBuilder.prototype.updateRuleFilter = function(rule, previousFilter) {
+    this.createRuleOperators(rule);
+    this.createRuleInput(rule);
+
+    rule.$el.find(QueryBuilder.selectors.rule_filter).val(rule.filter ? rule.filter.id : '-1');
+
+    // clear rule data if the filter changed
+    if (previousFilter && rule.filter && previousFilter.id !== rule.filter.id) {
+        rule.data = undefined;
+    }
+
+    /**
+     * After the filter has been updated and the operators and input re-created
+     * @event afterUpdateRuleFilter
+     * @memberof QueryBuilder
+     * @param {Rule} rule
+     */
+    this.trigger('afterUpdateRuleFilter', rule);
+};
+
+/**
+ * Performs actions when a rule's operator changes
+ * @param {Rule} rule
+ * @param {object} previousOperator
+ * @fires QueryBuilder.afterUpdateRuleOperator
+ * @private
+ */
+QueryBuilder.prototype.updateRuleOperator = function(rule, previousOperator) {
+    var $valueContainer = rule.$el.find(QueryBuilder.selectors.value_container);
+
+    if (!rule.operator || rule.operator.nb_inputs === 0) {
+        $valueContainer.hide();
+
+        rule.__.value = undefined;
+    }
+    else {
+        $valueContainer.show();
+
+        if ($valueContainer.is(':empty') || !previousOperator ||
+            rule.operator.nb_inputs !== previousOperator.nb_inputs ||
+            rule.operator.optgroup !== previousOperator.optgroup
+        ) {
+            this.createRuleInput(rule);
+        }
+    }
+
+    if (rule.operator) {
+        rule.$el.find(QueryBuilder.selectors.rule_operator).val(rule.operator.type);
+    }
+
+    /**
+     *  After the operator has been updated and the input optionally re-created
+     * @event afterUpdateRuleOperator
+     * @memberof QueryBuilder
+     * @param {Rule} rule
+     */
+    this.trigger('afterUpdateRuleOperator', rule);
+
+    this.updateRuleValue(rule);
+};
+
+/**
+ * Performs actions when rule's value changes
+ * @param {Rule} rule
+ * @fires QueryBuilder.afterUpdateRuleValue
+ * @private
+ */
+QueryBuilder.prototype.updateRuleValue = function(rule) {
+    if (!rule._updating_value) {
+        this.setRuleInputValue(rule, rule.value);
+    }
+
+    /**
+     * After the rule value has been modified
+     * @event afterUpdateRuleValue
+     * @memberof QueryBuilder
+     * @param {Rule} rule
+     */
+    this.trigger('afterUpdateRuleValue', rule);
+};
+
+/**
+ * Changes a rule's properties depending on its flags
+ * @param {Rule} rule
+ * @fires QueryBuilder.afterApplyRuleFlags
+ * @private
+ */
+QueryBuilder.prototype.applyRuleFlags = function(rule) {
+    var flags = rule.flags;
+    var Selectors = QueryBuilder.selectors;
+
+    if (flags.filter_readonly) {
+        rule.$el.find(Selectors.rule_filter).prop('disabled', true);
+    }
+    if (flags.operator_readonly) {
+        rule.$el.find(Selectors.rule_operator).prop('disabled', true);
+    }
+    if (flags.value_readonly) {
+        rule.$el.find(Selectors.rule_value).prop('disabled', true);
+    }
+    if (flags.no_delete) {
+        rule.$el.find(Selectors.delete_rule).remove();
+    }
+
+    /**
+     * After rule's flags has been applied
+     * @event afterApplyRuleFlags
+     * @memberof QueryBuilder
+     * @param {Rule} rule
+     */
+    this.trigger('afterApplyRuleFlags', rule);
+};
+
+/**
+ * Changes group's properties depending on its flags
+ * @param {Group} group
+ * @fires QueryBuilder.afterApplyGroupFlags
+ * @private
+ */
+QueryBuilder.prototype.applyGroupFlags = function(group) {
+    var flags = group.flags;
+    var Selectors = QueryBuilder.selectors;
+
+    if (flags.condition_readonly) {
+        group.$el.find('>' + Selectors.group_condition).prop('disabled', true)
+            .parent().addClass('readonly');
+    }
+    if (flags.no_add_rule) {
+        group.$el.find(Selectors.add_rule).remove();
+    }
+    if (flags.no_add_group) {
+        group.$el.find(Selectors.add_group).remove();
+    }
+    if (flags.no_delete) {
+        group.$el.find(Selectors.delete_group).remove();
+    }
+
+    /**
+     * After group's flags has been applied
+     * @event afterApplyGroupFlags
+     * @memberof QueryBuilder
+     * @param {Group} group
+     */
+    this.trigger('afterApplyGroupFlags', group);
+};
+
+/**
+ * Clears all errors markers
+ * @param {Node} [node] default is root Group
+ */
+QueryBuilder.prototype.clearErrors = function(node) {
+    node = node || this.model.root;
+
+    if (!node) {
+        return;
+    }
+
+    node.error = null;
+
+    if (node instanceof Group) {
+        node.each(function(rule) {
+            rule.error = null;
+        }, function(group) {
+            this.clearErrors(group);
+        }, this);
+    }
+};
+
+/**
+ * Adds/Removes error on a Rule or Group
+ * @param {Node} node
+ * @fires QueryBuilder.changer:displayError
+ * @private
+ */
+QueryBuilder.prototype.updateError = function(node) {
+    if (this.settings.display_errors) {
+        if (node.error === null) {
+            node.$el.removeClass('has-error');
+        }
+        else {
+            var errorMessage = this.translate('errors', node.error[0]);
+            errorMessage = Utils.fmt(errorMessage, node.error.slice(1));
+
+            /**
+             * Modifies an error message before display
+             * @event changer:displayError
+             * @memberof QueryBuilder
+             * @param {string} errorMessage - the error message (translated and formatted)
+             * @param {array} error - the raw error array (error code and optional arguments)
+             * @param {Node} node
+             * @returns {string}
+             */
+            errorMessage = this.change('displayError', errorMessage, node.error, node);
+
+            node.$el.addClass('has-error')
+                .find(QueryBuilder.selectors.error_container).eq(0)
+                .attr('title', errorMessage);
+        }
+    }
+};
+
+/**
+ * Triggers a validation error event
+ * @param {Node} node
+ * @param {string|array} error
+ * @param {*} value
+ * @fires QueryBuilder.validationError
+ * @private
+ */
+QueryBuilder.prototype.triggerValidationError = function(node, error, value) {
+    if (!$.isArray(error)) {
+        error = [error];
+    }
+
+    /**
+     * Fired when a validation error occurred, can be prevented
+     * @event validationError
+     * @memberof QueryBuilder
+     * @param {Node} node
+     * @param {string} error
+     * @param {*} value
+     */
+    var e = this.trigger('validationError', node, error, value);
+    if (!e.isDefaultPrevented()) {
+        node.error = error;
+    }
+};
+
+
+/**
+ * Destroys the builder
+ * @fires QueryBuilder.beforeDestroy
+ */
+QueryBuilder.prototype.destroy = function() {
+    /**
+     * Before the {@link QueryBuilder#destroy} method
+     * @event beforeDestroy
+     * @memberof QueryBuilder
+     */
+    this.trigger('beforeDestroy');
+
+    if (this.status.generated_id) {
+        this.$el.removeAttr('id');
+    }
+
+    this.clear();
+    this.model = null;
+
+    this.$el
+        .off('.queryBuilder')
+        .removeClass('query-builder')
+        .removeData('queryBuilder');
+
+    delete this.$el[0].queryBuilder;
+};
+
+/**
+ * Clear all rules and resets the root group
+ * @fires QueryBuilder.beforeReset
+ * @fires QueryBuilder.afterReset
+ */
+QueryBuilder.prototype.reset = function() {
+    /**
+     * Before the {@link QueryBuilder#reset} method, can be prevented
+     * @event beforeReset
+     * @memberof QueryBuilder
+     */
+    var e = this.trigger('beforeReset');
+    if (e.isDefaultPrevented()) {
+        return;
+    }
+
+    this.status.group_id = 1;
+    this.status.rule_id = 0;
+
+    this.model.root.empty();
+
+    this.addRule(this.model.root);
+
+    /**
+     * After the {@link QueryBuilder#reset} method
+     * @event afterReset
+     * @memberof QueryBuilder
+     */
+    this.trigger('afterReset');
+};
+
+/**
+ * Clears all rules and removes the root group
+ * @fires QueryBuilder.beforeClear
+ * @fires QueryBuilder.afterClear
+ */
+QueryBuilder.prototype.clear = function() {
+    /**
+     * Before the {@link QueryBuilder#clear} method, can be prevented
+     * @event beforeClear
+     * @memberof QueryBuilder
+     */
+    var e = this.trigger('beforeClear');
+    if (e.isDefaultPrevented()) {
+        return;
+    }
+
+    this.status.group_id = 0;
+    this.status.rule_id = 0;
+
+    if (this.model.root) {
+        this.model.root.drop();
+        this.model.root = null;
+    }
+
+    /**
+     * After the {@link QueryBuilder#clear} method
+     * @event afterClear
+     * @memberof QueryBuilder
+     */
+    this.trigger('afterClear');
+};
+
+/**
+ * Modifies the builder configuration.<br>
+ * Only options defined in QueryBuilder.modifiable_options are modifiable
+ * @param {object} options
+ */
+QueryBuilder.prototype.setOptions = function(options) {
+    $.each(options, function(opt, value) {
+        if (QueryBuilder.modifiable_options.indexOf(opt) !== -1) {
+            this.settings[opt] = value;
+        }
+    }.bind(this));
+};
+
+/**
+ * Returns the model associated to a DOM object, or the root model
+ * @param {jQuery} [target]
+ * @returns {Node}
+ */
+QueryBuilder.prototype.getModel = function(target) {
+    if (!target) {
+        return this.model.root;
+    }
+    else if (target instanceof Node) {
+        return target;
+    }
+    else {
+        return $(target).data('queryBuilderModel');
+    }
+};
+
+/**
+ * Validates the whole builder
+ * @param {object} [options]
+ * @param {boolean} [options.skip_empty=false] - skips validating rules that have no filter selected
+ * @returns {boolean}
+ * @fires QueryBuilder.changer:validate
+ */
+QueryBuilder.prototype.validate = function(options) {
+    options = $.extend({
+        skip_empty: false
+    }, options);
+
+    this.clearErrors();
+
+    var self = this;
+
+    var valid = (function parse(group) {
+        var done = 0;
+        var errors = 0;
+
+        group.each(function(rule) {
+            if (!rule.filter && options.skip_empty) {
+                return;
+            }
+
+            if (!rule.filter) {
+                self.triggerValidationError(rule, 'no_filter', null);
+                errors++;
+                return;
+            }
+
+            if (!rule.operator) {
+                self.triggerValidationError(rule, 'no_operator', null);
+                errors++;
+                return;
+            }
+
+            if (rule.operator.nb_inputs !== 0) {
+                var valid = self.validateValue(rule, rule.value);
+
+                if (valid !== true) {
+                    self.triggerValidationError(rule, valid, rule.value);
+                    errors++;
+                    return;
+                }
+            }
+
+            done++;
+
+        }, function(group) {
+            var res = parse(group);
+            if (res === true) {
+                done++;
+            }
+            else if (res === false) {
+                errors++;
+            }
+        });
+
+        if (errors > 0) {
+            return false;
+        }
+        else if (done === 0 && !group.isRoot() && options.skip_empty) {
+            return null;
+        }
+        else if (done === 0 && (!self.settings.allow_empty || !group.isRoot())) {
+            self.triggerValidationError(group, 'empty_group', null);
+            return false;
+        }
+
+        return true;
+
+    }(this.model.root));
+
+    /**
+     * Modifies the result of the {@link QueryBuilder#validate} method
+     * @event changer:validate
+     * @memberof QueryBuilder
+     * @param {boolean} valid
+     * @returns {boolean}
+     */
+    return this.change('validate', valid);
+};
+
+/**
+ * Gets an object representing current rules
+ * @param {object} [options]
+ * @param {boolean|string} [options.get_flags=false] - export flags, true: only changes from default flags or 'all'
+ * @param {boolean} [options.allow_invalid=false] - returns rules even if they are invalid
+ * @param {boolean} [options.skip_empty=false] - remove rules that have no filter selected
+ * @returns {object}
+ * @fires QueryBuilder.changer:ruleToJson
+ * @fires QueryBuilder.changer:groupToJson
+ * @fires QueryBuilder.changer:getRules
+ */
+QueryBuilder.prototype.getRules = function(options) {
+    options = $.extend({
+        get_flags: false,
+        allow_invalid: false,
+        skip_empty: false
+    }, options);
+
+    var valid = this.validate(options);
+    if (!valid && !options.allow_invalid) {
+        return null;
+    }
+
+    var self = this;
+
+    var out = (function parse(group) {
+        var groupData = {
+            condition: group.condition,
+            rules: []
+        };
+
+        if (group.data) {
+            groupData.data = $.extendext(true, 'replace', {}, group.data);
+        }
+
+        if (options.get_flags) {
+            var flags = self.getGroupFlags(group.flags, options.get_flags === 'all');
+            if (!$.isEmptyObject(flags)) {
+                groupData.flags = flags;
+            }
+        }
+
+        group.each(function(rule) {
+            if (!rule.filter && options.skip_empty) {
+                return;
+            }
+
+            var value = null;
+            if (!rule.operator || rule.operator.nb_inputs !== 0) {
+                value = rule.value;
+            }
+
+            var ruleData = {
+                id: rule.filter ? rule.filter.id : null,
+                field: rule.filter ? rule.filter.field : null,
+                type: rule.filter ? rule.filter.type : null,
+                input: rule.filter ? rule.filter.input : null,
+                operator: rule.operator ? rule.operator.type : null,
+                value: value
+            };
+
+            if (rule.filter && rule.filter.data || rule.data) {
+                ruleData.data = $.extendext(true, 'replace', {}, rule.filter.data, rule.data);
+            }
+
+            if (options.get_flags) {
+                var flags = self.getRuleFlags(rule.flags, options.get_flags === 'all');
+                if (!$.isEmptyObject(flags)) {
+                    ruleData.flags = flags;
+                }
+            }
+
+            /**
+             * Modifies the JSON generated from a Rule object
+             * @event changer:ruleToJson
+             * @memberof QueryBuilder
+             * @param {object} json
+             * @param {Rule} rule
+             * @returns {object}
+             */
+            groupData.rules.push(self.change('ruleToJson', ruleData, rule));
+
+        }, function(model) {
+            var data = parse(model);
+            if (data.rules.length !== 0 || !options.skip_empty) {
+                groupData.rules.push(data);
+            }
+        }, this);
+
+        /**
+         * Modifies the JSON generated from a Group object
+         * @event changer:groupToJson
+         * @memberof QueryBuilder
+         * @param {object} json
+         * @param {Group} group
+         * @returns {object}
+         */
+        return self.change('groupToJson', groupData, group);
+
+    }(this.model.root));
+
+    out.valid = valid;
+
+    /**
+     * Modifies the result of the {@link QueryBuilder#getRules} method
+     * @event changer:getRules
+     * @memberof QueryBuilder
+     * @param {object} json
+     * @returns {object}
+     */
+    return this.change('getRules', out);
+};
+
+/**
+ * Sets rules from object
+ * @param {object} data
+ * @param {object} [options]
+ * @param {boolean} [options.allow_invalid=false] - silent-fail if the data are invalid
+ * @throws RulesError, UndefinedConditionError
+ * @fires QueryBuilder.changer:setRules
+ * @fires QueryBuilder.changer:jsonToRule
+ * @fires QueryBuilder.changer:jsonToGroup
+ * @fires QueryBuilder.afterSetRules
+ */
+QueryBuilder.prototype.setRules = function(data, options) {
+    options = $.extend({
+        allow_invalid: false
+    }, options);
+
+    if ($.isArray(data)) {
+        data = {
+            condition: this.settings.default_condition,
+            rules: data
+        };
+    }
+
+    if (!data || !data.rules || (data.rules.length === 0 && !this.settings.allow_empty)) {
+        Utils.error('RulesParse', 'Incorrect data object passed');
+    }
+
+    this.clear();
+    this.setRoot(false, data.data, this.parseGroupFlags(data));
+    this.applyGroupFlags(this.model.root);
+
+    /**
+     * Modifies data before the {@link QueryBuilder#setRules} method
+     * @event changer:setRules
+     * @memberof QueryBuilder
+     * @param {object} json
+     * @param {object} options
+     * @returns {object}
+     */
+    data = this.change('setRules', data, options);
+
+    var self = this;
+
+    (function add(data, group) {
+        if (group === null) {
+            return;
+        }
+
+        if (data.condition === undefined) {
+            data.condition = self.settings.default_condition;
+        }
+        else if (self.settings.conditions.indexOf(data.condition) == -1) {
+            Utils.error(!options.allow_invalid, 'UndefinedCondition', 'Invalid condition "{0}"', data.condition);
+            data.condition = self.settings.default_condition;
+        }
+
+        group.condition = data.condition;
+
+        data.rules.forEach(function(item) {
+            var model;
+
+            if (item.rules !== undefined) {
+                if (self.settings.allow_groups !== -1 && self.settings.allow_groups < group.level) {
+                    Utils.error(!options.allow_invalid, 'RulesParse', 'No more than {0} groups are allowed', self.settings.allow_groups);
+                    self.reset();
+                }
+                else {
+                    model = self.addGroup(group, false, item.data, self.parseGroupFlags(item));
+                    if (model === null) {
+                        return;
+                    }
+
+                    self.applyGroupFlags(model);
+
+                    add(item, model);
+                }
+            }
+            else {
+                if (!item.empty) {
+                    if (item.id === undefined) {
+                        Utils.error(!options.allow_invalid, 'RulesParse', 'Missing rule field id');
+                        item.empty = true;
+                    }
+                    if (item.operator === undefined) {
+                        item.operator = 'equal';
+                    }
+                }
+
+                model = self.addRule(group, item.data, self.parseRuleFlags(item));
+                if (model === null) {
+                    return;
+                }
+
+                if (!item.empty) {
+                    model.filter = self.getFilterById(item.id, !options.allow_invalid);
+
+                    if (model.filter) {
+                        model.operator = self.getOperatorByType(item.operator, !options.allow_invalid);
+
+                        if (!model.operator) {
+                            model.operator = self.getOperators(model.filter)[0];
+                        }
+
+                        if (model.operator && model.operator.nb_inputs !== 0 && item.value !== undefined) {
+                            model.value = item.value;
+                        }
+                    }
+                }
+
+                self.applyRuleFlags(model);
+
+                /**
+                 * Modifies the Rule object generated from the JSON
+                 * @event changer:jsonToRule
+                 * @memberof QueryBuilder
+                 * @param {Rule} rule
+                 * @param {object} json
+                 * @returns {Rule} the same rule
+                 */
+                if (self.change('jsonToRule', model, item) != model) {
+                    Utils.error('RulesParse', 'Plugin tried to change rule reference');
+                }
+            }
+        });
+
+        /**
+         * Modifies the Group object generated from the JSON
+         * @event changer:jsonToGroup
+         * @memberof QueryBuilder
+         * @param {Group} group
+         * @param {object} json
+         * @returns {Group} the same group
+         */
+        if (self.change('jsonToGroup', group, data) != group) {
+            Utils.error('RulesParse', 'Plugin tried to change group reference');
+        }
+
+    }(data, this.model.root));
+
+    /**
+     * After the {@link QueryBuilder#setRules} method
+     * @event afterSetRules
+     * @memberof QueryBuilder
+     */
+    this.trigger('afterSetRules');
+};
+
+
+/**
+ * Performs value validation
+ * @param {Rule} rule
+ * @param {string|string[]} value
+ * @returns {array|boolean} true or error array
+ * @fires QueryBuilder.changer:validateValue
+ */
+QueryBuilder.prototype.validateValue = function(rule, value) {
+    var validation = rule.filter.validation || {};
+    var result = true;
+
+    if (validation.callback) {
+        result = validation.callback.call(this, value, rule);
+    }
+    else {
+        result = this._validateValue(rule, value);
+    }
+
+    /**
+     * Modifies the result of the rule validation method
+     * @event changer:validateValue
+     * @memberof QueryBuilder
+     * @param {array|boolean} result - true or an error array
+     * @param {*} value
+     * @param {Rule} rule
+     * @returns {array|boolean}
+     */
+    return this.change('validateValue', result, value, rule);
+};
+
+/**
+ * Default validation function
+ * @param {Rule} rule
+ * @param {string|string[]} value
+ * @returns {array|boolean} true or error array
+ * @throws ConfigError
+ * @private
+ */
+QueryBuilder.prototype._validateValue = function(rule, value) {
+    var filter = rule.filter;
+    var operator = rule.operator;
+    var validation = filter.validation || {};
+    var result = true;
+    var tmp, tempValue;
+
+    if (rule.operator.nb_inputs === 1) {
+        value = [value];
+    }
+
+    for (var i = 0; i < operator.nb_inputs; i++) {
+        if (!operator.multiple && $.isArray(value[i]) && value[i].length > 1) {
+            result = ['operator_not_multiple', operator.type, this.translate('operators', operator.type)];
+            break;
+        }
+
+        switch (filter.input) {
+            case 'radio':
+                if (value[i] === undefined || value[i].length === 0) {
+                    if (!validation.allow_empty_value) {
+                        result = ['radio_empty'];
+                    }
+                    break;
+                }
+                break;
+
+            case 'checkbox':
+                if (value[i] === undefined || value[i].length === 0) {
+                    if (!validation.allow_empty_value) {
+                        result = ['checkbox_empty'];
+                    }
+                    break;
+                }
+                break;
+
+            case 'select':
+                if (value[i] === undefined || value[i].length === 0 || (filter.placeholder && value[i] == filter.placeholder_value)) {
+                    if (!validation.allow_empty_value) {
+                        result = ['select_empty'];
+                    }
+                    break;
+                }
+                break;
+
+            default:
+                tempValue = $.isArray(value[i]) ? value[i] : [value[i]];
+
+                for (var j = 0; j < tempValue.length; j++) {
+                    switch (QueryBuilder.types[filter.type]) {
+                        case 'string':
+                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
+                                if (!validation.allow_empty_value) {
+                                    result = ['string_empty'];
+                                }
+                                break;
+                            }
+                            if (validation.min !== undefined) {
+                                if (tempValue[j].length < parseInt(validation.min)) {
+                                    result = [this.getValidationMessage(validation, 'min', 'string_exceed_min_length'), validation.min];
+                                    break;
+                                }
+                            }
+                            if (validation.max !== undefined) {
+                                if (tempValue[j].length > parseInt(validation.max)) {
+                                    result = [this.getValidationMessage(validation, 'max', 'string_exceed_max_length'), validation.max];
+                                    break;
+                                }
+                            }
+                            if (validation.format) {
+                                if (typeof validation.format == 'string') {
+                                    validation.format = new RegExp(validation.format);
+                                }
+                                if (!validation.format.test(tempValue[j])) {
+                                    result = [this.getValidationMessage(validation, 'format', 'string_invalid_format'), validation.format];
+                                    break;
+                                }
+                            }
+                            break;
+
+                        case 'number':
+                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
+                                if (!validation.allow_empty_value) {
+                                    result = ['number_nan'];
+                                }
+                                break;
+                            }
+                            if (isNaN(tempValue[j])) {
+                                result = ['number_nan'];
+                                break;
+                            }
+                            if (filter.type == 'integer') {
+                                if (parseInt(tempValue[j]) != tempValue[j]) {
+                                    result = ['number_not_integer'];
+                                    break;
+                                }
+                            }
+                            else {
+                                if (parseFloat(tempValue[j]) != tempValue[j]) {
+                                    result = ['number_not_double'];
+                                    break;
+                                }
+                            }
+                            if (validation.min !== undefined) {
+                                if (tempValue[j] < parseFloat(validation.min)) {
+                                    result = [this.getValidationMessage(validation, 'min', 'number_exceed_min'), validation.min];
+                                    break;
+                                }
+                            }
+                            if (validation.max !== undefined) {
+                                if (tempValue[j] > parseFloat(validation.max)) {
+                                    result = [this.getValidationMessage(validation, 'max', 'number_exceed_max'), validation.max];
+                                    break;
+                                }
+                            }
+                            if (validation.step !== undefined && validation.step !== 'any') {
+                                var v = (tempValue[j] / validation.step).toPrecision(14);
+                                if (parseInt(v) != v) {
+                                    result = [this.getValidationMessage(validation, 'step', 'number_wrong_step'), validation.step];
+                                    break;
+                                }
+                            }
+                            break;
+
+                        case 'datetime':
+                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
+                                if (!validation.allow_empty_value) {
+                                    result = ['datetime_empty'];
+                                }
+                                break;
+                            }
+
+                            // we need MomentJS
+                            if (validation.format) {
+                                if (!('moment' in window)) {
+                                    Utils.error('MissingLibrary', 'MomentJS is required for Date/Time validation. Get it here http://momentjs.com');
+                                }
+
+                                var datetime = moment(tempValue[j], validation.format);
+                                if (!datetime.isValid()) {
+                                    result = [this.getValidationMessage(validation, 'format', 'datetime_invalid'), validation.format];
+                                    break;
+                                }
+                                else {
+                                    if (validation.min) {
+                                        if (datetime < moment(validation.min, validation.format)) {
+                                            result = [this.getValidationMessage(validation, 'min', 'datetime_exceed_min'), validation.min];
+                                            break;
+                                        }
+                                    }
+                                    if (validation.max) {
+                                        if (datetime > moment(validation.max, validation.format)) {
+                                            result = [this.getValidationMessage(validation, 'max', 'datetime_exceed_max'), validation.max];
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+
+                        case 'boolean':
+                            if (tempValue[j] === undefined || tempValue[j].length === 0) {
+                                if (!validation.allow_empty_value) {
+                                    result = ['boolean_not_valid'];
+                                }
+                                break;
+                            }
+                            tmp = ('' + tempValue[j]).trim().toLowerCase();
+                            if (tmp !== 'true' && tmp !== 'false' && tmp !== '1' && tmp !== '0' && tempValue[j] !== 1 && tempValue[j] !== 0) {
+                                result = ['boolean_not_valid'];
+                                break;
+                            }
+                    }
+
+                    if (result !== true) {
+                        break;
+                    }
+                }
+        }
+
+        if (result !== true) {
+            break;
+        }
+    }
+
+    return result;
+};
+
+/**
+ * Returns an incremented group ID
+ * @returns {string}
+ * @private
+ */
+QueryBuilder.prototype.nextGroupId = function() {
+    return this.status.id + '_group_' + (this.status.group_id++);
+};
+
+/**
+ * Returns an incremented rule ID
+ * @returns {string}
+ * @private
+ */
+QueryBuilder.prototype.nextRuleId = function() {
+    return this.status.id + '_rule_' + (this.status.rule_id++);
+};
+
+/**
+ * Returns the operators for a filter
+ * @param {string|object} filter - filter id or filter object
+ * @returns {object[]}
+ * @fires QueryBuilder.changer:getOperators
+ * @private
+ */
+QueryBuilder.prototype.getOperators = function(filter) {
+    if (typeof filter == 'string') {
+        filter = this.getFilterById(filter);
+    }
+
+    var result = [];
+
+    for (var i = 0, l = this.operators.length; i < l; i++) {
+        // filter operators check
+        if (filter.operators) {
+            if (filter.operators.indexOf(this.operators[i].type) == -1) {
+                continue;
+            }
+        }
+        // type check
+        else if (this.operators[i].apply_to.indexOf(QueryBuilder.types[filter.type]) == -1) {
+            continue;
+        }
+
+        result.push(this.operators[i]);
+    }
+
+    // keep sort order defined for the filter
+    if (filter.operators) {
+        result.sort(function(a, b) {
+            return filter.operators.indexOf(a.type) - filter.operators.indexOf(b.type);
+        });
+    }
+
+    /**
+     * Modifies the operators available for a filter
+     * @event changer:getOperators
+     * @memberof QueryBuilder
+     * @param {QueryBuilder.Operator[]} operators
+     * @param {QueryBuilder.Filter} filter
+     * @returns {QueryBuilder.Operator[]}
+     */
+    return this.change('getOperators', result, filter);
+};
+
+/**
+ * Returns a particular filter by its id
+ * @param {string} id
+ * @param {boolean} [doThrow=true]
+ * @returns {object|null}
+ * @throws UndefinedFilterError
+ * @private
+ */
+QueryBuilder.prototype.getFilterById = function(id, doThrow) {
+    if (id == '-1') {
+        return null;
+    }
+
+    for (var i = 0, l = this.filters.length; i < l; i++) {
+        if (this.filters[i].id == id) {
+            return this.filters[i];
+        }
+    }
+
+    Utils.error(doThrow !== false, 'UndefinedFilter', 'Undefined filter "{0}"', id);
+
+    return null;
+};
+
+/**
+ * Returns a particular operator by its type
+ * @param {string} type
+ * @param {boolean} [doThrow=true]
+ * @returns {object|null}
+ * @throws UndefinedOperatorError
+ * @private
+ */
+QueryBuilder.prototype.getOperatorByType = function(type, doThrow) {
+    if (type == '-1') {
+        return null;
+    }
+
+    for (var i = 0, l = this.operators.length; i < l; i++) {
+        if (this.operators[i].type == type) {
+            return this.operators[i];
+        }
+    }
+
+    Utils.error(doThrow !== false, 'UndefinedOperator', 'Undefined operator "{0}"', type);
+
+    return null;
+};
+
+/**
+ * Returns rule's current input value
+ * @param {Rule} rule
+ * @returns {*}
+ * @fires QueryBuilder.changer:getRuleValue
+ * @private
+ */
+QueryBuilder.prototype.getRuleInputValue = function(rule) {
+    var filter = rule.filter;
+    var operator = rule.operator;
+    var value = [];
+
+    if (filter.valueGetter) {
+        value = filter.valueGetter.call(this, rule);
+    }
+    else {
+        var $value = rule.$el.find(QueryBuilder.selectors.value_container);
+
+        for (var i = 0; i < operator.nb_inputs; i++) {
+            var name = Utils.escapeElementId(rule.id + '_value_' + i);
+            var tmp;
+
+            switch (filter.input) {
+                case 'radio':
+                    value.push($value.find('[name=' + name + ']:checked').val());
+                    break;
+
+                case 'checkbox':
+                    tmp = [];
+                    // jshint loopfunc:true
+                    $value.find('[name=' + name + ']:checked').each(function() {
+                        tmp.push($(this).val());
+                    });
+                    // jshint loopfunc:false
+                    value.push(tmp);
+                    break;
+
+                case 'select':
+                    if (filter.multiple) {
+                        tmp = [];
+                        // jshint loopfunc:true
+                        $value.find('[name=' + name + '] option:selected').each(function() {
+                            tmp.push($(this).val());
+                        });
+                        // jshint loopfunc:false
+                        value.push(tmp);
+                    }
+                    else {
+                        value.push($value.find('[name=' + name + '] option:selected').val());
+                    }
+                    break;
+
+                default:
+                    value.push($value.find('[name=' + name + ']').val());
+            }
+        }
+
+        if (operator.multiple && filter.value_separator) {
+            value = value.map(function(val) {
+                return val.split(filter.value_separator);
+            });
+        }
+
+        if (operator.nb_inputs === 1) {
+            value = value[0];
+        }
+
+        // @deprecated
+        if (filter.valueParser) {
+            value = filter.valueParser.call(this, rule, value);
+        }
+    }
+
+    /**
+     * Modifies the rule's value grabbed from the DOM
+     * @event changer:getRuleValue
+     * @memberof QueryBuilder
+     * @param {*} value
+     * @param {Rule} rule
+     * @returns {*}
+     */
+    return this.change('getRuleValue', value, rule);
+};
+
+/**
+ * Sets the value of a rule's input
+ * @param {Rule} rule
+ * @param {*} value
+ * @private
+ */
+QueryBuilder.prototype.setRuleInputValue = function(rule, value) {
+    var filter = rule.filter;
+    var operator = rule.operator;
+
+    if (!filter || !operator) {
+        return;
+    }
+
+    this._updating_input = true;
+
+    if (filter.valueSetter) {
+        filter.valueSetter.call(this, rule, value);
+    }
+    else {
+        var $value = rule.$el.find(QueryBuilder.selectors.value_container);
+
+        if (operator.nb_inputs == 1) {
+            value = [value];
+        }
+
+        for (var i = 0; i < operator.nb_inputs; i++) {
+            var name = Utils.escapeElementId(rule.id + '_value_' + i);
+
+            switch (filter.input) {
+                case 'radio':
+                    $value.find('[name=' + name + '][value="' + value[i] + '"]').prop('checked', true).trigger('change');
+                    break;
+
+                case 'checkbox':
+                    if (!$.isArray(value[i])) {
+                        value[i] = [value[i]];
+                    }
+                    // jshint loopfunc:true
+                    value[i].forEach(function(value) {
+                        $value.find('[name=' + name + '][value="' + value + '"]').prop('checked', true).trigger('change');
+                    });
+                    // jshint loopfunc:false
+                    break;
+
+                default:
+                    if (operator.multiple && filter.value_separator && $.isArray(value[i])) {
+                        value[i] = value[i].join(filter.value_separator);
+                    }
+                    $value.find('[name=' + name + ']').val(value[i]).trigger('change');
+                    break;
+            }
+        }
+    }
+
+    this._updating_input = false;
+};
+
+/**
+ * Parses rule flags
+ * @param {object} rule
+ * @returns {object}
+ * @fires QueryBuilder.changer:parseRuleFlags
+ * @private
+ */
+QueryBuilder.prototype.parseRuleFlags = function(rule) {
+    var flags = $.extend({}, this.settings.default_rule_flags);
+
+    if (rule.readonly) {
+        $.extend(flags, {
+            filter_readonly: true,
+            operator_readonly: true,
+            value_readonly: true,
+            no_delete: true
+        });
+    }
+
+    if (rule.flags) {
+        $.extend(flags, rule.flags);
+    }
+
+    /**
+     * Modifies the consolidated rule's flags
+     * @event changer:parseRuleFlags
+     * @memberof QueryBuilder
+     * @param {object} flags
+     * @param {object} rule - <b>not</b> a Rule object
+     * @returns {object}
+     */
+    return this.change('parseRuleFlags', flags, rule);
+};
+
+/**
+ * Gets a copy of flags of a rule
+ * @param {object} flags
+ * @param {boolean} [all=false] - return all flags or only changes from default flags
+ * @returns {object}
+ * @private
+ */
+QueryBuilder.prototype.getRuleFlags = function(flags, all) {
+    if (all) {
+        return $.extend({}, flags);
+    }
+    else {
+        var ret = {};
+        $.each(this.settings.default_rule_flags, function(key, value) {
+            if (flags[key] !== value) {
+                ret[key] = flags[key];
+            }
+        });
+        return ret;
+    }
+};
+
+/**
+ * Parses group flags
+ * @param {object} group
+ * @returns {object}
+ * @fires QueryBuilder.changer:parseGroupFlags
+ * @private
+ */
+QueryBuilder.prototype.parseGroupFlags = function(group) {
+    var flags = $.extend({}, this.settings.default_group_flags);
+
+    if (group.readonly) {
+        $.extend(flags, {
+            condition_readonly: true,
+            no_add_rule: true,
+            no_add_group: true,
+            no_delete: true
+        });
+    }
+
+    if (group.flags) {
+        $.extend(flags, group.flags);
+    }
+
+    /**
+     * Modifies the consolidated group's flags
+     * @event changer:parseGroupFlags
+     * @memberof QueryBuilder
+     * @param {object} flags
+     * @param {object} group - <b>not</b> a Group object
+     * @returns {object}
+     */
+    return this.change('parseGroupFlags', flags, group);
+};
+
+/**
+ * Gets a copy of flags of a group
+ * @param {object} flags
+ * @param {boolean} [all=false] - return all flags or only changes from default flags
+ * @returns {object}
+ * @private
+ */
+QueryBuilder.prototype.getGroupFlags = function(flags, all) {
+    if (all) {
+        return $.extend({}, flags);
+    }
+    else {
+        var ret = {};
+        $.each(this.settings.default_group_flags, function(key, value) {
+            if (flags[key] !== value) {
+                ret[key] = flags[key];
+            }
+        });
+        return ret;
+    }
+};
+
+/**
+ * Translate a label either by looking in the `lang` object or in itself if it's an object where keys are language codes
+ * @param {string} [category]
+ * @param {string|object} key
+ * @returns {string}
+ * @fires QueryBuilder.changer:translate
+ */
+QueryBuilder.prototype.translate = function(category, key) {
+    if (!key) {
+        key = category;
+        category = undefined;
+    }
+
+    var translation;
+    if (typeof key === 'object') {
+        translation = key[this.settings.lang_code] || key['en'];
+    }
+    else {
+        translation = (category ? this.lang[category] : this.lang)[key] || key;
+    }
+
+    /**
+     * Modifies the translated label
+     * @event changer:translate
+     * @memberof QueryBuilder
+     * @param {string} translation
+     * @param {string|object} key
+     * @param {string} [category]
+     * @returns {string}
+     */
+    return this.change('translate', translation, key, category);
+};
+
+/**
+ * Returns a validation message
+ * @param {object} validation
+ * @param {string} type
+ * @param {string} def
+ * @returns {string}
+ * @private
+ */
+QueryBuilder.prototype.getValidationMessage = function(validation, type, def) {
+    return validation.messages && validation.messages[type] || def;
+};
+
+
+QueryBuilder.templates.group = '\
+<dl id="{{= it.group_id }}" class="rules-group-container"> \
+  <dt class="rules-group-header"> \
+    <div class="btn-group pull-right group-actions"> \
+      <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
+        <i class="{{= it.icons.add_rule }}"></i> {{= it.translate("add_rule") }} \
+      </button> \
+      {{? it.settings.allow_groups===-1 || it.settings.allow_groups>=it.level }} \
+        <button type="button" class="btn btn-xs btn-success" data-add="group"> \
+          <i class="{{= it.icons.add_group }}"></i> {{= it.translate("add_group") }} \
+        </button> \
+      {{?}} \
+      {{? it.level>1 }} \
+        <button type="button" class="btn btn-xs btn-danger" data-delete="group"> \
+          <i class="{{= it.icons.remove_group }}"></i> {{= it.translate("delete_group") }} \
+        </button> \
+      {{?}} \
+    </div> \
+    <div class="btn-group group-conditions"> \
+      {{~ it.conditions: condition }} \
+        <label class="btn btn-xs btn-primary"> \
+          <input type="radio" name="{{= it.group_id }}_cond" value="{{= condition }}"> {{= it.translate("conditions", condition) }} \
+        </label> \
+      {{~}} \
+    </div> \
+    {{? it.settings.display_errors }} \
+      <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
+    {{?}} \
+  </dt> \
+  <dd class=rules-group-body> \
+    <ul class=rules-list></ul> \
+  </dd> \
+</dl>';
+
+QueryBuilder.templates.rule = '\
+<li id="{{= it.rule_id }}" class="rule-container"> \
+  <div class="rule-header"> \
+    <div class="btn-group pull-right rule-actions"> \
+      <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
+        <i class="{{= it.icons.remove_rule }}"></i> {{= it.translate("delete_rule") }} \
+      </button> \
+    </div> \
+  </div> \
+  {{? it.settings.display_errors }} \
+    <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
+  {{?}} \
+  <div class="rule-filter-container"></div> \
+  <div class="rule-operator-container"></div> \
+  <div class="rule-value-container"></div> \
+</li>';
+
+QueryBuilder.templates.filterSelect = '\
+{{ var optgroup = null; }} \
+<select class="form-control" name="{{= it.rule.id }}_filter"> \
+  {{? it.settings.display_empty_filter }} \
+    <option value="-1">{{= it.settings.select_placeholder }}</option> \
+  {{?}} \
+  {{~ it.filters: filter }} \
+    {{? optgroup !== filter.optgroup }} \
+      {{? optgroup !== null }}</optgroup>{{?}} \
+      {{? (optgroup = filter.optgroup) !== null }} \
+        <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
+      {{?}} \
+    {{?}} \
+    <option value="{{= filter.id }}">{{= it.translate(filter.label) }}</option> \
+  {{~}} \
+  {{? optgroup !== null }}</optgroup>{{?}} \
+</select>';
+
+QueryBuilder.templates.operatorSelect = '\
+{{? it.operators.length === 1 }} \
+<span> \
+{{= it.translate("operators", it.operators[0].type) }} \
+</span> \
+{{?}} \
+{{ var optgroup = null; }} \
+<select class="form-control {{? it.operators.length === 1 }}hide{{?}}" name="{{= it.rule.id }}_operator"> \
+  {{~ it.operators: operator }} \
+    {{? optgroup !== operator.optgroup }} \
+      {{? optgroup !== null }}</optgroup>{{?}} \
+      {{? (optgroup = operator.optgroup) !== null }} \
+        <optgroup label="{{= it.translate(it.settings.optgroups[optgroup]) }}"> \
+      {{?}} \
+    {{?}} \
+    <option value="{{= operator.type }}">{{= it.translate("operators", operator.type) }}</option> \
+  {{~}} \
+  {{? optgroup !== null }}</optgroup>{{?}} \
+</select>';
+
+/**
+ * Returns group's HTML
+ * @param {string} group_id
+ * @param {int} level
+ * @returns {string}
+ * @fires QueryBuilder.changer:getGroupTemplate
+ * @private
+ */
+QueryBuilder.prototype.getGroupTemplate = function(group_id, level) {
+    var h = this.templates.group({
+        builder: this,
+        group_id: group_id,
+        level: level,
+        conditions: this.settings.conditions,
+        icons: this.icons,
+        settings: this.settings,
+        translate: this.translate.bind(this)
+    });
+
+    /**
+     * Modifies the raw HTML of a group
+     * @event changer:getGroupTemplate
+     * @memberof QueryBuilder
+     * @param {string} html
+     * @param {int} level
+     * @returns {string}
+     */
+    return this.change('getGroupTemplate', h, level);
+};
+
+/**
+ * Returns rule's HTML
+ * @param {string} rule_id
+ * @returns {string}
+ * @fires QueryBuilder.changer:getRuleTemplate
+ * @private
+ */
+QueryBuilder.prototype.getRuleTemplate = function(rule_id) {
+    var h = this.templates.rule({
+        builder: this,
+        rule_id: rule_id,
+        icons: this.icons,
+        settings: this.settings,
+        translate: this.translate.bind(this)
+    });
+
+    /**
+     * Modifies the raw HTML of a rule
+     * @event changer:getRuleTemplate
+     * @memberof QueryBuilder
+     * @param {string} html
+     * @returns {string}
+     */
+    return this.change('getRuleTemplate', h);
+};
+
+/**
+ * Returns rule's filter HTML
+ * @param {Rule} rule
+ * @param {object[]} filters
+ * @returns {string}
+ * @fires QueryBuilder.changer:getRuleFilterTemplate
+ * @private
+ */
+QueryBuilder.prototype.getRuleFilterSelect = function(rule, filters) {
+    var h = this.templates.filterSelect({
+        builder: this,
+        rule: rule,
+        filters: filters,
+        icons: this.icons,
+        settings: this.settings,
+        translate: this.translate.bind(this)
+    });
+
+    /**
+     * Modifies the raw HTML of the rule's filter dropdown
+     * @event changer:getRuleFilterTemplate
+     * @memberof QueryBuilder
+     * @param {string} html
+     * @param {Rule} rule
+     * @param {QueryBuilder.Filter[]} filters
+     * @returns {string}
+     */
+    return this.change('getRuleFilterSelect', h, rule, filters);
+};
+
+/**
+ * Returns rule's operator HTML
+ * @param {Rule} rule
+ * @param {object[]} operators
+ * @returns {string}
+ * @fires QueryBuilder.changer:getRuleOperatorTemplate
+ * @private
+ */
+QueryBuilder.prototype.getRuleOperatorSelect = function(rule, operators) {
+    var h = this.templates.operatorSelect({
+        builder: this,
+        rule: rule,
+        operators: operators,
+        icons: this.icons,
+        settings: this.settings,
+        translate: this.translate.bind(this)
+    });
+
+    /**
+     * Modifies the raw HTML of the rule's operator dropdown
+     * @event changer:getRuleOperatorTemplate
+     * @memberof QueryBuilder
+     * @param {string} html
+     * @param {Rule} rule
+     * @param {QueryBuilder.Operator[]} operators
+     * @returns {string}
+     */
+    return this.change('getRuleOperatorSelect', h, rule, operators);
+};
+
+/**
+ * Returns the rule's value HTML
+ * @param {Rule} rule
+ * @param {int} value_id
+ * @returns {string}
+ * @fires QueryBuilder.changer:getRuleInput
+ * @private
+ */
+QueryBuilder.prototype.getRuleInput = function(rule, value_id) {
+    var filter = rule.filter;
+    var validation = rule.filter.validation || {};
+    var name = rule.id + '_value_' + value_id;
+    var c = filter.vertical ? ' class=block' : '';
+    var h = '';
+
+    if (typeof filter.input == 'function') {
+        h = filter.input.call(this, rule, name);
+    }
+    else {
+        switch (filter.input) {
+            case 'radio':
+            case 'checkbox':
+                Utils.iterateOptions(filter.values, function(key, val) {
+                    h += '<label' + c + '><input type="' + filter.input + '" name="' + name + '" value="' + key + '"> ' + val + '</label> ';
+                });
+                break;
+
+            case 'select':
+                h += '<select class="form-control" name="' + name + '"' + (filter.multiple ? ' multiple' : '') + '>';
+                if (filter.placeholder) {
+                    h += '<option value="' + filter.placeholder_value + '" disabled selected>' + filter.placeholder + '</option>';
+                }
+                Utils.iterateOptions(filter.values, function(key, val) {
+                    h += '<option value="' + key + '">' + val + '</option> ';
+                });
+                h += '</select>';
+                break;
+
+            case 'textarea':
+                h += '<textarea class="form-control" name="' + name + '"';
+                if (filter.size) h += ' cols="' + filter.size + '"';
+                if (filter.rows) h += ' rows="' + filter.rows + '"';
+                if (validation.min !== undefined) h += ' minlength="' + validation.min + '"';
+                if (validation.max !== undefined) h += ' maxlength="' + validation.max + '"';
+                if (filter.placeholder) h += ' placeholder="' + filter.placeholder + '"';
+                h += '></textarea>';
+                break;
+
+            case 'number':
+                h += '<input class="form-control" type="number" name="' + name + '"';
+                if (validation.step !== undefined) h += ' step="' + validation.step + '"';
+                if (validation.min !== undefined) h += ' min="' + validation.min + '"';
+                if (validation.max !== undefined) h += ' max="' + validation.max + '"';
+                if (filter.placeholder) h += ' placeholder="' + filter.placeholder + '"';
+                if (filter.size) h += ' size="' + filter.size + '"';
+                h += '>';
+                break;
+
+            default:
+                h += '<input class="form-control" type="text" name="' + name + '"';
+                if (filter.placeholder) h += ' placeholder="' + filter.placeholder + '"';
+                if (filter.type === 'string' && validation.min !== undefined) h += ' minlength="' + validation.min + '"';
+                if (filter.type === 'string' && validation.max !== undefined) h += ' maxlength="' + validation.max + '"';
+                if (filter.size) h += ' size="' + filter.size + '"';
+                h += '>';
+        }
+    }
+
+    /**
+     * Modifies the raw HTML of the rule's input
+     * @event changer:getRuleInput
+     * @memberof QueryBuilder
+     * @param {string} html
+     * @param {Rule} rule
+     * @param {string} name - the name that the input must have
+     * @returns {string}
+     */
+    return this.change('getRuleInput', h, rule, name);
+};
+
+
+/**
+ * @namespace
+ */
+var Utils = {};
+
+/**
+ * @member {object}
+ * @memberof QueryBuilder
+ * @see Utils
+ */
+QueryBuilder.utils = Utils;
+
+/**
+ * @callback Utils#OptionsIteratee
+ * @param {string} key
+ * @param {string} value
+ */
+
+/**
+ * Iterates over radio/checkbox/selection options, it accept three formats
+ *
+ * @example
+ * // array of values
+ * options = ['one', 'two', 'three']
+ * @example
+ * // simple key-value map
+ * options = {1: 'one', 2: 'two', 3: 'three'}
+ * @example
+ * // array of 1-element maps
+ * options = [{1: 'one'}, {2: 'two'}, {3: 'three'}]
+ *
+ * @param {object|array} options
+ * @param {Utils#OptionsIteratee} tpl
+ */
+Utils.iterateOptions = function(options, tpl) {
+    if (options) {
+        if ($.isArray(options)) {
+            options.forEach(function(entry) {
+                // array of one-element maps
+                if ($.isPlainObject(entry)) {
+                    $.each(entry, function(key, val) {
+                        tpl(key, val);
+                        return false; // break after first entry
+                    });
+                }
+                // array of values
+                else {
+                    tpl(entry, entry);
+                }
+            });
+        }
+        // unordered map
+        else {
+            $.each(options, function(key, val) {
+                tpl(key, val);
+            });
+        }
+    }
+};
+
+/**
+ * Replaces {0}, {1}, ... in a string
+ * @param {string} str
+ * @param {...*} args
+ * @returns {string}
+ */
+Utils.fmt = function(str, args) {
+    if (!Array.isArray(args)) {
+        args = Array.prototype.slice.call(arguments, 1);
+    }
+
+    return str.replace(/{([0-9]+)}/g, function(m, i) {
+        return args[parseInt(i)];
+    });
+};
+
+/**
+ * Throws an Error object with custom name or logs an error
+ * @param {boolean} [doThrow=true]
+ * @param {string} type
+ * @param {string} message
+ * @param {...*} args
+ */
+Utils.error = function() {
+    var i = 0;
+    var doThrow = typeof arguments[i] === 'boolean' ? arguments[i++] : true;
+    var type = arguments[i++];
+    var message = arguments[i++];
+    var args = Array.isArray(arguments[i]) ? arguments[i] : Array.prototype.slice.call(arguments, i);
+
+    if (doThrow) {
+        var err = new Error(Utils.fmt(message, args));
+        err.name = type + 'Error';
+        err.args = args;
+        throw err;
+    }
+    else {
+        console.error(type + 'Error: ' + Utils.fmt(message, args));
+    }
+};
+
+/**
+ * Changes the type of a value to int, float or bool
+ * @param {*} value
+ * @param {string} type - 'integer', 'double', 'boolean' or anything else (passthrough)
+ * @param {boolean} [boolAsInt=false] - return 0 or 1 for booleans
+ * @returns {*}
+ */
+Utils.changeType = function(value, type, boolAsInt) {
+    switch (type) {
+        // @formatter:off
+    case 'integer': return parseInt(value);
+    case 'double': return parseFloat(value);
+    case 'boolean':
+        var bool = value.trim().toLowerCase() === 'true' || value.trim() === '1' || value === 1;
+        return boolAsInt ? (bool ? 1 : 0) : bool;
+    default: return value;
+    // @formatter:on
+    }
+};
+
+/**
+ * Escapes a string like PHP's mysql_real_escape_string does
+ * @param {string} value
+ * @returns {string}
+ */
+Utils.escapeString = function(value) {
+    if (typeof value != 'string') {
+        return value;
+    }
+
+    return value
+        .replace(/[\0\n\r\b\\\'\"]/g, function(s) {
+            switch (s) {
+                // @formatter:off
+            case '\0': return '\\0';
+            case '\n': return '\\n';
+            case '\r': return '\\r';
+            case '\b': return '\\b';
+            default:   return '\\' + s;
+            // @formatter:off
+            }
+        })
+        // uglify compliant
+        .replace(/\t/g, '\\t')
+        .replace(/\x1a/g, '\\Z');
+};
+
+/**
+ * Escapes a string for use in regex
+ * @param {string} str
+ * @returns {string}
+ */
+Utils.escapeRegExp = function(str) {
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+};
+
+/**
+ * Escapes a string for use in HTML element id
+ * @param {string} str
+ * @returns {string}
+ */
+Utils.escapeElementId = function(str) {
+    // Regex based on that suggested by:
+    // https://learn.jquery.com/using-jquery-core/faq/how-do-i-select-an-element-by-an-id-that-has-characters-used-in-css-notation/
+    // - escapes : . [ ] ,
+    // - avoids escaping already escaped values
+    return (str) ? str.replace(/(\\)?([:.\[\],])/g,
+            function( $0, $1, $2 ) { return $1 ? $0 : '\\' + $2; }) : str;
+};
+
+/**
+ * Sorts objects by grouping them by `key`, preserving initial order when possible
+ * @param {object[]} items
+ * @param {string} key
+ * @returns {object[]}
+ */
+Utils.groupSort = function(items, key) {
+    var optgroups = [];
+    var newItems = [];
+
+    items.forEach(function(item) {
+        var idx;
+
+        if (item[key]) {
+            idx = optgroups.lastIndexOf(item[key]);
+
+            if (idx == -1) {
+                idx = optgroups.length;
+            }
+            else {
+                idx++;
+            }
+        }
+        else {
+            idx = optgroups.length;
+        }
+
+        optgroups.splice(idx, 0, item[key]);
+        newItems.splice(idx, 0, item);
+    });
+
+    return newItems;
+};
+
+/**
+ * Defines properties on an Node prototype with getter and setter.<br>
+ *     Update events are emitted in the setter through root Model (if any).<br>
+ *     The object must have a `__` object, non enumerable property to store values.
+ * @param {function} obj
+ * @param {string[]} fields
+ */
+Utils.defineModelProperties = function(obj, fields) {
+    fields.forEach(function(field) {
+        Object.defineProperty(obj.prototype, field, {
+            enumerable: true,
+            get: function() {
+                return this.__[field];
+            },
+            set: function(value) {
+                var previousValue = (this.__[field] !== null && typeof this.__[field] == 'object') ?
+                    $.extend({}, this.__[field]) :
+                    this.__[field];
+
+                this.__[field] = value;
+
+                if (this.model !== null) {
+                    /**
+                     * After a value of the model changed
+                     * @event model:update
+                     * @memberof Model
+                     * @param {Node} node
+                     * @param {string} field
+                     * @param {*} value
+                     * @param {*} previousValue
+                     */
+                    this.model.trigger('update', this, field, value, previousValue);
+                }
+            }
+        });
+    });
+};
+
+
+/**
+ * Main object storing data model and emitting model events
+ * @constructor
+ */
+function Model() {
+    /**
+     * @member {Group}
+     * @readonly
+     */
+    this.root = null;
+
+    /**
+     * Base for event emitting
+     * @member {jQuery}
+     * @readonly
+     * @private
+     */
+    this.$ = $(this);
+}
+
+$.extend(Model.prototype, /** @lends Model.prototype */ {
+    /**
+     * Triggers an event on the model
+     * @param {string} type
+     * @returns {$.Event}
+     */
+    trigger: function(type) {
+        var event = new $.Event(type);
+        this.$.triggerHandler(event, Array.prototype.slice.call(arguments, 1));
+        return event;
+    },
+
+    /**
+     * Attaches an event listener on the model
+     * @param {string} type
+     * @param {function} cb
+     * @returns {Model}
+     */
+    on: function() {
+        this.$.on.apply(this.$, Array.prototype.slice.call(arguments));
+        return this;
+    },
+
+    /**
+     * Removes an event listener from the model
+     * @param {string} type
+     * @param {function} [cb]
+     * @returns {Model}
+     */
+    off: function() {
+        this.$.off.apply(this.$, Array.prototype.slice.call(arguments));
+        return this;
+    },
+
+    /**
+     * Attaches an event listener called once on the model
+     * @param {string} type
+     * @param {function} cb
+     * @returns {Model}
+     */
+    once: function() {
+        this.$.one.apply(this.$, Array.prototype.slice.call(arguments));
+        return this;
+    }
+});
+
+
+/**
+ * Root abstract object
+ * @constructor
+ * @param {Node} [parent]
+ * @param {jQuery} $el
+ */
+var Node = function(parent, $el) {
+    if (!(this instanceof Node)) {
+        return new Node(parent, $el);
+    }
+
+    Object.defineProperty(this, '__', { value: {} });
+
+    $el.data('queryBuilderModel', this);
+
+    /**
+     * @name level
+     * @member {int}
+     * @memberof Node
+     * @instance
+     * @readonly
+     */
+    this.__.level = 1;
+
+    /**
+     * @name error
+     * @member {string}
+     * @memberof Node
+     * @instance
+     */
+    this.__.error = null;
+
+    /**
+     * @name flags
+     * @member {object}
+     * @memberof Node
+     * @instance
+     * @readonly
+     */
+    this.__.flags = {};
+
+    /**
+     * @name data
+     * @member {object}
+     * @memberof Node
+     * @instance
+     */
+    this.__.data = undefined;
+
+    /**
+     * @member {jQuery}
+     * @readonly
+     */
+    this.$el = $el;
+
+    /**
+     * @member {string}
+     * @readonly
+     */
+    this.id = $el[0].id;
+
+    /**
+     * @member {Model}
+     * @readonly
+     */
+    this.model = null;
+
+    /**
+     * @member {Group}
+     * @readonly
+     */
+    this.parent = parent;
+};
+
+Utils.defineModelProperties(Node, ['level', 'error', 'data', 'flags']);
+
+Object.defineProperty(Node.prototype, 'parent', {
+    enumerable: true,
+    get: function() {
+        return this.__.parent;
+    },
+    set: function(value) {
+        this.__.parent = value;
+        this.level = value === null ? 1 : value.level + 1;
+        this.model = value === null ? null : value.model;
+    }
+});
+
+/**
+ * Checks if this Node is the root
+ * @returns {boolean}
+ */
+Node.prototype.isRoot = function() {
+    return (this.level === 1);
+};
+
+/**
+ * Returns the node position inside its parent
+ * @returns {int}
+ */
+Node.prototype.getPos = function() {
+    if (this.isRoot()) {
+        return -1;
+    }
+    else {
+        return this.parent.getNodePos(this);
+    }
+};
+
+/**
+ * Deletes self
+ * @fires Model.model:drop
+ */
+Node.prototype.drop = function() {
+    var model = this.model;
+
+    if (!!this.parent) {
+        this.parent.removeNode(this);
+    }
+
+    this.$el.removeData('queryBuilderModel');
+
+    if (model !== null) {
+        /**
+         * After a node of the model has been removed
+         * @event model:drop
+         * @memberof Model
+         * @param {Node} node
+         */
+        model.trigger('drop', this);
+    }
+};
+
+/**
+ * Moves itself after another Node
+ * @param {Node} target
+ * @fires Model.model:move
+ */
+Node.prototype.moveAfter = function(target) {
+    if (!this.isRoot()) {
+        this.move(target.parent, target.getPos() + 1);
+    }
+};
+
+/**
+ * Moves itself at the beginning of parent or another Group
+ * @param {Group} [target]
+ * @fires Model.model:move
+ */
+Node.prototype.moveAtBegin = function(target) {
+    if (!this.isRoot()) {
+        if (target === undefined) {
+            target = this.parent;
+        }
+
+        this.move(target, 0);
+    }
+};
+
+/**
+ * Moves itself at the end of parent or another Group
+ * @param {Group} [target]
+ * @fires Model.model:move
+ */
+Node.prototype.moveAtEnd = function(target) {
+    if (!this.isRoot()) {
+        if (target === undefined) {
+            target = this.parent;
+        }
+
+        this.move(target, target.length() === 0 ? 0 : target.length() - 1);
+    }
+};
+
+/**
+ * Moves itself at specific position of Group
+ * @param {Group} target
+ * @param {int} index
+ * @fires Model.model:move
+ */
+Node.prototype.move = function(target, index) {
+    if (!this.isRoot()) {
+        if (typeof target === 'number') {
+            index = target;
+            target = this.parent;
+        }
+
+        this.parent.removeNode(this);
+        target.insertNode(this, index, false);
+
+        if (this.model !== null) {
+            /**
+             * After a node of the model has been moved
+             * @event model:move
+             * @memberof Model
+             * @param {Node} node
+             * @param {Node} target
+             * @param {int} index
+             */
+            this.model.trigger('move', this, target, index);
+        }
+    }
+};
+
+
+/**
+ * Group object
+ * @constructor
+ * @extends Node
+ * @param {Group} [parent]
+ * @param {jQuery} $el
+ */
+var Group = function(parent, $el) {
+    if (!(this instanceof Group)) {
+        return new Group(parent, $el);
+    }
+
+    Node.call(this, parent, $el);
+
+    /**
+     * @member {object[]}
+     * @readonly
+     */
+    this.rules = [];
+
+    /**
+     * @name condition
+     * @member {string}
+     * @memberof Group
+     * @instance
+     */
+    this.__.condition = null;
+};
+
+Group.prototype = Object.create(Node.prototype);
+Group.prototype.constructor = Group;
+
+Utils.defineModelProperties(Group, ['condition']);
+
+/**
+ * Removes group's content
+ */
+Group.prototype.empty = function() {
+    this.each('reverse', function(rule) {
+        rule.drop();
+    }, function(group) {
+        group.drop();
+    });
+};
+
+/**
+ * Deletes self
+ */
+Group.prototype.drop = function() {
+    this.empty();
+    Node.prototype.drop.call(this);
+};
+
+/**
+ * Returns the number of children
+ * @returns {int}
+ */
+Group.prototype.length = function() {
+    return this.rules.length;
+};
+
+/**
+ * Adds a Node at specified index
+ * @param {Node} node
+ * @param {int} [index=end]
+ * @param {boolean} [trigger=false] - fire 'add' event
+ * @returns {Node} the inserted node
+ * @fires Model.model:add
+ */
+Group.prototype.insertNode = function(node, index, trigger) {
+    if (index === undefined) {
+        index = this.length();
+    }
+
+    this.rules.splice(index, 0, node);
+    node.parent = this;
+
+    if (trigger && this.model !== null) {
+        /**
+         * After a node of the model has been added
+         * @event model:add
+         * @memberof Model
+         * @param {Node} parent
+         * @param {Node} node
+         * @param {int} index
+         */
+        this.model.trigger('add', this, node, index);
+    }
+
+    return node;
+};
+
+/**
+ * Adds a new Group at specified index
+ * @param {jQuery} $el
+ * @param {int} [index=end]
+ * @returns {Group}
+ * @fires Model.model:add
+ */
+Group.prototype.addGroup = function($el, index) {
+    return this.insertNode(new Group(this, $el), index, true);
+};
+
+/**
+ * Adds a new Rule at specified index
+ * @param {jQuery} $el
+ * @param {int} [index=end]
+ * @returns {Rule}
+ * @fires Model.model:add
+ */
+Group.prototype.addRule = function($el, index) {
+    return this.insertNode(new Rule(this, $el), index, true);
+};
+
+/**
+ * Deletes a specific Node
+ * @param {Node} node
+ */
+Group.prototype.removeNode = function(node) {
+    var index = this.getNodePos(node);
+    if (index !== -1) {
+        node.parent = null;
+        this.rules.splice(index, 1);
+    }
+};
+
+/**
+ * Returns the position of a child Node
+ * @param {Node} node
+ * @returns {int}
+ */
+Group.prototype.getNodePos = function(node) {
+    return this.rules.indexOf(node);
+};
+
+/**
+ * @callback Model#GroupIteratee
+ * @param {Node} node
+ * @returns {boolean} stop the iteration
+ */
+
+/**
+ * Iterate over all Nodes
+ * @param {boolean} [reverse=false] - iterate in reverse order, required if you delete nodes
+ * @param {Model#GroupIteratee} cbRule - callback for Rules (can be `null` but not omitted)
+ * @param {Model#GroupIteratee} [cbGroup] - callback for Groups
+ * @param {object} [context] - context for callbacks
+ * @returns {boolean} if the iteration has been stopped by a callback
+ */
+Group.prototype.each = function(reverse, cbRule, cbGroup, context) {
+    if (typeof reverse !== 'boolean' && typeof reverse !== 'string') {
+        context = cbGroup;
+        cbGroup = cbRule;
+        cbRule = reverse;
+        reverse = false;
+    }
+    context = context === undefined ? null : context;
+
+    var i = reverse ? this.rules.length - 1 : 0;
+    var l = reverse ? 0 : this.rules.length - 1;
+    var c = reverse ? -1 : 1;
+    var next = function() {
+        return reverse ? i >= l : i <= l;
+    };
+    var stop = false;
+
+    for (; next(); i += c) {
+        if (this.rules[i] instanceof Group) {
+            if (!!cbGroup) {
+                stop = cbGroup.call(context, this.rules[i]) === false;
+            }
+        }
+        else if (!!cbRule) {
+            stop = cbRule.call(context, this.rules[i]) === false;
+        }
+
+        if (stop) {
+            break;
+        }
+    }
+
+    return !stop;
+};
+
+/**
+ * Checks if the group contains a particular Node
+ * @param {Node} node
+ * @param {boolean} [recursive=false]
+ * @returns {boolean}
+ */
+Group.prototype.contains = function(node, recursive) {
+    if (this.getNodePos(node) !== -1) {
+        return true;
+    }
+    else if (!recursive) {
+        return false;
+    }
+    else {
+        // the loop will return with false as soon as the Node is found
+        return !this.each(function() {
+            return true;
+        }, function(group) {
+            return !group.contains(node, true);
+        });
+    }
+};
+
+
+/**
+ * Rule object
+ * @constructor
+ * @extends Node
+ * @param {Group} parent
+ * @param {jQuery} $el
+ */
+var Rule = function(parent, $el) {
+    if (!(this instanceof Rule)) {
+        return new Rule(parent, $el);
+    }
+
+    Node.call(this, parent, $el);
+
+    this._updating_value = false;
+    this._updating_input = false;
+
+    /**
+     * @name filter
+     * @member {QueryBuilder.Filter}
+     * @memberof Rule
+     * @instance
+     */
+    this.__.filter = null;
+
+    /**
+     * @name operator
+     * @member {QueryBuilder.Operator}
+     * @memberof Rule
+     * @instance
+     */
+    this.__.operator = null;
+
+    /**
+     * @name value
+     * @member {*}
+     * @memberof Rule
+     * @instance
+     */
+    this.__.value = undefined;
+};
+
+Rule.prototype = Object.create(Node.prototype);
+Rule.prototype.constructor = Rule;
+
+Utils.defineModelProperties(Rule, ['filter', 'operator', 'value']);
+
+/**
+ * Checks if this Node is the root
+ * @returns {boolean} always false
+ */
+Rule.prototype.isRoot = function() {
+    return false;
+};
+
+
+/**
+ * @member {function}
+ * @memberof QueryBuilder
+ * @see Group
+ */
+QueryBuilder.Group = Group;
+
+/**
+ * @member {function}
+ * @memberof QueryBuilder
+ * @see Rule
+ */
+QueryBuilder.Rule = Rule;
+
+
+/**
+ * The {@link http://learn.jquery.com/plugins/|jQuery Plugins} namespace
+ * @external "jQuery.fn"
+ */
+
+/**
+ * Instanciates or accesses the {@link QueryBuilder} on an element
+ * @function
+ * @memberof external:"jQuery.fn"
+ * @param {*} option - initial configuration or method name
+ * @param {...*} args - method arguments
+ *
+ * @example
+ * $('#builder').queryBuilder({ /** configuration object *\/ });
+ * @example
+ * $('#builder').queryBuilder('methodName', methodParam1, methodParam2);
+ */
+$.fn.queryBuilder = function(option) {
+    if (this.length === 0) {
+        Utils.error('Config', 'No target defined');
+    }
+    if (this.length > 1) {
+        Utils.error('Config', 'Unable to initialize on multiple target');
+    }
+
+    var data = this.data('queryBuilder');
+    var options = (typeof option == 'object' && option) || {};
+
+    if (!data && option == 'destroy') {
+        return this;
+    }
+    if (!data) {
+        this.data('queryBuilder', new QueryBuilder(this, options));
+    }
+    if (typeof option == 'string') {
+        return data[option].apply(data, Array.prototype.slice.call(arguments, 1));
+    }
+
+    return this;
+};
+
+/**
+ * @function
+ * @memberof external:"jQuery.fn"
+ * @see QueryBuilder
+ */
+$.fn.queryBuilder.constructor = QueryBuilder;
+
+/**
+ * @function
+ * @memberof external:"jQuery.fn"
+ * @see QueryBuilder.defaults
+ */
+$.fn.queryBuilder.defaults = QueryBuilder.defaults;
+
+/**
+ * @function
+ * @memberof external:"jQuery.fn"
+ * @see QueryBuilder.defaults
+ */
+$.fn.queryBuilder.extend = QueryBuilder.extend;
+
+/**
+ * @function
+ * @memberof external:"jQuery.fn"
+ * @see QueryBuilder.define
+ */
+$.fn.queryBuilder.define = QueryBuilder.define;
+
+/**
+ * @function
+ * @memberof external:"jQuery.fn"
+ * @see QueryBuilder.regional
+ */
+$.fn.queryBuilder.regional = QueryBuilder.regional;
+
+
+/**
+ * @class BtCheckbox
+ * @memberof module:plugins
+ * @description Applies Awesome Bootstrap Checkbox for checkbox and radio inputs.
+ * @param {object} [options]
+ * @param {string} [options.font='glyphicons']
+ * @param {string} [options.color='default']
+ */
+QueryBuilder.define('bt-checkbox', function(options) {
+    if (options.font == 'glyphicons') {
+        this.$el.addClass('bt-checkbox-glyphicons');
+    }
+
+    this.on('getRuleInput.filter', function(h, rule, name) {
+        var filter = rule.filter;
+
+        if ((filter.input === 'radio' || filter.input === 'checkbox') && !filter.plugin) {
+            h.value = '';
+
+            if (!filter.colors) {
+                filter.colors = {};
+            }
+            if (filter.color) {
+                filter.colors._def_ = filter.color;
+            }
+
+            var style = filter.vertical ? ' style="display:block"' : '';
+            var i = 0;
+
+            Utils.iterateOptions(filter.values, function(key, val) {
+                var color = filter.colors[key] || filter.colors._def_ || options.color;
+                var id = name + '_' + (i++);
+
+                h.value+= '\
+<div' + style + ' class="' + filter.input + ' ' + filter.input + '-' + color + '"> \
+  <input type="' + filter.input + '" name="' + name + '" id="' + id + '" value="' + key + '"> \
+  <label for="' + id + '">' + val + '</label> \
+</div>';
+            });
+        }
+    });
+}, {
+    font: 'glyphicons',
+    color: 'default'
+});
+
+
+/**
+ * @class BtSelectpicker
+ * @memberof module:plugins
+ * @descriptioon Applies Bootstrap Select on filters and operators combo-boxes.
+ * @param {object} [options]
+ * @param {string} [options.container='body']
+ * @param {string} [options.style='btn-inverse btn-xs']
+ * @param {int|string} [options.width='auto']
+ * @param {boolean} [options.showIcon=false]
+ * @throws MissingLibraryError
+ */
+QueryBuilder.define('bt-selectpicker', function(options) {
+    if (!$.fn.selectpicker || !$.fn.selectpicker.Constructor) {
+        Utils.error('MissingLibrary', 'Bootstrap Select is required to use "bt-selectpicker" plugin. Get it here: http://silviomoreto.github.io/bootstrap-select');
+    }
+
+    var Selectors = QueryBuilder.selectors;
+
+    // init selectpicker
+    this.on('afterCreateRuleFilters', function(e, rule) {
+        rule.$el.find(Selectors.rule_filter).removeClass('form-control').selectpicker(options);
+    });
+
+    this.on('afterCreateRuleOperators', function(e, rule) {
+        rule.$el.find(Selectors.rule_operator).removeClass('form-control').selectpicker(options);
+    });
+
+    // update selectpicker on change
+    this.on('afterUpdateRuleFilter', function(e, rule) {
+        rule.$el.find(Selectors.rule_filter).selectpicker('render');
+    });
+
+    this.on('afterUpdateRuleOperator', function(e, rule) {
+        rule.$el.find(Selectors.rule_operator).selectpicker('render');
+    });
+
+    this.on('beforeDeleteRule', function(e, rule) {
+        rule.$el.find(Selectors.rule_filter).selectpicker('destroy');
+        rule.$el.find(Selectors.rule_operator).selectpicker('destroy');
+    });
+}, {
+    container: 'body',
+    style: 'btn-inverse btn-xs',
+    width: 'auto',
+    showIcon: false
+});
+
+
+/**
+ * @class BtTooltipErrors
+ * @memberof module:plugins
+ * @description Applies Bootstrap Tooltips on validation error messages.
+ * @param {object} [options]
+ * @param {string} [options.placement='right']
+ * @throws MissingLibraryError
+ */
+QueryBuilder.define('bt-tooltip-errors', function(options) {
+    if (!$.fn.tooltip || !$.fn.tooltip.Constructor || !$.fn.tooltip.Constructor.prototype.fixTitle) {
+        Utils.error('MissingLibrary', 'Bootstrap Tooltip is required to use "bt-tooltip-errors" plugin. Get it here: http://getbootstrap.com');
+    }
+
+    var self = this;
+
+    // add BT Tooltip data
+    this.on('getRuleTemplate.filter getGroupTemplate.filter', function(h) {
+        var $h = $(h.value);
+        $h.find(QueryBuilder.selectors.error_container).attr('data-toggle', 'tooltip');
+        h.value = $h.prop('outerHTML');
+    });
+
+    // init/refresh tooltip when title changes
+    this.model.on('update', function(e, node, field) {
+        if (field == 'error' && self.settings.display_errors) {
+            node.$el.find(QueryBuilder.selectors.error_container).eq(0)
+                .tooltip(options)
+                .tooltip('hide')
+                .tooltip('fixTitle');
+        }
+    });
+}, {
+    placement: 'right'
+});
+
+
+/**
+ * @class ChangeFilters
+ * @memberof module:plugins
+ * @description Allows to change available filters after plugin initialization.
+ */
+
+QueryBuilder.extend(/** @lends module:plugins.ChangeFilters.prototype */ {
+    /**
+     * Change the filters of the builder
+     * @param {boolean} [deleteOrphans=false] - delete rules using old filters
+     * @param {QueryBuilder[]} filters
+     * @fires module:plugins.ChangeFilters.changer:setFilters
+     * @fires module:plugins.ChangeFilters.afterSetFilters
+     * @throws ChangeFilterError
+     */
+    setFilters: function(deleteOrphans, filters) {
+        var self = this;
+
+        if (filters === undefined) {
+            filters = deleteOrphans;
+            deleteOrphans = false;
+        }
+
+        filters = this.checkFilters(filters);
+
+        /**
+         * Modifies the filters before {@link module:plugins.ChangeFilters.setFilters} method
+         * @event changer:setFilters
+         * @memberof module:plugins.ChangeFilters
+         * @param {QueryBuilder.Filter[]} filters
+         * @returns {QueryBuilder.Filter[]}
+         */
+        filters = this.change('setFilters', filters);
+
+        var filtersIds = filters.map(function(filter) {
+            return filter.id;
+        });
+
+        // check for orphans
+        if (!deleteOrphans) {
+            (function checkOrphans(node) {
+                node.each(
+                    function(rule) {
+                        if (rule.filter && filtersIds.indexOf(rule.filter.id) === -1) {
+                            Utils.error('ChangeFilter', 'A rule is using filter "{0}"', rule.filter.id);
+                        }
+                    },
+                    checkOrphans
+                );
+            }(this.model.root));
+        }
+
+        // replace filters
+        this.filters = filters;
+
+        // apply on existing DOM
+        (function updateBuilder(node) {
+            node.each(true,
+                function(rule) {
+                    if (rule.filter && filtersIds.indexOf(rule.filter.id) === -1) {
+                        rule.drop();
+                    }
+                    else {
+                        self.createRuleFilters(rule);
+
+                        rule.$el.find(QueryBuilder.selectors.rule_filter).val(rule.filter ? rule.filter.id : '-1');
+                        self.trigger('afterUpdateRuleFilter', rule);
+                    }
+                },
+                updateBuilder
+            );
+        }(this.model.root));
+
+        // update plugins
+        if (this.settings.plugins) {
+            if (this.settings.plugins['unique-filter']) {
+                this.updateDisabledFilters();
+            }
+            if (this.settings.plugins['bt-selectpicker']) {
+                this.$el.find(QueryBuilder.selectors.rule_filter).selectpicker('render');
+            }
+        }
+
+        // reset the default_filter if does not exist anymore
+        if (this.settings.default_filter) {
+            try {
+                this.getFilterById(this.settings.default_filter);
+            }
+            catch (e) {
+                this.settings.default_filter = null;
+            }
+        }
+
+        /**
+         * After {@link module:plugins.ChangeFilters.setFilters} method
+         * @event afterSetFilters
+         * @memberof module:plugins.ChangeFilters
+         * @param {QueryBuilder.Filter[]} filters
+         */
+        this.trigger('afterSetFilters', filters);
+    },
+
+    /**
+     * Adds a new filter to the builder
+     * @param {QueryBuilder.Filter|Filter[]} newFilters
+     * @param {int|string} [position=#end] - index or '#start' or '#end'
+     * @fires module:plugins.ChangeFilters.changer:setFilters
+     * @fires module:plugins.ChangeFilters.afterSetFilters
+     * @throws ChangeFilterError
+     */
+    addFilter: function(newFilters, position) {
+        if (position === undefined || position == '#end') {
+            position = this.filters.length;
+        }
+        else if (position == '#start') {
+            position = 0;
+        }
+
+        if (!$.isArray(newFilters)) {
+            newFilters = [newFilters];
+        }
+
+        var filters = $.extend(true, [], this.filters);
+
+        // numeric position
+        if (parseInt(position) == position) {
+            Array.prototype.splice.apply(filters, [position, 0].concat(newFilters));
+        }
+        else {
+            // after filter by its id
+            if (this.filters.some(function(filter, index) {
+                    if (filter.id == position) {
+                        position = index + 1;
+                        return true;
+                    }
+                })
+            ) {
+                Array.prototype.splice.apply(filters, [position, 0].concat(newFilters));
+            }
+            // defaults to end of list
+            else {
+                Array.prototype.push.apply(filters, newFilters);
+            }
+        }
+
+        this.setFilters(filters);
+    },
+
+    /**
+     * Removes a filter from the builder
+     * @param {string|string[]} filterIds
+     * @param {boolean} [deleteOrphans=false] delete rules using old filters
+     * @fires module:plugins.ChangeFilters.changer:setFilters
+     * @fires module:plugins.ChangeFilters.afterSetFilters
+     * @throws ChangeFilterError
+     */
+    removeFilter: function(filterIds, deleteOrphans) {
+        var filters = $.extend(true, [], this.filters);
+        if (typeof filterIds === 'string') {
+            filterIds = [filterIds];
+        }
+
+        filters = filters.filter(function(filter) {
+            return filterIds.indexOf(filter.id) === -1;
+        });
+
+        this.setFilters(deleteOrphans, filters);
+    }
+});
+
+
+/**
+ * @class FilterDescription
+ * @memberof module:plugins
+ * @description Provides three ways to display a description about a filter: inline, Bootsrap Popover or Bootbox.
+ * @param {object} [options]
+ * @param {string} [options.icon='glyphicon glyphicon-info-sign']
+ * @param {string} [options.mode='popover'] - inline, popover or bootbox
+ * @throws ConfigError
+ */
+QueryBuilder.define('filter-description', function(options) {
+    // INLINE
+    if (options.mode === 'inline') {
+        this.on('afterUpdateRuleFilter afterUpdateRuleOperator', function(e, rule) {
+            var $p = rule.$el.find('p.filter-description');
+            var description = e.builder.getFilterDescription(rule.filter, rule);
+
+            if (!description) {
+                $p.hide();
+            }
+            else {
+                if ($p.length === 0) {
+                    $p = $('<p class="filter-description"></p>');
+                    $p.appendTo(rule.$el);
+                }
+                else {
+                    $p.show();
+                }
+
+                $p.html('<i class="' + options.icon + '"></i> ' + description);
+            }
+        });
+    }
+    // POPOVER
+    else if (options.mode === 'popover') {
+        if (!$.fn.popover || !$.fn.popover.Constructor || !$.fn.popover.Constructor.prototype.fixTitle) {
+            Utils.error('MissingLibrary', 'Bootstrap Popover is required to use "filter-description" plugin. Get it here: http://getbootstrap.com');
+        }
+
+        this.on('afterUpdateRuleFilter afterUpdateRuleOperator', function(e, rule) {
+            var $b = rule.$el.find('button.filter-description');
+            var description = e.builder.getFilterDescription(rule.filter, rule);
+
+            if (!description) {
+                $b.hide();
+
+                if ($b.data('bs.popover')) {
+                    $b.popover('hide');
+                }
+            }
+            else {
+                if ($b.length === 0) {
+                    $b = $('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="popover"><i class="' + options.icon + '"></i></button>');
+                    $b.prependTo(rule.$el.find(QueryBuilder.selectors.rule_actions));
+
+                    $b.popover({
+                        placement: 'left',
+                        container: 'body',
+                        html: true
+                    });
+
+                    $b.on('mouseout', function() {
+                        $b.popover('hide');
+                    });
+                }
+                else {
+                    $b.show();
+                }
+
+                $b.data('bs.popover').options.content = description;
+
+                if ($b.attr('aria-describedby')) {
+                    $b.popover('show');
+                }
+            }
+        });
+    }
+    // BOOTBOX
+    else if (options.mode === 'bootbox') {
+        if (!('bootbox' in window)) {
+            Utils.error('MissingLibrary', 'Bootbox is required to use "filter-description" plugin. Get it here: http://bootboxjs.com');
+        }
+
+        this.on('afterUpdateRuleFilter afterUpdateRuleOperator', function(e, rule) {
+            var $b = rule.$el.find('button.filter-description');
+            var description = e.builder.getFilterDescription(rule.filter, rule);
+
+            if (!description) {
+                $b.hide();
+            }
+            else {
+                if ($b.length === 0) {
+                    $b = $('<button type="button" class="btn btn-xs btn-info filter-description" data-toggle="bootbox"><i class="' + options.icon + '"></i></button>');
+                    $b.prependTo(rule.$el.find(QueryBuilder.selectors.rule_actions));
+
+                    $b.on('click', function() {
+                        bootbox.alert($b.data('description'));
+                    });
+                }
+
+                $b.data('description', description);
+            }
+        });
+    }
+}, {
+    icon: 'glyphicon glyphicon-info-sign',
+    mode: 'popover'
+});
+
+QueryBuilder.extend(/** @lends module:plugins.FilterDescription.prototype */ {
+    /**
+     * Returns the description of a filter for a particular rule (if present)
+     * @param {object} filter
+     * @param {Rule} [rule]
+     * @returns {string}
+     * @private
+     */
+    getFilterDescription: function(filter, rule) {
+        if (!filter) {
+            return undefined;
+        }
+        else if (typeof filter.description == 'function') {
+            return filter.description.call(this, rule);
+        }
+        else {
+            return filter.description;
+        }
+    }
+});
+
+
+/**
+ * @class Invert
+ * @memberof module:plugins
+ * @description Allows to invert a rule operator, a group condition or the entire builder.
+ * @param {object} [options]
+ * @param {string} [options.icon='glyphicon glyphicon-random']
+ * @param {boolean} [options.recursive=true]
+ * @param {boolean} [options.invert_rules=true]
+ * @param {boolean} [options.display_rules_button=false]
+ * @param {boolean} [options.silent_fail=false]
+ */
+QueryBuilder.define('invert', function(options) {
+    var self = this;
+    var Selectors = QueryBuilder.selectors;
+
+    // Bind events
+    this.on('afterInit', function() {
+        self.$el.on('click.queryBuilder', '[data-invert=group]', function() {
+            var $group = $(this).closest(Selectors.group_container);
+            self.invert(self.getModel($group), options);
+        });
+
+        if (options.display_rules_button && options.invert_rules) {
+            self.$el.on('click.queryBuilder', '[data-invert=rule]', function() {
+                var $rule = $(this).closest(Selectors.rule_container);
+                self.invert(self.getModel($rule), options);
+            });
+        }
+    });
+
+    // Modify templates
+    this.on('getGroupTemplate.filter', function(h, level) {
+        var $h = $(h.value);
+        $h.find(Selectors.condition_container).after('<button type="button" class="btn btn-xs btn-default" data-invert="group"><i class="' + options.icon + '"></i> ' + self.translate('invert') + '</button>');
+        h.value = $h.prop('outerHTML');
+    });
+
+    if (options.display_rules_button && options.invert_rules) {
+        this.on('getRuleTemplate.filter', function(h) {
+            var $h = $(h.value);
+            $h.find(Selectors.rule_actions).prepend('<button type="button" class="btn btn-xs btn-default" data-invert="rule"><i class="' + options.icon + '"></i> ' + self.translate('invert') + '</button>');
+            h.value = $h.prop('outerHTML');
+        });
+    }
+}, {
+    icon: 'glyphicon glyphicon-random',
+    recursive: true,
+    invert_rules: true,
+    display_rules_button: false,
+    silent_fail: false
+});
+
+QueryBuilder.defaults({
+    operatorOpposites: {
+        'equal':            'not_equal',
+        'not_equal':        'equal',
+        'in':               'not_in',
+        'not_in':           'in',
+        'less':             'greater_or_equal',
+        'less_or_equal':    'greater',
+        'greater':          'less_or_equal',
+        'greater_or_equal': 'less',
+        'between':          'not_between',
+        'not_between':      'between',
+        'begins_with':      'not_begins_with',
+        'not_begins_with':  'begins_with',
+        'contains':         'not_contains',
+        'not_contains':     'contains',
+        'ends_with':        'not_ends_with',
+        'not_ends_with':    'ends_with',
+        'is_empty':         'is_not_empty',
+        'is_not_empty':     'is_empty',
+        'is_null':          'is_not_null',
+        'is_not_null':      'is_null'
+    },
+
+    conditionOpposites: {
+        'AND': 'OR',
+        'OR': 'AND'
+    }
+});
+
+QueryBuilder.extend(/** @lends module:plugins.Invert.prototype */ {
+    /**
+     * Invert a Group, a Rule or the whole builder
+     * @param {Node} [node]
+     * @param {object} [options] {@link module:plugins.Invert}
+     * @fires module:plugins.Invert.afterInvert
+     * @throws InvertConditionError, InvertOperatorError
+     */
+    invert: function(node, options) {
+        if (!(node instanceof Node)) {
+            if (!this.model.root) return;
+            options = node;
+            node = this.model.root;
+        }
+
+        if (typeof options != 'object') options = {};
+        if (options.recursive === undefined) options.recursive = true;
+        if (options.invert_rules === undefined) options.invert_rules = true;
+        if (options.silent_fail === undefined) options.silent_fail = false;
+        if (options.trigger === undefined) options.trigger = true;
+
+        if (node instanceof Group) {
+            // invert group condition
+            if (this.settings.conditionOpposites[node.condition]) {
+                node.condition = this.settings.conditionOpposites[node.condition];
+            }
+            else if (!options.silent_fail) {
+                Utils.error('InvertCondition', 'Unknown inverse of condition "{0}"', node.condition);
+            }
+
+            // recursive call
+            if (options.recursive) {
+                var tempOpts = $.extend({}, options, { trigger: false });
+                node.each(function(rule) {
+                    if (options.invert_rules) {
+                        this.invert(rule, tempOpts);
+                    }
+                }, function(group) {
+                    this.invert(group, tempOpts);
+                }, this);
+            }
+        }
+        else if (node instanceof Rule) {
+            if (node.operator && !node.filter.no_invert) {
+                // invert rule operator
+                if (this.settings.operatorOpposites[node.operator.type]) {
+                    var invert = this.settings.operatorOpposites[node.operator.type];
+                    // check if the invert is "authorized"
+                    if (!node.filter.operators || node.filter.operators.indexOf(invert) != -1) {
+                        node.operator = this.getOperatorByType(invert);
+                    }
+                }
+                else if (!options.silent_fail) {
+                    Utils.error('InvertOperator', 'Unknown inverse of operator "{0}"', node.operator.type);
+                }
+            }
+        }
+
+        if (options.trigger) {
+            /**
+             * After {@link module:plugins.Invert.invert} method
+             * @event afterInvert
+             * @memberof module:plugins.Invert
+             * @param {Node} node - the main group or rule that has been modified
+             * @param {object} options
+             */
+            this.trigger('afterInvert', node, options);
+        }
+    }
+});
+
+
+/**
+ * @class MongoDbSupport
+ * @memberof module:plugins
+ * @description Allows to export rules as a MongoDB find object as well as populating the builder from a MongoDB object.
+ */
+
+QueryBuilder.defaults({
+    mongoOperators: {
+        // @formatter:off
+        equal:            function(v) { return v[0]; },
+        not_equal:        function(v) { return { '$ne': v[0] }; },
+        in:               function(v) { return { '$in': v }; },
+        not_in:           function(v) { return { '$nin': v }; },
+        less:             function(v) { return { '$lt': v[0] }; },
+        less_or_equal:    function(v) { return { '$lte': v[0] }; },
+        greater:          function(v) { return { '$gt': v[0] }; },
+        greater_or_equal: function(v) { return { '$gte': v[0] }; },
+        between:          function(v) { return { '$gte': v[0], '$lte': v[1] }; },
+        not_between:      function(v) { return { '$lt': v[0], '$gt': v[1] }; },
+        begins_with:      function(v) { return { '$regex': '^' + Utils.escapeRegExp(v[0]) }; },
+        not_begins_with:  function(v) { return { '$regex': '^(?!' + Utils.escapeRegExp(v[0]) + ')' }; },
+        contains:         function(v) { return { '$regex': Utils.escapeRegExp(v[0]) }; },
+        not_contains:     function(v) { return { '$regex': '^((?!' + Utils.escapeRegExp(v[0]) + ').)*$', '$options': 's' }; },
+        ends_with:        function(v) { return { '$regex': Utils.escapeRegExp(v[0]) + '$' }; },
+        not_ends_with:    function(v) { return { '$regex': '(?<!' + Utils.escapeRegExp(v[0]) + ')$' }; },
+        is_empty:         function(v) { return ''; },
+        is_not_empty:     function(v) { return { '$ne': '' }; },
+        is_null:          function(v) { return null; },
+        is_not_null:      function(v) { return { '$ne': null }; }
+        // @formatter:on
+    },
+
+    mongoRuleOperators: {
+        $ne: function(v) {
+            v = v.$ne;
+            return {
+                'val': v,
+                'op': v === null ? 'is_not_null' : (v === '' ? 'is_not_empty' : 'not_equal')
+            };
+        },
+        eq: function(v) {
+            return {
+                'val': v,
+                'op': v === null ? 'is_null' : (v === '' ? 'is_empty' : 'equal')
+            };
+        },
+        $regex: function(v) {
+            v = v.$regex;
+            if (v.slice(0, 4) == '^(?!' && v.slice(-1) == ')') {
+                return { 'val': v.slice(4, -1), 'op': 'not_begins_with' };
+            }
+            else if (v.slice(0, 5) == '^((?!' && v.slice(-5) == ').)*$') {
+                return { 'val': v.slice(5, -5), 'op': 'not_contains' };
+            }
+            else if (v.slice(0, 4) == '(?<!' && v.slice(-2) == ')$') {
+                return { 'val': v.slice(4, -2), 'op': 'not_ends_with' };
+            }
+            else if (v.slice(-1) == '$') {
+                return { 'val': v.slice(0, -1), 'op': 'ends_with' };
+            }
+            else if (v.slice(0, 1) == '^') {
+                return { 'val': v.slice(1), 'op': 'begins_with' };
+            }
+            else {
+                return { 'val': v, 'op': 'contains' };
+            }
+        },
+        between: function(v) {
+            return { 'val': [v.$gte, v.$lte], 'op': 'between' };
+        },
+        not_between: function(v) {
+            return { 'val': [v.$lt, v.$gt], 'op': 'not_between' };
+        },
+        $in: function(v) {
+            return { 'val': v.$in, 'op': 'in' };
+        },
+        $nin: function(v) {
+            return { 'val': v.$nin, 'op': 'not_in' };
+        },
+        $lt: function(v) {
+            return { 'val': v.$lt, 'op': 'less' };
+        },
+        $lte: function(v) {
+            return { 'val': v.$lte, 'op': 'less_or_equal' };
+        },
+        $gt: function(v) {
+            return { 'val': v.$gt, 'op': 'greater' };
+        },
+        $gte: function(v) {
+            return { 'val': v.$gte, 'op': 'greater_or_equal' };
+        }
+    }
+});
+
+QueryBuilder.extend(/** @lends module:plugins.MongoDbSupport.prototype */ {
+    /**
+     * Returns rules as a MongoDB query
+     * @param {object} [data] - current rules by default
+     * @returns {object}
+     * @fires module:plugins.MongoDbSupport.changer:getMongoDBField
+     * @fires module:plugins.MongoDbSupport.changer:ruleToMongo
+     * @fires module:plugins.MongoDbSupport.changer:groupToMongo
+     * @throws UndefinedMongoConditionError, UndefinedMongoOperatorError
+     */
+    getMongo: function(data) {
+        data = (data === undefined) ? this.getRules() : data;
+
+        var self = this;
+
+        return (function parse(group) {
+            if (!group.condition) {
+                group.condition = self.settings.default_condition;
+            }
+            if (['AND', 'OR'].indexOf(group.condition.toUpperCase()) === -1) {
+                Utils.error('UndefinedMongoCondition', 'Unable to build MongoDB query with condition "{0}"', group.condition);
+            }
+
+            if (!group.rules) {
+                return {};
+            }
+
+            var parts = [];
+
+            group.rules.forEach(function(rule) {
+                if (rule.rules && rule.rules.length > 0) {
+                    parts.push(parse(rule));
+                }
+                else {
+                    var mdb = self.settings.mongoOperators[rule.operator];
+                    var ope = self.getOperatorByType(rule.operator);
+                    var values = [];
+
+                    if (mdb === undefined) {
+                        Utils.error('UndefinedMongoOperator', 'Unknown MongoDB operation for operator "{0}"', rule.operator);
+                    }
+
+                    if (ope.nb_inputs !== 0) {
+                        if (!(rule.value instanceof Array)) {
+                            rule.value = [rule.value];
+                        }
+
+                        rule.value.forEach(function(v) {
+                            values.push(Utils.changeType(v, rule.type, false));
+                        });
+                    }
+
+                    /**
+                     * Modifies the MongoDB field used by a rule
+                     * @event changer:getMongoDBField
+                     * @memberof module:plugins.MongoDbSupport
+                     * @param {string} field
+                     * @param {Rule} rule
+                     * @returns {string}
+                     */
+                    var field = self.change('getMongoDBField', rule.field, rule);
+
+                    var ruleExpression = {};
+                    ruleExpression[field] = mdb.call(self, values);
+
+                    /**
+                     * Modifies the MongoDB expression generated for a rul
+                     * @event changer:ruleToMongo
+                     * @memberof module:plugins.MongoDbSupport
+                     * @param {object} expression
+                     * @param {Rule} rule
+                     * @param {*} value
+                     * @param {function} valueWrapper - function that takes the value and adds the operator
+                     * @returns {object}
+                     */
+                    parts.push(self.change('ruleToMongo', ruleExpression, rule, values, mdb));
+                }
+            });
+
+            var groupExpression = {};
+            groupExpression['$' + group.condition.toLowerCase()] = parts;
+
+            /**
+             * Modifies the MongoDB expression generated for a group
+             * @event changer:groupToMongo
+             * @memberof module:plugins.MongoDbSupport
+             * @param {object} expression
+             * @param {Group} group
+             * @returns {object}
+             */
+            return self.change('groupToMongo', groupExpression, group);
+        }(data));
+    },
+
+    /**
+     * Converts a MongoDB query to rules
+     * @param {object} query
+     * @returns {object}
+     * @fires module:plugins.MongoDbSupport.changer:parseMongoNode
+     * @fires module:plugins.MongoDbSupport.changer:getMongoDBFieldID
+     * @fires module:plugins.MongoDbSupport.changer:mongoToRule
+     * @fires module:plugins.MongoDbSupport.changer:mongoToGroup
+     * @throws MongoParseError, UndefinedMongoConditionError, UndefinedMongoOperatorError
+     */
+    getRulesFromMongo: function(query) {
+        if (query === undefined || query === null) {
+            return null;
+        }
+
+        var self = this;
+
+        /**
+         * Custom parsing of a MongoDB expression, you can return a sub-part of the expression, or a well formed group or rule JSON
+         * @event changer:parseMongoNode
+         * @memberof module:plugins.MongoDbSupport
+         * @param {object} expression
+         * @returns {object} expression, rule or group
+         */
+        query = self.change('parseMongoNode', query);
+
+        // a plugin returned a group
+        if ('rules' in query && 'condition' in query) {
+            return query;
+        }
+
+        // a plugin returned a rule
+        if ('id' in query && 'operator' in query && 'value' in query) {
+            return {
+                condition: this.settings.default_condition,
+                rules: [query]
+            };
+        }
+
+        var key = andOr(query);
+        if (!key) {
+            Utils.error('MongoParse', 'Invalid MongoDB query format');
+        }
+
+        return (function parse(data, topKey) {
+            var rules = data[topKey];
+            var parts = [];
+
+            rules.forEach(function(data) {
+                // allow plugins to manually parse or handle special cases
+                data = self.change('parseMongoNode', data);
+
+                // a plugin returned a group
+                if ('rules' in data && 'condition' in data) {
+                    parts.push(data);
+                    return;
+                }
+
+                // a plugin returned a rule
+                if ('id' in data && 'operator' in data && 'value' in data) {
+                    parts.push(data);
+                    return;
+                }
+
+                var key = andOr(data);
+                if (key) {
+                    parts.push(parse(data, key));
+                }
+                else {
+                    var field = Object.keys(data)[0];
+                    var value = data[field];
+
+                    var operator = determineMongoOperator(value, field);
+                    if (operator === undefined) {
+                        Utils.error('MongoParse', 'Invalid MongoDB query format');
+                    }
+
+                    var mdbrl = self.settings.mongoRuleOperators[operator];
+                    if (mdbrl === undefined) {
+                        Utils.error('UndefinedMongoOperator', 'JSON Rule operation unknown for operator "{0}"', operator);
+                    }
+
+                    var opVal = mdbrl.call(self, value);
+
+                    var id = self.getMongoDBFieldID(field, value);
+
+                    /**
+                     * Modifies the rule generated from the MongoDB expression
+                     * @event changer:mongoToRule
+                     * @memberof module:plugins.MongoDbSupport
+                     * @param {object} rule
+                     * @param {object} expression
+                     * @returns {object}
+                     */
+                    var rule = self.change('mongoToRule', {
+                        id: id,
+                        field: field,
+                        operator: opVal.op,
+                        value: opVal.val
+                    }, data);
+
+                    parts.push(rule);
+                }
+            });
+
+            /**
+             * Modifies the group generated from the MongoDB expression
+             * @event changer:mongoToGroup
+             * @memberof module:plugins.MongoDbSupport
+             * @param {object} group
+             * @param {object} expression
+             * @returns {object}
+             */
+            return self.change('mongoToGroup', {
+                condition: topKey.replace('$', '').toUpperCase(),
+                rules: parts
+            }, data);
+        }(query, key));
+    },
+
+    /**
+     * Sets rules a from MongoDB query
+     * @see module:plugins.MongoDbSupport.getRulesFromMongo
+     */
+    setRulesFromMongo: function(query) {
+        this.setRules(this.getRulesFromMongo(query));
+    },
+
+    /**
+     * Returns a filter identifier from the MongoDB field.
+     * Automatically use the only one filter with a matching field, fires a changer otherwise.
+     * @param {string} field
+     * @param {*} value
+     * @fires module:plugins.MongoDbSupport:changer:getMongoDBFieldID
+     * @returns {string}
+     * @private
+     */
+    getMongoDBFieldID: function(field, value) {
+        var matchingFilters = this.filters.filter(function(filter) {
+            return filter.field === field;
+        });
+
+        var id;
+        if (matchingFilters.length === 1) {
+            id = matchingFilters[0].id;
+        }
+        else {
+            /**
+             * Returns a filter identifier from the MongoDB field
+             * @event changer:getMongoDBFieldID
+             * @memberof module:plugins.MongoDbSupport
+             * @param {string} field
+             * @param {*} value
+             * @returns {string}
+             */
+            id = this.change('getMongoDBFieldID', field, value);
+        }
+
+        return id;
+    }
+});
+
+/**
+ * Finds which operator is used in a MongoDB sub-object
+ * @memberof module:plugins.MongoDbSupport
+ * @param {*} value
+ * @returns {string|undefined}
+ * @private
+ */
+function determineMongoOperator(value) {
+    if (value !== null && typeof value == 'object') {
+        var subkeys = Object.keys(value);
+
+        if (subkeys.length === 1) {
+            return subkeys[0];
+        }
+        else {
+            if (value.$gte !== undefined && value.$lte !== undefined) {
+                return 'between';
+            }
+            if (value.$lt !== undefined && value.$gt !== undefined) {
+                return 'not_between';
+            }
+            else if (value.$regex !== undefined) { // optional $options
+                return '$regex';
+            }
+            else {
+                return;
+            }
+        }
+    }
+    else {
+        return 'eq';
+    }
+}
+
+/**
+ * Returns the key corresponding to "$or" or "$and"
+ * @memberof module:plugins.MongoDbSupport
+ * @param {object} data
+ * @returns {string}
+ * @private
+ */
+function andOr(data) {
+    var keys = Object.keys(data);
+
+    for (var i = 0, l = keys.length; i < l; i++) {
+        if (keys[i].toLowerCase() == '$or' || keys[i].toLowerCase() == '$and') {
+            return keys[i];
+        }
+    }
+
+    return undefined;
+}
+
+
+/**
+ * @class NotGroup
+ * @memberof module:plugins
+ * @description Adds a "Not" checkbox in front of group conditions.
+ * @param {object} [options]
+ * @param {string} [options.icon_checked='glyphicon glyphicon-checked']
+ * @param {string} [options.icon_unchecked='glyphicon glyphicon-unchecked']
+ */
+QueryBuilder.define('not-group', function(options) {
+    var self = this;
+
+    // Bind events
+    this.on('afterInit', function() {
+        self.$el.on('click.queryBuilder', '[data-not=group]', function() {
+            var $group = $(this).closest(QueryBuilder.selectors.group_container);
+            var group = self.getModel($group);
+            group.not = !group.not;
+        });
+
+        self.model.on('update', function(e, node, field) {
+            if (node instanceof Group && field === 'not') {
+                self.updateGroupNot(node);
+            }
+        });
+    });
+
+    // Init "not" property
+    this.on('afterAddGroup', function(e, group) {
+        group.__.not = false;
+    });
+
+    // Modify templates
+    this.on('getGroupTemplate.filter', function(h, level) {
+        var $h = $(h.value);
+        $h.find(QueryBuilder.selectors.condition_container).prepend(
+            '<button type="button" class="btn btn-xs btn-default" data-not="group">' +
+            '<i class="' + options.icon_unchecked + '"></i> ' + self.translate('NOT') +
+            '</button>'
+        );
+        h.value = $h.prop('outerHTML');
+    });
+
+    // Export "not" to JSON
+    this.on('groupToJson.filter', function(e, group) {
+        e.value.not = group.not;
+    });
+
+    // Read "not" from JSON
+    this.on('jsonToGroup.filter', function(e, json) {
+        e.value.not = !!json.not;
+    });
+
+    // Export "not" to SQL
+    this.on('groupToSQL.filter', function(e, group) {
+        if (group.not) {
+            e.value = 'NOT ( ' + e.value + ' )';
+        }
+    });
+
+    // Parse "NOT" function from sqlparser
+    this.on('parseSQLNode.filter', function(e) {
+        if (e.value.name && e.value.name.toUpperCase() == 'NOT') {
+            e.value = e.value.arguments.value[0];
+            e.value.not = true;
+        }
+    });
+
+    // Read "not" from parsed SQL
+    this.on('sqlToGroup.filter', function(e, data) {
+        e.value.not = !!data.not;
+    });
+
+    // Export "not" to Mongo
+    this.on('groupToMongo.filter', function(e, group) {
+        var key = '$' + group.condition.toLowerCase();
+        if (group.not && e.value[key]) {
+            e.value = { '$nor': [e.value] };
+        }
+    });
+
+    // Parse "$nor" operator from Mongo
+    this.on('parseMongoNode.filter', function(e) {
+        var keys = Object.keys(e.value);
+
+        if (keys[0] == '$nor') {
+            e.value = e.value[keys[0]][0];
+            e.value.not = true;
+        }
+    });
+
+    // Read "not" from parsed Mongo
+    this.on('mongoToGroup.filter', function(e, data) {
+        e.value.not = !!data.not;
+    });
+}, {
+    icon_unchecked: 'glyphicon glyphicon-unchecked',
+    icon_checked: 'glyphicon glyphicon-check'
+});
+
+/**
+ * From {@link module:plugins.NotGroup}
+ * @name not
+ * @member {boolean}
+ * @memberof Group
+ * @instance
+ */
+Utils.defineModelProperties(Group, ['not']);
+
+QueryBuilder.selectors.group_not = QueryBuilder.selectors.group_header + ' [data-not=group]';
+
+QueryBuilder.extend(/** @lends module:plugins.NotGroup.prototype */ {
+    /**
+     * Performs actions when a group's not changes
+     * @param {Group} group
+     * @fires module:plugins.NotGroup.afterUpdateGroupNot
+     * @private
+     */
+    updateGroupNot: function(group) {
+        var options = this.plugins['not-group'];
+        group.$el.find('>' + QueryBuilder.selectors.group_not)
+            .toggleClass('active', group.not)
+            .find('i').attr('class', group.not ? options.icon_checked : options.icon_unchecked);
+
+        /**
+         * After the group's not flag has been modified
+         * @event afterUpdateGroupNot
+         * @memberof module:plugins.NotGroup
+         * @param {Group} group
+         */
+        this.trigger('afterUpdateGroupNot', group);
+    }
+});
+
+
+/**
+ * @class Sortable
+ * @memberof module:plugins
+ * @description Enables drag & drop sort of rules.
+ * @param {object} [options]
+ * @param {boolean} [options.inherit_no_drop=true]
+ * @param {boolean} [options.inherit_no_sortable=true]
+ * @param {string} [options.icon='glyphicon glyphicon-sort']
+ * @throws MissingLibraryError, ConfigError
+ */
+QueryBuilder.define('sortable', function(options) {
+    if (!('interact' in window)) {
+        Utils.error('MissingLibrary', 'interact.js is required to use "sortable" plugin. Get it here: http://interactjs.io');
+    }
+
+    if (options.default_no_sortable !== undefined) {
+        Utils.error(false, 'Config', 'Sortable plugin : "default_no_sortable" options is deprecated, use standard "default_rule_flags" and "default_group_flags" instead');
+        this.settings.default_rule_flags.no_sortable = this.settings.default_group_flags.no_sortable = options.default_no_sortable;
+    }
+
+    // recompute drop-zones during drag (when a rule is hidden)
+    interact.dynamicDrop(true);
+
+    // set move threshold to 10px
+    interact.pointerMoveTolerance(10);
+
+    var placeholder;
+    var ghost;
+    var src;
+
+    // Init drag and drop
+    this.on('afterAddRule afterAddGroup', function(e, node) {
+        if (node == placeholder) {
+            return;
+        }
+
+        var self = e.builder;
+
+        // Inherit flags
+        if (options.inherit_no_sortable && node.parent && node.parent.flags.no_sortable) {
+            node.flags.no_sortable = true;
+        }
+        if (options.inherit_no_drop && node.parent && node.parent.flags.no_drop) {
+            node.flags.no_drop = true;
+        }
+
+        // Configure drag
+        if (!node.flags.no_sortable) {
+            interact(node.$el[0])
+                .allowFrom(QueryBuilder.selectors.drag_handle)
+                .draggable({
+                    onstart: function(event) {
+                        // get model of dragged element
+                        src = self.getModel(event.target);
+
+                        // create ghost
+                        ghost = src.$el.clone()
+                            .appendTo(src.$el.parent())
+                            .width(src.$el.outerWidth())
+                            .addClass('dragging');
+
+                        // create drop placeholder
+                        var ph = $('<div class="rule-placeholder">&nbsp;</div>')
+                            .height(src.$el.outerHeight());
+
+                        placeholder = src.parent.addRule(ph, src.getPos());
+
+                        // hide dragged element
+                        src.$el.hide();
+                    },
+                    onmove: function(event) {
+                        // make the ghost follow the cursor
+                        ghost[0].style.top = event.clientY - 15 + 'px';
+                        ghost[0].style.left = event.clientX - 15 + 'px';
+                    },
+                    onend: function() {
+                        // remove ghost
+                        ghost.remove();
+                        ghost = undefined;
+
+                        // remove placeholder
+                        placeholder.drop();
+                        placeholder = undefined;
+
+                        // show element
+                        src.$el.show();
+
+                        /**
+                         * After a node has been moved with {@link module:plugins.Sortable}
+                         * @event afterMove
+                         * @memberof module:plugins.Sortable
+                         * @param {Node} node
+                         */
+                        self.trigger('afterMove', src);
+                    }
+                });
+        }
+
+        if (!node.flags.no_drop) {
+            //  Configure drop on groups and rules
+            interact(node.$el[0])
+                .dropzone({
+                    accept: QueryBuilder.selectors.rule_and_group_containers,
+                    ondragenter: function(event) {
+                        moveSortableToTarget(placeholder, $(event.target), self);
+                    },
+                    ondrop: function(event) {
+                        moveSortableToTarget(src, $(event.target), self);
+                    }
+                });
+
+            // Configure drop on group headers
+            if (node instanceof Group) {
+                interact(node.$el.find(QueryBuilder.selectors.group_header)[0])
+                    .dropzone({
+                        accept: QueryBuilder.selectors.rule_and_group_containers,
+                        ondragenter: function(event) {
+                            moveSortableToTarget(placeholder, $(event.target), self);
+                        },
+                        ondrop: function(event) {
+                            moveSortableToTarget(src, $(event.target), self);
+                        }
+                    });
+            }
+        }
+    });
+
+    // Detach interactables
+    this.on('beforeDeleteRule beforeDeleteGroup', function(e, node) {
+        if (!e.isDefaultPrevented()) {
+            interact(node.$el[0]).unset();
+
+            if (node instanceof Group) {
+                interact(node.$el.find(QueryBuilder.selectors.group_header)[0]).unset();
+            }
+        }
+    });
+
+    // Remove drag handle from non-sortable items
+    this.on('afterApplyRuleFlags afterApplyGroupFlags', function(e, node) {
+        if (node.flags.no_sortable) {
+            node.$el.find('.drag-handle').remove();
+        }
+    });
+
+    // Modify templates
+    this.on('getGroupTemplate.filter', function(h, level) {
+        if (level > 1) {
+            var $h = $(h.value);
+            $h.find(QueryBuilder.selectors.condition_container).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
+            h.value = $h.prop('outerHTML');
+        }
+    });
+
+    this.on('getRuleTemplate.filter', function(h) {
+        var $h = $(h.value);
+        $h.find(QueryBuilder.selectors.rule_header).after('<div class="drag-handle"><i class="' + options.icon + '"></i></div>');
+        h.value = $h.prop('outerHTML');
+    });
+}, {
+    inherit_no_sortable: true,
+    inherit_no_drop: true,
+    icon: 'glyphicon glyphicon-sort'
+});
+
+QueryBuilder.selectors.rule_and_group_containers = QueryBuilder.selectors.rule_container + ', ' + QueryBuilder.selectors.group_container;
+QueryBuilder.selectors.drag_handle = '.drag-handle';
+
+QueryBuilder.defaults({
+    default_rule_flags: {
+        no_sortable: false,
+        no_drop: false
+    },
+    default_group_flags: {
+        no_sortable: false,
+        no_drop: false
+    }
+});
+
+/**
+ * Moves an element (placeholder or actual object) depending on active target
+ * @memberof module:plugins.Sortable
+ * @param {Node} node
+ * @param {jQuery} target
+ * @param {QueryBuilder} [builder]
+ * @private
+ */
+function moveSortableToTarget(node, target, builder) {
+    var parent, method;
+    var Selectors = QueryBuilder.selectors;
+
+    // on rule
+    parent = target.closest(Selectors.rule_container);
+    if (parent.length) {
+        method = 'moveAfter';
+    }
+
+    // on group header
+    if (!method) {
+        parent = target.closest(Selectors.group_header);
+        if (parent.length) {
+            parent = target.closest(Selectors.group_container);
+            method = 'moveAtBegin';
+        }
+    }
+
+    // on group
+    if (!method) {
+        parent = target.closest(Selectors.group_container);
+        if (parent.length) {
+            method = 'moveAtEnd';
+        }
+    }
+
+    if (method) {
+        node[method](builder.getModel(parent));
+
+        // refresh radio value
+        if (builder && node instanceof Rule) {
+            builder.setRuleInputValue(node, node.value);
+        }
+    }
+}
+
+
+/**
+ * @class SqlSupport
+ * @memberof module:plugins
+ * @description Allows to export rules as a SQL WHERE statement as well as populating the builder from an SQL query.
+ * @param {object} [options]
+ * @param {boolean} [options.boolean_as_integer=true] - `true` to convert boolean values to integer in the SQL output
+ */
+QueryBuilder.define('sql-support', function(options) {
+
+}, {
+    boolean_as_integer: true
+});
+
+QueryBuilder.defaults({
+    // operators for internal -> SQL conversion
+    sqlOperators: {
+        equal: { op: '= ?' },
+        not_equal: { op: '!= ?' },
+        in: { op: 'IN(?)', sep: ', ' },
+        not_in: { op: 'NOT IN(?)', sep: ', ' },
+        less: { op: '< ?' },
+        less_or_equal: { op: '<= ?' },
+        greater: { op: '> ?' },
+        greater_or_equal: { op: '>= ?' },
+        between: { op: 'BETWEEN ?', sep: ' AND ' },
+        not_between: { op: 'NOT BETWEEN ?', sep: ' AND ' },
+        begins_with: { op: 'LIKE(?)', mod: '{0}%' },
+        not_begins_with: { op: 'NOT LIKE(?)', mod: '{0}%' },
+        contains: { op: 'LIKE(?)', mod: '%{0}%' },
+        not_contains: { op: 'NOT LIKE(?)', mod: '%{0}%' },
+        ends_with: { op: 'LIKE(?)', mod: '%{0}' },
+        not_ends_with: { op: 'NOT LIKE(?)', mod: '%{0}' },
+        is_empty: { op: '= \'\'' },
+        is_not_empty: { op: '!= \'\'' },
+        is_null: { op: 'IS NULL' },
+        is_not_null: { op: 'IS NOT NULL' }
+    },
+
+    // operators for SQL -> internal conversion
+    sqlRuleOperator: {
+        '=': function(v) {
+            return {
+                val: v,
+                op: v === '' ? 'is_empty' : 'equal'
+            };
+        },
+        '!=': function(v) {
+            return {
+                val: v,
+                op: v === '' ? 'is_not_empty' : 'not_equal'
+            };
+        },
+        'LIKE': function(v) {
+            if (v.slice(0, 1) == '%' && v.slice(-1) == '%') {
+                return {
+                    val: v.slice(1, -1),
+                    op: 'contains'
+                };
+            }
+            else if (v.slice(0, 1) == '%') {
+                return {
+                    val: v.slice(1),
+                    op: 'ends_with'
+                };
+            }
+            else if (v.slice(-1) == '%') {
+                return {
+                    val: v.slice(0, -1),
+                    op: 'begins_with'
+                };
+            }
+            else {
+                Utils.error('SQLParse', 'Invalid value for LIKE operator "{0}"', v);
+            }
+        },
+        'NOT LIKE': function(v) {
+            if (v.slice(0, 1) == '%' && v.slice(-1) == '%') {
+                return {
+                    val: v.slice(1, -1),
+                    op: 'not_contains'
+                };
+            }
+            else if (v.slice(0, 1) == '%') {
+                return {
+                    val: v.slice(1),
+                    op: 'not_ends_with'
+                };
+            }
+            else if (v.slice(-1) == '%') {
+                return {
+                    val: v.slice(0, -1),
+                    op: 'not_begins_with'
+                };
+            }
+            else {
+                Utils.error('SQLParse', 'Invalid value for NOT LIKE operator "{0}"', v);
+            }
+        },
+        'IN': function(v) {
+            return { val: v, op: 'in' };
+        },
+        'NOT IN': function(v) {
+            return { val: v, op: 'not_in' };
+        },
+        '<': function(v) {
+            return { val: v, op: 'less' };
+        },
+        '<=': function(v) {
+            return { val: v, op: 'less_or_equal' };
+        },
+        '>': function(v) {
+            return { val: v, op: 'greater' };
+        },
+        '>=': function(v) {
+            return { val: v, op: 'greater_or_equal' };
+        },
+        'BETWEEN': function(v) {
+            return { val: v, op: 'between' };
+        },
+        'NOT BETWEEN': function(v) {
+            return { val: v, op: 'not_between' };
+        },
+        'IS': function(v) {
+            if (v !== null) {
+                Utils.error('SQLParse', 'Invalid value for IS operator');
+            }
+            return { val: null, op: 'is_null' };
+        },
+        'IS NOT': function(v) {
+            if (v !== null) {
+                Utils.error('SQLParse', 'Invalid value for IS operator');
+            }
+            return { val: null, op: 'is_not_null' };
+        }
+    },
+
+    // statements for internal -> SQL conversion
+    sqlStatements: {
+        'question_mark': function() {
+            var params = [];
+            return {
+                add: function(rule, value) {
+                    params.push(value);
+                    return '?';
+                },
+                run: function() {
+                    return params;
+                }
+            };
+        },
+
+        'numbered': function(char) {
+            if (!char || char.length > 1) char = '$';
+            var index = 0;
+            var params = [];
+            return {
+                add: function(rule, value) {
+                    params.push(value);
+                    index++;
+                    return char + index;
+                },
+                run: function() {
+                    return params;
+                }
+            };
+        },
+
+        'named': function(char) {
+            if (!char || char.length > 1) char = ':';
+            var indexes = {};
+            var params = {};
+            return {
+                add: function(rule, value) {
+                    if (!indexes[rule.field]) indexes[rule.field] = 1;
+                    var key = rule.field + '_' + (indexes[rule.field]++);
+                    params[key] = value;
+                    return char + key;
+                },
+                run: function() {
+                    return params;
+                }
+            };
+        }
+    },
+
+    // statements for SQL -> internal conversion
+    sqlRuleStatement: {
+        'question_mark': function(values) {
+            var index = 0;
+            return {
+                parse: function(v) {
+                    return v == '?' ? values[index++] : v;
+                },
+                esc: function(sql) {
+                    return sql.replace(/\?/g, '\'?\'');
+                }
+            };
+        },
+
+        'numbered': function(values, char) {
+            if (!char || char.length > 1) char = '$';
+            var regex1 = new RegExp('^\\' + char + '[0-9]+$');
+            var regex2 = new RegExp('\\' + char + '([0-9]+)', 'g');
+            return {
+                parse: function(v) {
+                    return regex1.test(v) ? values[v.slice(1) - 1] : v;
+                },
+                esc: function(sql) {
+                    return sql.replace(regex2, '\'' + (char == '$' ? '$$' : char) + '$1\'');
+                }
+            };
+        },
+
+        'named': function(values, char) {
+            if (!char || char.length > 1) char = ':';
+            var regex1 = new RegExp('^\\' + char);
+            var regex2 = new RegExp('\\' + char + '(' + Object.keys(values).join('|') + ')', 'g');
+            return {
+                parse: function(v) {
+                    return regex1.test(v) ? values[v.slice(1)] : v;
+                },
+                esc: function(sql) {
+                    return sql.replace(regex2, '\'' + (char == '$' ? '$$' : char) + '$1\'');
+                }
+            };
+        }
+    }
+});
+
+/**
+ * @typedef {object} SqlQuery
+ * @memberof module:plugins.SqlSupport
+ * @property {string} sql
+ * @property {object} params
+ */
+
+QueryBuilder.extend(/** @lends module:plugins.SqlSupport.prototype */ {
+    /**
+     * Returns rules as a SQL query
+     * @param {boolean|string} [stmt] - use prepared statements: false, 'question_mark', 'numbered', 'numbered(@)', 'named', 'named(@)'
+     * @param {boolean} [nl=false] output with new lines
+     * @param {object} [data] - current rules by default
+     * @returns {module:plugins.SqlSupport.SqlQuery}
+     * @fires module:plugins.SqlSupport.changer:getSQLField
+     * @fires module:plugins.SqlSupport.changer:ruleToSQL
+     * @fires module:plugins.SqlSupport.changer:groupToSQL
+     * @throws UndefinedSQLConditionError, UndefinedSQLOperatorError
+     */
+    getSQL: function(stmt, nl, data) {
+        data = (data === undefined) ? this.getRules() : data;
+        nl = !!nl ? '\n' : ' ';
+        var boolean_as_integer = this.getPluginOptions('sql-support', 'boolean_as_integer');
+
+        if (stmt === true) stmt = 'question_mark';
+        if (typeof stmt == 'string') {
+            var config = getStmtConfig(stmt);
+            stmt = this.settings.sqlStatements[config[1]](config[2]);
+        }
+
+        var self = this;
+
+        var sql = (function parse(group) {
+            if (!group.condition) {
+                group.condition = self.settings.default_condition;
+            }
+            if (['AND', 'OR'].indexOf(group.condition.toUpperCase()) === -1) {
+                Utils.error('UndefinedSQLCondition', 'Unable to build SQL query with condition "{0}"', group.condition);
+            }
+
+            if (!group.rules) {
+                return '';
+            }
+
+            var parts = [];
+
+            group.rules.forEach(function(rule) {
+                if (rule.rules && rule.rules.length > 0) {
+                    parts.push('(' + nl + parse(rule) + nl + ')' + nl);
+                }
+                else {
+                    var sql = self.settings.sqlOperators[rule.operator];
+                    var ope = self.getOperatorByType(rule.operator);
+                    var value = '';
+
+                    if (sql === undefined) {
+                        Utils.error('UndefinedSQLOperator', 'Unknown SQL operation for operator "{0}"', rule.operator);
+                    }
+
+                    if (ope.nb_inputs !== 0) {
+                        if (!(rule.value instanceof Array)) {
+                            rule.value = [rule.value];
+                        }
+
+                        rule.value.forEach(function(v, i) {
+                            if (i > 0) {
+                                value += sql.sep;
+                            }
+
+                            if (rule.type == 'integer' || rule.type == 'double' || rule.type == 'boolean') {
+                                v = Utils.changeType(v, rule.type, boolean_as_integer);
+                            }
+                            else if (!stmt) {
+                                v = Utils.escapeString(v);
+                            }
+
+                            if (sql.mod) {
+                                v = Utils.fmt(sql.mod, v);
+                            }
+
+                            if (stmt) {
+                                value += stmt.add(rule, v);
+                            }
+                            else {
+                                if (typeof v == 'string') {
+                                    v = '\'' + v + '\'';
+                                }
+
+                                value += v;
+                            }
+                        });
+                    }
+
+                    var sqlFn = function(v) {
+                        return sql.op.replace(/\?/, v);
+                    };
+
+                    /**
+                     * Modifies the SQL field used by a rule
+                     * @event changer:getSQLField
+                     * @memberof module:plugins.SqlSupport
+                     * @param {string} field
+                     * @param {Rule} rule
+                     * @returns {string}
+                     */
+                    var field = self.change('getSQLField', rule.field, rule);
+
+                    var ruleExpression = field + ' ' + sqlFn(value);
+
+                    /**
+                     * Modifies the SQL generated for a rule
+                     * @event changer:ruleToSQL
+                     * @memberof module:plugins.SqlSupport
+                     * @param {string} expression
+                     * @param {Rule} rule
+                     * @param {*} value
+                     * @param {function} valueWrapper - function that takes the value and adds the operator
+                     * @returns {string}
+                     */
+                    parts.push(self.change('ruleToSQL', ruleExpression, rule, value, sqlFn));
+                }
+            });
+
+            var groupExpression = parts.join(' ' + group.condition + nl);
+
+            /**
+             * Modifies the SQL generated for a group
+             * @event changer:groupToSQL
+             * @memberof module:plugins.SqlSupport
+             * @param {string} expression
+             * @param {Group} group
+             * @returns {string}
+             */
+            return self.change('groupToSQL', groupExpression, group);
+        }(data));
+
+        if (stmt) {
+            return {
+                sql: sql,
+                params: stmt.run()
+            };
+        }
+        else {
+            return {
+                sql: sql
+            };
+        }
+    },
+
+    /**
+     * Convert a SQL query to rules
+     * @param {string|module:plugins.SqlSupport.SqlQuery} query
+     * @param {boolean|string} stmt
+     * @returns {object}
+     * @fires module:plugins.SqlSupport.changer:parseSQLNode
+     * @fires module:plugins.SqlSupport.changer:getSQLFieldID
+     * @fires module:plugins.SqlSupport.changer:sqlToRule
+     * @fires module:plugins.SqlSupport.changer:sqlToGroup
+     * @throws MissingLibraryError, SQLParseError, UndefinedSQLOperatorError
+     */
+    getRulesFromSQL: function(query, stmt) {
+        if (!('SQLParser' in window)) {
+            Utils.error('MissingLibrary', 'SQLParser is required to parse SQL queries. Get it here https://github.com/mistic100/sql-parser');
+        }
+
+        var self = this;
+
+        if (typeof query == 'string') {
+            query = { sql: query };
+        }
+
+        if (stmt === true) stmt = 'question_mark';
+        if (typeof stmt == 'string') {
+            var config = getStmtConfig(stmt);
+            stmt = this.settings.sqlRuleStatement[config[1]](query.params, config[2]);
+        }
+
+        if (stmt) {
+            query.sql = stmt.esc(query.sql);
+        }
+
+        if (query.sql.toUpperCase().indexOf('SELECT') !== 0) {
+            query.sql = 'SELECT * FROM table WHERE ' + query.sql;
+        }
+
+        var parsed = SQLParser.parse(query.sql);
+
+        if (!parsed.where) {
+            Utils.error('SQLParse', 'No WHERE clause found');
+        }
+
+        /**
+         * Custom parsing of an AST node generated by SQLParser, you can return a sub-part of the tree, or a well formed group or rule JSON
+         * @event changer:parseSQLNode
+         * @memberof module:plugins.SqlSupport
+         * @param {object} AST node
+         * @returns {object} tree, rule or group
+         */
+        var data = self.change('parseSQLNode', parsed.where.conditions);
+
+        // a plugin returned a group
+        if ('rules' in data && 'condition' in data) {
+            return data;
+        }
+
+        // a plugin returned a rule
+        if ('id' in data && 'operator' in data && 'value' in data) {
+            return {
+                condition: this.settings.default_condition,
+                rules: [data]
+            };
+        }
+
+        // create root group
+        var out = self.change('sqlToGroup', {
+            condition: this.settings.default_condition,
+            rules: []
+        }, data);
+
+        // keep track of current group
+        var curr = out;
+
+        (function flatten(data, i) {
+            // allow plugins to manually parse or handle special cases
+            data = self.change('parseSQLNode', data);
+
+            // a plugin returned a group
+            if ('rules' in data && 'condition' in data) {
+                curr.rules.push(data);
+                return;
+            }
+
+            // a plugin returned a rule
+            if ('id' in data && 'operator' in data && 'value' in data) {
+                curr.rules.push(data);
+                return;
+            }
+
+            // data must be a SQL parser node
+            if (!('left' in data) || !('right' in data) || !('operation' in data)) {
+                Utils.error('SQLParse', 'Unable to parse WHERE clause');
+            }
+
+            // it's a node
+            if (['AND', 'OR'].indexOf(data.operation.toUpperCase()) !== -1) {
+                // create a sub-group if the condition is not the same and it's not the first level
+                if (i > 0 && curr.condition != data.operation.toUpperCase()) {
+                    /**
+                     * Modifies the group generated from the SQL expression (this is called before the group is filled with rules)
+                     * @event changer:sqlToGroup
+                     * @memberof module:plugins.SqlSupport
+                     * @param {object} group
+                     * @param {object} AST
+                     * @returns {object}
+                     */
+                    var group = self.change('sqlToGroup', {
+                        condition: self.settings.default_condition,
+                        rules: []
+                    }, data);
+
+                    curr.rules.push(group);
+                    curr = group;
+                }
+
+                curr.condition = data.operation.toUpperCase();
+                i++;
+
+                // some magic !
+                var next = curr;
+                flatten(data.left, i);
+
+                curr = next;
+                flatten(data.right, i);
+            }
+            // it's a leaf
+            else {
+                if ($.isPlainObject(data.right.value)) {
+                    Utils.error('SQLParse', 'Value format not supported for {0}.', data.left.value);
+                }
+
+                // convert array
+                var value;
+                if ($.isArray(data.right.value)) {
+                    value = data.right.value.map(function(v) {
+                        return v.value;
+                    });
+                }
+                else {
+                    value = data.right.value;
+                }
+
+                // get actual values
+                if (stmt) {
+                    if ($.isArray(value)) {
+                        value = value.map(stmt.parse);
+                    }
+                    else {
+                        value = stmt.parse(value);
+                    }
+                }
+
+                // convert operator
+                var operator = data.operation.toUpperCase();
+                if (operator == '<>') {
+                    operator = '!=';
+                }
+
+                var sqlrl = self.settings.sqlRuleOperator[operator];
+                if (sqlrl === undefined) {
+                    Utils.error('UndefinedSQLOperator', 'Invalid SQL operation "{0}".', data.operation);
+                }
+
+                var opVal = sqlrl.call(this, value, data.operation);
+
+                // find field name
+                var field;
+                if ('values' in data.left) {
+                    field = data.left.values.join('.');
+                }
+                else if ('value' in data.left) {
+                    field = data.left.value;
+                }
+                else {
+                    Utils.error('SQLParse', 'Cannot find field name in {0}', JSON.stringify(data.left));
+                }
+
+                var id = self.getSQLFieldID(field, value);
+
+                /**
+                 * Modifies the rule generated from the SQL expression
+                 * @event changer:sqlToRule
+                 * @memberof module:plugins.SqlSupport
+                 * @param {object} rule
+                 * @param {object} AST
+                 * @returns {object}
+                 */
+                var rule = self.change('sqlToRule', {
+                    id: id,
+                    field: field,
+                    operator: opVal.op,
+                    value: opVal.val
+                }, data);
+
+                curr.rules.push(rule);
+            }
+        }(data, 0));
+
+        return out;
+    },
+
+    /**
+     * Sets the builder's rules from a SQL query
+     * @see module:plugins.SqlSupport.getRulesFromSQL
+     */
+    setRulesFromSQL: function(query, stmt) {
+        this.setRules(this.getRulesFromSQL(query, stmt));
+    },
+
+    /**
+     * Returns a filter identifier from the SQL field.
+     * Automatically use the only one filter with a matching field, fires a changer otherwise.
+     * @param {string} field
+     * @param {*} value
+     * @fires module:plugins.SqlSupport:changer:getSQLFieldID
+     * @returns {string}
+     * @private
+     */
+    getSQLFieldID: function(field, value) {
+        var matchingFilters = this.filters.filter(function(filter) {
+            return filter.field === field;
+        });
+
+        var id;
+        if (matchingFilters.length === 1) {
+            id = matchingFilters[0].id;
+        }
+        else {
+            /**
+             * Returns a filter identifier from the SQL field
+             * @event changer:getSQLFieldID
+             * @memberof module:plugins.SqlSupport
+             * @param {string} field
+             * @param {*} value
+             * @returns {string}
+             */
+            id = this.change('getSQLFieldID', field, value);
+        }
+
+        return id;
+    }
+});
+
+/**
+ * Parses the statement configuration
+ * @memberof module:plugins.SqlSupport
+ * @param {string} stmt
+ * @returns {Array} null, mode, option
+ * @private
+ */
+function getStmtConfig(stmt) {
+    var config = stmt.match(/(question_mark|numbered|named)(?:\((.)\))?/);
+    if (!config) config = [null, 'question_mark', undefined];
+    return config;
+}
+
+
+/**
+ * @class UniqueFilter
+ * @memberof module:plugins
+ * @description Allows to define some filters as "unique": ie which can be used for only one rule, globally or in the same group.
+ */
+QueryBuilder.define('unique-filter', function() {
+    this.status.used_filters = {};
+
+    this.on('afterUpdateRuleFilter', this.updateDisabledFilters);
+    this.on('afterDeleteRule', this.updateDisabledFilters);
+    this.on('afterCreateRuleFilters', this.applyDisabledFilters);
+    this.on('afterReset', this.clearDisabledFilters);
+    this.on('afterClear', this.clearDisabledFilters);
+
+    // Ensure that the default filter is not already used if unique
+    this.on('getDefaultFilter.filter', function(e, model) {
+        var self = e.builder;
+
+        self.updateDisabledFilters();
+
+        if (e.value.id in self.status.used_filters) {
+            var found = self.filters.some(function(filter) {
+                if (!(filter.id in self.status.used_filters) || self.status.used_filters[filter.id].length > 0 && self.status.used_filters[filter.id].indexOf(model.parent) === -1) {
+                    e.value = filter;
+                    return true;
+                }
+            });
+
+            if (!found) {
+                Utils.error(false, 'UniqueFilter', 'No more non-unique filters available');
+                e.value = undefined;
+            }
+        }
+    });
+});
+
+QueryBuilder.extend(/** @lends module:plugins.UniqueFilter.prototype */ {
+    /**
+     * Updates the list of used filters
+     * @param {$.Event} [e]
+     * @private
+     */
+    updateDisabledFilters: function(e) {
+        var self = e ? e.builder : this;
+
+        self.status.used_filters = {};
+
+        if (!self.model) {
+            return;
+        }
+
+        // get used filters
+        (function walk(group) {
+            group.each(function(rule) {
+                if (rule.filter && rule.filter.unique) {
+                    if (!self.status.used_filters[rule.filter.id]) {
+                        self.status.used_filters[rule.filter.id] = [];
+                    }
+                    if (rule.filter.unique == 'group') {
+                        self.status.used_filters[rule.filter.id].push(rule.parent);
+                    }
+                }
+            }, function(group) {
+                walk(group);
+            });
+        }(self.model.root));
+
+        self.applyDisabledFilters(e);
+    },
+
+    /**
+     * Clear the list of used filters
+     * @param {$.Event} [e]
+     * @private
+     */
+    clearDisabledFilters: function(e) {
+        var self = e ? e.builder : this;
+
+        self.status.used_filters = {};
+
+        self.applyDisabledFilters(e);
+    },
+
+    /**
+     * Disabled filters depending on the list of used ones
+     * @param {$.Event} [e]
+     * @private
+     */
+    applyDisabledFilters: function(e) {
+        var self = e ? e.builder : this;
+
+        // re-enable everything
+        self.$el.find(QueryBuilder.selectors.filter_container + ' option').prop('disabled', false);
+
+        // disable some
+        $.each(self.status.used_filters, function(filterId, groups) {
+            if (groups.length === 0) {
+                self.$el.find(QueryBuilder.selectors.filter_container + ' option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
+            }
+            else {
+                groups.forEach(function(group) {
+                    group.each(function(rule) {
+                        rule.$el.find(QueryBuilder.selectors.filter_container + ' option[value="' + filterId + '"]:not(:selected)').prop('disabled', true);
+                    });
+                });
+            }
+        });
+
+        // update Selectpicker
+        if (self.settings.plugins && self.settings.plugins['bt-selectpicker']) {
+            self.$el.find(QueryBuilder.selectors.rule_filter).selectpicker('render');
+        }
+    }
+});
+
+
+/*!
+ * jQuery QueryBuilder 2.4.4
+ * Locale: English (en)
+ * Author: Damien "Mistic" Sorel, http://www.strangeplanet.fr
+ * Licensed under MIT (http://opensource.org/licenses/MIT)
+ */
+
+QueryBuilder.regional['en'] = {
+  "__locale": "English (en)",
+  "__author": "Damien \"Mistic\" Sorel, http://www.strangeplanet.fr",
+  "add_rule": "Add rule",
+  "add_group": "Add group",
+  "delete_rule": "Delete",
+  "delete_group": "Delete",
+  "conditions": {
+    "AND": "AND",
+    "OR": "OR"
+  },
+  "operators": {
+    "equal": "equal",
+    "not_equal": "not equal",
+    "in": "in",
+    "not_in": "not in",
+    "less": "less",
+    "less_or_equal": "less or equal",
+    "greater": "greater",
+    "greater_or_equal": "greater or equal",
+    "between": "between",
+    "not_between": "not between",
+    "begins_with": "begins with",
+    "not_begins_with": "doesn't begin with",
+    "contains": "contains",
+    "not_contains": "doesn't contain",
+    "ends_with": "ends with",
+    "not_ends_with": "doesn't end with",
+    "is_empty": "is empty",
+    "is_not_empty": "is not empty",
+    "is_null": "is null",
+    "is_not_null": "is not null"
+  },
+  "errors": {
+    "no_filter": "No filter selected",
+    "empty_group": "The group is empty",
+    "radio_empty": "No value selected",
+    "checkbox_empty": "No value selected",
+    "select_empty": "No value selected",
+    "string_empty": "Empty value",
+    "string_exceed_min_length": "Must contain at least {0} characters",
+    "string_exceed_max_length": "Must not contain more than {0} characters",
+    "string_invalid_format": "Invalid format ({0})",
+    "number_nan": "Not a number",
+    "number_not_integer": "Not an integer",
+    "number_not_double": "Not a real number",
+    "number_exceed_min": "Must be greater than {0}",
+    "number_exceed_max": "Must be lower than {0}",
+    "number_wrong_step": "Must be a multiple of {0}",
+    "datetime_empty": "Empty value",
+    "datetime_invalid": "Invalid date format ({0})",
+    "datetime_exceed_min": "Must be after {0}",
+    "datetime_exceed_max": "Must be before {0}",
+    "boolean_not_valid": "Not a boolean",
+    "operator_not_multiple": "Operator \"{1}\" cannot accept multiple values"
+  },
+  "invert": "Invert",
+  "NOT": "NOT"
+};
+
+QueryBuilder.defaults({ lang_code: 'en' });
+return QueryBuilder;
+
+}));
+
+},{"dot/doT":1,"jquery":8,"jquery-extendext":3}],3:[function(require,module,exports){
+/*!
+ * jQuery.extendext 0.1.2
+ *
+ * Copyright 2014-2016 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
+ * Licensed under MIT (http://opensource.org/licenses/MIT)
+ * 
+ * Based on jQuery.extend by jQuery Foundation, Inc. and other contributors
+ */
+
+/*jshint -W083 */
+
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery'], factory);
+    }
+    else if (typeof module === 'object' && module.exports) {
+        module.exports = factory(require('jquery'));
+    }
+    else {
+        factory(root.jQuery);
+    }
+}(this, function ($) {
+    "use strict";
+
+    $.extendext = function () {
+        var options, name, src, copy, copyIsArray, clone,
+            target = arguments[0] || {},
+            i = 1,
+            length = arguments.length,
+            deep = false,
+            arrayMode = 'default';
+
+        // Handle a deep copy situation
+        if (typeof target === "boolean") {
+            deep = target;
+
+            // Skip the boolean and the target
+            target = arguments[i++] || {};
+        }
+
+        // Handle array mode parameter
+        if (typeof target === "string") {
+            arrayMode = target.toLowerCase();
+            if (arrayMode !== 'concat' && arrayMode !== 'replace' && arrayMode !== 'extend') {
+                arrayMode = 'default';
+            }
+
+            // Skip the string param
+            target = arguments[i++] || {};
+        }
+
+        // Handle case when target is a string or something (possible in deep copy)
+        if (typeof target !== "object" && !$.isFunction(target)) {
+            target = {};
+        }
+
+        // Extend jQuery itself if only one argument is passed
+        if (i === length) {
+            target = this;
+            i--;
+        }
+
+        for (; i < length; i++) {
+            // Only deal with non-null/undefined values
+            if ((options = arguments[i]) !== null) {
+                // Special operations for arrays
+                if ($.isArray(options) && arrayMode !== 'default') {
+                    clone = target && $.isArray(target) ? target : [];
+
+                    switch (arrayMode) {
+                    case 'concat':
+                        target = clone.concat($.extend(deep, [], options));
+                        break;
+
+                    case 'replace':
+                        target = $.extend(deep, [], options);
+                        break;
+
+                    case 'extend':
+                        options.forEach(function (e, i) {
+                            if (typeof e === 'object') {
+                                var type = $.isArray(e) ? [] : {};
+                                clone[i] = $.extendext(deep, arrayMode, clone[i] || type, e);
+
+                            } else if (clone.indexOf(e) === -1) {
+                                clone.push(e);
+                            }
+                        });
+
+                        target = clone;
+                        break;
+                    }
+
+                } else {
+                    // Extend the base object
+                    for (name in options) {
+                        src = target[name];
+                        copy = options[name];
+
+                        // Prevent never-ending loop
+                        if (target === copy) {
+                            continue;
+                        }
+
+                        // Recurse if we're merging plain objects or arrays
+                        if (deep && copy && ( $.isPlainObject(copy) ||
+                            (copyIsArray = $.isArray(copy)) )) {
+
+                            if (copyIsArray) {
+                                copyIsArray = false;
+                                clone = src && $.isArray(src) ? src : [];
+
+                            } else {
+                                clone = src && $.isPlainObject(src) ? src : {};
+                            }
+
+                            // Never move original objects, clone them
+                            target[name] = $.extendext(deep, arrayMode, clone, copy);
+
+                            // Don't bring in undefined values
+                        } else if (copy !== undefined) {
+                            target[name] = copy;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Return the modified object
+        return target;
+    };
+}));
+},{"jquery":8}],4:[function(require,module,exports){
 /*!
  * jQuery UI Widget 1.12.1
  * http://jqueryui.com
@@ -733,7 +6921,7 @@ return $.widget;
 
 } ) );
 
-},{}],2:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 // jscs:disable maximumLineLength
 /* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
 /*!
@@ -2855,7 +9043,7 @@ return $.datepicker;
 
 } ) );
 
-},{}],3:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /*!
  * jQuery UI Mouse 1.12.1
  * http://jqueryui.com
@@ -3083,7 +9271,7 @@ return $.widget( "ui.mouse", {
 
 } ) );
 
-},{}],4:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /*!
  * jQuery UI Sortable 1.12.1
  * http://jqueryui.com
@@ -4639,7 +10827,7 @@ return $.widget( "ui.sortable", $.ui.mouse, {
 
 } ) );
 
-},{}],5:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -14894,7 +21082,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /*!
  * Select2 4.0.3
  * https://select2.github.io
@@ -20621,7 +26809,7 @@ S2.define('jquery.select2',[
   return select2;
 }));
 
-},{"jquery":5}],7:[function(require,module,exports){
+},{"jquery":8}],10:[function(require,module,exports){
 var beeps = {};
 
 beeps.success = new Audio("data:audio/wav;base64,//uQRAAAAWMSLwUIYAAsYkXgoQwAEaYLWfkWgAI0wWs/ItAAAGDgYtAgAyN+QWaAAihwMWm4G8QQRDiMcCBcH3Cc+CDv/7xA4Tvh9Rz/y8QADBwMWgQAZG/ILNAARQ4GLTcDeIIIhxGOBAuD7hOfBB3/94gcJ3w+o5/5eIAIAAAVwWgQAVQ2ORaIQwEMAJiDg95G4nQL7mQVWI6GwRcfsZAcsKkJvxgxEjzFUgfHoSQ9Qq7KNwqHwuB13MA4a1q/DmBrHgPcmjiGoh//EwC5nGPEmS4RcfkVKOhJf+WOgoxJclFz3kgn//dBA+ya1GhurNn8zb//9NNutNuhz31f////9vt///z+IdAEAAAK4LQIAKobHItEIYCGAExBwe8jcToF9zIKrEdDYIuP2MgOWFSE34wYiR5iqQPj0JIeoVdlG4VD4XA67mAcNa1fhzA1jwHuTRxDUQ//iYBczjHiTJcIuPyKlHQkv/LHQUYkuSi57yQT//uggfZNajQ3Vmz+Zt//+mm3Wm3Q576v////+32///5/EOgAAADVghQAAAAA//uQZAUAB1WI0PZugAAAAAoQwAAAEk3nRd2qAAAAACiDgAAAAAAABCqEEQRLCgwpBGMlJkIz8jKhGvj4k6jzRnqasNKIeoh5gI7BJaC1A1AoNBjJgbyApVS4IDlZgDU5WUAxEKDNmmALHzZp0Fkz1FMTmGFl1FMEyodIavcCAUHDWrKAIA4aa2oCgILEBupZgHvAhEBcZ6joQBxS76AgccrFlczBvKLC0QI2cBoCFvfTDAo7eoOQInqDPBtvrDEZBNYN5xwNwxQRfw8ZQ5wQVLvO8OYU+mHvFLlDh05Mdg7BT6YrRPpCBznMB2r//xKJjyyOh+cImr2/4doscwD6neZjuZR4AgAABYAAAABy1xcdQtxYBYYZdifkUDgzzXaXn98Z0oi9ILU5mBjFANmRwlVJ3/6jYDAmxaiDG3/6xjQQCCKkRb/6kg/wW+kSJ5//rLobkLSiKmqP/0ikJuDaSaSf/6JiLYLEYnW/+kXg1WRVJL/9EmQ1YZIsv/6Qzwy5qk7/+tEU0nkls3/zIUMPKNX/6yZLf+kFgAfgGyLFAUwY//uQZAUABcd5UiNPVXAAAApAAAAAE0VZQKw9ISAAACgAAAAAVQIygIElVrFkBS+Jhi+EAuu+lKAkYUEIsmEAEoMeDmCETMvfSHTGkF5RWH7kz/ESHWPAq/kcCRhqBtMdokPdM7vil7RG98A2sc7zO6ZvTdM7pmOUAZTnJW+NXxqmd41dqJ6mLTXxrPpnV8avaIf5SvL7pndPvPpndJR9Kuu8fePvuiuhorgWjp7Mf/PRjxcFCPDkW31srioCExivv9lcwKEaHsf/7ow2Fl1T/9RkXgEhYElAoCLFtMArxwivDJJ+bR1HTKJdlEoTELCIqgEwVGSQ+hIm0NbK8WXcTEI0UPoa2NbG4y2K00JEWbZavJXkYaqo9CRHS55FcZTjKEk3NKoCYUnSQ0rWxrZbFKbKIhOKPZe1cJKzZSaQrIyULHDZmV5K4xySsDRKWOruanGtjLJXFEmwaIbDLX0hIPBUQPVFVkQkDoUNfSoDgQGKPekoxeGzA4DUvnn4bxzcZrtJyipKfPNy5w+9lnXwgqsiyHNeSVpemw4bWb9psYeq//uQZBoABQt4yMVxYAIAAAkQoAAAHvYpL5m6AAgAACXDAAAAD59jblTirQe9upFsmZbpMudy7Lz1X1DYsxOOSWpfPqNX2WqktK0DMvuGwlbNj44TleLPQ+Gsfb+GOWOKJoIrWb3cIMeeON6lz2umTqMXV8Mj30yWPpjoSa9ujK8SyeJP5y5mOW1D6hvLepeveEAEDo0mgCRClOEgANv3B9a6fikgUSu/DmAMATrGx7nng5p5iimPNZsfQLYB2sDLIkzRKZOHGAaUyDcpFBSLG9MCQALgAIgQs2YunOszLSAyQYPVC2YdGGeHD2dTdJk1pAHGAWDjnkcLKFymS3RQZTInzySoBwMG0QueC3gMsCEYxUqlrcxK6k1LQQcsmyYeQPdC2YfuGPASCBkcVMQQqpVJshui1tkXQJQV0OXGAZMXSOEEBRirXbVRQW7ugq7IM7rPWSZyDlM3IuNEkxzCOJ0ny2ThNkyRai1b6ev//3dzNGzNb//4uAvHT5sURcZCFcuKLhOFs8mLAAEAt4UWAAIABAAAAAB4qbHo0tIjVkUU//uQZAwABfSFz3ZqQAAAAAngwAAAE1HjMp2qAAAAACZDgAAAD5UkTE1UgZEUExqYynN1qZvqIOREEFmBcJQkwdxiFtw0qEOkGYfRDifBui9MQg4QAHAqWtAWHoCxu1Yf4VfWLPIM2mHDFsbQEVGwyqQoQcwnfHeIkNt9YnkiaS1oizycqJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=");
@@ -20629,27 +26817,7 @@ beeps.success2 = new Audio("data:audio/wav;base64,UklGRpZmAABXQVZFZm10IBAAAAABAA
 beeps.error = new Audio("data:audio/wav;base64,UklGRpD2AABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YWz2AAABpv+lAKYBpv6lA6b9pQKm/6UApgCmAKYBpv6lA6b8pQOm/6X/pQOm/KUEpvylBKb9pQKm/6X/pQOm/aUCpv+lAKYApgGm/6UBpv+lAab/pQGmAKb/pQKm/qUBpgCm/6UBpgCm/6UCpv2lAqYApv+lAqb9pQOm/aUDpv6lAKYCpvylBKb+pQCmAab/pf+lA6b9pQKm/6UApgCmAKYApgCmAKYApv+lAqb+pQGmAKb/pQKm/qUBpgCmAKYApgCmAKb/pQOm/KUDpv+l/6UCpv+l/6UCpv6lAaYApv+lAqb+pQKm/lkAWgNa/FkEWvxZBFr8WQRa/VkBWgFa/VkEWv1ZAVoBWv1ZBFr8WQNa/lkBWv9ZAVr/WQJa/lkBWgBa/1kDWvxZBFr9WQJa/1kAWgBaAVr/WQBaAFoBWv5ZA1r9WQFaAVr+WQFaAFoAWgBaAFoAWgBaAKYApv+lA6b8pQSm/aUBpgGm/aUFpvqlBqb6pQam/KUBpgGm/aUEpv2lAaYBpv6lAqb+pQKm/6UBpv+lAKYBpv+lAab+pQKm/6UBpv+lAKYApgCmAab/pQCmAab+pQOm/aUCpv+lAab/pQGm/6UApgGm/6UBpgCm/qUCpv6lAqb/pQCmAKYApv+lAqb9pQOm/qUBpgCm/6UBpgCm/6UCpv2lA6b+pQGmAKb/pQGmAKb/pQGm/6UBpv+lAqb9pQOm/qUBpv+lAqb9pQSm/KUDpv6lAqb+pQKm/qUBpgCmAKYApgCm/6UBpgCm/6UCpv6lAaYApv+lAqb+pQKm/qUCpv2lA6b+pQGmAKb/pQGm/6UBpv+lAaYApv+lAab/pQGmAKb/pQKm/aUDpv6lAqb+pQKm/qUCpv+lAKYApgGm/qUDpv2lAqb/pQCmAab/pQGm/6UBpv+lAKYBpv+lAab/pQGm/qUDpv2lA6b+pQCmAab/pQGmAKb/pQGm/6UBpgCm/6UCpv2lA6b/pf+lAqb9pQOm/qUBpgCm/6UCpv6lAaYApgCmAKYBpv6lA6b9pQKm/6UApgGm/6UApgCmAKYApgFa/lkBWgBaAFoAWgFa/VkEWv1ZAVoBWv5ZAVoBWv5ZAVoAWv9ZAlr+WQFa/1kBWgBaAFr/WQFa/1kCWv5ZAVoAWv9ZAlr+WQFaAFr/WQJa/lkBWv9ZAVoAWv9ZAVr/WQFaAFr/WQFa/1kBWgBa/1kBWv+lAab/pQGm/6UBpv+lAab+pQOm/qUBpgCm/6UBpgCmAKYApgCm/6UCpv6lAqb+pQKm/qUBpgCmAKYApgGm/qUBpgGm/6UBpv+lAKYBpv+lAKYBpv+lAKYBpv6lAqb/pf+lA6b9pQGmAab9pQSm/aUCpv6lAqb+pQKm/6UApgCmAab+pQKm/qUCpv+lAKYApv+lAqb/pf+lAqb+pQKm/qUBpgCmAKYBpv2lBKb8pQOm/6X/pQKm/qUCpv6lAqb+pQKm/6UApgGm/qUCpv6lAqb/pQCmAKb/pQKm/aUFpvqlBab8pQOm/qUDpvylBKb8pQSm/aUCpv+lAKYApgCmAKYApgCmAKYApgCmAKYApgGm/qUCpv6lAaYBpv6lAqb+pQGmAKYApgCmAKYApgGm/qUCpv6lAqb/pQGm/qUCpv6lAqb/pQCmAab+pQKm/qUDpv2lAqb/pQCmAKYApgCmAab/pf+lAqb+pQOm/aUCpv6lAqb/pQGm/6X/pQKm/6UBpv+lAKYApgCmAab+pQOm/aUCpv+lAKYBpv+lAKYApgGm/6UBpv6lAaYBpv+lAab+pQKm/6UApgCmAKb/pQKm/aUDWv1ZA1r9WQJa/1kAWgJa/VkDWv1ZAloBWv1ZBFr8WQNa/1kAWgBaAFoAWgBaAFr/WQJa/lkBWv9ZAVoAWgBaAFr/WQJa/VkEWv1ZAVoAWv9ZAVoBWv5ZAVoAWv5ZBFr8WQJaAFr+WQNa/lkAWgFa/1kBpv+lAab/pQKm/aUDpv6lAaYApv+lAqb+pQKm/aUDpv6lAab/pQGm/6UBpv+lAKYBpv+lAqb+pQCmAaYApv+lAqb9pQOm/qUCpv2lA6b+pQGmAKb/pQGmAKb/pQGm/6UBpgCm/6UBpv+lAab/pQKm/aUCpgCm/qUDpv2lA6b+pQGm/qUDpv2lA6b+pQCmAqb9pQOm/aUEpvylA6b+pQCmAqb+pQGmAKb/pQGmAKb/pQKm/qUBpgCm/6UBpgCm/6UBpv+lAKYCpv2lA6b9pQKm/6UBpgCm/6UBpv+lAaYApv+lAKYBpgCm/6UApgCmAKYBpv6lAaYApv+lAqb+pQKm/aUEpvylBKb8pQOm/qUCpv+lAKb/pQGmAKYBpv6lAqb+pQKm/6UApgGm/qUDpv2lAaYBpv+lAKYBpv2lBKb+pQCmAqb8pQSm/qUBpv+lAab+pQOm/aUCpv+lAKYBpv6lAqb+pQKm/6UApgCm/6UCpv6lAaYApv+lAqb+pQGmAKYApgCm/6UCpv6lA6b8pQSm/KUEpv2lAaYBpv6lA6b8pQSm/KUFpvulBKb9pQKmAKb/pQCmAab/pQGm/6UApgGm/6UBWv5ZAloAWv5ZAlr/WQBaAVr+WQFaAVr+WQNa/FkEWvxZA1r+WQJa/lkCWv1ZA1r+WQJa/VkDWv5ZAVoAWgBaAFoAWv9ZAlr+WQJa/1n/WQNa/FkDWv9ZAFoAWgFa/VkEWvxZA1r/WQBa/1kCWv5ZAlr/pQCmAKYApgCmAKYApgCmAab9pQOm/aUDpv+l/6UBpv+lAqb9pQOm/aUDpv+lAKb/pQGm/6UCpv+lAKb/pQGmAKYApgGm/aUDpv6lAqb+pQKm/qUBpgCm/6UBpgCm/6UCpv2lAqYApv+lAqb+pQGmAKYApgCmAKYApv+lAqb+pQKm/qUBpgCmAKYApgCm/6UCpv+lAKYBpv2lBKb+pQCmAab/pQCmAaYApv6lA6b9pQGmAqb9pQOm/aUCpv+lAaYApv+lAab/pQGm/6UCpvylBab8pQKm/6UBpv+lAab/pQCmAab/pQGm/6UBpv6lA6b8pQSm/aUCpv+l/6UBpgCmAKYApgCm/6UCpv6lAaYBpv6lAaYBpv6lAqb/pQCmAKYBpv6lA6b9pQKm/qUDpv2lAqb+pQKm/6UBpv6lAqb+pQOm/aUDpv2lAqb/pQGm/6UBpv+lAab/pQCmAab+pQOm/aUBpgGm/qUCpv+lAKYApgGm/qUCpv6lAqb/pQCmAKYApgCmAKYApgCmAKYApgCmAKYApgGm/aUEpvylBKb+pf+lA6b8pQSm/aUCpgCm/6UBpv6lAqb/pQGm/6UApgCmAFoAWgFa/lkCWv9Z/1kDWvxZBFr9WQJa/1kBWv9ZAFoCWv1ZA1r+WQFaAFoAWv9ZAlr+WQFaAFoAWgBaAFr/WQFaAFoAWv9ZAVr/WQFaAFr/WQFa/1kAWgJa/VkDWv1ZA1r9WQNa/VkDWv5ZAFoCWv1ZA6b+pQCmAqb+pQGmAKb/pQGmAKYApgCmAKYApv+lAqb+pQKm/6X/pQGmAKb/pQGmAKb/pQKm/qUApgKm/qUDpv2lAqb+pQKm/qUDpvylBKb8pQSm/KUDpv6lAqb/pQCm/6UCpv6lA6b8pQSm/KUEpvylBKb9pQGmAKYApgCmAKb/pQKm/aUEpvulBab8pQKm/6UApgKm/aUCpv+lAKYBpv+lAKYApgGm/qUCpv6lAqb+pQKm/aUDpv+lAKYApv+lAaYApgGm/qUCpv6lAqb/pQCmAKYApgCmAKYBpv+lAKYApgCmAab/pQCmAKYBpv6lA6b8pQSm/KUDpv+lAKYBpv6lAqb/pf+lA6b9pQKm/6X/pQOm/KUFpvqlBab9pQKm/6UBpv6lAqb/pQCmAab+pQKm/qUBpgCm/6UCpv2lA6b9pQOm/qUBpgCm/6UBpgCm/6UCpv2lA6b9pQOm/qUApgGm/6UApgGm/qUDpv6lAKYBpv6lA6b9pQOm/qUApgKm/aUEpv2lAaYApv+lA6b8pQSm/KUDpv+l/6UCpv6lAaYApgCm/6UCpv6lAqb/pQCm/6UCpv6lA6b9pQGmAKYApv9ZAlr9WQRa/FkDWv1ZA1r9WQRa/FkDWv5ZAFoDWvxZA1r+WQBaAlr+WQFaAFr+WQNa/VkDWv5ZAVr/WQFa/1kBWgBa/1kBWv9ZAVr/WQJa/FkEWv1ZAlr/WQFa/lkCWv9ZAFoBWv5ZA1r9WQNa/VkBWgGm/6UBpv+lAKYBpv+lAKYBpv+lAab/pQCmAaYApv+lAKYBpv6lBKb8pQKm/6UBpv6lA6b+pQCmAab/pQGm/6UCpv2lA6b+pQCmAqb9pQOm/aUCpv+lAKYApgCmAKYBpv+lAKYApgGm/6UApgGm/qUDpv6l/6UCpv+lAKYApgCmAKYApgCm/6UBpgCmAKb/pQGm/6UCpv6lAab/pQKm/qUDpvylA6b/pQCmAKYApgCmAab+pQKm/qUBpgCmAKYApgCmAKb/pQKm/qUBpgGm/qUCpv+l/6UDpvylBab7pQSm/aUCpv6lAqb+pQOm/KUDpv6lAaYApgCm/6UCpv2lA6b9pQOm/qUBpv+lAKYBpgCm/6UBpv+lAKYBpgCm/6UCpvylBab7pQWm/KUCpgCm/qUDpv2lAqb/pQCmAab+pQKm/qUDpvylBKb8pQSm/aUBpgCmAKYApgCmAKYApgCmAKb/pQOm/KUDpv6lAaYApgCm/6UBpv+lAaYApv+lAqb+pQGmAKb/pQKm/6UApgCm/6UCpv6lAaYApgCm/6UCpv2lBKb9pQGmAKYBpv6lA6b8pQSm/aUBpgGm/qUCpv6lAaYAWgFa/lkDWvtZBVr+WQBaAVr+WQJa/1kBWv5ZAlr/WQBaAVr/Wf9ZA1r8WQRa/ln/WQNa/VkCWv9ZAFoBWgBa/lkCWv9ZAFoCWv1ZAlr/WQFa/1kBWv9ZAVoAWgBa/1kBWv9ZAlr+WQJa/VkDWv5ZAlr+pQGm/6UCpv2lBKb8pQOm/qUBpgCmAKYApv+lAqb+pQKm/qUBpgCmAKYApgCmAKb/pQOm+6UGpvqlBKb/pQCmAKYApv+lAqb/pf+lA6b8pQSm/aUCpv6lA6b9pQKmAKb9pQSm/aUCpv6lAab/pQGmAKb/pQGmAKb/pQGmAKb/pQOm+6UFpvylA6b+pQCmAaYApgCm/6UBpv+lA6b8pQOm/qUBpgGm/aUDpv6lAab/pQCmAKYBpv+lAKYBpv6lAqb/pQCmAqb9pQKm/6UApgGm/6UApgGm/qUDpv2lAqb/pQCmAKYBpv6lA6b8pQOm/qUBpgCm/6UBpgCm/6UBpv+lAab/pQKm/aUEpvylA6b+pQGmAKYBpv6lAqb9pQOm/qUCpv6lAaYApv+lAaYApv+lAqb+pQGmAKYApgCm/6UCpv2lBab6pQWm/KUDpv6lAqb+pQGm/6UBpgCmAKYApv+lAqb+pQGmAKYApgGm/qUCpv6lA6b9pQKm/6UApgGm/6UApgGm/qUCpgCm/qUDpvylBKb9pQOm/aUCpv+lAKYBpv6lA6b9pQKm/qUCpv6lA6b9pQKm/qUCpv6lAqb/pQCmAFr/WQJa/1kAWv9ZAVoAWgBaAFr/WQFaAFr/WQJa/VkEWvtZBlr5WQda+lkFWv1ZAVr/WQFaAFoAWgBaAFr/WQFaAFr/WQJa/lkAWgJa/VkDWv5ZAFoBWgBa/1kBWv9ZAFoBWv9ZAFoBWv9ZAFoBWv5ZA6b9pQOm/aUCpgCm/qUDpv2lAqYApv6lA6b+pQCmAab+pQOm/qUApgGm/6UApgGm/6UBpgCm/qUDpv6lAqb+pQGm/6UBpgCmAKb/pQKm/KUFpvylA6b+pQCmAab/pQKm/aUDpv6lAaYApv+lAqb+pQKm/qUBpgCmAKYApgCmAKYApgGm/qUCpv+lAKYBpv+lAKYBpv+lAKYCpvylBab6pQam/KUCpv+lAKYApgCmAab+pQOm/KUEpvylBKb9pQKm/6UApgCmAab/pQGm/6UBpv+lAab/pQGmAKb/pQGm/6UBpgCm/6UBpgCm/6UCpv2lAqYApv+lAab/pQCmAab/pQCmAKYBpv+lAKYApgCmAab/pQGm/6UApgGm/6UBpv+lAKYBpv+lAab+pQOm/aUCpv+lAKYBpv+lAab+pQOm/qUBpv+lAab/pQKm/qUCpv6lAqb/pQCmAKYApgCmAKYApgCmAKYApv+lAaYApgCmAab9pQSm/KUEpv2lAaYApv+lAqb9pQSm+6UFpvulBKb+pQGm/6UBpv+lAaYApv6lA6b9pQOm/qUApgGm/6UBpv+lAKYBpv+lAab/pQCmAKYBpv9ZAVr/WQFa/1kBWv9ZAVoAWv9ZAVoAWgBa/1kBWv9ZAlr/Wf9ZAlr+WQFaAVr9WQVa+lkGWvtZA1r/WQBaAFoBWv5ZAlr+WQFaAFoAWv9ZAVr/WQJa/VkDWv1ZA1r+WQFa/1kBWv9ZAVr/WQBaAVr/WQCmAab+pQKm/6UApgGm/6UApgGm/qUDpv6lAKYBpv+lAaYApv+lAqb9pQOm/qUApgGm/6UBpgCm/qUBpgCmAab/pQGm/qUCpv+lAab/pQGm/6UBpgCm/6UBpgCm/6UCpv6lAKYCpv2lA6b+pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQGmAKb/pQGmAKb/pQGmAKb/pQGmAKb/pQKm/aUDpv6lAaYApv+lAqb+pQKm/qUBpgCmAKYBpv6lAqb+pQKm/6UApgGm/qUBpgGm/qUDpvylA6b/pQCmAKb/pQKm/qUCpv6lAab/pQKm/qUBpgGm/aUEpv2lAaYApgGm/qUCpv6lAaYBpv6lAaYApv+lAqb+pQGmAKYApgCm/6UBpv+lAqb+pQCmAqb9pQOm/aUCpgCmAKYApv+lAab/pQKm/qUBpgCm/6UBpgCm/qUDpv2lA6b+pQGm/6UApgGm/6UBpgCm/6UBpv+lAKYCpv2lAqYApv6lBKb7pQSm/aUCpgCm/qUDpvylBKb9pQKm/6UBpv+lAKYApgGm/6UBpv6lAqb/pQCmAKYApgCmAKYApgCmAab/pQBaAVr+WQNa/VkDWv5ZAFoBWv5ZAlr/WQBaAVr/Wf9ZAlr+WQJa/1kAWgBaAFoAWgBaAVr9WQRa/FkEWv1ZAlr+WQJa/lkCWv9ZAFoBWv5ZAlr/WQBaAVr+WQJa/1kAWgFa/lkCWv9ZAFoBWv9ZAVr/WQGm/6UCpv2lBKb7pQWm/KUDpv6lAqb9pQOm/qUCpv+lAKb/pQKm/qUDpvylBKb9pQGmAab9pQSm/aUCpv6lAqb+pQKm/6X/pQKm/qUCpv6lAaYApgCmAKYApv+lAaYApgCmAKYApv+lAab/pQGmAKb/pQGm/qUDpv2lA6b9pQKm/6UBpv+lAab+pQOm/aUCpgCm/6UBpv+lAKYCpv6lAab/pQCmAab/pQGm/qUCpv+lAKYApgCmAKYBpv6lAqb+pQKm/6UApgGm/6UApgGm/6UBpv+lAab/pQGm/6UApgGm/6UApgCmAKYApgGm/qUCpv+l/6UDpvylBab7pQSm/aUDpv2lA6b9pQOm/aUDpv6lAab/pQGm/6UCpv6lAKYCpv2lBKb8pQKmAKYApgCm/6UCpv6lAqb+pQKm/qUCpv+lAKYBpv6lAqb+pQKm/6UApgGm/qUCpv6lA6b8pQWm+6UEpv2lAqb/pQCmAqb8pQSm/aUCpgCm/6UBpv+lAab/pQGmAKb/pQGm/6UApgGmAKb+pQSm+6UEpv6lAKYCpv2lA6b9pQOm/qUBpgCm/6UCpv6lAab/pQKm/qUCpv6lAKYCWv5ZAlr/Wf9ZAVoAWv9ZA1r7WQVa+1kEWv5ZAVr/WQFa/1kBWgBa/1kBWgBa/1kCWv1ZA1r+WQFaAFr+WQNa/lkBWv9ZAVr/WQFa/1kBWv9ZAVr+WQNa/VkDWvxZBFr9WQJa/1n/WQJa/1kAWgBaAFoApgCmAab9pQWm+qUGpvqlBqb6pQWm/aUBpgGm/qUBpgCmAKYApgGm/qUCpv6lAqb+pQKm/6X/pQKm/qUBpgCmAKb/pQGm/6UBpgCm/6UApgCmAab/pQGm/qUCpv+lAKYBpv+lAKYBpv6lAqb/pQCmAKYApgCmAKYApgCm/6UDpvylBab6pQWm/KUEpv2lAqb+pQGmAab+pQKm/qUCpv+lAKYApgCmAKYApgCm/6UCpv6lAaYApv+lAaYApv+lAab/pQGm/6UCpv2lA6b+pQCmAaYApv+lAqb9pQOm/qUBpgCm/6UCpv6lAaYApv+lAqb+pQGm/6UBpv+lAqb9pQOm/aUCpgCm/qUDpvylBKb9pQGmAKb/pQKm/qUBpgCm/6UBpgCmAKYApgCm/6UBpgCmAKYApgCm/6UBpv+lAqb+pQGmAKb/pQKm/aUDpv6lAaYApv6lBKb8pQOm/aUCpgCm/6UBpv6lAqb/pQCmAKYApgCmAKYApv+lAqb+pQKm/qUCpv6lAaYApgCmAKYApv+lAqb+pQKm/aUDpv+lAKYApgCm/6UDpv2lAaYApgCmAab+pQGmAKYApgCmAKb/pQKm/1kAWgBa/1kCWv5ZAlr/Wf9ZAVoAWv9ZAlr+WQBaAVr/WQFa/1kAWgBaAFoAWgFa/VkEWvxZBFr9WQJa/lkCWv9ZAVr+WQJa/lkDWv1ZAlr/WQBaAVr/WQFa/1kBWv9ZAVr/WQBaAFoBWv5ZA1r8WQNa/6X/pQOm/KUDpv6lAqb+pQKm/qUBpgCmAKYApgCmAKYApgCmAKYApgCmAKYApgGm/qUBpgCm/6UDpvylA6b+pQGmAKb/pQGmAKb/pQKm/aUDpv2lA6b+pQGm/6UCpvylBqb6pQSm/qUBpv+lAqb9pQKmAKYApv+lAqb9pQOm/qUBpgCm/6UCpv2lA6b+pQGmAKb/pQKm/qUDpvylA6b/pQCmAab+pQGmAab+pQKm/qUBpgCmAKYApv+lAab/pQGmAKb/pQGm/qUDpv2lA6b9pQKm/6UApgGm/6UApgGm/qUDpv2lAqYApv+lAab+pQOm/aUDpv2lAqYApv+lAKYBpv+lAqb+pQCmAaYApgCmAKb/pQCmAqb+pQGmAKb+pQOm/aUDpv2lA6b9pQKm/6UBpgCm/6UBpv6lBKb7pQWm+6UFpvylAqYApv6lBKb8pQKmAKb/pQKm/aUDpv2lA6b+pQGm/6UApgGm/6UBpv+lAab/pQGm/qUDpv6lAab/pQGmAKb/pQGmAKb/pQKm/qUApgGm/6UBpgCmAKb+pQKm/6UBpgCm/6UApgCmAab+pQKm/6UApgGm/qUCpv6lA6b9pQJa/1kAWgFa/lkCWv5ZAlr/WQFa/VkFWvpZB1r5WQZa+1kEWv5ZAFoBWv9ZAFoBWv9ZAVr/WQBaAVr/WQFa/1kBWv9ZAVr/WQFaAFr/WQJa/lkBWgBaAFr/WQJa/lkCWv9Z/1kCWv5ZAlr+WQFaAFoAWgCm/qUDpv2lAqYApv6lAqb/pQCmAab/pQCmAKYBpgCm/6UBpv+lAab/pQKm/aUDpv6lAaYApv+lAab/pQGmAKb/pQKm/aUDpv6lAaYApv+lAqb+pQGm/6UBpv+lAaYApv6lA6b9pQKm/6UApgGm/6UApgGm/aUFpvqlBqb7pQOm/6X/pQOm/KUEpvylBab7pQSm/aUCpv+lAab+pQKm/6UApgGm/qUBpgGm/qUCpv+l/6UCpv+lAKYBpv6lAqb/pQCmAKYApv+lAqb+pQGmAKb/pQKm/aUDpv2lA6b+pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQCmAqb9pQKmAKb+pQSm/KUDpv6lAaYApv+lAqb+pQGmAKb/pQGmAKb/pQKm/qUBpv+lAaYApgCmAKb/pQGmAKb/pQKm/qUBpv+lAqb9pQOm/aUCpgCm/6UBpv+lAab/pQGm/6UBpgCm/6UBpgCm/6UBpv+lAaYApv+lAab/pQGmAKb/pQGm/6UCpv2lA6b9pQOm/qUApgGm/6UBpv+lAKYApgGm/6UBpv6lAaYApgGm/qUCpv2lA6b+pQGmAKb/pQKm/aUEpvylA6b+WQFaAFr/WQJa/VkEWvtZBFr+WQFaAVr+WQBaAVr/WQJa/lkBWv9ZAFoBWv9ZAlr9WQJa/1kBWv9ZAVr+WQNa/VkCWv9Z/1kEWvtZBFr9WQFaAlr9WQJa/1kBWv9ZAVr+WQNa/lkBWv9ZAVr/WQFa/1kBpv+lAab/pQGm/6UBpv+lAab/pQGmAKYApv+lAKYBpgCm/6UCpv2lA6b9pQKm/6UBpv+lAab+pQOm/aUCpv+lAKYBpv+lAab/pQGm/6UBpv+lAaYApgCm/6UBpv+lAab/pQGmAKb/pQGm/6UApgKm/aUDpv6lAKYBpv6lA6b9pQOm/aUBpgKm/KUFpvulBKb+pQGm/6UApgGm/6UBpv+lAKYApgCmAKYBpv6lAqb+pQGmAab+pQKm/qUCpv+lAKYApgCmAKYBpv6lAqb+pQGmAKYApgCmAKb/pQGmAKYApgCmAKYApgCm/6UCpv6lAqb+pQGmAKYApv+lAqb+pQKm/qUCpv6lAqb9pQSm+6UGpvqlBKb9pQOm/aUDpv6lAab/pQGm/6UCpv2lA6b9pQKmAab9pQKm/6UApgGm/6UBpv+lAab/pQCmAab/pQKm/aUDpv2lAqYApv+lAab/pQCmAab/pQGm/6UApgGm/qUDpv2lAqb/pQCmAqb9pQOm/aUCpgCm/6UBpgCm/6UBpv+lAKYCpv6lAab/pQCmAaYApgCm/6UBpv6lBKb7pQSm/qUApgGm/6UApgCmAab+pQKm/6UAWgBaAVr+WQJa/lkCWv5ZAlr/WQBaAFr/WQJa/lkCWv5ZAVoAWgBa/1kBWgBa/1kDWvtZBVr8WQNa/lkBWv9ZAVoAWv9ZAVr/WQFa/1kBWgBa/1kBWgBa/1kCWv1ZA1r+WQFaAFr/WQJa/lkCWv5ZAlr+pQGmAab+pQKm/6X+pQSm/KUDpv6lAaYApv+lAqb+pQGmAKb/pQOm/KUDpv+l/6UCpv6lAaYApgCm/6UCpv6lAab/pQKm/qUBpgCm/qUFpvmlB6b7pQOm/6X/pQKm/qUCpv6lAaYBpv2lBKb8pQKmAab+pQKm/6X/pQOm/KUEpv6lAKYBpv6lA6b9pQOm/aUCpv+lAab/pQCmAab/pQGmAKb+pQOm/aUDpv2lAqYApv6lA6b9pQGmAqb8pQSm/aUCpv+lAab/pQCmAab/pQGmAKb/pQGmAKb/pQGmAKb+pQOm/aUCpgCm/qUCpv+lAKYApgGm/qUCpv+lAKYBpv+lAKYBpv+lAab/pQGm/qUDpv2lA6b9pQGmAKYApgGm/qUCpv6lAaYApgCm/6UCpv6lAqb+pQGm/6UCpv6lAqb9pQOm/qUCpv6lAqb+pQGmAab+pQKm/6X/pQKm/qUBpgCmAKYApgCm/6UCpv6lA6b8pQOm/6UApgCmAKYApv+lA6b8pQOm/6X/pQGmAKYApgCmAKb/pQKm/aUDpv6lAaYApv+lAKYCpv6lAaYApv+lAaYApv+lAqb+pQGm/6UApgGm/1kBWv9ZAFoBWv5ZA1r9WQJa/1kAWgFaAFr+WQNa/VkCWgBa/lkDWv1ZA1r8WQVa+1kEWv5ZAFoBWv9ZAVoAWv9ZAVr/WQJa/lkBWgBa/1kCWv5ZAVoAWv9ZAlr+WQJa/lkAWgJa/lkCWv5ZAVr/WQJa/qUCpv2lBKb8pQOm/qUApgGmAKb/pQGm/6UApgGm/6UBpv+lAKYBpv6lA6b8pQWm+qUGpvqlBqb8pQKm/qUBpgCmAab/pQGm/aUEpv2lAqb/pQCmAab/pQGm/qUDpv6lAaYApv+lAqb+pQGmAab+pQKm/qUCpv6lAaYApgCmAab+pQKm/qUCpv+lAKYBpv6lA6b8pQSm/aUBpgGm/qUBpgCm/6UCpv6lAab/pQGmAKb/pQKm/aUDpv2lA6b+pQGm/6UApgGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQKm/aUDpv6lAaYApgCmAKYApgGm/qUCpv+lAKYApgCmAKYBpv+l/6UBpgCmAab/pf+lAqb+pQKm/6X/pQKm/qUCpv6lAqb+pQGmAab9pQSm/KUDpv+lAKYApgCmAKYApgCmAab/pQGm/6UApgGm/6UBpv+lAab+pQOm/KUEpv2lAaYBpv6lAqb+pQGmAab+pQKm/qUBpgGm/aUDpv6lAaYApv+lAab/pQKm/aUCpv+lAab/pQKm/KUEpv6lAKYCpv2lAqb/pQGm/6UBpv+lAKYBpv+lAab/pQGm/6UBpgCm/6UBpv9ZAVr/WQJa/VkDWv5ZAFoBWgBa/lkDWv5ZAFoBWv9ZAVr/WQFa/1kAWgFa/1kAWgFa/lkCWv9ZAFoBWv5ZAlr/WQFa/lkCWv9ZAVr/WQBaAVr/WQJa/VkCWgBa/1kBWv9ZAFoCWvxZBVr6WQZa/FkCWv+lAKYApgGm/6UApgGm/qUDpv2lAqb+pQOm/aUDpv2lAqb/pQGm/6UBpv+lAKYBpv6lA6b9pQKm/6X/pQOm/aUCpv6lA6b8pQWm+6UEpvylBab8pQOm/aUBpgCmAqb9pQOm/KUEpv2lAqYApv+lAab/pQGm/6UCpv2lA6b+pQGm/6UBpv+lAqb9pQKm/6UBpgCm/qUDpvylBab8pQKm/6UApgCmAab/pQGm/qUCpv6lAqYApv6lAqb+pQOm/KUFpvulA6YApv6lAqYApv6lA6b9pQKmAKb/pQGmAKb+pQOm/aUCpgCm/6UApgGm/6UBpv+lAab/pQKm/qUBpgCm/6UCpv6lAqb+pQGmAKYApgCmAKb/pQKm/qUCpv6lAaYBpv6lAqb/pQCmAab+pQKm/6UApgGm/qUCpv+l/6UDpvylBKb9pQGmAab+pQOm/KUEpv2lAqYApv6lAqb/pQCmAab/pQGm/6UBpv+lAKYCpv2lAqYApv+lAKYBpv6lA6b9pQOm/KUFpvulBab7pQSm/aUCpgCm/qUDpv2lA6b+pQCmAqb9pQOm/qUBpv+lAab/pQGm/6UApgGm/6UApgGm/qUCWv9ZAFoAWgBaAFoAWgFa/lkCWv5ZAlr/WQBaAFoAWgFa/1kAWgBaAFoBWv9ZAVr+WQJa/1kAWgFa/lkCWv5ZAlr+WQJa/lkBWgBaAFoAWgBa/1kCWv5ZAlr/Wf9ZA1r8WQRa/VkCWv5ZAlr/WQBaAVr+pQKm/6UApgCmAKYApgCm/6UCpv2lBKb8pQOm/aUDpv6lAaYBpv2lA6b+pQGmAKYBpv6lAqb+pQKm/qUDpv2lAqb/pf+lAqb/pQGm/qUDpvylBKb9pQKm/6UApgCmAKYApgCm/6UCpv6lAaYApv+lAqb+pQGmAKb/pQKm/qUBpgCm/qUDpv6lAaYApv6lA6b9pQOm/aUCpv+lAab/pQCmAab+pQKm/6UBpgCm/qUCpv+lAqb9pQOm/aUDpv6lAKYBpgCm/qUCpv+lAKYCpv2lAaYBpv6lAqYApv6lA6b9pQKm/6UBpgCm/6UApgGm/qUEpvulBKb8pQWm+qUGpvulBKb9pQKm/qUDpv2lAqb/pQGm/6UBpv6lA6b9pQOm/qUApgGm/qUDpv2lA6b+pQCmAab/pQGm/6UBpv6lA6b9pQKm/qUCpv+lAKYBpv6lAqb/pQCmAab/pQCmAab+pQOm/aUCpv+lAab/pQGm/6UBpgCmAKb/pQKm/aUEpvylA6b+pQGmAKb/pQGmAKb/pQKm/aUDpv6lAaYApv+lAqb+pQGmAKb/pQKm/6X/pQKm/aUDpv6lAqb+pQGmAKb/pQKm/lkCWv1ZBFr9WQFaAFoAWv9ZA1r7WQVa/FkDWv5ZAVr/WQFa/1kBWgBa/1kBWv9ZAVr/WQFa/1kBWgBa/1kBWv9ZAVoAWv9ZAVr/WQFa/1kBWv9ZAVr/WQFaAFr/WQFa/1kBWgBa/1kBWv9ZAlr9WQNa/aUDpv6lAKYApgGm/6UBpv+l/6UCpv+lAKYApgGm/aUFpvqlBab9pQKm/6UApv+lA6b8pQSm/KUDpv+l/6UBpv+lAaYApgCm/6UBpv+lAab/pQGm/6UCpv6lAaYApv+lA6b8pQSm/aUCpv+lAKYApgGm/qUCpv+lAKYBpv6lAqb/pQCmAab+pQKm/6UApgGm/qUDpv2lAqb/pQCmAqb9pQOm/aUCpgCm/6UBpv+lAab/pQKm/KUFpvulBab8pQKmAKb+pQOm/aUCpgCm/6UApgGm/6UBpv+lAKYApgGm/qUCpv6lAqb+pQKm/qUCpv+lAab/pQCmAab+pQSm+6UEpv2lAqb/pQGm/6UApgGm/qUDpv6lAKYBpv+lAKYCpv2lA6b9pQKm/6UBpgCm/6UApgCmAKYBpgCm/qUCpv6lAqb/pQGm/qUCpv+l/6UDpvylBKb9pQCmA6b8pQSm/aUBpgGm/qUDpvylBKb9pQKm/6UBpv6lA6b8pQSm/aUCpv6lAqb+pQKm/aUEpvylA6b/pQCm/6UCpv6lAqb/pf+lAqb9pQSm/KUDpv6lAab/pQKm/qUBpgCmAKb/pQOm/KUDpv+l/1kCWv5ZAVoAWgBaAFr/WQJa/lkCWv9ZAFoAWgFa/lkDWv1ZAlr/WQFa/lkDWv1ZA1r9WQNa/VkDWv5ZAFoCWv5ZAVoAWv5ZBFr8WQRa/FkDWv5ZAVoAWgBaAFr/WQFa/1kBWgBa/1kBWv9ZAFoCWv1ZBKb7pQWm/KUCpgCm/qUEpvylAqb/pQCmAab/pQGm/6UApgCmAKYBpv+lAKYApgCmAKYApgCmAab+pQGmAKYApgCmAKb/pQKm/qUBpgCm/6UCpv2lA6b+pQGmAKb/pQGmAKb/pQKm/qUCpv6lAaYApgCmAKYBpv2lBKb9pQGmAKYApgCmAKYApgCmAKYBpv6lAqb/pQCmAab/pQGm/qUCpv+lAKYBpv6lAqb/pQGm/qUDpvylBab8pQOm/qUBpv+lAaYApv+lAqb9pQOm/aUDpv6lAaYApv+lAab/pQKm/qUBpgCm/6UCpv+l/6UCpv6lAqb+pQKm/qUCpv6lAaYApgCmAKb/pQKm/aUDpv6lAaYBpv2lA6b9pQSm/aUBpgCm/6UBpgCm/6UCpv6lAKYBpv6lA6b9pQKm/6UApgCmAKYBpv+lAab+pQOm/aUDpv2lAqb/pQGm/6UApgCmAKYBpv+lAKYBpv6lA6b9pQKmAKb/pQGm/6UBpv+lAab/pQGmAKb/pQCmAaYApv+lAab+pQKmAKb/pQGm/qUCpv6lA6b+pQCmAab+pQKmAKb/pQGm/6UApgGmAKb/pQGm/6UBpv9ZAlr9WQNa/lkBWgBaAFr/WQJa/VkEWvxZA1r+WQBaAlr+WQJa/lkBWv9ZAlr/WQBaAFr/WQFaAFr/WQFaAFr/WQFa/1kAWgJa/lkAWgFa/1kBWgBa/1kBWv9ZAFoBWv9ZAlr9WQJa/1kAWgJa/VkDWv6lAKYBpv+lAaYApv+lAKYApgGm/6UBpv+lAKYApgGm/qUDpv2lAqb/pQCmAab/pQGm/qUDpv2lAqYApv6lA6b9pQGmAab/pQCmAab+pQKm/6UApgCmAab+pQOm/KUEpvylBKb9pQGmAKYApgCmAab+pQKm/qUCpv+lAKYBpv6lA6b8pQSm/KUEpv2lAqb+pQKm/qUCpv6lAaYBpv6lAqb/pf+lAqb/pf+lA6b9pQKm/qUBpgCmAab+pQKm/qUCpv+lAKYBpv+lAab/pQGm/6UBpgCm/6UCpv2lA6b+pQKm/qUBpgCmAKYApgCm/6UCpv+l/6UDpvulBab8pQOm/6UApv+lAab/pQKm/qUCpv6lAaYApv+lAqb+pQGmAKb/pQKm/aUDpv2lA6b+pQCmAqb8pQSm/qUApgGm/6UApgGm/6UApgGm/qUCpv+lAKYBpv6lAqb+pQKm/6UApgGm/qUCpv6lAqb/pQGm/qUCpv6lAqb/pQCmAKYBpv6lAqb+pQKm/6UApgGm/qUCpv+lAKYCpv2lA6b8pQWm/KUCpgCm/6UBpgCm/6UBpgGm/aUEpvylA6b+pQKm/qUCpv6lAaYAWgBaAFoAWgBaAFoAWv9ZAlr9WQRa/VkBWv9ZAVoAWgBaAFoAWgBaAFoAWgBaAFoAWgBaAFoAWgBa/1kCWv5ZAVoAWv9ZAlr+WQFaAFoAWgBaAFr/WQFaAVr+WQFa/1kBWgBaAFoAWv9ZAlr+WQJa/lkCpv+lAab/pQCmAab/pQGm/6UCpv2lA6b8pQWm/KUCpgCm/qUDpv2lAqYApv+lAqb9pQOm/qUBpgCmAKYApgCm/6UCpv6lAqb+pQKm/6UApgCmAKYApgGm/6UApgCmAab9pQWm+6UEpv2lAqb/pQGm/6UApgCmAab+pQOm/KUEpv2lAaYApv+lAqb/pf+lAab/pQGmAKYApv+lAaYApv+lAqb/pf+lAqb+pQGmAKYApv+lAqb9pQOm/qUCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUBpgCmAKb/pQKm/aUEpv2lAKYCpv2lA6b+pQGm/6UBpgCm/6UBpv6lA6b+pQGm/6UApgGm/6UBpv+lAKYBpv+lAaYApv6lA6b+pQGmAKb/pQKm/qUBpv+lAqb+pQKm/aUDpv6lAqb+pQKm/qUCpv2lBKb9pQKm/6X/pQKm/qUCpv6lAqb+pQKm/qUBpgCmAKYBpv6lAaYBpv6lAqb+pQKm/qUCpv2lA6b+pQGmAKb/pQGmAKYApv+lAqb+pQKm/qUCpv6lAqb/pf+lAqb/pQCmAab+pQKm/6UBpv6lA6b8pQWm+6UDpgCm/qUDpvylBFr9WQJa/1n/WQJa/1kAWgBaAFoAWgBaAFoAWgFa/lkDWvxZBFr9WQJa/1kBWv9ZAFoAWgBaAFoBWv5ZAlr/WQBaAFoAWgBaAFoBWv5ZAlr+WQFaAVr+WQJa/1kAWgFa/lkCWv9ZAFoCWvxZBFr9WQFaAab/pQCmAKYBpv6lA6b8pQOm/6UApgCmAKb/pQKm/aUDpv2lA6b+pQGm/6UBpv+lAaYApv+lAqb9pQOm/qUCpv6lAab/pQKm/aUEpvulBab8pQOm/aUCpv+lAab/pQGm/aUFpvqlBqb7pQSm/aUCpv6lA6b9pQKm/6UApgGm/qUCpv+lAKYApv+lAqb+pQOm/KUDpv6lAqb+pQKm/qUCpv+lAKYApgCmAab+pQOm/KUEpv2lAqb/pQCmAKYBpv6lA6b9pQKm/6UApgKm/aUDpvylBab7pQWm/KUCpgCm/6UBpgCm/6UCpv6lAaYApv+lAqb+pQGm/6UBpv+lAqb9pQOm/aUCpv+lAKYBpv6lAqb/pf+lA6b8pQOm/6X/pQOm/KUEpvylA6b+pQGmAKYApgCm/6UBpv+lAaYApgCm/6UCpv2lA6b+pQKm/qUBpgCmAKYApgCm/6UBpgCm/6UCpv2lA6b+pQCmAqb+pQKm/qUBpv+lAqb+pQKm/qUBpv+lAaYApgCm/6UBpv+lAab/pQCmAab/pQCmAab+pQKm/qUCpv+lAKYApgCmAab+pQKm/qUCpv+lAKYApgGm/qUDpvxZBFr9WQJa/1kBWv9ZAFoBWv5ZA1r+WQBaAlr8WQVa/FkCWgBa/lkDWv1ZAloAWv5ZA1r9WQJa/1kBWv9ZAlr9WQJa/1kBWv9ZAFoBWv5ZAlr+WQJa/lkBWgBaAFoBWv5ZAlr9WQRa/VkCWgBa/lkDWvylBKb+pQCmAab+pQGmAab+pQKm/qUBpgCmAKYApgCmAKYApgCm/6UBpv+lAqb+pQGm/6UApgGmAKb/pQGm/6UApgKm/qUApgGm/qUDpv2lAqb+pQKm/6UApgCmAKYApgCmAab+pQKm/6UApgGm/qUCpv+lAKYApgCmAKYApgCmAKb/pQGmAKb/pQGm/6UBpv+lAqb8pQWm+6UEpv2lA6b9pQOm/KUEpv2lA6b+pQCmAKYApgGm/6UApgCmAKYApgCmAKYApgCmAKYApgCmAKYApgGm/6UApgCmAKYBpv+lAKYApgGm/qUCpv2lA6b/pQCmAKb/pQGmAKYApv+lAab/pQKm/aUDpv6lAab/pQGmAKb/pQKm/aUDpv2lBKb7pQWm+6UFpvylA6b+pQGmAKYApgCmAKYApgCmAKYApgGm/qUCpv6lAaYApgCm/6UCpv6lAaYApv+lAaYApgCmAKYApv+lAqb+pQKm/qUCpv6lAqb/pf+lAqb+pQKmAKb9pQSm/KUDpv6lAqb/pQCmAKb/pQKm/6UBpv6lA6b9pQKm/6UBpv+lAab+pQKm/6UApgGm/qUCpv6lAqb/pQCmAab9WQVa+1kDWv9Z/1kCWv5ZAVoAWgBa/1kCWv5ZAVoAWgBa/1kCWv5ZAVoAWv9ZAVoAWgBa/1kCWv5ZAVoAWv9ZAVoAWv9ZAlr9WQNa/VkDWv1ZA1r9WQJaAFr+WQNa/VkCWv9ZAVr+WQNa/VkCWv9ZAFoAWgGm/qUCpv6lAqb/pQCmAKYApgCmAKYApgCmAKb/pQGmAKYApv+lAab/pQKm/6UApgCmAKYApgGm/qUCpv+lAKYApgGm/qUCpv6lAaYBpv+lAKYApgCmAab/pQCmAab+pQSm/KUCpv+lAKYBpv+lAab/pQCmAKYApgGm/6UBpv+lAKYCpv2lBKb7pQSm/aUEpvylAqb/pQCmAqb+pQGmAKb/pQGmAKb/pQKm/qUBpgCm/qUEpvylA6b+pQCmAaYApv6lA6b9pQKm/6UApgCmAab/pQCmAKYApgGm/6UBpv6lA6b9pQKmAKb+pQSm+6UFpvylAqb/pQGmAKb/pQCmAab+pQOm/aUCpgCm/qUDpvylBab7pQSm/aUCpv+lAKYApgCmAab+pQKm/qUCpv+lAKYApgGm/qUCpv+l/6UCpv6lAaYBpv2lA6b9pQOm/qUBpgCm/6UBpgCm/6UCpv2lAqb/pQKm/aUDpv2lA6b+pQKm/aUDpv6lAaYBpv6lAaYApv+lAqb/pQCmAKb/pQKm/qUCpv6lAaYApgCmAKb/pQKm/qUCpv+l/6UCpv6lAqb+pQGm/6UBpgCmAKb/pQKm/aUEWvxZBFr9WQFaAFr/WQJa/VkEWvtZBlr6WQRa/lkBWgBaAFoAWgBa/1kCWv5ZA1r8WQRa/FkEWv1ZAlr/WQBaAVr9WQRa/VkBWgFa/VkEWv1ZAVoBWv5ZAlr+WQJa/1kAWgBa/1kCWv5ZAlr+WQFa/1kBpgCm/6UBpv+lAab/pQGm/qUCpgCm/6UBpv6lAqb/pQKm/qUBpv+lAaYApgCmAab9pQOm/qUBpgCm/6UBpgCm/6UBpv+lAaYApv+lAqb9pQKmAKb/pQGm/6UApgGm/6UBpv6lA6b+pQGm/qUCpv+lAqb+pQCmAab/pQKm/qUBpgCmAKYApgGm/qUCpv6lAqb/pQCmAKYApv+lA6b7pQWm/KUCpgGm/aUDpv2lA6b/pQCmAKb/pQGmAab+pQKm/qUCpv6lAqb9pQSm/aUCpv6lAqb/pQCmAab+pQOm/aUCpv+lAKYBpv6lAqb+pQOm/aUBpgCm/6UCpv+l/6UBpgCm/qUEpvulBab8pQKmAKb+pQOm/aUCpv+lAKYBpv6lA6b9pQOm/aUCpv+lAaYApv+lAKYApgCmAab/pQGm/6UApgGm/6UCpv6lAaYApv+lAqb+pQKm/aUEpvulBab8pQKm/6UBpv+lAKYBpv6lA6b9pQKm/6UApgGm/6UApgCmAKYApgCmAab+pQOm/KUDpgCm/6UBpv+lAab/pQKm/aUDpv6lAKYCpv2lA6b9pQKm/6UBpv+lAab/pQGmAKb/pQGmAFoAWv9ZA1r7WQVa/VkBWgFa/VkDWv5ZAlr+WQJa/VkEWvxZA1r/Wf9ZAlr+WQFaAFoAWv9ZAlr+WQFaAVr+WQJa/lkBWgFa/1kAWgBaAFoAWgFa/lkCWv9ZAFoAWgBaAFoBWv5ZA1r8WQNa/lkBWgFa/6X/pQGmAKYApgCmAKYApgCm/6UBpgCmAab+pQGm/6UBpgGm/qUBpgCmAKYApgCm/6UCpv6lA6b8pQOm/qUCpv+lAab+pQKm/6UBpv+lAab/pQCmAab/pQCmAab+pQKm/6UApgCmAKYBpv6lA6b8pQSm/aUCpv6lAqb/pQCmAab9pQSm/aUCpv+lAKYBpv+lAab+pQOm/aUDpv6lAKYBpv+lAaYApv+lAqb+pQGmAab+pQKm/qUCpv+lAab+pQKm/qUDpv2lAqb/pQCmAab+pQKm/6UApgGm/aUDpv+l/6UCpv6lAaYApgCmAKYApgCm/6UCpv6lAaYApv+lAaYApv+lAKYCpv2lA6b9pQGmAab/pQCmAab+pQOm/KUEpvylBKb9pQGmAab9pQSm/KUDpv+l/6UCpv6lAqb/pQCm/6UCpv6lAqb+pQGmAKb/pQOm+6UFpvylA6b/pf+lAqb9pQOm/qUBpgCm/6UApgGm/6UCpv2lAqb/pQGm/6UBpv6lA6b+pQCmAqb8pQWm/KUCpgCmAKb/pQKm/KUFpvylA6b+pQCmAab/pQKm/qUBpv+lAaYApgCmAKb/pQGm/6UBpv9ZAlr+WQBaAlr8WQVa/VkAWgJa/VkDWv5ZAVr/WQFaAFr/WQJa/VkEWvtZBVr8WQNa/lkBWgBa/1kCWv1ZA1r+WQFaAFr/WQFaAFoAWv9ZAVr/WQJa/1kAWgBa/1kCWv9ZAVr+WQFaAVr+WQNa/FkDWgCm/aUEpvylBKb9pQKm/qUBpgCmAab+pQKm/qUBpgGm/6X/pQKm/qUCpv+l/6UCpv6lA6b9pQGmAKYBpv+lAab+pQKm/6UApgGm/aUFpvulBKb9pQGmAab+pQKm/qUCpv6lAqb9pQOm/qUCpv6lAaYApgCmAKYApgCmAab+pQKm/6UApgKm/aUCpv+lAab/pQGm/6UBpv+lAab/pQGm/6UBpv+lAaYApv+lAab/pQGmAKb/pQGm/qUDpv2lA6b8pQOm/6X/pQOm/KUDpv+l/6UCpv+lAKYBpv6lAqb/pQCmAab/pQCmAqb8pQWm+6UEpv2lAqb+pQKm/qUBpgCm/6UCpv6lAaYApgCmAKYBpv6lAqb+pQKm/6UApgGm/qUCpv+lAab/pQGm/qUDpv2lA6b9pQKm/qUCpv+lAKYBpv6lAqb/pQCmAKYBpv6lA6b9pQKm/6UApgGmAKb/pQGm/6UBpgCmAKb/pQGmAKb/pQKm/aUCpgCm/6UBpv+lAKYBpv+lAab/pQCmAab/pQGm/6UApgCmAab/pQCmAab+pQOm/aUCpv+lAKYBpv+lAab+pQOm/aUCpgCm/qUCpv+lAab+WQJa/lkCWv9Z/1kBWgBaAFoAWgBa/1kBWgFa/VkEWvxZAloBWv5ZAlr9WQNa/lkCWv5ZAVoAWgBa/1kCWv5ZAVoAWv9ZAlr/Wf5ZBFr7WQZa+1kCWgBa/1kBWv9ZAVoAWgBa/lkDWv1ZA1r+WQFa/1kCpvylBKb+pQCmAab+pQOm/aUCpv6lAqb/pQGm/qUCpv+lAKYBpv6lA6b9pQKmAKb+pQSm/KUDpv6lAaYApgCm/6UCpv6lAqb+pQGmAKYApgCmAKb/pQGmAKb/pQKm/qUBpgCmAKYApgGm/qUCpv6lAqb/pQCmAKYApgCmAKYApgCmAKYApv+lAqb+pQGmAKb/pQKm/qUBpgCmAKYApgCmAKb/pQOm/KUEpvylAqYBpv6lAqb+pQKm/qUCpv6lAaYBpv6lAqb+pQKm/qUCpv6lAqb/pQCmAKYApgCmAKYApgCmAKYBpv2lA6b+pQGmAab+pQGmAKb/pQKm/qUCpv6lAaYApgCmAab9pQSm/KUEpvylA6b/pQCmAab+pQGmAab+pQKm/6UApgCmAab+pQOm/KUFpvulBab7pQSm/aUDpv6lAab/pQGm/6UCpv6lAqb+pQGm/6UBpgCm/6UCpvylBab8pQKmAKb+pQOm/aUCpv+lAKYApgGm/qUCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUCpv+lAKYApgCmAKYBpv+l/6UDpv2lAqYApv6lA6b9pQOm/VkDWv5ZAFoCWv1ZA1r9WQNa/VkEWvtZBFr+WQBaAlr9WQNa/VkCWv9ZAVr/WQFa/1kAWgJa/FkFWvtZBFr+WQFa/1kBWv5ZA1r+WQFa/1kAWgFa/1kBWv9ZAVr/WQFa/1kBWv9ZAVoAWv9ZAVr+WQNa/qUCpv2lA6b9pQOm/qUBpgCm/6UBpv+lAaYApv+lAab/pQGm/6UBpv6lAqb/pQGm/qUCpv6lAqb+pQKm/qUBpgCm/6UCpv6lAKYCpv6lAqb+pQKm/qUCpv+lAKYBpv6lAqb/pQCmAab+pQKm/qUCpv+lAKYBpv6lA6b9pQKm/6UBpv+lAab/pQGm/6UBpv+lAaYApv+lAab/pQKm/aUDpv2lA6b+pQCmAab+pQOm/aUCpv+lAKYBpv6lAqb/pQGm/6UApgCmAab/pQGm/qUCpv+lAKYBpv6lAqb/pQCmAKYBpv6lA6b8pQSm/aUCpv6lAaYApgCm/6UCpv2lA6b9pQKm/6UBpv+lAab/pQCmAab/pQGm/6UBpv+lAqb9pQKm/6UApgKm/aUDpv2lAqb+pQOm/qUBpgCm/qUDpv6lAaYApv+lAqb+pQKm/qUBpgCmAKYApgCmAKb/pQKm/qUCpv+l/6UCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUCpv+lAKYApgCmAKYApgCm/6UCpv2lBKb8pQSm/KUDpv+lAKYBpv6lAqb/pQGm/qUCpv+lAKYApgCmAKYBpv+l/6UCpv6lA1r9WQFaAVr9WQVa+1kDWv9ZAFoAWgBaAFoBWv9ZAFoBWv5ZAloAWv5ZA1r9WQJaAFr+WQNa/VkDWv1ZA1r9WQNa/VkCWv9ZAVr/WQFa/1kAWgFaAFr/WQJa/VkDWv5ZAFoBWv9ZAFoBWv5ZAlr+WQFaAKYApgGm/qUBpv+lAqb/pQCmAKb/pQGmAKYBpv6lAqb+pQCmA6b9pQKm/qUBpv+lAqb+pQGmAKb/pQGmAKb/pQGmAKb/pQOm/KUDpv6lAaYBpv6lAqb+pQGmAKYApgGm/qUCpv2lBKb8pQSm/KUDpv6lAaYApgCmAKYApgCmAab+pQKm/qUBpgGm/qUCpv6lAqb+pQKm/qUCpv+lAKYApgGm/qUCpv6lAqb/pQCmAKYApgGm/qUCpv2lBKb9pQKm/qUCpv6lA6b8pQWm+6UEpv6lAKYBpv+lAab/pQGm/6UBpv+lAab/pQGmAKb+pQSm+6UFpv2lAKYCpv2lA6b+pQGmAKb+pQOm/aUDpv2lA6b8pQWm/KUDpv6lAaYApgCmAKYBpv6lAqb/pQCmAab+pQKm/6UApgCmAKYApgCmAKYApv+lA6b7pQam+6UCpgGm/aUEpv2lAqb+pQGmAKYApgGm/6UApgCmAKYBpv6lAqb+pQKm/6UApgCmAKYApgGm/qUCpv+lAKYBpv+lAKYBpv6lA6b9pQKm/6UApgGm/6UApgCmAKYApgGm/qUCpv2lBKb8pQOm/6X+pQSm/KUDpv9Z/lkEWvxZA1r+WQFaAFr/WQJa/VkDWv5ZAVoAWv5ZA1r9WQNa/lkBWv5ZA1r9WQNa/lkAWgBaAVr/WQBaAVr+WQNa/FkEWvxZBFr8WQRa/FkDWv9Z/1kDWvtZBVr8WQRa/VkBWv9ZAVoAWgBaAFoAWv+lA6b8pQSm/aUBpgGm/qUDpv2lAqb+pQKmAKb/pQGm/qUCpgCm/6UBpv6lA6b9pQOm/aUDpv2lAqb/pQGmAKb/pQCmAab/pQGm/6UApgGm/6UApgGm/6UApgGm/qUDpv2lAqb/pQGm/6UApgCmAab/pQGm/6UApgGm/6UBpv+lAab/pQKm/qUBpv+lAaYApgCm/6UBpv+lAab/pQGm/6UBpgCm/6UBpv+lAaYApgCmAKb/pQGmAKb/pQGm/6UBpv+lAab/pQGm/6UApgGm/6UBpv+lAab/pQGm/6UBpgCm/6UBpgCm/6UCpv6lAKYCpv6lAqb+pQGm/6UCpv6lAqb+pQGmAKYApgCmAKYApgCmAab+pQGmAKYApgCmAab9pQOm/aUDpv2lA6b9pQOm/aUCpv+lAab/pQCmAab/pQGm/6UBpv+lAKYBpv+lAaYApv+lAKYCpv2lA6b9pQKm/6UApgGm/qUCpv+l/6UCpv+l/6UDpvulBqb7pQOm/qUCpv6lAqb+pQKm/qUBpgGm/qUCpv6lAaYApgCmAKb/pQKm/qUBpgCm/6UCpv6lAqb+pQKm/qUCpv6lAqb/pQCmAKb/WQJa/lkBWgFa/FkFWvxZA1r+WQFa/1kBWgBa/1kBWv9ZAVr/WQFa/1kAWgFa/1kBWv9ZAFoAWgBaAlr8WQVa+lkFWv5ZAFoBWv5ZAlr/WQFa/1kAWgFa/lkDWvxZBFr9WQJa/lkCWv5ZAlr/Wf9ZA1r8pQSm/aUCpv6lAqb/pQCmAab+pQKm/qUCpv+lAKYApgCmAKYBpv6lAqb/pQGm/6UApgGm/qUDpv2lA6b9pQKm/qUCpv+lAab+pQKm/qUCpv+lAKYApgCmAKYBpv6lAqb+pQKm/6UApgGm/qUDpv2lAqb/pQCmAab/pQCmAKYBpv+lAab+pQKm/6UBpv+lAKYBpv+lAab/pQCmAKYBpv+lAab/pQCmAKYBpv+lAab/pQGm/6UBpv+lAab/pQCmAab/pQCmAab+pQKm/6UBpv+lAab/pQGmAKb/pQGm/6UCpv2lAqb+pQKm/6UBpv6lAqb+pQKm/6UApgGm/6UApgKm/aUDpv6lAab/pQKm/aUEpvulBab8pQKm/6UBpv+lAqb9pQKm/6UBpgCm/6UBpv+lAaYApv6lA6b+pQGmAKb+pQOm/qUCpv6lAKYCpv6lAqb+pQKm/aUEpvylBKb9pQKm/qUCpv6lAqb/pQCmAKYApgCmAKYApgCm/6UCpv2lBKb8pQOm/aUDpv6lAab/pQCmAqb9pQKm/6UApgGmAKb+pQKm/6UApgKm/aUCpv+lAab/pQGm/6UApgGm/6UBpv+lAFoAWgFa/1kBWv5ZAlr+WQJa/1kAWgBaAFoAWgFa/lkDWvxZBVr8WQJaAFr+WQNa/lkBWgBa/1kBWv9ZAVoAWv9ZAVr/WQFa/1kBWv9ZAVoAWv9ZAVr/WQJa/lkBWgBa/1kCWv5ZAlr+WQJa/lkCWv5ZAqb+pQKm/6X/pQKm/qUCpv+lAKYApgGm/qUDpv2lAqb/pQCmAab/pQCmAab+pQKm/6UApgGm/6UApgCmAKYBpv+lAKYApgCmAab+pQOm+6UGpvulA6b/pf+lAqb/pQCmAKYApv+lAqb/pf+lA6b7pQam+6UDpv6lAqb+pQOm/KUDpv+l/6UCpv6lAqb+pQGmAKYApgGm/qUBpgCmAKYApgGm/qUCpv6lAaYBpv6lAqb+pQKm/qUCpv6lAqb/pf+lAqb+pQOm/aUBpgCmAKYApgCmAKYApv+lAab/pQGmAKb/pQCmAab+pQSm/KUCpv+lAab/pQKm/qUApgGm/6UApgGm/6UApgGm/qUCpv6lA6b9pQGmAab+pQKmAKb+pQOm/aUCpgCm/6UCpv2lA6b+pQGmAKb/pQKm/qUBpgCmAKYApgCmAKYApgCmAab+pQKm/6X/pQOm/aUBpgGm/aUDpv6lAqb+pQKm/aUEpvylBKb8pQSm/aUBpgCmAKYApgGm/aUEpvylBab6pQWm/KUDpv+l/6UCpv2lA6b+pQGmAab9pQSm/KUDpgCm/aUEpvylA6b+pQKm/qUBpgCmAKb/pQJa/lkBWgBa/1kCWv5ZAlr9WQNa/lkBWgBa/1kBWgBa/lkEWvtZBVr8WQJa/1kCWv1ZBFr7WQRa/1n+WQRa+1kGWvpZBVr8WQNa/1n/WQFaAFr/WQJa/VkDWv5ZAVr/WQJa/VkEWvxZA1r+WQJa/VkEWv2lAaYBpv2lA6b+pQGmAKYApv+lAab/pQGmAKb/pQKm/qUBpv+lAab/pQKm/aUEpvqlB6b6pQWm/KUCpgCm/6UBpv+lAab/pQGm/6UApgGm/qUDpv2lA6b8pQSm/aUCpv+lAab+pQOm/aUCpv+lAKYBpv+lAab/pQCmAab+pQOm/aUCpv+lAKYApgCmAKYApgGm/qUBpgGm/qUCpv6lAaYBpv+lAKYApgCmAKYBpv+l/6UCpv6lAaYBpv6lAab/pQGmAKYBpv+lAKYApgGmAKb/pQKm/qUBpgGm/aUDpv6lAqb+pQGm/6UBpgCm/6UBpv6lA6b9pQOm/aUCpv6lA6b9pQKm/6UApgGm/6X/pQKm/qUDpv2lAaYApv+lAqb/pf+lAqb+pQGmAab+pQGmAKYApgGm/qUBpv+lA6b8pQSm/KUDpv6lAqb+pQKm/qUBpgCmAab+pQKm/qUBpgGm/qUCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUCpv2lA6b+pQGmAKb/pQCmAab/pQGmAKb+pQOm/aUDpv6lAKYBpv6lA6b+pQCmAab+pQKmAKb+pQOm/aUBpgGm/6UBpv6lAqb+pQNa/VkCWv5ZA1r9WQJa/1kAWgFaAFr+WQJa/lkCWv9ZAVr+WQJa/lkCWv5ZAlr+WQFaAFoAWgBa/1kBWgBaAFoAWgBa/1kCWv5ZAVoBWv5ZAlr9WQNa/lkCWv5ZAlr+WQFa/1kCWv5ZAlr/Wf9ZAlr/WQCmAab/pQCmAKYBpv6lA6b+pf+lA6b8pQSm/qUApgCmAab+pQKm/qUCpv6lAqb+pQGmAKYApgCmAKYApgCmAKYBpv6lAqb/pQCmAKYApgCmAab+pQKm/qUCpv+lAKb/pQOm/KUFpvqlBab8pQSm/aUCpv6lAqb+pQKm/6X/pQKm/6X/pQKm/aUDpv6lAqb9pQOm/aUDpv6lAab/pQGm/6UBpv+lAKYApgGm/qUDpv2lAqYApv6lA6b9pQKmAKb/pQGmAKb+pQOm/aUDpv6lAKYCpv2lA6b9pQOm/qUCpv2lAqb/pQKm/qUBpgCm/qUEpvylAqYApv+lAqb9pQOm/aUCpgCm/qUDpv2lAqb/pQGm/6UBpv+lAKYBpv+lAaYApv6lA6b9pQOm/qUApgGm/6UBpv+lAKYBpv6lA6b9pQKm/6UApgGm/qUCpv+lAKYBpv+lAKYBpv6lA6b9pQOm/aUDpv6lAab/pQGmAKb/pQKm/aUDpv2lA6b+pQCmAqb8pQSm/qUApgGm/qUCpv+lAKYBpv6lA6b9pQKm/6UApgGm/6UApgGm/qUDpv2lAaYBpv6lA6b8pQSm/aUCpv6lAqb/WQFa/1kAWgFa/1kBWv9ZAVoAWv9ZAVr+WQRa/FkDWv5ZAFoCWv5ZAVoAWv9ZAlr+WQFaAFoAWv9ZAlr9WQNa/lkBWgBa/1kBWv9ZAlr9WQNa/lkBWgBa/1kBWgBaAFr/WQJa/lkCWv5ZAVoAWgBaAFoApgCm/6UBpv+lAqb+pQGm/6UApgKm/aUDpv2lA6b+pQCmAab/pQGmAKb+pQOm/aUCpv+lAKYBpv+lAKYApgCmAKYApgCmAKYApgCmAKYApv+lAqb9pQSm/aUBpgCm/6UBpgCm/6UCpv2lA6b+pQGm/6UBpgCm/6UCpv2lAqb/pQCmAKYCpvylBKb7pQWm/aUDpvylA6b9pQSm/KUEpvylAqYApv+lAqb+pQGmAKb/pQGmAKb/pQKm/aUDpv6lAKYBpv+lAab/pQGm/qUDpv2lAqYApv+lAab/pQGmAKYApgCm/6UBpgCm/6UCpv6lAKYCpv2lA6b+pQGmAKb/pQKm/qUCpv6lAqb+pQOm/aUCpv+lAKYBpv+lAab/pQGm/6UBpv+lAqb+pQKm/qUBpgCmAKYBpv6lAab/pQGmAab9pQOm/aUDpv6lAaYApv+lAaYApgCmAab+pQKm/qUCpv+lAab+pQKm/6UApgGm/qUCpv6lAqb/pf+lA6b8pQOm/6X/pQKm/qUCpv6lAaYApgCmAKYApgCmAKYBpv6lAqb/pQCmAab/pQCmAKYBpv+lAab/pQCmAab+pQOm/aUDpv2lA1r9WQNa/lkBWgBaAFoAWgBaAFr/WQJa/lkCWv5ZAlr9WQRa/FkEWv1ZAlr+WQJa/lkDWvxZBFr8WQRa/VkBWgBaAFoBWv9ZAFoAWgBaAVr/WQFa/lkCWv5ZA1r8WQVa+lkGWvtZBFr9WQJaAFr/WQFa/6UApgGm/6UCpv2lA6b9pQKmAKb/pQKm/aUDpv2lA6b9pQOm/aUDpv6lAKYBpv+lAaYApv+lAaYApv+lAab/pQGm/6UBpv+lAab/pQGm/6UBpv+lAaYApv+lAqb9pQKmAKb/pQGmAKb/pQGm/6UBpv+lAqb9pQOm/aUDpv6lAKYBpv+lAab/pQGm/6UBpv+lAKYBpgCm/6UBpv+lAaYApv+lAqb+pQKm/qUBpgGm/qUCpv6lAqb/pQCmAKYApgCmAab/pQCmAKYBpv6lA6b9pQGmAqb8pQSm/aUCpv6lAqb/pQCmAab9pQSm/aUCpv+l/6UDpvylBab6pQWm/aUCpgCm/6UApgCmAaYApv+lAqb9pQOm/qUBpv+lAqb9pQOm/qUBpgCm/6UBpgCm/6UCpv6lAaYApv+lAqb+pQKm/aUDpv+l/6UCpv6lAaYApv+lAab/pQGm/6UBpv+lAKYApgCmAab+pQOm/KUEpv2lAqb/pQGm/qUDpvylBKb+pQGm/qUDpvylBKb+pQCmAqb9pQKm/6UBpgCm/6UBpv+lAab/pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQCmAqb9pQNa/VkCWv9ZAlr9WQNa/VkCWgBa/1kBWv9ZAVoAWv9ZAFoBWgBaAFr/WQBaAVr/WQJa/FkFWvtZBFr9WQJa/lkCWv5ZAlr+WQFaAFr/WQJa/lkCWv5ZAlr+WQJa/1kBWv9ZAFoBWv5ZAlr/WQBaAVr+WQKm/qUBpgGm/aUEpv2lAaYApv+lAaYApgGm/aUDpv6lAaYApgCm/6UCpv6lAab/pQGmAKb/pQKm/KUFpvylA6b9pQOm/aUDpv6lAaYApv6lA6b9pQOm/qUBpgCm/6UBpgCm/6UCpv6lAqb9pQOm/qUCpv+l/6UCpv2lBab6pQam+qUFpv2lAaYApv+lAqb+pQGmAKb/pQKm/qUBpv+lAqb+pQGmAKb/pQGmAKb/pQGmAKb/pQGm/6UBpv+lAqb8pQWm/KUDpv2lAqYApv+lAqb8pQSm/aUDpv2lAqb/pf+lA6b8pQSm/aUCpv+l/6UCpv6lAqb+pQGmAKb/pQGm/6UBpgCm/6UCpv2lBKb7pQam+6UDpv+lAKYApgCmAKYApgCmAKb/pQKm/qUCpv2lA6b+pQGmAKb/pQGmAKb+pQOm/aUDpv2lAqb/pQCmAab/pQCmAab/pQCmAab+pQKm/6UApgCmAab+pQKm/qUCpv+lAKYBpv6lA6b9pQKm/6UApgGm/6UApgCmAab/pQGm/qUCpv+lAab/pQCmAKYApgCmAKYApgCm/6UCpv2lBKb8pQKmAab9pQSm/KUDpv2lA6b9WQNa/lkBWv9ZAVr/WQFa/1kBWv9ZAVr/WQFa/1kBWv9ZAVoAWv9ZAVoAWv5ZBFr8WQJaAFr+WQRa/FkCWv9ZAVoAWgBa/1kBWv9ZAlr+WQFaAFr/WQJa/VkDWv1ZA1r+WQBaAVr/WQBaAFoBWv5ZA1r8pQOm/6UApgGm/qUBpgGm/6UApgCmAKYApgGm/qUBpgCmAKYApgCmAKYApv+lAqb+pQKm/qUBpv+lAqb+pQGmAKb/pQGm/6UCpv2lBKb7pQWm/KUCpgCm/6UBpgCm/6UBpgCm/6UBpgCm/6UBpv+lAab/pQGm/qUDpv2lAqb/pQCmAab/pQGm/qUDpv6lAKYCpv2lA6b+pQGmAKb/pQKm/qUBpgGm/aUEpv2lAaYApv+lAqb/pQCmAKb/pQKm/qUDpv2lAaYBpv6lAqb/pQCmAab/pf+lAqb/pQGm/6UApgCmAab+pQOm/KUEpv2lAqb/pQCmAKYApgGm/qUDpvylBKb9pQKm/qUCpv6lA6b8pQSm/KUEpv2lAqb+pQKm/6UApgGm/qUCpv6lAqb/pf+lAqb9pQOm/6X/pQKm/qUBpgCmAKYBpv+lAKYApgCmAab/pQCmAKYApgCmAab+pQKm/qUCpv6lAqb+pQOm/KUEpvylBKb9pQKm/6UApgGm/qUDpv6lAab/pQCmAaYApv+lAab+pQOm/aUDpv2lAqb/pQGm/6UBpv+lAab/pQCmAaYApv+lAab+pQKmAKb/pQGm/1kAWgFa/1kBWv9ZAFoBWv9ZAVr/WQBaAVr+WQNa/VkCWv5ZA1r8WQRa/FkEWv1ZAlr+WQJa/1kAWgBaAVr+WQNa/FkEWv1ZAlr/WQBaAVr/WQBaAVr/WQFa/1kAWgFa/1kAWgFa/lkCWv9ZAFoBWv9ZAFoBpv+lAaYApv+lAab/pQGm/6UCpv2lA6b9pQOm/qUBpgCm/6UBpgCm/6UCpv6lAaYApv+lA6b7pQam+qUFpvylA6b+pQGmAKb+pQSm+6UFpvulBab8pQOm/qUBpv+lAaYApv+lA6b6pQem+qUFpvylA6b+pQGmAKYApgCmAKYApgCmAKYBpv6lA6b9pQKm/6UApgGm/6UBpv+lAab/pQGm/6UCpv6lAaYApgCmAKYBpv2lBab6pQem+aUGpvylAqb/pQGm/6UBpv+lAKYCpv6lAab/pQGmAKYApgCm/6UCpv2lA6b+pQGmAKb/pQGm/6UCpv2lA6b+pQCmAaYApv+lAqb9pQOm/qUCpv6lAqb+pQKm/qUCpv+lAKYBpv6lAqb/pQCmAKYApgCmAab+pQGmAKYApgCmAKb/pQKm/qUBpgCm/6UCpv2lA6b/pf+lAqb9pQSm/aUCpv6lAaYApgCmAab+pQKm/aUDpv+l/6UCpv6lAaYApgCmAKYApgCmAKYApgGm/qUCpv+lAKYApgCmAKYApgGm/aUDpv6lAqb+pQGm/6UCpv6lAab/pQGmAKb/pQGmAKb/pQGmAKb+pQOm/lkBWgBa/lkDWv5ZAVoAWv9ZAVoAWgBa/1kCWv5ZAVoBWv5ZAVoBWv9ZAVr/WQFa/1kCWv1ZA1r+WQFa/1kBWv9ZAVoAWv9ZAVr/WQFa/1kCWv1ZA1r9WQNa/VkCWv9ZAVr/WQFa/lkDWv1ZA1r+WQBaAab+pQSm/KUCpv+lAab/pQKm/KUFpvulBab8pQOm/aUCpgCm/6UCpv6lAaYApv+lAqb+pQKm/qUBpv+lAqb+pQGm/6UBpv+lAqb+pQCmAqb9pQOm/qUBpv+lAqb9pQOm/qUBpgCm/6UCpv6lAqb+pQGmAKYApgGm/qUBpgCmAKYBpv6lAaYApgCm/6UCpv2lA6b/pf6lBKb7pQWm/KUDpv6lAqb9pQSm/KUCpgGm/qUCpv+l/6UCpv6lAqb/pQCmAab9pQSm/aUCpv6lAqb/pQCmAKYApgGm/qUCpv6lAaYBpv6lAqb+pQKm/qUCpv+lAKYApgCmAab+pQOm/KUEpv2lAqb/pQGm/qUDpvylBKb9pQKm/6UApgCm/6UCpv6lA6b8pQOm/qUBpgGm/qUCpv6lAqb/pQCmAKYBpv+lAab+pQKm/6UCpvylBab6pQam/KUCpgCm/qUDpv2lA6b9pQKm/qUDpv2lAqb+pQGmAKYApv+lAqb+pQGmAKb/pQKm/6UApgCmAKYBpv+lAKYBpv6lA6b9pQGmAab+pQKm/6X/pQKm/qUCpv+lAKYApgCmAKYBpv+lAKYApv+lA6b9pQJa/lkCWv9ZAVr/WQBaAVr+WQNa/VkCWv9ZAFoBWv5ZA1r9WQJa/1kAWgFaAFr/WQBaAVr+WQRa+1kEWv1ZAloAWv9ZAVr+WQJaAFr/WQFa/1kAWgJa/VkDWv1ZAloAWv9ZAVoAWv9ZAVr/WQFaAFr/WQGm/6UBpgCm/6UBpv+lAKYBpv+lAab/pQCmAKYApgGm/6UBpv6lAaYBpv+lAab+pQGmAKYBpv6lAaYApgCmAab+pQKm/6UApgCmAab+pQOm/aUBpgCmAKYApgGm/qUBpgCmAab+pQKm/qUCpv+lAKYApgCmAab+pQKm/qUCpv+lAKYApgCmAab/pQCmAKYApgGmAKb+pQOm/KUFpvulBKb9pQKmAKb/pQCmAab/pQGmAKb/pQKm/aUDpv6lAaYBpv2lA6b+pQGmAab9pQOm/qUBpgCmAKb/pQGmAKb/pQKm/aUEpvylBKb8pQOm/qUCpv+lAab+pQKm/qUCpv+lAab/pQCmAKb/pQOm/aUCpv+l/6UCpv6lAqb/pQCmAKYApgCmAKYBpv+lAKYBpv2lBab7pQSm/aUBpgCmAab+pQKm/aUEpvylBKb9pQGmAKYApgCmAab+pQGmAKYBpv6lAqb+pQKm/6UApgCmAKYApgCmAab+pQKm/qUBpgGm/qUBpgGm/qUCpv6lAaYApgCmAab+pQGmAKYApgCmAKb/pQKm/qUBpv+lAaYApgCm/6UApgGmAKb/pQKm/aUDpv+l/6UCWv5ZAlr+WQNa/FkEWv1ZAVoAWgBaAFoAWgBaAFoAWgBa/1kCWv5ZA1r8WQNa/lkBWgBa/1kBWv9ZAVr/WQFa/1kAWgFa/lkDWv1ZA1r9WQNa/VkDWv1ZA1r+WQFaAFr/WQFaAFr/WQFa/1kBWgBa/1kBpv+lAaYApv+lAaYApv+lAab/pQGmAKb/pQGm/6UBpgCmAKYApv+lAaYApgCmAKb/pQGmAKYApgCm/6UBpgCmAKb/pQKm/aUDpv6lAab/pQGm/6UApgKm/aUCpv+lAKYBpv+lAKYApgGm/6UApgCm/6UDpv2lAqb+pQGmAKYBpv6lAqb+pQKm/6UBpv6lAqb/pQCmAab+pQKm/6UApgCmAab/pQCmAab+pQKm/6X/pQOm/aUBpgGm/aUEpv6lAKYBpv+lAKYBpv+lAKYBpv6lAqb+pQOm+6UGpvulA6YApv6lA6b9pQKm/6UBpgCm/qUDpv2lA6b+pQCmAab/pQGm/6UBpv+lAab/pQGm/6UApgKm/aUDpv6lAKYBpv+lAaYApv+lAab/pQGm/6UCpv2lBKb8pQKmAKb/pQKm/aUDpv2lA6b9pQOm/aUDpv6lAKYCpv2lA6b+pQCmAqb9pQOm/aUDpv2lA6b+pQCmAaYApv6lBKb7pQWm/KUDpv6lAaYApgCmAKYApgCm/6UCpv6lAaYApv+lAqb+pQGmAKYApgGm/qUCpv6lAqb+pQKm/qUDpvylBKb8pQSm/aUDpv2lAlr/WQBaAVr/WQBaAFoAWgFa/lkCWv5ZAVoBWv5ZAlr/Wf9ZAlr/WQBaAlr8WQRa/VkDWvxZBVr7WQVa/FkCWv9ZAVoAWgBaAFr/WQFa/1kCWv1ZBFr7WQVa/FkDWv5ZAVoAWgBaAFoAWgBaAFoAWgBaAab+pQKm/qUCpv+lAKb/pQOm+6UGpvqlBKb/pQCm/6UBpv+lAaYBpv6lAab/pQGmAKb/pQKm/aUEpvulBab7pQSm/qUBpv+lAab+pQOm/aUDpv6lAKYBpv+lAqb+pQGm/qUDpv6lAqb9pQOm/qUBpgCm/6UCpv+l/6UCpv6lAqb+pQKm/aUEpv2lAaYBpv6lAqb+pQKm/qUDpv2lAaYBpv2lBKb9pQGmAab9pQOm/6X/pQOm/KUDpv6lAqb/pQCmAKb/pQKm/qUCpv6lAqb+pQGmAKYApgGm/qUCpv6lAqb/pQCmAab+pQKm/qUCpv6lAqb+pQKm/qUCpv6lAqb/pQGm/6UApgCmAab/pQKm/aUCpv+lAKYBpv+lAab+pQOm/aUCpv+lAab/pQGm/6UApgKm/aUCpv+lAab/pQGm/qUDpv6lAab/pQGm/6UBpgCm/6UCpvylBab7pQWm/KUBpgGm/qUDpvylBKb8pQSm/aUCpv+lAKYBpv6lBKb7pQSm/qUApgGmAKb/pQGmAKb/pQKm/qUCpv6lAqb+pQKm/6UApv+lAqb+pQKm/qUBpv+lAqb+pQGmAKYApgCmAKYApgBaAFoBWv5ZA1r9WQJa/1kBWv9ZAVr/WQFa/1kCWv1ZA1r+WQFaAFr/WQJa/lkCWv5ZAVoAWgFa/lkCWv5ZAVoBWv5ZAlr+WQJa/lkDWvxZBFr9WQJaAFr+WQNa/VkDWv5ZAVr/WQJa/lkBWgBa/1kCWv6lAqb+pQGmAKYApgCmAab+pQKm/qUCpv+lAab+pQKm/qUDpv2lAqb/pQCmAKYApgCmAKYBpv6lAqb+pQKm/qUDpv2lAqb/pQCmAKYBpv6lAqb+pQKm/6UApgCmAKYApgGm/qUCpv6lAqb/pf+lAqb+pQKm/6UApv+lAqb/pQCmAab+pQKm/qUCpv+l/6UDpvylBab7pQOm/qUDpv2lAqb/pQCmAab+pQOm/KUEpv2lAqb/pQCmAab+pQOm/aUCpgCm/qUDpv2lA6b+pQCmAqb8pQWm/KUCpgCm/qUDpv2lA6b+pQCmAab/pQGm/6UApgGm/6UBpv+lAKYCpv2lA6b9pQOm/qUBpv+lAab/pQGmAKb/pQGm/6UApgGmAKb/pQGm/6UApgGm/qUDpv2lA6b8pQSm/aUCpgCm/qUDpv2lAqb/pQGm/qUDpvylBab7pQOm/6UApgGm/6UBpv6lAqb/pQGm/6UBpv6lA6b9pQKm/6UApgGm/qUCpv6lAqb+pQKm/6UApgCmAab/pQGm/6UApgGm/6UBpv+lAab+pQOm/aUDpv6lAab/pQGm/6UBpgCm/6UBpv+lAKYCpv2lA6b9pQJa/1kBWv9ZAVr/WQBaAVr/WQFa/1kAWgFa/1kBWv9ZAFoBWv9ZAVr+WQJa/lkDWv1ZAlr+WQNa/FkFWvpZBlr7WQNa/1kAWv9ZAlr9WQRa+1kFWvxZA1r+WQFa/1kBWgBa/1kBWv9ZAFoCWv1ZAlr/WQGmAKb+pQKm/6UCpv6lAab+pQOm/qUBpgCm/6UCpv6lAab/pQGmAab/pf+lAaYApgCmAKYApv+lA6b9pQKm/6UApgGmAKb+pQOm/qUApgKm/aUDpv6lAKYCpv2lA6b+pQGm/6UCpvylBab8pQOm/qUBpv+lAab/pQKm/qUApgKm/aUDpv+l/qUEpvylA6b/pQCmAKYApgCmAKYBpv6lA6b8pQSm/KUEpv2lAaYApgCm/6UCpv6lAKYCpv2lBKb7pQWm+6UFpv2lAKYBpgCm/6UCpv2lAqYBpv2lA6b9pQKm/6UBpv6lA6b9pQKm/6UBpv6lA6b+pQCmAqb9pQOm/qUBpgCm/6UCpv2lA6b+pQGm/6UBpv+lAaYApv+lAaYApv+lAqb+pQGmAKb/pQKm/qUBpgCm/6UCpv6lAqb+pQGmAKYApgGm/qUBpgCmAKYBpv2lBKb8pQSm/KUDpv+lAKYApv+lAaYBpv2lBKb7pQWm/KUDpv6lAaYBpv6lAqb+pQGmAab/pQGm/qUCpv+lAKYBpv+lAKYCpv2lA6b+pQGmAKYApv+lAqb+pQGmAKb/pQKm/qUBpgCm/6UCpv6lAaYBWv5ZAVoAWv9ZAlr/WQBaAFoAWgBaAVr/WQBaAVr+WQNa/FkEWv1ZAlr+WQNa/VkDWv1ZAloAWv9ZAVr/WQBaAVr/WQFa/1kAWgFa/lkDWv1ZA1r+WQBaAFoBWv9ZAlr9WQJaAFr+WQRa+lkHWvlZB1r5pQam+6UEpv2lAqb/pQCmAKYApgGm/qUCpv6lAqb/pQGm/qUCpv+lAab/pQCmAKYApgGm/6UApgGm/qUCpv+lAKYBpv6lA6b8pQSm/KUEpv2lAqb+pQKm/qUCpv6lAqb+pQKm/aUDpv6lAaYApv+lAab/pQGm/6UCpv2lA6b+pQCmAqb+pQGmAKYApv+lAqb+pQGmAab+pQKm/qUCpv+lAKYApgCmAKYApgGm/aUEpvylAqYApv+lAaYApgCm/qUDpv2lA6b+pQGm/6UBpgCm/6UBpv+lAaYApgCm/6UBpgCm/6UDpvulBab8pQOm/6X/pQKm/aUEpv2lAaYBpv6lAqb/pQCmAKYBpv6lA6b8pQSm/aUCpv+lAKYBpv+lAab/pQGm/qUDpv2lA6b+pQCmAab/pQKm/aUDpv2lA6b+pQKm/aUEpvulBKb+pQGmAKb/pQGm/6UCpv2lBKb8pQOm/qUBpgCmAKYApgCmAKYApgCmAKYApgGm/qUCpv+lAKYBpv6lAqb/pQCmAab+pQKm/6UApgGm/qUCpv+lAKYCpvylBKb9pQKmAKb+pQKm/qUCpv+lAKYApgCmAKYApgCmAFoAWgBaAVr+WQJa/1kAWgFa/lkCWv9ZAVr/WQBaAFoBWv5ZA1r9WQJa/1kBWv9ZAVr/WQFaAFr/WQBaAlr9WQNa/lkAWgFa/1kBWgBa/1kBWgBa/1kCWv1ZA1r+WQFa/1kBWv5ZAlr/WQBaAFoAWgBaAKYApv+lAqb+pQKm/aUDpv+lAKYApv+lAqb/pQCmAab9pQSm/KUDpv+lAKYApgCm/6UCpv6lAqb/pf+lA6b7pQam+6UDpv+lAKb/pQOm/KUEpv2lAqb/pQCmAKYBpv+lAab+pQKm/6UBpv+lAKYBpv6lA6b9pQKm/6UApgCmAab+pQOm/aUCpv+lAab/pQGm/6UBpv+lAab/pQGmAKb/pQGm/6UBpgCmAKb/pQKm/aUEpvylAqYApv+lAqb+pQGm/6UBpgCm/6UCpv6lAKYCpv2lA6b+pQCmAab/pQGmAKb+pQOm/aUDpv6lAKYBpv+lAab/pQGm/6UCpv6lAaYApv+lA6b8pQSm/KUDpv6lAqb+pQKm/qUBpgCm/6UCpv6lAaYApv+lAaYApv+lAqb+pQGmAKYApgGm/qUCpv6lA6b+pQGm/6UApgGmAKb/pQKm/aUDpv2lA6b9pQOm/aUDpv2lA6b9pQKm/6UBpgCm/6UBpv6lA6b+pQKm/aUDpv2lA6b+pQGm/6UBpv+lAab/pQGm/6UApgGm/6UBpv+lAKYBpv+lAqb9pQOm/aUCpgCmAKb/pQGm/6UBpgCm/qUDpv5ZAVoAWv5ZA1r+WQFa/1kBWv9ZAVr/WQFa/1kBWv9ZAVr/WQFaAFr/WQFaAFr+WQRa+1kFWvtZBFr+WQBaAVr/WQBaAlr9WQJaAFr/WQJa/VkDWv5ZAlr+WQJa/VkDWv5ZAVoAWgBa/1kBWv9ZAVoAWv+lAab/pQGm/6UBpv+lAqb+pQCmAab/pQKm/6X/pQGm/6UBpgCmAKb/pQGm/6UBpv+lAab+pQOm/aUCpv+lAKYBpv+lAKYApgCmAab+pQOm/KUEpv2lAaYApgGm/6UApgGm/aUEpv2lAaYBpv6lAqb+pQGmAab+pQKm/qUBpgGm/qUCpv6lAqb+pQKm/qUCpv6lAqb+pQGmAKb/pQKm/qUBpgCm/6UBpv+lAqb+pQGm/6UApgKm/aUDpv2lA6b9pQOm/aUCpv+lAab/pQKm/aUDpv2lA6b+pQKm/qUBpv+lAab/pQGm/6UBpgCm/qUDpv2lAqYApv6lA6b9pQKm/6X/pQOm/aUCpv+l/6UDpvylBKb9pQKm/6UApgCmAab/pQGm/qUCpv+lAKYBpv6lAqb/pQCmAab/pQGm/6UBpgCm/6UBpgCm/6UBpgCm/6UCpv6lAaYApgCmAKb/pQKm/qUBpgCm/6UBpgCm/qUEpvulBKb9pQKm/6UApgGm/qUDpvylBKb9pQKm/6UApgCmAab/pQGm/6UApgGm/6UBpv+lAab/pQGm/6UApgGm/qUDpv2lAqb/pQCmAKYBpv6lAqb/Wf9ZA1r8WQRa/VkBWgFa/1kAWgFa/1kBWv9ZAVr+WQNa/VkCWv5ZAlr+WQJa/lkCWv5ZA1r8WQRa/VkCWv9ZAFoBWv9ZAFoAWgBaAVr/WQBaAFoAWgBaAFoAWgBaAVr+WQJa/1kBWv9ZAVr/WQJa/lkBpv+lAaYApgCm/6UBpv+lAaYApv+lAaYApv+lAqb+pQGmAab9pQSm/KUDpv+l/6UBpv+lAaYApv+lAab/pQGm/6UBpgCm/6UBpv+lAab/pQGm/6UBpgCm/6UBpv+lAqb+pQGm/6UBpgCmAKb/pQGmAKb/pQGmAKb/pQOm+6UEpv6lAaYBpv2lA6b9pQOm/6UApgCm/6UCpv6lAqb/pQCmAab/pQCmAab/pQKm/qUCpv6lAaYBpv2lBKb8pQOm/qUApgGm/qUDpv2lAaYBpv6lAqb/pQCmAab+pQKm/6UApgKm/KUEpv6lAab/pQCmAab/pQKm/aUCpv+lAab/pQKm/KUFpvylA6b+pQGm/6UBpgCm/6UBpv+lAKYBpv6lAqb/pQCmAab+pQOm/aUDpv6lAKYCpv2lBKb8pQKmAKb/pQKm/qUBpgCm/6UCpv+lAKYApgCmAKYBpv6lAqb+pQKm/qUCpv6lAqb+pQGmAKb/pQOm/KUDpv6lAaYApgCm/6UCpv2lBKb8pQOm/qUApgGmAKb/pQGm/6UApgGmAKb+pQSm+6UFpvylAqYApv+lAab/pQGm/6UBpv+lAKYCpv2lBKb7WQRa/lkBWgBa/1kBWv9ZAlr9WQNa/lkBWgBa/lkDWv5ZAVr/WQFa/lkDWvxZBVr7WQVa+1kDWv9ZAVr/WQFa/lkDWv1ZAloAWv9ZAlr9WQNa/lkBWgBa/1kCWv5ZAVr/WQFa/1kBWv9ZAVr/WQBaAFoApgGm/6UApgCmAKYApgGm/6UApgGm/qUDpv2lAqb/pQCmAab+pQOm/aUCpv6lA6b9pQSm+6UFpvylA6b+pQGmAab9pQSm/KUDpv6lAab/pQKm/aUCpgCm/qUDpv2lAqb/pQGm/qUDpv6lAKYBpv+lAKYCpvylBKb9pQKm/6UApgGm/qUCpv+lAKYApgGm/qUCpv6lAqb+pQKm/6UApgCmAKYApgGm/6UApgCmAKYApgGm/qUCpv+l/6UDpvylBKb9pQOm/KUEpv2lAqb/pQCmAKYBpv6lA6b8pQSm/aUCpv+lAKYApgGm/6UApv+lAqb+pQKm/qUBpv+lAqb9pQOm/qUApgKm/aUDpv6lAab/pQKm/qUBpv+lAab/pQKm/qUBpv+lAab/pQKm/qUBpv+lAaYApv+lAab/pQGmAKb/pQGm/6UBpgCm/6UCpv2lAqYApv+lAaYApv6lA6b9pQKmAKb/pQCmAab/pQCmAqb8pQWm/KUCpgCm/6UBpv+lAab/pQGm/6UBpv+lAab/pQCmAqb8pQam+aUFpv6lAKYBpv+lAKYBpv+lAaYApv6lA6b9pQOm/qUBpv+lAab/pQKm/VkDWv5ZAVoAWv9ZAVoAWgBaAFr/WQFaAFr/WQJa/VkEWvxZA1r+WQFaAFoBWv5ZAlr/Wf9ZA1r9WQJa/1kAWgBaAlr8WQVa+1kDWgBa/lkDWvxZBFr8WQRa/FkEWvxZA1r+WQFaAFoAWv9ZAlr+WQBaAqb+pQGmAKb/pQKm/aUDpv6lAaYBpv2lA6b+pQKm/6UApgCmAKYBpv+lAab/pQCmAKYBpv6lA6b8pQOm/6UApgCm/6UCpv6lAqb+pQGmAKb/pQKm/qUCpv6lAqb+pQKm/qUCpv+lAab+pQKm/6UApgGm/qUCpv6lA6b9pQKm/6UApgGm/6UBpv+lAKYApgGm/6UApgCmAKYApgGm/aUFpvqlBab+pf+lA6b8pQOm/6X/pQKm/6UApgCmAKb/pQOm/KUEpv2lAqb+pQKm/qUCpv6lAqb+pQKm/aUDpv2lA6b/pf+lAab/pQGmAKYApv+lAqb+pQGmAKYApgCmAKYApgCmAKYBpv6lAqb/pQCmAab+pQKm/6UBpv+lAKYBpv+lAab/pQGm/6UBpv+lAKYBpv6lA6b9pQKm/qUCpv+lAKYApgCmAab+pQOm/KUEpv2lAqb+pQKm/6UApgCmAKYApgGm/6UApgCmAKYBpv+lAab/pQCmAab/pQGmAKb+pQOm/aUDpv6lAab/pQGm/6UCpv2lBKb7pQam+qUFpvulBKb/pf+lAqb9pQOm/qUCpv6lAqb+pQKm/qUCpv+l/6UDpvxZBFr8WQNa/1kAWgFa/VkDWv5ZAlr+WQJa/lkCWv5ZAVoAWv9ZAVoAWv9ZAVr+WQJaAFr/WQFa/lkCWgBa/1kBWv9ZAFoBWgBa/1kBWv9ZAVr/WQFa/1kAWgFa/lkDWv1ZAlr/WQBaAVr/WQFa/1kBWv+lAKYApgGm/6UBpv+lAKYBpv6lA6b+pQGm/6UApgGm/6UCpv2lA6b9pQOm/qUCpv2lA6b+pQGmAKb/pQGmAKYApv+lAaYApgCmAKYApgCmAKYApgCmAab+pQGmAab9pQSm/KUDpv+lAKYApgCmAKYBpv+lAab+pQKm/6UApgCmAKYApgCmAKYApgCmAab+pQKm/qUDpvylBKb8pQSm/aUCpv+l/6UDpv2lA6b9pQKm/qUCpv+lAKYApv+lAab/pQKm/qUBpgCm/6UCpv2lBKb8pQSm/KUDpv6lAaYApgCmAKYApv+lAqb+pQKm/qUCpv2lBKb8pQOm/6X/pQKm/qUCpv6lAqb9pQSm/KUEpvylAqb/pQGmAKYApv6lA6b+pQGmAab8pQWm/KUEpvylA6b+pQGmAKb/pQGmAKb/pQKm/aUDpv2lA6b9pQOm/aUDpv2lA6b8pQSm/aUDpv6lAKYBpv6lA6b+pQGmAKb/pQGm/6UBpgCm/6UBpv+lAab/pQGm/6UBpgCm/6UCpv6lAaYApgCmAKb/pQKm/aUEpvylA6b9pQOm/aUEpvylA6b9pQKm/6UCpvylBab7pQOmAKb+WQJa/1kAWgFa/1kAWgFa/1kBWv9ZAFoCWv1ZA1r9WQNa/lkAWgFa/lkDWv1ZAlr+WQNa/VkCWv5ZAlr/WQFa/1kAWgFa/1kBWv9ZAVoAWv9ZAVr/WQJa/VkDWv1ZAloAWv9ZAVr/WQFa/1kBWgBa/1kCpv2lBKb8pQOm/6X/pQKm/qUBpgGm/qUCpv6lAqb/pQCmAKYApgGm/6UApgCm/6UCpv+lAKYApgCm/6UCpv6lAaYApv+lAaYApv+lAab/pQKm/aUEpvulBqb6pQWm/KUDpv+l/6UBpgCmAKb/pQKm/qUCpv6lAaYApgCmAKYApv+lAqb+pQGmAKb/pQKm/qUBpv+lAab/pQGm/6UBpgCm/qUDpv2lA6b9pQOm/aUCpv+lAKYApgGm/qUCpv+l/6UDpv2lAqb/pQCmAqb9pQKmAKb+pQWm+aUHpvmlB6b6pQWm/KUCpv+lAab/pQGm/6UApgGm/qUDpv2lAqb/pQCmAab+pQKm/6UApgGm/qUCpv6lAqb+pQKm/6UApgCmAKYApgCmAKYApgCmAKYApv+lAaYApgCmAKYApv+lAaYApv+lA6b8pQOm/qUBpgCmAKYApgCmAKYApgCmAKYApgCm/6UDpvylBKb8pQOm/6X/pQKm/qUCpv6lAqb+pQGmAab9pQSm/aUBpgGm/aUEpvylA6b/pf+lAqb9pQOm/qUBpv+lAaYApgCm/6UBpv+lAqb+pQGmAKYApv+lAqb9pQOm/1n/WQFa/1kBWgBa/1kBWv5ZBFr8WQNa/lkBWgBaAFoAWgBaAFoAWgBaAFoAWv9ZA1r7WQZa+lkEWv5ZAVoAWgBa/1kCWv1ZBFr8WQRa/FkEWv1ZAlr/WQBaAFoBWv9ZAVr/WQBaAVr/WQFa/1kBWv5ZA6b8pQWm+6UEpv2lAaYBpv+lAKYCpvylBKb+pQCmAqb+pQCmAqb9pQOm/qUBpv+lAqb9pQKmAKb/pQGmAKb/pQGmAKb/pQKm/qUBpgCmAKYApgCmAKb/pQOm/KUEpvylA6b+pQKm/qUCpv2lBKb8pQOm/qUBpgCmAab9pQOm/qUBpgGm/qUCpv+lAKYApgCmAab+pQOm/aUCpv+lAKYApgGm/qUDpv2lAqb/pQCmAab/pQCmAab/pQGm/6UApgGm/6UBpv+lAKYBpv+lAab/pQGm/qUCpv+lAab/pQCmAKYApgGm/6UApgCmAab+pQOm/KUEpv2lAqb+pQKm/6UApgCmAKYApgGm/qUCpv+l/6UCpv6lAqb/pf+lAaYBpv6lA6b8pQOm/6UApgCmAKYBpv6lAqb+pQKm/6UBpv6lAqb/pQCmAab/pQCmAab+pQKm/6UBpv+lAab+pQKm/6UApgCmAKYApgCmAKYApgCmAKYApgCmAKYBpv+lAKYBpv6lAqb/pQGm/6UBpv+lAKYBpgCm/6UBpgCm/qUDpv6lAKYCpv2lA6b9pQOm/aUDpv6lAKYCpv6lAab/pQGm/6UBpgCm/lkDWv1ZAlr/WQFa/1kAWgFa/lkDWv1ZAlr/WQFa/1kAWgFa/lkDWv1ZAlr/WQBaAVr+WQNa/VkCWv9ZAVr/WQBaAVr/WQFa/1kAWgFaAFr/WQFa/lkDWv5ZAlr+WQFa/1kBWgBaAFoAWv9ZAVr/WQJa/qUCpv6lAKYCpv2lBKb8pQOm/aUCpv+lAab/pQGm/6UBpv+lAab/pQKm/qUCpv2lBKb9pQGmAab+pQOm/aUBpgGm/qUDpv2lAqb/pQGm/qUDpv2lAqb/pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQGm/6UApgCmAqb9pQSm+6UFpvylBKb8pQOm/6UApgCm/6UBpgCmAKb/pQGm/6UBpgCm/6UBpgCm/qUEpvulBab8pQKmAKYApv+lAqb9pQOm/6UApgCmAKb/pQKm/qUCpv6lAaYBpv2lBKb9pQKm/6UApv+lA6b8pQWm+qUFpv2lAaYBpv6lAaYBpv6lA6b8pQSm/KUFpvulBKb+pQCmAab/pQGm/6UBpv+lAaYApv6lA6b9pQOm/aUDpv2lA6b9pQOm/aUDpv2lAqb/pQCmAab+pQKm/qUBpgCmAKb/pQKm/aUDpv+lAKYApgCm/6UDpvylBKb9pQGmAab9pQSm/KUEpv2lAqb+pQKm/6UBpv6lAqb/pQGm/6X/pQKm/qUCpv+l/6UCpv2lA6b/pQCm/6UBpv+lAqb/pf+lAaYApgCm/6UCpv6lAqb/pQCmAKYApgFa/VkFWvtZA1r+WQJa/lkDWvxZA1r+WQNa/FkEWvxZA1r/Wf9ZAlr+WQFaAFr/WQJa/lkBWgBa/1kCWv5ZAVr/WQFaAFr/WQJa/VkDWv5ZAlr+WQJa/VkEWvxZBFr8WQNa/1n/WQJa/VkEWv1ZAlr+WQGmAKYApgCmAKYApgCmAKYApgCmAKYApgCmAab+pQKm/6X/pQOm/aUCpgCm/qUDpv2lA6b9pQOm/aUDpv2lAqb/pQCmAab/pQCmAab+pQKm/6UBpv+lAKYBpv+lAab/pQGm/6UBpv+lAab/pQGm/6UApgGm/6UBpv+lAaYApv6lA6b9pQOm/qUBpv+lAab/pQKm/aUDpv2lAqYApv+lAab/pQCmAab/pQGm/6UBpv+lAab/pQGmAKb/pQGm/6UCpv2lBKb7pQSm/qUBpgCm/6UApgKm/aUEpvylA6b+pQKm/6UApgCmAKYApgCmAKYApgCm/6UBpv+lAqb+pQCmAab+pQOm/qUBpv+lAab/pQGmAKb/pQKm/qUCpv2lA6b+pQKm/qUBpgCm/6UDpvylA6b/pQCmAKYBpv2lBKb+pf+lA6b8pQOm/6UBpv6lA6b8pQOm/6UApgGm/qUCpv2lBKb8pQOm/6X/pQKm/qUBpgCmAKYApgGm/aUDpv6lAaYBpv6lAaYApv6lA6b+pQGmAKYApv6lA6b9pQOm/6X/pQGm/6UBpgCm/6UBpv+lAqb+pQGm/6UBpgCmAab+pQKm/qUCWv5ZA1r9WQNa/VkCWv9ZAVr/WQJa/VkEWvtZBFr+WQJa/lkCWv5ZAVoAWgBa/1kCWv5ZAVoBWv1ZBFr8WQNa/lkBWgBaAFr/WQFa/1kBWgBa/1kCWv1ZA1r+WQJa/lkCWv1ZBFr8WQRa/FkDWv5ZAlr+pQKm/qUBpgGm/aUEpvylA6b+pQKm/qUCpv6lAqb+pQKm/6UApgGm/qUCpv6lA6b8pQWm+6UEpv6lAab/pQGmAKb/pQKm/qUBpgCm/6UCpv2lBKb7pQWm/KUDpv2lA6b9pQOm/aUCpv+lAab/pQGm/6UApgGm/6UCpv2lBKb8pQKmAab8pQem+KUHpvulA6b/pf+lAqb+pQKm/qUCpv6lAaYApv+lAqb+pQGmAKYApgCmAKb/pQKm/qUDpvylBKb8pQSm/KUEpv2lAqb+pQKm/qUCpv+lAKYApgCmAKYApgGm/qUBpgCm/6UCpv2lBKb8pQSm/KUDpv6lAaYBpv6lAaYApv+lAqb+pQGm/6UBpv+lAab/pQGm/6UApgGm/6UBpv+lAab/pQGm/6UApgKm/KUEpv2lAqYApv6lA6b9pQKmAKb+pQOm/aUBpgGm/qUCpv6lAqb+pQKm/6X/pQOm/aUCpv6lAqb+pQKm/qUBpgCmAKb/pQGmAKb/pQKm/aUDpv6lAaYApv+lAaYApgCm/6UBpv+lAaYApv6lA6b9pQOm/aUCpgCm/6UCpv6lAaYApv+lAqb/pQCmAKb/pQGmAVr+WQJa/lkBWgBaAFoAWgBaAFoAWgBaAFoBWv5ZA1r8WQRa/lkAWgJa/FkFWvtZBVr7WQVa+1kFWvxZAlr/WQBaAlr9WQNa/VkCWgBa/lkDWv1ZAlr/WQBaAVr/WQBaAFoAWgFa/lkDWv1ZAlr+WQJa/qUDpv2lAqb+pQGmAab/pQGm/qUCpv+lAab/pQGm/qUDpv6lAaYApv6lAqYApgCmAKYApv6lA6b+pQKm/qUCpv6lAaYBpv2lA6b+pQGmAKb/pQGmAKYApgCm/6UBpgGm/6UApgCmAKYBpv+lAKYBpv+lAab/pQGm/6UBpgCm/qUEpvqlB6b6pQSm/aUCpv6lAqb+pQKm/qUBpv+lAqb+pQGm/6UBpgCm/6UBpv+lAab/pQGm/6UBpv+lAKYBpv+lAab+pQKm/6UApgGm/qUCpv+lAKYBpv+lAKYCpvylBab8pQKmAKb/pQGmAKYApv+lAqb9pQOm/qUBpgCmAKb/pQGm/6UCpv6lAqb9pQSm/KUEpvylBKb8pQSm/aUCpv+lAab/pQCmAqb9pQKm/6UApgKm/aUBpgGm/aUFpvulA6b/pQCmAKYApgCmAab/pQCmAab+pQOm/qUBpgCm/6UBpgCmAKb/pQKm/aUDpv6lAaYApv+lAKYBpgCmAKb/pQGm/6UBpgCm/6UBpgCm/6UCpv2lA6b+pQKm/qUCpv6lAaYApgCmAKYApv+lAqb+pQGmAab9pQWm+qUFpvylBKb8pQRa/FkDWv5ZAlr+WQFaAFr/WQJa/lkBWgBa/1kCWv5ZAVoAWv9ZAlr+WQFa/1kBWgBaAFr/WQFaAFr/WQJa/lkBWgBa/1kBWgBa/1kBWv9ZAVr/WQFaAFr/WQFa/1kBWgBaAFr/WQFaAFr/WQJa/VkDWv6lAab/pQGm/6UBpv+lAKYBpv+lAab/pQCmAab/pQCmAab+pQOm/aUCpv+l/6UDpvylBab7pQOm/6UApgCmAKYApgCmAKYApv+lAqb/pf+lAab/pQGmAab+pQGm/6UBpv+lAaYApv+lAqb9pQOm/aUDpv6lAqb+pQGm/6UBpgCmAKb/pQGm/6UBpv+lAab/pQGmAKb/pQGm/6UBpgCm/6UCpv2lA6b9pQOm/qUBpgCm/6UBpgCm/6UBpgCm/6UBpv+lAab/pQGm/6UBpv+lAab/pQCmAab+pQOm/KUEpv2lA6b9pQKm/qUDpv2lA6b9pQKm/6UApgCmAab/pQCmAKb/pQOm/KUEpvylA6b/pQCmAKYApv+lAqb/pQCmAKYApgCmAab+pQKm/6UBpv+lAKYBpv+lAab/pQCmAab/pQCmAab+pQOm/qUBpv+lAab/pQGmAKYApv+lAab/pQGmAKYApv+lAab/pQGm/6UCpvylBKb9pQOm/aUCpv6lAqYApv6lAqb+pQGmAab+pQGmAab9pQSm/aUBpgGm/qUCpv+lAKYBpv6lAqb/pQGm/6UBpv+lAqb+pQGm/6UCpv+lAKYAWv9ZAlr/WQBaAFoAWgBaAVr+WQJa/lkBWgBaAVr+WQJa/VkDWv9ZAFoAWgBaAFoBWv5ZA1r8WQVa+1kEWv5ZAFoBWv9ZAVoAWgBa/1kBWgBaAFoAWgBa/1kCWv5ZAlr+WQJa/lkCWv9ZAFoAWgBaAFoApgGm/qUCpv+lAKYApgCmAKYBpv+lAKYApgCmAKYApgCmAKYApgCmAKb/pQGmAKYApgCm/6UBpv+lAqb9pQOm/qUBpv+lAab/pQKm/aUDpv6lAaYApv+lAaYApgCmAKYApgCmAKYApgCmAKYApgCmAKYApgCm/6UCpv6lAaYApv+lAaYBpvylBab8pQOm/qUBpv+lAqb9pQSm/KUDpv6lAaYApgCm/6UCpv6lAqb/pf+lAqb+pQKm/qUCpv2lBKb8pQOm/qUBpgCmAKb/pQKm/qUCpv6lAaYApv+lA6b8pQSm/KUDpv6lAaYApv+lAqb+pQGm/6UBpgCmAKYApv+lAaYApgCmAKYApgCmAKYApgCmAKYApgCmAKYApgCmAKb/pQGmAKb/pQKm/qUApgKm/aUDpv6lAab/pQGm/6UBpv+lAKYCpv2lA6b+pQCmAqb+pQGmAKb/pQGmAKb/pQGmAKb+pQOm/KUFpvylAqb/pQCmAKYBpv+lAKYCpvylBKb9pQKm/6UBpv+lAKYApgCmAab/pQCmAKYApgCmAab+pQKm/qUCpv6lA6b8pQOm/6UApgGm/qUCpv6lAqb/pf+lA6b9WQJa/lkCWv5ZA1r9WQJa/1kAWgFa/1kBWv5ZAlr/WQBaAVr/WQBaAVr+WQJaAFr+WQNa/VkCWgBa/1kBWv9ZAVr+WQNa/lkBWv9ZAFoAWgJa/VkDWv1ZAloAWv5ZBFr7WQVa/FkCWgFa/VkEWvxZA1r/pQCmAKYApv+lA6b8pQSm/KUDpv+lAKYApgGm/qUDpvylBab7pQWm+6UEpv6lAKYBpv6lAqb/pQCmAab+pQKm/6UApgGm/qUDpvylBKb9pQKm/qUBpgCmAKYApgCm/6UDpvylBKb9pQKmAKb/pQCmAqb9pQSm+6UFpvulBqb5pQem+qUFpvylA6b+pQKm/qUBpgCmAab/pQCm/6UCpv6lBKb6pQam+qUFpv6l/6UDpv2lAqb+pQGmAKYBpv+l/6UCpv6lAqb/pf+lAqb/pQCmAab+pQKm/qUDpv2lAaYBpv6lA6b9pQKm/6UBpv+lAab/pQGm/6UCpvylBab7pQSm/qUApgGm/qUCpv+lAKYBpv6lAqb/pQCmAab/pQGm/6UBpv+lAaYApv+lAaYApv+lAqb9pQSm/KUEpv2lAqb/pQCmAKYApgGm/6UApgCm/6UDpvylBKb9pQGmAab+pQKm/6UApgCmAKYApgGm/qUCpv6lAaYBpv6lAqb+pQGmAKYBpv6lAqb+pQKm/6UBpv6lAqb/pQCmAab/pQCmAKYApgGm/qUCpv6lAqb+pQKm/qUCpv+l/6UCpv+lAKYApv+lAlr+WQJa/lkBWgBa/1kBWgBa/1kCWv1ZBFr8WQNa/lkBWgFa/1kAWgBa/1kCWv9ZAFr/WQFa/1kCWv1ZA1r9WQNa/VkCWv9ZAVr/WQFa/lkDWv1ZA1r+WQFaAFr/WQFaAFr/WQFaAFr/WQFa/1kBWv9ZAqb9pQOm/qUBpgCm/6UCpv6lAaYApgCmAKYApgCmAKYApv+lAaYApgCmAKb/pQKm/aUDpv6lAaYBpv6lAaYApv+lAqb/pQCmAKYApgGm/qUDpvylBKb9pQKm/6UApgCmAKYApgGm/qUCpv6lAqb/pQCmAab+pQKm/6UApgCmAab+pQOm/KUDpv+lAKYBpv6lAqb/pQCmAKYApgGm/6UApgCmAKYApgGm/qUCpv+lAKYBpv6lAqb+pQOm/aUDpvylBKb+pQCmAab+pQOm/aUDpv2lA6b9pQOm/aUDpv+l/6UCpv2lA6b/pQCmAKb/pQKm/qUCpv6lAKYCpv6lAaYApv+lAqb9pQOm/aUDpv+l/qUDpv2lA6b+pQGm/6UCpv2lBKb8pQSm+6UFpvylBKb8pQKmAKb/pQGm/6UBpgCm/qUCpv+lAab/pQGm/6UBpv+lAKYBpv+lAab/pQCmAKYApgGm/qUDpvylBKb+pQCmAKYBpv6lAqYApv6lA6b9pQGmAab/pQCmAab+pQKm/6UApgCmAKYApgCmAKYApgCmAKYApgCmAKYBpv6lAqb/pQGm/6UApgCmAab/pQGm/6UApgJa/VkDWv5ZAVoAWv9ZAlr9WQNa/lkBWv9ZAlr9WQNa/lkAWgFaAFr/WQFaAFr/WQFaAFr/WQJa/lkBWgBaAFoAWgBa/1kCWv5ZAlr+WQFaAFoAWgBaAFr/WQJa/lkCWv5ZAVoAWgBaAFr/WQJa/lkCWv6lAqb+pQKm/qUBpgGm/6X/pQOm/KUDpv+lAKYBpv+lAKYApgCmAab/pQCmAKYApgGm/qUCpv6lAqb/pQCmAKYBpv6lAqb/pQCmAab+pQOm/aUDpv2lAqb/pQGm/6UBpv+lAab/pQCmAab/pQKm/KUFpvulBab8pQOm/qUBpgCm/6UCpv6lAqb+pQKm/aUDpv+lAKYApgCm/6UCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/6UApgCm/6UDpvylBab6pQWm/aUCpv6lAqb/pQCmAKYApv+lA6b8pQSm/KUDpv6lAqb+pQGmAKYApgCmAKb/pQOm/KUEpvylBKb9pQGmAab+pQKm/qUCpv+lAKYApgCmAKYBpv+lAKYApgGm/qUCpv+lAKYBpv+lAKYBpv+lAKYBpv6lA6b9pQKm/6UApgGm/6UApgGm/6UBpgCm/6UBpgCm/6UCpv6lAaYApv+lAab/pQGmAKb/pQCmAab/pQGm/6UBpv+lAaYApv6lBKb8pQOm/6X/pQGmAKb/pQKm/qUApgKm/aUDpv2lA6b9pQOm/qUBpgCm/6UBpv+lAqb+pQGmAKb/pQKm/qUBpgCm/6UBWgBaAFoAWv9ZAVoAWgBaAFoAWv9ZAlr+WQJa/lkBWgBaAFoAWgBaAFoBWv5ZAlr+WQNa/VkCWv9ZAFoBWv9ZAFoBWv9ZAFoBWv5ZAloAWv5ZA1r8WQNa/1kAWgFa/lkCWv5ZAlr+WQJa/1kAWgFa/lkCpv+lAab+pQOm/aUCpgCm/qUCpgCm/qUDpv2lAqb/pQGm/qUCpv+lAKYBpv6lAqb+pQKm/6UApgCmAab+pQOm/KUDpv+lAKYBpv6lAaYApgGm/qUCpv6lAaYApgCmAKYApgCm/6UBpgCmAKYApgCm/6UCpv6lAqb+pQKm/qUCpv6lA6b9pQKm/6UApgKm/qUBpgCm/6UCpv6lAqb+pQGmAKYApgCmAKb/pQKm/qUCpv6lAqb+pQKm/qUBpgCmAKb/pQGmAKb/pQKm/aUDpv6lAqb9pQOm/qUBpgCm/6UBpv+lAaYApgCmAKb/pQGmAKYApgCmAKYApgCmAKYApgCmAKYApgCmAab9pQOm/aUEpvylBKb7pQSm/6X/pQOm+6UEpv6lAaYApv+lAaYApgCm/6UCpv2lBKb9pQKm/qUCpv6lAqb+pQKm/6UApgGm/qUCpgCm/qUDpv2lAqYApv+lAKYCpv2lA6b+pQCmAab/pQGm/6UApgGm/6UApgCmAab+pQSm+qUGpvulBKb9pQKm/6UApgGm/6UApgGm/6UBpv+lAKYApgGm/6UBpv6lAqb/pQGm/6UApgGm/6UBpv+lAFoBWv5ZA1r8WQRa/VkBWgFa/lkCWv9ZAVr+WQJa/lkCWv9ZAFoAWv9ZAlr+WQFaAFr/WQJa/lkBWgBa/1kCWv5ZAVoBWv1ZBFr8WQRa/VkCWv5ZAlr+WQJa/1kAWgFa/1kAWgFa/lkDWv1ZAlr/WQBaAab+pQKm/6UApgGm/6UBpgCm/6UBpv+lAab/pQKm/qUApgGm/6UBpgCm/6UBpv+lAKYBpv+lAqb9pQKm/qUCpgCm/6UBpv6lAqb/pQGm/6UBpv6lA6b9pQOm/aUDpv2lBKb8pQOm/qUBpgCmAKYApgCm/6UBpgCmAKb/pQGm/6UBpgCm/6UApgKm/qUBpgCm/6UCpv6lAaYApv+lAqb+pQGmAKb/pQGmAKYApgCm/6UBpgCmAKYApv+lAqb+pQKm/6X/pQKm/qUBpgKm/KUDpv6lAaYBpv+l/6UBpgGm/qUCpv6lAaYBpv6lAqb+pQKm/qUCpv+lAKYApgCmAab/pQGm/6UApgGm/6UBpv+lAab/pQCmAab/pQGm/6UBpv+lAqb9pQOm/aUDpv+l/6UCpv6lAaYApv+lAqb/pf+lAqb+pQGmAKYApgCmAab+pQKm/6UApgGm/qUDpv2lAaYApgCmAKYBpv2lA6b9pQSm/aUBpgCm/6UCpv2lBKb8pQSm/aUBpgCmAKYApgCmAKYApgCmAKb/pQKm/qUBpgCm/6UCpv6lAaYApgCmAKb/pQKm/qUDpvylA6b/pQCmAab+pQKm/1kAWgFa/lkDWv1ZAlr/WQBaAVr/WQBaAVr+WQNa/VkCWv9ZAVr/WQFa/1kAWgJa/VkCWv9ZAFoBWv9ZAFoAWgBaAVr+WQNa/FkEWv1ZAlr+WQNa/VkCWv9ZAFoBWv9ZAVr/WQFa/1kAWgFaAFr/WQFa/qUCpgCm/6UBpv+lAKYBpv+lAKYBpv+lAKYBpv6lAaYBpv6lAqb+pQGmAKb/pQKm/aUDpv2lA6b9pQOm/aUDpv2lA6b9pQSm+6UFpvylA6b+pQGmAKb/pQKm/aUDpv6lAqb+pQKm/aUDpv+lAKYBpv6lAqb+pQGmAab+pQOm/KUDpv6lA6b8pQSm/aUBpgKm/KUDpv+lAKYBpv6lAqb+pQOm/aUDpvylBKb+pQGm/6UApgGm/6UBpv+lAaYApv+lAKYApgKm/qUCpvylBKb+pQGmAKb/pQGmAKYApv+lAqb+pQKm/6X/pQKm/6UApgGm/aUFpvulBKb+pf+lA6b8pQSm/qUApgGm/qUCpv+lAKYApgCmAKYApgCmAKb/pQKm/qUCpv2lBKb8pQOm/6UApgCmAab9pQSm/aUCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUDpvylBKb9pQKm/6UApgCmAKYBpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUCpv+lAKYApgGm/6UBpv+lAKYBpv+lAab/pQCmAKYApgCmAab9pQOm/qUCpv+l/6UBpgCmAKYApgCm/6UCpv2lBKb8pQNa/lkBWgBaAFoAWgBaAFoBWv5ZAlr+WQNa/VkDWvxZBFr9WQNa/lkAWgBaAVr+WQNa/FkEWv1ZAlr+WQFaAVr+WQJa/lkBWgFa/lkCWv1ZA1r+WQFaAVr+WQFaAFr/WQJa/lkCWv5ZAlr/WQBaAFoAWgCmAab/pf+lAqb+pQOm/aUCpv6lA6b9pQOm/aUCpgCm/6UBpv+lAKYBpv+lAab/pQGm/6UApgKm/aUEpvulBab8pQKmAab9pQSm+6UFpvulBab8pQKm/6UApgCmAab+pQKm/qUCpv6lAaYApv+lA6b7pQWm+6UEpv+l/6UBpgCm/qUDpv6lAaYApv+lAaYApv+lAab/pQGm/6UBpv6lA6b9pQKm/qUCpv6lAqb/pf+lA6b8pQSm/KUEpv2lAqb/pQCmAKYBpv+lAab+pQKm/6UBpv+lAKYBpv6lA6b8pQSm/qUApgGm/qUCpv+lAab/pQCmAKYBpv6lA6b9pQKm/6UApgGm/6UBpv6lAqYApv+lAab/pQCmAab/pQGm/6UBpv+lAab+pQOm/KUFpvulBKb+pQCmAab/pQCmAqb9pQOm/aUCpgCm/6UBpv+lAKYBpv+lAab/pQGm/6UBpv+lAab+pQKmAKb/pQGm/6UApgGm/6UBpv+lAab/pQCmAKYBpv+lAKYBpv6lAqb/pf+lA6b8pQSm/aUBpgCmAKYApgCmAKb/pQOm/KUEpvylA6b+pQKm/qUCpv6lAaYApgCm/6UCWv1ZA1r+WQFaAFr/WQJa/VkDWv5ZAVoBWv1ZA1r+WQFaAFr/WQJa/VkEWvxZBFr8WQNa/lkCWv5ZAlr+WQJa/lkCWv5ZAlr+WQJa/lkCWv5ZAlr/WQBaAFoAWgBaAFoAWgFa/VkEWvtZBVr9WQFa/1kBpv+lAqb9pQOm/aUDpv6lAKYCpv2lA6b+pQGm/6UBpv+lAqb+pQGm/6UBpgCmAKYApgCm/6UBpgCmAKYBpv2lA6b+pQKm/6UApgCmAKYBpv+lAab/pQGmAKb/pQKm/qUBpgGm/aUFpvqlBab9pQGmAab+pQKm/6UApv+lAqb+pQKm/qUBpgCm/6UBpv+lAab/pQGm/6UApgGm/qUCpv+lAKYBpv+lAKYBpv+lAab/pQGm/6UBpgCm/6UBpv+lAqb9pQSm+6UFpv2lAaYApv+lAqb+pQKm/qUBpgCmAKb/pQKm/aUDpv6lAaYApv+lAab/pQGmAKYApv6lA6b9pQKmAab8pQWm/KUDpv2lBKb7pQWm/KUCpgCm/6UBpv+lAaYApv+lAaYApv+lAqb9pQOm/qUBpv+lAab+pQOm/aUDpv2lA6b9pQOm/aUDpv2lA6b+pQCmAqb9pQOm/aUDpv6lAaYApv6lA6b9pQKm/6UBpv6lA6b8pQSm/qUBpv+lAqb9pQSm/KUDpv6lAqb+pQKm/qUCpv6lAqb+pQGmAab+pQKm/qUCpv6lAqb+pQGmAKb/pQGmAKb+pQOm/aUCpv+lAVr+WQNa/lkAWgFa/1kBWgBa/1kBWv9ZAVr/WQFa/1kBWv5ZAlr/WQBaAVr+WQJa/1kAWgBaAVr+WQJa/lkCWv5ZA1r8WQRa/FkDWv9ZAFoAWgFa/VkEWvxZBFr9WQJa/lkCWv5ZAlr+WQFaAFr/WQJa/qUBpgCm/6UBpgCm/6UCpv2lBKb8pQOm/qUApgKm/qUBpgCmAKb/pQKm/aUDpv6lAqb9pQOm/qUBpgCmAKb+pQSm/KUDpv6lAab/pQGmAKb/pQKm/aUDpv2lA6b+pQGmAKb/pQGm/6UCpv2lA6b+pQGm/6UBpv6lA6b+pQCmAab+pQOm/aUDpv6lAab/pQGm/6UCpv2lA6b9pQKm/6UApgGm/qUCpv6lAqb/pQCmAab/pQCmAab/pQGmAKb/pQGm/6UBpv+lAab/pQGm/6UBpv+lAKYBpv+lAKYBpv6lAqYApv6lAqb/pQCmAab/pQCmAaYApv+lAab/pQGm/6UBpv+lAaYApv+lAab+pQOm/aUCpv+lAab/pQGm/qUCpgCm/6UBpv+lAKYBpv6lA6b9pQKm/6X/pQOm/aUCpv+lAKYApgCmAab+pQKm/qUBpgCmAKYApgCm/6UCpv2lBKb8pQOm/qUCpv6lAqb+pQGmAKYApgGm/qUBpgCmAKYApgCmAKYApgCmAKYApgCmAab+pQKm/6UApgGm/6UBpv6lA6b8pQSm/aUCpv+lAKYApgCmAKYApgGm/qUCpv6lAqb+pQFaAFr/WQJa/lkBWgBa/1kCWv5ZAlr+WQJa/lkCWv1ZA1r+WQFa/1kCWv1ZA1r9WQNa/lkBWgBa/1kCWv5ZAVoAWgBa/1kCWv5ZAlr+WQJa/VkEWvxZA1r/WQBaAFoAWgBaAFoBWv5ZAlr/WQBaAFoAWgCmAKYBpv6lAqb+pQKm/6UApgGm/qUCpv+l/6UCpv+lAKYApv+lAqb9pQSm+6UFpvylAqb/pQKm/aUDpv2lA6b+pQGm/6UBpgCmAKb/pQGm/6UBpgGm/aUDpv2lA6b+pQGm/6UBpv+lAab+pQOm/aUDpv2lAqb+pQOm/qUApgGm/qUDpv2lAqb/pQGm/qUDpvylBKb+pQCmAab/pQCmAab/pQCmAKYBpv+lAab+pQGmAab/pQCmAKb/pQKm/qUCpv6lAaYApv+lA6b8pQSm/KUDpv6lAab/pQKm/aUCpv+lAKYCpv2lAqb+pQOm/qUBpv+lAKYBpgCm/6UCpv2lA6b9pQOm/qUBpgCm/6UBpgCmAKYApv+lAaYApgCmAKb/pQGm/6UCpv6lAab/pQGmAKb/pQKm/aUDpv6lAKYBpgCm/6UCpv2lA6b+pQKm/qUCpv6lAqb/pQCmAKYApgCmAab/pQCmAKYApgCmAab/pQCmAab/pQCmAab/pQGm/6UApgCmAKYBpv6lAqb+pQKm/qUDpvylBKb8pQOm/6UApgCmAKb/pQKm/qUDpvylBKb8pQOm/6UApgGm/qUBpgCm/6UCpv9ZAFoAWv9ZAVoAWgBaAFr/WQFaAFoAWgBa/1kCWv5ZAlr/WQBaAFoAWv9ZAVoBWv1ZBFr8WQJaAFoAWv9ZAlr9WQRa/VkBWgBa/1kBWgBaAFoAWgBa/1kCWv5ZAVoAWv9ZAlr+WQFaAFr/WQJa/lkCWv6lAqb/pQCmAKYApgCmAab+pQKm/qUBpgGm/qUCpv2lA6b+pQGmAKb/pQGmAKb/pQKm/qUBpgCm/6UCpv6lAaYApv+lAab/pQKm/qUBpgCm/6UBpgCmAKb/pQKm/aUEpv2lAaYApv+lA6b8pQSm/aUBpgCmAKYApgCmAKb/pQKm/qUBpgCm/6UBpgCm/qUDpv6lAKYBpv6lAqb/pQCmAab+pQKm/qUCpv+lAab+pQKm/qUCpv+lAKYApgCmAKYApgCmAKYApgCmAKYApgCmAKYApgCmAKYApgCmAKYApv+lAqb+pQKm/aUEpvylA6b+pQGm/6UCpv6lAab/pQGm/6UBpv+lAKYBpgCm/6UBpv6lA6b+pQKm/aUCpgCm/6UBpv+lAKYBpv6lA6b8pQSm/KUEpvylBKb8pQSm/aUBpgGm/qUCpv+lAKYBpv+lAKYBpv6lA6b9pQOm/aUCpv6lAqb/pQCmAab+pQKm/qUCpv+lAKYBpv6lAaYBpv+lAab/pQCmAKYBpv+lAab+pQKm/qUCpv+lAKYBpv+lAKYBpv+lAaYApv+lAab/pQGmAKb/pQGm/6UBpv+lAab/pQGm/6UAWgFa/lkCWv9ZAFoBWv5ZAlr+WQFaAFoAWgBaAFr/WQFa/1kBWgBa/1kCWv1ZA1r+WQFaAFr/WQFaAFr/WQJa/VkCWgBa/1kBWv9ZAFoBWv9ZAVr/WQFa/lkDWv1ZA1r+WQFaAFoAWv9ZAVoAWgBaAVr+pQGmAKYApgGm/qUCpv6lAqb+pQKm/aUEpvylBKb8pQOm/aUEpvylBKb7pQWm/KUEpvylA6b+pQGmAKYApv+lAaYApv+lAqb+pQCmAqb9pQOm/qUBpgCm/6UCpv2lA6b+pQGmAKb/pQKm/aUEpvulBab8pQOm/6X/pQKm/qUCpv+lAKYApgCmAKYApgGm/qUCpv6lAqb+pQKm/qUCpv6lAqb+pQGmAKYApgCmAKYApgCmAab+pQKm/6UBpv6lA6b8pQSm/aUCpv+l/6UCpv6lAqb/pf+lAqb+pQKm/6X/pQOm/KUEpv2lAqb/pQCmAab+pQOm/aUDpv6lAKYBpv+lAqb+pQGmAKb+pQSm+6UEpv+l/qUDpv2lAqb/pQGmAKb/pQGm/6UBpgCm/6UBpgCm/6UCpv2lA6b+pQCmAqb9pQOm/aUCpv+lAKYBpv6lAqb+pQKm/6UBpv6lAqb+pQKm/6UApgGm/qUBpgCmAKYApgCmAKYApgCmAKb/pQOm/KUDpv+l/6UCpv6lAKYCpv6lAqb+pQCmAaYApv+lAqb9pQSm/KUDpv2lA6b+pQGmAKb/pQKm/aUDpv6lAaYApgCmAFoAWv9ZAVoAWgFa/VkEWvtZBlr7WQNa/lkCWv5ZAlr9WQRa/FkEWvxZA1r9WQRa/VkCWv5ZAFoCWv5ZAlr+WQFa/1kCWv5ZAVoAWv9ZAVoAWv9ZAVr/WQBaAlr9WQJaAFr/WQJa/VkDWv5ZAlr+WQFa/6UBpgCm/6UCpv2lA6b9pQOm/aUDpv6lAKYBpv+lAaYApv6lA6b9pQOm/qUBpv+lAqb9pQOm/qUBpgCmAKYApv+lAab/pQKm/qUCpv2lA6b+pQKm/6UApgGm/6UApgGm/6UBpgCm/6UApgGm/6UBpv+lAab+pQKm/qUCpv+lAKb/pQGmAKYApgCmAKb/pQKm/qUCpv+l/6UCpv6lAqb+pQGmAKb/pQOm+6UEpv6lAKYCpv2lAqb/pQGm/6UBpv6lA6b9pQOm/aUCpv+lAab/pQCmAab+pQKm/qUCpv+lAKYApgCmAKYApgCmAab/pQGm/qUCpv6lA6b9pQOm/KUDpv6lAqb/pQCmAKYApgCmAKYApgCmAab+pQKm/qUCpv+lAKYApgCmAKYApgCm/6UCpv2lA6b+pQCmAqb9pQOm/qUApgGmAKb/pQKm/qUBpv+lAqb+pQKm/qUApgGmAKb/pQGm/6UApgGm/6UApgKm/aUDpv6lAKYBpv+lAqb+pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQGm/6UCpv2lA6b+pQGmAKb/pQGm/6UBpv+lAab/pQCmAab/pQGm/qUCpv9ZAVr/WQFa/1kBWv9ZAVr/WQFa/1kCWv1ZAlr/WQFaAFr/WQBaAVr/WQFa/lkCWv5ZA1r8WQRa/FkDWv9Z/1kDWvxZBFr8WQRa/VkCWv9ZAFoAWgFa/1kAWgFa/lkCWv9ZAFoAWgBaAFoAWgBaAFoAWgCmAKYApgCmAKYApgCmAKYApgCm/6UCpv6lAqb/pf+lAaYBpv6lA6b8pQOm/6X/pQOm/KUEpvylA6b+pQGmAKb/pQGm/6UBpv+lAKYBpv+lAab/pQCmAaYApv+lAab/pQCmAab/pQGm/6UApgCmAab/pQGm/qUCpv+lAab/pQCmAKYApgCmAab/pQCmAab/pQCmAab/pQGmAKb/pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQGmAKb/pQGmAKb/pQGm/6UBpv+lAab/pQCmAab/pQGm/6UApgGm/6UBpgCm/qUEpvulBab8pQOm/qUBpgCmAKb/pQKm/qUBpgCm/6UCpv6lAab/pQGmAKb/pQGm/6UBpv+lAab/pQGm/6UBpv+lAaYApv6lBKb8pQOm/qUBpgCmAKYApv+lAqb+pQGmAKYApv+lAqb9pQOm/qUBpgCm/6UCpv2lA6b+pQGmAKb/pQKm/aUEpvulBqb6pQWm/KUDpv6lAqb9pQSm/KUDpv+l/6UCpv6lAaYApgCmAKYApgCmAKYApgCmAab+pQOm/aUBpgKm/aUDpv2lAqYApgCm/6UCpv2lBKb8pQOm/6X/WQJa/lkCWv9ZAFoAWgBaAVr+WQJa/1n/WQJa/lkCWv1ZBFr7WQVa/FkCWgBa/1kBWv9ZAVoAWv9ZAFoBWv9ZAVr/WQBaAVr+WQNa/FkEWv1ZAlr/WQBaAVr/WQBaAVr/WQFa/1kBWv9ZAVr+WQJa/1kBpv+l/6UCpv+lAKYBpv6lAqb/pQCmAKYBpv+lAKYBpv6lA6b9pQKm/qUDpv2lAqb+pQKm/6UApgGm/qUCpv+lAab/pQGm/qUCpv+lAaYApv6lAqb/pQCmAab+pQKm/qUCpv6lAqb+pQKm/qUCpv+lAKYBpv6lA6b9pQOm/aUDpv2lAqb/pQGmAKb+pQOm/aUDpv6lAKYBpv+lAqb9pQOm/aUCpgCm/6UBpv+lAab/pQGm/6UBpv+lAab/pQCmAqb9pQOm/qUApgKm/aUDpv6lAab/pQGmAKYApgCm/6UCpv6lAqb+pQGmAKb/pQKm/aUEpvulBab8pQOm/qUBpv+lAqb9pQOm/aUCpv+lAaYApv+lAKYApgGm/6UBpv+lAab/pQCmAab/pQKm/aUCpv+lAqb9pQOm/aUCpv+lAab/pQGm/qUCpv+lAaYApv6lAqYApv+lAab/pQGm/6UBpv+lAab/pQKm/aUEpvulBKb+pQGmAKYApv6lBKb8pQOm/qUBpgCm/6UCpv2lA6b9pQKm/6UBpv+lAKYBpv6lA6b9pQKmAKb9pQWm+6UEpv6lAKYBpv+lAKYCpv2lA6b9pQKm/1kBWv9ZAVr+WQNa/FkFWvtZBFr9WQJa/1kAWgBaAFoAWgBaAVr9WQVa+lkGWvtZA1r/WQBaAVr+WQJa/lkCWv9Z/1kCWv5ZAlr+WQFaAFr/WQJa/lkBWgBa/1kBWgBa/1kCWv1ZAlr/WQBaAVoAWv5ZAqb/pQCmAqb9pQOm/aUDpv2lAqYApv+lAab/pQCmAab/pQGmAKb/pQGm/6UApgGm/6UApgGm/qUDpv2lAqb/pQGm/6UCpv2lA6b+pQGm/6UBpgCm/qUDpv2lAqYApv6lA6b8pQSm/aUDpv6lAKYApgGm/qUDpv2lA6b9pQKm/6UBpv+lAab+pQOm/aUCpgCm/qUCpv6lA6f9pgOn/aYBpwKn/aYDp/2mAqf/pgGn/6YBp/6mAqf/pgCnAaf+pgKn/qYCp/+m/6YDp/ymA6f/pv+mAqf+pgGnAKcAp/+mAqf9pgOn/qYBp/+mAaf/pgGn/6YApwCnAaf/pgCnAaf+pgOn/aYCp/+mAKcBp/6mA6f8pgSn/KYDp/6mAacAp/+mAqf9pgKn/6YBpwCn/6YBp/6mA6f9pgSn+6YFp/umBaf8pgOn/aYDp/6mAacAp/+mAqf+pgGnAKf/pgKn/qYCp/6mAKcCp/2mBKf9pgGnAKf/pgGnAaf/pv+mAqf9pgSn/aYBpwGn/aYEp/2mAqf+pgKn/qYCp/+mAKcApwCnAKcApwCnAaf+pgKn/6YApwGn/qYCp/6mAqf/pv+mAqf/pv+mA1n8WANZAFn9WARZ/VgCWf5YAln9WARZ/FgDWf9YAFkAWf9YAVkAWQBZAFn/WAJZ/lgAWQJZ/VgDWf5YAVkAWQBZ/1gBWQBZAFkAWQFZ/VgFWfpYBln8WAFZAVn+WANZ/lj/WAJZ/lgCWf9Y/1gCWf5YAqf+pgKn/qYCp/+mAKcBp/+mAaf/pgCnAaf/pgKn/aYCpwCn/qYEp/umBaf8pgOn/qYCp/+mAKf/pgOn/aYDp/ymBKf9pgOn/aYBpwGn/6YBp/+mAaf/pgGn/6YBpwCn/6YCp/2mA6f9pgOn/qYBpwCn/6YCp/2mA6f9pgSn+6YGp/mmBqf8pgKnAKf/pgCnAaf/pgGnAKf+pgOn/aYCpwCn/6YBp/+mAKcBp/+mAaf/pgCnAaf+pgOn/KYEp/ymA6f/pgCnAaf+pgGnAaf+pgOn/aYCp/+mAKcApwGn/qYDp/2mAqf+pgKn/qYDp/ymBKf8pgOn/6b/pgOn+6YGp/qmBaf9pgCnA6f8pgOn/qYBpwCnAKcApwCnAKcAp/+mAqf+pgGnAKf/pgKn/aYDp/6mAacBp/6mAqf+pgKn/6YApwGn/qYCp/6mAqf/pgCnAKcAp/+mA6f9pgKn/qYBp/+mAqf/pv+mAqf8pgan+aYGp/ymAqcBp/ymBKf9pgOn/aYCp/+mAaf/pgGn/qYDp/2mAqf+pgOn/aYDp/ymA6f/pgCnAKcApwCnAaf+pgKn/qYDp/2mAqf/pgGnAKcAp/9YAVkAWf9YAln9WARZ+1gGWfpYBFn/WP5YBFn8WANZ/lgBWQBZ/1gBWQBZ/1gBWQBZ/1gBWf9YAVkAWQBZ/1gBWf9YAln9WANZ/lgBWQBZ/1gBWQBZAFn/WAFZ/1gBWQBZ/1gCWfxYBVn8WANZ/1j/WAKn/qYCp/6mAacBp/6mAqf+pgKn/6YApwCnAKcBp/6mAqf+pgKn/qYCp/6mAqf+pgGn/6YDp/ymA6f+pgCnA6f9pgCnAqf+pgKn/6b/pgKn/qYBpwGn/qYCp/6mAacApwCn/6YBpwCnAKf/pgGn/6YApwOn+6YEp/6mAKcCp/2mAqf/pgGn/6YApwGn/qYCp/+mAKcBp/6mAacApwCnAKcAp/+mAacApwCnAKf/pgGnAKf/pgKn/aYEp/ymA6f9pgOn/6YApwCn/6YBpwCnAKcApwCn/6YBpwCnAKf/pgGn/6YBpwCn/6YBpwCn/6YCp/2mA6f+pgGnAKcAp/+mAaf/pgGn/6YBp/+mAaf/pgGn/6YApwKn/aYDp/2mAqcApwCn/6YBp/+mAaf/pgGn/6YBp/+mAKcBp/6mA6f9pgOn/qYApwGnAKf/pgKn/aYDp/6mAqf+pgGn/6YBpwCnAKcAp/+mAaf/pgKn/qYBpwCn/qYEp/ymA6f+pgGn/6YBpwCn/6YBpwCn/6YCp/6mAacApwGn/6YApwGn/6YBp/+mAaf/pgGn/6YBp/+mAaf/pgCnAqf9pgOn/aYCpwCn/6YAWQFZ/lgDWf1YAln/WAFZ/lgDWf1YA1n+WABZAVkAWf9YAVn/WAFZAFkAWf9YAln9WARZ/FgDWf5YAln+WAJZ/lgBWQBZAVn9WARZ/FgDWf9Y/1gCWf5YAVkBWf5YAln+WAFZAFkAWQBZ/1gBWQBZ/1gCp/2mAqcAp/+mAqf9pgSn/KYDp/6mAacApwCnAKf/pgKn/aYEp/ymA6f+pgGnAKcApwCn/6YBp/+mAacAp/+mAacAp/+mAqf+pgGnAaf+pgKn/6YApwGn/qYCp/6mA6f8pgSn/aYBpwGn/aYEp/ymBKf8pgOn/qYCp/2mBKf8pgSn/aYCp/6mA6f9pgKn/6YApwGn/6YApwGn/qYDp/ymBKf9pgKn/6YApwGn/qYDp/2mAqcAp/6mA6f8pgSn/aYCp/+m/6YCp/6mAqf+pgKn/qYDp/2mAacApwCnAaf+pgOn+6YGp/qmBaf9pgKn/qYBp/+mAacApwCnAKf/pgGn/6YCp/6mAqf9pgSn/KYDp/6mAacApwGn/aYEp/ymBKf9pgGnAaf/pgGn/6YApwGn/6YBp/+mAaf/pgCnAKcBpwCn/6YApwGn/6YBp/+mAaf/pgGn/qYCp/+mAaf/pgGn/qYCp/6mAqcAp/6mA6f8pgOn/qYBpwCnAaf+pgGn/6YBp/+mAqf9pgOn/aYCp/+mAaf/pgGn/6YApwKn/aYDp/6mAKcBp/+mAacAp/+mAaf/pgKn/aYEp/ymA6f+pgGn/1gCWf1YA1n+WAFZAFn/WAFZAFn/WAFZAFn/WAJZ/VgDWf5YAVkBWf1YBFn8WANZ/lgCWf5YAln+WAFZAFkAWQFZ/lgCWf5YAVkBWf5YAVkAWQBZAFkAWQBZAFkBWf9YAFkAWQBZAFkBWf9Y/1gCWf5YAqf/pv+mA6f8pgSn/KYEp/2mAqf+pgKn/qYCp/6mAqf/pgCnAKcApwCnAaf/pgGn/6YApwGn/6YBpwCn/qYDp/2mA6f+pgCnAqf+pgGnAKf/pgKn/qYCp/6mAacApwCn/6YDp/umBqf6pgSn/6b/pgOn+6YEp/6mAacBp/6mAKcCp/2mBKf8pgOn/qYBpwCnAKcApwCnAKcApwGn/qYCp/+mAaf+pgOn/KYEp/2mAqf+pgOn/KYEp/2mAqf+pgKn/qYDp/2mAqf9pgSn/aYCp/+mAKcBp/6mA6f9pgOn/aYDp/2mA6f+pgGn/6YApwCnAKcBp/6mAqf9pgOn/qYBpwCn/6YBpwCnAKf/pgGnAKf/pgKn/qYApwKn/aYDp/2mAqf/pgCnAaf+pgKn/qYCp/+mAKcApwGn/qYDp/ymBKf9pgKn/6b/pgKn/qYCp/6mAacAp/+mAaf/pgGnAKcAp/+mAaf/pgKn/qYCp/6mAqf+pgKn/aYEp/ymBKf8pgSn/KYDp/6mAacBp/6mAaf/pgGnAKcAp/+mAqf9pgOn/qYCp/6mAqf+pgKn/6YApwCnAKcApwGn/qYCp/6mAqf+pgJZ/lgCWf5YAln+WAJZ/lgBWQBZAFkAWQBZAFkAWQBZ/1gDWfxYBFn9WAFZAVn+WAFZAFn/WANZ+1gFWfxYAlkAWf9YAVkAWf9YAVkAWf9YAln+WAFZAFkAWQBZ/1gBWf9YAln9WANZ/VgDWf5YAVn/WAGnAKcApwCnAKcApwCnAKcBp/6mA6f8pgSn/aYDp/2mAqf+pgOn/aYCp/+mAKcApwCnAKcApwCn/6YCp/6mAqf9pgOn/aYEp/ymAqcAp/+mAacAp/+mAqf+pgKn/qYCp/+mAKcBp/6mAqf/pgCnAKcBp/6mAqf+pgKn/6YApwGn/qYCp/+m/6YDp/ymBKf8pgOn/6YApwCnAKcApwGn/qYDp/2mA6f9pgOn/aYDp/2mAqcAp/+mAaf/pgCnAqf9pgOn/qYBpwCn/6YCp/2mBKf8pgOn/qYBpwCnAKcAp/+mAqf+pgKn/qYCp/6mAqf/pgCnAKcBp/6mA6f9pgKn/6YApwGn/qYCp/6mAqf+pgKn/qYCp/6mAqf/pgCnAaf+pgOn/aYDp/2mAqf/pgGn/6YBp/+mAKcApwGn/qYDp/ymA6f/pgCnAKf/pgKn/aYEp/ymA6f/pv+mAqf9pgSn/KYEp/2mAaf/pgKn/qYCp/6mAacApwGn/aYEp/ymBKf8pgOn/qYBpwCn/6YBpwCn/6YBpwCnAKf/pgKn/qYBpwGn/qYCp/+m/6YCp/+mAKcBp/6mAqf/pgCnAaf+pgKn/6YApwBZAFkAWQBZAVn9WARZ/FgEWfxYBFn9WAFZAFkAWQBZAVn+WAFZAFkBWf1YBFn8WANZ/1j/WAJZ/lgCWf5YAln+WAJZ/lgCWf5YAln+WAFZAFkAWf9YAln9WANZ/lgAWQJZ/VgCWQBZ/lgDWf1YAlkAWf+mAKcBp/+mAacAp/6mA6f+pgGnAKf/pgGnAKcAp/+mAacAp/+mAqf9pgKnAKf+pgOn/aYDp/2mAqf+pgKn/6YApwGn/qYCp/6mAacBp/6mAqf/pgCnAaf+pgGnAKcApwGn/qYCp/2mA6f+pgKn/qYBpwCn/6YCp/6mAKcCp/2mBKf8pgOn/qYBpwGn/aYEp/ymA6f/pv+mAqf+pgGnAKcApwGn/6YApwGn/6YBp/+mAacAp/+mAaf+pgSn+6YFp/umBKf9pgKn/qYDp/ymBKf8pgOn/6YApwCnAKcApwGn/qYCp/+mAKcBp/6mAqf+pgOn/KYEp/ymA6f/pgCnAKcAp/+mAqf/pgCnAKf/pgGnAKcAp/+mAqf9pgOn/qYBp/+mAqf9pgSn/KYDp/6mAacApwCnAKcApwCnAKcApwCnAKcApwCnAKcApwCnAKf/pgGn/6YCp/6mAaf/pgGn/6YCp/2mA6f+pgGnAKf/pgGnAKf/pgOn/KYDp/6mAacApwCn/6YBpwCn/6YBp/+mAacApwCnAKcApwCn/6YCp/6mAqf/pv+mAqf+pgGnAKcApwCnAKcAp/+mAacAp/+mAqf9WANZ/lgBWQBZ/1gBWf9YAln+WAFZ/1gBWf9YAln+WAFZ/1gBWQBZ/1gBWQBZ/1gCWf1YA1n+WAFZAFkAWQBZ/1gCWf5YAln+WAFZAFn/WAJZ/VgDWf5YAVkAWf9YAln9WAVZ+lgGWfpYBVn9WAJZ/lgBp/+mAqf/pgCnAKf/pgKn/qYCp/6mAqf+pgGn/6YCp/6mAacAp/+mAqf+pgGnAKf/pgKn/qYCp/6mAacApwCnAKcApwGn/aYEp/ymA6f+pgKn/aYEp/ymA6f/pv+mA6f7pgan+6YEp/2mAacApwCnAKcBp/6mAqf+pgKn/qYDp/2mAacBp/2mBKf9pgKn/qYCp/6mAacApwCnAKcApwCn/6YCp/6mAacAp/+mAaf/pgGn/6YBp/6mA6f+pgCnAqf9pgOn/qYBpwCn/6YCp/6mAacAp/+mAqf+pgGn/6YBpwCn/6YBp/+mAaf/pgCnAaf/pgGn/6b/pgKn/6YApwGn/qYBpwGn/qYCp/+mAKcApwCnAaf+pgOn/KYEp/2mAacBp/6mAqf+pgKn/qYCp/6mAqf+pgGnAKf/pgKn/qYBp/+mAKcBpwCn/6YBp/+mAacAp/+mAacApwCnAKf/pgKn/qYCp/6mAqf+pgKn/qYCp/+mAKcApwCnAKcApwCnAKcApwCn/6YBpwGn/aYEp/ymA6f+pgGn/6YCp/6mAaf/pgGn/6YBpwCn/6YBp/+mAaf/pgKn/qYBp/+mAaf/pgGn/1gBWf9YAVn9WAVZ/FgCWQBZ/lgDWf5YAVkAWf9YAln+WAJZ/lgBWQFZ/lgDWfxYA1n/WABZAFkAWQBZAFkAWQBZ/1gCWf5YAVkAWf9YAln+WAFZAFn/WAFZAFkAWf9YAln9WANZ/lgBWQBZAFn/WAFZAKf/pgOn/KYDp/6mAacApwGn/6b/pgKn/aYEp/2mAacBp/6mAacAp/+mA6f9pgKn/qYCp/+mAaf/pgGnAKf/pgKn/aYDp/6mAqf+pgGn/6YBpwCnAKcAp/+mAqf+pgKn/qYCp/6mA6f9pgGnAaf/pgGnAKf/pgCnAqf9pgOn/aYDp/2mA6f9pgGnAaf+pgKn/6b/pgKn/qYCp/6mAacApwCnAKcApwCn/6YCp/6mAacAp/+mAqf+pgGn/6YCp/6mAqf+pgCnAqf+pgGnAKf/pgGnAKf/pgGnAKcApwCn/6YCp/2mBaf6pgWn/KYDp/6mAqf+pgGn/6YCp/2mA6f+pgGnAKf/pgGn/6YBp/+mAacAp/+mAaf+pgOn/qYBpwCn/6YBpwCn/6YBpwCnAKcApwCn/6YBpwCnAKcApwCn/6YBpwCn/6YCp/2mA6f+pgGnAKf/pgGn/6YCp/2mBKf7pgSn/6b+pgOn/aYDp/2mA6f9pgOn/qYApwGn/6YCp/2mAqf/pgGnAKf/pgCnAKcBp/+mAaf/pgCnAaf/pgCnAaf/pgCnAaf+pgOn/aYCp/+mAKcBp/+mAacAp/+mAaf/pgFZAFkAWQBZ/1gBWQBZAFkAWQBZAFkAWf9YAVkAWQBZAFn+WAJZ/1gAWQFZ/lgDWf1YAVkAWQBZAFkBWf9YAFkBWf5YA1n9WANZ/VgDWf5YAFkBWf9YAVkAWf9YAVkAWf9YAVkAWQBZAFkAWf9YAln+WAGnAKf/pgOn+6YFp/ymA6f+pgGn/6YBp/+mAaf/pgGn/qYCp/+mAKcBp/6mAqf/pgCnAKcApwGn/6YBp/6mAqf/pgCnAaf/pgGn/6YApwGn/6YCp/2mAqf/pgGn/6YCp/2mAqcAp/6mA6f9pgOn/aYDp/2mAqcAp/6mA6f+pgCnAqf9pgKnAKf/pgGn/6YApwGn/6YApwGn/qYCpwCn/qYCp/+mAKcCp/2mA6f8pgWn/KYDp/2mA6f9pgOn/qYApwKn/aYCp/+mAaf/pgGn/qYCp/+mAKcBp/6mAqf/pgCnAKcApwCnAKcAp/+mAqf/pgCnAKf/pgKn/6YApwGn/6YApwGn/6YBp/+mAacAp/+mAqf9pgSn+6YFp/umBaf8pgKnAKf/pgGn/6YBpwCnAKf/pgKn/qYBpwCn/6YCp/2mA6f9pgOn/qYBp/+mAaf/pgGn/6YBp/+mAKcBp/+mAKcApwCnAKcBp/6mAqf+pgKn/qYCp/6mAqf+pgGnAKf/pgOn/KYDp/6mAacApwGn/aYFp/qmBaf9pgGnAaf/pgCnAKf/pgGnAaf+pgKn/qYApwKn/qYCp/+m/6YBpwCnAKcBWf5YAVkAWQBZAFkBWf5YAln/WP9YA1n8WARZ/VgBWQFZ/lgCWf5YAln+WAJZ/1gAWQFZ/lgDWfxYBFn9WANZ/lgAWQFZ/1gBWQBZ/lgEWftYBVn7WARZ/lgBWQBZ/lgDWf1YA1n+WABZAVn/WAFZ/1gApwKn/aYDp/6mAKcCp/6mAacAp/+mAacAp/+mAaf/pgGnAKf/pgGn/6YApwKn/aYCp/+mAaf+pgOn/aYBpwGn/qYCpwCn/qYCp/+mAKcApwGn/qYDp/2mAqf+pgKn/6YBp/+mAKcBp/+mAqf9pgKn/6YBp/+mAaf+pgOn/aYCp/+mAKcBpwCn/qYDp/2mAqcAp/6mA6f9pgOn/aYCp/+mAKcBp/+mAaf/pgCnAaf+pgOn/qYApwGn/6YApwKn/aYCp/+mAaf/pgCnAaf+pgOn/aYCp/+mAaf/pgGn/6YBp/+mAaf/pgGn/6YApwGn/6YBp/+mAKcBp/+mAacAp/+mAacAp/+mAqf9pgSn/KYDp/2mAqcApwCnAKf/pgGn/6YBpwCnAKcAp/+mAaf/pgKn/qYBp/+mAKcCp/2mA6f9pgKn/6YBp/+mAaf/pgCnAaf/pgCnAaf/pgCnAaf9pgSn/aYCp/6mAqf9pgSn/KYDp/6mAqf+pgKn/qYCp/+mAKcApwCnAaf+pgKn/qYBpwCn/6YCp/2mBKf7pgWn/KYDp/6mAqf9pgOn/6b/pgKn/qYApwOn/KYDp/+m/6YBpwCn/6YCWf5YAFkCWf1YA1n+WAFZAFkAWf9YAVkAWQBZAFn/WAFZAFkAWQBZAFkAWQBZAFkAWQBZAVn+WAFZAFn/WANZ/FgEWfxYBFn9WAJZ/lgCWf9YAFkBWf5YAln+WAJZ/lgCWf5YAln/WABZ/1gCWf5YA1n8pgOn/qYCp/+mAKcApwCnAKcBp/6mA6f9pgOn/aYCp/+mAacAp/6mA6f9pgOn/aYCp/+mAaf/pgCnAaf/pgGn/qYDp/ymBaf7pgSn/aYCp/+mAKcBp/6mAqf/pgCnAaf+pgKn/6YBp/+mAKcBp/+mAaf/pgCnAaf/pgGn/qYCp/+mAacAp/+mAaf/pgGn/6YBp/+mAaf/pgCnAKcBp/+mAKcBp/6mA6f9pgKn/6YApwKn/aYCp/+mAKcBpwCn/qYDp/2mAqf/pgGn/6YBp/+mAaf/pgGn/6YBp/+mAacAp/6mA6f9pgKnAKf+pgKn/qYCp/+mAKcApwCnAKcApwCnAKcAp/+mAqf+pgKn/qYBpwCnAKcBp/2mBKf9pgKn/qYBpwCnAaf/pgCnAKf/pgOn/KYEp/2mAqf+pgKn/qYCp/+mAKcApwCnAKcApwCnAKcApwGn/qYCp/6mAacBp/6mAqf+pgKn/qYCp/2mBKf9pgGnAKcApwCnAaf9pgOn/qYCp/6mAqf+pgKn/qYCp/6mAqf/pgCnAaf+pgKn/6YApwGn/qYCp/+mAKcApwGn/qYCp/6mAqf/pgGn/6b/pgOn/VgCWQBZ/lgCWf9YAVn+WANZ/FgEWf5YAFkAWQFZ/lgDWf5Y/1gCWf9Y/1gDWfxYA1n/WP9YAln/WABZAVn+WAJZ/1gBWf9YAFkBWf5YAln+WAJZ/1gAWQBZAFkAWQBZAFkAWQBZAFkAWQBZAFn/WAJZ/qYCp/6mAacApwCn/6YBpwCn/6YCp/2mA6f+pgCnAqf9pgSn/KYCpwCn/6YCp/6mAacBp/6mAqf+pgKn/6YBp/+mAKcBp/+mAaf/pgCnAacAp/+mAaf/pgCnAqf9pgKn/6YApwGn/qYCp/+m/6YDp/ymA6cAp/6mA6f9pgKn/6YApwGn/qYEp/umBKf9pgGnAaf/pgCnAaf9pgWn+qYHp/mmBqf7pgSn/qYApwKn/KYFp/ymAqf/pgCnAaf/pgCnAaf+pgKn/qYCp/+mAKcAp/+mAqf/pgCnAKcAp/+mA6f8pgOn/6b+pgWn+qYFp/ymAqcApwCnAKf/pgGnAKf/pgKn/aYDp/6mAacApwCn/6YCp/6mAqf+pgGnAaf+pgKn/qYBpwGn/6b/pgKn/qYCp/+m/6YBpwCnAKcAp/+mAacAp/+mAqf+pgGnAKf/pgGnAKf/pgGnAKf/pgKn/aYEp/ymBKf8pgOn/qYCp/6mAqf9pgOn/qYBpwCn/6YBpwCn/6YCp/6mAacBp/2mA6f/pgCnAKcAp/+mAqf/pgCnAaf/pgCnAKcBp/6mA6f8pgOn/6b/pgOn/KYEp/2mAqf/pgFZ/lgDWf1YA1n9WANZ/VgCWQBZ/1gCWf1YA1n9WANZ/VgCWf9YAFkBWf5YAln/WABZAVn+WAJZ/lgCWf5YAln+WAFZAFkAWQBZAFn/WAJZ/lgCWf5YAVkAWQBZ/1gCWf5YAln/WABZAFkBWf9YAFkBWf+mAaf/pgGn/6YBp/+mAKcCp/2mAqf/pgCnAaf+pgKn/qYDp/2mAacApwCnAKcBp/6mAaf/pgKn/aYEp/ymAqf/pgGn/6YCp/2mA6f9pgOn/qYBp/+mAaf/pgKn/aYCpwCn/qYEp/umBKf+pgCnAqf9pgKn/6YBp/+mAKcApwCnAaf/pgCnAKcApwCnAaf/pgCnAaf+pgKn/6YApwGn/qYCp/6mAqf+pgKn/qYCp/6mAqf9pgSn/KYEp/ymA6f+pgGnAKcApwCnAKcApwCnAKcApwCnAaf+pgKn/qYCp/+mAKcBp/6mAqf/pgCnAaf+pgKn/6YApwCnAKcBp/6mAqf+pgKn/6b/pgKn/aYDp/+m/6YCp/2mAqcBp/6mAqf9pgSn/aYCp/+mAKcApwGn/qYDp/2mAqf/pgCnAaf+pgOn/KYEp/2mAacBp/6mAqf/pgCnAKcBp/6mA6f8pgSn/aYDp/2mAqf/pgGn/6YBp/+mAaf/pgGn/6YApwGn/qYDp/6mAKcApwCnAKcCp/ymBKf8pgSn/aYBpwCnAaf+pgOn+6YGp/umA6f/pgCnAKcApwCnAKcAp/+mAqf+pgGnAKf/WAJZ/lgBWf9YAln+WAFZAFn/WAJZ/VgEWftYBVn8WAJZAFn/WAJZ/VgCWQBZ/1gBWf9YAVkAWf9YAVn/WAJZ/lgBWQBZ/1gCWf5YAln/WP9YAln+WAJZ/1j/WAJZ/lgCWf5YAln9WARZ/FgDWf5YAln+pgKn/qYBpwCnAKf/pgKn/aYDp/6mAacAp/+mAacApwCn/6YCp/6mAacAp/+mAacApwCnAKf/pgGnAKf/pgKn/aYDp/6mAKcCp/2mBKf8pgKnAKcApwCn/6YCp/6mAqf9pgOn/qYBpwGn/KYFp/umBaf9pgGn/6YBp/+mAqf/pv+mAqf9pgSn/KYEp/umBqf6pgWn/KYDp/6mAacApwCnAKf/pgGnAKcApwCnAKf/pgKn/qYCp/+mAKcApwGn/6YBp/+mAKcBp/6mA6f8pgSn/aYCp/6mAqf+pgKn/qYCp/6mAacAp/+mAqf+pgGn/6YBp/+mAqf+pgGn/6YBpwCnAKf/pgGnAKcAp/+mAaf/pgGnAKf/pgGn/6YBp/+mAqf+pgGnAKf/pgOn/KYDp/6mAacApwCn/6YBpwCn/6YCp/2mA6f+pgGnAaf+pgGnAKf/pgKn/6b/pgOn+6YGp/umA6f/pgCnAKcApwCnAKcApwCnAKcApwGn/qYBpwCnAKcBp/6mAqf+pgKn/6YApwCnAKcApwCnAKcApwCnAKcAp/+mAqf9pgOn/6b/pgKn/aYDp/+m/6YCp/2mA6f+pgGnAFn/WABZAVn/WAJZ/lgAWQJZ/VgEWfxYA1n+WAFZAFn/WAJZ/lgAWQJZ/VgDWf5YAVn/WAFZ/1gBWQBZ/1gBWf9YAVkAWf9YAln9WANZ/lgBWQBZ/1gBWQBZ/1gBWQBZ/1gCWf1YA1n+WAFZAFn/WAFZAKcAp/+mAaf/pgKn/qYCp/2mA6f+pgGnAKf/pgKn/aYDp/6mAacAp/+mAaf/pgGn/6YBp/6mA6f9pgKn/6YApwGn/6YBp/+mAKcBp/+mAaf/pgCnAKcApwCnAaf+pgKn/qYBpwGn/aYEp/ymA6f+pgGnAKcAp/+mAacApwCnAKcAp/+mAqf+pgGnAKcApwCnAKf/pgGnAKcApwCn/6YCp/6mAacAp/+mAqf+pgKn/aYEp/ymA6f+pgGnAKcAp/+mAaf/pgGnAKf/pgGn/6YApwGn/6YApwCn/6YDp/2mAqf+pgGnAaf/pgGn/6YApwGn/6YApwGn/6YApwGn/qYCp/+mAaf+pgOn/aYBpwGn/qYCp/+m/6YCp/6mAacAp/+mAqf9pgOn/6b/pgKn/aYDp/+mAKcApwCnAKcBp/6mA6f9pgKn/6YApwCnAaf+pgKn/6YApwCnAaf+pgKn/6YApwCnAaf+pgKn/qYBpwCn/6YCp/2mA6f9pgKn/qYDp/2mAqf+pgKn/6YBp/+mAKcBp/+mAaf/pgGn/6YBp/+mAKcBp/+mAaf/pgGn/6YBp/+mAaf/pgGn/6YBp/+mAaf/pgFZ/1gBWf9YAln+WAFZ/1gBWQBZAFn/WAFZ/1gBWQBZ/1gBWf9YAVkAWf9YAVn/WAFZ/1gBWf5YA1n+WABZAVn9WAVZ/FgCWf9Y/1gDWfxYBFn8WARZ/FgEWftYBVn8WANZ/lgAWQFZAFn/WAJZ/FgFWfymA6f+pgGn/6YBpwCn/6YCp/2mAqcAp/+mAqf+pgGn/6YBpwCn/6YCp/2mA6f+pgGnAKcAp/+mAqf9pgOn/6b/pgKn/KYFp/ymA6f+pgGnAKcAp/+mAacApwCnAKf/pgKn/qYCp/6mAacApwCnAKcBp/6mAqf+pgGnAaf+pgKn/qYBpwCnAKcApwCnAKf/pgKn/qYCp/6mAaf/pgKn/qYBp/+mAaf/pgKn/aYDp/2mA6f+pgGn/6YBp/+mAqf9pgOn/qYBp/+mAaf/pgKn/qYApwGn/6YBp/+mAaf/pgGn/6YApwGn/6YBp/+mAKcBp/+mAaf/pgGn/6YBp/6mA6f9pgOn/aYCp/+mAKcBp/6mAqf/pgCnAKcAp/+mAqf+pgKn/qYBpwCnAKcAp/+mAqf+pgOn/KYEp/umBqf6pgWn/aYApwKn/aYCp/+mAKcBpwCn/6YBp/6mAqcAp/+mAqf8pgSn/qYApwKn/KYEp/6mAacAp/+mAacAp/+mAqf+pgKn/aYDp/6mAacAp/+mAKcBp/+mAKcCp/ymBKf9pgOn/aYCp/+mAacAp/+mAKcBp/+mAaf+pgKn/qYDp/ymA6f+pgFZAFn/WAJZ/VgDWf5YAVkAWQBZ/1gCWf5YAln+WAJZ/lgCWf5YAln+WAJZ/lgCWf5YAVkAWQBZAFkAWQBZ/1gCWf5YAln+WAJZ/lgCWf5YA1n8WARZ/FgEWf5YAVn/WABZAFkBWf9YAVn/WABZAVn/WACnAaf+pgSn+6YFp/umBaf7pgan+qYGp/qmBaf8pgSn/aYCp/2mBKf9pgGnAKf/pgGnAKf/pgGnAKf/pgCnAaf+pgSn/KYDp/2mAqcApwCn/6YBp/+mAacAp/+mAaf/pgGn/6YBp/+mAacAp/+mAaf/pgGnAKf/pgCnAacAp/+mAaf+pgOn/aYCpwCn/qYDp/ymA6cAp/+mAKcBp/2mBqf6pgOnAKf+pgSn+6YFp/umBaf8pgKnAKf/pgGn/6YBp/+mAaf/pgGn/qYCp/+mAKcBp/+mAKcBp/6mAqf/pgCnAaf/pgCnAKcApwCnAaf/pgCnAKcBp/6mA6f9pgOn/aYCpwCn/6YCp/6mAacAp/+mAqf9pgSn+6YFp/umBKf9pgKn/6YApwCnAKcApwCnAKcApwCnAKcApwCnAKf/pgKn/qYBpwCn/6YBpwCn/6YBpwCn/6YBp/+mAaf/pgKn/aYDp/6mAacApwCnAKf/pgKn/qYCp/+m/6YCp/6mAqf/pgCnAKcApwCnAKcBp/2mBKf8pgOn/qYBp/+mAqf9pgOn/aYCpwCn/6YBp/+mAKcBp/+mAaf/pgCnAaf+pgKnAKf+WAJZ/1gAWQFZ/1gAWQFZ/1gAWQFZ/1gAWQJZ/FgEWf1YAln/WABZAFkBWf9YAVn+WAJZ/1gBWf9YAFkBWf5YA1n9WAJZ/1gAWQFZ/1gAWQBZAVn+WANZ/FgDWf9YAFkAWQFZ/lgDWf1YAVkBWf9YAVn/pgCnAaf/pgCnAKcBp/+mAaf+pgKn/qYCp/+mAKcBp/6mAacApwGn/qYCp/+mAKcApwCnAaf/pgGn/qYCp/+mAaf/pgCnAaf/pgGnAKf/pgGn/6YBpwCn/6YBp/+mAaf/pgCnAaf/pgCnAaf+pgOn/KYEp/ymBKf9pgKn/qYCp/6mAqf/pgCnAaf/pgCnAKcBp/+mAaf/pgCnAqf8pgan+aYGp/2mAKcDp/ymA6f+pgKn/qYCp/6mAqf+pgGnAKf/pgKn/qYCp/6mAacAp/+mA6f8pgOn/6b/pgGnAKf/pgKn/aYDp/2mA6f+pgCnAaf/pgGn/6YBp/+mAqf+pgGn/6YBpwGn/qYBpwCnAKcBp/6mAacApwCnAaf+pgGnAKf/pgKn/qYBpwCn/6YBpwCn/6YCp/2mAqcAp/+mAaf/pgCnAaf+pgOn/KYEp/2mAqf/pgCnAaf+pgOn/qYBp/+mAaf/pgKn/aYDp/2mA6f9pgOn/aYDp/2mA6f+pgKn/aYDp/6mAqf/pgCn/6YCp/6mA6f8pgOn/qYCp/+mAKf/pgOn/KYFp/umA6f/pgGn/qYDp/2mAacCp/ymBKf9pgGnAVn+WANZ/VgCWf9YAFkBWf9YAVkAWf9YAFkAWQFZAFn/WAFZ/lgCWQBZ/1gBWf9YAFkBWf9YAVn/WAFZ/lgCWf9YAVn/WAFZ/lgDWf1YA1n9WANZ/VgDWf5YAFkBWf5YA1n9WANZ/FgEWf1YAln/WABZAaf+pgKn/6YApwCnAKf/pgOn/KYEp/ymA6f/pv+mA6f9pgGnAaf+pgKn/qYCp/6mAqf+pgGnAKf/pgKn/qYBp/+mAaf/pgGnAKf/pgGn/6YBp/+mAaf/pgGn/6YCp/ymBaf8pgKnAKf+pgOn/aYDp/2mAqf/pgCnAaf/pgCnAaf+pgOn/aYCp/+mAKcBp/+mAaf/pgCnAaf/pgGn/6YBp/+mAaf/pgCnAaf/pgGn/qYDp/2mAqf/pgCnAqf+pgCnAaf/pgKn/qYBpwCn/6YCp/6mAacBp/6mAqf+pgKn/6YBp/+m/6YDp/2mAqf/pv+mAqf/pgCnAKf/pgKn/qYCp/6mAacAp/+mAqf+pgGnAKf/pgGnAKf/pgGn/6YApwGn/6YApwGn/qYDp/2mAqcAp/+mAaf/pgGnAKcAp/+mAacAp/+mAacAp/+mAqf+pgCnAqf+pgGnAKf/pgGnAaf9pgSn+6YEp/6mAaf/pgGn/qYCp/+mAKcBp/6mAqf/pgGn/qYCp/6mA6f9pgKn/6YApwGn/6YApwGn/6YBp/+mAKcBp/6mA6f9pgGnAaf+pgKn/6YApwGn/6YBp/6mA6f9pgNZ/VgDWf1YA1n9WANZ/VgDWf1YA1n9WANZ/FgEWf1YA1n8WARZ/FgEWf1YAln+WAJZ/1gAWQBZAVn+WAJZ/1gAWQFZ/1gAWQFZ/1gBWf9YAVn/WAFZAFn/WAFZ/1gBWf9YAVkAWf9YAln8WAVZ/FgCWQGn/aYDp/2mAqcAp/+mAaf/pgGn/6YBpwCn/qYDp/6mAacAp/+mAacBp/6mAaf/pgGnAaf+pgGn/6YBpwCnAKcAp/+mAqf+pgKn/6b/pgKn/qYDp/2mAacApwCnAKcApwCn/6YCp/2mA6f9pgOn/aYCp/+mAKcApwGn/qYBpwCnAKcApwCnAKf/pgKn/qYBpwCn/6YCp/6mAacApwCnAKcApwCn/6YCp/6mAqf+pgGn/6YBp/+mAacAp/+mAaf/pgGn/6YBpwCn/6YCp/2mA6f+pgGnAKcAp/+mAacAp/+mAqf9pgOn/qYCp/6mAKcCp/2mA6f/pv6mBKf7pgWn/KYDp/6mAacAp/+mAqf+pgGnAKf/pgGnAKf/pgGn/6YBp/+mAaf+pgOn/qYApwGn/6YBp/+mAaf/pgGn/6YBp/+mAaf/pgCnAqf8pgSn/aYCpwCn/qYCp/+mAaf/pgGn/6YBp/+mAaf/pgKn/aYDp/2mA6f+pgGnAKf/pgGn/6YBpwCnAKcApwCn/6YBpwCnAKcApwCn/6YCp/6mAacApwCnAKcApwCn/6YDp/ymBKf9pgGnAaf+pgKn/6b/pgOn/KYFWfpYBln7WANZAFn+WANZ/VgCWf5YAln/WABZAFkAWf9YA1n8WARZ/FgEWfxYBFn9WAFZAFn/WAFZAFn/WAFZ/1gBWf9YAVn/WAFZ/1gBWQBZAFkAWf9YAln+WANZ/FgDWf9Y/1gCWf1YA1n+WAJZ/VgDp/2mA6f+pgGnAKcAp/+mAqf9pgSn/KYDp/6mAqf+pgGnAKcAp/+mAqf9pgOn/6b/pgGn/6YBpwCn/6YCp/2mBKf7pgWn/KYCpwCn/6YBp/+mAKcApwGn/6YApwCnAKcBp/+mAKcApwCnAaf/pgCnAKcApwCnAKcBp/6mAacBp/2mBaf7pgOnAKf+pgKnAKf+pgSn/KYBpwGn/6YBpwCn/qYCp/+mAKcBp/+mAacAp/6mA6f+pgGnAKf/pgGnAKf/pgGnAKf+pgOn/aYDp/2mAqf/pgGn/6YBp/+mAKcBp/+mAKcCp/umB6f5pgan+6YEp/2mA6f+pgCnAaf/pgGnAKf/pgGn/6YBpwCn/6YBp/+mAaf/pgKn/aYDp/2mAqcAp/+mAaf/pgCnAqf9pgOn/aYDp/6mAaf/pgGn/6YCp/2mA6f9pgKnAKf+pgSn+6YEp/6mAKcBpwCn/6YBp/+mAaf/pgKn/qYApwKn/aYDp/6mAaf/pgKn/aYCpwCn/6YCp/2mAqf/pgKn/qYBp/+mAKcBpwCnAKf/pgGn/6YBpwCn/6YCp/6mAacAp/+mAqf+pgGnAKcApwCn/6YCp/6mAqf+WAFZAFkAWQBZAFkAWf9YAVkAWQBZAFn+WANZ/VgCWQBZ/lgDWf1YAln/WAFZ/lgEWfpYBln8WAJZAFn+WAJZAFn/WAFZ/1gBWQBZ/1gBWf9YAln+WAFZAFkAWQBZAFkAWf9YA1n8WANZ/1j+WARZ/FgDp/2mA6f9pgOn/qYApwGn/qYDp/2mAqf/pgCnAaf/pgGn/qYDp/6mAaf/pgGn/6YCp/6mAacAp/+mAacBp/2mA6f+pgCnAaf/pgCnAaf/pgGn/qYDp/2mAqcAp/+mAqf9pgOn/aYDp/6mAacAp/+mAaf/pgGn/6YCp/2mA6f9pgKn/6YCp/2mBKf7pgWn/KYDp/6mAqf+pgKn/qYBpwCnAKf/pgGn/6YCp/2mBKf7pgSn/6b+pgSn/KYDp/+m/6YBpwGn/qYCp/6mAacApwCn/6YBp/+mAKcBp/6mAqf+pgKn/6YApwCnAaf+pgOn/aYCpwCn/qYDp/6mAaf/pgGn/6YCp/6mAKcCp/2mBKf8pgOn/aYDp/6mAaf/pgGn/6YBpwCn/qYDp/2mAqcAp/+mAacAp/+mAqf+pgGnAKcApwGn/6YAp/+mA6f8pgWn+qYFp/2mAqf/pv+mA6f7pgen+aYGp/umA6f+pgKn/6YBp/6mAqf+pgKn/6YApwGn/qYCp/6mAacApwCnAKcAp/+mAaf/pgKn/qYBpwCn/6YBp/+mAqf+pgKn/qYBpwCnAKcApwCnAKcApwCnAKcAp/+mA1n8WARZ/FgDWf9YAFkAWf9YAln+WAJZ/lgBWQBZ/1gCWf5YAVkAWf9YAln+WAFZAFn/WAJZ/lgBWf9YAVkAWf9YAVn/WAFZ/1gBWQBZ/1gBWf9YAVkAWf9YAVn/WAFZ/1gBWf9YAVn/WABZAFkBWf9YAKcApwCnAaf+pgKn/qYCp/+mAKcApwCnAKcApwCnAKcApwCnAKcApwCnAKcApwCnAKcApwCn/6YCp/2mBKf7pgan+qYFp/ymA6f+pgGnAKcAp/+mAqf9pgSn/KYDp/2mA6f+pgKn/qYBp/+mAaf/pgGn/6YBp/6mAqf/pgCnAKcApwCnAaf/pgGn/qYDp/ymBaf7pgSn/aYCp/6mA6f8pgSn/KYEp/ymBKf9pgGnAKf/pgKn/6YApwCn/6YCp/6mAqf+pgKn/qYCp/6mAqf+pgOn/KYEp/ymA6f/pv+mAqf+pgGnAaf9pgSn/KYDp/+mAKcApwCnAKcApwCnAKcApwCnAKcAp/+mAqf+pgKn/qYCp/6mAqf/pgCnAKcApwCnAaf+pgKn/aYEp/ymA6f/pv6mBKf8pgOn/qYBp/+mAqf9pgOn/aYDp/6mAKcBp/+mAaf/pgGn/6YBp/+mAKcBp/+mAKcBp/6mAqf+pgKn/6YApwCn/6YDp/2mA6f9pgKn/qYCp/+mAacAp/+mAKcBp/+mAacAp/+mAacAp/+mAacAp/+mAqf+pgGnAKcApwCnAKcApwCnAaf+pgOn/aYDp/1YA1n9WANZ/VgDWf1YA1n9WANZ/VgCWf9YAVn/WAJZ/FgEWf5YAFkCWf1YAlkAWf5YA1n9WANZ/lgAWQFZ/1gBWQBZ/1gBWQBZAFn/WAFZAFkAWQBZAFn/WAJZ/lgCWf9YAFkBWf5YAln/WABZAVn+WAGnAKcAp/+mAaf/pgGn/6YBp/6mA6f+pgGn/6YBp/+mAqf9pgOn/aYDp/6mAKcBp/6mAqcAp/2mBKf8pgOn/6b/pgGnAKcAp/+mAqf9pgSn/KYDp/2mA6f+pgKn/aYDp/2mBKf8pgOn/qYBpwCnAKcApwCnAKcAp/+mAqf/pgGn/qYBpwCnAKcApwGn/aYEp/ymAqcBp/6mAacAp/+mAqf+pgGnAKcAp/+mAqf9pgSn/KYDp/6mAacAp/+mAacApwCn/6YBp/+mAqf+pgGnAKf/pgGnAKcApwCnAKf/pgGnAKcApwCnAKf/pgGnAKcApwCn/6YCp/2mBKf8pgOn/qYCp/6mAacAp/+mA6f7pgan+6YDp/+m/6YDp/2mAacBp/6mA6f9pgKn/6YApwGn/6YBp/+mAKcBp/+mAaf+pgOn/KYEp/6mAKcBp/+mAKcBp/+mAaf/pgGn/6YBpwCn/6YApwKn/KYFp/umBKf+pgCnAaf+pgOn/qYApwKn/aYDp/2mA6f9pgOn/aYDp/6mAacAp/+mAacBp/6mA6f8pgKnAKcApwCnAKf+pgOn/aYDp/2mAqf/pgGnAKf+pgOn/KYFWftYA1n/WABZAVn+WAJZ/lgDWf1YAln/WABZAFkBWf5YAln+WAFZAVn+WAJZ/1j/WANZ/FgEWf1YAln+WANZ/VgBWQBZ/1gDWf1YAln9WARZ/FgEWfxYA1n/WP9YAln9WANZ/1j/WAJZ/VgDWf9YAFn/pgKn/qYCp/6mAacApwCnAKcAp/+mAqf9pgOn/qYBp/+mAaf+pgOn/aYDp/2mA6f9pgKnAKf+pgOn/aYBpwGn/qYCp/6mAqf+pgKn/6YApwGn/6YApwGn/6YBp/+mAaf+pgOn/KYEp/2mAqf/pgCnAKcApwCnAKcApwGn/qYCp/6mAacBp/6mAqf+pgGnAaf+pgKn/qYCp/+mAaf/pgCnAqf9pgOn/qYBp/+mAaf/pgGn/6YBp/+mAacAp/6mBKf8pgOn/qYBpwCnAKcAp/6mBKf7pgWn/KYCpwCn/6YBp/+mAqf9pgOn/qYBpwCn/6YApwKn/aYDp/2mAqf/pgGnAKf/pgGn/6YBpwCn/6YBpwCn/6YCp/2mA6f+pgGnAKf/pgGnAKf/pgGn/6YApwGn/6YBp/+mAKcBp/+mAaf/pgCnAaf/pgCnAaf/pgCnAKcApwGn/6YBp/6mA6f9pgOn/aYCpwCn/6YCp/6mAaf/pgGnAaf+pgGnAKf/pgKn/qYBpwCnAKcAp/+mAqf/pgCnAKf/pgKn/qYCp/+m/6YBp/+mAqf/pv+mAqf9pgSn/aYBpwCnAKcApwCnAKf/pgKn/lgBWQBZ/1gCWf5YAVkAWf9YAln+WAFZAFn/WAJZ/lgBWf9YAFkBWQBZ/lgDWfxYBFn9WAJZ/1gAWQFZ/1gAWQFZ/lgDWf1YA1n9WAJZ/1gBWf9YAVn/WAFZ/1gBWf5YA1n9WAJZ/1gAWQBZAFkBWf5YA6f8pgSn/qYApwGn/6YApwKn/aYDp/ymBaf7pgSn/qYApwGn/6YBp/+mAaf/pgGnAKf/pgGn/6YBpwCn/6YBpwCn/qYDp/2mA6f+pgGn/6YBpwCn/6YBpwCn/6YCp/2mA6f+pgGnAKf/pgKn/qYBpwCn/6YCp/6mAaf/pgGn/6YBp/+mAKcBp/+mAKcBp/+mAacAp/6mBKf7pgWn/aYBpwCnAKf/pgKn/qYCp/6mAacApwCnAKcAp/+mAqf+pgGnAKf/pgGnAaf9pgOn/qYBpwCnAKf/pgKn/qYCp/6mAqf+pgKn/6YApwCnAKcApwCnAKcApwCnAKcAp/+mAqf/pv+mAqf+pgGnAKf/pgGnAKcAp/+mAqf9pgOn/qYBpwCn/6YCp/2mA6f+pgGnAKf/pgGnAKcApwCn/6YBpwCnAaf+pgGn/6YBpwCnAKf/pgGn/6YBpwCn/6YBp/+mAacAp/6mA6f9pgKnAKf+pgOn/aYCpwCn/6YCp/2mA6f+pgGnAKcAp/+mAqf+pgGnAKf/pgKn/qYCp/2mBKf7pgWn/KYCpwCn/6YBp/+mAKcBp/+mAaf/pgCnAaf/pgGn/6YBp/+mAVn/WAJZ/VgEWftYBFn+WAFZAFn/WAFZ/1gBWQBZ/1gBWf9YAln+WAJZ/VgDWf9Y/1gCWf5YAVkAWQBZ/1gBWQBZ/1gCWf1YAln/WABZAln9WANZ/VgCWQBZ/1gCWf1YA1n+WAFZAFn/WAFZ/1gBWQBZ/qYDp/6mAKcCp/ymBKf+pgCnAaf+pgKn/6YBp/6mAqf+pgGnAaf+pwKo/qcAqAKo/qcCqP6nAagAqACoAaj9pwSo/acCqP+nAKgAqACoAaj+pwKo/qcCqP6nAqj+pwKo/qcBqACo/6cCqP6nAqj9pwOo/acDqP+n/6cCqP6nAaj/pwKo/acEqPynAqgAqP+nAaj/pwGo/6cBqACo/6cCqP6nAagAqACoAaj+pwKo/qcBqAGo/qcCqP2nA6j+pwKo/qcAqAGo/6cCqP6nAaj/pwGo/6cCqP6nAaj/pwGo/6cBqACo/qcEqPunBKj+pwGo/6cBqP+nAaj/pwCoAaj/pwGo/6cAqACoAqj9pwKo/6cAqAGoAKj+pwKo/6cBqP+nAaj+pwOo/acDqP2nA6j9pwOo/acDqP6nAagAqP+nAagAqP+nAqj+pwGoAKj/pwKo/qcBqAGo/acEqP2nAagBqP2nBKj9pwGoAKj/pwKo/qcBqACo/6cBqACoAKgAqP+nAaj/pwKo/qcBqACo/6cBqACo/6cCqP6nAqj9pwSo/KcEqP2nAagAqP+nAqj+pwKo/qcBqACoAKgAqACoAKgAqABYAFgAWP9XAlj+VwFYAVj+VwFYAFgAWABYAVj+VwFYAVj+VwJY/1cAWABYAFgAWAFY/1f/VwJY/1cAWAFY/VcEWP1XAlj/VwBYAFgBWP5XA1j9VwJYAFj/VwFY/1cBWP9XAVgAWP5XA1j9VwJY/1cAWAGo/6cBqP+nAaj/pwGo/6cBqACo/6cBqP+nAagAqP+nAaj/pwGo/6cBqP+nAKgAqACoAaj/pwCoAKgAqACoAqj9pwOo/acDqP2nBKj8pwSo/KcDqP6nAqj+pwKo/qcBqACo/6cBqACo/6cBqP+nAaj/pwGo/6cAqAGo/6cBqP+nAKgBqP6nAqgAqP6nA6j9pwKo/6cBqP+nAaj/pwCoAaj/pwGo/6cBqACo/6cCqP6nAagBqP6nAqj/p/+nA6j8pwSo/KcEqP2nAagAqACoAKgAqACoAKgAqACoAKj/pwKo/qcBqACo/6cBqACo/6cBqACo/6cBqACo/6cBqACo/6cBqP+nAagAqP+nAaj+pwSo/KcDqP6nAKgCqP6nAagAqP+nAagAqP+nAagAqP6nA6j9pwKoAKj+pwOo/KcEqPynBKj9pwKo/6f/pwKo/qcBqACo/6cCqP6nAaj/pwGo/6cCqP6nAagBqP2nBKj8pwSo/KcEqP2nAagAqP+nAqj+pwKo/acEqPynA6j+pwKo/qcCqP2nBKj8pwOo/qcBqACo/6cBqP+nAaj/pwGo/6cBqP+nAaj/pwGo/6cAqAKo/KcFWPxXAlj/VwFY/1cBWP9XAVj/VwFY/1cAWAJY/VcDWP1XA1j+VwFY/1cAWAJY/lcBWABY/1cBWAFY/VcEWPxXA1j/V/9XAlj9VwNY/lcBWABYAFgAWABYAFgAWABYAVj+VwNY/FcEWP1XAlj/VwBYAFgBqP6nAqj/pwCoAaj/pwCoAaj+pwOo/acDqP2nAqj/pwCoAaj+pwOo/acCqP+n/6cDqP2nAqj/p/+nA6j9pwKo/6f/pwKo/6cAqACoAKgAqACoAKgAqACoAKgAqACoAKgAqP+nAqj+pwGoAKj+pwSo/KcCqACo/qcEqPunBaj8pwKo/6cBqACoAKj/pwCoAagAqACo/6cBqP6nA6j+pwGo/6cAqAGoAKgAqACo/qcDqP6nAqj+pwGo/6cBqP+nAaj/pwGoAKj+pwOo/acDqP6nAKgBqP+nAaj/pwGo/qcEqPunBKj+pwGoAKj/pwGo/6cCqP6nAKgCqP2nA6j+pwCoAqj9pwOo/acCqP+nAaj/pwCoAaj+pwOo/KcEqP2nA6j8pwSo/acDqP2nA6j9pwOo/qcBqACoAKgAqP+nAqj+pwKo/qcCqP+nAKgBqP6nAqj/pwGo/6cBqP+nAaj/pwGo/6cBqACo/6cBqP+nAaj/pwGo/6cAqAKo/acCqP+nAKgBqP+nAKgBqP6nA6j8pwSo/acCqP+nAKgAqACoAKgAqACoAKgAqP+nAqj+pwKo/qcBqP+nAqj+pwGo/6cBqACo/1cBWABY/1cCWP5XAVgAWABY/1cCWP5XAlj+VwJY/lcCWP9XAFgBWP9XAFgAWAFY/lcDWPxXA1j+VwJY/lcCWP5XAVgAWABYAFgBWP1XA1j+VwFYAVj9VwNY/VcEWPxXA1j9VwNY/lcBWABY/lcDWP5XAKgBqP+nAKgCqPynBKj9pwKoAKj/pwCoAaj+pwSo+6cFqPynAqgAqP+nAqj9pwSo+6cFqPynA6j+pwKo/acEqPynBKj8pwSo/acBqAGo/qcCqP+nAKgAqAGo/qcCqP+nAKgAqAGo/qcCqP+n/6cDqPynBKj9pwGoAaj9pwWo+6cDqP6nAagBqP6nAqj+pwGoAaj+pwGoAaj+pwOo/acCqP6nA6j9pwKo/6cAqAGo/qcDqP2nA6j9pwKo/6cCqP2nA6j8pwWo/KcCqP+nAKgBqP+nAKgAqAGo/6cBqP6nAqj+pwOo/qcAqAGo/6cAqAGo/6cAqAGo/qcCqP+nAKgBqP6nAqj+pwKo/6cAqACoAaj9pwWo+qcFqP6nAKgAqACoAKgAqAGo/qcCqP6nAagAqAGo/qcCqP6nAagBqP6nA6j9pwKo/qcCqP+nAKgBqP6nAqj+pwGoAKgBqP6nAqj+pwKo/6cAqACoAaj+pwKo/qcBqACoAKgAqACo/6cBqACo/6cCqP6nAKgDqPunBaj8pwKoAaj+pwGo/6cAqAOo+6cFqPynAqgAqP6nA6j+pwCoAaj+pwKo/6cAqAGo/6cAqABYAVgAWP5XA1j9VwNY/lcAWAFY/1cAWAFY/1cCWPxXBVj6VwdY+lcEWP5XAFgBWP9XAVgAWP9XAVj/VwFYAFj/VwJY/VcDWP5XAVgAWP9XAVj/VwJY/VcEWPtXBVj9VwFYAFgAWABYAFgAWABYAFgAWP+nAagAqACoAKj/pwGoAKgAqACo/6cCqP6nAqj+pwGoAKgAqACoAKgAqP+nAqj+pwGoAKj/pwGoAKj+pwOo/KcEqP6nAKgBqP6nAagBqP+nAKgAqACoAKgAqACoAKgAqAGo/acFqPunBKj+pwCoAaj/pwGo/6cCqP2nA6j+pwCoA6j7pwao+qcEqP+n/6cCqP6nAKgDqPunBqj7pwOo/6cAqACoAKgAqAGo/qcCqP6nAqj+pwKo/6f/pwOo/KcEqP2nAagBqP2nBKj8pwOo/6cAqP+nAagAqACoAaj+pwGo/6cDqPynBKj8pwOo/6cAqACoAKgAqACoAKgAqACoAaj+pwKo/6f/pwOo/acCqP+n/6cCqP6nAagAqP6nBKj8pwKoAKj+pwOo/acCqACo/6cBqP6nAqgAqP+nAaj/pwGoAKj/pwKo/acEqPynBKj9pwKo/6cAqAGo/6cBqP+nAKgBqP+nAaj/pwCoAaj/pwGo/qcDqP2nA6j8pwSo/acCqP+nAKgBqP");
 
 module.exports = beeps;
-},{}],8:[function(require,module,exports){
-(function (global){
-global.$ = global.jQuery = require('jquery');
-
-require("jquery-ui");
-require('jquery-ui/ui/widgets/mouse');
-require('jquery-ui/ui/widgets/datepicker');
-require('jquery-ui/ui/widgets/sortable');
-require('select2');
-
-var GeneralModule = require('./modules/general.js');
-var General = new GeneralModule();
-global.app = General;
-
-/**
- * fires after DOM is loaded
- */
-$(document).ready(function () {
-    General.init();
-});
-
+},{}],11:[function(require,module,exports){
 /*
  bindWithDelay jQuery plugin
  Author: Brian Grinstead
@@ -20664,7 +26832,6 @@ $(document).ready(function () {
  $(window).bindWithDelay("resize", { optional: "eventData" }, callback, 1000);
  $(window).bindWithDelay("resize", callback, 1000, true);
  */
-
 $.fn.bindWithDelay = function (events, data, fn, timeout, throttle) {
 
     if ($.isFunction(data)) {
@@ -20703,8 +26870,8 @@ $.fn.bindWithDelay = function (events, data, fn, timeout, throttle) {
 
         $(this).on(events, data, cb);
     });
-}; 
-
+};
+},{}],12:[function(require,module,exports){
 /**
  * Brings something like PHP's sprintf to js.
  * Use it like "{0} string {1}".format("Handy", "replacement");
@@ -20720,8 +26887,43 @@ if (!String.prototype.format) {
         });
     };
 }
+},{}],13:[function(require,module,exports){
+(function (global){
+/**
+ * expose jQuerys $ to the global scope
+ * @type {jQuery}
+ */
+global.$ = global.jQuery = require('jquery');
+
+/**
+ * load dependencies
+ */
+require("jquery-ui");
+require('jquery-ui/ui/widgets/mouse');
+require('jquery-ui/ui/widgets/datepicker');
+require('jquery-ui/ui/widgets/sortable');
+require('select2');
+require('jQuery-QueryBuilder');
+require('./assets/jQueryBindWithDelay');
+require('./assets/sprintf');
+
+/**
+ * get instance of the general module and expose it as app to the global scope
+ *
+ * @type {GeneralModule}
+ */
+var GeneralModule = require('./modules/general.js');
+var General = new GeneralModule();
+global.app = General;
+
+/**
+ * start up
+ */
+$(document).ready(function () {
+    General.init();
+});
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./modules/general.js":9,"jquery":5,"jquery-ui":1,"jquery-ui/ui/widgets/datepicker":2,"jquery-ui/ui/widgets/mouse":3,"jquery-ui/ui/widgets/sortable":4,"select2":6}],9:[function(require,module,exports){
+},{"./assets/jQueryBindWithDelay":11,"./assets/sprintf":12,"./modules/general.js":14,"jQuery-QueryBuilder":2,"jquery":8,"jquery-ui":4,"jquery-ui/ui/widgets/datepicker":5,"jquery-ui/ui/widgets/mouse":6,"jquery-ui/ui/widgets/sortable":7,"select2":9}],14:[function(require,module,exports){
 var VarietiesModule = require('./varieties.js');
 var TreesModule = require('./trees.js');
 var MarksModule = require('./marks.js');
@@ -20737,9 +26939,15 @@ function GeneralModule() {
      */
     var self = this;
 
+    /**
+     * temp storages for filters etc. to set timeout before sending request
+     */
     var last_search_term;
     var search_timer;
 
+    /**
+     * Load modules
+     */
     this.Varieties = new VarietiesModule(self);
     this.Trees = new TreesModule(self);
     this.Marks = new MarksModule(self);
@@ -21125,7 +27333,7 @@ function GeneralModule() {
 }
 
 module.exports = GeneralModule;
-},{"./../assets/beeps.js":7,"./marks.js":10,"./queries.js":11,"./trees.js":12,"./varieties.js":13}],10:[function(require,module,exports){
+},{"./../assets/beeps.js":10,"./marks.js":15,"./queries.js":16,"./trees.js":17,"./varieties.js":18}],15:[function(require,module,exports){
 /**
  * handles all the marks stuff
  */
@@ -21320,6 +27528,9 @@ function MarksModule(General) {
         }
     };
 
+    /**
+     * process scanner input
+     */
     this.byScanner = function () {
         var $scanner = $('.scanner_mark_field').first();
 
@@ -21333,6 +27544,11 @@ function MarksModule(General) {
         }, 200);
     };
 
+    /**
+     * search tree from given value
+     *
+     * @param val
+     */
     this.getTree = function (val) {
         var $container = $('#tree_container').first();
         var $searching = $('#searching').first();
@@ -21363,6 +27579,11 @@ function MarksModule(General) {
         });
     };
 
+    /**
+     * Get mark from given code and set correct value
+     *
+     * @param val
+     */
     this.getScannerMark = function (val) {
         var $searching = $('#searching').first();
 
@@ -21389,6 +27610,11 @@ function MarksModule(General) {
         });
     };
 
+    /**
+     * Set mark value from server response of scanner code request
+     *
+     * @param data
+     */
     this.setMark = function (data) {
         var input_id = '#mark-form-fields-mark-form-properties-' + data.mark_form_property_id + '-mark-values-value';
         var radio_id = '#mark-form-fields-mark-form-properties-' + data.mark_form_property_id + '-mark-values-value-' + data.mark_value;
@@ -21408,6 +27634,9 @@ function MarksModule(General) {
         }
     };
 
+    /**
+     * Submit form
+     */
     this.submitForm = function () {
         var $form = $('form');
         var $inputs = $form.find('input, select, textarea');
@@ -21432,6 +27661,11 @@ function MarksModule(General) {
         }
     }
 
+    /**
+     * detect what was scanned and call correct action (get tree, set mark, submit form)
+     *
+     * @param $scanner
+     */
     this.processScannerCode = function ($scanner) {
         var val = $scanner.val();
 
@@ -21448,7 +27682,7 @@ function MarksModule(General) {
 }
 
 module.exports = MarksModule;
-},{}],11:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * handles all the queries stuff
  */
@@ -21653,7 +27887,7 @@ function QueriesModule(General) {
 }
 
 module.exports = QueriesModule;
-},{}],12:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * handles all the trees stuff
  */
@@ -21710,7 +27944,7 @@ function TreesModule(General) {
 }
 
 module.exports = TreesModule;
-},{}],13:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * handles all the varieties stuff
  */
@@ -21802,4 +28036,4 @@ function VarietiesModule(General) {
 }
 
 module.exports = VarietiesModule;
-},{}]},{},[8])
+},{}]},{},[13])

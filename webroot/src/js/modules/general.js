@@ -13,9 +13,15 @@ function GeneralModule() {
      */
     var self = this;
 
+    /**
+     * temp storages for filters etc. to set timeout before sending request
+     */
     var last_search_term;
     var search_timer;
 
+    /**
+     * Load modules
+     */
     this.Varieties = new VarietiesModule(self);
     this.Trees = new TreesModule(self);
     this.Marks = new MarksModule(self);
