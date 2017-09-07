@@ -1,15 +1,21 @@
 {
   "name": "poc",
   "version": "1.0.0",
-  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/cyrillbolliger/poc"
+  },
+  "private": true,
+  "description": "Breeders Database",
   "main": "app.js",
   "directories": {},
   "scripts": {},
-  "author": "",
-  "license": "ISC",
+  "author": "Cyrill Bolliger",
+  "license": "proprietary",
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-browserify": "^0.5.1"
+    "gulp-browserify": "^0.5.1",
+    "gulp-uglify": "^3.0.0"
   },
   "dependencies": {
     "jquery": "^3.2.1",
