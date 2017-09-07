@@ -17,7 +17,7 @@
     <li><?= $this->Html->link(__('New Scanner Code'), ['controller' => 'MarkScannerCodes', 'action' => 'add']) ?></li>
     <li><?= $this->Html->link(__('List Scanner Codes'),
             ['controller' => 'MarkScannerCodes', 'action' => 'index']) ?></li>
-    <li><?= $this->Html->link(__('Print submit form label'),
+    <li><?= $this->Html->link(__('Print Submit Form Label'),
             ['controller' => 'MarkScannerCodes', 'action' => 'printSubmit']) ?>
     </li>
 </ul>
