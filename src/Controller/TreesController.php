@@ -459,11 +459,21 @@ class TreesController extends AppController
      */
     public function print(int $tree_id, string $caller, $params = null)
     {
-        $convar_zpl               = $this->Trees->getLabelZpl($tree_id,'convar');
-        $breeder_variety_code_zpl = $this->Trees->getLabelZpl($tree_id,'breeder_variety_code');
+        $convar_zpl               = $this->Trees->getLabelZpl($tree_id, 'convar');
+        $breeder_variety_code_zpl = $this->Trees->getLabelZpl($tree_id, 'breeder_variety_code');
         
         $this->set([
-            'zpl'        => [__('Regular') => $convar_zpl, __('Anonymous') => $breeder_variety_code_zpl],
+            'buttons'    => [
+                'regular'   => [
+                    'label' => __('Regular'),
+                    'zpl'   => $convar_zpl,
+                ],
+                'anonymous' => [
+                    'label' => __('Anonymous'),
+                    'zpl'   => $breeder_variety_code_zpl
+                ],
+            ],
+            'focus'      => 'regular',
             'controller' => 'Trees',
             'action'     => $caller,
             'params'     => $params,

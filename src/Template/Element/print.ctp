@@ -4,11 +4,11 @@
 <div class="print form large-9 medium-8 columns content">
     <h1><?= __('Print a label?') ?></h1>
     <?php
-    foreach ($zpl as $label => $code) {
+    foreach ($buttons as $id => $options) {
         $button = $this->Html->link(
-            $label,
+            $options['label'],
             ['controller' => $controller, 'action' => $action, $params],
-            ['class' => 'button zpl_print', 'data-zpl' => $code]);
+            ['class' => 'button zpl_print', 'data-zpl' => $options['zpl'], 'id' => 'print_button_'.$id]);
         echo $button . ' ';
     }
     ?>
@@ -18,3 +18,7 @@
         ['class' => 'button']);
     ?>
 </div>
+
+<script>
+    $('#print_button_<?= $focus ?>').focus();
+</script>

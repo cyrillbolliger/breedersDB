@@ -199,7 +199,8 @@ class MarkScannerCodesController extends AppController
         $zpl = $this->MarkScannerCodes->getLabelZpl($id);
         
         $this->set([
-            'zpl'        => [__('Regular') => $zpl],
+            'buttons'    => ['regular' => ['label' => __('Regular'), 'zpl' => $zpl]],
+            'focus'      => 'regular',
             'controller' => 'MarkScannerCodes',
             'action'     => $caller,
             'params'     => $params,
@@ -220,7 +221,8 @@ class MarkScannerCodesController extends AppController
         $zpl = $this->MarkScannerCodes->getSubmitLabelZpl();
         
         $this->set([
-            'zpl'        => [__('Regular') => $zpl],
+            'buttons'    => ['regular' => ['label' => __('Regular'), 'zpl' => $zpl]],
+            'focus'      => 'regular',
             'controller' => 'MarkScannerCodes',
             'action'     => 'index',
             'params'     => null,
