@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const browserify = require('gulp-browserify');
+const uglify = require('gulp-uglify');
 
 
 const src = 'webroot/src';
@@ -51,6 +52,7 @@ gulp.task('jsDev', function() {
 gulp.task('jsDist', function() {
     gulp.src(src+'/js/app.js')
         .pipe(browserify())
+        .pipe(uglify())
         .pipe(gulp.dest(dist+'/js'));
 });
 
@@ -58,8 +60,8 @@ gulp.task('dev', ['imgsDev','fontsDev','cssDev','jsDev']);
 gulp.task('dist', ['imgsDist','fontsDist','cssDist','jsDist']);
 
 gulp.task('watch', function() {
-    gulp.watch(src+'/img/**/*',['imgsDev']);
-    gulp.watch(src+'/fonts/**/*',['fontsDev']);
-    gulp.watch(src+'/css/**/*',['cssDev']);
-    gulp.watch(src+'/js/**/*',['jsDev']);
+    gulp.watch(src+'/img/**/*',['imgsDev', 'imgsDist']);
+    gulp.watch(src+'/fonts/**/*',['fontsDev', 'fontsDist']);
+    gulp.watch(src+'/css/**/*',['cssDev', 'cssDist']);
+    gulp.watch(src+'/js/**/*',['jsDev', 'jsDist']);
 });

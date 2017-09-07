@@ -137,11 +137,19 @@ class AppController extends Controller
         }
         
         // This is done here instead of the bootstrap to not affect the debug kit
+        $this->setResourcesUrl();
+    }
+    
+    private function setResourcesUrl() {
+        $branch = 'dist/';
+        
         if (Configure::read('debug')) {
-            Configure::write('App.cssBaseUrl', 'dev/'.Configure::read('App.cssBaseUrl'));
-            Configure::write('App.jsBaseUrl', 'dev/'.Configure::read('App.jsBaseUrl'));
-            Configure::write('App.imgBaseUrl', 'dev/'.Configure::read('App.imgBaseUrl'));
+            $branch = 'dev/';
         }
+    
+        Configure::write('App.cssBaseUrl', $branch.Configure::read('App.cssBaseUrl'));
+        Configure::write('App.jsBaseUrl', $branch.Configure::read('App.jsBaseUrl'));
+        Configure::write('App.imgBaseUrl', $branch.Configure::read('App.imgBaseUrl'));
     }
     
     public function beforeFilter(Event $event)
