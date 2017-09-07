@@ -28,6 +28,7 @@
     <?= $this->Html->css('jquery-ui.min.css') ?>
     <?= $this->Html->css('select2.min.css') ?>
     <?= $this->Html->css('font-awesome.min.css') ?>
+    <?= $this->Html->css('query-builder.default.min.css') ?>
     <?= $this->Html->css('app.css') ?>
     <?= $this->Html->css('print.css') ?>
     

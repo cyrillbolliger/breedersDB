@@ -159,6 +159,8 @@ class QueriesController extends AppController
             $associations[$view_name] = $this->Queries->getAssociationsOf($view_name);
         }
         
+        $filter_data = $this->Queries->getFilterData($q);
+        
         $this->loadModel('QueryGroups');
         $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
         $query_groups = $this->QueryGroups->find('list')->order('code');

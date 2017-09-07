@@ -305,6 +305,21 @@ class QueriesTable extends Table
     }
     
     /**
+     * Return active fields from given query data.
+     *
+     * The $query_data must be a stdClass with at least the properties:
+     * - fields : result of the query builder field selection as stdClass
+     *
+     * @param $query_data
+     *
+     * @return array
+     */
+    public function getActiveFields($query_data)
+    {
+        return $this->_parseQuery($query_data->fields, 'field');
+    }
+    
+    /**
      * Return array with fields or tables
      *
      * @param \stdClass $query
@@ -359,7 +374,7 @@ class QueriesTable extends Table
      *
      * @return string
      */
-    private function _getDottedFieldPath(string $key) : string
+    private function _getDottedFieldPath(string $key): string
     {
         $table = explode('.', $key)[0];
         foreach ($this->viewQueryAssociations as $association) {
@@ -516,6 +531,31 @@ class QueriesTable extends Table
     }
     
     /**
+     * Return data for the query where builder
+     *
+     * The $query_data must be a stdClass with at least the properties:
+     * - fields : result of the query builder field selection as stdClass
+     *
+     * @param $query_data
+     *
+     * @return array
+     */
+    public function getFilterData($query_data)
+    {
+        $tables          = $this->getActiveViewTables($query_data);
+        $tables_fields[] = $this->getFieldTypeMapOf($tables);
+        
+        $fields = [];
+        foreach ($tables_fields as $table => $table_fields) {
+            foreach ($tables_fields as $field => $type) {
+                $fields[$table . '.' . $field] = $this->_getFieldFilterData($table, $field, $type);
+            }
+        }
+        
+        debug($fields);
+    }
+    
+    /**
      * Return active tables from given query data.
      *
      * The $query_data must be a stdClass with at least the properties:
@@ -525,21 +565,45 @@ class QueriesTable extends Table
      *
      * @return array
      */
-    public function getActiveViewTables($query_data) {
+    public function getActiveViewTables($query_data)
+    {
         return $this->_parseQuery($query_data->fields, 'table');
     }
     
+    private function _getFieldFilterData(string $table, string $field, string $type)
+    {
+        $data['id']    = $table . '.' . $field;
+        $data['label'] = $this->translateFields($data['id']);
+        $data['type']  = $this->_getFieldTypeForFilter($type);
+        
+        // ToDo: continue here: http://querybuilder.js.org/index.html#filters
+    }
+    
     /**
-     * Return active fields from given query data.
+     * Return the type our query where builder understands from given cakeish db type
      *
-     * The $query_data must be a stdClass with at least the properties:
-     * - fields : result of the query builder field selection as stdClass
+     * @param string $type
      *
-     * @param $query_data
-     *
-     * @return array
+     * @return string
      */
-    public function getActiveFields($query_data) {
-        return $this->_parseQuery($query_data->fields, 'field');
+    private function _getFieldTypeForFilter(string $type): string
+    {
+        $cast = [
+            'string'       => 'string',
+            'text'         => 'string',
+            'integer'      => 'integer',
+            'smallinteger' => 'integer',
+            'tinyinteger'  => 'integer',
+            'biginteger'   => 'integer',
+            'float'        => 'double',
+            'decimal'      => 'double',
+            'boolean'      => 'boolean',
+            'date'         => 'date',
+            'datetime'     => 'datetime',
+            'timestamp'    => 'integer',
+            'time'         => 'time',
+        ];
+        
+        return $cast[$type];
     }
 }

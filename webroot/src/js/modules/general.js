@@ -208,7 +208,7 @@ function GeneralModule() {
             if (!link) {
                 return;
             }
-            
+
             new_link = link.replace('&sort=', '');
             new_link = new_link.replace('&direction=', '');
             new_link = new_link + '&sort=' + sort + '&direction=' + direction;

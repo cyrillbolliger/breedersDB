@@ -37,9 +37,10 @@ foreach ($views as $view_key => $view_name) {
 }
 ?>
 
+&nbsp;
 <legend class="sub-legend-h3"><?= __('Set filter criteria') ?></legend>
 &nbsp;
-<div id="query_builder_filter"></div>
+<div id="query_where_builder"></div>
 
 <script>
     var query_builder_associations = $.parseJSON('<?= json_encode($associations)?>');

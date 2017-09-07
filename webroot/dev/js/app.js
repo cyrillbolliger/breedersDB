@@ -27134,7 +27134,7 @@ function GeneralModule() {
             if (!link) {
                 return;
             }
-            
+
             new_link = link.replace('&sort=', '');
             new_link = new_link.replace('&direction=', '');
             new_link = new_link + '&sort=' + sort + '&direction=' + direction;
@@ -27712,6 +27712,7 @@ function QueriesModule(General) {
         self.setViewSelectorInitState();
         self.bindRootViewSelectorEvents();
         self.setRootViewSelectorInitState();
+        self.instantiateQueryWhereBuilder();
     };
 
     /**
@@ -27727,8 +27728,8 @@ function QueriesModule(General) {
      */
     this.bindRootViewSelectorEvents = function () {
         var $el;
-        $('#root-view').on('change', function() {
-            $el = $('input[name="'+$(this).val()+'"].view-selector');
+        $('#root-view').on('change', function () {
+            $el = $('input[name="' + $(this).val() + '"].view-selector');
             $el.prop('checked', true);
             $('input.view-selector')
                 .prop('disabled', false)
@@ -27754,7 +27755,7 @@ function QueriesModule(General) {
      * set field selector on click events
      */
     this.bindViewSelectorEvents = function () {
-        $('.view-selector').on('click change',function () {
+        $('.view-selector').on('click change', function () {
             self.setFieldVisibilityFrom($(this));
             self.enableAssociated();
         });
@@ -27787,7 +27788,7 @@ function QueriesModule(General) {
 
         // root view must be first to be always valid
         root_view = $('#root-view').val();
-        input.splice(input.indexOf(root_view),1);
+        input.splice(input.indexOf(root_view), 1);
         input.unshift(root_view);
 
         valid.push(input.shift());
@@ -27805,7 +27806,7 @@ function QueriesModule(General) {
         }
 
         // the elements remaining in 'input' are invalid
-        $.each(input, function(idx, invalid) {
+        $.each(input, function (idx, invalid) {
             $invalid = $('input[name="' + invalid + '"]');
             $invalid.prop('checked', false);
             self.setFieldVisibilityFrom($invalid);
@@ -27890,6 +27891,89 @@ function QueriesModule(General) {
         } else {
             $target.hide();
         }
+    };
+
+    this.instantiateQueryWhereBuilder = function () {
+        var $query_where_builder = $('#query_where_builder');
+        var icons = {
+            add_group: 'fa fa-plus-square',
+                add_rule: 'fa fa-plus-circle',
+                remove_group: 'fa fa-minus-square',
+                remove_rule: 'fa fa-minus-circle',
+                error: 'fa fa-exclamation-triangle'
+        };
+
+        var rules_basic = {
+            condition: 'AND',
+            rules: [{
+                id: 'price',
+                operator: 'less',
+                value: 10.25
+            }, {
+                condition: 'OR',
+                rules: [{
+                    id: 'category',
+                    operator: 'equal',
+                    value: 2
+                }, {
+                    id: 'category',
+                    operator: 'equal',
+                    value: 1
+                }]
+            }]
+        };
+
+        $query_where_builder.queryBuilder({
+            icons: icons,
+            filters: [{
+                id: 'name',
+                label: 'Name',
+                type: 'string'
+            }, {
+                id: 'category',
+                label: 'Category',
+                type: 'integer',
+                input: 'select',
+                values: {
+                    1: 'Books',
+                    2: 'Movies',
+                    3: 'Music',
+                    4: 'Tools',
+                    5: 'Goodies',
+                    6: 'Clothes'
+                },
+                operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
+            }, {
+                id: 'in_stock',
+                label: 'In stock',
+                type: 'integer',
+                input: 'radio',
+                values: {
+                    1: 'Yes',
+                    0: 'No'
+                },
+                operators: ['equal']
+            }, {
+                id: 'price',
+                label: 'Price',
+                type: 'double',
+                validation: {
+                    min: 0,
+                    step: 0.01
+                }
+            }, {
+                id: 'id',
+                label: 'Identifier',
+                type: 'string',
+                placeholder: '____-____-____',
+                operators: ['equal', 'not_equal'],
+                validation: {
+                    format: /^.{4}-.{4}-.{4}$/
+                }
+            }],
+
+            rules: rules_basic
+        });
     };
 }
 
