@@ -27134,10 +27134,10 @@ function GeneralModule() {
             if (!link) {
                 return;
             }
-
+            
             new_link = link.replace('&sort=', '');
-            new_link = link.replace('&direction=', '');
-            new_link = link + '&sort=' + sort + '&direction=' + direction;
+            new_link = new_link.replace('&direction=', '');
+            new_link = new_link + '&sort=' + sort + '&direction=' + direction;
             $(this).attr('href', new_link);
         });
     };
