@@ -1,12 +1,17 @@
 /**
  * handles all the queries stuff
  */
-function QueriesModule() {
+function QueriesModule(General) {
 
     /**
      * having our class always accessible can get handy
      */
     var self = this;
+
+    /**
+     * make the general module accessible
+     */
+    this.General = General;
 
     /**
      * gets called on startup

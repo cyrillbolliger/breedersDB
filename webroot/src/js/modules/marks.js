@@ -1,12 +1,17 @@
 /**
  * handles all the marks stuff
  */
-function MarksModule() {
+function MarksModule(General) {
 
     /**
      * having our class always accessible can get handy
      */
     var self = this;
+
+    /**
+     * make the general module accessible
+     */
+    this.General = General;
 
     /**
      * initialize
@@ -93,7 +98,7 @@ function MarksModule() {
     this.initNewField = function () {
         self.makeFormFieldsSortable();
         self.makeFormFieldsDeletable();
-        General.instantiateDatepicker();
+        self.General.instantiateDatepicker();
     };
 
     /**
@@ -159,7 +164,7 @@ function MarksModule() {
                         .addClass(cls)
                         .attr('id', id);
 
-                    General.instantiateDatepicker();
+                    self.General.instantiateDatepicker();
                 },
                 method: 'GET',
                 dataType: 'html',
@@ -214,10 +219,10 @@ function MarksModule() {
             success: function (resp, status) {
                 if ('success' == status) {
                     $container.html(resp);
-                    General.beep('success');
+                    self.General.beep('success');
                 } else {
                     $container.html('<div class="nothing_found">' + trans.no_tree_found + '</div>');
-                    General.beep('error');
+                    self.General.beep('error');
                 }
                 $searching.hide();
                 $('.scanner_mark_field').first().focus();
@@ -244,7 +249,7 @@ function MarksModule() {
                 $('.scanner_mark_field').first().focus();
             },
             error: function () {
-                General.beep('error');
+                self.General.beep('error');
                 $searching.hide();
                 $('.scanner_mark_field').first().focus();
             },
@@ -267,9 +272,9 @@ function MarksModule() {
             } else {
                 $el.val(data.mark_value);
             }
-            General.beep('success');
+            self.General.beep('success');
         } else {
-            General.beep('error').addEventListener("ended", function () {
+            self.General.beep('error').addEventListener("ended", function () {
                 alert(String(trans.matching_elements).format($el.length));
             });
         }
@@ -291,11 +296,11 @@ function MarksModule() {
         }
 
         if (valid) {
-            General.beep('success2').addEventListener("ended", function () {
+            self.General.beep('success2').addEventListener("ended", function () {
                 $('button[type=submit]').trigger('click');
             });
         } else {
-            General.beep('error');
+            self.General.beep('error');
         }
     }
 

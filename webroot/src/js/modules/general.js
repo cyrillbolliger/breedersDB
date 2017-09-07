@@ -3,11 +3,6 @@ var TreesModule = require('./trees.js');
 var MarksModule = require('./marks.js');
 var QueriesModule = require('./queries.js');
 
-var Varieties = new VarietiesModule();
-var Trees = new TreesModule();
-var Marks = new MarksModule();
-var Queries = new QueriesModule();
-
 /**
  * handles all the general stuff
  */
@@ -18,15 +13,19 @@ function GeneralModule() {
      */
     var self = this;
 
-    var searching;
     var last_search_term;
     var search_timer;
+
+    this.Varieties = new VarietiesModule(self);
+    this.Trees = new TreesModule(self);
+    this.Marks = new MarksModule(self);
+    this.Queries = new QueriesModule(self);
 
     /*
      * start up
      */
     this.init = function () {
-        searching = '<div class="searching">' + trans.searching + '</div>';
+        this.searching = '<div class="searching">' + trans.searching + '</div>';
 
         this.instantiateDatepicker();
         this.instantiateSelect2();
@@ -35,16 +34,16 @@ function GeneralModule() {
         this.instantiateFilter();
         this.instantiatePrefillMarker();
         this.instantiatePrintButtons();
-        Varieties.selectBatchId();
-        Varieties.setCodeFromOfficialName();
-        Trees.get();
-        Marks.initValidationRulesCreator();
-        Marks.addMarkFormFieldInit();
-        Marks.loadFormFields();
-        Marks.applyValidationRules();
-        Marks.byScanner();
-        Marks.unlockScannerField();
-        Queries.init();
+        this.Varieties.selectBatchId();
+        this.Varieties.setCodeFromOfficialName();
+        this.Trees.get();
+        this.Marks.initValidationRulesCreator();
+        this.Marks.addMarkFormFieldInit();
+        this.Marks.loadFormFields();
+        this.Marks.applyValidationRules();
+        this.Marks.byScanner();
+        this.Marks.unlockScannerField();
+        this.Queries.init();
     };
 
     /*

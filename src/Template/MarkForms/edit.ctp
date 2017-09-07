@@ -38,5 +38,5 @@
 </div>
 
 <script>
-    Marks.initNewField();
+    app.Marks.initNewField();
 </script>

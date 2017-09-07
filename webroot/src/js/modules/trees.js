@@ -1,12 +1,17 @@
 /**
  * handles all the trees stuff
  */
-function TreesModule() {
+function TreesModule(General) {
 
     /**
      * having our class always accessible can get handy
      */
     var self = this;
+
+    /**
+     * make the general module accessible
+     */
+    this.General = General;
 
     /**
      * get tree
@@ -30,18 +35,18 @@ function TreesModule() {
                 success: function (resp, status) {
                     if ('success' == status) {
                         $container.html(resp);
-                        General.beep('success');
+                        self.General.beep('success');
                     } else {
                         $container.html('<div class="nothing_found">' + trans.no_tree_found + '</div>');
                         if (0 < $filter.val().length) {
-                            General.beep('error');
+                            self.General.beep('error');
                         }
                     }
                 },
                 dataType: 'html',
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader('X-CSRF-Token', csrfToken);
-                    $container.html(General.searching);
+                    $container.html(self.General.searching);
                 }
             });
         });

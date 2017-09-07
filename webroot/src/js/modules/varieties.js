@@ -1,12 +1,17 @@
 /**
  * handles all the varieties stuff
  */
-function VarietiesModule() {
+function VarietiesModule(General) {
 
     /**
      * having our class always accessible can get handy
      */
     var self = this;
+
+    /**
+     * make the general module accessible
+     */
+    this.General = General;
 
     /*
      * load and configure the Crossing.Batch select field. Unlock Code

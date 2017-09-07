@@ -1,10 +1,14 @@
 global.$ = global.jQuery = require('jquery');
 
 require("jquery-ui");
+require('jquery-ui/ui/widgets/mouse');
+require('jquery-ui/ui/widgets/datepicker');
+require('jquery-ui/ui/widgets/sortable');
 require('select2');
 
 var GeneralModule = require('./modules/general.js');
 var General = new GeneralModule();
+global.app = General;
 
 /**
  * fires after DOM is loaded
@@ -12,7 +16,6 @@ var General = new GeneralModule();
 $(document).ready(function () {
     General.init();
 });
-
 
 /*
  bindWithDelay jQuery plugin

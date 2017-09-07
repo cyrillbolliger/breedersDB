@@ -21,8 +21,8 @@ echo $this->Form->input('note');
 
 <script>
     $(document).ready(function () {
-        General.instantiateDatepicker();
-        General.instantiateSelect2();
-        General.instantiatePrefillMarker();
+        app.instantiateDatepicker();
+        app.instantiateSelect2();
+        app.instantiatePrefillMarker();
     });
 </script>
