@@ -10,6 +10,13 @@ function QueriesModule(General) {
     var self = this;
 
     /**
+     * The container that hold the query where builder
+     *
+     * @type jQuery object
+     */
+    var $query_where_builder;
+
+    /**
      * make the general module accessible
      */
     this.General = General;
@@ -18,11 +25,13 @@ function QueriesModule(General) {
      * gets called on startup
      */
     this.init = function () {
+        self.$query_where_builder = $('#query_where_builder');
+
         self.bindViewSelectorEvents();
         self.setViewSelectorInitState();
         self.bindRootViewSelectorEvents();
         self.setRootViewSelectorInitState();
-        self.instantiateQueryWhereBuilder();
+        self.saveQueryWhereData();
     };
 
     /**
@@ -68,6 +77,7 @@ function QueriesModule(General) {
         $('.view-selector').on('click change', function () {
             self.setFieldVisibilityFrom($(this));
             self.enableAssociated();
+            self.setQueryWhereBuildersFilters();
         });
     };
 
@@ -203,8 +213,10 @@ function QueriesModule(General) {
         }
     };
 
-    this.instantiateQueryWhereBuilder = function () {
-        var $query_where_builder = $('#query_where_builder');
+    /**
+     * Instantiate the query where builder
+     */
+    this.instantiateQueryWhereBuilder = function (filters) {
         var icons = {
             add_group: 'fa fa-plus-square',
                 add_rule: 'fa fa-plus-circle',
@@ -213,76 +225,43 @@ function QueriesModule(General) {
                 error: 'fa fa-exclamation-triangle'
         };
 
-        var rules_basic = {
-            condition: 'AND',
-            rules: [{
-                id: 'price',
-                operator: 'less',
-                value: 10.25
-            }, {
-                condition: 'OR',
-                rules: [{
-                    id: 'category',
-                    operator: 'equal',
-                    value: 2
-                }, {
-                    id: 'category',
-                    operator: 'equal',
-                    value: 1
-                }]
-            }]
-        };
-
-        $query_where_builder.queryBuilder({
+        this.$query_where_builder.queryBuilder({
             icons: icons,
-            filters: [{
-                id: 'name',
-                label: 'Name',
-                type: 'string'
-            }, {
-                id: 'category',
-                label: 'Category',
-                type: 'integer',
-                input: 'select',
-                values: {
-                    1: 'Books',
-                    2: 'Movies',
-                    3: 'Music',
-                    4: 'Tools',
-                    5: 'Goodies',
-                    6: 'Clothes'
-                },
-                operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
-            }, {
-                id: 'in_stock',
-                label: 'In stock',
-                type: 'integer',
-                input: 'radio',
-                values: {
-                    1: 'Yes',
-                    0: 'No'
-                },
-                operators: ['equal']
-            }, {
-                id: 'price',
-                label: 'Price',
-                type: 'double',
-                validation: {
-                    min: 0,
-                    step: 0.01
-                }
-            }, {
-                id: 'id',
-                label: 'Identifier',
-                type: 'string',
-                placeholder: '____-____-____',
-                operators: ['equal', 'not_equal'],
-                validation: {
-                    format: /^.{4}-.{4}-.{4}$/
-                }
-            }],
+            filters: filters,
+            rules: query_where_builder_rules
+        });
+    };
 
-            rules: rules_basic
+    /**
+     * Set the filters of the query where builder
+     */
+    this.setQueryWhereBuildersFilters = function () {
+        var $checked = $('.view-selector:checked');
+        var filters = [];
+        var tmp;
+
+        $checked.each(function () {
+            tmp = $(this).attr('name');
+            $.each(query_where_builder_filters[tmp], function(key, val) {
+                filters.push(val);
+            });
+        });
+
+        // destroy old query builder because filters cant be changed
+        this.$query_where_builder.queryBuilder('destroy');
+
+        // reinstantiate a new onw with the new filters
+        this.instantiateQueryWhereBuilder(filters);
+    };
+
+    /**
+     * Write data of the query builder in the hidden #where_query field before submitting the form
+     */
+    this.saveQueryWhereData = function() {
+        $('#query_builder_form').submit(function() {
+            var rules = JSON.stringify(self.$query_where_builder.queryBuilder('getRules'));
+            $('#where-query').val(rules);
+            self.$query_where_builder.remove();
         });
     };
 }

@@ -37,6 +37,15 @@ foreach ($views as $view_key => $view_name) {
 }
 ?>
 
+<?php
+
+$this->Form->unlockField('where_query');
+echo $this->Form->input('where_query', [
+        'type' => 'hidden',
+]);
+
+?>
+
 &nbsp;
 <legend class="sub-legend-h3"><?= __('Set filter criteria') ?></legend>
 &nbsp;
@@ -44,4 +53,6 @@ foreach ($views as $view_key => $view_name) {
 
 <script>
     var query_builder_associations = $.parseJSON('<?= json_encode($associations)?>');
+    var query_where_builder_filters = $.parseJSON('<?= json_encode($filter_data)?>');
+    var query_where_builder_rules = $.parseJSON('<?= $where_rules ?>');
 </script>

@@ -256,6 +256,10 @@ class QueriesTable extends Table
         }
         
         $data['fields']   = $query;
+        
+        $data['where'] = $request['where_query'];
+        unset($request['where_query']);
+        
         $request['query'] = json_encode($data);
         
         return $this->patchEntity($entity, $request);
@@ -533,50 +537,39 @@ class QueriesTable extends Table
     /**
      * Return data for the query where builder
      *
-     * The $query_data must be a stdClass with at least the properties:
-     * - fields : result of the query builder field selection as stdClass
-     *
-     * @param $query_data
-     *
      * @return array
      */
-    public function getFilterData($query_data)
+    public function getFilterData()
     {
-        $tables          = $this->getActiveViewTables($query_data);
-        $tables_fields[] = $this->getFieldTypeMapOf($tables);
+        $tables        = array_keys($this->getViewNames());
+        $tables_fields = $this->getFieldTypeMapOf($tables);
         
         $fields = [];
         foreach ($tables_fields as $table => $table_fields) {
-            foreach ($tables_fields as $field => $type) {
-                $fields[$table . '.' . $field] = $this->_getFieldFilterData($table, $field, $type);
+            foreach ($table_fields as $field => $type) {
+                $fields[$table][] = $this->_getFieldFilterData($table, $field, $type);
             }
         }
         
-        debug($fields);
+        return $fields;
     }
     
     /**
-     * Return active tables from given query data.
+     * Return array with filter data according to the needs of http://querybuilder.js.org/#filters
      *
-     * The $query_data must be a stdClass with at least the properties:
-     * - fields : result of the query builder field selection as stdClass
-     *
-     * @param $query_data
+     * @param string $table
+     * @param string $field
+     * @param string $type
      *
      * @return array
      */
-    public function getActiveViewTables($query_data)
-    {
-        return $this->_parseQuery($query_data->fields, 'table');
-    }
-    
-    private function _getFieldFilterData(string $table, string $field, string $type)
+    private function _getFieldFilterData(string $table, string $field, string $type): array
     {
         $data['id']    = $table . '.' . $field;
         $data['label'] = $this->translateFields($data['id']);
         $data['type']  = $this->_getFieldTypeForFilter($type);
         
-        // ToDo: continue here: http://querybuilder.js.org/index.html#filters
+        return $data;
     }
     
     /**
@@ -605,5 +598,34 @@ class QueriesTable extends Table
         ];
         
         return $cast[$type];
+    }
+    
+    /**
+     * Return active tables from given query data.
+     *
+     * The $query_data must be a stdClass with at least the properties:
+     * - fields : result of the query builder field selection as stdClass
+     *
+     * @param $query_data
+     *
+     * @return array
+     */
+    public function getActiveViewTables(\stdClass $query_data)
+    {
+        return $this->_parseQuery($query_data->fields, 'table');
+    }
+    
+    /**
+     * Return the where data as JSON or null
+     *
+     * @param $query_data
+     *
+     * @return null
+     */
+    public function getWhereRules(\stdClass $query_data) {
+        if (property_exists($query_data, 'where')) {
+            return $query_data->where;
+        }
+        return json_encode(null);
     }
 }

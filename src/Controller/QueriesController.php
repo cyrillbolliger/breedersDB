@@ -88,6 +88,9 @@ class QueriesController extends AppController
         foreach (array_keys($views) as $view_name) {
             $associations[$view_name] = $this->Queries->getAssociationsOf($view_name);
         }
+    
+        $filter_data = $this->Queries->getFilterData();
+        $where_rules = json_encode(null);
         
         $this->loadModel('QueryGroups');
         $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
@@ -104,7 +107,9 @@ class QueriesController extends AppController
             'view_fields',
             'associations',
             'active_views',
-            'active_fields'
+            'active_fields',
+            'filter_data',
+            'where_rules'
         ));
         $this->set('_serialize', [
             'default_root_view',
@@ -117,7 +122,9 @@ class QueriesController extends AppController
             'view_fields',
             'associations',
             'active_views',
-            'active_fields'
+            'active_fields',
+            'filter_data',
+            'where_rules'
         ]);
     }
     
@@ -159,7 +166,8 @@ class QueriesController extends AppController
             $associations[$view_name] = $this->Queries->getAssociationsOf($view_name);
         }
         
-        $filter_data = $this->Queries->getFilterData($q);
+        $filter_data = $this->Queries->getFilterData();
+        $where_rules = $this->Queries->getWhereRules($q);
         
         $this->loadModel('QueryGroups');
         $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
@@ -174,7 +182,9 @@ class QueriesController extends AppController
             'view_fields',
             'active_views',
             'active_fields',
-            'associations'
+            'associations',
+            'filter_data',
+            'where_rules'
         ));
         $this->set('_serialize', [
             'query',
@@ -185,7 +195,9 @@ class QueriesController extends AppController
             'view_fields',
             'active_views',
             'active_fields',
-            'associations'
+            'associations',
+            'filter_data',
+            'where_rules'
         ]);
     }
     

@@ -2,7 +2,7 @@
     <?= $this->element('Query/nav'); ?>
 </nav>
 <div class="queries form large-9 medium-8 columns content">
-    <?= $this->Form->create($query) ?>
+    <?= $this->Form->create($query, ['id'=>'query_builder_form']) ?>
     <fieldset>
         <legend><?= __('Add Query') ?></legend>
         <?php
