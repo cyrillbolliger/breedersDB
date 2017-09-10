@@ -45,6 +45,7 @@ class QueriesTable extends Table
         $this->primaryKey('id');
         
         $this->addBehavior('Timestamp');
+        $this->addBehavior('RulesToConditionsConvertible');
         
         $this->belongsTo('QueryGroups', [
             'foreignKey' => 'query_group_id',
@@ -255,7 +256,7 @@ class QueriesTable extends Table
             unset($request[$view]);
         }
         
-        $data['fields']   = $query;
+        $data['fields'] = $query;
         
         $data['where'] = $request['where_query'];
         unset($request['where_query']);
@@ -399,6 +400,10 @@ class QueriesTable extends Table
      * - root_view : the FROM table
      * - fields : result of the query builder field selection as stdClass
      *
+     * The 'where' property is optional.
+     * If present the original JSON from the where query builder is expected.
+     * (@see http://querybuilder.js.org/)
+     *
      * @param $query_data
      *
      * @return Query
@@ -412,10 +417,14 @@ class QueriesTable extends Table
         $associations                = $this->_buildAssociationsForContainStatement($this->viewQueryRoot, $tables);
         $this->viewQueryAssociations = $associations;
         
+        $where_rules = json_decode($this->getWhereRules($query_data));
+        $conditions = $this->convertRulesetToConditions($where_rules);
+        
         $rootTable = TableRegistry::get($this->viewQueryRoot);
         $query     = $rootTable
             ->find('all')
-            ->contain($associations);
+            ->contain($associations)
+            ->where($conditions);
         
         return $query;
     }
@@ -535,6 +544,22 @@ class QueriesTable extends Table
     }
     
     /**
+     * Return the where data as JSON or null
+     *
+     * @param $query_data
+     *
+     * @return null
+     */
+    public function getWhereRules(\stdClass $query_data)
+    {
+        if (property_exists($query_data, 'where')) {
+            return $query_data->where;
+        }
+        
+        return json_encode(null);
+    }
+    
+    /**
      * Return data for the query where builder
      *
      * @return array
@@ -613,19 +638,5 @@ class QueriesTable extends Table
     public function getActiveViewTables(\stdClass $query_data)
     {
         return $this->_parseQuery($query_data->fields, 'table');
-    }
-    
-    /**
-     * Return the where data as JSON or null
-     *
-     * @param $query_data
-     *
-     * @return null
-     */
-    public function getWhereRules(\stdClass $query_data) {
-        if (property_exists($query_data, 'where')) {
-            return $query_data->where;
-        }
-        return json_encode(null);
     }
 }
