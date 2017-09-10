@@ -23,7 +23,32 @@ use Cake\Validation\Validator;
  */
 class VarietiesViewTable extends Table
 {
-
+    /**
+     * boolean fields
+     */
+    private $boolean = [];
+    
+    /**
+     * select fields
+     */
+    private $select = [];
+    
+    /**
+     * @return mixed
+     */
+    public function getBooleanFields()
+    {
+        return $this->boolean;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getSelectFields()
+    {
+        return $this->select;
+    }
+    
     /**
      * Initialize method
      *

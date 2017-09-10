@@ -22,7 +22,33 @@ use Cake\Validation\Validator;
  */
 class MotherTreesViewTable extends Table
 {
-
+    /**
+     * boolean fields
+     */
+    private $boolean = ['planed'];
+    
+    /**
+     * select fields
+     */
+    private $select = ['row', 'experiment_site'];
+    
+    /**
+     * @return mixed
+     */
+    public function getBooleanFields()
+    {
+        return $this->boolean;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getSelectFields()
+    {
+        return $this->select;
+    }
+    
+    
     /**
      * Initialize method
      *

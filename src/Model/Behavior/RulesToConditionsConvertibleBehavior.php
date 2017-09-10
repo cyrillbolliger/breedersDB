@@ -93,18 +93,6 @@ class RulesToConditionsConvertibleBehavior extends Behavior
                 return [$rule->field . ' IS NULL'];
             case 'is_not_null':
                 return ['NOT' => [$rule->field . ' IS NULL']];
-            case 'between':
-                if (count($rule->value) !== 2) {
-                    throw new \InvalidArgumentException("Between statements require exactly two values");
-                }
-                
-                return [$rule->field . ' BETWEEN ? AND ?' => $rule->value];
-            case 'not_between':
-                if (count($rule->value) !== 2) {
-                    throw new \InvalidArgumentException("Between statements require exactly two values");
-                }
-                
-                return [$rule->field . ' BETWEEN ? AND ?' => $rule->value];
             default:
                 throw new \InvalidArgumentException("Given operator is not supported");
         }

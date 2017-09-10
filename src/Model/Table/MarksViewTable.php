@@ -23,7 +23,32 @@ use Cake\Validation\Validator;
  */
 class MarksViewTable extends Table
 {
-
+    /**
+     * boolean fields
+     */
+    private $boolean = ['exceptional_mark'];
+    
+    /**
+     * select fields
+     */
+    private $select = ['name', 'field_type', 'mark_form_property_type'];
+    
+    /**
+     * @return mixed
+     */
+    public function getBooleanFields()
+    {
+        return $this->boolean;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getSelectFields()
+    {
+        return $this->select;
+    }
+    
     /**
      * Initialize method
      *

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -23,17 +24,43 @@ use Cake\Validation\Validator;
  */
 class CrossingsViewTable extends Table
 {
-
+    /**
+     * boolean fields
+     */
+    private $boolean = [];
+    
+    /**
+     * select fields
+     */
+    private $select = [];
+    
+    /**
+     * @return mixed
+     */
+    public function getBooleanFields()
+    {
+        return $this->boolean;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getSelectFields()
+    {
+        return $this->select;
+    }
+    
     /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
-
+        
         $this->table('crossings_view');
         $this->displayField('code');
         $this->primaryKey('id');
@@ -45,11 +72,12 @@ class CrossingsViewTable extends Table
             'foreignKey' => 'crossing_id'
         ]);
     }
-
+    
     /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
@@ -58,17 +86,17 @@ class CrossingsViewTable extends Table
             ->integer('id')
             ->requirePresence('id', 'create')
             ->notEmpty('id');
-
+        
         $validator
             ->requirePresence('code', 'create')
             ->notEmpty('code');
-
+        
         $validator
             ->allowEmpty('mother_variety');
-
+        
         $validator
             ->allowEmpty('father_variety');
-
+        
         return $validator;
     }
 }

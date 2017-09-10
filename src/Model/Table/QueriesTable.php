@@ -418,7 +418,7 @@ class QueriesTable extends Table
         $this->viewQueryAssociations = $associations;
         
         $where_rules = json_decode($this->getWhereRules($query_data));
-        $conditions = $this->convertRulesetToConditions($where_rules);
+        $conditions  = $this->convertRulesetToConditions($where_rules);
         
         $rootTable = TableRegistry::get($this->viewQueryRoot);
         $query     = $rootTable
@@ -593,6 +593,17 @@ class QueriesTable extends Table
         $data['id']    = $table . '.' . $field;
         $data['label'] = $this->translateFields($data['id']);
         $data['type']  = $this->_getFieldTypeForFilter($type);
+        $data['input'] = $this->_getFilterFieldInputType($table, $field, $type);
+        
+        if ('radio' === $data['input']) {
+            $data['values']    = [1 => __('Yes'), 0 => __('No')];
+            $data['operators'] = ['equal'];
+        }
+        
+        if ('select' === $data['input']) {
+            $data['values']    = $this->_getSelectValuesOf($table, $field);
+            $data['operators'] = ['equal', 'not_equal', 'is_empty', 'is_not_empty'];
+        }
         
         return $data;
     }
@@ -623,6 +634,56 @@ class QueriesTable extends Table
         ];
         
         return $cast[$type];
+    }
+    
+    /**
+     * Return array with filter data according to the needs of http://querybuilder.js.org/#filters
+     *
+     * @param string $tablename
+     * @param string $field
+     * @param string $type
+     *
+     * @return string
+     */
+    private function _getFilterFieldInputType(string $tablename, string $field, string $type): string
+    {
+        if (in_array($type,
+            ['integer', 'smallinteger', 'tinyinteger', 'biginteger', 'float', 'decimal', 'timestamp'])) {
+            return 'number';
+        }
+        
+        $table = TableRegistry::get($tablename);
+        if (in_array($field, $table->getBooleanFields())) {
+            return 'radio';
+        }
+        if (in_array($field, $table->getSelectFields())) {
+            return 'select';
+        }
+        
+        return 'text';
+    }
+    
+    /**
+     * Return array with the possible select values of the given table.field
+     *
+     * @param string $tablename
+     * @param string $field
+     *
+     * @return array
+     */
+    private function _getSelectValuesOf(string $tablename, string $field): array
+    {
+        $table  = TableRegistry::get($tablename);
+        $tmp    = $table->find()->select([$field])->distinct()->orderAsc($field)->toArray();
+        $values = [];
+        foreach ($tmp as $item) {
+            if (empty($item->$field)) {
+                continue;
+            }
+            $values[$item->$field] = $item->$field;
+        }
+        
+        return $values;
     }
     
     /**

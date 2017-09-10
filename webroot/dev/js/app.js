@@ -27909,16 +27909,36 @@ function QueriesModule(General) {
     this.instantiateQueryWhereBuilder = function (filters) {
         var icons = {
             add_group: 'fa fa-plus-square',
-                add_rule: 'fa fa-plus-circle',
-                remove_group: 'fa fa-minus-square',
-                remove_rule: 'fa fa-minus-circle',
-                error: 'fa fa-exclamation-triangle'
+            add_rule: 'fa fa-plus-circle',
+            remove_group: 'fa fa-minus-square',
+            remove_rule: 'fa fa-minus-circle',
+            error: 'fa fa-exclamation-triangle'
         };
+
+        var operators = [
+            {type: 'equal', nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']},
+            {type: 'not_equal', nb_inputs: 1, multiple: false, apply_to: ['string', 'number', 'datetime', 'boolean']},
+            {type: 'less', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
+            {type: 'less_or_equal', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
+            {type: 'greater', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
+            {type: 'greater_or_equal', nb_inputs: 1, multiple: false, apply_to: ['number', 'datetime']},
+            {type: 'begins_with', nb_inputs: 1, multiple: false, apply_to: ['string']},
+            {type: 'not_begins_with', nb_inputs: 1, multiple: false, apply_to: ['string']},
+            {type: 'contains', nb_inputs: 1, multiple: false, apply_to: ['string']},
+            {type: 'not_contains', nb_inputs: 1, multiple: false, apply_to: ['string']},
+            {type: 'ends_with', nb_inputs: 1, multiple: false, apply_to: ['string']},
+            {type: 'not_ends_with', nb_inputs: 1, multiple: false, apply_to: ['string']},
+            {type: 'is_empty', nb_inputs: 0, multiple: false, apply_to: ['string']},
+            {type: 'is_not_empty', nb_inputs: 0, multiple: false, apply_to: ['string']},
+            {type: 'is_null', nb_inputs: 0, multiple: false, apply_to: ['number', 'datetime', 'boolean']},
+            {type: 'is_not_null', nb_inputs: 0, multiple: false, apply_to: ['number', 'datetime', 'boolean']}
+        ];
 
         this.$query_where_builder.queryBuilder({
             icons: icons,
             filters: filters,
-            rules: query_where_builder_rules
+            rules: query_where_builder_rules,
+            operators: operators
         });
     };
 
@@ -27932,7 +27952,7 @@ function QueriesModule(General) {
 
         $checked.each(function () {
             tmp = $(this).attr('name');
-            $.each(query_where_builder_filters[tmp], function(key, val) {
+            $.each(query_where_builder_filters[tmp], function (key, val) {
                 filters.push(val);
             });
         });
@@ -27947,8 +27967,8 @@ function QueriesModule(General) {
     /**
      * Write data of the query builder in the hidden #where_query field before submitting the form
      */
-    this.saveQueryWhereData = function() {
-        $('#query_builder_form').submit(function() {
+    this.saveQueryWhereData = function () {
+        $('#query_builder_form').submit(function () {
             var rules = JSON.stringify(self.$query_where_builder.queryBuilder('getRules'));
             $('#where-query').val(rules);
             self.$query_where_builder.remove();
