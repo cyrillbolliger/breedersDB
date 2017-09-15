@@ -18,12 +18,14 @@
         "source": "https://github.com/cakephp/migrations"
     },
     "require": {
-        "php": ">=5.4",
-        "robmorgan/phinx": "0.6.5",
-        "cakephp/cakephp": "~3.1"
+        "php": ">=5.5.9",
+        "robmorgan/phinx": "0.8.1",
+        "cakephp/orm": "~3.2",
+        "cakephp/cache": "~3.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "*",
+        "phpunit/phpunit": "~4.1",
+        "cakephp/cakephp": "~3.2",
         "cakephp/bake": "@stable"
     },
     "autoload": {
@@ -34,6 +36,7 @@
     "autoload-dev": {
         "psr-4": {
             "Cake\\Test\\": "./vendor/cakephp/cakephp/tests",
+            "Migrations\\PHPStan\\": "tests/PHPStan",
             "Migrations\\Test\\": "tests",
             "TestApp\\": "tests/test_app/App",
             "TestBlog\\": "tests/test_app/Plugin/TestBlog/src"

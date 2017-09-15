@@ -24,13 +24,13 @@
         "cakephp/chronos": "~1.0",
         "aura/intl": "1.1.*",
         "psr/log": "^1.0",
-        "zendframework/zend-diactoros": "~1.0"
+        "zendframework/zend-diactoros": "^1.4"
     },
     "suggest": {
         "ext-openssl": "To use Security::encrypt() or have secure CSRF token generation."
     },
     "require-dev": {
-        "phpunit/phpunit": "*",
+        "phpunit/phpunit": "<6.0",
         "cakephp/cakephp-codesniffer": "~2.1"
     },
     "autoload": {
@@ -76,8 +76,9 @@
             "@cs-check",
             "@test"
         ],
-        "cs-check": "phpcs --colors -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
-        "cs-fix": "phpcbf --colors --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
-        "test": "phpunit --colors=always"
+        "cs-check": "phpcs --colors -p ./src ./tests",
+        "cs-fix": "phpcbf --colors ./src ./tests",
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-clover=clover.xml"
     }
 }
