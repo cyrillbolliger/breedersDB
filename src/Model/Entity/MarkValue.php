@@ -3,6 +3,8 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
+use Cake\I18n\Date;
 
 /**
  * MarkValue Entity
@@ -34,4 +36,24 @@ class MarkValue extends Entity
         '*'  => true,
         'id' => false
     ];
+    
+    /**
+     * Return nicely formatted date if its a date. Else just return the value as it is.
+     * The conversion to the ymd format at saving is done in the beforeMarshalling method of the table.
+     *
+     * @return string
+     */
+    protected function _getValue()
+    {
+        $MarkFormProperties = TableRegistry::get('MarkFormProperties');
+        
+        $type = $MarkFormProperties->get($this->_properties['mark_form_property_id'])->field_type;
+        
+        if ('DATE' === $type) {
+            $date = Date::parse($this->_properties['value']);
+            return $date->i18nFormat();
+        }
+        
+        return $this->_properties['value'];
+    }
 }
