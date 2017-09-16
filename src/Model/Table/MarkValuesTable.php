@@ -7,6 +7,8 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use Cake\Validation\Validation;
+use Cake\Event\Event;
+use ArrayObject;
 
 /**
  * MarkValues Model
@@ -55,6 +57,24 @@ class MarkValuesTable extends Table
     }
     
     /**
+     * Modify data before saving
+     *
+     * @param Event $event
+     * @param ArrayObject $data
+     * @param ArrayObject $options
+     */
+    public function beforeMarshal(Event $event, ArrayObject &$data, ArrayObject $options)
+    {
+        // convert date data into the yyyy-mm-dd format
+        $type = $this->MarkFormProperties->get($data['mark_form_property_id'])->field_type;
+        
+        if ('DATE' === $type) {
+            $tmp         = preg_split('/[.-\/]/', $data['value']);
+            $data['value'] = $tmp[2] . '-' . $tmp[1] . '-' . $tmp[0];
+        }
+    }
+    
+    /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
@@ -87,22 +107,13 @@ class MarkValuesTable extends Table
     }
     
     /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
+     * Validation rules for the value column
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @param $value
+     * @param $context
      *
-     * @return \Cake\ORM\RulesChecker
+     * @return bool
      */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->isUnique(['id']));
-        $rules->add($rules->existsIn(['mark_form_property_id'], 'MarkFormProperties'));
-        $rules->add($rules->existsIn(['mark_id'], 'Marks'));
-        
-        return $rules;
-    }
-    
     protected function _validateValue($value, $context)
     {
         $mark_form_property = $this->MarkFormProperties->get($context['data']['mark_form_property_id']);
@@ -130,7 +141,7 @@ class MarkValuesTable extends Table
                     break;
                 
                 case 'DATE':
-                    return Validation::localizedTime($value, 'date');
+                    return Validation::date($value, 'ymd');
                     break;
                 
                 default:
@@ -140,5 +151,22 @@ class MarkValuesTable extends Table
         } else {
             return false;
         }
+    }
+    
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     *
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['id']));
+        $rules->add($rules->existsIn(['mark_form_property_id'], 'MarkFormProperties'));
+        $rules->add($rules->existsIn(['mark_id'], 'Marks'));
+        
+        return $rules;
     }
 }

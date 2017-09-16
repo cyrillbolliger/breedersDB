@@ -12,6 +12,8 @@ switch ($markFormProperty->field_type) {
             'label'    => $markFormProperty->name,
             'required' => $required,
             'value'    => $value,
+            'pattern'  => $this->LocalizedTime->getDateValidationRegex(),
+            'title'     => __("The date must be valid and match one of the following formats: 'dd.mm.yyyy' or 'dd-mm-yyyy' or 'dd/mm/yyyy'"),
         ]);
         break;
     

@@ -46,12 +46,38 @@ class RulesToConditionsConvertibleBehavior extends Behavior
             }
             $conditions[] = $tmp;
         } else { // it's a rule
-            $conditions = $this->_convertRuleToCondition($ruleset);
+            
+            if ( ! $this->_isMarkProperty($ruleset->id)) {
+                // if it's not a Mark Property
+                return $this->_convertRuleToCondition($ruleset);
+            } else {
+                // if it is a Mark Property
+                return $this->_getMarkPropertyConditionFromRule($ruleset);
+            }
         }
         
         return $conditions;
     }
     
+    /**
+     * Return true if its a mark property else false
+     *
+     * @param string $id
+     *
+     * @return bool
+     */
+    private function _isMarkProperty(string $id): bool
+    {
+        return 0 === strpos($id, 'MarkProperty');
+    }
+    
+    /**
+     * Return cake where condition array from given rule
+     *
+     * @param \stdClass $rule
+     *
+     * @return array
+     */
     private function _convertRuleToCondition(\stdClass $rule): array
     {
         $this->_typecastValue($rule);
@@ -74,17 +100,17 @@ class RulesToConditionsConvertibleBehavior extends Behavior
             case 'greater_or_equal':
                 return [$rule->field . ' >=' => $rule->value];
             case 'begins_with':
-                return [$rule->field . ' LIKE' => $rule->value.'%'];
+                return [$rule->field . ' LIKE' => $rule->value . '%'];
             case 'not_begins_with':
-                return ['NOT' => [$rule->field . ' LIKE' => $rule->value.'%']];
+                return ['NOT' => [$rule->field . ' LIKE' => $rule->value . '%']];
             case 'contains':
-                return [$rule->field . ' LIKE' => '%'.$rule->value.'%'];
+                return [$rule->field . ' LIKE' => '%' . $rule->value . '%'];
             case 'not_contains':
-                return ['NOT' => [$rule->field . ' LIKE' => '%'.$rule->value.'%']];
+                return ['NOT' => [$rule->field . ' LIKE' => '%' . $rule->value . '%']];
             case 'ends_with':
-                return [$rule->field . ' LIKE' => '%'.$rule->value];
+                return [$rule->field . ' LIKE' => '%' . $rule->value];
             case 'not_ends_with':
-                return ['NOT' => [$rule->field . ' LIKE' => '%'.$rule->value]];
+                return ['NOT' => [$rule->field . ' LIKE' => '%' . $rule->value]];
             case 'is_empty':
                 return ['OR' => [$rule->field => '', $rule->field . ' IS NULL']];
             case 'is_not_empty':
@@ -106,7 +132,7 @@ class RulesToConditionsConvertibleBehavior extends Behavior
     private function _typecastValue(\stdClass &$rule): void
     {
         $simple  = ['integer', 'double', 'boolean', 'string'];
-        $complex = ['date', 'time', 'datetime', 'boolean'];
+        $complex = ['date', 'time', 'datetime'];
         
         if (in_array($rule->type, $simple)) {
             if (is_array($rule->value)) {
@@ -126,18 +152,39 @@ class RulesToConditionsConvertibleBehavior extends Behavior
             if (is_array($rule->value)) {
                 foreach ($rule->value as &$value) {
                     // ToDo
-                    debug('TODO');
+                    debug($rule->value);
                 }
                 
                 return;
             } else {
                 // ToDo
-                debug('TODO');
+                debug($rule->value);
                 
                 return;
             }
         }
         
         throw new InvalidTypeException('The given type is not supported');
+    }
+    
+    /**
+     * Return cake where condition array from given mark property rule
+     *
+     * @param \stdClass $rule
+     *
+     * @return array
+     */
+    private function _getMarkPropertyConditionFromRule(\stdClass $rule): array
+    {
+        $property    = substr($rule->id, strpos($rule->id, '.') + 1);
+        $rule->field = 'MarksView.value';
+        
+        // if it is a Mark Property
+        return [
+            'AND' => [
+                'MarksView.name' => $property,
+                $this->_convertRuleToCondition($rule),
+            ]
+        ];
     }
 }
