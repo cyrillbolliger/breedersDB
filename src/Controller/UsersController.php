@@ -122,6 +122,22 @@ class UsersController extends AppController
      */
     public function login()
     {
+        require_once ROOT.'/autoupdate/Updator.php';
+        require_once ROOT.'/autoupdate/VersionChecker.php';
+    
+        $updator = new \Autoupdate\Updater();
+        if ($updator->isUpdateAvailable()) {
+            $this->Flash->set(
+                __('An update is available. Click here to update now.'),
+                ['element' => 'update']
+            );
+        } else {
+            $this->Flash->set(
+                __('Your application is up to date.'),
+                ['element' => 'success']
+            );
+        }
+        
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
             if ($user) {
