@@ -8,6 +8,12 @@
 
 namespace Autoupdate;
 
+require_once dirname(dirname(__FILE__)) . '/autoupdate/VersionChecker.php';
+require_once dirname(dirname(__FILE__)) . '/autoupdate/BackupHandler.php';
+require_once dirname(dirname(__FILE__)) . '/autoupdate/FileUpdateHandler.php';
+require_once dirname(dirname(__FILE__)) . '/dbupdate/Updater.php';
+
+
 class Updater
 {
     private $pathToVersionsFile = '../version.txt';
@@ -72,7 +78,12 @@ class Updater
         return $this->backupHandler->backupDatabase($this->backupFolder, $this->dbconf);
     }
     
-    public function setCurrentVersion()
+    public function setCurrentVersion(string $currentVersion)
+    {
+        $this->currentVersion = $this->versionChecker->parseVersion($currentVersion);
+    }
+    
+    public function detectCurrentVersion()
     {
         $this->currentVersion = $this->versionChecker->detectLocalVersion();
     }
@@ -109,5 +120,9 @@ class Updater
         $dbUpdater = new \DBUpdate\Updater($this->dbconf);
         
         return $dbUpdater->update($this->currentVersion);
+    }
+    
+    public function getCurrentVersion() {
+        return $this->currentVersion;
     }
 }
