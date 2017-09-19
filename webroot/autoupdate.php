@@ -102,7 +102,7 @@ if (isset($_GET['step'])) {
                 $errorMsgSuffix
             );
             break;
-            
+        
         case 201:
             // ToDo restore files from backup
             break;
