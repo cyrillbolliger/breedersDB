@@ -122,7 +122,7 @@ class UsersController extends AppController
      */
     public function login()
     {
-        require_once ROOT.'/autoupdate/Updator.php';
+        require_once ROOT.'/autoupdate/Updater.php';
         require_once ROOT.'/autoupdate/VersionChecker.php';
     
         $updator = new \Autoupdate\Updater();

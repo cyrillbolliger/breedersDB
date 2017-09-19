@@ -87,7 +87,7 @@ class VersionChecker
      *
      * @return string
      */
-    private function parseVersion(string $txt): string
+    public function parseVersion(string $txt): string
     {
         preg_match("/^\d+\.\d+(\.\d+)*/", $txt, $matches);
         

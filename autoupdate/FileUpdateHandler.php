@@ -96,7 +96,7 @@ class FileUpdateHandler
         
         // on success
         if ($statusCode == 200) {
-            return $this->downloadDest;
+            return true;
         }
         
         return false;
