@@ -11,8 +11,6 @@ namespace Autoupdate;
 require_once dirname(dirname(__FILE__)) . '/autoupdate/VersionChecker.php';
 require_once dirname(dirname(__FILE__)) . '/autoupdate/BackupHandler.php';
 require_once dirname(dirname(__FILE__)) . '/autoupdate/FileUpdateHandler.php';
-require_once dirname(dirname(__FILE__)) . '/dbupdate/Updater.php';
-
 
 class Updater
 {
@@ -117,6 +115,7 @@ class Updater
     }
     
     public function updateDatabase() {
+        require_once dirname(dirname(__FILE__)) . '/dbupdate/Updater.php';
         $dbUpdater = new \DBUpdate\Updater($this->dbconf);
         
         return $dbUpdater->update($this->currentVersion);
