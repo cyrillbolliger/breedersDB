@@ -160,7 +160,7 @@ class FileUpdateHandler
             
             // If the destination directory does not exist create it
             if ( ! is_dir($destFolder)) {
-                if ( ! mkdir($destFolder)) {
+                if ( ! mkdir($destFolder, 0755, true)) {
                     // If the destination directory could not be created stop processing
                     throw new \Exception('Error creating folder:' . $destFolder);
                 }
