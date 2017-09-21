@@ -239,10 +239,10 @@ function tryTask($updater, $task, $successMsg, $nextSuccess, $errorMsg = null, $
         $msg      = $status ? $success . $successMsg . ' ' : $errorMsg;
         $nextStep = $status ? $nextSuccess : $nextError;
     } catch (\Exception $e) {
-        $msg = $errorMsg .'<br>--- BEGIN DEBUG INFORMATION ---<br>'. $e->getMessage() . '<br><pre>' . $e->getTraceAsString() . '</pre><br>--- END DEBUG INFORMATION ---' . $errorMsgSuffix;
+        $msg = $errorMsg . '<br>--- BEGIN DEBUG INFORMATION ---<br>' . $e->getMessage() . '<br><pre>' . $e->getTraceAsString() . '</pre><br>--- END DEBUG INFORMATION ---' . $errorMsgSuffix;
+    } finally {
+        return ['status' => $status, 'msg' => $msg, 'nextStep' => $nextStep];
     }
-    
-    return ['status' => $status, 'msg' => $msg, 'nextStep' => $nextStep];
 }
 
 ?>
