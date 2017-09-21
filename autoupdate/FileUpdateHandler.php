@@ -256,8 +256,11 @@ class FileUpdateHandler
                 throw new \Exception('Error deleting ' . $filePath);
             }
         }
+    
+        // delete empty folders
+        $this->recursivelydeleteEmptyFolders($rootPath);
         
-        return $this->recursivelydeleteEmptyFolders($rootPath);
+        return true;
     }
     
     /**
