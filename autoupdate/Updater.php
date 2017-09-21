@@ -8,6 +8,9 @@
 
 namespace Autoupdate;
 
+// recovery only works if reporting is off
+error_reporting(0);
+
 require_once dirname(dirname(__FILE__)) . '/autoupdate/VersionChecker.php';
 require_once dirname(dirname(__FILE__)) . '/autoupdate/BackupHandler.php';
 require_once dirname(dirname(__FILE__)) . '/autoupdate/FileUpdateHandler.php';
@@ -145,7 +148,7 @@ class Updater
         }
         if (true === $success) {
             $success = $this->fileUpdateHandler->extractFiles($backupPath,
-                $this->fileUpdateHandler->getExtractionDest());
+                $this->fileUpdateHandler->getExtractionDest().DIRECTORY_SEPARATOR.'backup');
         }
         if (true === $success) {
             $success = $this->fileUpdateHandler->moveFiles();
