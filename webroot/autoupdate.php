@@ -70,7 +70,7 @@ if (isset($_GET['step'])) {
                     'Deleting temporary files...',
                     7,
                     $errorMsg,
-                    201,
+                    -2,
                     $errorMsgSuffix
             );
             break;
@@ -84,7 +84,7 @@ if (isset($_GET['step'])) {
                 'Updating database...',
                 8,
                 $errorMsg,
-                201,
+                -2,
                 $errorMsgSuffix
             );
             break;
@@ -98,12 +98,23 @@ if (isset($_GET['step'])) {
                 '---<br>Update successfully terminated!',
                 100,
                 $errorMsg,
-                202,
+                -3,
                 $errorMsgSuffix
             );
             break;
+    
+        case -1:
+            $errorMsg       = 'Error<br>---<br>The application still works, but we could not clean up the erroneous update. Please contact your supplier.';
+            $data           = tryTask(
+                $updater,
+                'cleanUpFailedUpdate',
+                '---<br>Restore successfully terminated!',
+                100,
+                $errorMsg
+            );
+            break;
             
-        case 201:
+        case -2:
             $errorMsg       = 'Error<br>---<br>Sorry! We could not restore your application. Please contact your supplier.';
             $data           = tryTask(
                 $updater,
@@ -114,7 +125,7 @@ if (isset($_GET['step'])) {
             );
             break;
     
-        case 202:
+        case -3:
             $errorMsg       = 'Error<br>---<br>Sorry! We could not restore your application. Please contact your supplier.';
             $data           = tryTask(
                 $updater,

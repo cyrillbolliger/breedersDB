@@ -161,4 +161,11 @@ class Updater
     {
         return $this->fileUpdateHandler->deleteFiles($this->tempPath);
     }
+    
+    public function cleanUpFailedUpdate() {
+        if (is_dir($this->tempPath)) {
+            return $this->deleteTempFiles();
+        }
+        return true;
+    }
 }
