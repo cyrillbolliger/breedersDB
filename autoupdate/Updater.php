@@ -99,7 +99,7 @@ class Updater
     
     public function extractFiles()
     {
-        return $this->fileUpdateHandler->extractFiles();
+        return $this->fileUpdateHandler->extractFiles($this->fileUpdateHandler->getDownloadDest(), $this->fileUpdateHandler->getExtractionDest());
     }
     
     public function moveFiles()
@@ -123,5 +123,32 @@ class Updater
     
     public function getCurrentVersion() {
         return $this->currentVersion;
+    }
+    
+    public function restoreFiles()
+    {
+        $backupPath = $this->backupHandler->getFileBackupPath($this->backupFolder);
+        
+        $success = $this->deleteTempFiles();
+        if ($success) {
+            $success = $this->fileUpdateHandler->extractFiles($backupPath, $this->fileUpdateHandler->getExtractionDest());
+        }
+        if ($success) {
+            $success = $this->fileUpdateHandler->moveFiles();
+        }
+        if ($success) {
+            $success = $this->deleteTempFiles();
+        }
+
+        return $success;
+    }
+    
+    public function restoreFilesAndDB() {
+        $success = $this->restoreFiles();
+        if ($success) {
+            $success = $this->backupHandler->restoreDatabase();
+        }
+        
+        return $success;
     }
 }

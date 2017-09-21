@@ -37,12 +37,29 @@ class FileUpdateHandler
     }
     
     /**
+     * @return string
+     */
+    public function getDownloadDest(): string
+    {
+        return $this->downloadDest;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getExtractionDest(): string
+    {
+        return $this->extractionDest;
+    }
+    
+    /**
      * Remove given value from exclude list
      *
      * @param $value
      */
-    public function removeFromExcludeList($value) {
-        if(($key = array_search($value, $this->excludeList)) !== false) {
+    public function removeFromExcludeList($value)
+    {
+        if (($key = array_search($value, $this->excludeList)) !== false) {
             unset($this->excludeList[$key]);
         }
     }
@@ -105,21 +122,24 @@ class FileUpdateHandler
     /**
      * Unzip files or throw error
      *
+     * @param string $archive path to archive
+     * @param string $destination path to folder where the archive will be unzipped to
+     *
      * @return bool
      * @throws \Exception
      */
-    public function extractFiles()
+    public function extractFiles($archive, $destination)
     {
         $zip = new \ZipArchive;
         
-        if ($zip->open($this->downloadDest) === true) {
-            $zip->extractTo($this->extractionDest);
+        if ($zip->open($archive) === true) {
+            $zip->extractTo($destination);
             $zip->close();
             
             return true;
         }
         
-        throw new \Exception("Error unzipping {$this->downloadDest} to {$this->extractionDest}");
+        throw new \Exception("Error unzipping {$archive} to {$destination}");
     }
     
     /**
@@ -256,7 +276,7 @@ class FileUpdateHandler
                 throw new \Exception('Error deleting ' . $filePath);
             }
         }
-    
+        
         // delete empty folders
         $this->recursivelydeleteEmptyFolders($rootPath);
         

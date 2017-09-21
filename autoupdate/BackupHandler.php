@@ -23,9 +23,7 @@ class BackupHandler
      */
     public function backupFiles(string $relBackupDestination, array $excludeList): bool
     {
-        // Get real path for project src
-        $rootPath   = realpath(dirname(dirname(__FILE__)));
-        $backupPath = realpath($rootPath . DIRECTORY_SEPARATOR . $relBackupDestination) . DIRECTORY_SEPARATOR . 'filebackup.zip';
+        $backupPath = $this->getFileBackupPath($relBackupDestination);
         
         // Initialize archive object
         $zip = new \ZipArchive();
@@ -35,7 +33,7 @@ class BackupHandler
         // Create recursive directory iterator
         /** @var \SplFileInfo[] $files */
         $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($rootPath),
+            new \RecursiveDirectoryIterator($this->getRootPath()),
             \RecursiveIteratorIterator::LEAVES_ONLY
         );
         
@@ -47,7 +45,7 @@ class BackupHandler
             
             // Get real and relative path for current file
             $filePath     = $file->getRealPath();
-            $relativePath = substr($filePath, strlen($rootPath) + 1);
+            $relativePath = substr($filePath, strlen($this->getRootPath()) + 1);
             
             // Skip the files of the exclude list
             $match = false;
@@ -69,24 +67,100 @@ class BackupHandler
         return $zip->close();
     }
     
-    public function backupDatabase($relBackupDestination, $dbconf)
+    /**
+     * Return full path of file backup from given relative path
+     *
+     * @param string $relBackupDestination
+     *
+     * @return string
+     */
+    public function getFileBackupPath(string $relBackupDestination): string
     {
-        $rootPath   = realpath(dirname(dirname(__FILE__)));
-        $backupPath = realpath($rootPath . DIRECTORY_SEPARATOR . $relBackupDestination) . DIRECTORY_SEPARATOR . 'dbdump.sql.gz';
+        return $this->getAbsPathFrom($relBackupDestination) . 'filebackup.zip';
+    }
+    
+    /**
+     * Get absolute path from given path which is relative to the project base
+     *
+     * @param string $relPath
+     *
+     * @return string
+     */
+    private function getAbsPathFrom(string $relPath): string
+    {
+        return realpath($this->getRootPath() . DIRECTORY_SEPARATOR . $relPath) . DIRECTORY_SEPARATOR;
+    }
+    
+    /**
+     * Return absolute path to project root
+     *
+     * @return string
+     */
+    private function getRootPath(): string
+    {
+        return realpath(dirname(dirname(__FILE__)));
+    }
+    
+    /**
+     * Save a mysql dump to given destination using the commandline instruction 'mysqldump'
+     *
+     * @param string $relBackupDestination
+     * @param array $dbconf
+     *
+     * @return array|bool
+     */
+    public function backupDatabase(string $relBackupDestination, array $dbconf)
+    {
+        $backupPath = $this->getDatabaseBackupPath($relBackupDestination);
+        $command = "mysqldump --user={$dbconf['username']} --password={$dbconf['password']} --host={$dbconf['host']} {$dbconf['database']} | gzip -c  > $backupPath";
         
-        $dbhost     = $dbconf['host'];
-        $dbuser     = $dbconf['username'];
-        $dbpassword = $dbconf['password'];
-        $dbname     = $dbconf['database'];
+        return $this->exec($command);
+    }
+    
+    /**
+     * Return full path of database backup from given relative path
+     *
+     * @param string $relBackupDestination
+     *
+     * @return string
+     */
+    public function getDatabaseBackupPath(string $relBackupDestination): string
+    {
+        return $this->getAbsPathFrom($relBackupDestination) . 'dbdump.sql.gz';
+    }
+    
+    /**
+     * Restore mysql backup
+     *
+     * @param string $relBackupDestination
+     * @param array $dbconf
+     *
+     * @return array|bool
+     */
+    public function restoreDatabase(string $relBackupDestination, array $dbconf)
+    {
+        $backupPath = $this->getDatabaseBackupPath($relBackupDestination);
+        $command = "mysql -h {$dbconf['host']} -u {$dbconf['username']} -p{$dbconf['password']} {$dbconf['database']} < $backupPath";
         
+        return $this->exec($command);
+    }
+    
+    
+    /**
+     * Execute a commandline instruction and return true or array with the output
+     *
+     * @param $command
+     *
+     * @return array|bool
+     */
+    private function exec($command)
+    {
         $output = [];
-        exec(
-            "mysqldump --user=$dbuser --password=$dbpassword --host=$dbhost $dbname | gzip -c  > $backupPath",
-            $output
-        );
+        
+        exec($command, $output);
         
         // no output is good
-        if (empty($output)){
+        if (empty($output)) {
             return true;
         }
         

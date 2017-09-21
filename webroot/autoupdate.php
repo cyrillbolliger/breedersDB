@@ -95,16 +95,36 @@ if (isset($_GET['step'])) {
             $data           = tryTask(
                 $updater,
                 'updateDatabase',
-                'Update successfully terminated!',
+                '---<br>Update successfully terminated!',
                 100,
                 $errorMsg,
-                201,
+                202,
                 $errorMsgSuffix
             );
             break;
             
         case 201:
-            // ToDo restore files from backup
+            $errorMsg       = 'Error<br>---<br>Sorry! We could not restore your application. Please contact your supplier.';
+            $data           = tryTask(
+                $updater,
+                'restoreFiles',
+                '---<br>Restore successfully terminated!',
+                100,
+                $errorMsg,
+                201
+            );
+            break;
+    
+        case 202:
+            $errorMsg       = 'Error<br>---<br>Sorry! We could not restore your application. Please contact your supplier.';
+            $data           = tryTask(
+                $updater,
+                'restoreFilesAndDB',
+                '---<br>Restore successfully terminated!',
+                100,
+                $errorMsg,
+                201
+            );
             break;
     }
     $return = json_encode($data);
@@ -230,7 +250,7 @@ if ( ! $updater->isUpdateAvailable()) {
 
 function tryTask($updater, $task, $successMsg, $nextSuccess, $errorMsg = null, $nextError = -1, $errorMsgSuffix = '')
 {
-    $success  = 'successful<br>';
+    $success  = 'Successful.<br>';
     $status   = false;
     $nextStep = $nextError;
     $errorMsg = empty($errorMsg) ? "Error<br>---<br>Update process stopped. Your application wasn't updated but still works." : $errorMsg;
