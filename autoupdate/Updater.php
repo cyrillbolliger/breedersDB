@@ -44,6 +44,8 @@ class Updater
         // $tempDir <-- gets pushed dynamically
     ];
     private $tempDir = 'tmp';
+    private $tempPath;
+    private $rootPath;
     private $currentVersion;
     private $versionChecker;
     private $backupHandler;
@@ -54,10 +56,13 @@ class Updater
         array_push($this->exclude, $this->backupFolder);
         array_push($this->exclude, $this->tempDir);
         
+        $this->rootPath = realpath(dirname(dirname(__FILE__)));
+        $this->tempPath = $this->rootPath . DIRECTORY_SEPARATOR . $this->tempDir;
+        
         $this->versionChecker = new VersionChecker($this->pathToVersionsFile, $this->bitbucket);
-        $this->backupHandler = new BackupHandler();
-    
-        $extractionFolder = $this->tempDir.DIRECTORY_SEPARATOR.'deploy';
+        $this->backupHandler  = new BackupHandler();
+        
+        $extractionFolder        = $this->tempDir . DIRECTORY_SEPARATOR . 'deploy';
         $this->fileUpdateHandler = new FileUpdateHandler($this->tempDir, $extractionFolder, $this->exclude);
     }
     
@@ -76,11 +81,6 @@ class Updater
         return $this->backupHandler->backupDatabase($this->backupFolder, $this->dbconf);
     }
     
-    public function setCurrentVersion(string $currentVersion)
-    {
-        $this->currentVersion = $this->versionChecker->parseVersion($currentVersion);
-    }
-    
     public function detectCurrentVersion()
     {
         $this->currentVersion = $this->versionChecker->detectLocalVersion();
@@ -93,13 +93,13 @@ class Updater
     
     public function deleteOldFiles()
     {
-        $rootPath = realpath(dirname(dirname(__FILE__)));
-        return $this->fileUpdateHandler->deleteFiles($rootPath);
+        return $this->fileUpdateHandler->deleteFiles($this->rootPath);
     }
     
     public function extractFiles()
     {
-        return $this->fileUpdateHandler->extractFiles($this->fileUpdateHandler->getDownloadDest(), $this->fileUpdateHandler->getExtractionDest());
+        return $this->fileUpdateHandler->extractFiles($this->fileUpdateHandler->getDownloadDest(),
+            $this->fileUpdateHandler->getExtractionDest());
     }
     
     public function moveFiles()
@@ -107,48 +107,58 @@ class Updater
         return $this->fileUpdateHandler->moveFiles();
     }
     
-    public function deleteTempFiles()
+    public function updateDatabase()
     {
-        $this->fileUpdateHandler->removeFromExcludeList($this->tempDir);
-        $tempPath = realpath(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tmp');
-        return $this->fileUpdateHandler->deleteFiles($tempPath);
-    }
-    
-    public function updateDatabase() {
-        require_once dirname(dirname(__FILE__)) . '/dbupdate/Updater.php';
+        require_once $this->rootPath . DIRECTORY_SEPARATOR . 'dbupdate' . DIRECTORY_SEPARATOR . 'Updater.php';
         $dbUpdater = new \DBUpdate\Updater($this->dbconf);
         
         return $dbUpdater->update($this->currentVersion);
     }
     
-    public function getCurrentVersion() {
+    public function getCurrentVersion()
+    {
         return $this->currentVersion;
+    }
+    
+    public function setCurrentVersion(string $currentVersion)
+    {
+        $this->currentVersion = $this->versionChecker->parseVersion($currentVersion);
+    }
+    
+    public function restoreFilesAndDB()
+    {
+        $success = $this->restoreFiles();
+        if ($success) {
+            $success = $this->backupHandler->restoreDatabase($this->backupFolder, $this->dbconf);
+        }
+        
+        return $success;
     }
     
     public function restoreFiles()
     {
         $backupPath = $this->backupHandler->getFileBackupPath($this->backupFolder);
         
-        $success = $this->deleteTempFiles();
-        if ($success) {
-            $success = $this->fileUpdateHandler->extractFiles($backupPath, $this->fileUpdateHandler->getExtractionDest());
-        }
-        if ($success) {
-            $success = $this->fileUpdateHandler->moveFiles();
-        }
-        if ($success) {
+        $success = true;
+        if (is_dir($this->tempPath)) {
             $success = $this->deleteTempFiles();
         }
-
-        return $success;
-    }
-    
-    public function restoreFilesAndDB() {
-        $success = $this->restoreFiles();
-        if ($success) {
-            $success = $this->backupHandler->restoreDatabase();
+        if (true === $success) {
+            $success = $this->fileUpdateHandler->extractFiles($backupPath,
+                $this->fileUpdateHandler->getExtractionDest());
+        }
+        if (true === $success) {
+            $success = $this->fileUpdateHandler->moveFiles();
+        }
+        if (true === $success) {
+            $success = $this->deleteTempFiles();
         }
         
         return $success;
+    }
+    
+    public function deleteTempFiles()
+    {
+        return $this->fileUpdateHandler->deleteFiles($this->tempPath);
     }
 }

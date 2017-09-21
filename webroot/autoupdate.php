@@ -110,8 +110,7 @@ if (isset($_GET['step'])) {
                 'restoreFiles',
                 '---<br>Restore successfully terminated!',
                 100,
-                $errorMsg,
-                201
+                $errorMsg
             );
             break;
     
@@ -122,8 +121,7 @@ if (isset($_GET['step'])) {
                 'restoreFilesAndDB',
                 '---<br>Restore successfully terminated!',
                 100,
-                $errorMsg,
-                201
+                $errorMsg
             );
             break;
     }
