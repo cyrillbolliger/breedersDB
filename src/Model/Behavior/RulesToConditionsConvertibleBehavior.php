@@ -153,12 +153,12 @@ class RulesToConditionsConvertibleBehavior extends Behavior
         if (in_array($rule->type, $complex)) {
             if (is_array($rule->value)) {
                 foreach ($rule->value as &$value) {
-                    $rule->value = $this->_parseTime($rule->type, $rule->value);
+                    $rule->value = $this->_parseTime($rule->type, (string) $rule->value);
                 }
                 
                 return;
             } else {
-                $rule->value = $this->_parseTime($rule->type, $rule->value);
+                $rule->value = $this->_parseTime($rule->type, (string) $rule->value);
                 
                 return;
             }
