@@ -11,6 +11,8 @@ namespace App\Model\Behavior;
 
 use Cake\ORM\Behavior;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
+use Cake\I18n\Date;
+use Cake\I18n\Time;
 
 /**
  * Class RulesToConditionsConvertibleBehavior is used to convert rules
@@ -151,20 +153,50 @@ class RulesToConditionsConvertibleBehavior extends Behavior
         if (in_array($rule->type, $complex)) {
             if (is_array($rule->value)) {
                 foreach ($rule->value as &$value) {
-                    // ToDo
-                    debug($rule->value);
+                    $rule->value = $this->_parseTime($rule->type, $rule->value);
                 }
                 
                 return;
             } else {
-                // ToDo
-                debug($rule->value);
+                $rule->value = $this->_parseTime($rule->type, $rule->value);
                 
                 return;
             }
         }
         
         throw new InvalidTypeException('The given type is not supported');
+    }
+    
+    /**
+     * Return given date, time or datetime in mysql format
+     *
+     * @param string $type
+     * @param string $value
+     *
+     * @return string
+     */
+    private function _parseTime(string $type, string $value): string
+    {
+        switch ($type) {
+            case 'date':
+                $date = Date::parse($value);
+                
+                return $date->format('Y-m-d');
+            
+            case 'time':
+                $date = Time::parse($value);
+                
+                return $date->format('H:i:s');
+            
+            case 'datetime':
+                $date = Time::parse($value);
+                
+                return $date->format('Y-m-d H:i:s');
+            
+            default:
+                throw new InvalidTypeException('The given type is not supported');
+        }
+        
     }
     
     /**
