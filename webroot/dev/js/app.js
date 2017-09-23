@@ -31757,6 +31757,8 @@ function GeneralModule() {
     this.init = function () {
         this.searching = '<div class="searching">' + trans.searching + '</div>';
 
+        this.instantiateDatepicker();
+        this.instantiateSelect2();
         this.selectConvar();
         this.selectTree();
         this.instantiateFilter();
@@ -31772,8 +31774,6 @@ function GeneralModule() {
         this.Marks.byScanner();
         this.Marks.unlockScannerField();
         this.Queries.init();
-        this.instantiateDatepicker();
-        this.instantiateSelect2();
     };
 
     /*
