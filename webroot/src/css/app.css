@@ -230,6 +230,24 @@ table .actions {
     color: #aaa;
 }
 
+.query_builder_validation_error {
+    background-color: #FDD;
+    color: red;
+    padding: 10px 10px;
+    border-radius: 5px;
+    border: solid 1px #F99;
+    display: none;
+}
+
+.query_builder_validation_error .query_builder_validation_error_sign {
+    font-size: 1.5em;
+    margin: 0 0.75em 0 0.25em;
+}
+
+.query_builder_validation_error ul {
+    margin-bottom: 0;
+}
+
 /* --------- Query Where -------- */
 .query-builder input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea {
     margin: 0;

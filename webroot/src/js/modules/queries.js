@@ -31,6 +31,7 @@ function QueriesModule(General) {
         self.setViewSelectorInitState();
         self.bindRootViewSelectorEvents();
         self.setRootViewSelectorInitState();
+        self.bindValidatorEvents();
         self.saveQueryWhereData();
     };
 
@@ -282,6 +283,32 @@ function QueriesModule(General) {
             var rules = JSON.stringify(self.$query_where_builder.queryBuilder('getRules'));
             $('#where-query').val(rules);
             self.$query_where_builder.remove();
+        });
+    };
+
+    /**
+     * Handle query where builder validation
+     */
+    this.bindValidatorEvents = function () {
+        var valid = false;
+        $('.validate_query_where_builder').on('click submit change', function (e) {
+            // start off with an empty error list
+            $('.query_builder_validation_error').find('ul').html('');
+
+            // validate
+            valid = self.$query_where_builder.queryBuilder('validate');
+
+            // prevent submitting if not valid
+            if (!valid) {
+                e.preventDefault();
+            }
+        });
+
+        // for each rule, that is not valid
+        self.$query_where_builder.on('validationError.queryBuilder', function (e, rule, error, value) {
+            $('.query_builder_validation_error').show()
+                .find('ul')
+                .append("<li class='" + rule.id + "'>" + error[0] + "</li>");
         });
     };
 }

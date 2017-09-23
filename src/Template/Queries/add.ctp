@@ -12,9 +12,11 @@
             'default' => $query_group_id,
         ]);
         echo $this->Form->input('description');
-        echo $this->element('Query/builder'); ?>
+        echo $this->element('Query/builder');
+        echo $this->element('Query/validation_message');
+        ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Submit'), ['class' => 'validate_query_where_builder']) ?>
     <?= $this->Form->end() ?>
 </div>
 

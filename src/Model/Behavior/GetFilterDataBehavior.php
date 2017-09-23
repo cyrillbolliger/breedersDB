@@ -89,11 +89,12 @@ class GetFilterDataBehavior extends Behavior
             'boolean' => 'radio',
             'date'    => 'text'
         ];
-        
-        $data['id']    = 'MarkProperty.' . $field;
-        $data['label'] = __('Mark Property') . ' -> ' . $field;
-        $data['type']  = $this->_getFieldTypeForFilter($type);
-        $data['input'] = $typeInputTypeMap[$data['type']];
+    
+        $data['id']         = 'MarkProperty.' . $field;
+        $data['label']      = __('Mark Property') . ' -> ' . $field;
+        $data['type']       = $this->_getFieldTypeForFilter($type);
+        $data['input']      = $typeInputTypeMap[$data['type']];
+        $data['validation'] = $this->_getValidator($data['type']);
         
         $this->_addRadioButtonProperties($data);
         
@@ -136,6 +137,90 @@ class GetFilterDataBehavior extends Behavior
     }
     
     /**
+     * Return a where query builder validator object
+     *
+     * @param string $type
+     *
+     * @return array
+     * @throws \Exception
+     */
+    private function _getValidator(string $type): array
+    {
+        switch ($type) {
+            case 'string':
+                return [];
+            
+            case 'integer':
+                return [
+                    'step'              => 1,
+                    'min'               => PHP_INT_MIN,
+                    'max'               => PHP_INT_MAX,
+                    'allow_empty_value' => false,
+                    'messages'          => [
+                        'number_nan'         => __('Please enter a number'),
+                        'number_not_integer' => __('Only integers allowed'),
+                        'step'               => __('Only integers allowed'),
+                        'allow_empty_value'  => __('Please enter a number'),
+                        'min'                => sprintf(__('The given number must not be smaller then %s'),
+                            PHP_INT_MIN),
+                        'man'                => sprintf(__('The given number must not be greater then %s'),
+                            PHP_INT_MAX),
+                    ]
+                ];
+            
+            case 'double':
+                return [
+                    'step'              => 'any',
+                    'allow_empty_value' => false,
+                    'messages'          => [
+                        'number_nan'        => __('Please enter a number'),
+                        'number_not_double' => __('Only numbers allowed'),
+                        'allow_empty_value' => __('Please enter a number'),
+                    ]
+                ];
+            
+            case 'boolean':
+                return [];
+            
+            case 'date':
+                return [
+                    'format'            => __x('moment.js date format', 'DD.MM.YYYY'),
+                    'allow_empty_value' => false,
+                    'messages'          => [
+                        'format'            => __x('moment.js date format',
+                            'The given date must match the format DD.MM.YYYY'),
+                        'allow_empty_value' => __('Please enter a date'),
+                    ]
+                ];
+            
+            case 'datetime':
+                return [
+                    'format'            => __x('moment.js datetime format', 'DD.MM.YYYY HH:mm:ss'),
+                    'allow_empty_value' => false,
+                    'messages'          => [
+                        'format'            => __x('moment.js datetime format',
+                            'The given date and time must match the format DD.MM.YYYY HH:mm:ss'),
+                        'allow_empty_value' => __('Please enter date and time'),
+                    ]
+                ];
+            
+            case 'time':
+                return [
+                    'format'            => __x('moment.js time format', 'HH:mm:ss'),
+                    'allow_empty_value' => false,
+                    'messages'          => [
+                        'format'            => __x('moment.js time format',
+                            'The given time must match the format HH:mm:ss'),
+                        'allow_empty_value' => __('Please enter a time'),
+                    ]
+                ];
+            
+            default:
+                throw new \Exception('Unknown type given.');
+        }
+    }
+    
+    /**
      * Add the radio button properties to given filter data, if needed.
      *
      * @param $data
@@ -161,11 +246,12 @@ class GetFilterDataBehavior extends Behavior
     private function _getFieldFilterData(string $table, string $field, string $type): array
     {
         $queries = TableRegistry::get('Queries');
-        
-        $data['id']    = $table . '.' . $field;
-        $data['label'] = $queries->translateFields($data['id']);
-        $data['type']  = $this->_getFieldTypeForFilter($type);
-        $data['input'] = $this->_getFilterFieldInputType($table, $field, $type);
+    
+        $data['id']         = $table . '.' . $field;
+        $data['label']      = $queries->translateFields($data['id']);
+        $data['type']       = $this->_getFieldTypeForFilter($type);
+        $data['input']      = $this->_getFilterFieldInputType($table, $field, $type);
+        $data['validation'] = $this->_getValidator($data['type']);
         
         $this->_addRadioButtonProperties($data);
         
