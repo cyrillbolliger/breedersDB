@@ -27,6 +27,8 @@ function QueriesModule(General) {
     this.init = function () {
         self.$query_where_builder = $('#query_where_builder');
 
+        self.afterAddRule();
+        self.afterCreateRuleInput();
         self.bindViewSelectorEvents();
         self.setViewSelectorInitState();
         self.bindRootViewSelectorEvents();
@@ -75,7 +77,7 @@ function QueriesModule(General) {
      * set field selector on click events
      */
     this.bindViewSelectorEvents = function () {
-        $('.view-selector').on('click change', function () {
+        $('.view-selector').on('change', function () {
             self.setFieldVisibilityFrom($(this));
             self.enableAssociated();
             self.setQueryWhereBuildersFilters();
@@ -251,6 +253,8 @@ function QueriesModule(General) {
             rules: query_where_builder_rules,
             operators: operators
         });
+
+        self.General.instantiateSelect2();
     };
 
     /**
@@ -268,7 +272,7 @@ function QueriesModule(General) {
             });
         });
 
-        // destroy old query builder because filters cant be changed
+        // destroy old query builder because filters can't be changed
         this.$query_where_builder.queryBuilder('destroy');
 
         // reinstantiate a new onw with the new filters
@@ -309,6 +313,30 @@ function QueriesModule(General) {
             $('.query_builder_validation_error').show()
                 .find('ul')
                 .append("<li class='" + rule.id + "'>" + error[0] + "</li>");
+        });
+    };
+
+    /**
+     * add datepicker and select2 to every (new) rule
+     */
+    this.afterCreateRuleInput = function () {
+        self.$query_where_builder.on('afterCreateRuleInput.queryBuilder', function (event, rule) {
+            if (rule.filter.type === 'date') {
+                rule.$el.find('.rule-value-container input[type="text"].form-control')
+                    .addClass('datepicker');
+                self.General.instantiateDatepicker();
+            }
+
+            self.General.instantiateSelect2();
+        });
+    };
+
+    /**
+     * add select2 to new rules
+     */
+    this.afterAddRule = function () {
+        self.$query_where_builder.on('afterCreateRuleFilters.queryBuilder', function () {
+            self.General.instantiateSelect2();
         });
     };
 }

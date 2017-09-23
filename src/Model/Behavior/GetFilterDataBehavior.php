@@ -89,7 +89,7 @@ class GetFilterDataBehavior extends Behavior
             'boolean' => 'radio',
             'date'    => 'text'
         ];
-    
+        
         $data['id']         = 'MarkProperty.' . $field;
         $data['label']      = __('Mark Property') . ' -> ' . $field;
         $data['type']       = $this->_getFieldTypeForFilter($type);
@@ -246,7 +246,7 @@ class GetFilterDataBehavior extends Behavior
     private function _getFieldFilterData(string $table, string $field, string $type): array
     {
         $queries = TableRegistry::get('Queries');
-    
+        
         $data['id']         = $table . '.' . $field;
         $data['label']      = $queries->translateFields($data['id']);
         $data['type']       = $this->_getFieldTypeForFilter($type);

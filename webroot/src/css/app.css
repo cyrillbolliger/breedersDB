@@ -255,6 +255,10 @@ table .actions {
     padding: 0;
 }
 
+.rule-value-container input[type="text"].form-control.datepicker {
+    width: auto;
+}
+
 .query-builder select {
     width: initial;
     -webkit-appearance: menulist !important;
