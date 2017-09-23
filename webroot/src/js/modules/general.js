@@ -395,6 +395,9 @@ function GeneralModule() {
         return audio;
     };
 
+    /**
+     * Initiate ZPL printing
+     */
     this.instantiatePrintButtons = function () {
         $('.zpl_print').click(function (event) {
             var printWindow = window.open();
