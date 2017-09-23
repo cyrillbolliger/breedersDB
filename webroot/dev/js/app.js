@@ -31790,7 +31790,7 @@ function GeneralModule() {
      */
     this.instantiateSelect2 = function () {
         // default select2
-        $('select').select2({
+        $('select').not('.hide, .hidden').select2({
             minimumResultsForSearch: 12
         });
     };
@@ -32118,6 +32118,9 @@ function GeneralModule() {
         return audio;
     };
 
+    /**
+     * Initiate ZPL printing
+     */
     this.instantiatePrintButtons = function () {
         $('.zpl_print').click(function (event) {
             var printWindow = window.open();

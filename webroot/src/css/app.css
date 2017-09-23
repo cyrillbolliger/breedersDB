@@ -34,6 +34,10 @@ input[type="text"].datepicker {
     width: 272px;
 }
 
+.select2, .select2-results li {
+    font-size: 0.875rem;
+}
+
 .select2-container {
     margin-bottom: 1rem;
 }
@@ -249,10 +253,32 @@ table .actions {
 }
 
 /* --------- Query Where -------- */
-.query-builder input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea {
+.query-builder input[type="text"],
+.query-builder input[type="password"],
+.query-builder input[type="date"],
+.query-builder input[type="datetime"],
+.query-builder input[type="datetime-local"],
+.query-builder input[type="month"],
+.query-builder input[type="week"],
+.query-builder input[type="email"],
+.query-builder input[type="number"],
+.query-builder input[type="search"],
+.query-builder input[type="tel"],
+.query-builder input[type="time"],
+.query-builder input[type="url"],
+.query-builder input[type="color"],
+.query-builder textarea {
     margin: 0;
     box-sizing: border-box;
     padding: 0;
+}
+
+
+.query-builder .rule-value-container input[type=number],
+.query-builder .rule-value-container input[type=text],
+.query-builder .rule-value-container select {
+    height: 1.75rem;
+    padding: 0 0.5rem;
 }
 
 .rule-value-container input[type="text"].form-control.datepicker {

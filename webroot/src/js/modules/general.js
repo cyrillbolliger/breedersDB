@@ -67,7 +67,7 @@ function GeneralModule() {
      */
     this.instantiateSelect2 = function () {
         // default select2
-        $('select').select2({
+        $('select').not('.hide, .hidden').select2({
             minimumResultsForSearch: 12
         });
     };
