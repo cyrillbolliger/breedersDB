@@ -134,7 +134,13 @@ function QueriesWhereBuilderModule(General) {
         self.addUtilities();
     };
 
-
+    /**
+     * test if value can be found in in an items.id of the array
+     *
+     * @param array array
+     * @param value string
+     * @returns boolean
+     */
     this.inValues = function (array, value) {
         return array.some(function (item) {
             return value === item.id;
