@@ -2,7 +2,6 @@
  * load dependencies
  */
 global.$ = global.jQuery = require('jquery');
-global.moment = require('moment');
 
 require("jquery-ui");
 require("jquery-ui/ui/data");
@@ -14,8 +13,6 @@ require('jquery-ui/ui/widgets/mouse');
 require('jquery-ui/ui/widgets/datepicker');
 require('jquery-ui/ui/widgets/sortable');
 require('select2');
-require('jQuery-QueryBuilder');
-require('./assets/queryBuilder-validate')
 require('./assets/jQueryBindWithDelay');
 require('./assets/sprintf');
 

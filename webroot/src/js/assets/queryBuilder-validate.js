@@ -12,7 +12,7 @@
  * @throws ConfigError
  * @private
  */
-$.fn.queryBuilder.extend({
+QueryBuilder.extend({
     _validateValue: function (rule, value) {
 
         var filter = rule.filter;
@@ -63,7 +63,7 @@ $.fn.queryBuilder.extend({
                     tempValue = $.isArray(value[i]) ? value[i] : [value[i]];
 
                     for (var j = 0; j < tempValue.length; j++) {
-                        switch (this.constructor.types[filter.type]) {
+                        switch (QueryBuilder.types[filter.type]) {
                             case 'string':
                                 if (tempValue[j] === undefined || tempValue[j].length === 0) {
                                     if (!validation.allow_empty_value) {

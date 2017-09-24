@@ -1,7 +1,8 @@
 var VarietiesModule = require('./varieties.js');
 var TreesModule = require('./trees.js');
 var MarksModule = require('./marks.js');
-var QueriesModule = require('./queries.js');
+var QueriesViewSelectorModule = require('./queries/view_selector.js');
+var QueriesWhereBuilderModule = require('./queries/where_builder.js');
 
 /**
  * handles all the general stuff
@@ -26,7 +27,8 @@ function GeneralModule() {
     this.Varieties = new VarietiesModule(self);
     this.Trees = new TreesModule(self);
     this.Marks = new MarksModule(self);
-    this.Queries = new QueriesModule(self);
+    this.QueriesViewSelector = new QueriesViewSelectorModule(self);
+    this.QueriesWhereBuilder = new QueriesWhereBuilderModule(self);
 
     /*
      * start up
@@ -50,7 +52,8 @@ function GeneralModule() {
         this.Marks.applyValidationRules();
         this.Marks.byScanner();
         this.Marks.unlockScannerField();
-        this.Queries.init();
+        this.QueriesViewSelector.init();
+        this.QueriesWhereBuilder.init();
     };
 
     /*
