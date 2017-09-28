@@ -20,8 +20,9 @@ function QueriesViewSelectorModule(General) {
     this.init = function () {
         self.onViewSelectorChange();
         self.setViewSelectorInitState();
-        self.bindRootViewSelectorEvents(); //
+        self.bindRootViewSelectorEvents();
         self.setRootViewSelectorInitState();
+        self.uncheckOrphanedProperties();
     };
 
     /**
@@ -34,6 +35,18 @@ function QueriesViewSelectorModule(General) {
         });
     };
 
+    /**
+     * Uncheck all properties if table is unchecked before form is submitted
+     */
+    this.uncheckOrphanedProperties = function() {
+        $('#query_builder_form').submit(function() {
+            $('.view-selector').not(':checked').each(function() {
+                $('.'+$(this).attr('name')+'-field-selector-container')
+                    .find('input[type="checkbox"]')
+                    .prop('checked',false);
+            });
+        });
+    };
 
     /**
      * set visibility of the field selector on startup
