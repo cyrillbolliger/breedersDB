@@ -2,7 +2,8 @@
 
 namespace App\Model\Table;
 
-use Cake\Core\Exception\Exception;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Association\HasMany;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -323,6 +324,8 @@ class QueriesTable extends Table
         $associations                = $this->_buildAssociationsForContainStatement($this->viewQueryRoot, $tables);
         $this->viewQueryAssociations = $associations;
         
+        $joins = $this->_buildJoinArrays($associations);
+        
         $where_rules = json_decode($this->getWhereRules($query_data));
         $conditions  = $this->convertRulesetToConditions($where_rules);
         
@@ -330,6 +333,7 @@ class QueriesTable extends Table
         $query     = $rootTable
             ->find('all')
             ->contain($associations)
+            ->join($joins)
             ->where($conditions);
         
         return $query;
@@ -447,6 +451,62 @@ class QueriesTable extends Table
         }
         
         return $return;
+    }
+    
+    /**
+     * Return an array ready for the cake ORMs join method from given array with a dot noted list of associations
+     *
+     * @param array $associations
+     *
+     * @return array
+     */
+    private function _buildJoinArrays(array $associations)
+    {
+        
+        $array = array();
+        foreach ($associations as $els) {
+            $rootTable = TableRegistry::get($this->viewQueryRoot);
+            foreach (explode('.', $els) as $tableName) {
+                $table             = TableRegistry::get($tableName);
+                $rootAssociation   = $rootTable->associations()->get($table->alias());
+                $tableAssociation  = $table->associations()->get($rootTable->alias());
+                $array[$tableName] = [
+                    'table'      => $table->table(),
+                    'conditions' => $this->_getAssociationConditions($rootAssociation, $tableAssociation),
+                    'type'       => $rootAssociation->joinType()
+                ];
+                $rootTable         = $table;
+            }
+        }
+        
+        return $array;
+    }
+    
+    /**
+     * Return the SQL join condition from given table associations to join
+     *
+     * @param $associationA
+     * @param $associationB
+     *
+     * @return string
+     * @throws \Exception
+     */
+    private function _getAssociationConditions($associationA, $associationB)
+    {
+        if ($associationA instanceof BelongsTo && $associationB instanceof HasMany) {
+            $leaf = $associationA;
+            $root = $associationB;
+        }
+        if ($associationA instanceof HasMany && $associationB instanceof BelongsTo) {
+            $leaf = $associationB;
+            $root = $associationA;
+        }
+        
+        if (empty($leaf)||empty($root)) {
+            throw new \Exception("Type of association not implemented");
+        }
+        
+        return $root->name().'.'.$root->foreignKey().' = '.$leaf->name().'.'.$leaf->bindingKey();
     }
     
     /**
