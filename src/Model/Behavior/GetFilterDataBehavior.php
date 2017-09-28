@@ -37,9 +37,6 @@ class GetFilterDataBehavior extends Behavior
         // add normal filter data
         foreach ($tables_fields as $table => $table_fields) {
             foreach ($table_fields as $field => $type) {
-                if ('MarksView' === $table && 'name' === $field) {
-                    continue; // we've already added the fields. see above
-                }
                 $fields[$table][] = $this->_getFieldFilterData($table, $field, $type);
             }
         }
