@@ -93,6 +93,9 @@ class FileUpdateHandler
         
         // Timeout if the file doesn't download after 30 seconds.
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    
+        // Disable SSL certificate verification (because curl doesn't know the authorities by default)
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         
         // Set login credentials
         curl_setopt($ch, CURLOPT_USERPWD, $bitbucketconf['user'] . ':' . $bitbucketconf['pass']);

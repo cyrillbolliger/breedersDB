@@ -30,6 +30,7 @@ class Updater
         'username' => 'root',
         'password' => 'root',
         'database' => 'poc',
+        'port'     => 8889,
     ];
     private $backupFolder = 'backup';
     private $exclude = [
@@ -148,7 +149,7 @@ class Updater
         }
         if (true === $success) {
             $success = $this->fileUpdateHandler->extractFiles($backupPath,
-                $this->fileUpdateHandler->getExtractionDest().DIRECTORY_SEPARATOR.'backup');
+                $this->fileUpdateHandler->getExtractionDest() . DIRECTORY_SEPARATOR . 'backup');
         }
         if (true === $success) {
             $success = $this->fileUpdateHandler->moveFiles();
@@ -165,10 +166,12 @@ class Updater
         return $this->fileUpdateHandler->deleteFiles($this->tempPath);
     }
     
-    public function cleanUpFailedUpdate() {
+    public function cleanUpFailedUpdate()
+    {
         if (is_dir($this->tempPath)) {
             return $this->deleteTempFiles();
         }
+        
         return true;
     }
 }

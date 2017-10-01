@@ -58,11 +58,12 @@ class VersionChecker
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 5);
         curl_setopt($ch, CURLOPT_USERPWD, $this->bitbucket['user'].':'.$this->bitbucket['pass']);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $resp = curl_exec($ch);
     
         // If there was an error, throw an Exception
         if (curl_errno($ch)) {
-            throw new Exception(curl_error($ch));
+            throw new \Exception(curl_error($ch));
         }
     
         // Get the HTTP status code.

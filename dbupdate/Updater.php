@@ -21,7 +21,7 @@ class Updater
     {
         // get connection to db or return false
         try {
-            $this->db = new \PDO("mysql:host={$dbconf['host']};dbname={$dbconf['database']}", $dbconf['username'],
+            $this->db = new \PDO("mysql: host={$dbconf['host']};dbname={$dbconf['database']};port={$dbconf['port']}", $dbconf['username'],
                 $dbconf['password'], array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
         } catch (\PDOException $e) {
             return false;
