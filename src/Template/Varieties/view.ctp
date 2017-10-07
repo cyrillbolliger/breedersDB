@@ -14,6 +14,10 @@
             <td><?= h($variety->official_name) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Acronym') ?></th>
+            <td><?= h($variety->acronym) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Breeder Variety Code') ?></th>
             <td><?= h($variety->breeder_variety_code) ?></td>
         </tr>
