@@ -128,7 +128,7 @@ class BackupHandler
     {
         $backupPath = $this->getDatabaseBackupPath($relBackupDestination);
         $mysqldump  = $this->getMysqlCommand('mysqldump');
-        $command    = "$mysqldump --user={$dbconf['username']} --password={$dbconf['password']} --host={$dbconf['host']} {$dbconf['database']} | gzip -c  > $backupPath";
+        $command    = "$mysqldump --user={$dbconf['username']} --password={$dbconf['password']} --host={$dbconf['host']} {$dbconf['database']} > $backupPath";
         
         return $this->exec($command);
     }
@@ -142,7 +142,7 @@ class BackupHandler
      */
     public function getDatabaseBackupPath(string $relBackupDestination): string
     {
-        return $this->getAbsPathFrom($relBackupDestination) . 'dbdump.sql.gz';
+        return $this->getAbsPathFrom($relBackupDestination) . 'dbdump.sql';
     }
     
     /**
