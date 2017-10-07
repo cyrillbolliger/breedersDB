@@ -160,7 +160,7 @@ if ( ! $updater->isUpdateAvailable()) {
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script>
             var current_version = '<?= $updater->getCurrentVersion() ?>';
-            var current_page = '//<?= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] ?>';
+            var current_page = '<?= getBaseUrl() . $_SERVER['REQUEST_URI'] ?>';
         </script>
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -179,7 +179,7 @@ if ( ! $updater->isUpdateAvailable()) {
             <nav>
                 <ul class="nav nav-pills pull-right">
                     <li role="presentation"><a class="btn btn-default"
-                                               href="<?= "//" . $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']); ?>">Back</a>
+                                               href="<?= getBaseUrl() . dirname($_SERVER['REQUEST_URI']); ?>">Back</a>
                     </li>
                 </ul>
             </nav>
@@ -191,7 +191,7 @@ if ( ! $updater->isUpdateAvailable()) {
                 <h1>Perfect!</h1>
                 <p class="lead">Your installation is up to date. You may now return to the application.</p>
                 <p><a class="btn btn-lg btn-success"
-                      href="<?= "//" . $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']); ?>" role="button">Return
+                      href="<?= getBaseUrl() . dirname($_SERVER['REQUEST_URI']); ?>" role="button">Return
                         to application</a></p>
             </div>
         <?php else: ?>
@@ -203,10 +203,10 @@ if ( ! $updater->isUpdateAvailable()) {
                     include the updating log in the support request.</p>
                 <p><a class="btn btn-lg btn-success" id="update_start" role="button">Start updating</a></p>
                 <p><a class="btn btn-lg btn-success hidden" id="return_to_application" role="button"
-                      href="<?= "//" . $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']); ?>">Return to
+                      href="<?= getBaseUrl() . dirname($_SERVER['REQUEST_URI']); ?>">Return to
                         application</a></p>
                 <p><a class="btn btn-lg btn-success hidden" id="reload" role="button"
-                      href="<?= "//" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']; ?>">Reload & Retry</a></p>
+                      href="<?= getBaseUrl() . $_SERVER['REQUEST_URI']; ?>">Reload & Retry</a></p>
             </div>
         <?php endif; ?>
 
@@ -272,6 +272,18 @@ function tryTask($updater, $task, $successMsg, $nextSuccess, $errorMsg = null, $
     } finally {
         return ['status' => $status, 'msg' => $msg, 'nextStep' => $nextStep];
     }
+}
+
+function getBaseUrl()
+{
+    $ssl      = ( ! empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' );
+    $sp       = strtolower( $_SERVER['SERVER_PROTOCOL'] );
+    $protocol = substr( $sp, 0, strpos( $sp, '/' ) ) . ( ( $ssl ) ? 's' : '' );
+    $port     = $_SERVER['SERVER_PORT'];
+    $port     = ( ( ! $ssl && $port=='80' ) || ( $ssl && $port=='443' ) ) ? '' : ':'.$port;
+    $host     = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : null;
+    $host     = isset( $host ) ? $host : $_SERVER['SERVER_NAME'] . $port;
+    return $protocol . '://' . $host;
 }
 
 ?>
