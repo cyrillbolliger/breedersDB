@@ -12,6 +12,21 @@ namespace Autoupdate;
 class BackupHandler
 {
     /**
+     * @var string holding the path to the mysql binaries if not installed globally
+     */
+    private $pathToMysqlBinaries;
+    
+    /**
+     * BackupHandler constructor.
+     *
+     * @param string $pathToMysqlBinaries
+     */
+    public function __construct($pathToMysqlBinaries)
+    {
+        $this->pathToMysqlBinaries = $pathToMysqlBinaries;
+    }
+    
+    /**
      * Save a zip of the current project to the given path, excluding the files and folders of the given exclude list
      *
      * @param string $relBackupDestination relative destination path (folder only) to store the backup
@@ -109,10 +124,11 @@ class BackupHandler
      *
      * @return array|bool
      */
-    public function backupDatabase(string $relBackupDestination, array $dbconf)
+    public function backupDatabase(string $relBackupDestination, array $dbconf, string $pathToMysqlBinaries)
     {
         $backupPath = $this->getDatabaseBackupPath($relBackupDestination);
-        $command = "mysqldump --user={$dbconf['username']} --password={$dbconf['password']} --host={$dbconf['host']} {$dbconf['database']} | gzip -c  > $backupPath";
+        $mysqldump  = $this->getMysqlCommand('mysqldump');
+        $command    = "$mysqldump --user={$dbconf['username']} --password={$dbconf['password']} --host={$dbconf['host']} {$dbconf['database']} | gzip -c  > $backupPath";
         
         return $this->exec($command);
     }
@@ -130,21 +146,17 @@ class BackupHandler
     }
     
     /**
-     * Restore mysql backup
+     * Returns path and mysql command from given command
      *
-     * @param string $relBackupDestination
-     * @param array $dbconf
+     * @param string $command mysql command you'd like to use
      *
-     * @return array|bool
+     * @return string
      */
-    public function restoreDatabase(string $relBackupDestination, array $dbconf)
+    private function getMysqlCommand(string $command): string
     {
-        $backupPath = $this->getDatabaseBackupPath($relBackupDestination);
-        $command = "mysql -h {$dbconf['host']} -u {$dbconf['username']} -p{$dbconf['password']} {$dbconf['database']} < $backupPath";
-        
-        return $this->exec($command);
+        return empty($this->pathToMysqlBinaries) ? $command : preg_replace("/\\" . DIRECTORY_SEPARATOR . "$/", '',
+                $this->pathToMysqlBinaries) . DIRECTORY_SEPARATOR . $command;
     }
-    
     
     /**
      * Execute a commandline instruction and return true or array with the output
@@ -165,5 +177,22 @@ class BackupHandler
         }
         
         return $output;
+    }
+    
+    /**
+     * Restore mysql backup
+     *
+     * @param string $relBackupDestination
+     * @param array $dbconf
+     *
+     * @return array|bool
+     */
+    public function restoreDatabase(string $relBackupDestination, array $dbconf)
+    {
+        $backupPath = $this->getDatabaseBackupPath($relBackupDestination);
+        $mysql      = $this->getMysqlCommand('mysql');
+        $command    = "$mysql -h {$dbconf['host']} -u {$dbconf['username']} -p{$dbconf['password']} {$dbconf['database']} < $backupPath";
+        
+        return $this->exec($command);
     }
 }

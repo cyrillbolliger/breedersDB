@@ -48,6 +48,7 @@ class Updater
         // $tempDir <-- gets pushed dynamically
     ];
     private $tempDir = 'tmp';
+    private $pathToMysqlBinaries = ''; // set path to mysql and mysqldump command if not installed globally
     private $tempPath;
     private $rootPath;
     private $currentVersion;
@@ -64,7 +65,7 @@ class Updater
         $this->tempPath = $this->rootPath . DIRECTORY_SEPARATOR . $this->tempDir;
         
         $this->versionChecker = new VersionChecker($this->pathToVersionsFile, $this->bitbucket);
-        $this->backupHandler  = new BackupHandler();
+        $this->backupHandler  = new BackupHandler($this->pathToMysqlBinaries);
         
         $extractionFolder        = $this->tempDir . DIRECTORY_SEPARATOR . 'deploy';
         $this->fileUpdateHandler = new FileUpdateHandler($this->tempDir, $extractionFolder, $this->exclude);
