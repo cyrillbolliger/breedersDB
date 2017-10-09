@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2017-10-07 17:39+0000\n"
-"PO-Revision-Date: 2017-10-07 19:40+0200\n"
+"PO-Revision-Date: 2017-10-09 13:58+0200\n"
 "Last-Translator: Cyrill Bolliger <bolliger@gmx.ch>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -430,7 +430,7 @@ msgstr "Ein Update ist verfügbar. Klicke hier, um jetzt zu aktualisieren."
 
 #: Controller/UsersController.php:136
 msgid "Your application is up to date."
-msgstr "Ihre System ist auf dem neuesten Stand."
+msgstr "Das System ist auf dem neuesten Stand."
 
 #: Controller/UsersController.php:157
 msgid "Your username or password is incorrect."
