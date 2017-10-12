@@ -25,7 +25,7 @@ function TreesModule(General) {
         var $container = $('#tree_container').first();
         var printable = $filter.hasClass('get_printable_tree_with_date') ? 'with_date' : false;
 
-        $filter.on('keyup paste', function () {
+        $filter.bindWithDelay('keyup paste', function () {
             var params = $filter.data('filter');
             $.ajax({
                 url: webroot + params.controller + '/' + params.action,
@@ -52,7 +52,7 @@ function TreesModule(General) {
                     $container.html(self.General.searching);
                 }
             });
-        });
+        }, 200, false);
     };
 }
 
