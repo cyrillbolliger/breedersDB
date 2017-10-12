@@ -32908,6 +32908,11 @@ function QueriesWhereBuilderModule(General) {
     this.init = function () {
         self.$query_where_builder = $('#query_where_builder');
 
+        // stop here if we are on a page without query builder
+        if (0 === self.$query_where_builder.length) {
+            return;
+        }
+
         self.autoAddUtilitiesSwitch = true;
 
         self.autoAddUtilities();
