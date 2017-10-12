@@ -164,6 +164,8 @@ class Updater
     
     public function deleteTempFiles()
     {
+        // remove the temp dir from the exclude list, else nothing will get deleted
+        $this->fileUpdateHandler->removeFromExcludeList($this->tempDir);
         return $this->fileUpdateHandler->deleteFiles($this->tempPath);
     }
     
