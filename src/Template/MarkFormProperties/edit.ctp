@@ -42,6 +42,7 @@
             'value'    => isset($markFormProperty->validation_rule['step']) ? $markFormProperty->validation_rule['step'] : '',
         ]);
         $this->Form->unlockField('step');
+        echo $this->Form->input('note');
         ?>
         <fieldset>
             <legend><?= __('This property serves to mark:') ?></legend>

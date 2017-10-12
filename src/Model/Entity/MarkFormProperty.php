@@ -11,6 +11,7 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property string $validation_rule
  * @property string $field_type
+ * @property string $note
  * @property int $mark_form_property_type_id
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified

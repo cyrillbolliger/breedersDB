@@ -32,6 +32,10 @@ class Updater
         if (1 === version_compare('1.0.0', $currentVersion)) {
             $this->updateTo1dot0dot0();
         }
+    
+        if (1 === version_compare('1.1.0', $currentVersion)) {
+            $this->updateTo1dot1dot0();
+        }
     }
     
     public function update(string $currentVersion): bool
@@ -86,6 +90,15 @@ class Updater
                 $this->db->exec($query);
             }
         }
+    }
+    
+    /**
+     * Add a note field to mark form properties
+     */
+    private function updateTo1dot1dot0(){
+        // add field to table
+        $query1 = "ALTER TABLE `mark_form_properties` ADD COLUMN `note` TEXT NULL DEFAULT NULL AFTER `field_type`";
+        $this->db->exec($query1);
     }
     
     private function getAssoc(string $query): array

@@ -39,6 +39,7 @@
             'required' => 'required',
         ]);
         $this->Form->unlockField('step');
+        echo $this->Form->input('note');
         ?>
         <fieldset>
             <legend><?= __('This property serves to mark:') ?></legend>
