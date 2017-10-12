@@ -124,7 +124,7 @@ class BackupHandler
      *
      * @return array|bool
      */
-    public function backupDatabase(string $relBackupDestination, array $dbconf, string $pathToMysqlBinaries)
+    public function backupDatabase(string $relBackupDestination, array $dbconf)
     {
         $backupPath = $this->getDatabaseBackupPath($relBackupDestination);
         $mysqldump  = $this->getMysqlCommand('mysqldump');
