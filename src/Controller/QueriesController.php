@@ -11,6 +11,12 @@ use App\Controller\AppController;
  */
 class QueriesController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        
+        $this->loadComponent('Excel');
+    }
     
     /**
      * Index method
@@ -53,6 +59,33 @@ class QueriesController extends AppController
         
         $this->set(compact('query', 'query_groups', 'queryGroups', 'results', 'columns'));
         $this->set('_serialize', ['query', 'query_groups', 'queryGroups', 'results', 'columns']);
+    }
+    
+    /**
+     * Export method
+     *
+     * @param string|null $id Query id.
+     *
+     * @return \Cake\Network\Response|null
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function export($id = null) {
+        $query = $this->Queries->get($id);
+        $query->query = json_decode($query->query);
+    
+        $q = $this->Queries->buildViewQuery($query->query);
+        $columns = $this->Queries->getViewQueryColumns($query->query);
+        $file = $this->Excel->export($q, $columns, $query->code);
+        
+        $this->response->type('xlsx');
+        $this->response->file($file, ['download' => true ]);
+        
+        // used for jquery.fileDownload.js
+        $this->Cookie->configKey('fileDownload', 'encryption', false);
+        $this->Cookie->write('fileDownload', 'true');
+    
+        // prevent rendering
+        $this->autoRender = false;
     }
     
     /**

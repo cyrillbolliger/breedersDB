@@ -3,6 +3,7 @@ var TreesModule = require('./trees.js');
 var MarksModule = require('./marks.js');
 var QueriesViewSelectorModule = require('./queries/view_selector.js');
 var QueriesWhereBuilderModule = require('./queries/where_builder.js');
+var Exporter = require('./exporter.js');
 
 /**
  * handles all the general stuff
@@ -29,6 +30,7 @@ function GeneralModule() {
     this.Marks = new MarksModule(self);
     this.QueriesViewSelector = new QueriesViewSelectorModule(self);
     this.QueriesWhereBuilder = new QueriesWhereBuilderModule(self);
+    this.Exporter = new Exporter(self);
 
     /*
      * start up
@@ -54,6 +56,7 @@ function GeneralModule() {
         this.Marks.unlockScannerField();
         this.QueriesViewSelector.init();
         this.QueriesWhereBuilder.init();
+        this.Exporter.init();
     };
 
     /*

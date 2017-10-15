@@ -41,6 +41,7 @@
     <script>
         var csrfToken = '<?= $this->request->params['_csrfToken'] ?>';
         var webroot = '<?= $this->Url->build('/', true); ?>';
+        var urlbase = '<?= $this->Url->build('/', false); ?>';
         var trans = {
             dateformat: '<?= __x('Date format', 'dd.mm.yy') ?>',
             searching: '<?= __('Searching...') ?>',
@@ -51,7 +52,9 @@
                 'Are you sure you want to delete:')?>',
             matching_elements: '<?= __('{0} matching elements for this mark were found.') ?>',
             no_tree_found: '<?= __('No tree could be found') ?>',
-            impossible_selection: "<?= __x('Query builder. {0} is replaced by the table name.',"{0} will be deselected, since they aren't connected to the other selected entities.") ?>"
+            impossible_selection: "<?= __x('Query builder. {0} is replaced by the table name.',"{0} will be deselected, since they aren't connected to the other selected entities.") ?>",
+            preparing_report: "<?= __('Please wait, while your report is generated. This may take up to few minutes.') ?>",
+            preparing_report_failed: "<?= __("Sorry, your report couldn't be generated. Please try again.") ?>"
         };
     </script>
 </head>

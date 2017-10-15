@@ -6053,7 +6053,7 @@ return QueryBuilder;
 
 }));
 
-},{"dot/doT":1,"jquery":13,"jquery-extendext":4}],3:[function(require,module,exports){
+},{"dot/doT":1,"jquery":27,"jquery-extendext":4}],3:[function(require,module,exports){
 /**
  * @class ChangeFilters
  * @memberof module:plugins
@@ -6357,7 +6357,7 @@ QueryBuilder.extend(/** @lends module:plugins.ChangeFilters.prototype */ {
         return target;
     };
 }));
-},{"jquery":13}],5:[function(require,module,exports){
+},{"jquery":27}],5:[function(require,module,exports){
 /*!
  * jQuery UI :data 1.12.1
  * http://jqueryui.com
@@ -6399,6 +6399,140 @@ return $.extend( $.expr[ ":" ], {
 } ) );
 
 },{}],6:[function(require,module,exports){
+/*!
+ * jQuery UI Disable Selection 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: disableSelection
+//>>group: Core
+//>>description: Disable selection of text content within the set of matched elements.
+//>>docs: http://api.jqueryui.com/disableSelection/
+
+// This file is deprecated
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "jquery", "./version" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+} ( function( $ ) {
+
+return $.fn.extend( {
+	disableSelection: ( function() {
+		var eventType = "onselectstart" in document.createElement( "div" ) ?
+			"selectstart" :
+			"mousedown";
+
+		return function() {
+			return this.on( eventType + ".ui-disableSelection", function( event ) {
+				event.preventDefault();
+			} );
+		};
+	} )(),
+
+	enableSelection: function() {
+		return this.off( ".ui-disableSelection" );
+	}
+} );
+
+} ) );
+
+},{}],7:[function(require,module,exports){
+/*!
+ * jQuery UI Focusable 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: :focusable Selector
+//>>group: Core
+//>>description: Selects elements which can be focused.
+//>>docs: http://api.jqueryui.com/focusable-selector/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "jquery", "./version" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+} ( function( $ ) {
+
+// Selectors
+$.ui.focusable = function( element, hasTabindex ) {
+	var map, mapName, img, focusableIfVisible, fieldset,
+		nodeName = element.nodeName.toLowerCase();
+
+	if ( "area" === nodeName ) {
+		map = element.parentNode;
+		mapName = map.name;
+		if ( !element.href || !mapName || map.nodeName.toLowerCase() !== "map" ) {
+			return false;
+		}
+		img = $( "img[usemap='#" + mapName + "']" );
+		return img.length > 0 && img.is( ":visible" );
+	}
+
+	if ( /^(input|select|textarea|button|object)$/.test( nodeName ) ) {
+		focusableIfVisible = !element.disabled;
+
+		if ( focusableIfVisible ) {
+
+			// Form controls within a disabled fieldset are disabled.
+			// However, controls within the fieldset's legend do not get disabled.
+			// Since controls generally aren't placed inside legends, we skip
+			// this portion of the check.
+			fieldset = $( element ).closest( "fieldset" )[ 0 ];
+			if ( fieldset ) {
+				focusableIfVisible = !fieldset.disabled;
+			}
+		}
+	} else if ( "a" === nodeName ) {
+		focusableIfVisible = element.href || hasTabindex;
+	} else {
+		focusableIfVisible = hasTabindex;
+	}
+
+	return focusableIfVisible && $( element ).is( ":visible" ) && visible( $( element ) );
+};
+
+// Support: IE 8 only
+// IE 8 doesn't resolve inherit to visible/hidden for computed values
+function visible( element ) {
+	var visibility = element.css( "visibility" );
+	while ( visibility === "inherit" ) {
+		element = element.parent();
+		visibility = element.css( "visibility" );
+	}
+	return visibility !== "hidden";
+}
+
+$.extend( $.expr[ ":" ], {
+	focusable: function( element ) {
+		return $.ui.focusable( element, $.attr( element, "tabindex" ) != null );
+	}
+} );
+
+return $.ui.focusable;
+
+} ) );
+
+},{}],8:[function(require,module,exports){
 ( function( factory ) {
 	if ( typeof define === "function" && define.amd ) {
 
@@ -6415,7 +6549,665 @@ return $.extend( $.expr[ ":" ], {
 return $.ui.ie = !!/msie [\w.]+/.exec( navigator.userAgent.toLowerCase() );
 } ) );
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
+/*!
+ * jQuery UI Keycode 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Keycode
+//>>group: Core
+//>>description: Provide keycodes as keynames
+//>>docs: http://api.jqueryui.com/jQuery.ui.keyCode/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "jquery", "./version" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+} ( function( $ ) {
+return $.ui.keyCode = {
+	BACKSPACE: 8,
+	COMMA: 188,
+	DELETE: 46,
+	DOWN: 40,
+	END: 35,
+	ENTER: 13,
+	ESCAPE: 27,
+	HOME: 36,
+	LEFT: 37,
+	PAGE_DOWN: 34,
+	PAGE_UP: 33,
+	PERIOD: 190,
+	RIGHT: 39,
+	SPACE: 32,
+	TAB: 9,
+	UP: 38
+};
+
+} ) );
+
+},{}],10:[function(require,module,exports){
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "jquery", "./version" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+} ( function( $ ) {
+
+// $.ui.plugin is deprecated. Use $.widget() extensions instead.
+return $.ui.plugin = {
+	add: function( module, option, set ) {
+		var i,
+			proto = $.ui[ module ].prototype;
+		for ( i in set ) {
+			proto.plugins[ i ] = proto.plugins[ i ] || [];
+			proto.plugins[ i ].push( [ option, set[ i ] ] );
+		}
+	},
+	call: function( instance, name, args, allowDisconnected ) {
+		var i,
+			set = instance.plugins[ name ];
+
+		if ( !set ) {
+			return;
+		}
+
+		if ( !allowDisconnected && ( !instance.element[ 0 ].parentNode ||
+				instance.element[ 0 ].parentNode.nodeType === 11 ) ) {
+			return;
+		}
+
+		for ( i = 0; i < set.length; i++ ) {
+			if ( instance.options[ set[ i ][ 0 ] ] ) {
+				set[ i ][ 1 ].apply( instance.element, args );
+			}
+		}
+	}
+};
+
+} ) );
+
+},{}],11:[function(require,module,exports){
+/*!
+ * jQuery UI Position 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/position/
+ */
+
+//>>label: Position
+//>>group: Core
+//>>description: Positions elements relative to other elements.
+//>>docs: http://api.jqueryui.com/position/
+//>>demos: http://jqueryui.com/position/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "jquery", "./version" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+( function() {
+var cachedScrollbarWidth,
+	max = Math.max,
+	abs = Math.abs,
+	rhorizontal = /left|center|right/,
+	rvertical = /top|center|bottom/,
+	roffset = /[\+\-]\d+(\.[\d]+)?%?/,
+	rposition = /^\w+/,
+	rpercent = /%$/,
+	_position = $.fn.position;
+
+function getOffsets( offsets, width, height ) {
+	return [
+		parseFloat( offsets[ 0 ] ) * ( rpercent.test( offsets[ 0 ] ) ? width / 100 : 1 ),
+		parseFloat( offsets[ 1 ] ) * ( rpercent.test( offsets[ 1 ] ) ? height / 100 : 1 )
+	];
+}
+
+function parseCss( element, property ) {
+	return parseInt( $.css( element, property ), 10 ) || 0;
+}
+
+function getDimensions( elem ) {
+	var raw = elem[ 0 ];
+	if ( raw.nodeType === 9 ) {
+		return {
+			width: elem.width(),
+			height: elem.height(),
+			offset: { top: 0, left: 0 }
+		};
+	}
+	if ( $.isWindow( raw ) ) {
+		return {
+			width: elem.width(),
+			height: elem.height(),
+			offset: { top: elem.scrollTop(), left: elem.scrollLeft() }
+		};
+	}
+	if ( raw.preventDefault ) {
+		return {
+			width: 0,
+			height: 0,
+			offset: { top: raw.pageY, left: raw.pageX }
+		};
+	}
+	return {
+		width: elem.outerWidth(),
+		height: elem.outerHeight(),
+		offset: elem.offset()
+	};
+}
+
+$.position = {
+	scrollbarWidth: function() {
+		if ( cachedScrollbarWidth !== undefined ) {
+			return cachedScrollbarWidth;
+		}
+		var w1, w2,
+			div = $( "<div " +
+				"style='display:block;position:absolute;width:50px;height:50px;overflow:hidden;'>" +
+				"<div style='height:100px;width:auto;'></div></div>" ),
+			innerDiv = div.children()[ 0 ];
+
+		$( "body" ).append( div );
+		w1 = innerDiv.offsetWidth;
+		div.css( "overflow", "scroll" );
+
+		w2 = innerDiv.offsetWidth;
+
+		if ( w1 === w2 ) {
+			w2 = div[ 0 ].clientWidth;
+		}
+
+		div.remove();
+
+		return ( cachedScrollbarWidth = w1 - w2 );
+	},
+	getScrollInfo: function( within ) {
+		var overflowX = within.isWindow || within.isDocument ? "" :
+				within.element.css( "overflow-x" ),
+			overflowY = within.isWindow || within.isDocument ? "" :
+				within.element.css( "overflow-y" ),
+			hasOverflowX = overflowX === "scroll" ||
+				( overflowX === "auto" && within.width < within.element[ 0 ].scrollWidth ),
+			hasOverflowY = overflowY === "scroll" ||
+				( overflowY === "auto" && within.height < within.element[ 0 ].scrollHeight );
+		return {
+			width: hasOverflowY ? $.position.scrollbarWidth() : 0,
+			height: hasOverflowX ? $.position.scrollbarWidth() : 0
+		};
+	},
+	getWithinInfo: function( element ) {
+		var withinElement = $( element || window ),
+			isWindow = $.isWindow( withinElement[ 0 ] ),
+			isDocument = !!withinElement[ 0 ] && withinElement[ 0 ].nodeType === 9,
+			hasOffset = !isWindow && !isDocument;
+		return {
+			element: withinElement,
+			isWindow: isWindow,
+			isDocument: isDocument,
+			offset: hasOffset ? $( element ).offset() : { left: 0, top: 0 },
+			scrollLeft: withinElement.scrollLeft(),
+			scrollTop: withinElement.scrollTop(),
+			width: withinElement.outerWidth(),
+			height: withinElement.outerHeight()
+		};
+	}
+};
+
+$.fn.position = function( options ) {
+	if ( !options || !options.of ) {
+		return _position.apply( this, arguments );
+	}
+
+	// Make a copy, we don't want to modify arguments
+	options = $.extend( {}, options );
+
+	var atOffset, targetWidth, targetHeight, targetOffset, basePosition, dimensions,
+		target = $( options.of ),
+		within = $.position.getWithinInfo( options.within ),
+		scrollInfo = $.position.getScrollInfo( within ),
+		collision = ( options.collision || "flip" ).split( " " ),
+		offsets = {};
+
+	dimensions = getDimensions( target );
+	if ( target[ 0 ].preventDefault ) {
+
+		// Force left top to allow flipping
+		options.at = "left top";
+	}
+	targetWidth = dimensions.width;
+	targetHeight = dimensions.height;
+	targetOffset = dimensions.offset;
+
+	// Clone to reuse original targetOffset later
+	basePosition = $.extend( {}, targetOffset );
+
+	// Force my and at to have valid horizontal and vertical positions
+	// if a value is missing or invalid, it will be converted to center
+	$.each( [ "my", "at" ], function() {
+		var pos = ( options[ this ] || "" ).split( " " ),
+			horizontalOffset,
+			verticalOffset;
+
+		if ( pos.length === 1 ) {
+			pos = rhorizontal.test( pos[ 0 ] ) ?
+				pos.concat( [ "center" ] ) :
+				rvertical.test( pos[ 0 ] ) ?
+					[ "center" ].concat( pos ) :
+					[ "center", "center" ];
+		}
+		pos[ 0 ] = rhorizontal.test( pos[ 0 ] ) ? pos[ 0 ] : "center";
+		pos[ 1 ] = rvertical.test( pos[ 1 ] ) ? pos[ 1 ] : "center";
+
+		// Calculate offsets
+		horizontalOffset = roffset.exec( pos[ 0 ] );
+		verticalOffset = roffset.exec( pos[ 1 ] );
+		offsets[ this ] = [
+			horizontalOffset ? horizontalOffset[ 0 ] : 0,
+			verticalOffset ? verticalOffset[ 0 ] : 0
+		];
+
+		// Reduce to just the positions without the offsets
+		options[ this ] = [
+			rposition.exec( pos[ 0 ] )[ 0 ],
+			rposition.exec( pos[ 1 ] )[ 0 ]
+		];
+	} );
+
+	// Normalize collision option
+	if ( collision.length === 1 ) {
+		collision[ 1 ] = collision[ 0 ];
+	}
+
+	if ( options.at[ 0 ] === "right" ) {
+		basePosition.left += targetWidth;
+	} else if ( options.at[ 0 ] === "center" ) {
+		basePosition.left += targetWidth / 2;
+	}
+
+	if ( options.at[ 1 ] === "bottom" ) {
+		basePosition.top += targetHeight;
+	} else if ( options.at[ 1 ] === "center" ) {
+		basePosition.top += targetHeight / 2;
+	}
+
+	atOffset = getOffsets( offsets.at, targetWidth, targetHeight );
+	basePosition.left += atOffset[ 0 ];
+	basePosition.top += atOffset[ 1 ];
+
+	return this.each( function() {
+		var collisionPosition, using,
+			elem = $( this ),
+			elemWidth = elem.outerWidth(),
+			elemHeight = elem.outerHeight(),
+			marginLeft = parseCss( this, "marginLeft" ),
+			marginTop = parseCss( this, "marginTop" ),
+			collisionWidth = elemWidth + marginLeft + parseCss( this, "marginRight" ) +
+				scrollInfo.width,
+			collisionHeight = elemHeight + marginTop + parseCss( this, "marginBottom" ) +
+				scrollInfo.height,
+			position = $.extend( {}, basePosition ),
+			myOffset = getOffsets( offsets.my, elem.outerWidth(), elem.outerHeight() );
+
+		if ( options.my[ 0 ] === "right" ) {
+			position.left -= elemWidth;
+		} else if ( options.my[ 0 ] === "center" ) {
+			position.left -= elemWidth / 2;
+		}
+
+		if ( options.my[ 1 ] === "bottom" ) {
+			position.top -= elemHeight;
+		} else if ( options.my[ 1 ] === "center" ) {
+			position.top -= elemHeight / 2;
+		}
+
+		position.left += myOffset[ 0 ];
+		position.top += myOffset[ 1 ];
+
+		collisionPosition = {
+			marginLeft: marginLeft,
+			marginTop: marginTop
+		};
+
+		$.each( [ "left", "top" ], function( i, dir ) {
+			if ( $.ui.position[ collision[ i ] ] ) {
+				$.ui.position[ collision[ i ] ][ dir ]( position, {
+					targetWidth: targetWidth,
+					targetHeight: targetHeight,
+					elemWidth: elemWidth,
+					elemHeight: elemHeight,
+					collisionPosition: collisionPosition,
+					collisionWidth: collisionWidth,
+					collisionHeight: collisionHeight,
+					offset: [ atOffset[ 0 ] + myOffset[ 0 ], atOffset [ 1 ] + myOffset[ 1 ] ],
+					my: options.my,
+					at: options.at,
+					within: within,
+					elem: elem
+				} );
+			}
+		} );
+
+		if ( options.using ) {
+
+			// Adds feedback as second argument to using callback, if present
+			using = function( props ) {
+				var left = targetOffset.left - position.left,
+					right = left + targetWidth - elemWidth,
+					top = targetOffset.top - position.top,
+					bottom = top + targetHeight - elemHeight,
+					feedback = {
+						target: {
+							element: target,
+							left: targetOffset.left,
+							top: targetOffset.top,
+							width: targetWidth,
+							height: targetHeight
+						},
+						element: {
+							element: elem,
+							left: position.left,
+							top: position.top,
+							width: elemWidth,
+							height: elemHeight
+						},
+						horizontal: right < 0 ? "left" : left > 0 ? "right" : "center",
+						vertical: bottom < 0 ? "top" : top > 0 ? "bottom" : "middle"
+					};
+				if ( targetWidth < elemWidth && abs( left + right ) < targetWidth ) {
+					feedback.horizontal = "center";
+				}
+				if ( targetHeight < elemHeight && abs( top + bottom ) < targetHeight ) {
+					feedback.vertical = "middle";
+				}
+				if ( max( abs( left ), abs( right ) ) > max( abs( top ), abs( bottom ) ) ) {
+					feedback.important = "horizontal";
+				} else {
+					feedback.important = "vertical";
+				}
+				options.using.call( this, props, feedback );
+			};
+		}
+
+		elem.offset( $.extend( position, { using: using } ) );
+	} );
+};
+
+$.ui.position = {
+	fit: {
+		left: function( position, data ) {
+			var within = data.within,
+				withinOffset = within.isWindow ? within.scrollLeft : within.offset.left,
+				outerWidth = within.width,
+				collisionPosLeft = position.left - data.collisionPosition.marginLeft,
+				overLeft = withinOffset - collisionPosLeft,
+				overRight = collisionPosLeft + data.collisionWidth - outerWidth - withinOffset,
+				newOverRight;
+
+			// Element is wider than within
+			if ( data.collisionWidth > outerWidth ) {
+
+				// Element is initially over the left side of within
+				if ( overLeft > 0 && overRight <= 0 ) {
+					newOverRight = position.left + overLeft + data.collisionWidth - outerWidth -
+						withinOffset;
+					position.left += overLeft - newOverRight;
+
+				// Element is initially over right side of within
+				} else if ( overRight > 0 && overLeft <= 0 ) {
+					position.left = withinOffset;
+
+				// Element is initially over both left and right sides of within
+				} else {
+					if ( overLeft > overRight ) {
+						position.left = withinOffset + outerWidth - data.collisionWidth;
+					} else {
+						position.left = withinOffset;
+					}
+				}
+
+			// Too far left -> align with left edge
+			} else if ( overLeft > 0 ) {
+				position.left += overLeft;
+
+			// Too far right -> align with right edge
+			} else if ( overRight > 0 ) {
+				position.left -= overRight;
+
+			// Adjust based on position and margin
+			} else {
+				position.left = max( position.left - collisionPosLeft, position.left );
+			}
+		},
+		top: function( position, data ) {
+			var within = data.within,
+				withinOffset = within.isWindow ? within.scrollTop : within.offset.top,
+				outerHeight = data.within.height,
+				collisionPosTop = position.top - data.collisionPosition.marginTop,
+				overTop = withinOffset - collisionPosTop,
+				overBottom = collisionPosTop + data.collisionHeight - outerHeight - withinOffset,
+				newOverBottom;
+
+			// Element is taller than within
+			if ( data.collisionHeight > outerHeight ) {
+
+				// Element is initially over the top of within
+				if ( overTop > 0 && overBottom <= 0 ) {
+					newOverBottom = position.top + overTop + data.collisionHeight - outerHeight -
+						withinOffset;
+					position.top += overTop - newOverBottom;
+
+				// Element is initially over bottom of within
+				} else if ( overBottom > 0 && overTop <= 0 ) {
+					position.top = withinOffset;
+
+				// Element is initially over both top and bottom of within
+				} else {
+					if ( overTop > overBottom ) {
+						position.top = withinOffset + outerHeight - data.collisionHeight;
+					} else {
+						position.top = withinOffset;
+					}
+				}
+
+			// Too far up -> align with top
+			} else if ( overTop > 0 ) {
+				position.top += overTop;
+
+			// Too far down -> align with bottom edge
+			} else if ( overBottom > 0 ) {
+				position.top -= overBottom;
+
+			// Adjust based on position and margin
+			} else {
+				position.top = max( position.top - collisionPosTop, position.top );
+			}
+		}
+	},
+	flip: {
+		left: function( position, data ) {
+			var within = data.within,
+				withinOffset = within.offset.left + within.scrollLeft,
+				outerWidth = within.width,
+				offsetLeft = within.isWindow ? within.scrollLeft : within.offset.left,
+				collisionPosLeft = position.left - data.collisionPosition.marginLeft,
+				overLeft = collisionPosLeft - offsetLeft,
+				overRight = collisionPosLeft + data.collisionWidth - outerWidth - offsetLeft,
+				myOffset = data.my[ 0 ] === "left" ?
+					-data.elemWidth :
+					data.my[ 0 ] === "right" ?
+						data.elemWidth :
+						0,
+				atOffset = data.at[ 0 ] === "left" ?
+					data.targetWidth :
+					data.at[ 0 ] === "right" ?
+						-data.targetWidth :
+						0,
+				offset = -2 * data.offset[ 0 ],
+				newOverRight,
+				newOverLeft;
+
+			if ( overLeft < 0 ) {
+				newOverRight = position.left + myOffset + atOffset + offset + data.collisionWidth -
+					outerWidth - withinOffset;
+				if ( newOverRight < 0 || newOverRight < abs( overLeft ) ) {
+					position.left += myOffset + atOffset + offset;
+				}
+			} else if ( overRight > 0 ) {
+				newOverLeft = position.left - data.collisionPosition.marginLeft + myOffset +
+					atOffset + offset - offsetLeft;
+				if ( newOverLeft > 0 || abs( newOverLeft ) < overRight ) {
+					position.left += myOffset + atOffset + offset;
+				}
+			}
+		},
+		top: function( position, data ) {
+			var within = data.within,
+				withinOffset = within.offset.top + within.scrollTop,
+				outerHeight = within.height,
+				offsetTop = within.isWindow ? within.scrollTop : within.offset.top,
+				collisionPosTop = position.top - data.collisionPosition.marginTop,
+				overTop = collisionPosTop - offsetTop,
+				overBottom = collisionPosTop + data.collisionHeight - outerHeight - offsetTop,
+				top = data.my[ 1 ] === "top",
+				myOffset = top ?
+					-data.elemHeight :
+					data.my[ 1 ] === "bottom" ?
+						data.elemHeight :
+						0,
+				atOffset = data.at[ 1 ] === "top" ?
+					data.targetHeight :
+					data.at[ 1 ] === "bottom" ?
+						-data.targetHeight :
+						0,
+				offset = -2 * data.offset[ 1 ],
+				newOverTop,
+				newOverBottom;
+			if ( overTop < 0 ) {
+				newOverBottom = position.top + myOffset + atOffset + offset + data.collisionHeight -
+					outerHeight - withinOffset;
+				if ( newOverBottom < 0 || newOverBottom < abs( overTop ) ) {
+					position.top += myOffset + atOffset + offset;
+				}
+			} else if ( overBottom > 0 ) {
+				newOverTop = position.top - data.collisionPosition.marginTop + myOffset + atOffset +
+					offset - offsetTop;
+				if ( newOverTop > 0 || abs( newOverTop ) < overBottom ) {
+					position.top += myOffset + atOffset + offset;
+				}
+			}
+		}
+	},
+	flipfit: {
+		left: function() {
+			$.ui.position.flip.left.apply( this, arguments );
+			$.ui.position.fit.left.apply( this, arguments );
+		},
+		top: function() {
+			$.ui.position.flip.top.apply( this, arguments );
+			$.ui.position.fit.top.apply( this, arguments );
+		}
+	}
+};
+
+} )();
+
+return $.ui.position;
+
+} ) );
+
+},{}],12:[function(require,module,exports){
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "jquery", "./version" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+} ( function( $ ) {
+return $.ui.safeActiveElement = function( document ) {
+	var activeElement;
+
+	// Support: IE 9 only
+	// IE9 throws an "Unspecified error" accessing document.activeElement from an <iframe>
+	try {
+		activeElement = document.activeElement;
+	} catch ( error ) {
+		activeElement = document.body;
+	}
+
+	// Support: IE 9 - 11 only
+	// IE may return null instead of an element
+	// Interestingly, this only seems to occur when NOT in an iframe
+	if ( !activeElement ) {
+		activeElement = document.body;
+	}
+
+	// Support: IE 11 only
+	// IE11 returns a seemingly empty object in some cases when accessing
+	// document.activeElement from an <iframe>
+	if ( !activeElement.nodeName ) {
+		activeElement = document.body;
+	}
+
+	return activeElement;
+};
+
+} ) );
+
+},{}],13:[function(require,module,exports){
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "jquery", "./version" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+} ( function( $ ) {
+return $.ui.safeBlur = function( element ) {
+
+	// Support: IE9 - 10 only
+	// If the <body> is blurred, IE will switch windows, see #9420
+	if ( element && element.nodeName.toLowerCase() !== "body" ) {
+		$( element ).trigger( "blur" );
+	}
+};
+
+} ) );
+
+},{}],14:[function(require,module,exports){
 /*!
  * jQuery UI Scroll Parent 1.12.1
  * http://jqueryui.com
@@ -6462,7 +7254,95 @@ return $.fn.scrollParent = function( includeHidden ) {
 
 } ) );
 
-},{}],8:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
+/*!
+ * jQuery UI Tabbable 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: :tabbable Selector
+//>>group: Core
+//>>description: Selects elements which can be tabbed to.
+//>>docs: http://api.jqueryui.com/tabbable-selector/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "jquery", "./version", "./focusable" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+} ( function( $ ) {
+
+return $.extend( $.expr[ ":" ], {
+	tabbable: function( element ) {
+		var tabIndex = $.attr( element, "tabindex" ),
+			hasTabindex = tabIndex != null;
+		return ( !hasTabindex || tabIndex >= 0 ) && $.ui.focusable( element, hasTabindex );
+	}
+} );
+
+} ) );
+
+},{}],16:[function(require,module,exports){
+/*!
+ * jQuery UI Unique ID 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: uniqueId
+//>>group: Core
+//>>description: Functions to generate and remove uniqueId's
+//>>docs: http://api.jqueryui.com/uniqueId/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "jquery", "./version" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+} ( function( $ ) {
+
+return $.fn.extend( {
+	uniqueId: ( function() {
+		var uuid = 0;
+
+		return function() {
+			return this.each( function() {
+				if ( !this.id ) {
+					this.id = "ui-id-" + ( ++uuid );
+				}
+			} );
+		};
+	} )(),
+
+	removeUniqueId: function() {
+		return this.each( function() {
+			if ( /^ui-id-\d+$/.test( this.id ) ) {
+				$( this ).removeAttr( "id" );
+			}
+		} );
+	}
+} );
+
+} ) );
+
+},{}],17:[function(require,module,exports){
 ( function( factory ) {
 	if ( typeof define === "function" && define.amd ) {
 
@@ -6481,7 +7361,7 @@ return $.ui.version = "1.12.1";
 
 } ) );
 
-},{}],9:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /*!
  * jQuery UI Widget 1.12.1
  * http://jqueryui.com
@@ -7216,7 +8096,395 @@ return $.widget;
 
 } ) );
 
-},{}],10:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
+/*!
+ * jQuery UI Button 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Button
+//>>group: Widgets
+//>>description: Enhances a form with themeable buttons.
+//>>docs: http://api.jqueryui.com/button/
+//>>demos: http://jqueryui.com/button/
+//>>css.structure: ../../themes/base/core.css
+//>>css.structure: ../../themes/base/button.css
+//>>css.theme: ../../themes/base/theme.css
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+
+			// These are only for backcompat
+			// TODO: Remove after 1.12
+			"./controlgroup",
+			"./checkboxradio",
+
+			"../keycode",
+			"../widget"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+$.widget( "ui.button", {
+	version: "1.12.1",
+	defaultElement: "<button>",
+	options: {
+		classes: {
+			"ui-button": "ui-corner-all"
+		},
+		disabled: null,
+		icon: null,
+		iconPosition: "beginning",
+		label: null,
+		showLabel: true
+	},
+
+	_getCreateOptions: function() {
+		var disabled,
+
+			// This is to support cases like in jQuery Mobile where the base widget does have
+			// an implementation of _getCreateOptions
+			options = this._super() || {};
+
+		this.isInput = this.element.is( "input" );
+
+		disabled = this.element[ 0 ].disabled;
+		if ( disabled != null ) {
+			options.disabled = disabled;
+		}
+
+		this.originalLabel = this.isInput ? this.element.val() : this.element.html();
+		if ( this.originalLabel ) {
+			options.label = this.originalLabel;
+		}
+
+		return options;
+	},
+
+	_create: function() {
+		if ( !this.option.showLabel & !this.options.icon ) {
+			this.options.showLabel = true;
+		}
+
+		// We have to check the option again here even though we did in _getCreateOptions,
+		// because null may have been passed on init which would override what was set in
+		// _getCreateOptions
+		if ( this.options.disabled == null ) {
+			this.options.disabled = this.element[ 0 ].disabled || false;
+		}
+
+		this.hasTitle = !!this.element.attr( "title" );
+
+		// Check to see if the label needs to be set or if its already correct
+		if ( this.options.label && this.options.label !== this.originalLabel ) {
+			if ( this.isInput ) {
+				this.element.val( this.options.label );
+			} else {
+				this.element.html( this.options.label );
+			}
+		}
+		this._addClass( "ui-button", "ui-widget" );
+		this._setOption( "disabled", this.options.disabled );
+		this._enhance();
+
+		if ( this.element.is( "a" ) ) {
+			this._on( {
+				"keyup": function( event ) {
+					if ( event.keyCode === $.ui.keyCode.SPACE ) {
+						event.preventDefault();
+
+						// Support: PhantomJS <= 1.9, IE 8 Only
+						// If a native click is available use it so we actually cause navigation
+						// otherwise just trigger a click event
+						if ( this.element[ 0 ].click ) {
+							this.element[ 0 ].click();
+						} else {
+							this.element.trigger( "click" );
+						}
+					}
+				}
+			} );
+		}
+	},
+
+	_enhance: function() {
+		if ( !this.element.is( "button" ) ) {
+			this.element.attr( "role", "button" );
+		}
+
+		if ( this.options.icon ) {
+			this._updateIcon( "icon", this.options.icon );
+			this._updateTooltip();
+		}
+	},
+
+	_updateTooltip: function() {
+		this.title = this.element.attr( "title" );
+
+		if ( !this.options.showLabel && !this.title ) {
+			this.element.attr( "title", this.options.label );
+		}
+	},
+
+	_updateIcon: function( option, value ) {
+		var icon = option !== "iconPosition",
+			position = icon ? this.options.iconPosition : value,
+			displayBlock = position === "top" || position === "bottom";
+
+		// Create icon
+		if ( !this.icon ) {
+			this.icon = $( "<span>" );
+
+			this._addClass( this.icon, "ui-button-icon", "ui-icon" );
+
+			if ( !this.options.showLabel ) {
+				this._addClass( "ui-button-icon-only" );
+			}
+		} else if ( icon ) {
+
+			// If we are updating the icon remove the old icon class
+			this._removeClass( this.icon, null, this.options.icon );
+		}
+
+		// If we are updating the icon add the new icon class
+		if ( icon ) {
+			this._addClass( this.icon, null, value );
+		}
+
+		this._attachIcon( position );
+
+		// If the icon is on top or bottom we need to add the ui-widget-icon-block class and remove
+		// the iconSpace if there is one.
+		if ( displayBlock ) {
+			this._addClass( this.icon, null, "ui-widget-icon-block" );
+			if ( this.iconSpace ) {
+				this.iconSpace.remove();
+			}
+		} else {
+
+			// Position is beginning or end so remove the ui-widget-icon-block class and add the
+			// space if it does not exist
+			if ( !this.iconSpace ) {
+				this.iconSpace = $( "<span> </span>" );
+				this._addClass( this.iconSpace, "ui-button-icon-space" );
+			}
+			this._removeClass( this.icon, null, "ui-wiget-icon-block" );
+			this._attachIconSpace( position );
+		}
+	},
+
+	_destroy: function() {
+		this.element.removeAttr( "role" );
+
+		if ( this.icon ) {
+			this.icon.remove();
+		}
+		if ( this.iconSpace ) {
+			this.iconSpace.remove();
+		}
+		if ( !this.hasTitle ) {
+			this.element.removeAttr( "title" );
+		}
+	},
+
+	_attachIconSpace: function( iconPosition ) {
+		this.icon[ /^(?:end|bottom)/.test( iconPosition ) ? "before" : "after" ]( this.iconSpace );
+	},
+
+	_attachIcon: function( iconPosition ) {
+		this.element[ /^(?:end|bottom)/.test( iconPosition ) ? "append" : "prepend" ]( this.icon );
+	},
+
+	_setOptions: function( options ) {
+		var newShowLabel = options.showLabel === undefined ?
+				this.options.showLabel :
+				options.showLabel,
+			newIcon = options.icon === undefined ? this.options.icon : options.icon;
+
+		if ( !newShowLabel && !newIcon ) {
+			options.showLabel = true;
+		}
+		this._super( options );
+	},
+
+	_setOption: function( key, value ) {
+		if ( key === "icon" ) {
+			if ( value ) {
+				this._updateIcon( key, value );
+			} else if ( this.icon ) {
+				this.icon.remove();
+				if ( this.iconSpace ) {
+					this.iconSpace.remove();
+				}
+			}
+		}
+
+		if ( key === "iconPosition" ) {
+			this._updateIcon( key, value );
+		}
+
+		// Make sure we can't end up with a button that has neither text nor icon
+		if ( key === "showLabel" ) {
+				this._toggleClass( "ui-button-icon-only", null, !value );
+				this._updateTooltip();
+		}
+
+		if ( key === "label" ) {
+			if ( this.isInput ) {
+				this.element.val( value );
+			} else {
+
+				// If there is an icon, append it, else nothing then append the value
+				// this avoids removal of the icon when setting label text
+				this.element.html( value );
+				if ( this.icon ) {
+					this._attachIcon( this.options.iconPosition );
+					this._attachIconSpace( this.options.iconPosition );
+				}
+			}
+		}
+
+		this._super( key, value );
+
+		if ( key === "disabled" ) {
+			this._toggleClass( null, "ui-state-disabled", value );
+			this.element[ 0 ].disabled = value;
+			if ( value ) {
+				this.element.blur();
+			}
+		}
+	},
+
+	refresh: function() {
+
+		// Make sure to only check disabled if its an element that supports this otherwise
+		// check for the disabled class to determine state
+		var isDisabled = this.element.is( "input, button" ) ?
+			this.element[ 0 ].disabled : this.element.hasClass( "ui-button-disabled" );
+
+		if ( isDisabled !== this.options.disabled ) {
+			this._setOptions( { disabled: isDisabled } );
+		}
+
+		this._updateTooltip();
+	}
+} );
+
+// DEPRECATED
+if ( $.uiBackCompat !== false ) {
+
+	// Text and Icons options
+	$.widget( "ui.button", $.ui.button, {
+		options: {
+			text: true,
+			icons: {
+				primary: null,
+				secondary: null
+			}
+		},
+
+		_create: function() {
+			if ( this.options.showLabel && !this.options.text ) {
+				this.options.showLabel = this.options.text;
+			}
+			if ( !this.options.showLabel && this.options.text ) {
+				this.options.text = this.options.showLabel;
+			}
+			if ( !this.options.icon && ( this.options.icons.primary ||
+					this.options.icons.secondary ) ) {
+				if ( this.options.icons.primary ) {
+					this.options.icon = this.options.icons.primary;
+				} else {
+					this.options.icon = this.options.icons.secondary;
+					this.options.iconPosition = "end";
+				}
+			} else if ( this.options.icon ) {
+				this.options.icons.primary = this.options.icon;
+			}
+			this._super();
+		},
+
+		_setOption: function( key, value ) {
+			if ( key === "text" ) {
+				this._super( "showLabel", value );
+				return;
+			}
+			if ( key === "showLabel" ) {
+				this.options.text = value;
+			}
+			if ( key === "icon" ) {
+				this.options.icons.primary = value;
+			}
+			if ( key === "icons" ) {
+				if ( value.primary ) {
+					this._super( "icon", value.primary );
+					this._super( "iconPosition", "beginning" );
+				} else if ( value.secondary ) {
+					this._super( "icon", value.secondary );
+					this._super( "iconPosition", "end" );
+				}
+			}
+			this._superApply( arguments );
+		}
+	} );
+
+	$.fn.button = ( function( orig ) {
+		return function() {
+			if ( !this.length || ( this.length && this[ 0 ].tagName !== "INPUT" ) ||
+					( this.length && this[ 0 ].tagName === "INPUT" && (
+						this.attr( "type" ) !== "checkbox" && this.attr( "type" ) !== "radio"
+					) ) ) {
+				return orig.apply( this, arguments );
+			}
+			if ( !$.ui.checkboxradio ) {
+				$.error( "Checkboxradio widget missing" );
+			}
+			if ( arguments.length === 0 ) {
+				return this.checkboxradio( {
+					"icon": false
+				} );
+			}
+			return this.checkboxradio.apply( this, arguments );
+		};
+	} )( $.fn.button );
+
+	$.fn.buttonset = function() {
+		if ( !$.ui.controlgroup ) {
+			$.error( "Controlgroup widget missing" );
+		}
+		if ( arguments[ 0 ] === "option" && arguments[ 1 ] === "items" && arguments[ 2 ] ) {
+			return this.controlgroup.apply( this,
+				[ arguments[ 0 ], "items.button", arguments[ 2 ] ] );
+		}
+		if ( arguments[ 0 ] === "option" && arguments[ 1 ] === "items" ) {
+			return this.controlgroup.apply( this, [ arguments[ 0 ], "items.button" ] );
+		}
+		if ( typeof arguments[ 0 ] === "object" && arguments[ 0 ].items ) {
+			arguments[ 0 ].items = {
+				button: arguments[ 0 ].items
+			};
+		}
+		return this.controlgroup.apply( this, arguments );
+	};
+}
+
+return $.ui.button;
+
+} ) );
+
+},{}],20:[function(require,module,exports){
 // jscs:disable maximumLineLength
 /* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
 /*!
@@ -9338,7 +10606,2201 @@ return $.datepicker;
 
 } ) );
 
-},{}],11:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
+/*!
+ * jQuery UI Dialog 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Dialog
+//>>group: Widgets
+//>>description: Displays customizable dialog windows.
+//>>docs: http://api.jqueryui.com/dialog/
+//>>demos: http://jqueryui.com/dialog/
+//>>css.structure: ../../themes/base/core.css
+//>>css.structure: ../../themes/base/dialog.css
+//>>css.theme: ../../themes/base/theme.css
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"./button",
+			"./draggable",
+			"./mouse",
+			"./resizable",
+			"../focusable",
+			"../keycode",
+			"../position",
+			"../safe-active-element",
+			"../safe-blur",
+			"../tabbable",
+			"../unique-id",
+			"../version",
+			"../widget"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+$.widget( "ui.dialog", {
+	version: "1.12.1",
+	options: {
+		appendTo: "body",
+		autoOpen: true,
+		buttons: [],
+		classes: {
+			"ui-dialog": "ui-corner-all",
+			"ui-dialog-titlebar": "ui-corner-all"
+		},
+		closeOnEscape: true,
+		closeText: "Close",
+		draggable: true,
+		hide: null,
+		height: "auto",
+		maxHeight: null,
+		maxWidth: null,
+		minHeight: 150,
+		minWidth: 150,
+		modal: false,
+		position: {
+			my: "center",
+			at: "center",
+			of: window,
+			collision: "fit",
+
+			// Ensure the titlebar is always visible
+			using: function( pos ) {
+				var topOffset = $( this ).css( pos ).offset().top;
+				if ( topOffset < 0 ) {
+					$( this ).css( "top", pos.top - topOffset );
+				}
+			}
+		},
+		resizable: true,
+		show: null,
+		title: null,
+		width: 300,
+
+		// Callbacks
+		beforeClose: null,
+		close: null,
+		drag: null,
+		dragStart: null,
+		dragStop: null,
+		focus: null,
+		open: null,
+		resize: null,
+		resizeStart: null,
+		resizeStop: null
+	},
+
+	sizeRelatedOptions: {
+		buttons: true,
+		height: true,
+		maxHeight: true,
+		maxWidth: true,
+		minHeight: true,
+		minWidth: true,
+		width: true
+	},
+
+	resizableRelatedOptions: {
+		maxHeight: true,
+		maxWidth: true,
+		minHeight: true,
+		minWidth: true
+	},
+
+	_create: function() {
+		this.originalCss = {
+			display: this.element[ 0 ].style.display,
+			width: this.element[ 0 ].style.width,
+			minHeight: this.element[ 0 ].style.minHeight,
+			maxHeight: this.element[ 0 ].style.maxHeight,
+			height: this.element[ 0 ].style.height
+		};
+		this.originalPosition = {
+			parent: this.element.parent(),
+			index: this.element.parent().children().index( this.element )
+		};
+		this.originalTitle = this.element.attr( "title" );
+		if ( this.options.title == null && this.originalTitle != null ) {
+			this.options.title = this.originalTitle;
+		}
+
+		// Dialogs can't be disabled
+		if ( this.options.disabled ) {
+			this.options.disabled = false;
+		}
+
+		this._createWrapper();
+
+		this.element
+			.show()
+			.removeAttr( "title" )
+			.appendTo( this.uiDialog );
+
+		this._addClass( "ui-dialog-content", "ui-widget-content" );
+
+		this._createTitlebar();
+		this._createButtonPane();
+
+		if ( this.options.draggable && $.fn.draggable ) {
+			this._makeDraggable();
+		}
+		if ( this.options.resizable && $.fn.resizable ) {
+			this._makeResizable();
+		}
+
+		this._isOpen = false;
+
+		this._trackFocus();
+	},
+
+	_init: function() {
+		if ( this.options.autoOpen ) {
+			this.open();
+		}
+	},
+
+	_appendTo: function() {
+		var element = this.options.appendTo;
+		if ( element && ( element.jquery || element.nodeType ) ) {
+			return $( element );
+		}
+		return this.document.find( element || "body" ).eq( 0 );
+	},
+
+	_destroy: function() {
+		var next,
+			originalPosition = this.originalPosition;
+
+		this._untrackInstance();
+		this._destroyOverlay();
+
+		this.element
+			.removeUniqueId()
+			.css( this.originalCss )
+
+			// Without detaching first, the following becomes really slow
+			.detach();
+
+		this.uiDialog.remove();
+
+		if ( this.originalTitle ) {
+			this.element.attr( "title", this.originalTitle );
+		}
+
+		next = originalPosition.parent.children().eq( originalPosition.index );
+
+		// Don't try to place the dialog next to itself (#8613)
+		if ( next.length && next[ 0 ] !== this.element[ 0 ] ) {
+			next.before( this.element );
+		} else {
+			originalPosition.parent.append( this.element );
+		}
+	},
+
+	widget: function() {
+		return this.uiDialog;
+	},
+
+	disable: $.noop,
+	enable: $.noop,
+
+	close: function( event ) {
+		var that = this;
+
+		if ( !this._isOpen || this._trigger( "beforeClose", event ) === false ) {
+			return;
+		}
+
+		this._isOpen = false;
+		this._focusedElement = null;
+		this._destroyOverlay();
+		this._untrackInstance();
+
+		if ( !this.opener.filter( ":focusable" ).trigger( "focus" ).length ) {
+
+			// Hiding a focused element doesn't trigger blur in WebKit
+			// so in case we have nothing to focus on, explicitly blur the active element
+			// https://bugs.webkit.org/show_bug.cgi?id=47182
+			$.ui.safeBlur( $.ui.safeActiveElement( this.document[ 0 ] ) );
+		}
+
+		this._hide( this.uiDialog, this.options.hide, function() {
+			that._trigger( "close", event );
+		} );
+	},
+
+	isOpen: function() {
+		return this._isOpen;
+	},
+
+	moveToTop: function() {
+		this._moveToTop();
+	},
+
+	_moveToTop: function( event, silent ) {
+		var moved = false,
+			zIndices = this.uiDialog.siblings( ".ui-front:visible" ).map( function() {
+				return +$( this ).css( "z-index" );
+			} ).get(),
+			zIndexMax = Math.max.apply( null, zIndices );
+
+		if ( zIndexMax >= +this.uiDialog.css( "z-index" ) ) {
+			this.uiDialog.css( "z-index", zIndexMax + 1 );
+			moved = true;
+		}
+
+		if ( moved && !silent ) {
+			this._trigger( "focus", event );
+		}
+		return moved;
+	},
+
+	open: function() {
+		var that = this;
+		if ( this._isOpen ) {
+			if ( this._moveToTop() ) {
+				this._focusTabbable();
+			}
+			return;
+		}
+
+		this._isOpen = true;
+		this.opener = $( $.ui.safeActiveElement( this.document[ 0 ] ) );
+
+		this._size();
+		this._position();
+		this._createOverlay();
+		this._moveToTop( null, true );
+
+		// Ensure the overlay is moved to the top with the dialog, but only when
+		// opening. The overlay shouldn't move after the dialog is open so that
+		// modeless dialogs opened after the modal dialog stack properly.
+		if ( this.overlay ) {
+			this.overlay.css( "z-index", this.uiDialog.css( "z-index" ) - 1 );
+		}
+
+		this._show( this.uiDialog, this.options.show, function() {
+			that._focusTabbable();
+			that._trigger( "focus" );
+		} );
+
+		// Track the dialog immediately upon openening in case a focus event
+		// somehow occurs outside of the dialog before an element inside the
+		// dialog is focused (#10152)
+		this._makeFocusTarget();
+
+		this._trigger( "open" );
+	},
+
+	_focusTabbable: function() {
+
+		// Set focus to the first match:
+		// 1. An element that was focused previously
+		// 2. First element inside the dialog matching [autofocus]
+		// 3. Tabbable element inside the content element
+		// 4. Tabbable element inside the buttonpane
+		// 5. The close button
+		// 6. The dialog itself
+		var hasFocus = this._focusedElement;
+		if ( !hasFocus ) {
+			hasFocus = this.element.find( "[autofocus]" );
+		}
+		if ( !hasFocus.length ) {
+			hasFocus = this.element.find( ":tabbable" );
+		}
+		if ( !hasFocus.length ) {
+			hasFocus = this.uiDialogButtonPane.find( ":tabbable" );
+		}
+		if ( !hasFocus.length ) {
+			hasFocus = this.uiDialogTitlebarClose.filter( ":tabbable" );
+		}
+		if ( !hasFocus.length ) {
+			hasFocus = this.uiDialog;
+		}
+		hasFocus.eq( 0 ).trigger( "focus" );
+	},
+
+	_keepFocus: function( event ) {
+		function checkFocus() {
+			var activeElement = $.ui.safeActiveElement( this.document[ 0 ] ),
+				isActive = this.uiDialog[ 0 ] === activeElement ||
+					$.contains( this.uiDialog[ 0 ], activeElement );
+			if ( !isActive ) {
+				this._focusTabbable();
+			}
+		}
+		event.preventDefault();
+		checkFocus.call( this );
+
+		// support: IE
+		// IE <= 8 doesn't prevent moving focus even with event.preventDefault()
+		// so we check again later
+		this._delay( checkFocus );
+	},
+
+	_createWrapper: function() {
+		this.uiDialog = $( "<div>" )
+			.hide()
+			.attr( {
+
+				// Setting tabIndex makes the div focusable
+				tabIndex: -1,
+				role: "dialog"
+			} )
+			.appendTo( this._appendTo() );
+
+		this._addClass( this.uiDialog, "ui-dialog", "ui-widget ui-widget-content ui-front" );
+		this._on( this.uiDialog, {
+			keydown: function( event ) {
+				if ( this.options.closeOnEscape && !event.isDefaultPrevented() && event.keyCode &&
+						event.keyCode === $.ui.keyCode.ESCAPE ) {
+					event.preventDefault();
+					this.close( event );
+					return;
+				}
+
+				// Prevent tabbing out of dialogs
+				if ( event.keyCode !== $.ui.keyCode.TAB || event.isDefaultPrevented() ) {
+					return;
+				}
+				var tabbables = this.uiDialog.find( ":tabbable" ),
+					first = tabbables.filter( ":first" ),
+					last = tabbables.filter( ":last" );
+
+				if ( ( event.target === last[ 0 ] || event.target === this.uiDialog[ 0 ] ) &&
+						!event.shiftKey ) {
+					this._delay( function() {
+						first.trigger( "focus" );
+					} );
+					event.preventDefault();
+				} else if ( ( event.target === first[ 0 ] ||
+						event.target === this.uiDialog[ 0 ] ) && event.shiftKey ) {
+					this._delay( function() {
+						last.trigger( "focus" );
+					} );
+					event.preventDefault();
+				}
+			},
+			mousedown: function( event ) {
+				if ( this._moveToTop( event ) ) {
+					this._focusTabbable();
+				}
+			}
+		} );
+
+		// We assume that any existing aria-describedby attribute means
+		// that the dialog content is marked up properly
+		// otherwise we brute force the content as the description
+		if ( !this.element.find( "[aria-describedby]" ).length ) {
+			this.uiDialog.attr( {
+				"aria-describedby": this.element.uniqueId().attr( "id" )
+			} );
+		}
+	},
+
+	_createTitlebar: function() {
+		var uiDialogTitle;
+
+		this.uiDialogTitlebar = $( "<div>" );
+		this._addClass( this.uiDialogTitlebar,
+			"ui-dialog-titlebar", "ui-widget-header ui-helper-clearfix" );
+		this._on( this.uiDialogTitlebar, {
+			mousedown: function( event ) {
+
+				// Don't prevent click on close button (#8838)
+				// Focusing a dialog that is partially scrolled out of view
+				// causes the browser to scroll it into view, preventing the click event
+				if ( !$( event.target ).closest( ".ui-dialog-titlebar-close" ) ) {
+
+					// Dialog isn't getting focus when dragging (#8063)
+					this.uiDialog.trigger( "focus" );
+				}
+			}
+		} );
+
+		// Support: IE
+		// Use type="button" to prevent enter keypresses in textboxes from closing the
+		// dialog in IE (#9312)
+		this.uiDialogTitlebarClose = $( "<button type='button'></button>" )
+			.button( {
+				label: $( "<a>" ).text( this.options.closeText ).html(),
+				icon: "ui-icon-closethick",
+				showLabel: false
+			} )
+			.appendTo( this.uiDialogTitlebar );
+
+		this._addClass( this.uiDialogTitlebarClose, "ui-dialog-titlebar-close" );
+		this._on( this.uiDialogTitlebarClose, {
+			click: function( event ) {
+				event.preventDefault();
+				this.close( event );
+			}
+		} );
+
+		uiDialogTitle = $( "<span>" ).uniqueId().prependTo( this.uiDialogTitlebar );
+		this._addClass( uiDialogTitle, "ui-dialog-title" );
+		this._title( uiDialogTitle );
+
+		this.uiDialogTitlebar.prependTo( this.uiDialog );
+
+		this.uiDialog.attr( {
+			"aria-labelledby": uiDialogTitle.attr( "id" )
+		} );
+	},
+
+	_title: function( title ) {
+		if ( this.options.title ) {
+			title.text( this.options.title );
+		} else {
+			title.html( "&#160;" );
+		}
+	},
+
+	_createButtonPane: function() {
+		this.uiDialogButtonPane = $( "<div>" );
+		this._addClass( this.uiDialogButtonPane, "ui-dialog-buttonpane",
+			"ui-widget-content ui-helper-clearfix" );
+
+		this.uiButtonSet = $( "<div>" )
+			.appendTo( this.uiDialogButtonPane );
+		this._addClass( this.uiButtonSet, "ui-dialog-buttonset" );
+
+		this._createButtons();
+	},
+
+	_createButtons: function() {
+		var that = this,
+			buttons = this.options.buttons;
+
+		// If we already have a button pane, remove it
+		this.uiDialogButtonPane.remove();
+		this.uiButtonSet.empty();
+
+		if ( $.isEmptyObject( buttons ) || ( $.isArray( buttons ) && !buttons.length ) ) {
+			this._removeClass( this.uiDialog, "ui-dialog-buttons" );
+			return;
+		}
+
+		$.each( buttons, function( name, props ) {
+			var click, buttonOptions;
+			props = $.isFunction( props ) ?
+				{ click: props, text: name } :
+				props;
+
+			// Default to a non-submitting button
+			props = $.extend( { type: "button" }, props );
+
+			// Change the context for the click callback to be the main element
+			click = props.click;
+			buttonOptions = {
+				icon: props.icon,
+				iconPosition: props.iconPosition,
+				showLabel: props.showLabel,
+
+				// Deprecated options
+				icons: props.icons,
+				text: props.text
+			};
+
+			delete props.click;
+			delete props.icon;
+			delete props.iconPosition;
+			delete props.showLabel;
+
+			// Deprecated options
+			delete props.icons;
+			if ( typeof props.text === "boolean" ) {
+				delete props.text;
+			}
+
+			$( "<button></button>", props )
+				.button( buttonOptions )
+				.appendTo( that.uiButtonSet )
+				.on( "click", function() {
+					click.apply( that.element[ 0 ], arguments );
+				} );
+		} );
+		this._addClass( this.uiDialog, "ui-dialog-buttons" );
+		this.uiDialogButtonPane.appendTo( this.uiDialog );
+	},
+
+	_makeDraggable: function() {
+		var that = this,
+			options = this.options;
+
+		function filteredUi( ui ) {
+			return {
+				position: ui.position,
+				offset: ui.offset
+			};
+		}
+
+		this.uiDialog.draggable( {
+			cancel: ".ui-dialog-content, .ui-dialog-titlebar-close",
+			handle: ".ui-dialog-titlebar",
+			containment: "document",
+			start: function( event, ui ) {
+				that._addClass( $( this ), "ui-dialog-dragging" );
+				that._blockFrames();
+				that._trigger( "dragStart", event, filteredUi( ui ) );
+			},
+			drag: function( event, ui ) {
+				that._trigger( "drag", event, filteredUi( ui ) );
+			},
+			stop: function( event, ui ) {
+				var left = ui.offset.left - that.document.scrollLeft(),
+					top = ui.offset.top - that.document.scrollTop();
+
+				options.position = {
+					my: "left top",
+					at: "left" + ( left >= 0 ? "+" : "" ) + left + " " +
+						"top" + ( top >= 0 ? "+" : "" ) + top,
+					of: that.window
+				};
+				that._removeClass( $( this ), "ui-dialog-dragging" );
+				that._unblockFrames();
+				that._trigger( "dragStop", event, filteredUi( ui ) );
+			}
+		} );
+	},
+
+	_makeResizable: function() {
+		var that = this,
+			options = this.options,
+			handles = options.resizable,
+
+			// .ui-resizable has position: relative defined in the stylesheet
+			// but dialogs have to use absolute or fixed positioning
+			position = this.uiDialog.css( "position" ),
+			resizeHandles = typeof handles === "string" ?
+				handles :
+				"n,e,s,w,se,sw,ne,nw";
+
+		function filteredUi( ui ) {
+			return {
+				originalPosition: ui.originalPosition,
+				originalSize: ui.originalSize,
+				position: ui.position,
+				size: ui.size
+			};
+		}
+
+		this.uiDialog.resizable( {
+			cancel: ".ui-dialog-content",
+			containment: "document",
+			alsoResize: this.element,
+			maxWidth: options.maxWidth,
+			maxHeight: options.maxHeight,
+			minWidth: options.minWidth,
+			minHeight: this._minHeight(),
+			handles: resizeHandles,
+			start: function( event, ui ) {
+				that._addClass( $( this ), "ui-dialog-resizing" );
+				that._blockFrames();
+				that._trigger( "resizeStart", event, filteredUi( ui ) );
+			},
+			resize: function( event, ui ) {
+				that._trigger( "resize", event, filteredUi( ui ) );
+			},
+			stop: function( event, ui ) {
+				var offset = that.uiDialog.offset(),
+					left = offset.left - that.document.scrollLeft(),
+					top = offset.top - that.document.scrollTop();
+
+				options.height = that.uiDialog.height();
+				options.width = that.uiDialog.width();
+				options.position = {
+					my: "left top",
+					at: "left" + ( left >= 0 ? "+" : "" ) + left + " " +
+						"top" + ( top >= 0 ? "+" : "" ) + top,
+					of: that.window
+				};
+				that._removeClass( $( this ), "ui-dialog-resizing" );
+				that._unblockFrames();
+				that._trigger( "resizeStop", event, filteredUi( ui ) );
+			}
+		} )
+			.css( "position", position );
+	},
+
+	_trackFocus: function() {
+		this._on( this.widget(), {
+			focusin: function( event ) {
+				this._makeFocusTarget();
+				this._focusedElement = $( event.target );
+			}
+		} );
+	},
+
+	_makeFocusTarget: function() {
+		this._untrackInstance();
+		this._trackingInstances().unshift( this );
+	},
+
+	_untrackInstance: function() {
+		var instances = this._trackingInstances(),
+			exists = $.inArray( this, instances );
+		if ( exists !== -1 ) {
+			instances.splice( exists, 1 );
+		}
+	},
+
+	_trackingInstances: function() {
+		var instances = this.document.data( "ui-dialog-instances" );
+		if ( !instances ) {
+			instances = [];
+			this.document.data( "ui-dialog-instances", instances );
+		}
+		return instances;
+	},
+
+	_minHeight: function() {
+		var options = this.options;
+
+		return options.height === "auto" ?
+			options.minHeight :
+			Math.min( options.minHeight, options.height );
+	},
+
+	_position: function() {
+
+		// Need to show the dialog to get the actual offset in the position plugin
+		var isVisible = this.uiDialog.is( ":visible" );
+		if ( !isVisible ) {
+			this.uiDialog.show();
+		}
+		this.uiDialog.position( this.options.position );
+		if ( !isVisible ) {
+			this.uiDialog.hide();
+		}
+	},
+
+	_setOptions: function( options ) {
+		var that = this,
+			resize = false,
+			resizableOptions = {};
+
+		$.each( options, function( key, value ) {
+			that._setOption( key, value );
+
+			if ( key in that.sizeRelatedOptions ) {
+				resize = true;
+			}
+			if ( key in that.resizableRelatedOptions ) {
+				resizableOptions[ key ] = value;
+			}
+		} );
+
+		if ( resize ) {
+			this._size();
+			this._position();
+		}
+		if ( this.uiDialog.is( ":data(ui-resizable)" ) ) {
+			this.uiDialog.resizable( "option", resizableOptions );
+		}
+	},
+
+	_setOption: function( key, value ) {
+		var isDraggable, isResizable,
+			uiDialog = this.uiDialog;
+
+		if ( key === "disabled" ) {
+			return;
+		}
+
+		this._super( key, value );
+
+		if ( key === "appendTo" ) {
+			this.uiDialog.appendTo( this._appendTo() );
+		}
+
+		if ( key === "buttons" ) {
+			this._createButtons();
+		}
+
+		if ( key === "closeText" ) {
+			this.uiDialogTitlebarClose.button( {
+
+				// Ensure that we always pass a string
+				label: $( "<a>" ).text( "" + this.options.closeText ).html()
+			} );
+		}
+
+		if ( key === "draggable" ) {
+			isDraggable = uiDialog.is( ":data(ui-draggable)" );
+			if ( isDraggable && !value ) {
+				uiDialog.draggable( "destroy" );
+			}
+
+			if ( !isDraggable && value ) {
+				this._makeDraggable();
+			}
+		}
+
+		if ( key === "position" ) {
+			this._position();
+		}
+
+		if ( key === "resizable" ) {
+
+			// currently resizable, becoming non-resizable
+			isResizable = uiDialog.is( ":data(ui-resizable)" );
+			if ( isResizable && !value ) {
+				uiDialog.resizable( "destroy" );
+			}
+
+			// Currently resizable, changing handles
+			if ( isResizable && typeof value === "string" ) {
+				uiDialog.resizable( "option", "handles", value );
+			}
+
+			// Currently non-resizable, becoming resizable
+			if ( !isResizable && value !== false ) {
+				this._makeResizable();
+			}
+		}
+
+		if ( key === "title" ) {
+			this._title( this.uiDialogTitlebar.find( ".ui-dialog-title" ) );
+		}
+	},
+
+	_size: function() {
+
+		// If the user has resized the dialog, the .ui-dialog and .ui-dialog-content
+		// divs will both have width and height set, so we need to reset them
+		var nonContentHeight, minContentHeight, maxContentHeight,
+			options = this.options;
+
+		// Reset content sizing
+		this.element.show().css( {
+			width: "auto",
+			minHeight: 0,
+			maxHeight: "none",
+			height: 0
+		} );
+
+		if ( options.minWidth > options.width ) {
+			options.width = options.minWidth;
+		}
+
+		// Reset wrapper sizing
+		// determine the height of all the non-content elements
+		nonContentHeight = this.uiDialog.css( {
+			height: "auto",
+			width: options.width
+		} )
+			.outerHeight();
+		minContentHeight = Math.max( 0, options.minHeight - nonContentHeight );
+		maxContentHeight = typeof options.maxHeight === "number" ?
+			Math.max( 0, options.maxHeight - nonContentHeight ) :
+			"none";
+
+		if ( options.height === "auto" ) {
+			this.element.css( {
+				minHeight: minContentHeight,
+				maxHeight: maxContentHeight,
+				height: "auto"
+			} );
+		} else {
+			this.element.height( Math.max( 0, options.height - nonContentHeight ) );
+		}
+
+		if ( this.uiDialog.is( ":data(ui-resizable)" ) ) {
+			this.uiDialog.resizable( "option", "minHeight", this._minHeight() );
+		}
+	},
+
+	_blockFrames: function() {
+		this.iframeBlocks = this.document.find( "iframe" ).map( function() {
+			var iframe = $( this );
+
+			return $( "<div>" )
+				.css( {
+					position: "absolute",
+					width: iframe.outerWidth(),
+					height: iframe.outerHeight()
+				} )
+				.appendTo( iframe.parent() )
+				.offset( iframe.offset() )[ 0 ];
+		} );
+	},
+
+	_unblockFrames: function() {
+		if ( this.iframeBlocks ) {
+			this.iframeBlocks.remove();
+			delete this.iframeBlocks;
+		}
+	},
+
+	_allowInteraction: function( event ) {
+		if ( $( event.target ).closest( ".ui-dialog" ).length ) {
+			return true;
+		}
+
+		// TODO: Remove hack when datepicker implements
+		// the .ui-front logic (#8989)
+		return !!$( event.target ).closest( ".ui-datepicker" ).length;
+	},
+
+	_createOverlay: function() {
+		if ( !this.options.modal ) {
+			return;
+		}
+
+		// We use a delay in case the overlay is created from an
+		// event that we're going to be cancelling (#2804)
+		var isOpening = true;
+		this._delay( function() {
+			isOpening = false;
+		} );
+
+		if ( !this.document.data( "ui-dialog-overlays" ) ) {
+
+			// Prevent use of anchors and inputs
+			// Using _on() for an event handler shared across many instances is
+			// safe because the dialogs stack and must be closed in reverse order
+			this._on( this.document, {
+				focusin: function( event ) {
+					if ( isOpening ) {
+						return;
+					}
+
+					if ( !this._allowInteraction( event ) ) {
+						event.preventDefault();
+						this._trackingInstances()[ 0 ]._focusTabbable();
+					}
+				}
+			} );
+		}
+
+		this.overlay = $( "<div>" )
+			.appendTo( this._appendTo() );
+
+		this._addClass( this.overlay, null, "ui-widget-overlay ui-front" );
+		this._on( this.overlay, {
+			mousedown: "_keepFocus"
+		} );
+		this.document.data( "ui-dialog-overlays",
+			( this.document.data( "ui-dialog-overlays" ) || 0 ) + 1 );
+	},
+
+	_destroyOverlay: function() {
+		if ( !this.options.modal ) {
+			return;
+		}
+
+		if ( this.overlay ) {
+			var overlays = this.document.data( "ui-dialog-overlays" ) - 1;
+
+			if ( !overlays ) {
+				this._off( this.document, "focusin" );
+				this.document.removeData( "ui-dialog-overlays" );
+			} else {
+				this.document.data( "ui-dialog-overlays", overlays );
+			}
+
+			this.overlay.remove();
+			this.overlay = null;
+		}
+	}
+} );
+
+// DEPRECATED
+// TODO: switch return back to widget declaration at top of file when this is removed
+if ( $.uiBackCompat !== false ) {
+
+	// Backcompat for dialogClass option
+	$.widget( "ui.dialog", $.ui.dialog, {
+		options: {
+			dialogClass: ""
+		},
+		_createWrapper: function() {
+			this._super();
+			this.uiDialog.addClass( this.options.dialogClass );
+		},
+		_setOption: function( key, value ) {
+			if ( key === "dialogClass" ) {
+				this.uiDialog
+					.removeClass( this.options.dialogClass )
+					.addClass( value );
+			}
+			this._superApply( arguments );
+		}
+	} );
+}
+
+return $.ui.dialog;
+
+} ) );
+
+},{}],22:[function(require,module,exports){
+/*!
+ * jQuery UI Draggable 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Draggable
+//>>group: Interactions
+//>>description: Enables dragging functionality for any element.
+//>>docs: http://api.jqueryui.com/draggable/
+//>>demos: http://jqueryui.com/draggable/
+//>>css.structure: ../../themes/base/draggable.css
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"./mouse",
+			"../data",
+			"../plugin",
+			"../safe-active-element",
+			"../safe-blur",
+			"../scroll-parent",
+			"../version",
+			"../widget"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+$.widget( "ui.draggable", $.ui.mouse, {
+	version: "1.12.1",
+	widgetEventPrefix: "drag",
+	options: {
+		addClasses: true,
+		appendTo: "parent",
+		axis: false,
+		connectToSortable: false,
+		containment: false,
+		cursor: "auto",
+		cursorAt: false,
+		grid: false,
+		handle: false,
+		helper: "original",
+		iframeFix: false,
+		opacity: false,
+		refreshPositions: false,
+		revert: false,
+		revertDuration: 500,
+		scope: "default",
+		scroll: true,
+		scrollSensitivity: 20,
+		scrollSpeed: 20,
+		snap: false,
+		snapMode: "both",
+		snapTolerance: 20,
+		stack: false,
+		zIndex: false,
+
+		// Callbacks
+		drag: null,
+		start: null,
+		stop: null
+	},
+	_create: function() {
+
+		if ( this.options.helper === "original" ) {
+			this._setPositionRelative();
+		}
+		if ( this.options.addClasses ) {
+			this._addClass( "ui-draggable" );
+		}
+		this._setHandleClassName();
+
+		this._mouseInit();
+	},
+
+	_setOption: function( key, value ) {
+		this._super( key, value );
+		if ( key === "handle" ) {
+			this._removeHandleClassName();
+			this._setHandleClassName();
+		}
+	},
+
+	_destroy: function() {
+		if ( ( this.helper || this.element ).is( ".ui-draggable-dragging" ) ) {
+			this.destroyOnClear = true;
+			return;
+		}
+		this._removeHandleClassName();
+		this._mouseDestroy();
+	},
+
+	_mouseCapture: function( event ) {
+		var o = this.options;
+
+		// Among others, prevent a drag on a resizable-handle
+		if ( this.helper || o.disabled ||
+				$( event.target ).closest( ".ui-resizable-handle" ).length > 0 ) {
+			return false;
+		}
+
+		//Quit if we're not on a valid handle
+		this.handle = this._getHandle( event );
+		if ( !this.handle ) {
+			return false;
+		}
+
+		this._blurActiveElement( event );
+
+		this._blockFrames( o.iframeFix === true ? "iframe" : o.iframeFix );
+
+		return true;
+
+	},
+
+	_blockFrames: function( selector ) {
+		this.iframeBlocks = this.document.find( selector ).map( function() {
+			var iframe = $( this );
+
+			return $( "<div>" )
+				.css( "position", "absolute" )
+				.appendTo( iframe.parent() )
+				.outerWidth( iframe.outerWidth() )
+				.outerHeight( iframe.outerHeight() )
+				.offset( iframe.offset() )[ 0 ];
+		} );
+	},
+
+	_unblockFrames: function() {
+		if ( this.iframeBlocks ) {
+			this.iframeBlocks.remove();
+			delete this.iframeBlocks;
+		}
+	},
+
+	_blurActiveElement: function( event ) {
+		var activeElement = $.ui.safeActiveElement( this.document[ 0 ] ),
+			target = $( event.target );
+
+		// Don't blur if the event occurred on an element that is within
+		// the currently focused element
+		// See #10527, #12472
+		if ( target.closest( activeElement ).length ) {
+			return;
+		}
+
+		// Blur any element that currently has focus, see #4261
+		$.ui.safeBlur( activeElement );
+	},
+
+	_mouseStart: function( event ) {
+
+		var o = this.options;
+
+		//Create and append the visible helper
+		this.helper = this._createHelper( event );
+
+		this._addClass( this.helper, "ui-draggable-dragging" );
+
+		//Cache the helper size
+		this._cacheHelperProportions();
+
+		//If ddmanager is used for droppables, set the global draggable
+		if ( $.ui.ddmanager ) {
+			$.ui.ddmanager.current = this;
+		}
+
+		/*
+		 * - Position generation -
+		 * This block generates everything position related - it's the core of draggables.
+		 */
+
+		//Cache the margins of the original element
+		this._cacheMargins();
+
+		//Store the helper's css position
+		this.cssPosition = this.helper.css( "position" );
+		this.scrollParent = this.helper.scrollParent( true );
+		this.offsetParent = this.helper.offsetParent();
+		this.hasFixedAncestor = this.helper.parents().filter( function() {
+				return $( this ).css( "position" ) === "fixed";
+			} ).length > 0;
+
+		//The element's absolute position on the page minus margins
+		this.positionAbs = this.element.offset();
+		this._refreshOffsets( event );
+
+		//Generate the original position
+		this.originalPosition = this.position = this._generatePosition( event, false );
+		this.originalPageX = event.pageX;
+		this.originalPageY = event.pageY;
+
+		//Adjust the mouse offset relative to the helper if "cursorAt" is supplied
+		( o.cursorAt && this._adjustOffsetFromHelper( o.cursorAt ) );
+
+		//Set a containment if given in the options
+		this._setContainment();
+
+		//Trigger event + callbacks
+		if ( this._trigger( "start", event ) === false ) {
+			this._clear();
+			return false;
+		}
+
+		//Recache the helper size
+		this._cacheHelperProportions();
+
+		//Prepare the droppable offsets
+		if ( $.ui.ddmanager && !o.dropBehaviour ) {
+			$.ui.ddmanager.prepareOffsets( this, event );
+		}
+
+		// Execute the drag once - this causes the helper not to be visible before getting its
+		// correct position
+		this._mouseDrag( event, true );
+
+		// If the ddmanager is used for droppables, inform the manager that dragging has started
+		// (see #5003)
+		if ( $.ui.ddmanager ) {
+			$.ui.ddmanager.dragStart( this, event );
+		}
+
+		return true;
+	},
+
+	_refreshOffsets: function( event ) {
+		this.offset = {
+			top: this.positionAbs.top - this.margins.top,
+			left: this.positionAbs.left - this.margins.left,
+			scroll: false,
+			parent: this._getParentOffset(),
+			relative: this._getRelativeOffset()
+		};
+
+		this.offset.click = {
+			left: event.pageX - this.offset.left,
+			top: event.pageY - this.offset.top
+		};
+	},
+
+	_mouseDrag: function( event, noPropagation ) {
+
+		// reset any necessary cached properties (see #5009)
+		if ( this.hasFixedAncestor ) {
+			this.offset.parent = this._getParentOffset();
+		}
+
+		//Compute the helpers position
+		this.position = this._generatePosition( event, true );
+		this.positionAbs = this._convertPositionTo( "absolute" );
+
+		//Call plugins and callbacks and use the resulting position if something is returned
+		if ( !noPropagation ) {
+			var ui = this._uiHash();
+			if ( this._trigger( "drag", event, ui ) === false ) {
+				this._mouseUp( new $.Event( "mouseup", event ) );
+				return false;
+			}
+			this.position = ui.position;
+		}
+
+		this.helper[ 0 ].style.left = this.position.left + "px";
+		this.helper[ 0 ].style.top = this.position.top + "px";
+
+		if ( $.ui.ddmanager ) {
+			$.ui.ddmanager.drag( this, event );
+		}
+
+		return false;
+	},
+
+	_mouseStop: function( event ) {
+
+		//If we are using droppables, inform the manager about the drop
+		var that = this,
+			dropped = false;
+		if ( $.ui.ddmanager && !this.options.dropBehaviour ) {
+			dropped = $.ui.ddmanager.drop( this, event );
+		}
+
+		//if a drop comes from outside (a sortable)
+		if ( this.dropped ) {
+			dropped = this.dropped;
+			this.dropped = false;
+		}
+
+		if ( ( this.options.revert === "invalid" && !dropped ) ||
+				( this.options.revert === "valid" && dropped ) ||
+				this.options.revert === true || ( $.isFunction( this.options.revert ) &&
+				this.options.revert.call( this.element, dropped ) )
+		) {
+			$( this.helper ).animate(
+				this.originalPosition,
+				parseInt( this.options.revertDuration, 10 ),
+				function() {
+					if ( that._trigger( "stop", event ) !== false ) {
+						that._clear();
+					}
+				}
+			);
+		} else {
+			if ( this._trigger( "stop", event ) !== false ) {
+				this._clear();
+			}
+		}
+
+		return false;
+	},
+
+	_mouseUp: function( event ) {
+		this._unblockFrames();
+
+		// If the ddmanager is used for droppables, inform the manager that dragging has stopped
+		// (see #5003)
+		if ( $.ui.ddmanager ) {
+			$.ui.ddmanager.dragStop( this, event );
+		}
+
+		// Only need to focus if the event occurred on the draggable itself, see #10527
+		if ( this.handleElement.is( event.target ) ) {
+
+			// The interaction is over; whether or not the click resulted in a drag,
+			// focus the element
+			this.element.trigger( "focus" );
+		}
+
+		return $.ui.mouse.prototype._mouseUp.call( this, event );
+	},
+
+	cancel: function() {
+
+		if ( this.helper.is( ".ui-draggable-dragging" ) ) {
+			this._mouseUp( new $.Event( "mouseup", { target: this.element[ 0 ] } ) );
+		} else {
+			this._clear();
+		}
+
+		return this;
+
+	},
+
+	_getHandle: function( event ) {
+		return this.options.handle ?
+			!!$( event.target ).closest( this.element.find( this.options.handle ) ).length :
+			true;
+	},
+
+	_setHandleClassName: function() {
+		this.handleElement = this.options.handle ?
+			this.element.find( this.options.handle ) : this.element;
+		this._addClass( this.handleElement, "ui-draggable-handle" );
+	},
+
+	_removeHandleClassName: function() {
+		this._removeClass( this.handleElement, "ui-draggable-handle" );
+	},
+
+	_createHelper: function( event ) {
+
+		var o = this.options,
+			helperIsFunction = $.isFunction( o.helper ),
+			helper = helperIsFunction ?
+				$( o.helper.apply( this.element[ 0 ], [ event ] ) ) :
+				( o.helper === "clone" ?
+					this.element.clone().removeAttr( "id" ) :
+					this.element );
+
+		if ( !helper.parents( "body" ).length ) {
+			helper.appendTo( ( o.appendTo === "parent" ?
+				this.element[ 0 ].parentNode :
+				o.appendTo ) );
+		}
+
+		// Http://bugs.jqueryui.com/ticket/9446
+		// a helper function can return the original element
+		// which wouldn't have been set to relative in _create
+		if ( helperIsFunction && helper[ 0 ] === this.element[ 0 ] ) {
+			this._setPositionRelative();
+		}
+
+		if ( helper[ 0 ] !== this.element[ 0 ] &&
+				!( /(fixed|absolute)/ ).test( helper.css( "position" ) ) ) {
+			helper.css( "position", "absolute" );
+		}
+
+		return helper;
+
+	},
+
+	_setPositionRelative: function() {
+		if ( !( /^(?:r|a|f)/ ).test( this.element.css( "position" ) ) ) {
+			this.element[ 0 ].style.position = "relative";
+		}
+	},
+
+	_adjustOffsetFromHelper: function( obj ) {
+		if ( typeof obj === "string" ) {
+			obj = obj.split( " " );
+		}
+		if ( $.isArray( obj ) ) {
+			obj = { left: +obj[ 0 ], top: +obj[ 1 ] || 0 };
+		}
+		if ( "left" in obj ) {
+			this.offset.click.left = obj.left + this.margins.left;
+		}
+		if ( "right" in obj ) {
+			this.offset.click.left = this.helperProportions.width - obj.right + this.margins.left;
+		}
+		if ( "top" in obj ) {
+			this.offset.click.top = obj.top + this.margins.top;
+		}
+		if ( "bottom" in obj ) {
+			this.offset.click.top = this.helperProportions.height - obj.bottom + this.margins.top;
+		}
+	},
+
+	_isRootNode: function( element ) {
+		return ( /(html|body)/i ).test( element.tagName ) || element === this.document[ 0 ];
+	},
+
+	_getParentOffset: function() {
+
+		//Get the offsetParent and cache its position
+		var po = this.offsetParent.offset(),
+			document = this.document[ 0 ];
+
+		// This is a special case where we need to modify a offset calculated on start, since the
+		// following happened:
+		// 1. The position of the helper is absolute, so it's position is calculated based on the
+		// next positioned parent
+		// 2. The actual offset parent is a child of the scroll parent, and the scroll parent isn't
+		// the document, which means that the scroll is included in the initial calculation of the
+		// offset of the parent, and never recalculated upon drag
+		if ( this.cssPosition === "absolute" && this.scrollParent[ 0 ] !== document &&
+				$.contains( this.scrollParent[ 0 ], this.offsetParent[ 0 ] ) ) {
+			po.left += this.scrollParent.scrollLeft();
+			po.top += this.scrollParent.scrollTop();
+		}
+
+		if ( this._isRootNode( this.offsetParent[ 0 ] ) ) {
+			po = { top: 0, left: 0 };
+		}
+
+		return {
+			top: po.top + ( parseInt( this.offsetParent.css( "borderTopWidth" ), 10 ) || 0 ),
+			left: po.left + ( parseInt( this.offsetParent.css( "borderLeftWidth" ), 10 ) || 0 )
+		};
+
+	},
+
+	_getRelativeOffset: function() {
+		if ( this.cssPosition !== "relative" ) {
+			return { top: 0, left: 0 };
+		}
+
+		var p = this.element.position(),
+			scrollIsRootNode = this._isRootNode( this.scrollParent[ 0 ] );
+
+		return {
+			top: p.top - ( parseInt( this.helper.css( "top" ), 10 ) || 0 ) +
+				( !scrollIsRootNode ? this.scrollParent.scrollTop() : 0 ),
+			left: p.left - ( parseInt( this.helper.css( "left" ), 10 ) || 0 ) +
+				( !scrollIsRootNode ? this.scrollParent.scrollLeft() : 0 )
+		};
+
+	},
+
+	_cacheMargins: function() {
+		this.margins = {
+			left: ( parseInt( this.element.css( "marginLeft" ), 10 ) || 0 ),
+			top: ( parseInt( this.element.css( "marginTop" ), 10 ) || 0 ),
+			right: ( parseInt( this.element.css( "marginRight" ), 10 ) || 0 ),
+			bottom: ( parseInt( this.element.css( "marginBottom" ), 10 ) || 0 )
+		};
+	},
+
+	_cacheHelperProportions: function() {
+		this.helperProportions = {
+			width: this.helper.outerWidth(),
+			height: this.helper.outerHeight()
+		};
+	},
+
+	_setContainment: function() {
+
+		var isUserScrollable, c, ce,
+			o = this.options,
+			document = this.document[ 0 ];
+
+		this.relativeContainer = null;
+
+		if ( !o.containment ) {
+			this.containment = null;
+			return;
+		}
+
+		if ( o.containment === "window" ) {
+			this.containment = [
+				$( window ).scrollLeft() - this.offset.relative.left - this.offset.parent.left,
+				$( window ).scrollTop() - this.offset.relative.top - this.offset.parent.top,
+				$( window ).scrollLeft() + $( window ).width() -
+					this.helperProportions.width - this.margins.left,
+				$( window ).scrollTop() +
+					( $( window ).height() || document.body.parentNode.scrollHeight ) -
+					this.helperProportions.height - this.margins.top
+			];
+			return;
+		}
+
+		if ( o.containment === "document" ) {
+			this.containment = [
+				0,
+				0,
+				$( document ).width() - this.helperProportions.width - this.margins.left,
+				( $( document ).height() || document.body.parentNode.scrollHeight ) -
+					this.helperProportions.height - this.margins.top
+			];
+			return;
+		}
+
+		if ( o.containment.constructor === Array ) {
+			this.containment = o.containment;
+			return;
+		}
+
+		if ( o.containment === "parent" ) {
+			o.containment = this.helper[ 0 ].parentNode;
+		}
+
+		c = $( o.containment );
+		ce = c[ 0 ];
+
+		if ( !ce ) {
+			return;
+		}
+
+		isUserScrollable = /(scroll|auto)/.test( c.css( "overflow" ) );
+
+		this.containment = [
+			( parseInt( c.css( "borderLeftWidth" ), 10 ) || 0 ) +
+				( parseInt( c.css( "paddingLeft" ), 10 ) || 0 ),
+			( parseInt( c.css( "borderTopWidth" ), 10 ) || 0 ) +
+				( parseInt( c.css( "paddingTop" ), 10 ) || 0 ),
+			( isUserScrollable ? Math.max( ce.scrollWidth, ce.offsetWidth ) : ce.offsetWidth ) -
+				( parseInt( c.css( "borderRightWidth" ), 10 ) || 0 ) -
+				( parseInt( c.css( "paddingRight" ), 10 ) || 0 ) -
+				this.helperProportions.width -
+				this.margins.left -
+				this.margins.right,
+			( isUserScrollable ? Math.max( ce.scrollHeight, ce.offsetHeight ) : ce.offsetHeight ) -
+				( parseInt( c.css( "borderBottomWidth" ), 10 ) || 0 ) -
+				( parseInt( c.css( "paddingBottom" ), 10 ) || 0 ) -
+				this.helperProportions.height -
+				this.margins.top -
+				this.margins.bottom
+		];
+		this.relativeContainer = c;
+	},
+
+	_convertPositionTo: function( d, pos ) {
+
+		if ( !pos ) {
+			pos = this.position;
+		}
+
+		var mod = d === "absolute" ? 1 : -1,
+			scrollIsRootNode = this._isRootNode( this.scrollParent[ 0 ] );
+
+		return {
+			top: (
+
+				// The absolute mouse position
+				pos.top	+
+
+				// Only for relative positioned nodes: Relative offset from element to offset parent
+				this.offset.relative.top * mod +
+
+				// The offsetParent's offset without borders (offset + border)
+				this.offset.parent.top * mod -
+				( ( this.cssPosition === "fixed" ?
+					-this.offset.scroll.top :
+					( scrollIsRootNode ? 0 : this.offset.scroll.top ) ) * mod )
+			),
+			left: (
+
+				// The absolute mouse position
+				pos.left +
+
+				// Only for relative positioned nodes: Relative offset from element to offset parent
+				this.offset.relative.left * mod +
+
+				// The offsetParent's offset without borders (offset + border)
+				this.offset.parent.left * mod	-
+				( ( this.cssPosition === "fixed" ?
+					-this.offset.scroll.left :
+					( scrollIsRootNode ? 0 : this.offset.scroll.left ) ) * mod )
+			)
+		};
+
+	},
+
+	_generatePosition: function( event, constrainPosition ) {
+
+		var containment, co, top, left,
+			o = this.options,
+			scrollIsRootNode = this._isRootNode( this.scrollParent[ 0 ] ),
+			pageX = event.pageX,
+			pageY = event.pageY;
+
+		// Cache the scroll
+		if ( !scrollIsRootNode || !this.offset.scroll ) {
+			this.offset.scroll = {
+				top: this.scrollParent.scrollTop(),
+				left: this.scrollParent.scrollLeft()
+			};
+		}
+
+		/*
+		 * - Position constraining -
+		 * Constrain the position to a mix of grid, containment.
+		 */
+
+		// If we are not dragging yet, we won't check for options
+		if ( constrainPosition ) {
+			if ( this.containment ) {
+				if ( this.relativeContainer ) {
+					co = this.relativeContainer.offset();
+					containment = [
+						this.containment[ 0 ] + co.left,
+						this.containment[ 1 ] + co.top,
+						this.containment[ 2 ] + co.left,
+						this.containment[ 3 ] + co.top
+					];
+				} else {
+					containment = this.containment;
+				}
+
+				if ( event.pageX - this.offset.click.left < containment[ 0 ] ) {
+					pageX = containment[ 0 ] + this.offset.click.left;
+				}
+				if ( event.pageY - this.offset.click.top < containment[ 1 ] ) {
+					pageY = containment[ 1 ] + this.offset.click.top;
+				}
+				if ( event.pageX - this.offset.click.left > containment[ 2 ] ) {
+					pageX = containment[ 2 ] + this.offset.click.left;
+				}
+				if ( event.pageY - this.offset.click.top > containment[ 3 ] ) {
+					pageY = containment[ 3 ] + this.offset.click.top;
+				}
+			}
+
+			if ( o.grid ) {
+
+				//Check for grid elements set to 0 to prevent divide by 0 error causing invalid
+				// argument errors in IE (see ticket #6950)
+				top = o.grid[ 1 ] ? this.originalPageY + Math.round( ( pageY -
+					this.originalPageY ) / o.grid[ 1 ] ) * o.grid[ 1 ] : this.originalPageY;
+				pageY = containment ? ( ( top - this.offset.click.top >= containment[ 1 ] ||
+					top - this.offset.click.top > containment[ 3 ] ) ?
+						top :
+						( ( top - this.offset.click.top >= containment[ 1 ] ) ?
+							top - o.grid[ 1 ] : top + o.grid[ 1 ] ) ) : top;
+
+				left = o.grid[ 0 ] ? this.originalPageX +
+					Math.round( ( pageX - this.originalPageX ) / o.grid[ 0 ] ) * o.grid[ 0 ] :
+					this.originalPageX;
+				pageX = containment ? ( ( left - this.offset.click.left >= containment[ 0 ] ||
+					left - this.offset.click.left > containment[ 2 ] ) ?
+						left :
+						( ( left - this.offset.click.left >= containment[ 0 ] ) ?
+							left - o.grid[ 0 ] : left + o.grid[ 0 ] ) ) : left;
+			}
+
+			if ( o.axis === "y" ) {
+				pageX = this.originalPageX;
+			}
+
+			if ( o.axis === "x" ) {
+				pageY = this.originalPageY;
+			}
+		}
+
+		return {
+			top: (
+
+				// The absolute mouse position
+				pageY -
+
+				// Click offset (relative to the element)
+				this.offset.click.top -
+
+				// Only for relative positioned nodes: Relative offset from element to offset parent
+				this.offset.relative.top -
+
+				// The offsetParent's offset without borders (offset + border)
+				this.offset.parent.top +
+				( this.cssPosition === "fixed" ?
+					-this.offset.scroll.top :
+					( scrollIsRootNode ? 0 : this.offset.scroll.top ) )
+			),
+			left: (
+
+				// The absolute mouse position
+				pageX -
+
+				// Click offset (relative to the element)
+				this.offset.click.left -
+
+				// Only for relative positioned nodes: Relative offset from element to offset parent
+				this.offset.relative.left -
+
+				// The offsetParent's offset without borders (offset + border)
+				this.offset.parent.left +
+				( this.cssPosition === "fixed" ?
+					-this.offset.scroll.left :
+					( scrollIsRootNode ? 0 : this.offset.scroll.left ) )
+			)
+		};
+
+	},
+
+	_clear: function() {
+		this._removeClass( this.helper, "ui-draggable-dragging" );
+		if ( this.helper[ 0 ] !== this.element[ 0 ] && !this.cancelHelperRemoval ) {
+			this.helper.remove();
+		}
+		this.helper = null;
+		this.cancelHelperRemoval = false;
+		if ( this.destroyOnClear ) {
+			this.destroy();
+		}
+	},
+
+	// From now on bulk stuff - mainly helpers
+
+	_trigger: function( type, event, ui ) {
+		ui = ui || this._uiHash();
+		$.ui.plugin.call( this, type, [ event, ui, this ], true );
+
+		// Absolute position and offset (see #6884 ) have to be recalculated after plugins
+		if ( /^(drag|start|stop)/.test( type ) ) {
+			this.positionAbs = this._convertPositionTo( "absolute" );
+			ui.offset = this.positionAbs;
+		}
+		return $.Widget.prototype._trigger.call( this, type, event, ui );
+	},
+
+	plugins: {},
+
+	_uiHash: function() {
+		return {
+			helper: this.helper,
+			position: this.position,
+			originalPosition: this.originalPosition,
+			offset: this.positionAbs
+		};
+	}
+
+} );
+
+$.ui.plugin.add( "draggable", "connectToSortable", {
+	start: function( event, ui, draggable ) {
+		var uiSortable = $.extend( {}, ui, {
+			item: draggable.element
+		} );
+
+		draggable.sortables = [];
+		$( draggable.options.connectToSortable ).each( function() {
+			var sortable = $( this ).sortable( "instance" );
+
+			if ( sortable && !sortable.options.disabled ) {
+				draggable.sortables.push( sortable );
+
+				// RefreshPositions is called at drag start to refresh the containerCache
+				// which is used in drag. This ensures it's initialized and synchronized
+				// with any changes that might have happened on the page since initialization.
+				sortable.refreshPositions();
+				sortable._trigger( "activate", event, uiSortable );
+			}
+		} );
+	},
+	stop: function( event, ui, draggable ) {
+		var uiSortable = $.extend( {}, ui, {
+			item: draggable.element
+		} );
+
+		draggable.cancelHelperRemoval = false;
+
+		$.each( draggable.sortables, function() {
+			var sortable = this;
+
+			if ( sortable.isOver ) {
+				sortable.isOver = 0;
+
+				// Allow this sortable to handle removing the helper
+				draggable.cancelHelperRemoval = true;
+				sortable.cancelHelperRemoval = false;
+
+				// Use _storedCSS To restore properties in the sortable,
+				// as this also handles revert (#9675) since the draggable
+				// may have modified them in unexpected ways (#8809)
+				sortable._storedCSS = {
+					position: sortable.placeholder.css( "position" ),
+					top: sortable.placeholder.css( "top" ),
+					left: sortable.placeholder.css( "left" )
+				};
+
+				sortable._mouseStop( event );
+
+				// Once drag has ended, the sortable should return to using
+				// its original helper, not the shared helper from draggable
+				sortable.options.helper = sortable.options._helper;
+			} else {
+
+				// Prevent this Sortable from removing the helper.
+				// However, don't set the draggable to remove the helper
+				// either as another connected Sortable may yet handle the removal.
+				sortable.cancelHelperRemoval = true;
+
+				sortable._trigger( "deactivate", event, uiSortable );
+			}
+		} );
+	},
+	drag: function( event, ui, draggable ) {
+		$.each( draggable.sortables, function() {
+			var innermostIntersecting = false,
+				sortable = this;
+
+			// Copy over variables that sortable's _intersectsWith uses
+			sortable.positionAbs = draggable.positionAbs;
+			sortable.helperProportions = draggable.helperProportions;
+			sortable.offset.click = draggable.offset.click;
+
+			if ( sortable._intersectsWith( sortable.containerCache ) ) {
+				innermostIntersecting = true;
+
+				$.each( draggable.sortables, function() {
+
+					// Copy over variables that sortable's _intersectsWith uses
+					this.positionAbs = draggable.positionAbs;
+					this.helperProportions = draggable.helperProportions;
+					this.offset.click = draggable.offset.click;
+
+					if ( this !== sortable &&
+							this._intersectsWith( this.containerCache ) &&
+							$.contains( sortable.element[ 0 ], this.element[ 0 ] ) ) {
+						innermostIntersecting = false;
+					}
+
+					return innermostIntersecting;
+				} );
+			}
+
+			if ( innermostIntersecting ) {
+
+				// If it intersects, we use a little isOver variable and set it once,
+				// so that the move-in stuff gets fired only once.
+				if ( !sortable.isOver ) {
+					sortable.isOver = 1;
+
+					// Store draggable's parent in case we need to reappend to it later.
+					draggable._parent = ui.helper.parent();
+
+					sortable.currentItem = ui.helper
+						.appendTo( sortable.element )
+						.data( "ui-sortable-item", true );
+
+					// Store helper option to later restore it
+					sortable.options._helper = sortable.options.helper;
+
+					sortable.options.helper = function() {
+						return ui.helper[ 0 ];
+					};
+
+					// Fire the start events of the sortable with our passed browser event,
+					// and our own helper (so it doesn't create a new one)
+					event.target = sortable.currentItem[ 0 ];
+					sortable._mouseCapture( event, true );
+					sortable._mouseStart( event, true, true );
+
+					// Because the browser event is way off the new appended portlet,
+					// modify necessary variables to reflect the changes
+					sortable.offset.click.top = draggable.offset.click.top;
+					sortable.offset.click.left = draggable.offset.click.left;
+					sortable.offset.parent.left -= draggable.offset.parent.left -
+						sortable.offset.parent.left;
+					sortable.offset.parent.top -= draggable.offset.parent.top -
+						sortable.offset.parent.top;
+
+					draggable._trigger( "toSortable", event );
+
+					// Inform draggable that the helper is in a valid drop zone,
+					// used solely in the revert option to handle "valid/invalid".
+					draggable.dropped = sortable.element;
+
+					// Need to refreshPositions of all sortables in the case that
+					// adding to one sortable changes the location of the other sortables (#9675)
+					$.each( draggable.sortables, function() {
+						this.refreshPositions();
+					} );
+
+					// Hack so receive/update callbacks work (mostly)
+					draggable.currentItem = draggable.element;
+					sortable.fromOutside = draggable;
+				}
+
+				if ( sortable.currentItem ) {
+					sortable._mouseDrag( event );
+
+					// Copy the sortable's position because the draggable's can potentially reflect
+					// a relative position, while sortable is always absolute, which the dragged
+					// element has now become. (#8809)
+					ui.position = sortable.position;
+				}
+			} else {
+
+				// If it doesn't intersect with the sortable, and it intersected before,
+				// we fake the drag stop of the sortable, but make sure it doesn't remove
+				// the helper by using cancelHelperRemoval.
+				if ( sortable.isOver ) {
+
+					sortable.isOver = 0;
+					sortable.cancelHelperRemoval = true;
+
+					// Calling sortable's mouseStop would trigger a revert,
+					// so revert must be temporarily false until after mouseStop is called.
+					sortable.options._revert = sortable.options.revert;
+					sortable.options.revert = false;
+
+					sortable._trigger( "out", event, sortable._uiHash( sortable ) );
+					sortable._mouseStop( event, true );
+
+					// Restore sortable behaviors that were modfied
+					// when the draggable entered the sortable area (#9481)
+					sortable.options.revert = sortable.options._revert;
+					sortable.options.helper = sortable.options._helper;
+
+					if ( sortable.placeholder ) {
+						sortable.placeholder.remove();
+					}
+
+					// Restore and recalculate the draggable's offset considering the sortable
+					// may have modified them in unexpected ways. (#8809, #10669)
+					ui.helper.appendTo( draggable._parent );
+					draggable._refreshOffsets( event );
+					ui.position = draggable._generatePosition( event, true );
+
+					draggable._trigger( "fromSortable", event );
+
+					// Inform draggable that the helper is no longer in a valid drop zone
+					draggable.dropped = false;
+
+					// Need to refreshPositions of all sortables just in case removing
+					// from one sortable changes the location of other sortables (#9675)
+					$.each( draggable.sortables, function() {
+						this.refreshPositions();
+					} );
+				}
+			}
+		} );
+	}
+} );
+
+$.ui.plugin.add( "draggable", "cursor", {
+	start: function( event, ui, instance ) {
+		var t = $( "body" ),
+			o = instance.options;
+
+		if ( t.css( "cursor" ) ) {
+			o._cursor = t.css( "cursor" );
+		}
+		t.css( "cursor", o.cursor );
+	},
+	stop: function( event, ui, instance ) {
+		var o = instance.options;
+		if ( o._cursor ) {
+			$( "body" ).css( "cursor", o._cursor );
+		}
+	}
+} );
+
+$.ui.plugin.add( "draggable", "opacity", {
+	start: function( event, ui, instance ) {
+		var t = $( ui.helper ),
+			o = instance.options;
+		if ( t.css( "opacity" ) ) {
+			o._opacity = t.css( "opacity" );
+		}
+		t.css( "opacity", o.opacity );
+	},
+	stop: function( event, ui, instance ) {
+		var o = instance.options;
+		if ( o._opacity ) {
+			$( ui.helper ).css( "opacity", o._opacity );
+		}
+	}
+} );
+
+$.ui.plugin.add( "draggable", "scroll", {
+	start: function( event, ui, i ) {
+		if ( !i.scrollParentNotHidden ) {
+			i.scrollParentNotHidden = i.helper.scrollParent( false );
+		}
+
+		if ( i.scrollParentNotHidden[ 0 ] !== i.document[ 0 ] &&
+				i.scrollParentNotHidden[ 0 ].tagName !== "HTML" ) {
+			i.overflowOffset = i.scrollParentNotHidden.offset();
+		}
+	},
+	drag: function( event, ui, i  ) {
+
+		var o = i.options,
+			scrolled = false,
+			scrollParent = i.scrollParentNotHidden[ 0 ],
+			document = i.document[ 0 ];
+
+		if ( scrollParent !== document && scrollParent.tagName !== "HTML" ) {
+			if ( !o.axis || o.axis !== "x" ) {
+				if ( ( i.overflowOffset.top + scrollParent.offsetHeight ) - event.pageY <
+						o.scrollSensitivity ) {
+					scrollParent.scrollTop = scrolled = scrollParent.scrollTop + o.scrollSpeed;
+				} else if ( event.pageY - i.overflowOffset.top < o.scrollSensitivity ) {
+					scrollParent.scrollTop = scrolled = scrollParent.scrollTop - o.scrollSpeed;
+				}
+			}
+
+			if ( !o.axis || o.axis !== "y" ) {
+				if ( ( i.overflowOffset.left + scrollParent.offsetWidth ) - event.pageX <
+						o.scrollSensitivity ) {
+					scrollParent.scrollLeft = scrolled = scrollParent.scrollLeft + o.scrollSpeed;
+				} else if ( event.pageX - i.overflowOffset.left < o.scrollSensitivity ) {
+					scrollParent.scrollLeft = scrolled = scrollParent.scrollLeft - o.scrollSpeed;
+				}
+			}
+
+		} else {
+
+			if ( !o.axis || o.axis !== "x" ) {
+				if ( event.pageY - $( document ).scrollTop() < o.scrollSensitivity ) {
+					scrolled = $( document ).scrollTop( $( document ).scrollTop() - o.scrollSpeed );
+				} else if ( $( window ).height() - ( event.pageY - $( document ).scrollTop() ) <
+						o.scrollSensitivity ) {
+					scrolled = $( document ).scrollTop( $( document ).scrollTop() + o.scrollSpeed );
+				}
+			}
+
+			if ( !o.axis || o.axis !== "y" ) {
+				if ( event.pageX - $( document ).scrollLeft() < o.scrollSensitivity ) {
+					scrolled = $( document ).scrollLeft(
+						$( document ).scrollLeft() - o.scrollSpeed
+					);
+				} else if ( $( window ).width() - ( event.pageX - $( document ).scrollLeft() ) <
+						o.scrollSensitivity ) {
+					scrolled = $( document ).scrollLeft(
+						$( document ).scrollLeft() + o.scrollSpeed
+					);
+				}
+			}
+
+		}
+
+		if ( scrolled !== false && $.ui.ddmanager && !o.dropBehaviour ) {
+			$.ui.ddmanager.prepareOffsets( i, event );
+		}
+
+	}
+} );
+
+$.ui.plugin.add( "draggable", "snap", {
+	start: function( event, ui, i ) {
+
+		var o = i.options;
+
+		i.snapElements = [];
+
+		$( o.snap.constructor !== String ? ( o.snap.items || ":data(ui-draggable)" ) : o.snap )
+			.each( function() {
+				var $t = $( this ),
+					$o = $t.offset();
+				if ( this !== i.element[ 0 ] ) {
+					i.snapElements.push( {
+						item: this,
+						width: $t.outerWidth(), height: $t.outerHeight(),
+						top: $o.top, left: $o.left
+					} );
+				}
+			} );
+
+	},
+	drag: function( event, ui, inst ) {
+
+		var ts, bs, ls, rs, l, r, t, b, i, first,
+			o = inst.options,
+			d = o.snapTolerance,
+			x1 = ui.offset.left, x2 = x1 + inst.helperProportions.width,
+			y1 = ui.offset.top, y2 = y1 + inst.helperProportions.height;
+
+		for ( i = inst.snapElements.length - 1; i >= 0; i-- ) {
+
+			l = inst.snapElements[ i ].left - inst.margins.left;
+			r = l + inst.snapElements[ i ].width;
+			t = inst.snapElements[ i ].top - inst.margins.top;
+			b = t + inst.snapElements[ i ].height;
+
+			if ( x2 < l - d || x1 > r + d || y2 < t - d || y1 > b + d ||
+					!$.contains( inst.snapElements[ i ].item.ownerDocument,
+					inst.snapElements[ i ].item ) ) {
+				if ( inst.snapElements[ i ].snapping ) {
+					( inst.options.snap.release &&
+						inst.options.snap.release.call(
+							inst.element,
+							event,
+							$.extend( inst._uiHash(), { snapItem: inst.snapElements[ i ].item } )
+						) );
+				}
+				inst.snapElements[ i ].snapping = false;
+				continue;
+			}
+
+			if ( o.snapMode !== "inner" ) {
+				ts = Math.abs( t - y2 ) <= d;
+				bs = Math.abs( b - y1 ) <= d;
+				ls = Math.abs( l - x2 ) <= d;
+				rs = Math.abs( r - x1 ) <= d;
+				if ( ts ) {
+					ui.position.top = inst._convertPositionTo( "relative", {
+						top: t - inst.helperProportions.height,
+						left: 0
+					} ).top;
+				}
+				if ( bs ) {
+					ui.position.top = inst._convertPositionTo( "relative", {
+						top: b,
+						left: 0
+					} ).top;
+				}
+				if ( ls ) {
+					ui.position.left = inst._convertPositionTo( "relative", {
+						top: 0,
+						left: l - inst.helperProportions.width
+					} ).left;
+				}
+				if ( rs ) {
+					ui.position.left = inst._convertPositionTo( "relative", {
+						top: 0,
+						left: r
+					} ).left;
+				}
+			}
+
+			first = ( ts || bs || ls || rs );
+
+			if ( o.snapMode !== "outer" ) {
+				ts = Math.abs( t - y1 ) <= d;
+				bs = Math.abs( b - y2 ) <= d;
+				ls = Math.abs( l - x1 ) <= d;
+				rs = Math.abs( r - x2 ) <= d;
+				if ( ts ) {
+					ui.position.top = inst._convertPositionTo( "relative", {
+						top: t,
+						left: 0
+					} ).top;
+				}
+				if ( bs ) {
+					ui.position.top = inst._convertPositionTo( "relative", {
+						top: b - inst.helperProportions.height,
+						left: 0
+					} ).top;
+				}
+				if ( ls ) {
+					ui.position.left = inst._convertPositionTo( "relative", {
+						top: 0,
+						left: l
+					} ).left;
+				}
+				if ( rs ) {
+					ui.position.left = inst._convertPositionTo( "relative", {
+						top: 0,
+						left: r - inst.helperProportions.width
+					} ).left;
+				}
+			}
+
+			if ( !inst.snapElements[ i ].snapping && ( ts || bs || ls || rs || first ) ) {
+				( inst.options.snap.snap &&
+					inst.options.snap.snap.call(
+						inst.element,
+						event,
+						$.extend( inst._uiHash(), {
+							snapItem: inst.snapElements[ i ].item
+						} ) ) );
+			}
+			inst.snapElements[ i ].snapping = ( ts || bs || ls || rs || first );
+
+		}
+
+	}
+} );
+
+$.ui.plugin.add( "draggable", "stack", {
+	start: function( event, ui, instance ) {
+		var min,
+			o = instance.options,
+			group = $.makeArray( $( o.stack ) ).sort( function( a, b ) {
+				return ( parseInt( $( a ).css( "zIndex" ), 10 ) || 0 ) -
+					( parseInt( $( b ).css( "zIndex" ), 10 ) || 0 );
+			} );
+
+		if ( !group.length ) { return; }
+
+		min = parseInt( $( group[ 0 ] ).css( "zIndex" ), 10 ) || 0;
+		$( group ).each( function( i ) {
+			$( this ).css( "zIndex", min + i );
+		} );
+		this.css( "zIndex", ( min + group.length ) );
+	}
+} );
+
+$.ui.plugin.add( "draggable", "zIndex", {
+	start: function( event, ui, instance ) {
+		var t = $( ui.helper ),
+			o = instance.options;
+
+		if ( t.css( "zIndex" ) ) {
+			o._zIndex = t.css( "zIndex" );
+		}
+		t.css( "zIndex", o.zIndex );
+	},
+	stop: function( event, ui, instance ) {
+		var o = instance.options;
+
+		if ( o._zIndex ) {
+			$( ui.helper ).css( "zIndex", o._zIndex );
+		}
+	}
+} );
+
+return $.ui.draggable;
+
+} ) );
+
+},{}],23:[function(require,module,exports){
 /*!
  * jQuery UI Mouse 1.12.1
  * http://jqueryui.com
@@ -9566,7 +13028,1210 @@ return $.widget( "ui.mouse", {
 
 } ) );
 
-},{}],12:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
+/*!
+ * jQuery UI Resizable 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Resizable
+//>>group: Interactions
+//>>description: Enables resize functionality for any element.
+//>>docs: http://api.jqueryui.com/resizable/
+//>>demos: http://jqueryui.com/resizable/
+//>>css.structure: ../../themes/base/core.css
+//>>css.structure: ../../themes/base/resizable.css
+//>>css.theme: ../../themes/base/theme.css
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"./mouse",
+			"../disable-selection",
+			"../plugin",
+			"../version",
+			"../widget"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+$.widget( "ui.resizable", $.ui.mouse, {
+	version: "1.12.1",
+	widgetEventPrefix: "resize",
+	options: {
+		alsoResize: false,
+		animate: false,
+		animateDuration: "slow",
+		animateEasing: "swing",
+		aspectRatio: false,
+		autoHide: false,
+		classes: {
+			"ui-resizable-se": "ui-icon ui-icon-gripsmall-diagonal-se"
+		},
+		containment: false,
+		ghost: false,
+		grid: false,
+		handles: "e,s,se",
+		helper: false,
+		maxHeight: null,
+		maxWidth: null,
+		minHeight: 10,
+		minWidth: 10,
+
+		// See #7960
+		zIndex: 90,
+
+		// Callbacks
+		resize: null,
+		start: null,
+		stop: null
+	},
+
+	_num: function( value ) {
+		return parseFloat( value ) || 0;
+	},
+
+	_isNumber: function( value ) {
+		return !isNaN( parseFloat( value ) );
+	},
+
+	_hasScroll: function( el, a ) {
+
+		if ( $( el ).css( "overflow" ) === "hidden" ) {
+			return false;
+		}
+
+		var scroll = ( a && a === "left" ) ? "scrollLeft" : "scrollTop",
+			has = false;
+
+		if ( el[ scroll ] > 0 ) {
+			return true;
+		}
+
+		// TODO: determine which cases actually cause this to happen
+		// if the element doesn't have the scroll set, see if it's possible to
+		// set the scroll
+		el[ scroll ] = 1;
+		has = ( el[ scroll ] > 0 );
+		el[ scroll ] = 0;
+		return has;
+	},
+
+	_create: function() {
+
+		var margins,
+			o = this.options,
+			that = this;
+		this._addClass( "ui-resizable" );
+
+		$.extend( this, {
+			_aspectRatio: !!( o.aspectRatio ),
+			aspectRatio: o.aspectRatio,
+			originalElement: this.element,
+			_proportionallyResizeElements: [],
+			_helper: o.helper || o.ghost || o.animate ? o.helper || "ui-resizable-helper" : null
+		} );
+
+		// Wrap the element if it cannot hold child nodes
+		if ( this.element[ 0 ].nodeName.match( /^(canvas|textarea|input|select|button|img)$/i ) ) {
+
+			this.element.wrap(
+				$( "<div class='ui-wrapper' style='overflow: hidden;'></div>" ).css( {
+					position: this.element.css( "position" ),
+					width: this.element.outerWidth(),
+					height: this.element.outerHeight(),
+					top: this.element.css( "top" ),
+					left: this.element.css( "left" )
+				} )
+			);
+
+			this.element = this.element.parent().data(
+				"ui-resizable", this.element.resizable( "instance" )
+			);
+
+			this.elementIsWrapper = true;
+
+			margins = {
+				marginTop: this.originalElement.css( "marginTop" ),
+				marginRight: this.originalElement.css( "marginRight" ),
+				marginBottom: this.originalElement.css( "marginBottom" ),
+				marginLeft: this.originalElement.css( "marginLeft" )
+			};
+
+			this.element.css( margins );
+			this.originalElement.css( "margin", 0 );
+
+			// support: Safari
+			// Prevent Safari textarea resize
+			this.originalResizeStyle = this.originalElement.css( "resize" );
+			this.originalElement.css( "resize", "none" );
+
+			this._proportionallyResizeElements.push( this.originalElement.css( {
+				position: "static",
+				zoom: 1,
+				display: "block"
+			} ) );
+
+			// Support: IE9
+			// avoid IE jump (hard set the margin)
+			this.originalElement.css( margins );
+
+			this._proportionallyResize();
+		}
+
+		this._setupHandles();
+
+		if ( o.autoHide ) {
+			$( this.element )
+				.on( "mouseenter", function() {
+					if ( o.disabled ) {
+						return;
+					}
+					that._removeClass( "ui-resizable-autohide" );
+					that._handles.show();
+				} )
+				.on( "mouseleave", function() {
+					if ( o.disabled ) {
+						return;
+					}
+					if ( !that.resizing ) {
+						that._addClass( "ui-resizable-autohide" );
+						that._handles.hide();
+					}
+				} );
+		}
+
+		this._mouseInit();
+	},
+
+	_destroy: function() {
+
+		this._mouseDestroy();
+
+		var wrapper,
+			_destroy = function( exp ) {
+				$( exp )
+					.removeData( "resizable" )
+					.removeData( "ui-resizable" )
+					.off( ".resizable" )
+					.find( ".ui-resizable-handle" )
+						.remove();
+			};
+
+		// TODO: Unwrap at same DOM position
+		if ( this.elementIsWrapper ) {
+			_destroy( this.element );
+			wrapper = this.element;
+			this.originalElement.css( {
+				position: wrapper.css( "position" ),
+				width: wrapper.outerWidth(),
+				height: wrapper.outerHeight(),
+				top: wrapper.css( "top" ),
+				left: wrapper.css( "left" )
+			} ).insertAfter( wrapper );
+			wrapper.remove();
+		}
+
+		this.originalElement.css( "resize", this.originalResizeStyle );
+		_destroy( this.originalElement );
+
+		return this;
+	},
+
+	_setOption: function( key, value ) {
+		this._super( key, value );
+
+		switch ( key ) {
+		case "handles":
+			this._removeHandles();
+			this._setupHandles();
+			break;
+		default:
+			break;
+		}
+	},
+
+	_setupHandles: function() {
+		var o = this.options, handle, i, n, hname, axis, that = this;
+		this.handles = o.handles ||
+			( !$( ".ui-resizable-handle", this.element ).length ?
+				"e,s,se" : {
+					n: ".ui-resizable-n",
+					e: ".ui-resizable-e",
+					s: ".ui-resizable-s",
+					w: ".ui-resizable-w",
+					se: ".ui-resizable-se",
+					sw: ".ui-resizable-sw",
+					ne: ".ui-resizable-ne",
+					nw: ".ui-resizable-nw"
+				} );
+
+		this._handles = $();
+		if ( this.handles.constructor === String ) {
+
+			if ( this.handles === "all" ) {
+				this.handles = "n,e,s,w,se,sw,ne,nw";
+			}
+
+			n = this.handles.split( "," );
+			this.handles = {};
+
+			for ( i = 0; i < n.length; i++ ) {
+
+				handle = $.trim( n[ i ] );
+				hname = "ui-resizable-" + handle;
+				axis = $( "<div>" );
+				this._addClass( axis, "ui-resizable-handle " + hname );
+
+				axis.css( { zIndex: o.zIndex } );
+
+				this.handles[ handle ] = ".ui-resizable-" + handle;
+				this.element.append( axis );
+			}
+
+		}
+
+		this._renderAxis = function( target ) {
+
+			var i, axis, padPos, padWrapper;
+
+			target = target || this.element;
+
+			for ( i in this.handles ) {
+
+				if ( this.handles[ i ].constructor === String ) {
+					this.handles[ i ] = this.element.children( this.handles[ i ] ).first().show();
+				} else if ( this.handles[ i ].jquery || this.handles[ i ].nodeType ) {
+					this.handles[ i ] = $( this.handles[ i ] );
+					this._on( this.handles[ i ], { "mousedown": that._mouseDown } );
+				}
+
+				if ( this.elementIsWrapper &&
+						this.originalElement[ 0 ]
+							.nodeName
+							.match( /^(textarea|input|select|button)$/i ) ) {
+					axis = $( this.handles[ i ], this.element );
+
+					padWrapper = /sw|ne|nw|se|n|s/.test( i ) ?
+						axis.outerHeight() :
+						axis.outerWidth();
+
+					padPos = [ "padding",
+						/ne|nw|n/.test( i ) ? "Top" :
+						/se|sw|s/.test( i ) ? "Bottom" :
+						/^e$/.test( i ) ? "Right" : "Left" ].join( "" );
+
+					target.css( padPos, padWrapper );
+
+					this._proportionallyResize();
+				}
+
+				this._handles = this._handles.add( this.handles[ i ] );
+			}
+		};
+
+		// TODO: make renderAxis a prototype function
+		this._renderAxis( this.element );
+
+		this._handles = this._handles.add( this.element.find( ".ui-resizable-handle" ) );
+		this._handles.disableSelection();
+
+		this._handles.on( "mouseover", function() {
+			if ( !that.resizing ) {
+				if ( this.className ) {
+					axis = this.className.match( /ui-resizable-(se|sw|ne|nw|n|e|s|w)/i );
+				}
+				that.axis = axis && axis[ 1 ] ? axis[ 1 ] : "se";
+			}
+		} );
+
+		if ( o.autoHide ) {
+			this._handles.hide();
+			this._addClass( "ui-resizable-autohide" );
+		}
+	},
+
+	_removeHandles: function() {
+		this._handles.remove();
+	},
+
+	_mouseCapture: function( event ) {
+		var i, handle,
+			capture = false;
+
+		for ( i in this.handles ) {
+			handle = $( this.handles[ i ] )[ 0 ];
+			if ( handle === event.target || $.contains( handle, event.target ) ) {
+				capture = true;
+			}
+		}
+
+		return !this.options.disabled && capture;
+	},
+
+	_mouseStart: function( event ) {
+
+		var curleft, curtop, cursor,
+			o = this.options,
+			el = this.element;
+
+		this.resizing = true;
+
+		this._renderProxy();
+
+		curleft = this._num( this.helper.css( "left" ) );
+		curtop = this._num( this.helper.css( "top" ) );
+
+		if ( o.containment ) {
+			curleft += $( o.containment ).scrollLeft() || 0;
+			curtop += $( o.containment ).scrollTop() || 0;
+		}
+
+		this.offset = this.helper.offset();
+		this.position = { left: curleft, top: curtop };
+
+		this.size = this._helper ? {
+				width: this.helper.width(),
+				height: this.helper.height()
+			} : {
+				width: el.width(),
+				height: el.height()
+			};
+
+		this.originalSize = this._helper ? {
+				width: el.outerWidth(),
+				height: el.outerHeight()
+			} : {
+				width: el.width(),
+				height: el.height()
+			};
+
+		this.sizeDiff = {
+			width: el.outerWidth() - el.width(),
+			height: el.outerHeight() - el.height()
+		};
+
+		this.originalPosition = { left: curleft, top: curtop };
+		this.originalMousePosition = { left: event.pageX, top: event.pageY };
+
+		this.aspectRatio = ( typeof o.aspectRatio === "number" ) ?
+			o.aspectRatio :
+			( ( this.originalSize.width / this.originalSize.height ) || 1 );
+
+		cursor = $( ".ui-resizable-" + this.axis ).css( "cursor" );
+		$( "body" ).css( "cursor", cursor === "auto" ? this.axis + "-resize" : cursor );
+
+		this._addClass( "ui-resizable-resizing" );
+		this._propagate( "start", event );
+		return true;
+	},
+
+	_mouseDrag: function( event ) {
+
+		var data, props,
+			smp = this.originalMousePosition,
+			a = this.axis,
+			dx = ( event.pageX - smp.left ) || 0,
+			dy = ( event.pageY - smp.top ) || 0,
+			trigger = this._change[ a ];
+
+		this._updatePrevProperties();
+
+		if ( !trigger ) {
+			return false;
+		}
+
+		data = trigger.apply( this, [ event, dx, dy ] );
+
+		this._updateVirtualBoundaries( event.shiftKey );
+		if ( this._aspectRatio || event.shiftKey ) {
+			data = this._updateRatio( data, event );
+		}
+
+		data = this._respectSize( data, event );
+
+		this._updateCache( data );
+
+		this._propagate( "resize", event );
+
+		props = this._applyChanges();
+
+		if ( !this._helper && this._proportionallyResizeElements.length ) {
+			this._proportionallyResize();
+		}
+
+		if ( !$.isEmptyObject( props ) ) {
+			this._updatePrevProperties();
+			this._trigger( "resize", event, this.ui() );
+			this._applyChanges();
+		}
+
+		return false;
+	},
+
+	_mouseStop: function( event ) {
+
+		this.resizing = false;
+		var pr, ista, soffseth, soffsetw, s, left, top,
+			o = this.options, that = this;
+
+		if ( this._helper ) {
+
+			pr = this._proportionallyResizeElements;
+			ista = pr.length && ( /textarea/i ).test( pr[ 0 ].nodeName );
+			soffseth = ista && this._hasScroll( pr[ 0 ], "left" ) ? 0 : that.sizeDiff.height;
+			soffsetw = ista ? 0 : that.sizeDiff.width;
+
+			s = {
+				width: ( that.helper.width()  - soffsetw ),
+				height: ( that.helper.height() - soffseth )
+			};
+			left = ( parseFloat( that.element.css( "left" ) ) +
+				( that.position.left - that.originalPosition.left ) ) || null;
+			top = ( parseFloat( that.element.css( "top" ) ) +
+				( that.position.top - that.originalPosition.top ) ) || null;
+
+			if ( !o.animate ) {
+				this.element.css( $.extend( s, { top: top, left: left } ) );
+			}
+
+			that.helper.height( that.size.height );
+			that.helper.width( that.size.width );
+
+			if ( this._helper && !o.animate ) {
+				this._proportionallyResize();
+			}
+		}
+
+		$( "body" ).css( "cursor", "auto" );
+
+		this._removeClass( "ui-resizable-resizing" );
+
+		this._propagate( "stop", event );
+
+		if ( this._helper ) {
+			this.helper.remove();
+		}
+
+		return false;
+
+	},
+
+	_updatePrevProperties: function() {
+		this.prevPosition = {
+			top: this.position.top,
+			left: this.position.left
+		};
+		this.prevSize = {
+			width: this.size.width,
+			height: this.size.height
+		};
+	},
+
+	_applyChanges: function() {
+		var props = {};
+
+		if ( this.position.top !== this.prevPosition.top ) {
+			props.top = this.position.top + "px";
+		}
+		if ( this.position.left !== this.prevPosition.left ) {
+			props.left = this.position.left + "px";
+		}
+		if ( this.size.width !== this.prevSize.width ) {
+			props.width = this.size.width + "px";
+		}
+		if ( this.size.height !== this.prevSize.height ) {
+			props.height = this.size.height + "px";
+		}
+
+		this.helper.css( props );
+
+		return props;
+	},
+
+	_updateVirtualBoundaries: function( forceAspectRatio ) {
+		var pMinWidth, pMaxWidth, pMinHeight, pMaxHeight, b,
+			o = this.options;
+
+		b = {
+			minWidth: this._isNumber( o.minWidth ) ? o.minWidth : 0,
+			maxWidth: this._isNumber( o.maxWidth ) ? o.maxWidth : Infinity,
+			minHeight: this._isNumber( o.minHeight ) ? o.minHeight : 0,
+			maxHeight: this._isNumber( o.maxHeight ) ? o.maxHeight : Infinity
+		};
+
+		if ( this._aspectRatio || forceAspectRatio ) {
+			pMinWidth = b.minHeight * this.aspectRatio;
+			pMinHeight = b.minWidth / this.aspectRatio;
+			pMaxWidth = b.maxHeight * this.aspectRatio;
+			pMaxHeight = b.maxWidth / this.aspectRatio;
+
+			if ( pMinWidth > b.minWidth ) {
+				b.minWidth = pMinWidth;
+			}
+			if ( pMinHeight > b.minHeight ) {
+				b.minHeight = pMinHeight;
+			}
+			if ( pMaxWidth < b.maxWidth ) {
+				b.maxWidth = pMaxWidth;
+			}
+			if ( pMaxHeight < b.maxHeight ) {
+				b.maxHeight = pMaxHeight;
+			}
+		}
+		this._vBoundaries = b;
+	},
+
+	_updateCache: function( data ) {
+		this.offset = this.helper.offset();
+		if ( this._isNumber( data.left ) ) {
+			this.position.left = data.left;
+		}
+		if ( this._isNumber( data.top ) ) {
+			this.position.top = data.top;
+		}
+		if ( this._isNumber( data.height ) ) {
+			this.size.height = data.height;
+		}
+		if ( this._isNumber( data.width ) ) {
+			this.size.width = data.width;
+		}
+	},
+
+	_updateRatio: function( data ) {
+
+		var cpos = this.position,
+			csize = this.size,
+			a = this.axis;
+
+		if ( this._isNumber( data.height ) ) {
+			data.width = ( data.height * this.aspectRatio );
+		} else if ( this._isNumber( data.width ) ) {
+			data.height = ( data.width / this.aspectRatio );
+		}
+
+		if ( a === "sw" ) {
+			data.left = cpos.left + ( csize.width - data.width );
+			data.top = null;
+		}
+		if ( a === "nw" ) {
+			data.top = cpos.top + ( csize.height - data.height );
+			data.left = cpos.left + ( csize.width - data.width );
+		}
+
+		return data;
+	},
+
+	_respectSize: function( data ) {
+
+		var o = this._vBoundaries,
+			a = this.axis,
+			ismaxw = this._isNumber( data.width ) && o.maxWidth && ( o.maxWidth < data.width ),
+			ismaxh = this._isNumber( data.height ) && o.maxHeight && ( o.maxHeight < data.height ),
+			isminw = this._isNumber( data.width ) && o.minWidth && ( o.minWidth > data.width ),
+			isminh = this._isNumber( data.height ) && o.minHeight && ( o.minHeight > data.height ),
+			dw = this.originalPosition.left + this.originalSize.width,
+			dh = this.originalPosition.top + this.originalSize.height,
+			cw = /sw|nw|w/.test( a ), ch = /nw|ne|n/.test( a );
+		if ( isminw ) {
+			data.width = o.minWidth;
+		}
+		if ( isminh ) {
+			data.height = o.minHeight;
+		}
+		if ( ismaxw ) {
+			data.width = o.maxWidth;
+		}
+		if ( ismaxh ) {
+			data.height = o.maxHeight;
+		}
+
+		if ( isminw && cw ) {
+			data.left = dw - o.minWidth;
+		}
+		if ( ismaxw && cw ) {
+			data.left = dw - o.maxWidth;
+		}
+		if ( isminh && ch ) {
+			data.top = dh - o.minHeight;
+		}
+		if ( ismaxh && ch ) {
+			data.top = dh - o.maxHeight;
+		}
+
+		// Fixing jump error on top/left - bug #2330
+		if ( !data.width && !data.height && !data.left && data.top ) {
+			data.top = null;
+		} else if ( !data.width && !data.height && !data.top && data.left ) {
+			data.left = null;
+		}
+
+		return data;
+	},
+
+	_getPaddingPlusBorderDimensions: function( element ) {
+		var i = 0,
+			widths = [],
+			borders = [
+				element.css( "borderTopWidth" ),
+				element.css( "borderRightWidth" ),
+				element.css( "borderBottomWidth" ),
+				element.css( "borderLeftWidth" )
+			],
+			paddings = [
+				element.css( "paddingTop" ),
+				element.css( "paddingRight" ),
+				element.css( "paddingBottom" ),
+				element.css( "paddingLeft" )
+			];
+
+		for ( ; i < 4; i++ ) {
+			widths[ i ] = ( parseFloat( borders[ i ] ) || 0 );
+			widths[ i ] += ( parseFloat( paddings[ i ] ) || 0 );
+		}
+
+		return {
+			height: widths[ 0 ] + widths[ 2 ],
+			width: widths[ 1 ] + widths[ 3 ]
+		};
+	},
+
+	_proportionallyResize: function() {
+
+		if ( !this._proportionallyResizeElements.length ) {
+			return;
+		}
+
+		var prel,
+			i = 0,
+			element = this.helper || this.element;
+
+		for ( ; i < this._proportionallyResizeElements.length; i++ ) {
+
+			prel = this._proportionallyResizeElements[ i ];
+
+			// TODO: Seems like a bug to cache this.outerDimensions
+			// considering that we are in a loop.
+			if ( !this.outerDimensions ) {
+				this.outerDimensions = this._getPaddingPlusBorderDimensions( prel );
+			}
+
+			prel.css( {
+				height: ( element.height() - this.outerDimensions.height ) || 0,
+				width: ( element.width() - this.outerDimensions.width ) || 0
+			} );
+
+		}
+
+	},
+
+	_renderProxy: function() {
+
+		var el = this.element, o = this.options;
+		this.elementOffset = el.offset();
+
+		if ( this._helper ) {
+
+			this.helper = this.helper || $( "<div style='overflow:hidden;'></div>" );
+
+			this._addClass( this.helper, this._helper );
+			this.helper.css( {
+				width: this.element.outerWidth(),
+				height: this.element.outerHeight(),
+				position: "absolute",
+				left: this.elementOffset.left + "px",
+				top: this.elementOffset.top + "px",
+				zIndex: ++o.zIndex //TODO: Don't modify option
+			} );
+
+			this.helper
+				.appendTo( "body" )
+				.disableSelection();
+
+		} else {
+			this.helper = this.element;
+		}
+
+	},
+
+	_change: {
+		e: function( event, dx ) {
+			return { width: this.originalSize.width + dx };
+		},
+		w: function( event, dx ) {
+			var cs = this.originalSize, sp = this.originalPosition;
+			return { left: sp.left + dx, width: cs.width - dx };
+		},
+		n: function( event, dx, dy ) {
+			var cs = this.originalSize, sp = this.originalPosition;
+			return { top: sp.top + dy, height: cs.height - dy };
+		},
+		s: function( event, dx, dy ) {
+			return { height: this.originalSize.height + dy };
+		},
+		se: function( event, dx, dy ) {
+			return $.extend( this._change.s.apply( this, arguments ),
+				this._change.e.apply( this, [ event, dx, dy ] ) );
+		},
+		sw: function( event, dx, dy ) {
+			return $.extend( this._change.s.apply( this, arguments ),
+				this._change.w.apply( this, [ event, dx, dy ] ) );
+		},
+		ne: function( event, dx, dy ) {
+			return $.extend( this._change.n.apply( this, arguments ),
+				this._change.e.apply( this, [ event, dx, dy ] ) );
+		},
+		nw: function( event, dx, dy ) {
+			return $.extend( this._change.n.apply( this, arguments ),
+				this._change.w.apply( this, [ event, dx, dy ] ) );
+		}
+	},
+
+	_propagate: function( n, event ) {
+		$.ui.plugin.call( this, n, [ event, this.ui() ] );
+		( n !== "resize" && this._trigger( n, event, this.ui() ) );
+	},
+
+	plugins: {},
+
+	ui: function() {
+		return {
+			originalElement: this.originalElement,
+			element: this.element,
+			helper: this.helper,
+			position: this.position,
+			size: this.size,
+			originalSize: this.originalSize,
+			originalPosition: this.originalPosition
+		};
+	}
+
+} );
+
+/*
+ * Resizable Extensions
+ */
+
+$.ui.plugin.add( "resizable", "animate", {
+
+	stop: function( event ) {
+		var that = $( this ).resizable( "instance" ),
+			o = that.options,
+			pr = that._proportionallyResizeElements,
+			ista = pr.length && ( /textarea/i ).test( pr[ 0 ].nodeName ),
+			soffseth = ista && that._hasScroll( pr[ 0 ], "left" ) ? 0 : that.sizeDiff.height,
+			soffsetw = ista ? 0 : that.sizeDiff.width,
+			style = {
+				width: ( that.size.width - soffsetw ),
+				height: ( that.size.height - soffseth )
+			},
+			left = ( parseFloat( that.element.css( "left" ) ) +
+				( that.position.left - that.originalPosition.left ) ) || null,
+			top = ( parseFloat( that.element.css( "top" ) ) +
+				( that.position.top - that.originalPosition.top ) ) || null;
+
+		that.element.animate(
+			$.extend( style, top && left ? { top: top, left: left } : {} ), {
+				duration: o.animateDuration,
+				easing: o.animateEasing,
+				step: function() {
+
+					var data = {
+						width: parseFloat( that.element.css( "width" ) ),
+						height: parseFloat( that.element.css( "height" ) ),
+						top: parseFloat( that.element.css( "top" ) ),
+						left: parseFloat( that.element.css( "left" ) )
+					};
+
+					if ( pr && pr.length ) {
+						$( pr[ 0 ] ).css( { width: data.width, height: data.height } );
+					}
+
+					// Propagating resize, and updating values for each animation step
+					that._updateCache( data );
+					that._propagate( "resize", event );
+
+				}
+			}
+		);
+	}
+
+} );
+
+$.ui.plugin.add( "resizable", "containment", {
+
+	start: function() {
+		var element, p, co, ch, cw, width, height,
+			that = $( this ).resizable( "instance" ),
+			o = that.options,
+			el = that.element,
+			oc = o.containment,
+			ce = ( oc instanceof $ ) ?
+				oc.get( 0 ) :
+				( /parent/.test( oc ) ) ? el.parent().get( 0 ) : oc;
+
+		if ( !ce ) {
+			return;
+		}
+
+		that.containerElement = $( ce );
+
+		if ( /document/.test( oc ) || oc === document ) {
+			that.containerOffset = {
+				left: 0,
+				top: 0
+			};
+			that.containerPosition = {
+				left: 0,
+				top: 0
+			};
+
+			that.parentData = {
+				element: $( document ),
+				left: 0,
+				top: 0,
+				width: $( document ).width(),
+				height: $( document ).height() || document.body.parentNode.scrollHeight
+			};
+		} else {
+			element = $( ce );
+			p = [];
+			$( [ "Top", "Right", "Left", "Bottom" ] ).each( function( i, name ) {
+				p[ i ] = that._num( element.css( "padding" + name ) );
+			} );
+
+			that.containerOffset = element.offset();
+			that.containerPosition = element.position();
+			that.containerSize = {
+				height: ( element.innerHeight() - p[ 3 ] ),
+				width: ( element.innerWidth() - p[ 1 ] )
+			};
+
+			co = that.containerOffset;
+			ch = that.containerSize.height;
+			cw = that.containerSize.width;
+			width = ( that._hasScroll ( ce, "left" ) ? ce.scrollWidth : cw );
+			height = ( that._hasScroll ( ce ) ? ce.scrollHeight : ch ) ;
+
+			that.parentData = {
+				element: ce,
+				left: co.left,
+				top: co.top,
+				width: width,
+				height: height
+			};
+		}
+	},
+
+	resize: function( event ) {
+		var woset, hoset, isParent, isOffsetRelative,
+			that = $( this ).resizable( "instance" ),
+			o = that.options,
+			co = that.containerOffset,
+			cp = that.position,
+			pRatio = that._aspectRatio || event.shiftKey,
+			cop = {
+				top: 0,
+				left: 0
+			},
+			ce = that.containerElement,
+			continueResize = true;
+
+		if ( ce[ 0 ] !== document && ( /static/ ).test( ce.css( "position" ) ) ) {
+			cop = co;
+		}
+
+		if ( cp.left < ( that._helper ? co.left : 0 ) ) {
+			that.size.width = that.size.width +
+				( that._helper ?
+					( that.position.left - co.left ) :
+					( that.position.left - cop.left ) );
+
+			if ( pRatio ) {
+				that.size.height = that.size.width / that.aspectRatio;
+				continueResize = false;
+			}
+			that.position.left = o.helper ? co.left : 0;
+		}
+
+		if ( cp.top < ( that._helper ? co.top : 0 ) ) {
+			that.size.height = that.size.height +
+				( that._helper ?
+					( that.position.top - co.top ) :
+					that.position.top );
+
+			if ( pRatio ) {
+				that.size.width = that.size.height * that.aspectRatio;
+				continueResize = false;
+			}
+			that.position.top = that._helper ? co.top : 0;
+		}
+
+		isParent = that.containerElement.get( 0 ) === that.element.parent().get( 0 );
+		isOffsetRelative = /relative|absolute/.test( that.containerElement.css( "position" ) );
+
+		if ( isParent && isOffsetRelative ) {
+			that.offset.left = that.parentData.left + that.position.left;
+			that.offset.top = that.parentData.top + that.position.top;
+		} else {
+			that.offset.left = that.element.offset().left;
+			that.offset.top = that.element.offset().top;
+		}
+
+		woset = Math.abs( that.sizeDiff.width +
+			( that._helper ?
+				that.offset.left - cop.left :
+				( that.offset.left - co.left ) ) );
+
+		hoset = Math.abs( that.sizeDiff.height +
+			( that._helper ?
+				that.offset.top - cop.top :
+				( that.offset.top - co.top ) ) );
+
+		if ( woset + that.size.width >= that.parentData.width ) {
+			that.size.width = that.parentData.width - woset;
+			if ( pRatio ) {
+				that.size.height = that.size.width / that.aspectRatio;
+				continueResize = false;
+			}
+		}
+
+		if ( hoset + that.size.height >= that.parentData.height ) {
+			that.size.height = that.parentData.height - hoset;
+			if ( pRatio ) {
+				that.size.width = that.size.height * that.aspectRatio;
+				continueResize = false;
+			}
+		}
+
+		if ( !continueResize ) {
+			that.position.left = that.prevPosition.left;
+			that.position.top = that.prevPosition.top;
+			that.size.width = that.prevSize.width;
+			that.size.height = that.prevSize.height;
+		}
+	},
+
+	stop: function() {
+		var that = $( this ).resizable( "instance" ),
+			o = that.options,
+			co = that.containerOffset,
+			cop = that.containerPosition,
+			ce = that.containerElement,
+			helper = $( that.helper ),
+			ho = helper.offset(),
+			w = helper.outerWidth() - that.sizeDiff.width,
+			h = helper.outerHeight() - that.sizeDiff.height;
+
+		if ( that._helper && !o.animate && ( /relative/ ).test( ce.css( "position" ) ) ) {
+			$( this ).css( {
+				left: ho.left - cop.left - co.left,
+				width: w,
+				height: h
+			} );
+		}
+
+		if ( that._helper && !o.animate && ( /static/ ).test( ce.css( "position" ) ) ) {
+			$( this ).css( {
+				left: ho.left - cop.left - co.left,
+				width: w,
+				height: h
+			} );
+		}
+	}
+} );
+
+$.ui.plugin.add( "resizable", "alsoResize", {
+
+	start: function() {
+		var that = $( this ).resizable( "instance" ),
+			o = that.options;
+
+		$( o.alsoResize ).each( function() {
+			var el = $( this );
+			el.data( "ui-resizable-alsoresize", {
+				width: parseFloat( el.width() ), height: parseFloat( el.height() ),
+				left: parseFloat( el.css( "left" ) ), top: parseFloat( el.css( "top" ) )
+			} );
+		} );
+	},
+
+	resize: function( event, ui ) {
+		var that = $( this ).resizable( "instance" ),
+			o = that.options,
+			os = that.originalSize,
+			op = that.originalPosition,
+			delta = {
+				height: ( that.size.height - os.height ) || 0,
+				width: ( that.size.width - os.width ) || 0,
+				top: ( that.position.top - op.top ) || 0,
+				left: ( that.position.left - op.left ) || 0
+			};
+
+			$( o.alsoResize ).each( function() {
+				var el = $( this ), start = $( this ).data( "ui-resizable-alsoresize" ), style = {},
+					css = el.parents( ui.originalElement[ 0 ] ).length ?
+							[ "width", "height" ] :
+							[ "width", "height", "top", "left" ];
+
+				$.each( css, function( i, prop ) {
+					var sum = ( start[ prop ] || 0 ) + ( delta[ prop ] || 0 );
+					if ( sum && sum >= 0 ) {
+						style[ prop ] = sum || null;
+					}
+				} );
+
+				el.css( style );
+			} );
+	},
+
+	stop: function() {
+		$( this ).removeData( "ui-resizable-alsoresize" );
+	}
+} );
+
+$.ui.plugin.add( "resizable", "ghost", {
+
+	start: function() {
+
+		var that = $( this ).resizable( "instance" ), cs = that.size;
+
+		that.ghost = that.originalElement.clone();
+		that.ghost.css( {
+			opacity: 0.25,
+			display: "block",
+			position: "relative",
+			height: cs.height,
+			width: cs.width,
+			margin: 0,
+			left: 0,
+			top: 0
+		} );
+
+		that._addClass( that.ghost, "ui-resizable-ghost" );
+
+		// DEPRECATED
+		// TODO: remove after 1.12
+		if ( $.uiBackCompat !== false && typeof that.options.ghost === "string" ) {
+
+			// Ghost option
+			that.ghost.addClass( this.options.ghost );
+		}
+
+		that.ghost.appendTo( that.helper );
+
+	},
+
+	resize: function() {
+		var that = $( this ).resizable( "instance" );
+		if ( that.ghost ) {
+			that.ghost.css( {
+				position: "relative",
+				height: that.size.height,
+				width: that.size.width
+			} );
+		}
+	},
+
+	stop: function() {
+		var that = $( this ).resizable( "instance" );
+		if ( that.ghost && that.helper ) {
+			that.helper.get( 0 ).removeChild( that.ghost.get( 0 ) );
+		}
+	}
+
+} );
+
+$.ui.plugin.add( "resizable", "grid", {
+
+	resize: function() {
+		var outerDimensions,
+			that = $( this ).resizable( "instance" ),
+			o = that.options,
+			cs = that.size,
+			os = that.originalSize,
+			op = that.originalPosition,
+			a = that.axis,
+			grid = typeof o.grid === "number" ? [ o.grid, o.grid ] : o.grid,
+			gridX = ( grid[ 0 ] || 1 ),
+			gridY = ( grid[ 1 ] || 1 ),
+			ox = Math.round( ( cs.width - os.width ) / gridX ) * gridX,
+			oy = Math.round( ( cs.height - os.height ) / gridY ) * gridY,
+			newWidth = os.width + ox,
+			newHeight = os.height + oy,
+			isMaxWidth = o.maxWidth && ( o.maxWidth < newWidth ),
+			isMaxHeight = o.maxHeight && ( o.maxHeight < newHeight ),
+			isMinWidth = o.minWidth && ( o.minWidth > newWidth ),
+			isMinHeight = o.minHeight && ( o.minHeight > newHeight );
+
+		o.grid = grid;
+
+		if ( isMinWidth ) {
+			newWidth += gridX;
+		}
+		if ( isMinHeight ) {
+			newHeight += gridY;
+		}
+		if ( isMaxWidth ) {
+			newWidth -= gridX;
+		}
+		if ( isMaxHeight ) {
+			newHeight -= gridY;
+		}
+
+		if ( /^(se|s|e)$/.test( a ) ) {
+			that.size.width = newWidth;
+			that.size.height = newHeight;
+		} else if ( /^(ne)$/.test( a ) ) {
+			that.size.width = newWidth;
+			that.size.height = newHeight;
+			that.position.top = op.top - oy;
+		} else if ( /^(sw)$/.test( a ) ) {
+			that.size.width = newWidth;
+			that.size.height = newHeight;
+			that.position.left = op.left - ox;
+		} else {
+			if ( newHeight - gridY <= 0 || newWidth - gridX <= 0 ) {
+				outerDimensions = that._getPaddingPlusBorderDimensions( this );
+			}
+
+			if ( newHeight - gridY > 0 ) {
+				that.size.height = newHeight;
+				that.position.top = op.top - oy;
+			} else {
+				newHeight = gridY - outerDimensions.height;
+				that.size.height = newHeight;
+				that.position.top = op.top + os.height - newHeight;
+			}
+			if ( newWidth - gridX > 0 ) {
+				that.size.width = newWidth;
+				that.position.left = op.left - ox;
+			} else {
+				newWidth = gridX - outerDimensions.width;
+				that.size.width = newWidth;
+				that.position.left = op.left + os.width - newWidth;
+			}
+		}
+	}
+
+} );
+
+return $.ui.resizable;
+
+} ) );
+
+},{}],25:[function(require,module,exports){
 /*!
  * jQuery UI Sortable 1.12.1
  * http://jqueryui.com
@@ -11122,7 +15787,126 @@ return $.widget( "ui.sortable", $.ui.mouse, {
 
 } ) );
 
-},{}],13:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
+/*!
+ * jQuery Cookie Plugin v1.4.1
+ * https://github.com/carhartl/jquery-cookie
+ *
+ * Copyright 2013 Klaus Hartl
+ * Released under the MIT license
+ */
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD
+		define(['jquery'], factory);
+	} else if (typeof exports === 'object') {
+		// CommonJS
+		factory(require('jquery'));
+	} else {
+		// Browser globals
+		factory(jQuery);
+	}
+}(function ($) {
+
+	var pluses = /\+/g;
+
+	function encode(s) {
+		return config.raw ? s : encodeURIComponent(s);
+	}
+
+	function decode(s) {
+		return config.raw ? s : decodeURIComponent(s);
+	}
+
+	function stringifyCookieValue(value) {
+		return encode(config.json ? JSON.stringify(value) : String(value));
+	}
+
+	function parseCookieValue(s) {
+		if (s.indexOf('"') === 0) {
+			// This is a quoted cookie as according to RFC2068, unescape...
+			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+		}
+
+		try {
+			// Replace server-side written pluses with spaces.
+			// If we can't decode the cookie, ignore it, it's unusable.
+			// If we can't parse the cookie, ignore it, it's unusable.
+			s = decodeURIComponent(s.replace(pluses, ' '));
+			return config.json ? JSON.parse(s) : s;
+		} catch(e) {}
+	}
+
+	function read(s, converter) {
+		var value = config.raw ? s : parseCookieValue(s);
+		return $.isFunction(converter) ? converter(value) : value;
+	}
+
+	var config = $.cookie = function (key, value, options) {
+
+		// Write
+
+		if (value !== undefined && !$.isFunction(value)) {
+			options = $.extend({}, config.defaults, options);
+
+			if (typeof options.expires === 'number') {
+				var days = options.expires, t = options.expires = new Date();
+				t.setTime(+t + days * 864e+5);
+			}
+
+			return (document.cookie = [
+				encode(key), '=', stringifyCookieValue(value),
+				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+				options.path    ? '; path=' + options.path : '',
+				options.domain  ? '; domain=' + options.domain : '',
+				options.secure  ? '; secure' : ''
+			].join(''));
+		}
+
+		// Read
+
+		var result = key ? undefined : {};
+
+		// To prevent the for loop in the first place assign an empty array
+		// in case there are no cookies at all. Also prevents odd result when
+		// calling $.cookie().
+		var cookies = document.cookie ? document.cookie.split('; ') : [];
+
+		for (var i = 0, l = cookies.length; i < l; i++) {
+			var parts = cookies[i].split('=');
+			var name = decode(parts.shift());
+			var cookie = parts.join('=');
+
+			if (key && key === name) {
+				// If second argument (value) is a function it's a converter...
+				result = read(cookie, value);
+				break;
+			}
+
+			// Prevent storing a cookie that we couldn't decode.
+			if (!key && (cookie = read(cookie)) !== undefined) {
+				result[name] = cookie;
+			}
+		}
+
+		return result;
+	};
+
+	config.defaults = {};
+
+	$.removeCookie = function (key, options) {
+		if ($.cookie(key) === undefined) {
+			return false;
+		}
+
+		// Must not alter options, thus extending a fresh object...
+		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
+		return !$.cookie(key);
+	};
+
+}));
+
+},{"jquery":27}],27:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -21377,7 +26161,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],14:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 //! moment.js
 //! version : 2.18.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -25842,7 +30626,7 @@ return hooks;
 
 })));
 
-},{}],15:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 /*!
  * Select2 4.0.3
  * https://select2.github.io
@@ -31569,7 +36353,7 @@ S2.define('jquery.select2',[
   return select2;
 }));
 
-},{"jquery":13}],16:[function(require,module,exports){
+},{"jquery":27}],30:[function(require,module,exports){
 var beeps = {};
 
 beeps.success = new Audio("data:audio/wav;base64,//uQRAAAAWMSLwUIYAAsYkXgoQwAEaYLWfkWgAI0wWs/ItAAAGDgYtAgAyN+QWaAAihwMWm4G8QQRDiMcCBcH3Cc+CDv/7xA4Tvh9Rz/y8QADBwMWgQAZG/ILNAARQ4GLTcDeIIIhxGOBAuD7hOfBB3/94gcJ3w+o5/5eIAIAAAVwWgQAVQ2ORaIQwEMAJiDg95G4nQL7mQVWI6GwRcfsZAcsKkJvxgxEjzFUgfHoSQ9Qq7KNwqHwuB13MA4a1q/DmBrHgPcmjiGoh//EwC5nGPEmS4RcfkVKOhJf+WOgoxJclFz3kgn//dBA+ya1GhurNn8zb//9NNutNuhz31f////9vt///z+IdAEAAAK4LQIAKobHItEIYCGAExBwe8jcToF9zIKrEdDYIuP2MgOWFSE34wYiR5iqQPj0JIeoVdlG4VD4XA67mAcNa1fhzA1jwHuTRxDUQ//iYBczjHiTJcIuPyKlHQkv/LHQUYkuSi57yQT//uggfZNajQ3Vmz+Zt//+mm3Wm3Q576v////+32///5/EOgAAADVghQAAAAA//uQZAUAB1WI0PZugAAAAAoQwAAAEk3nRd2qAAAAACiDgAAAAAAABCqEEQRLCgwpBGMlJkIz8jKhGvj4k6jzRnqasNKIeoh5gI7BJaC1A1AoNBjJgbyApVS4IDlZgDU5WUAxEKDNmmALHzZp0Fkz1FMTmGFl1FMEyodIavcCAUHDWrKAIA4aa2oCgILEBupZgHvAhEBcZ6joQBxS76AgccrFlczBvKLC0QI2cBoCFvfTDAo7eoOQInqDPBtvrDEZBNYN5xwNwxQRfw8ZQ5wQVLvO8OYU+mHvFLlDh05Mdg7BT6YrRPpCBznMB2r//xKJjyyOh+cImr2/4doscwD6neZjuZR4AgAABYAAAABy1xcdQtxYBYYZdifkUDgzzXaXn98Z0oi9ILU5mBjFANmRwlVJ3/6jYDAmxaiDG3/6xjQQCCKkRb/6kg/wW+kSJ5//rLobkLSiKmqP/0ikJuDaSaSf/6JiLYLEYnW/+kXg1WRVJL/9EmQ1YZIsv/6Qzwy5qk7/+tEU0nkls3/zIUMPKNX/6yZLf+kFgAfgGyLFAUwY//uQZAUABcd5UiNPVXAAAApAAAAAE0VZQKw9ISAAACgAAAAAVQIygIElVrFkBS+Jhi+EAuu+lKAkYUEIsmEAEoMeDmCETMvfSHTGkF5RWH7kz/ESHWPAq/kcCRhqBtMdokPdM7vil7RG98A2sc7zO6ZvTdM7pmOUAZTnJW+NXxqmd41dqJ6mLTXxrPpnV8avaIf5SvL7pndPvPpndJR9Kuu8fePvuiuhorgWjp7Mf/PRjxcFCPDkW31srioCExivv9lcwKEaHsf/7ow2Fl1T/9RkXgEhYElAoCLFtMArxwivDJJ+bR1HTKJdlEoTELCIqgEwVGSQ+hIm0NbK8WXcTEI0UPoa2NbG4y2K00JEWbZavJXkYaqo9CRHS55FcZTjKEk3NKoCYUnSQ0rWxrZbFKbKIhOKPZe1cJKzZSaQrIyULHDZmV5K4xySsDRKWOruanGtjLJXFEmwaIbDLX0hIPBUQPVFVkQkDoUNfSoDgQGKPekoxeGzA4DUvnn4bxzcZrtJyipKfPNy5w+9lnXwgqsiyHNeSVpemw4bWb9psYeq//uQZBoABQt4yMVxYAIAAAkQoAAAHvYpL5m6AAgAACXDAAAAD59jblTirQe9upFsmZbpMudy7Lz1X1DYsxOOSWpfPqNX2WqktK0DMvuGwlbNj44TleLPQ+Gsfb+GOWOKJoIrWb3cIMeeON6lz2umTqMXV8Mj30yWPpjoSa9ujK8SyeJP5y5mOW1D6hvLepeveEAEDo0mgCRClOEgANv3B9a6fikgUSu/DmAMATrGx7nng5p5iimPNZsfQLYB2sDLIkzRKZOHGAaUyDcpFBSLG9MCQALgAIgQs2YunOszLSAyQYPVC2YdGGeHD2dTdJk1pAHGAWDjnkcLKFymS3RQZTInzySoBwMG0QueC3gMsCEYxUqlrcxK6k1LQQcsmyYeQPdC2YfuGPASCBkcVMQQqpVJshui1tkXQJQV0OXGAZMXSOEEBRirXbVRQW7ugq7IM7rPWSZyDlM3IuNEkxzCOJ0ny2ThNkyRai1b6ev//3dzNGzNb//4uAvHT5sURcZCFcuKLhOFs8mLAAEAt4UWAAIABAAAAAB4qbHo0tIjVkUU//uQZAwABfSFz3ZqQAAAAAngwAAAE1HjMp2qAAAAACZDgAAAD5UkTE1UgZEUExqYynN1qZvqIOREEFmBcJQkwdxiFtw0qEOkGYfRDifBui9MQg4QAHAqWtAWHoCxu1Yf4VfWLPIM2mHDFsbQEVGwyqQoQcwnfHeIkNt9YnkiaS1oizycqJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=");
@@ -31577,7 +36361,7 @@ beeps.success2 = new Audio("data:audio/wav;base64,UklGRpZmAABXQVZFZm10IBAAAAABAA
 beeps.error = new Audio("data:audio/wav;base64,UklGRpD2AABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YWz2AAABpv+lAKYBpv6lA6b9pQKm/6UApgCmAKYBpv6lA6b8pQOm/6X/pQOm/KUEpvylBKb9pQKm/6X/pQOm/aUCpv+lAKYApgGm/6UBpv+lAab/pQGmAKb/pQKm/qUBpgCm/6UBpgCm/6UCpv2lAqYApv+lAqb9pQOm/aUDpv6lAKYCpvylBKb+pQCmAab/pf+lA6b9pQKm/6UApgCmAKYApgCmAKYApv+lAqb+pQGmAKb/pQKm/qUBpgCmAKYApgCmAKb/pQOm/KUDpv+l/6UCpv+l/6UCpv6lAaYApv+lAqb+pQKm/lkAWgNa/FkEWvxZBFr8WQRa/VkBWgFa/VkEWv1ZAVoBWv1ZBFr8WQNa/lkBWv9ZAVr/WQJa/lkBWgBa/1kDWvxZBFr9WQJa/1kAWgBaAVr/WQBaAFoBWv5ZA1r9WQFaAVr+WQFaAFoAWgBaAFoAWgBaAKYApv+lA6b8pQSm/aUBpgGm/aUFpvqlBqb6pQam/KUBpgGm/aUEpv2lAaYBpv6lAqb+pQKm/6UBpv+lAKYBpv+lAab+pQKm/6UBpv+lAKYApgCmAab/pQCmAab+pQOm/aUCpv+lAab/pQGm/6UApgGm/6UBpgCm/qUCpv6lAqb/pQCmAKYApv+lAqb9pQOm/qUBpgCm/6UBpgCm/6UCpv2lA6b+pQGmAKb/pQGmAKb/pQGm/6UBpv+lAqb9pQOm/qUBpv+lAqb9pQSm/KUDpv6lAqb+pQKm/qUBpgCmAKYApgCm/6UBpgCm/6UCpv6lAaYApv+lAqb+pQKm/qUCpv2lA6b+pQGmAKb/pQGm/6UBpv+lAaYApv+lAab/pQGmAKb/pQKm/aUDpv6lAqb+pQKm/qUCpv+lAKYApgGm/qUDpv2lAqb/pQCmAab/pQGm/6UBpv+lAKYBpv+lAab/pQGm/qUDpv2lA6b+pQCmAab/pQGmAKb/pQGm/6UBpgCm/6UCpv2lA6b/pf+lAqb9pQOm/qUBpgCm/6UCpv6lAaYApgCmAKYBpv6lA6b9pQKm/6UApgGm/6UApgCmAKYApgFa/lkBWgBaAFoAWgFa/VkEWv1ZAVoBWv5ZAVoBWv5ZAVoAWv9ZAlr+WQFa/1kBWgBaAFr/WQFa/1kCWv5ZAVoAWv9ZAlr+WQFaAFr/WQJa/lkBWv9ZAVoAWv9ZAVr/WQFaAFr/WQFa/1kBWgBa/1kBWv+lAab/pQGm/6UBpv+lAab+pQOm/qUBpgCm/6UBpgCmAKYApgCm/6UCpv6lAqb+pQKm/qUBpgCmAKYApgGm/qUBpgGm/6UBpv+lAKYBpv+lAKYBpv+lAKYBpv6lAqb/pf+lA6b9pQGmAab9pQSm/aUCpv6lAqb+pQKm/6UApgCmAab+pQKm/qUCpv+lAKYApv+lAqb/pf+lAqb+pQKm/qUBpgCmAKYBpv2lBKb8pQOm/6X/pQKm/qUCpv6lAqb+pQKm/6UApgGm/qUCpv6lAqb/pQCmAKb/pQKm/aUFpvqlBab8pQOm/qUDpvylBKb8pQSm/aUCpv+lAKYApgCmAKYApgCmAKYApgCmAKYApgGm/qUCpv6lAaYBpv6lAqb+pQGmAKYApgCmAKYApgGm/qUCpv6lAqb/pQGm/qUCpv6lAqb/pQCmAab+pQKm/qUDpv2lAqb/pQCmAKYApgCmAab/pf+lAqb+pQOm/aUCpv6lAqb/pQGm/6X/pQKm/6UBpv+lAKYApgCmAab+pQOm/aUCpv+lAKYBpv+lAKYApgGm/6UBpv6lAaYBpv+lAab+pQKm/6UApgCmAKb/pQKm/aUDWv1ZA1r9WQJa/1kAWgJa/VkDWv1ZAloBWv1ZBFr8WQNa/1kAWgBaAFoAWgBaAFr/WQJa/lkBWv9ZAVoAWgBaAFr/WQJa/VkEWv1ZAVoAWv9ZAVoBWv5ZAVoAWv5ZBFr8WQJaAFr+WQNa/lkAWgFa/1kBpv+lAab/pQKm/aUDpv6lAaYApv+lAqb+pQKm/aUDpv6lAab/pQGm/6UBpv+lAKYBpv+lAqb+pQCmAaYApv+lAqb9pQOm/qUCpv2lA6b+pQGmAKb/pQGmAKb/pQGm/6UBpgCm/6UBpv+lAab/pQKm/aUCpgCm/qUDpv2lA6b+pQGm/qUDpv2lA6b+pQCmAqb9pQOm/aUEpvylA6b+pQCmAqb+pQGmAKb/pQGmAKb/pQKm/qUBpgCm/6UBpgCm/6UBpv+lAKYCpv2lA6b9pQKm/6UBpgCm/6UBpv+lAaYApv+lAKYBpgCm/6UApgCmAKYBpv6lAaYApv+lAqb+pQKm/aUEpvylBKb8pQOm/qUCpv+lAKb/pQGmAKYBpv6lAqb+pQKm/6UApgGm/qUDpv2lAaYBpv+lAKYBpv2lBKb+pQCmAqb8pQSm/qUBpv+lAab+pQOm/aUCpv+lAKYBpv6lAqb+pQKm/6UApgCm/6UCpv6lAaYApv+lAqb+pQGmAKYApgCm/6UCpv6lA6b8pQSm/KUEpv2lAaYBpv6lA6b8pQSm/KUFpvulBKb9pQKmAKb/pQCmAab/pQGm/6UApgGm/6UBWv5ZAloAWv5ZAlr/WQBaAVr+WQFaAVr+WQNa/FkEWvxZA1r+WQJa/lkCWv1ZA1r+WQJa/VkDWv5ZAVoAWgBaAFoAWv9ZAlr+WQJa/1n/WQNa/FkDWv9ZAFoAWgFa/VkEWvxZA1r/WQBa/1kCWv5ZAlr/pQCmAKYApgCmAKYApgCmAab9pQOm/aUDpv+l/6UBpv+lAqb9pQOm/aUDpv+lAKb/pQGm/6UCpv+lAKb/pQGmAKYApgGm/aUDpv6lAqb+pQKm/qUBpgCm/6UBpgCm/6UCpv2lAqYApv+lAqb+pQGmAKYApgCmAKYApv+lAqb+pQKm/qUBpgCmAKYApgCm/6UCpv+lAKYBpv2lBKb+pQCmAab/pQCmAaYApv6lA6b9pQGmAqb9pQOm/aUCpv+lAaYApv+lAab/pQGm/6UCpvylBab8pQKm/6UBpv+lAab/pQCmAab/pQGm/6UBpv6lA6b8pQSm/aUCpv+l/6UBpgCmAKYApgCm/6UCpv6lAaYBpv6lAaYBpv6lAqb/pQCmAKYBpv6lA6b9pQKm/qUDpv2lAqb+pQKm/6UBpv6lAqb+pQOm/aUDpv2lAqb/pQGm/6UBpv+lAab/pQCmAab+pQOm/aUBpgGm/qUCpv+lAKYApgGm/qUCpv6lAqb/pQCmAKYApgCmAKYApgCmAKYApgCmAKYApgGm/aUEpvylBKb+pf+lA6b8pQSm/aUCpgCm/6UBpv6lAqb/pQGm/6UApgCmAFoAWgFa/lkCWv9Z/1kDWvxZBFr9WQJa/1kBWv9ZAFoCWv1ZA1r+WQFaAFoAWv9ZAlr+WQFaAFoAWgBaAFr/WQFaAFoAWv9ZAVr/WQFaAFr/WQFa/1kAWgJa/VkDWv1ZA1r9WQNa/VkDWv5ZAFoCWv1ZA6b+pQCmAqb+pQGmAKb/pQGmAKYApgCmAKYApv+lAqb+pQKm/6X/pQGmAKb/pQGmAKb/pQKm/qUApgKm/qUDpv2lAqb+pQKm/qUDpvylBKb8pQSm/KUDpv6lAqb/pQCm/6UCpv6lA6b8pQSm/KUEpvylBKb9pQGmAKYApgCmAKb/pQKm/aUEpvulBab8pQKm/6UApgKm/aUCpv+lAKYBpv+lAKYApgGm/qUCpv6lAqb+pQKm/aUDpv+lAKYApv+lAaYApgGm/qUCpv6lAqb/pQCmAKYApgCmAKYBpv+lAKYApgCmAab/pQCmAKYBpv6lA6b8pQSm/KUDpv+lAKYBpv6lAqb/pf+lA6b9pQKm/6X/pQOm/KUFpvqlBab9pQKm/6UBpv6lAqb/pQCmAab+pQKm/qUBpgCm/6UCpv2lA6b9pQOm/qUBpgCm/6UBpgCm/6UCpv2lA6b9pQOm/qUApgGm/6UApgGm/qUDpv6lAKYBpv6lA6b9pQOm/qUApgKm/aUEpv2lAaYApv+lA6b8pQSm/KUDpv+l/6UCpv6lAaYApgCm/6UCpv6lAqb/pQCm/6UCpv6lA6b9pQGmAKYApv9ZAlr9WQRa/FkDWv1ZA1r9WQRa/FkDWv5ZAFoDWvxZA1r+WQBaAlr+WQFaAFr+WQNa/VkDWv5ZAVr/WQFa/1kBWgBa/1kBWv9ZAVr/WQJa/FkEWv1ZAlr/WQFa/lkCWv9ZAFoBWv5ZA1r9WQNa/VkBWgGm/6UBpv+lAKYBpv+lAKYBpv+lAab/pQCmAaYApv+lAKYBpv6lBKb8pQKm/6UBpv6lA6b+pQCmAab/pQGm/6UCpv2lA6b+pQCmAqb9pQOm/aUCpv+lAKYApgCmAKYBpv+lAKYApgGm/6UApgGm/qUDpv6l/6UCpv+lAKYApgCmAKYApgCm/6UBpgCmAKb/pQGm/6UCpv6lAab/pQKm/qUDpvylA6b/pQCmAKYApgCmAab+pQKm/qUBpgCmAKYApgCmAKb/pQKm/qUBpgGm/qUCpv+l/6UDpvylBab7pQSm/aUCpv6lAqb+pQOm/KUDpv6lAaYApgCm/6UCpv2lA6b9pQOm/qUBpv+lAKYBpgCm/6UBpv+lAKYBpgCm/6UCpvylBab7pQWm/KUCpgCm/qUDpv2lAqb/pQCmAab+pQKm/qUDpvylBKb8pQSm/aUBpgCmAKYApgCmAKYApgCmAKb/pQOm/KUDpv6lAaYApgCm/6UBpv+lAaYApv+lAqb+pQGmAKb/pQKm/6UApgCm/6UCpv6lAaYApgCm/6UCpv2lBKb9pQGmAKYBpv6lA6b8pQSm/aUBpgGm/qUCpv6lAaYAWgFa/lkDWvtZBVr+WQBaAVr+WQJa/1kBWv5ZAlr/WQBaAVr/Wf9ZA1r8WQRa/ln/WQNa/VkCWv9ZAFoBWgBa/lkCWv9ZAFoCWv1ZAlr/WQFa/1kBWv9ZAVoAWgBa/1kBWv9ZAlr+WQJa/VkDWv5ZAlr+pQGm/6UCpv2lBKb8pQOm/qUBpgCmAKYApv+lAqb+pQKm/qUBpgCmAKYApgCmAKb/pQOm+6UGpvqlBKb/pQCmAKYApv+lAqb/pf+lA6b8pQSm/aUCpv6lA6b9pQKmAKb9pQSm/aUCpv6lAab/pQGmAKb/pQGmAKb/pQGmAKb/pQOm+6UFpvylA6b+pQCmAaYApgCm/6UBpv+lA6b8pQOm/qUBpgGm/aUDpv6lAab/pQCmAKYBpv+lAKYBpv6lAqb/pQCmAqb9pQKm/6UApgGm/6UApgGm/qUDpv2lAqb/pQCmAKYBpv6lA6b8pQOm/qUBpgCm/6UBpgCm/6UBpv+lAab/pQKm/aUEpvylA6b+pQGmAKYBpv6lAqb9pQOm/qUCpv6lAaYApv+lAaYApv+lAqb+pQGmAKYApgCm/6UCpv2lBab6pQWm/KUDpv6lAqb+pQGm/6UBpgCmAKYApv+lAqb+pQGmAKYApgGm/qUCpv6lA6b9pQKm/6UApgGm/6UApgGm/qUCpgCm/qUDpvylBKb9pQOm/aUCpv+lAKYBpv6lA6b9pQKm/qUCpv6lA6b9pQKm/qUCpv6lAqb/pQCmAFr/WQJa/1kAWv9ZAVoAWgBaAFr/WQFaAFr/WQJa/VkEWvtZBlr5WQda+lkFWv1ZAVr/WQFaAFoAWgBaAFr/WQFaAFr/WQJa/lkAWgJa/VkDWv5ZAFoBWgBa/1kBWv9ZAFoBWv9ZAFoBWv9ZAFoBWv5ZA6b9pQOm/aUCpgCm/qUDpv2lAqYApv6lA6b+pQCmAab+pQOm/qUApgGm/6UApgGm/6UBpgCm/qUDpv6lAqb+pQGm/6UBpgCmAKb/pQKm/KUFpvylA6b+pQCmAab/pQKm/aUDpv6lAaYApv+lAqb+pQKm/qUBpgCmAKYApgCmAKYApgGm/qUCpv+lAKYBpv+lAKYBpv+lAKYCpvylBab6pQam/KUCpv+lAKYApgCmAab+pQOm/KUEpvylBKb9pQKm/6UApgCmAab/pQGm/6UBpv+lAab/pQGmAKb/pQGm/6UBpgCm/6UBpgCm/6UCpv2lAqYApv+lAab/pQCmAab/pQCmAKYBpv+lAKYApgCmAab/pQGm/6UApgGm/6UBpv+lAKYBpv+lAab+pQOm/aUCpv+lAKYBpv+lAab+pQOm/qUBpv+lAab/pQKm/qUCpv6lAqb/pQCmAKYApgCmAKYApgCmAKYApv+lAaYApgCmAab9pQSm/KUEpv2lAaYApv+lAqb9pQSm+6UFpvulBKb+pQGm/6UBpv+lAaYApv6lA6b9pQOm/qUApgGm/6UBpv+lAKYBpv+lAab/pQCmAKYBpv9ZAVr/WQFa/1kBWv9ZAVoAWv9ZAVoAWgBa/1kBWv9ZAlr/Wf9ZAlr+WQFaAVr9WQVa+lkGWvtZA1r/WQBaAFoBWv5ZAlr+WQFaAFoAWv9ZAVr/WQJa/VkDWv1ZA1r+WQFa/1kBWv9ZAVr/WQBaAVr/WQCmAab+pQKm/6UApgGm/6UApgGm/qUDpv6lAKYBpv+lAaYApv+lAqb9pQOm/qUApgGm/6UBpgCm/qUBpgCmAab/pQGm/qUCpv+lAab/pQGm/6UBpgCm/6UBpgCm/6UCpv6lAKYCpv2lA6b+pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQGmAKb/pQGmAKb/pQGmAKb/pQGmAKb/pQKm/aUDpv6lAaYApv+lAqb+pQKm/qUBpgCmAKYBpv6lAqb+pQKm/6UApgGm/qUBpgGm/qUDpvylA6b/pQCmAKb/pQKm/qUCpv6lAab/pQKm/qUBpgGm/aUEpv2lAaYApgGm/qUCpv6lAaYBpv6lAaYApv+lAqb+pQGmAKYApgCm/6UBpv+lAqb+pQCmAqb9pQOm/aUCpgCmAKYApv+lAab/pQKm/qUBpgCm/6UBpgCm/qUDpv2lA6b+pQGm/6UApgGm/6UBpgCm/6UBpv+lAKYCpv2lAqYApv6lBKb7pQSm/aUCpgCm/qUDpvylBKb9pQKm/6UBpv+lAKYApgGm/6UBpv6lAqb/pQCmAKYApgCmAKYApgCmAab/pQBaAVr+WQNa/VkDWv5ZAFoBWv5ZAlr/WQBaAVr/Wf9ZAlr+WQJa/1kAWgBaAFoAWgBaAVr9WQRa/FkEWv1ZAlr+WQJa/lkCWv9ZAFoBWv5ZAlr/WQBaAVr+WQJa/1kAWgFa/lkCWv9ZAFoBWv9ZAVr/WQGm/6UCpv2lBKb7pQWm/KUDpv6lAqb9pQOm/qUCpv+lAKb/pQKm/qUDpvylBKb9pQGmAab9pQSm/aUCpv6lAqb+pQKm/6X/pQKm/qUCpv6lAaYApgCmAKYApv+lAaYApgCmAKYApv+lAab/pQGmAKb/pQGm/qUDpv2lA6b9pQKm/6UBpv+lAab+pQOm/aUCpgCm/6UBpv+lAKYCpv6lAab/pQCmAab/pQGm/qUCpv+lAKYApgCmAKYBpv6lAqb+pQKm/6UApgGm/6UApgGm/6UBpv+lAab/pQGm/6UApgGm/6UApgCmAKYApgGm/qUCpv+l/6UDpvylBab7pQSm/aUDpv2lA6b9pQOm/aUDpv6lAab/pQGm/6UCpv6lAKYCpv2lBKb8pQKmAKYApgCm/6UCpv6lAqb+pQKm/qUCpv+lAKYBpv6lAqb+pQKm/6UApgGm/qUCpv6lA6b8pQWm+6UEpv2lAqb/pQCmAqb8pQSm/aUCpgCm/6UBpv+lAab/pQGmAKb/pQGm/6UApgGmAKb+pQSm+6UEpv6lAKYCpv2lA6b9pQOm/qUBpgCm/6UCpv6lAab/pQKm/qUCpv6lAKYCWv5ZAlr/Wf9ZAVoAWv9ZA1r7WQVa+1kEWv5ZAVr/WQFa/1kBWgBa/1kBWgBa/1kCWv1ZA1r+WQFaAFr+WQNa/lkBWv9ZAVr/WQFa/1kBWv9ZAVr+WQNa/VkDWvxZBFr9WQJa/1n/WQJa/1kAWgBaAFoApgCmAab9pQWm+qUGpvqlBqb6pQWm/aUBpgGm/qUBpgCmAKYApgGm/qUCpv6lAqb+pQKm/6X/pQKm/qUBpgCmAKb/pQGm/6UBpgCm/6UApgCmAab/pQGm/qUCpv+lAKYBpv+lAKYBpv6lAqb/pQCmAKYApgCmAKYApgCm/6UDpvylBab6pQWm/KUEpv2lAqb+pQGmAab+pQKm/qUCpv+lAKYApgCmAKYApgCm/6UCpv6lAaYApv+lAaYApv+lAab/pQGm/6UCpv2lA6b+pQCmAaYApv+lAqb9pQOm/qUBpgCm/6UCpv6lAaYApv+lAqb+pQGm/6UBpv+lAqb9pQOm/aUCpgCm/qUDpvylBKb9pQGmAKb/pQKm/qUBpgCm/6UBpgCmAKYApgCm/6UBpgCmAKYApgCm/6UBpv+lAqb+pQGmAKb/pQKm/aUDpv6lAaYApv6lBKb8pQOm/aUCpgCm/6UBpv6lAqb/pQCmAKYApgCmAKYApv+lAqb+pQKm/qUCpv6lAaYApgCmAKYApv+lAqb+pQKm/aUDpv+lAKYApgCm/6UDpv2lAaYApgCmAab+pQGmAKYApgCmAKb/pQKm/1kAWgBa/1kCWv5ZAlr/Wf9ZAVoAWv9ZAlr+WQBaAVr/WQFa/1kAWgBaAFoAWgFa/VkEWvxZBFr9WQJa/lkCWv9ZAVr+WQJa/lkDWv1ZAlr/WQBaAVr/WQFa/1kBWv9ZAVr/WQBaAFoBWv5ZA1r8WQNa/6X/pQOm/KUDpv6lAqb+pQKm/qUBpgCmAKYApgCmAKYApgCmAKYApgCmAKYApgGm/qUBpgCm/6UDpvylA6b+pQGmAKb/pQGmAKb/pQKm/aUDpv2lA6b+pQGm/6UCpvylBqb6pQSm/qUBpv+lAqb9pQKmAKYApv+lAqb9pQOm/qUBpgCm/6UCpv2lA6b+pQGmAKb/pQKm/qUDpvylA6b/pQCmAab+pQGmAab+pQKm/qUBpgCmAKYApv+lAab/pQGmAKb/pQGm/qUDpv2lA6b9pQKm/6UApgGm/6UApgGm/qUDpv2lAqYApv+lAab+pQOm/aUDpv2lAqYApv+lAKYBpv+lAqb+pQCmAaYApgCmAKb/pQCmAqb+pQGmAKb+pQOm/aUDpv2lA6b9pQKm/6UBpgCm/6UBpv6lBKb7pQWm+6UFpvylAqYApv6lBKb8pQKmAKb/pQKm/aUDpv2lA6b+pQGm/6UApgGm/6UBpv+lAab/pQGm/qUDpv6lAab/pQGmAKb/pQGmAKb/pQKm/qUApgGm/6UBpgCmAKb+pQKm/6UBpgCm/6UApgCmAab+pQKm/6UApgGm/qUCpv6lA6b9pQJa/1kAWgFa/lkCWv5ZAlr/WQFa/VkFWvpZB1r5WQZa+1kEWv5ZAFoBWv9ZAFoBWv9ZAVr/WQBaAVr/WQFa/1kBWv9ZAVr/WQFaAFr/WQJa/lkBWgBaAFr/WQJa/lkCWv9Z/1kCWv5ZAlr+WQFaAFoAWgCm/qUDpv2lAqYApv6lAqb/pQCmAab/pQCmAKYBpgCm/6UBpv+lAab/pQKm/aUDpv6lAaYApv+lAab/pQGmAKb/pQKm/aUDpv6lAaYApv+lAqb+pQGm/6UBpv+lAaYApv6lA6b9pQKm/6UApgGm/6UApgGm/aUFpvqlBqb7pQOm/6X/pQOm/KUEpvylBab7pQSm/aUCpv+lAab+pQKm/6UApgGm/qUBpgGm/qUCpv+l/6UCpv+lAKYBpv6lAqb/pQCmAKYApv+lAqb+pQGmAKb/pQKm/aUDpv2lA6b+pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQCmAqb9pQKmAKb+pQSm/KUDpv6lAaYApv+lAqb+pQGmAKb/pQGmAKb/pQKm/qUBpv+lAaYApgCmAKb/pQGmAKb/pQKm/qUBpv+lAqb9pQOm/aUCpgCm/6UBpv+lAab/pQGm/6UBpgCm/6UBpgCm/6UBpv+lAaYApv+lAab/pQGmAKb/pQGm/6UCpv2lA6b9pQOm/qUApgGm/6UBpv+lAKYApgGm/6UBpv6lAaYApgGm/qUCpv2lA6b+pQGmAKb/pQKm/aUEpvylA6b+WQFaAFr/WQJa/VkEWvtZBFr+WQFaAVr+WQBaAVr/WQJa/lkBWv9ZAFoBWv9ZAlr9WQJa/1kBWv9ZAVr+WQNa/VkCWv9Z/1kEWvtZBFr9WQFaAlr9WQJa/1kBWv9ZAVr+WQNa/lkBWv9ZAVr/WQFa/1kBpv+lAab/pQGm/6UBpv+lAab/pQGmAKYApv+lAKYBpgCm/6UCpv2lA6b9pQKm/6UBpv+lAab+pQOm/aUCpv+lAKYBpv+lAab/pQGm/6UBpv+lAaYApgCm/6UBpv+lAab/pQGmAKb/pQGm/6UApgKm/aUDpv6lAKYBpv6lA6b9pQOm/aUBpgKm/KUFpvulBKb+pQGm/6UApgGm/6UBpv+lAKYApgCmAKYBpv6lAqb+pQGmAab+pQKm/qUCpv+lAKYApgCmAKYBpv6lAqb+pQGmAKYApgCmAKb/pQGmAKYApgCmAKYApgCm/6UCpv6lAqb+pQGmAKYApv+lAqb+pQKm/qUCpv6lAqb9pQSm+6UGpvqlBKb9pQOm/aUDpv6lAab/pQGm/6UCpv2lA6b9pQKmAab9pQKm/6UApgGm/6UBpv+lAab/pQCmAab/pQKm/aUDpv2lAqYApv+lAab/pQCmAab/pQGm/6UApgGm/qUDpv2lAqb/pQCmAqb9pQOm/aUCpgCm/6UBpgCm/6UBpv+lAKYCpv6lAab/pQCmAaYApgCm/6UBpv6lBKb7pQSm/qUApgGm/6UApgCmAab+pQKm/6UAWgBaAVr+WQJa/lkCWv5ZAlr/WQBaAFr/WQJa/lkCWv5ZAVoAWgBa/1kBWgBa/1kDWvtZBVr8WQNa/lkBWv9ZAVoAWv9ZAVr/WQFa/1kBWgBa/1kBWgBa/1kCWv1ZA1r+WQFaAFr/WQJa/lkCWv5ZAlr+pQGmAab+pQKm/6X+pQSm/KUDpv6lAaYApv+lAqb+pQGmAKb/pQOm/KUDpv+l/6UCpv6lAaYApgCm/6UCpv6lAab/pQKm/qUBpgCm/qUFpvmlB6b7pQOm/6X/pQKm/qUCpv6lAaYBpv2lBKb8pQKmAab+pQKm/6X/pQOm/KUEpv6lAKYBpv6lA6b9pQOm/aUCpv+lAab/pQCmAab/pQGmAKb+pQOm/aUDpv2lAqYApv6lA6b9pQGmAqb8pQSm/aUCpv+lAab/pQCmAab/pQGmAKb/pQGmAKb/pQGmAKb+pQOm/aUCpgCm/qUCpv+lAKYApgGm/qUCpv+lAKYBpv+lAKYBpv+lAab/pQGm/qUDpv2lA6b9pQGmAKYApgGm/qUCpv6lAaYApgCm/6UCpv6lAqb+pQGm/6UCpv6lAqb9pQOm/qUCpv6lAqb+pQGmAab+pQKm/6X/pQKm/qUBpgCmAKYApgCm/6UCpv6lA6b8pQOm/6UApgCmAKYApv+lA6b8pQOm/6X/pQGmAKYApgCmAKb/pQKm/aUDpv6lAaYApv+lAKYCpv6lAaYApv+lAaYApv+lAqb+pQGm/6UApgGm/1kBWv9ZAFoBWv5ZA1r9WQJa/1kAWgFaAFr+WQNa/VkCWgBa/lkDWv1ZA1r8WQVa+1kEWv5ZAFoBWv9ZAVoAWv9ZAVr/WQJa/lkBWgBa/1kCWv5ZAVoAWv9ZAlr+WQJa/lkAWgJa/lkCWv5ZAVr/WQJa/qUCpv2lBKb8pQOm/qUApgGmAKb/pQGm/6UApgGm/6UBpv+lAKYBpv6lA6b8pQWm+qUGpvqlBqb8pQKm/qUBpgCmAab/pQGm/aUEpv2lAqb/pQCmAab/pQGm/qUDpv6lAaYApv+lAqb+pQGmAab+pQKm/qUCpv6lAaYApgCmAab+pQKm/qUCpv+lAKYBpv6lA6b8pQSm/aUBpgGm/qUBpgCm/6UCpv6lAab/pQGmAKb/pQKm/aUDpv2lA6b+pQGm/6UApgGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQKm/aUDpv6lAaYApgCmAKYApgGm/qUCpv+lAKYApgCmAKYBpv+l/6UBpgCmAab/pf+lAqb+pQKm/6X/pQKm/qUCpv6lAqb+pQGmAab9pQSm/KUDpv+lAKYApgCmAKYApgCmAab/pQGm/6UApgGm/6UBpv+lAab+pQOm/KUEpv2lAaYBpv6lAqb+pQGmAab+pQKm/qUBpgGm/aUDpv6lAaYApv+lAab/pQKm/aUCpv+lAab/pQKm/KUEpv6lAKYCpv2lAqb/pQGm/6UBpv+lAKYBpv+lAab/pQGm/6UBpgCm/6UBpv9ZAVr/WQJa/VkDWv5ZAFoBWgBa/lkDWv5ZAFoBWv9ZAVr/WQFa/1kAWgFa/1kAWgFa/lkCWv9ZAFoBWv5ZAlr/WQFa/lkCWv9ZAVr/WQBaAVr/WQJa/VkCWgBa/1kBWv9ZAFoCWvxZBVr6WQZa/FkCWv+lAKYApgGm/6UApgGm/qUDpv2lAqb+pQOm/aUDpv2lAqb/pQGm/6UBpv+lAKYBpv6lA6b9pQKm/6X/pQOm/aUCpv6lA6b8pQWm+6UEpvylBab8pQOm/aUBpgCmAqb9pQOm/KUEpv2lAqYApv+lAab/pQGm/6UCpv2lA6b+pQGm/6UBpv+lAqb9pQKm/6UBpgCm/qUDpvylBab8pQKm/6UApgCmAab/pQGm/qUCpv6lAqYApv6lAqb+pQOm/KUFpvulA6YApv6lAqYApv6lA6b9pQKmAKb/pQGmAKb+pQOm/aUCpgCm/6UApgGm/6UBpv+lAab/pQKm/qUBpgCm/6UCpv6lAqb+pQGmAKYApgCmAKb/pQKm/qUCpv6lAaYBpv6lAqb/pQCmAab+pQKm/6UApgGm/qUCpv+l/6UDpvylBKb9pQGmAab+pQOm/KUEpv2lAqYApv6lAqb/pQCmAab/pQGm/6UBpv+lAKYCpv2lAqYApv+lAKYBpv6lA6b9pQOm/KUFpvulBab7pQSm/aUCpgCm/qUDpv2lA6b+pQCmAqb9pQOm/qUBpv+lAab/pQGm/6UApgGm/6UApgGm/qUCWv9ZAFoAWgBaAFoAWgFa/lkCWv5ZAlr/WQBaAFoAWgFa/1kAWgBaAFoBWv9ZAVr+WQJa/1kAWgFa/lkCWv5ZAlr+WQJa/lkBWgBaAFoAWgBa/1kCWv5ZAlr/Wf9ZA1r8WQRa/VkCWv5ZAlr/WQBaAVr+pQKm/6UApgCmAKYApgCm/6UCpv2lBKb8pQOm/aUDpv6lAaYBpv2lA6b+pQGmAKYBpv6lAqb+pQKm/qUDpv2lAqb/pf+lAqb/pQGm/qUDpvylBKb9pQKm/6UApgCmAKYApgCm/6UCpv6lAaYApv+lAqb+pQGmAKb/pQKm/qUBpgCm/qUDpv6lAaYApv6lA6b9pQOm/aUCpv+lAab/pQCmAab+pQKm/6UBpgCm/qUCpv+lAqb9pQOm/aUDpv6lAKYBpgCm/qUCpv+lAKYCpv2lAaYBpv6lAqYApv6lA6b9pQKm/6UBpgCm/6UApgGm/qUEpvulBKb8pQWm+qUGpvulBKb9pQKm/qUDpv2lAqb/pQGm/6UBpv6lA6b9pQOm/qUApgGm/qUDpv2lA6b+pQCmAab/pQGm/6UBpv6lA6b9pQKm/qUCpv+lAKYBpv6lAqb/pQCmAab/pQCmAab+pQOm/aUCpv+lAab/pQGm/6UBpgCmAKb/pQKm/aUEpvylA6b+pQGmAKb/pQGmAKb/pQKm/aUDpv6lAaYApv+lAqb+pQGmAKb/pQKm/6X/pQKm/aUDpv6lAqb+pQGmAKb/pQKm/lkCWv1ZBFr9WQFaAFoAWv9ZA1r7WQVa/FkDWv5ZAVr/WQFa/1kBWgBa/1kBWv9ZAVr/WQFa/1kBWgBa/1kBWv9ZAVoAWv9ZAVr/WQFa/1kBWv9ZAVr/WQFaAFr/WQFa/1kBWgBa/1kBWv9ZAlr9WQNa/aUDpv6lAKYApgGm/6UBpv+l/6UCpv+lAKYApgGm/aUFpvqlBab9pQKm/6UApv+lA6b8pQSm/KUDpv+l/6UBpv+lAaYApgCm/6UBpv+lAab/pQGm/6UCpv6lAaYApv+lA6b8pQSm/aUCpv+lAKYApgGm/qUCpv+lAKYBpv6lAqb/pQCmAab+pQKm/6UApgGm/qUDpv2lAqb/pQCmAqb9pQOm/aUCpgCm/6UBpv+lAab/pQKm/KUFpvulBab8pQKmAKb+pQOm/aUCpgCm/6UApgGm/6UBpv+lAKYApgGm/qUCpv6lAqb+pQKm/qUCpv+lAab/pQCmAab+pQSm+6UEpv2lAqb/pQGm/6UApgGm/qUDpv6lAKYBpv+lAKYCpv2lA6b9pQKm/6UBpgCm/6UApgCmAKYBpgCm/qUCpv6lAqb/pQGm/qUCpv+l/6UDpvylBKb9pQCmA6b8pQSm/aUBpgGm/qUDpvylBKb9pQKm/6UBpv6lA6b8pQSm/aUCpv6lAqb+pQKm/aUEpvylA6b/pQCm/6UCpv6lAqb/pf+lAqb9pQSm/KUDpv6lAab/pQKm/qUBpgCmAKb/pQOm/KUDpv+l/1kCWv5ZAVoAWgBaAFr/WQJa/lkCWv9ZAFoAWgFa/lkDWv1ZAlr/WQFa/lkDWv1ZA1r9WQNa/VkDWv5ZAFoCWv5ZAVoAWv5ZBFr8WQRa/FkDWv5ZAVoAWgBaAFr/WQFa/1kBWgBa/1kBWv9ZAFoCWv1ZBKb7pQWm/KUCpgCm/qUEpvylAqb/pQCmAab/pQGm/6UApgCmAKYBpv+lAKYApgCmAKYApgCmAab+pQGmAKYApgCmAKb/pQKm/qUBpgCm/6UCpv2lA6b+pQGmAKb/pQGmAKb/pQKm/qUCpv6lAaYApgCmAKYBpv2lBKb9pQGmAKYApgCmAKYApgCmAKYBpv6lAqb/pQCmAab/pQGm/qUCpv+lAKYBpv6lAqb/pQGm/qUDpvylBab8pQOm/qUBpv+lAaYApv+lAqb9pQOm/aUDpv6lAaYApv+lAab/pQKm/qUBpgCm/6UCpv+l/6UCpv6lAqb+pQKm/qUCpv6lAaYApgCmAKb/pQKm/aUDpv6lAaYBpv2lA6b9pQSm/aUBpgCm/6UBpgCm/6UCpv6lAKYBpv6lA6b9pQKm/6UApgCmAKYBpv+lAab+pQOm/aUDpv2lAqb/pQGm/6UApgCmAKYBpv+lAKYBpv6lA6b9pQKmAKb/pQGm/6UBpv+lAab/pQGmAKb/pQCmAaYApv+lAab+pQKmAKb/pQGm/qUCpv6lA6b+pQCmAab+pQKmAKb/pQGm/6UApgGmAKb/pQGm/6UBpv9ZAlr9WQNa/lkBWgBaAFr/WQJa/VkEWvxZA1r+WQBaAlr+WQJa/lkBWv9ZAlr/WQBaAFr/WQFaAFr/WQFaAFr/WQFa/1kAWgJa/lkAWgFa/1kBWgBa/1kBWv9ZAFoBWv9ZAlr9WQJa/1kAWgJa/VkDWv6lAKYBpv+lAaYApv+lAKYApgGm/6UBpv+lAKYApgGm/qUDpv2lAqb/pQCmAab/pQGm/qUDpv2lAqYApv6lA6b9pQGmAab/pQCmAab+pQKm/6UApgCmAab+pQOm/KUEpvylBKb9pQGmAKYApgCmAab+pQKm/qUCpv+lAKYBpv6lA6b8pQSm/KUEpv2lAqb+pQKm/qUCpv6lAaYBpv6lAqb/pf+lAqb/pf+lA6b9pQKm/qUBpgCmAab+pQKm/qUCpv+lAKYBpv+lAab/pQGm/6UBpgCm/6UCpv2lA6b+pQKm/qUBpgCmAKYApgCm/6UCpv+l/6UDpvulBab8pQOm/6UApv+lAab/pQKm/qUCpv6lAaYApv+lAqb+pQGmAKb/pQKm/aUDpv2lA6b+pQCmAqb8pQSm/qUApgGm/6UApgGm/6UApgGm/qUCpv+lAKYBpv6lAqb+pQKm/6UApgGm/qUCpv6lAqb/pQGm/qUCpv6lAqb/pQCmAKYBpv6lAqb+pQKm/6UApgGm/qUCpv+lAKYCpv2lA6b8pQWm/KUCpgCm/6UBpgCm/6UBpgGm/aUEpvylA6b+pQKm/qUCpv6lAaYAWgBaAFoAWgBaAFoAWv9ZAlr9WQRa/VkBWv9ZAVoAWgBaAFoAWgBaAFoAWgBaAFoAWgBaAFoAWgBa/1kCWv5ZAVoAWv9ZAlr+WQFaAFoAWgBaAFr/WQFaAVr+WQFa/1kBWgBaAFoAWv9ZAlr+WQJa/lkCpv+lAab/pQCmAab/pQGm/6UCpv2lA6b8pQWm/KUCpgCm/qUDpv2lAqYApv+lAqb9pQOm/qUBpgCmAKYApgCm/6UCpv6lAqb+pQKm/6UApgCmAKYApgGm/6UApgCmAab9pQWm+6UEpv2lAqb/pQGm/6UApgCmAab+pQOm/KUEpv2lAaYApv+lAqb/pf+lAab/pQGmAKYApv+lAaYApv+lAqb/pf+lAqb+pQGmAKYApv+lAqb9pQOm/qUCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUBpgCmAKb/pQKm/aUEpv2lAKYCpv2lA6b+pQGm/6UBpgCm/6UBpv6lA6b+pQGm/6UApgGm/6UBpv+lAKYBpv+lAaYApv6lA6b+pQGmAKb/pQKm/qUBpv+lAqb+pQKm/aUDpv6lAqb+pQKm/qUCpv2lBKb9pQKm/6X/pQKm/qUCpv6lAqb+pQKm/qUBpgCmAKYBpv6lAaYBpv6lAqb+pQKm/qUCpv2lA6b+pQGmAKb/pQGmAKYApv+lAqb+pQKm/qUCpv6lAqb/pf+lAqb/pQCmAab+pQKm/6UBpv6lA6b8pQWm+6UDpgCm/qUDpvylBFr9WQJa/1n/WQJa/1kAWgBaAFoAWgBaAFoAWgFa/lkDWvxZBFr9WQJa/1kBWv9ZAFoAWgBaAFoBWv5ZAlr/WQBaAFoAWgBaAFoBWv5ZAlr+WQFaAVr+WQJa/1kAWgFa/lkCWv9ZAFoCWvxZBFr9WQFaAab/pQCmAKYBpv6lA6b8pQOm/6UApgCmAKb/pQKm/aUDpv2lA6b+pQGm/6UBpv+lAaYApv+lAqb9pQOm/qUCpv6lAab/pQKm/aUEpvulBab8pQOm/aUCpv+lAab/pQGm/aUFpvqlBqb7pQSm/aUCpv6lA6b9pQKm/6UApgGm/qUCpv+lAKYApv+lAqb+pQOm/KUDpv6lAqb+pQKm/qUCpv+lAKYApgCmAab+pQOm/KUEpv2lAqb/pQCmAKYBpv6lA6b9pQKm/6UApgKm/aUDpvylBab7pQWm/KUCpgCm/6UBpgCm/6UCpv6lAaYApv+lAqb+pQGm/6UBpv+lAqb9pQOm/aUCpv+lAKYBpv6lAqb/pf+lA6b8pQOm/6X/pQOm/KUEpvylA6b+pQGmAKYApgCm/6UBpv+lAaYApgCm/6UCpv2lA6b+pQKm/qUBpgCmAKYApgCm/6UBpgCm/6UCpv2lA6b+pQCmAqb+pQKm/qUBpv+lAqb+pQKm/qUBpv+lAaYApgCm/6UBpv+lAab/pQCmAab/pQCmAab+pQKm/qUCpv+lAKYApgCmAab+pQKm/qUCpv+lAKYApgGm/qUDpvxZBFr9WQJa/1kBWv9ZAFoBWv5ZA1r+WQBaAlr8WQVa/FkCWgBa/lkDWv1ZAloAWv5ZA1r9WQJa/1kBWv9ZAlr9WQJa/1kBWv9ZAFoBWv5ZAlr+WQJa/lkBWgBaAFoBWv5ZAlr9WQRa/VkCWgBa/lkDWvylBKb+pQCmAab+pQGmAab+pQKm/qUBpgCmAKYApgCmAKYApgCm/6UBpv+lAqb+pQGm/6UApgGmAKb/pQGm/6UApgKm/qUApgGm/qUDpv2lAqb+pQKm/6UApgCmAKYApgCmAab+pQKm/6UApgGm/qUCpv+lAKYApgCmAKYApgCmAKb/pQGmAKb/pQGm/6UBpv+lAqb8pQWm+6UEpv2lA6b9pQOm/KUEpv2lA6b+pQCmAKYApgGm/6UApgCmAKYApgCmAKYApgCmAKYApgCmAKYApgGm/6UApgCmAKYBpv+lAKYApgGm/qUCpv2lA6b/pQCmAKb/pQGmAKYApv+lAab/pQKm/aUDpv6lAab/pQGmAKb/pQKm/aUDpv2lBKb7pQWm+6UFpvylA6b+pQGmAKYApgCmAKYApgCmAKYApgGm/qUCpv6lAaYApgCm/6UCpv6lAaYApv+lAaYApgCmAKYApv+lAqb+pQKm/qUCpv6lAqb/pf+lAqb+pQKmAKb9pQSm/KUDpv6lAqb/pQCmAKb/pQKm/6UBpv6lA6b9pQKm/6UBpv+lAab+pQKm/6UApgGm/qUCpv6lAqb/pQCmAab9WQVa+1kDWv9Z/1kCWv5ZAVoAWgBa/1kCWv5ZAVoAWgBa/1kCWv5ZAVoAWv9ZAVoAWgBa/1kCWv5ZAVoAWv9ZAVoAWv9ZAlr9WQNa/VkDWv1ZA1r9WQJaAFr+WQNa/VkCWv9ZAVr+WQNa/VkCWv9ZAFoAWgGm/qUCpv6lAqb/pQCmAKYApgCmAKYApgCmAKb/pQGmAKYApv+lAab/pQKm/6UApgCmAKYApgGm/qUCpv+lAKYApgGm/qUCpv6lAaYBpv+lAKYApgCmAab/pQCmAab+pQSm/KUCpv+lAKYBpv+lAab/pQCmAKYApgGm/6UBpv+lAKYCpv2lBKb7pQSm/aUEpvylAqb/pQCmAqb+pQGmAKb/pQGmAKb/pQKm/qUBpgCm/qUEpvylA6b+pQCmAaYApv6lA6b9pQKm/6UApgCmAab/pQCmAKYApgGm/6UBpv6lA6b9pQKmAKb+pQSm+6UFpvylAqb/pQGmAKb/pQCmAab+pQOm/aUCpgCm/qUDpvylBab7pQSm/aUCpv+lAKYApgCmAab+pQKm/qUCpv+lAKYApgGm/qUCpv+l/6UCpv6lAaYBpv2lA6b9pQOm/qUBpgCm/6UBpgCm/6UCpv2lAqb/pQKm/aUDpv2lA6b+pQKm/aUDpv6lAaYBpv6lAaYApv+lAqb/pQCmAKb/pQKm/qUCpv6lAaYApgCmAKb/pQKm/qUCpv+l/6UCpv6lAqb+pQGm/6UBpgCmAKb/pQKm/aUEWvxZBFr9WQFaAFr/WQJa/VkEWvtZBlr6WQRa/lkBWgBaAFoAWgBa/1kCWv5ZA1r8WQRa/FkEWv1ZAlr/WQBaAVr9WQRa/VkBWgFa/VkEWv1ZAVoBWv5ZAlr+WQJa/1kAWgBa/1kCWv5ZAlr+WQFa/1kBpgCm/6UBpv+lAab/pQGm/qUCpgCm/6UBpv6lAqb/pQKm/qUBpv+lAaYApgCmAab9pQOm/qUBpgCm/6UBpgCm/6UBpv+lAaYApv+lAqb9pQKmAKb/pQGm/6UApgGm/6UBpv6lA6b+pQGm/qUCpv+lAqb+pQCmAab/pQKm/qUBpgCmAKYApgGm/qUCpv6lAqb/pQCmAKYApv+lA6b7pQWm/KUCpgGm/aUDpv2lA6b/pQCmAKb/pQGmAab+pQKm/qUCpv6lAqb9pQSm/aUCpv6lAqb/pQCmAab+pQOm/aUCpv+lAKYBpv6lAqb+pQOm/aUBpgCm/6UCpv+l/6UBpgCm/qUEpvulBab8pQKmAKb+pQOm/aUCpv+lAKYBpv6lA6b9pQOm/aUCpv+lAaYApv+lAKYApgCmAab/pQGm/6UApgGm/6UCpv6lAaYApv+lAqb+pQKm/aUEpvulBab8pQKm/6UBpv+lAKYBpv6lA6b9pQKm/6UApgGm/6UApgCmAKYApgCmAab+pQOm/KUDpgCm/6UBpv+lAab/pQKm/aUDpv6lAKYCpv2lA6b9pQKm/6UBpv+lAab/pQGmAKb/pQGmAFoAWv9ZA1r7WQVa/VkBWgFa/VkDWv5ZAlr+WQJa/VkEWvxZA1r/Wf9ZAlr+WQFaAFoAWv9ZAlr+WQFaAVr+WQJa/lkBWgFa/1kAWgBaAFoAWgFa/lkCWv9ZAFoAWgBaAFoBWv5ZA1r8WQNa/lkBWgFa/6X/pQGmAKYApgCmAKYApgCm/6UBpgCmAab+pQGm/6UBpgGm/qUBpgCmAKYApgCm/6UCpv6lA6b8pQOm/qUCpv+lAab+pQKm/6UBpv+lAab/pQCmAab/pQCmAab+pQKm/6UApgCmAKYBpv6lA6b8pQSm/aUCpv6lAqb/pQCmAab9pQSm/aUCpv+lAKYBpv+lAab+pQOm/aUDpv6lAKYBpv+lAaYApv+lAqb+pQGmAab+pQKm/qUCpv+lAab+pQKm/qUDpv2lAqb/pQCmAab+pQKm/6UApgGm/aUDpv+l/6UCpv6lAaYApgCmAKYApgCm/6UCpv6lAaYApv+lAaYApv+lAKYCpv2lA6b9pQGmAab/pQCmAab+pQOm/KUEpvylBKb9pQGmAab9pQSm/KUDpv+l/6UCpv6lAqb/pQCm/6UCpv6lAqb+pQGmAKb/pQOm+6UFpvylA6b/pf+lAqb9pQOm/qUBpgCm/6UApgGm/6UCpv2lAqb/pQGm/6UBpv6lA6b+pQCmAqb8pQWm/KUCpgCmAKb/pQKm/KUFpvylA6b+pQCmAab/pQKm/qUBpv+lAaYApgCmAKb/pQGm/6UBpv9ZAlr+WQBaAlr8WQVa/VkAWgJa/VkDWv5ZAVr/WQFaAFr/WQJa/VkEWvtZBVr8WQNa/lkBWgBa/1kCWv1ZA1r+WQFaAFr/WQFaAFoAWv9ZAVr/WQJa/1kAWgBa/1kCWv9ZAVr+WQFaAVr+WQNa/FkDWgCm/aUEpvylBKb9pQKm/qUBpgCmAab+pQKm/qUBpgGm/6X/pQKm/qUCpv+l/6UCpv6lA6b9pQGmAKYBpv+lAab+pQKm/6UApgGm/aUFpvulBKb9pQGmAab+pQKm/qUCpv6lAqb9pQOm/qUCpv6lAaYApgCmAKYApgCmAab+pQKm/6UApgKm/aUCpv+lAab/pQGm/6UBpv+lAab/pQGm/6UBpv+lAaYApv+lAab/pQGmAKb/pQGm/qUDpv2lA6b8pQOm/6X/pQOm/KUDpv+l/6UCpv+lAKYBpv6lAqb/pQCmAab/pQCmAqb8pQWm+6UEpv2lAqb+pQKm/qUBpgCm/6UCpv6lAaYApgCmAKYBpv6lAqb+pQKm/6UApgGm/qUCpv+lAab/pQGm/qUDpv2lA6b9pQKm/qUCpv+lAKYBpv6lAqb/pQCmAKYBpv6lA6b9pQKm/6UApgGmAKb/pQGm/6UBpgCmAKb/pQGmAKb/pQKm/aUCpgCm/6UBpv+lAKYBpv+lAab/pQCmAab/pQGm/6UApgCmAab/pQCmAab+pQOm/aUCpv+lAKYBpv+lAab+pQOm/aUCpgCm/qUCpv+lAab+WQJa/lkCWv9Z/1kBWgBaAFoAWgBa/1kBWgFa/VkEWvxZAloBWv5ZAlr9WQNa/lkCWv5ZAVoAWgBa/1kCWv5ZAVoAWv9ZAlr/Wf5ZBFr7WQZa+1kCWgBa/1kBWv9ZAVoAWgBa/lkDWv1ZA1r+WQFa/1kCpvylBKb+pQCmAab+pQOm/aUCpv6lAqb/pQGm/qUCpv+lAKYBpv6lA6b9pQKmAKb+pQSm/KUDpv6lAaYApgCm/6UCpv6lAqb+pQGmAKYApgCmAKb/pQGmAKb/pQKm/qUBpgCmAKYApgGm/qUCpv6lAqb/pQCmAKYApgCmAKYApgCmAKYApv+lAqb+pQGmAKb/pQKm/qUBpgCmAKYApgCmAKb/pQOm/KUEpvylAqYBpv6lAqb+pQKm/qUCpv6lAaYBpv6lAqb+pQKm/qUCpv6lAqb/pQCmAKYApgCmAKYApgCmAKYBpv2lA6b+pQGmAab+pQGmAKb/pQKm/qUCpv6lAaYApgCmAab9pQSm/KUEpvylA6b/pQCmAab+pQGmAab+pQKm/6UApgCmAab+pQOm/KUFpvulBab7pQSm/aUDpv6lAab/pQGm/6UCpv6lAqb+pQGm/6UBpgCm/6UCpvylBab8pQKmAKb+pQOm/aUCpv+lAKYApgGm/qUCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUCpv+lAKYApgCmAKYBpv+l/6UDpv2lAqYApv6lA6b9pQOm/VkDWv5ZAFoCWv1ZA1r9WQNa/VkEWvtZBFr+WQBaAlr9WQNa/VkCWv9ZAVr/WQFa/1kAWgJa/FkFWvtZBFr+WQFa/1kBWv5ZA1r+WQFa/1kAWgFa/1kBWv9ZAVr/WQFa/1kBWv9ZAVoAWv9ZAVr+WQNa/qUCpv2lA6b9pQOm/qUBpgCm/6UBpv+lAaYApv+lAab/pQGm/6UBpv6lAqb/pQGm/qUCpv6lAqb+pQKm/qUBpgCm/6UCpv6lAKYCpv6lAqb+pQKm/qUCpv+lAKYBpv6lAqb/pQCmAab+pQKm/qUCpv+lAKYBpv6lA6b9pQKm/6UBpv+lAab/pQGm/6UBpv+lAaYApv+lAab/pQKm/aUDpv2lA6b+pQCmAab+pQOm/aUCpv+lAKYBpv6lAqb/pQGm/6UApgCmAab/pQGm/qUCpv+lAKYBpv6lAqb/pQCmAKYBpv6lA6b8pQSm/aUCpv6lAaYApgCm/6UCpv2lA6b9pQKm/6UBpv+lAab/pQCmAab/pQGm/6UBpv+lAqb9pQKm/6UApgKm/aUDpv2lAqb+pQOm/qUBpgCm/qUDpv6lAaYApv+lAqb+pQKm/qUBpgCmAKYApgCmAKb/pQKm/qUCpv+l/6UCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUCpv+lAKYApgCmAKYApgCm/6UCpv2lBKb8pQSm/KUDpv+lAKYBpv6lAqb/pQGm/qUCpv+lAKYApgCmAKYBpv+l/6UCpv6lA1r9WQFaAVr9WQVa+1kDWv9ZAFoAWgBaAFoBWv9ZAFoBWv5ZAloAWv5ZA1r9WQJaAFr+WQNa/VkDWv1ZA1r9WQNa/VkCWv9ZAVr/WQFa/1kAWgFaAFr/WQJa/VkDWv5ZAFoBWv9ZAFoBWv5ZAlr+WQFaAKYApgGm/qUBpv+lAqb/pQCmAKb/pQGmAKYBpv6lAqb+pQCmA6b9pQKm/qUBpv+lAqb+pQGmAKb/pQGmAKb/pQGmAKb/pQOm/KUDpv6lAaYBpv6lAqb+pQGmAKYApgGm/qUCpv2lBKb8pQSm/KUDpv6lAaYApgCmAKYApgCmAab+pQKm/qUBpgGm/qUCpv6lAqb+pQKm/qUCpv+lAKYApgGm/qUCpv6lAqb/pQCmAKYApgGm/qUCpv2lBKb9pQKm/qUCpv6lA6b8pQWm+6UEpv6lAKYBpv+lAab/pQGm/6UBpv+lAab/pQGmAKb+pQSm+6UFpv2lAKYCpv2lA6b+pQGmAKb+pQOm/aUDpv2lA6b8pQWm/KUDpv6lAaYApgCmAKYBpv6lAqb/pQCmAab+pQKm/6UApgCmAKYApgCmAKYApv+lA6b7pQam+6UCpgGm/aUEpv2lAqb+pQGmAKYApgGm/6UApgCmAKYBpv6lAqb+pQKm/6UApgCmAKYApgGm/qUCpv+lAKYBpv+lAKYBpv6lA6b9pQKm/6UApgGm/6UApgCmAKYApgGm/qUCpv2lBKb8pQOm/6X+pQSm/KUDpv9Z/lkEWvxZA1r+WQFaAFr/WQJa/VkDWv5ZAVoAWv5ZA1r9WQNa/lkBWv5ZA1r9WQNa/lkAWgBaAVr/WQBaAVr+WQNa/FkEWvxZBFr8WQRa/FkDWv9Z/1kDWvtZBVr8WQRa/VkBWv9ZAVoAWgBaAFoAWv+lA6b8pQSm/aUBpgGm/qUDpv2lAqb+pQKmAKb/pQGm/qUCpgCm/6UBpv6lA6b9pQOm/aUDpv2lAqb/pQGmAKb/pQCmAab/pQGm/6UApgGm/6UApgGm/6UApgGm/qUDpv2lAqb/pQGm/6UApgCmAab/pQGm/6UApgGm/6UBpv+lAab/pQKm/qUBpv+lAaYApgCm/6UBpv+lAab/pQGm/6UBpgCm/6UBpv+lAaYApgCmAKb/pQGmAKb/pQGm/6UBpv+lAab/pQGm/6UApgGm/6UBpv+lAab/pQGm/6UBpgCm/6UBpgCm/6UCpv6lAKYCpv6lAqb+pQGm/6UCpv6lAqb+pQGmAKYApgCmAKYApgCmAab+pQGmAKYApgCmAab9pQOm/aUDpv2lA6b9pQOm/aUCpv+lAab/pQCmAab/pQGm/6UBpv+lAKYBpv+lAaYApv+lAKYCpv2lA6b9pQKm/6UApgGm/qUCpv+l/6UCpv+l/6UDpvulBqb7pQOm/qUCpv6lAqb+pQKm/qUBpgGm/qUCpv6lAaYApgCmAKb/pQKm/qUBpgCm/6UCpv6lAqb+pQKm/qUCpv6lAqb/pQCmAKb/WQJa/lkBWgFa/FkFWvxZA1r+WQFa/1kBWgBa/1kBWv9ZAVr/WQFa/1kAWgFa/1kBWv9ZAFoAWgBaAlr8WQVa+lkFWv5ZAFoBWv5ZAlr/WQFa/1kAWgFa/lkDWvxZBFr9WQJa/lkCWv5ZAlr/Wf9ZA1r8pQSm/aUCpv6lAqb/pQCmAab+pQKm/qUCpv+lAKYApgCmAKYBpv6lAqb/pQGm/6UApgGm/qUDpv2lA6b9pQKm/qUCpv+lAab+pQKm/qUCpv+lAKYApgCmAKYBpv6lAqb+pQKm/6UApgGm/qUDpv2lAqb/pQCmAab/pQCmAKYBpv+lAab+pQKm/6UBpv+lAKYBpv+lAab/pQCmAKYBpv+lAab/pQCmAKYBpv+lAab/pQGm/6UBpv+lAab/pQCmAab/pQCmAab+pQKm/6UBpv+lAab/pQGmAKb/pQGm/6UCpv2lAqb+pQKm/6UBpv6lAqb+pQKm/6UApgGm/6UApgKm/aUDpv6lAab/pQKm/aUEpvulBab8pQKm/6UBpv+lAqb9pQKm/6UBpgCm/6UBpv+lAaYApv6lA6b+pQGmAKb+pQOm/qUCpv6lAKYCpv6lAqb+pQKm/aUEpvylBKb9pQKm/qUCpv6lAqb/pQCmAKYApgCmAKYApgCm/6UCpv2lBKb8pQOm/aUDpv6lAab/pQCmAqb9pQKm/6UApgGmAKb+pQKm/6UApgKm/aUCpv+lAab/pQGm/6UApgGm/6UBpv+lAFoAWgFa/1kBWv5ZAlr+WQJa/1kAWgBaAFoAWgFa/lkDWvxZBVr8WQJaAFr+WQNa/lkBWgBa/1kBWv9ZAVoAWv9ZAVr/WQFa/1kBWv9ZAVoAWv9ZAVr/WQJa/lkBWgBa/1kCWv5ZAlr+WQJa/lkCWv5ZAqb+pQKm/6X/pQKm/qUCpv+lAKYApgGm/qUDpv2lAqb/pQCmAab/pQCmAab+pQKm/6UApgGm/6UApgCmAKYBpv+lAKYApgCmAab+pQOm+6UGpvulA6b/pf+lAqb/pQCmAKYApv+lAqb/pf+lA6b7pQam+6UDpv6lAqb+pQOm/KUDpv+l/6UCpv6lAqb+pQGmAKYApgGm/qUBpgCmAKYApgGm/qUCpv6lAaYBpv6lAqb+pQKm/qUCpv6lAqb/pf+lAqb+pQOm/aUBpgCmAKYApgCmAKYApv+lAab/pQGmAKb/pQCmAab+pQSm/KUCpv+lAab/pQKm/qUApgGm/6UApgGm/6UApgGm/qUCpv6lA6b9pQGmAab+pQKmAKb+pQOm/aUCpgCm/6UCpv2lA6b+pQGmAKb/pQKm/qUBpgCmAKYApgCmAKYApgCmAab+pQKm/6X/pQOm/aUBpgGm/aUDpv6lAqb+pQKm/aUEpvylBKb8pQSm/aUBpgCmAKYApgGm/aUEpvylBab6pQWm/KUDpv+l/6UCpv2lA6b+pQGmAab9pQSm/KUDpgCm/aUEpvylA6b+pQKm/qUBpgCmAKb/pQJa/lkBWgBa/1kCWv5ZAlr9WQNa/lkBWgBa/1kBWgBa/lkEWvtZBVr8WQJa/1kCWv1ZBFr7WQRa/1n+WQRa+1kGWvpZBVr8WQNa/1n/WQFaAFr/WQJa/VkDWv5ZAVr/WQJa/VkEWvxZA1r+WQJa/VkEWv2lAaYBpv2lA6b+pQGmAKYApv+lAab/pQGmAKb/pQKm/qUBpv+lAab/pQKm/aUEpvqlB6b6pQWm/KUCpgCm/6UBpv+lAab/pQGm/6UApgGm/qUDpv2lA6b8pQSm/aUCpv+lAab+pQOm/aUCpv+lAKYBpv+lAab/pQCmAab+pQOm/aUCpv+lAKYApgCmAKYApgGm/qUBpgGm/qUCpv6lAaYBpv+lAKYApgCmAKYBpv+l/6UCpv6lAaYBpv6lAab/pQGmAKYBpv+lAKYApgGmAKb/pQKm/qUBpgGm/aUDpv6lAqb+pQGm/6UBpgCm/6UBpv6lA6b9pQOm/aUCpv6lA6b9pQKm/6UApgGm/6X/pQKm/qUDpv2lAaYApv+lAqb/pf+lAqb+pQGmAab+pQGmAKYApgGm/qUBpv+lA6b8pQSm/KUDpv6lAqb+pQKm/qUBpgCmAab+pQKm/qUBpgGm/qUCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUCpv2lA6b+pQGmAKb/pQCmAab/pQGmAKb+pQOm/aUDpv6lAKYBpv6lA6b+pQCmAab+pQKmAKb+pQOm/aUBpgGm/6UBpv6lAqb+pQNa/VkCWv5ZA1r9WQJa/1kAWgFaAFr+WQJa/lkCWv9ZAVr+WQJa/lkCWv5ZAlr+WQFaAFoAWgBa/1kBWgBaAFoAWgBa/1kCWv5ZAVoBWv5ZAlr9WQNa/lkCWv5ZAlr+WQFa/1kCWv5ZAlr/Wf9ZAlr/WQCmAab/pQCmAKYBpv6lA6b+pf+lA6b8pQSm/qUApgCmAab+pQKm/qUCpv6lAqb+pQGmAKYApgCmAKYApgCmAKYBpv6lAqb/pQCmAKYApgCmAab+pQKm/qUCpv+lAKb/pQOm/KUFpvqlBab8pQSm/aUCpv6lAqb+pQKm/6X/pQKm/6X/pQKm/aUDpv6lAqb9pQOm/aUDpv6lAab/pQGm/6UBpv+lAKYApgGm/qUDpv2lAqYApv6lA6b9pQKmAKb/pQGmAKb+pQOm/aUDpv6lAKYCpv2lA6b9pQOm/qUCpv2lAqb/pQKm/qUBpgCm/qUEpvylAqYApv+lAqb9pQOm/aUCpgCm/qUDpv2lAqb/pQGm/6UBpv+lAKYBpv+lAaYApv6lA6b9pQOm/qUApgGm/6UBpv+lAKYBpv6lA6b9pQKm/6UApgGm/qUCpv+lAKYBpv+lAKYBpv6lA6b9pQOm/aUDpv6lAab/pQGmAKb/pQKm/aUDpv2lA6b+pQCmAqb8pQSm/qUApgGm/qUCpv+lAKYBpv6lA6b9pQKm/6UApgGm/6UApgGm/qUDpv2lAaYBpv6lA6b8pQSm/aUCpv6lAqb/WQFa/1kAWgFa/1kBWv9ZAVoAWv9ZAVr+WQRa/FkDWv5ZAFoCWv5ZAVoAWv9ZAlr+WQFaAFoAWv9ZAlr9WQNa/lkBWgBa/1kBWv9ZAlr9WQNa/lkBWgBa/1kBWgBaAFr/WQJa/lkCWv5ZAVoAWgBaAFoApgCm/6UBpv+lAqb+pQGm/6UApgKm/aUDpv2lA6b+pQCmAab/pQGmAKb+pQOm/aUCpv+lAKYBpv+lAKYApgCmAKYApgCmAKYApgCmAKYApv+lAqb9pQSm/aUBpgCm/6UBpgCm/6UCpv2lA6b+pQGm/6UBpgCm/6UCpv2lAqb/pQCmAKYCpvylBKb7pQWm/aUDpvylA6b9pQSm/KUEpvylAqYApv+lAqb+pQGmAKb/pQGmAKb/pQKm/aUDpv6lAKYBpv+lAab/pQGm/qUDpv2lAqYApv+lAab/pQGmAKYApgCm/6UBpgCm/6UCpv6lAKYCpv2lA6b+pQGmAKb/pQKm/qUCpv6lAqb+pQOm/aUCpv+lAKYBpv+lAab/pQGm/6UBpv+lAqb+pQKm/qUBpgCmAKYBpv6lAab/pQGmAab9pQOm/aUDpv6lAaYApv+lAaYApgCmAab+pQKm/qUCpv+lAab+pQKm/6UApgGm/qUCpv6lAqb/pf+lA6b8pQOm/6X/pQKm/qUCpv6lAaYApgCmAKYApgCmAKYBpv6lAqb/pQCmAab/pQCmAKYBpv+lAab/pQCmAab+pQOm/aUDpv2lA1r9WQNa/lkBWgBaAFoAWgBaAFr/WQJa/lkCWv5ZAlr9WQRa/FkEWv1ZAlr+WQJa/lkDWvxZBFr8WQRa/VkBWgBaAFoBWv9ZAFoAWgBaAVr/WQFa/lkCWv5ZA1r8WQVa+lkGWvtZBFr9WQJaAFr/WQFa/6UApgGm/6UCpv2lA6b9pQKmAKb/pQKm/aUDpv2lA6b9pQOm/aUDpv6lAKYBpv+lAaYApv+lAaYApv+lAab/pQGm/6UBpv+lAab/pQGm/6UBpv+lAaYApv+lAqb9pQKmAKb/pQGmAKb/pQGm/6UBpv+lAqb9pQOm/aUDpv6lAKYBpv+lAab/pQGm/6UBpv+lAKYBpgCm/6UBpv+lAaYApv+lAqb+pQKm/qUBpgGm/qUCpv6lAqb/pQCmAKYApgCmAab/pQCmAKYBpv6lA6b9pQGmAqb8pQSm/aUCpv6lAqb/pQCmAab9pQSm/aUCpv+l/6UDpvylBab6pQWm/aUCpgCm/6UApgCmAaYApv+lAqb9pQOm/qUBpv+lAqb9pQOm/qUBpgCm/6UBpgCm/6UCpv6lAaYApv+lAqb+pQKm/aUDpv+l/6UCpv6lAaYApv+lAab/pQGm/6UBpv+lAKYApgCmAab+pQOm/KUEpv2lAqb/pQGm/qUDpvylBKb+pQGm/qUDpvylBKb+pQCmAqb9pQKm/6UBpgCm/6UBpv+lAab/pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQCmAqb9pQNa/VkCWv9ZAlr9WQNa/VkCWgBa/1kBWv9ZAVoAWv9ZAFoBWgBaAFr/WQBaAVr/WQJa/FkFWvtZBFr9WQJa/lkCWv5ZAlr+WQFaAFr/WQJa/lkCWv5ZAlr+WQJa/1kBWv9ZAFoBWv5ZAlr/WQBaAVr+WQKm/qUBpgGm/aUEpv2lAaYApv+lAaYApgGm/aUDpv6lAaYApgCm/6UCpv6lAab/pQGmAKb/pQKm/KUFpvylA6b9pQOm/aUDpv6lAaYApv6lA6b9pQOm/qUBpgCm/6UBpgCm/6UCpv6lAqb9pQOm/qUCpv+l/6UCpv2lBab6pQam+qUFpv2lAaYApv+lAqb+pQGmAKb/pQKm/qUBpv+lAqb+pQGmAKb/pQGmAKb/pQGmAKb/pQGm/6UBpv+lAqb8pQWm/KUDpv2lAqYApv+lAqb8pQSm/aUDpv2lAqb/pf+lA6b8pQSm/aUCpv+l/6UCpv6lAqb+pQGmAKb/pQGm/6UBpgCm/6UCpv2lBKb7pQam+6UDpv+lAKYApgCmAKYApgCmAKb/pQKm/qUCpv2lA6b+pQGmAKb/pQGmAKb+pQOm/aUDpv2lAqb/pQCmAab/pQCmAab/pQCmAab+pQKm/6UApgCmAab+pQKm/qUCpv+lAKYBpv6lA6b9pQKm/6UApgGm/6UApgCmAab/pQGm/qUCpv+lAab/pQCmAKYApgCmAKYApgCm/6UCpv2lBKb8pQKmAab9pQSm/KUDpv2lA6b9WQNa/lkBWv9ZAVr/WQFa/1kBWv9ZAVr/WQFa/1kBWv9ZAVoAWv9ZAVoAWv5ZBFr8WQJaAFr+WQRa/FkCWv9ZAVoAWgBa/1kBWv9ZAlr+WQFaAFr/WQJa/VkDWv1ZA1r+WQBaAVr/WQBaAFoBWv5ZA1r8pQOm/6UApgGm/qUBpgGm/6UApgCmAKYApgGm/qUBpgCmAKYApgCmAKYApv+lAqb+pQKm/qUBpv+lAqb+pQGmAKb/pQGm/6UCpv2lBKb7pQWm/KUCpgCm/6UBpgCm/6UBpgCm/6UBpgCm/6UBpv+lAab/pQGm/qUDpv2lAqb/pQCmAab/pQGm/qUDpv6lAKYCpv2lA6b+pQGmAKb/pQKm/qUBpgGm/aUEpv2lAaYApv+lAqb/pQCmAKb/pQKm/qUDpv2lAaYBpv6lAqb/pQCmAab/pf+lAqb/pQGm/6UApgCmAab+pQOm/KUEpv2lAqb/pQCmAKYApgGm/qUDpvylBKb9pQKm/qUCpv6lA6b8pQSm/KUEpv2lAqb+pQKm/6UApgGm/qUCpv6lAqb/pf+lAqb9pQOm/6X/pQKm/qUBpgCmAKYBpv+lAKYApgCmAab/pQCmAKYApgCmAab+pQKm/qUCpv6lAqb+pQOm/KUEpvylBKb9pQKm/6UApgGm/qUDpv6lAab/pQCmAaYApv+lAab+pQOm/aUDpv2lAqb/pQGm/6UBpv+lAab/pQCmAaYApv+lAab+pQKmAKb/pQGm/1kAWgFa/1kBWv9ZAFoBWv9ZAVr/WQBaAVr+WQNa/VkCWv5ZA1r8WQRa/FkEWv1ZAlr+WQJa/1kAWgBaAVr+WQNa/FkEWv1ZAlr/WQBaAVr/WQBaAVr/WQFa/1kAWgFa/1kAWgFa/lkCWv9ZAFoBWv9ZAFoBpv+lAaYApv+lAab/pQGm/6UCpv2lA6b9pQOm/qUBpgCm/6UBpgCm/6UCpv6lAaYApv+lA6b7pQam+qUFpvylA6b+pQGmAKb+pQSm+6UFpvulBab8pQOm/qUBpv+lAaYApv+lA6b6pQem+qUFpvylA6b+pQGmAKYApgCmAKYApgCmAKYBpv6lA6b9pQKm/6UApgGm/6UBpv+lAab/pQGm/6UCpv6lAaYApgCmAKYBpv2lBab6pQem+aUGpvylAqb/pQGm/6UBpv+lAKYCpv6lAab/pQGmAKYApgCm/6UCpv2lA6b+pQGmAKb/pQGm/6UCpv2lA6b+pQCmAaYApv+lAqb9pQOm/qUCpv6lAqb+pQKm/qUCpv+lAKYBpv6lAqb/pQCmAKYApgCmAab+pQGmAKYApgCmAKb/pQKm/qUBpgCm/6UCpv2lA6b/pf+lAqb9pQSm/aUCpv6lAaYApgCmAab+pQKm/aUDpv+l/6UCpv6lAaYApgCmAKYApgCmAKYApgGm/qUCpv+lAKYApgCmAKYApgGm/aUDpv6lAqb+pQGm/6UCpv6lAab/pQGmAKb/pQGmAKb/pQGmAKb+pQOm/lkBWgBa/lkDWv5ZAVoAWv9ZAVoAWgBa/1kCWv5ZAVoBWv5ZAVoBWv9ZAVr/WQFa/1kCWv1ZA1r+WQFa/1kBWv9ZAVoAWv9ZAVr/WQFa/1kCWv1ZA1r9WQNa/VkCWv9ZAVr/WQFa/lkDWv1ZA1r+WQBaAab+pQSm/KUCpv+lAab/pQKm/KUFpvulBab8pQOm/aUCpgCm/6UCpv6lAaYApv+lAqb+pQKm/qUBpv+lAqb+pQGm/6UBpv+lAqb+pQCmAqb9pQOm/qUBpv+lAqb9pQOm/qUBpgCm/6UCpv6lAqb+pQGmAKYApgGm/qUBpgCmAKYBpv6lAaYApgCm/6UCpv2lA6b/pf6lBKb7pQWm/KUDpv6lAqb9pQSm/KUCpgGm/qUCpv+l/6UCpv6lAqb/pQCmAab9pQSm/aUCpv6lAqb/pQCmAKYApgGm/qUCpv6lAaYBpv6lAqb+pQKm/qUCpv+lAKYApgCmAab+pQOm/KUEpv2lAqb/pQGm/qUDpvylBKb9pQKm/6UApgCm/6UCpv6lA6b8pQOm/qUBpgGm/qUCpv6lAqb/pQCmAKYBpv+lAab+pQKm/6UCpvylBab6pQam/KUCpgCm/qUDpv2lA6b9pQKm/qUDpv2lAqb+pQGmAKYApv+lAqb+pQGmAKb/pQKm/6UApgCmAKYBpv+lAKYBpv6lA6b9pQGmAab+pQKm/6X/pQKm/qUCpv+lAKYApgCmAKYBpv+lAKYApv+lA6b9pQJa/lkCWv9ZAVr/WQBaAVr+WQNa/VkCWv9ZAFoBWv5ZA1r9WQJa/1kAWgFaAFr/WQBaAVr+WQRa+1kEWv1ZAloAWv9ZAVr+WQJaAFr/WQFa/1kAWgJa/VkDWv1ZAloAWv9ZAVoAWv9ZAVr/WQFaAFr/WQGm/6UBpgCm/6UBpv+lAKYBpv+lAab/pQCmAKYApgGm/6UBpv6lAaYBpv+lAab+pQGmAKYBpv6lAaYApgCmAab+pQKm/6UApgCmAab+pQOm/aUBpgCmAKYApgGm/qUBpgCmAab+pQKm/qUCpv+lAKYApgCmAab+pQKm/qUCpv+lAKYApgCmAab/pQCmAKYApgGmAKb+pQOm/KUFpvulBKb9pQKmAKb/pQCmAab/pQGmAKb/pQKm/aUDpv6lAaYBpv2lA6b+pQGmAab9pQOm/qUBpgCmAKb/pQGmAKb/pQKm/aUEpvylBKb8pQOm/qUCpv+lAab+pQKm/qUCpv+lAab/pQCmAKb/pQOm/aUCpv+l/6UCpv6lAqb/pQCmAKYApgCmAKYBpv+lAKYBpv2lBab7pQSm/aUBpgCmAab+pQKm/aUEpvylBKb9pQGmAKYApgCmAab+pQGmAKYBpv6lAqb+pQKm/6UApgCmAKYApgCmAab+pQKm/qUBpgGm/qUBpgGm/qUCpv6lAaYApgCmAab+pQGmAKYApgCmAKb/pQKm/qUBpv+lAaYApgCm/6UApgGmAKb/pQKm/aUDpv+l/6UCWv5ZAlr+WQNa/FkEWv1ZAVoAWgBaAFoAWgBaAFoAWgBa/1kCWv5ZA1r8WQNa/lkBWgBa/1kBWv9ZAVr/WQFa/1kAWgFa/lkDWv1ZA1r9WQNa/VkDWv1ZA1r+WQFaAFr/WQFaAFr/WQFa/1kBWgBa/1kBpv+lAaYApv+lAaYApv+lAab/pQGmAKb/pQGm/6UBpgCmAKYApv+lAaYApgCmAKb/pQGmAKYApgCm/6UBpgCmAKb/pQKm/aUDpv6lAab/pQGm/6UApgKm/aUCpv+lAKYBpv+lAKYApgGm/6UApgCm/6UDpv2lAqb+pQGmAKYBpv6lAqb+pQKm/6UBpv6lAqb/pQCmAab+pQKm/6UApgCmAab/pQCmAab+pQKm/6X/pQOm/aUBpgGm/aUEpv6lAKYBpv+lAKYBpv+lAKYBpv6lAqb+pQOm+6UGpvulA6YApv6lA6b9pQKm/6UBpgCm/qUDpv2lA6b+pQCmAab/pQGm/6UBpv+lAab/pQGm/6UApgKm/aUDpv6lAKYBpv+lAaYApv+lAab/pQGm/6UCpv2lBKb8pQKmAKb/pQKm/aUDpv2lA6b9pQOm/aUDpv6lAKYCpv2lA6b+pQCmAqb9pQOm/aUDpv2lA6b+pQCmAaYApv6lBKb7pQWm/KUDpv6lAaYApgCmAKYApgCm/6UCpv6lAaYApv+lAqb+pQGmAKYApgGm/qUCpv6lAqb+pQKm/qUDpvylBKb8pQSm/aUDpv2lAlr/WQBaAVr/WQBaAFoAWgFa/lkCWv5ZAVoBWv5ZAlr/Wf9ZAlr/WQBaAlr8WQRa/VkDWvxZBVr7WQVa/FkCWv9ZAVoAWgBaAFr/WQFa/1kCWv1ZBFr7WQVa/FkDWv5ZAVoAWgBaAFoAWgBaAFoAWgBaAab+pQKm/qUCpv+lAKb/pQOm+6UGpvqlBKb/pQCm/6UBpv+lAaYBpv6lAab/pQGmAKb/pQKm/aUEpvulBab7pQSm/qUBpv+lAab+pQOm/aUDpv6lAKYBpv+lAqb+pQGm/qUDpv6lAqb9pQOm/qUBpgCm/6UCpv+l/6UCpv6lAqb+pQKm/aUEpv2lAaYBpv6lAqb+pQKm/qUDpv2lAaYBpv2lBKb9pQGmAab9pQOm/6X/pQOm/KUDpv6lAqb/pQCmAKb/pQKm/qUCpv6lAqb+pQGmAKYApgGm/qUCpv6lAqb/pQCmAab+pQKm/qUCpv6lAqb+pQKm/qUCpv6lAqb/pQGm/6UApgCmAab/pQKm/aUCpv+lAKYBpv+lAab+pQOm/aUCpv+lAab/pQGm/6UApgKm/aUCpv+lAab/pQGm/qUDpv6lAab/pQGm/6UBpgCm/6UCpvylBab7pQWm/KUBpgGm/qUDpvylBKb8pQSm/aUCpv+lAKYBpv6lBKb7pQSm/qUApgGmAKb/pQGmAKb/pQKm/qUCpv6lAqb+pQKm/6UApv+lAqb+pQKm/qUBpv+lAqb+pQGmAKYApgCmAKYApgBaAFoBWv5ZA1r9WQJa/1kBWv9ZAVr/WQFa/1kCWv1ZA1r+WQFaAFr/WQJa/lkCWv5ZAVoAWgFa/lkCWv5ZAVoBWv5ZAlr+WQJa/lkDWvxZBFr9WQJaAFr+WQNa/VkDWv5ZAVr/WQJa/lkBWgBa/1kCWv6lAqb+pQGmAKYApgCmAab+pQKm/qUCpv+lAab+pQKm/qUDpv2lAqb/pQCmAKYApgCmAKYBpv6lAqb+pQKm/qUDpv2lAqb/pQCmAKYBpv6lAqb+pQKm/6UApgCmAKYApgGm/qUCpv6lAqb/pf+lAqb+pQKm/6UApv+lAqb/pQCmAab+pQKm/qUCpv+l/6UDpvylBab7pQOm/qUDpv2lAqb/pQCmAab+pQOm/KUEpv2lAqb/pQCmAab+pQOm/aUCpgCm/qUDpv2lA6b+pQCmAqb8pQWm/KUCpgCm/qUDpv2lA6b+pQCmAab/pQGm/6UApgGm/6UBpv+lAKYCpv2lA6b9pQOm/qUBpv+lAab/pQGmAKb/pQGm/6UApgGmAKb/pQGm/6UApgGm/qUDpv2lA6b8pQSm/aUCpgCm/qUDpv2lAqb/pQGm/qUDpvylBab7pQOm/6UApgGm/6UBpv6lAqb/pQGm/6UBpv6lA6b9pQKm/6UApgGm/qUCpv6lAqb+pQKm/6UApgCmAab/pQGm/6UApgGm/6UBpv+lAab+pQOm/aUDpv6lAab/pQGm/6UBpgCm/6UBpv+lAKYCpv2lA6b9pQJa/1kBWv9ZAVr/WQBaAVr/WQFa/1kAWgFa/1kBWv9ZAFoBWv9ZAVr+WQJa/lkDWv1ZAlr+WQNa/FkFWvpZBlr7WQNa/1kAWv9ZAlr9WQRa+1kFWvxZA1r+WQFa/1kBWgBa/1kBWv9ZAFoCWv1ZAlr/WQGmAKb+pQKm/6UCpv6lAab+pQOm/qUBpgCm/6UCpv6lAab/pQGmAab/pf+lAaYApgCmAKYApv+lA6b9pQKm/6UApgGmAKb+pQOm/qUApgKm/aUDpv6lAKYCpv2lA6b+pQGm/6UCpvylBab8pQOm/qUBpv+lAab/pQKm/qUApgKm/aUDpv+l/qUEpvylA6b/pQCmAKYApgCmAKYBpv6lA6b8pQSm/KUEpv2lAaYApgCm/6UCpv6lAKYCpv2lBKb7pQWm+6UFpv2lAKYBpgCm/6UCpv2lAqYBpv2lA6b9pQKm/6UBpv6lA6b9pQKm/6UBpv6lA6b+pQCmAqb9pQOm/qUBpgCm/6UCpv2lA6b+pQGm/6UBpv+lAaYApv+lAaYApv+lAqb+pQGmAKb/pQKm/qUBpgCm/6UCpv6lAqb+pQGmAKYApgGm/qUBpgCmAKYBpv2lBKb8pQSm/KUDpv+lAKYApv+lAaYBpv2lBKb7pQWm/KUDpv6lAaYBpv6lAqb+pQGmAab/pQGm/qUCpv+lAKYBpv+lAKYCpv2lA6b+pQGmAKYApv+lAqb+pQGmAKb/pQKm/qUBpgCm/6UCpv6lAaYBWv5ZAVoAWv9ZAlr/WQBaAFoAWgBaAVr/WQBaAVr+WQNa/FkEWv1ZAlr+WQNa/VkDWv1ZAloAWv9ZAVr/WQBaAVr/WQFa/1kAWgFa/lkDWv1ZA1r+WQBaAFoBWv9ZAlr9WQJaAFr+WQRa+lkHWvlZB1r5pQam+6UEpv2lAqb/pQCmAKYApgGm/qUCpv6lAqb/pQGm/qUCpv+lAab/pQCmAKYApgGm/6UApgGm/qUCpv+lAKYBpv6lA6b8pQSm/KUEpv2lAqb+pQKm/qUCpv6lAqb+pQKm/aUDpv6lAaYApv+lAab/pQGm/6UCpv2lA6b+pQCmAqb+pQGmAKYApv+lAqb+pQGmAab+pQKm/qUCpv+lAKYApgCmAKYApgGm/aUEpvylAqYApv+lAaYApgCm/qUDpv2lA6b+pQGm/6UBpgCm/6UBpv+lAaYApgCm/6UBpgCm/6UDpvulBab8pQOm/6X/pQKm/aUEpv2lAaYBpv6lAqb/pQCmAKYBpv6lA6b8pQSm/aUCpv+lAKYBpv+lAab/pQGm/qUDpv2lA6b+pQCmAab/pQKm/aUDpv2lA6b+pQKm/aUEpvulBKb+pQGmAKb/pQGm/6UCpv2lBKb8pQOm/qUBpgCmAKYApgCmAKYApgCmAKYApgGm/qUCpv+lAKYBpv6lAqb/pQCmAab+pQKm/6UApgGm/qUCpv+lAKYCpvylBKb9pQKmAKb+pQKm/qUCpv+lAKYApgCmAKYApgCmAFoAWgBaAVr+WQJa/1kAWgFa/lkCWv9ZAVr/WQBaAFoBWv5ZA1r9WQJa/1kBWv9ZAVr/WQFaAFr/WQBaAlr9WQNa/lkAWgFa/1kBWgBa/1kBWgBa/1kCWv1ZA1r+WQFa/1kBWv5ZAlr/WQBaAFoAWgBaAKYApv+lAqb+pQKm/aUDpv+lAKYApv+lAqb/pQCmAab9pQSm/KUDpv+lAKYApgCm/6UCpv6lAqb/pf+lA6b7pQam+6UDpv+lAKb/pQOm/KUEpv2lAqb/pQCmAKYBpv+lAab+pQKm/6UBpv+lAKYBpv6lA6b9pQKm/6UApgCmAab+pQOm/aUCpv+lAab/pQGm/6UBpv+lAab/pQGmAKb/pQGm/6UBpgCmAKb/pQKm/aUEpvylAqYApv+lAqb+pQGm/6UBpgCm/6UCpv6lAKYCpv2lA6b+pQCmAab/pQGmAKb+pQOm/aUDpv6lAKYBpv+lAab/pQGm/6UCpv6lAaYApv+lA6b8pQSm/KUDpv6lAqb+pQKm/qUBpgCm/6UCpv6lAaYApv+lAaYApv+lAqb+pQGmAKYApgGm/qUCpv6lA6b+pQGm/6UApgGmAKb/pQKm/aUDpv2lA6b9pQOm/aUDpv2lA6b9pQKm/6UBpgCm/6UBpv6lA6b+pQKm/aUDpv2lA6b+pQGm/6UBpv+lAab/pQGm/6UApgGm/6UBpv+lAKYBpv+lAqb9pQOm/aUCpgCmAKb/pQGm/6UBpgCm/qUDpv5ZAVoAWv5ZA1r+WQFa/1kBWv9ZAVr/WQFa/1kBWv9ZAVr/WQFaAFr/WQFaAFr+WQRa+1kFWvtZBFr+WQBaAVr/WQBaAlr9WQJaAFr/WQJa/VkDWv5ZAlr+WQJa/VkDWv5ZAVoAWgBa/1kBWv9ZAVoAWv+lAab/pQGm/6UBpv+lAqb+pQCmAab/pQKm/6X/pQGm/6UBpgCmAKb/pQGm/6UBpv+lAab+pQOm/aUCpv+lAKYBpv+lAKYApgCmAab+pQOm/KUEpv2lAaYApgGm/6UApgGm/aUEpv2lAaYBpv6lAqb+pQGmAab+pQKm/qUBpgGm/qUCpv6lAqb+pQKm/qUCpv6lAqb+pQGmAKb/pQKm/qUBpgCm/6UBpv+lAqb+pQGm/6UApgKm/aUDpv2lA6b9pQOm/aUCpv+lAab/pQKm/aUDpv2lA6b+pQKm/qUBpv+lAab/pQGm/6UBpgCm/qUDpv2lAqYApv6lA6b9pQKm/6X/pQOm/aUCpv+l/6UDpvylBKb9pQKm/6UApgCmAab/pQGm/qUCpv+lAKYBpv6lAqb/pQCmAab/pQGm/6UBpgCm/6UBpgCm/6UBpgCm/6UCpv6lAaYApgCmAKb/pQKm/qUBpgCm/6UBpgCm/qUEpvulBKb9pQKm/6UApgGm/qUDpvylBKb9pQKm/6UApgCmAab/pQGm/6UApgGm/6UBpv+lAab/pQGm/6UApgGm/qUDpv2lAqb/pQCmAKYBpv6lAqb/Wf9ZA1r8WQRa/VkBWgFa/1kAWgFa/1kBWv9ZAVr+WQNa/VkCWv5ZAlr+WQJa/lkCWv5ZA1r8WQRa/VkCWv9ZAFoBWv9ZAFoAWgBaAVr/WQBaAFoAWgBaAFoAWgBaAVr+WQJa/1kBWv9ZAVr/WQJa/lkBpv+lAaYApgCm/6UBpv+lAaYApv+lAaYApv+lAqb+pQGmAab9pQSm/KUDpv+l/6UBpv+lAaYApv+lAab/pQGm/6UBpgCm/6UBpv+lAab/pQGm/6UBpgCm/6UBpv+lAqb+pQGm/6UBpgCmAKb/pQGmAKb/pQGmAKb/pQOm+6UEpv6lAaYBpv2lA6b9pQOm/6UApgCm/6UCpv6lAqb/pQCmAab/pQCmAab/pQKm/qUCpv6lAaYBpv2lBKb8pQOm/qUApgGm/qUDpv2lAaYBpv6lAqb/pQCmAab+pQKm/6UApgKm/KUEpv6lAab/pQCmAab/pQKm/aUCpv+lAab/pQKm/KUFpvylA6b+pQGm/6UBpgCm/6UBpv+lAKYBpv6lAqb/pQCmAab+pQOm/aUDpv6lAKYCpv2lBKb8pQKmAKb/pQKm/qUBpgCm/6UCpv+lAKYApgCmAKYBpv6lAqb+pQKm/qUCpv6lAqb+pQGmAKb/pQOm/KUDpv6lAaYApgCm/6UCpv2lBKb8pQOm/qUApgGmAKb/pQGm/6UApgGmAKb+pQSm+6UFpvylAqYApv+lAab/pQGm/6UBpv+lAKYCpv2lBKb7WQRa/lkBWgBa/1kBWv9ZAlr9WQNa/lkBWgBa/lkDWv5ZAVr/WQFa/lkDWvxZBVr7WQVa+1kDWv9ZAVr/WQFa/lkDWv1ZAloAWv9ZAlr9WQNa/lkBWgBa/1kCWv5ZAVr/WQFa/1kBWv9ZAVr/WQBaAFoApgGm/6UApgCmAKYApgGm/6UApgGm/qUDpv2lAqb/pQCmAab+pQOm/aUCpv6lA6b9pQSm+6UFpvylA6b+pQGmAab9pQSm/KUDpv6lAab/pQKm/aUCpgCm/qUDpv2lAqb/pQGm/qUDpv6lAKYBpv+lAKYCpvylBKb9pQKm/6UApgGm/qUCpv+lAKYApgGm/qUCpv6lAqb+pQKm/6UApgCmAKYApgGm/6UApgCmAKYApgGm/qUCpv+l/6UDpvylBKb9pQOm/KUEpv2lAqb/pQCmAKYBpv6lA6b8pQSm/aUCpv+lAKYApgGm/6UApv+lAqb+pQKm/qUBpv+lAqb9pQOm/qUApgKm/aUDpv6lAab/pQKm/qUBpv+lAab/pQKm/qUBpv+lAab/pQKm/qUBpv+lAaYApv+lAab/pQGmAKb/pQGm/6UBpgCm/6UCpv2lAqYApv+lAaYApv6lA6b9pQKmAKb/pQCmAab/pQCmAqb8pQWm/KUCpgCm/6UBpv+lAab/pQGm/6UBpv+lAab/pQCmAqb8pQam+aUFpv6lAKYBpv+lAKYBpv+lAaYApv6lA6b9pQOm/qUBpv+lAab/pQKm/VkDWv5ZAVoAWv9ZAVoAWgBaAFr/WQFaAFr/WQJa/VkEWvxZA1r+WQFaAFoBWv5ZAlr/Wf9ZA1r9WQJa/1kAWgBaAlr8WQVa+1kDWgBa/lkDWvxZBFr8WQRa/FkEWvxZA1r+WQFaAFoAWv9ZAlr+WQBaAqb+pQGmAKb/pQKm/aUDpv6lAaYBpv2lA6b+pQKm/6UApgCmAKYBpv+lAab/pQCmAKYBpv6lA6b8pQOm/6UApgCm/6UCpv6lAqb+pQGmAKb/pQKm/qUCpv6lAqb+pQKm/qUCpv+lAab+pQKm/6UApgGm/qUCpv6lA6b9pQKm/6UApgGm/6UBpv+lAKYApgGm/6UApgCmAKYApgGm/aUFpvqlBab+pf+lA6b8pQOm/6X/pQKm/6UApgCmAKb/pQOm/KUEpv2lAqb+pQKm/qUCpv6lAqb+pQKm/aUDpv2lA6b/pf+lAab/pQGmAKYApv+lAqb+pQGmAKYApgCmAKYApgCmAKYBpv6lAqb/pQCmAab+pQKm/6UBpv+lAKYBpv+lAab/pQGm/6UBpv+lAKYBpv6lA6b9pQKm/qUCpv+lAKYApgCmAab+pQOm/KUEpv2lAqb+pQKm/6UApgCmAKYApgGm/6UApgCmAKYBpv+lAab/pQCmAab/pQGmAKb+pQOm/aUDpv6lAab/pQGm/6UCpv2lBKb7pQam+qUFpvulBKb/pf+lAqb9pQOm/qUCpv6lAqb+pQKm/qUCpv+l/6UDpvxZBFr8WQNa/1kAWgFa/VkDWv5ZAlr+WQJa/lkCWv5ZAVoAWv9ZAVoAWv9ZAVr+WQJaAFr/WQFa/lkCWgBa/1kBWv9ZAFoBWgBa/1kBWv9ZAVr/WQFa/1kAWgFa/lkDWv1ZAlr/WQBaAVr/WQFa/1kBWv+lAKYApgGm/6UBpv+lAKYBpv6lA6b+pQGm/6UApgGm/6UCpv2lA6b9pQOm/qUCpv2lA6b+pQGmAKb/pQGmAKYApv+lAaYApgCmAKYApgCmAKYApgCmAab+pQGmAab9pQSm/KUDpv+lAKYApgCmAKYBpv+lAab+pQKm/6UApgCmAKYApgCmAKYApgCmAab+pQKm/qUDpvylBKb8pQSm/aUCpv+l/6UDpv2lA6b9pQKm/qUCpv+lAKYApv+lAab/pQKm/qUBpgCm/6UCpv2lBKb8pQSm/KUDpv6lAaYApgCmAKYApv+lAqb+pQKm/qUCpv2lBKb8pQOm/6X/pQKm/qUCpv6lAqb9pQSm/KUEpvylAqb/pQGmAKYApv6lA6b+pQGmAab8pQWm/KUEpvylA6b+pQGmAKb/pQGmAKb/pQKm/aUDpv2lA6b9pQOm/aUDpv2lA6b8pQSm/aUDpv6lAKYBpv6lA6b+pQGmAKb/pQGm/6UBpgCm/6UBpv+lAab/pQGm/6UBpgCm/6UCpv6lAaYApgCmAKb/pQKm/aUEpvylA6b9pQOm/aUEpvylA6b9pQKm/6UCpvylBab7pQOmAKb+WQJa/1kAWgFa/1kAWgFa/1kBWv9ZAFoCWv1ZA1r9WQNa/lkAWgFa/lkDWv1ZAlr+WQNa/VkCWv5ZAlr/WQFa/1kAWgFa/1kBWv9ZAVoAWv9ZAVr/WQJa/VkDWv1ZAloAWv9ZAVr/WQFa/1kBWgBa/1kCpv2lBKb8pQOm/6X/pQKm/qUBpgGm/qUCpv6lAqb/pQCmAKYApgGm/6UApgCm/6UCpv+lAKYApgCm/6UCpv6lAaYApv+lAaYApv+lAab/pQKm/aUEpvulBqb6pQWm/KUDpv+l/6UBpgCmAKb/pQKm/qUCpv6lAaYApgCmAKYApv+lAqb+pQGmAKb/pQKm/qUBpv+lAab/pQGm/6UBpgCm/qUDpv2lA6b9pQOm/aUCpv+lAKYApgGm/qUCpv+l/6UDpv2lAqb/pQCmAqb9pQKmAKb+pQWm+aUHpvmlB6b6pQWm/KUCpv+lAab/pQGm/6UApgGm/qUDpv2lAqb/pQCmAab+pQKm/6UApgGm/qUCpv6lAqb+pQKm/6UApgCmAKYApgCmAKYApgCmAKYApv+lAaYApgCmAKYApv+lAaYApv+lA6b8pQOm/qUBpgCmAKYApgCmAKYApgCmAKYApgCm/6UDpvylBKb8pQOm/6X/pQKm/qUCpv6lAqb+pQGmAab9pQSm/aUBpgGm/aUEpvylA6b/pf+lAqb9pQOm/qUBpv+lAaYApgCm/6UBpv+lAqb+pQGmAKYApv+lAqb9pQOm/1n/WQFa/1kBWgBa/1kBWv5ZBFr8WQNa/lkBWgBaAFoAWgBaAFoAWgBaAFoAWv9ZA1r7WQZa+lkEWv5ZAVoAWgBa/1kCWv1ZBFr8WQRa/FkEWv1ZAlr/WQBaAFoBWv9ZAVr/WQBaAVr/WQFa/1kBWv5ZA6b8pQWm+6UEpv2lAaYBpv+lAKYCpvylBKb+pQCmAqb+pQCmAqb9pQOm/qUBpv+lAqb9pQKmAKb/pQGmAKb/pQGmAKb/pQKm/qUBpgCmAKYApgCmAKb/pQOm/KUEpvylA6b+pQKm/qUCpv2lBKb8pQOm/qUBpgCmAab9pQOm/qUBpgGm/qUCpv+lAKYApgCmAab+pQOm/aUCpv+lAKYApgGm/qUDpv2lAqb/pQCmAab/pQCmAab/pQGm/6UApgGm/6UBpv+lAKYBpv+lAab/pQGm/qUCpv+lAab/pQCmAKYApgGm/6UApgCmAab+pQOm/KUEpv2lAqb+pQKm/6UApgCmAKYApgGm/qUCpv+l/6UCpv6lAqb/pf+lAaYBpv6lA6b8pQOm/6UApgCmAKYBpv6lAqb+pQKm/6UBpv6lAqb/pQCmAab/pQCmAab+pQKm/6UBpv+lAab+pQKm/6UApgCmAKYApgCmAKYApgCmAKYApgCmAKYBpv+lAKYBpv6lAqb/pQGm/6UBpv+lAKYBpgCm/6UBpgCm/qUDpv6lAKYCpv2lA6b9pQOm/aUDpv6lAKYCpv6lAab/pQGm/6UBpgCm/lkDWv1ZAlr/WQFa/1kAWgFa/lkDWv1ZAlr/WQFa/1kAWgFa/lkDWv1ZAlr/WQBaAVr+WQNa/VkCWv9ZAVr/WQBaAVr/WQFa/1kAWgFaAFr/WQFa/lkDWv5ZAlr+WQFa/1kBWgBaAFoAWv9ZAVr/WQJa/qUCpv6lAKYCpv2lBKb8pQOm/aUCpv+lAab/pQGm/6UBpv+lAab/pQKm/qUCpv2lBKb9pQGmAab+pQOm/aUBpgGm/qUDpv2lAqb/pQGm/qUDpv2lAqb/pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQGm/6UApgCmAqb9pQSm+6UFpvylBKb8pQOm/6UApgCm/6UBpgCmAKb/pQGm/6UBpgCm/6UBpgCm/qUEpvulBab8pQKmAKYApv+lAqb9pQOm/6UApgCmAKb/pQKm/qUCpv6lAaYBpv2lBKb9pQKm/6UApv+lA6b8pQWm+qUFpv2lAaYBpv6lAaYBpv6lA6b8pQSm/KUFpvulBKb+pQCmAab/pQGm/6UBpv+lAaYApv6lA6b9pQOm/aUDpv2lA6b9pQOm/aUDpv2lAqb/pQCmAab+pQKm/qUBpgCmAKb/pQKm/aUDpv+lAKYApgCm/6UDpvylBKb9pQGmAab9pQSm/KUEpv2lAqb+pQKm/6UBpv6lAqb/pQGm/6X/pQKm/qUCpv+l/6UCpv2lA6b/pQCm/6UBpv+lAqb/pf+lAaYApgCm/6UCpv6lAqb/pQCmAKYApgFa/VkFWvtZA1r+WQJa/lkDWvxZA1r+WQNa/FkEWvxZA1r/Wf9ZAlr+WQFaAFr/WQJa/lkBWgBa/1kCWv5ZAVr/WQFaAFr/WQJa/VkDWv5ZAlr+WQJa/VkEWvxZBFr8WQNa/1n/WQJa/VkEWv1ZAlr+WQGmAKYApgCmAKYApgCmAKYApgCmAKYApgCmAab+pQKm/6X/pQOm/aUCpgCm/qUDpv2lA6b9pQOm/aUDpv2lAqb/pQCmAab/pQCmAab+pQKm/6UBpv+lAKYBpv+lAab/pQGm/6UBpv+lAab/pQGm/6UApgGm/6UBpv+lAaYApv6lA6b9pQOm/qUBpv+lAab/pQKm/aUDpv2lAqYApv+lAab/pQCmAab/pQGm/6UBpv+lAab/pQGmAKb/pQGm/6UCpv2lBKb7pQSm/qUBpgCm/6UApgKm/aUEpvylA6b+pQKm/6UApgCmAKYApgCmAKYApgCm/6UBpv+lAqb+pQCmAab+pQOm/qUBpv+lAab/pQGmAKb/pQKm/qUCpv2lA6b+pQKm/qUBpgCm/6UDpvylA6b/pQCmAKYBpv2lBKb+pf+lA6b8pQOm/6UBpv6lA6b8pQOm/6UApgGm/qUCpv2lBKb8pQOm/6X/pQKm/qUBpgCmAKYApgGm/aUDpv6lAaYBpv6lAaYApv6lA6b+pQGmAKYApv6lA6b9pQOm/6X/pQGm/6UBpgCm/6UBpv+lAqb+pQGm/6UBpgCmAab+pQKm/qUCWv5ZA1r9WQNa/VkCWv9ZAVr/WQJa/VkEWvtZBFr+WQJa/lkCWv5ZAVoAWgBa/1kCWv5ZAVoBWv1ZBFr8WQNa/lkBWgBaAFr/WQFa/1kBWgBa/1kCWv1ZA1r+WQJa/lkCWv1ZBFr8WQRa/FkDWv5ZAlr+pQKm/qUBpgGm/aUEpvylA6b+pQKm/qUCpv6lAqb+pQKm/6UApgGm/qUCpv6lA6b8pQWm+6UEpv6lAab/pQGmAKb/pQKm/qUBpgCm/6UCpv2lBKb7pQWm/KUDpv2lA6b9pQOm/aUCpv+lAab/pQGm/6UApgGm/6UCpv2lBKb8pQKmAab8pQem+KUHpvulA6b/pf+lAqb+pQKm/qUCpv6lAaYApv+lAqb+pQGmAKYApgCmAKb/pQKm/qUDpvylBKb8pQSm/KUEpv2lAqb+pQKm/qUCpv+lAKYApgCmAKYApgGm/qUBpgCm/6UCpv2lBKb8pQSm/KUDpv6lAaYBpv6lAaYApv+lAqb+pQGm/6UBpv+lAab/pQGm/6UApgGm/6UBpv+lAab/pQGm/6UApgKm/KUEpv2lAqYApv6lA6b9pQKmAKb+pQOm/aUBpgGm/qUCpv6lAqb+pQKm/6X/pQOm/aUCpv6lAqb+pQKm/qUBpgCmAKb/pQGmAKb/pQKm/aUDpv6lAaYApv+lAaYApgCm/6UBpv+lAaYApv6lA6b9pQOm/aUCpgCm/6UCpv6lAaYApv+lAqb/pQCmAKb/pQGmAVr+WQJa/lkBWgBaAFoAWgBaAFoAWgBaAFoBWv5ZA1r8WQRa/lkAWgJa/FkFWvtZBVr7WQVa+1kFWvxZAlr/WQBaAlr9WQNa/VkCWgBa/lkDWv1ZAlr/WQBaAVr/WQBaAFoAWgFa/lkDWv1ZAlr+WQJa/qUDpv2lAqb+pQGmAab/pQGm/qUCpv+lAab/pQGm/qUDpv6lAaYApv6lAqYApgCmAKYApv6lA6b+pQKm/qUCpv6lAaYBpv2lA6b+pQGmAKb/pQGmAKYApgCm/6UBpgGm/6UApgCmAKYBpv+lAKYBpv+lAab/pQGm/6UBpgCm/qUEpvqlB6b6pQSm/aUCpv6lAqb+pQKm/qUBpv+lAqb+pQGm/6UBpgCm/6UBpv+lAab/pQGm/6UBpv+lAKYBpv+lAab+pQKm/6UApgGm/qUCpv+lAKYBpv+lAKYCpvylBab8pQKmAKb/pQGmAKYApv+lAqb9pQOm/qUBpgCmAKb/pQGm/6UCpv6lAqb9pQSm/KUEpvylBKb8pQSm/aUCpv+lAab/pQCmAqb9pQKm/6UApgKm/aUBpgGm/aUFpvulA6b/pQCmAKYApgCmAab/pQCmAab+pQOm/qUBpgCm/6UBpgCmAKb/pQKm/aUDpv6lAaYApv+lAKYBpgCmAKb/pQGm/6UBpgCm/6UBpgCm/6UCpv2lA6b+pQKm/qUCpv6lAaYApgCmAKYApv+lAqb+pQGmAab9pQWm+qUFpvylBKb8pQRa/FkDWv5ZAlr+WQFaAFr/WQJa/lkBWgBa/1kCWv5ZAVoAWv9ZAlr+WQFa/1kBWgBaAFr/WQFaAFr/WQJa/lkBWgBa/1kBWgBa/1kBWv9ZAVr/WQFaAFr/WQFa/1kBWgBaAFr/WQFaAFr/WQJa/VkDWv6lAab/pQGm/6UBpv+lAKYBpv+lAab/pQCmAab/pQCmAab+pQOm/aUCpv+l/6UDpvylBab7pQOm/6UApgCmAKYApgCmAKYApv+lAqb/pf+lAab/pQGmAab+pQGm/6UBpv+lAaYApv+lAqb9pQOm/aUDpv6lAqb+pQGm/6UBpgCmAKb/pQGm/6UBpv+lAab/pQGmAKb/pQGm/6UBpgCm/6UCpv2lA6b9pQOm/qUBpgCm/6UBpgCm/6UBpgCm/6UBpv+lAab/pQGm/6UBpv+lAab/pQCmAab+pQOm/KUEpv2lA6b9pQKm/qUDpv2lA6b9pQKm/6UApgCmAab/pQCmAKb/pQOm/KUEpvylA6b/pQCmAKYApv+lAqb/pQCmAKYApgCmAab+pQKm/6UBpv+lAKYBpv+lAab/pQCmAab/pQCmAab+pQOm/qUBpv+lAab/pQGmAKYApv+lAab/pQGmAKYApv+lAab/pQGm/6UCpvylBKb9pQOm/aUCpv6lAqYApv6lAqb+pQGmAab+pQGmAab9pQSm/aUBpgGm/qUCpv+lAKYBpv6lAqb/pQGm/6UBpv+lAqb+pQGm/6UCpv+lAKYAWv9ZAlr/WQBaAFoAWgBaAVr+WQJa/lkBWgBaAVr+WQJa/VkDWv9ZAFoAWgBaAFoBWv5ZA1r8WQVa+1kEWv5ZAFoBWv9ZAVoAWgBa/1kBWgBaAFoAWgBa/1kCWv5ZAlr+WQJa/lkCWv9ZAFoAWgBaAFoApgGm/qUCpv+lAKYApgCmAKYBpv+lAKYApgCmAKYApgCmAKYApgCmAKb/pQGmAKYApgCm/6UBpv+lAqb9pQOm/qUBpv+lAab/pQKm/aUDpv6lAaYApv+lAaYApgCmAKYApgCmAKYApgCmAKYApgCmAKYApgCm/6UCpv6lAaYApv+lAaYBpvylBab8pQOm/qUBpv+lAqb9pQSm/KUDpv6lAaYApgCm/6UCpv6lAqb/pf+lAqb+pQKm/qUCpv2lBKb8pQOm/qUBpgCmAKb/pQKm/qUCpv6lAaYApv+lA6b8pQSm/KUDpv6lAaYApv+lAqb+pQGm/6UBpgCmAKYApv+lAaYApgCmAKYApgCmAKYApgCmAKYApgCmAKYApgCmAKb/pQGmAKb/pQKm/qUApgKm/aUDpv6lAab/pQGm/6UBpv+lAKYCpv2lA6b+pQCmAqb+pQGmAKb/pQGmAKb/pQGmAKb+pQOm/KUFpvylAqb/pQCmAKYBpv+lAKYCpvylBKb9pQKm/6UBpv+lAKYApgCmAab/pQCmAKYApgCmAab+pQKm/qUCpv6lA6b8pQOm/6UApgGm/qUCpv6lAqb/pf+lA6b9WQJa/lkCWv5ZA1r9WQJa/1kAWgFa/1kBWv5ZAlr/WQBaAVr/WQBaAVr+WQJaAFr+WQNa/VkCWgBa/1kBWv9ZAVr+WQNa/lkBWv9ZAFoAWgJa/VkDWv1ZAloAWv5ZBFr7WQVa/FkCWgFa/VkEWvxZA1r/pQCmAKYApv+lA6b8pQSm/KUDpv+lAKYApgGm/qUDpvylBab7pQWm+6UEpv6lAKYBpv6lAqb/pQCmAab+pQKm/6UApgGm/qUDpvylBKb9pQKm/qUBpgCmAKYApgCm/6UDpvylBKb9pQKmAKb/pQCmAqb9pQSm+6UFpvulBqb5pQem+qUFpvylA6b+pQKm/qUBpgCmAab/pQCm/6UCpv6lBKb6pQam+qUFpv6l/6UDpv2lAqb+pQGmAKYBpv+l/6UCpv6lAqb/pf+lAqb/pQCmAab+pQKm/qUDpv2lAaYBpv6lA6b9pQKm/6UBpv+lAab/pQGm/6UCpvylBab7pQSm/qUApgGm/qUCpv+lAKYBpv6lAqb/pQCmAab/pQGm/6UBpv+lAaYApv+lAaYApv+lAqb9pQSm/KUEpv2lAqb/pQCmAKYApgGm/6UApgCm/6UDpvylBKb9pQGmAab+pQKm/6UApgCmAKYApgGm/qUCpv6lAaYBpv6lAqb+pQGmAKYBpv6lAqb+pQKm/6UBpv6lAqb/pQCmAab/pQCmAKYApgGm/qUCpv6lAqb+pQKm/qUCpv+l/6UCpv+lAKYApv+lAlr+WQJa/lkBWgBa/1kBWgBa/1kCWv1ZBFr8WQNa/lkBWgFa/1kAWgBa/1kCWv9ZAFr/WQFa/1kCWv1ZA1r9WQNa/VkCWv9ZAVr/WQFa/lkDWv1ZA1r+WQFaAFr/WQFaAFr/WQFaAFr/WQFa/1kBWv9ZAqb9pQOm/qUBpgCm/6UCpv6lAaYApgCmAKYApgCmAKYApv+lAaYApgCmAKb/pQKm/aUDpv6lAaYBpv6lAaYApv+lAqb/pQCmAKYApgGm/qUDpvylBKb9pQKm/6UApgCmAKYApgGm/qUCpv6lAqb/pQCmAab+pQKm/6UApgCmAab+pQOm/KUDpv+lAKYBpv6lAqb/pQCmAKYApgGm/6UApgCmAKYApgGm/qUCpv+lAKYBpv6lAqb+pQOm/aUDpvylBKb+pQCmAab+pQOm/aUDpv2lA6b9pQOm/aUDpv+l/6UCpv2lA6b/pQCmAKb/pQKm/qUCpv6lAKYCpv6lAaYApv+lAqb9pQOm/aUDpv+l/qUDpv2lA6b+pQGm/6UCpv2lBKb8pQSm+6UFpvylBKb8pQKmAKb/pQGm/6UBpgCm/qUCpv+lAab/pQGm/6UBpv+lAKYBpv+lAab/pQCmAKYApgGm/qUDpvylBKb+pQCmAKYBpv6lAqYApv6lA6b9pQGmAab/pQCmAab+pQKm/6UApgCmAKYApgCmAKYApgCmAKYApgCmAKYBpv6lAqb/pQGm/6UApgCmAab/pQGm/6UApgJa/VkDWv5ZAVoAWv9ZAlr9WQNa/lkBWv9ZAlr9WQNa/lkAWgFaAFr/WQFaAFr/WQFaAFr/WQJa/lkBWgBaAFoAWgBa/1kCWv5ZAlr+WQFaAFoAWgBaAFr/WQJa/lkCWv5ZAVoAWgBaAFr/WQJa/lkCWv6lAqb+pQKm/qUBpgGm/6X/pQOm/KUDpv+lAKYBpv+lAKYApgCmAab/pQCmAKYApgGm/qUCpv6lAqb/pQCmAKYBpv6lAqb/pQCmAab+pQOm/aUDpv2lAqb/pQGm/6UBpv+lAab/pQCmAab/pQKm/KUFpvulBab8pQOm/qUBpgCm/6UCpv6lAqb+pQKm/aUDpv+lAKYApgCm/6UCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/6UApgCm/6UDpvylBab6pQWm/aUCpv6lAqb/pQCmAKYApv+lA6b8pQSm/KUDpv6lAqb+pQGmAKYApgCmAKb/pQOm/KUEpvylBKb9pQGmAab+pQKm/qUCpv+lAKYApgCmAKYBpv+lAKYApgGm/qUCpv+lAKYBpv+lAKYBpv+lAKYBpv6lA6b9pQKm/6UApgGm/6UApgGm/6UBpgCm/6UBpgCm/6UCpv6lAaYApv+lAab/pQGmAKb/pQCmAab/pQGm/6UBpv+lAaYApv6lBKb8pQOm/6X/pQGmAKb/pQKm/qUApgKm/aUDpv2lA6b9pQOm/qUBpgCm/6UBpv+lAqb+pQGmAKb/pQKm/qUBpgCm/6UBWgBaAFoAWv9ZAVoAWgBaAFoAWv9ZAlr+WQJa/lkBWgBaAFoAWgBaAFoBWv5ZAlr+WQNa/VkCWv9ZAFoBWv9ZAFoBWv9ZAFoBWv5ZAloAWv5ZA1r8WQNa/1kAWgFa/lkCWv5ZAlr+WQJa/1kAWgFa/lkCpv+lAab+pQOm/aUCpgCm/qUCpgCm/qUDpv2lAqb/pQGm/qUCpv+lAKYBpv6lAqb+pQKm/6UApgCmAab+pQOm/KUDpv+lAKYBpv6lAaYApgGm/qUCpv6lAaYApgCmAKYApgCm/6UBpgCmAKYApgCm/6UCpv6lAqb+pQKm/qUCpv6lA6b9pQKm/6UApgKm/qUBpgCm/6UCpv6lAqb+pQGmAKYApgCmAKb/pQKm/qUCpv6lAqb+pQKm/qUBpgCmAKb/pQGmAKb/pQKm/aUDpv6lAqb9pQOm/qUBpgCm/6UBpv+lAaYApgCmAKb/pQGmAKYApgCmAKYApgCmAKYApgCmAKYApgCmAab9pQOm/aUEpvylBKb7pQSm/6X/pQOm+6UEpv6lAaYApv+lAaYApgCm/6UCpv2lBKb9pQKm/qUCpv6lAqb+pQKm/6UApgGm/qUCpgCm/qUDpv2lAqYApv+lAKYCpv2lA6b+pQCmAab/pQGm/6UApgGm/6UApgCmAab+pQSm+qUGpvulBKb9pQKm/6UApgGm/6UApgGm/6UBpv+lAKYApgGm/6UBpv6lAqb/pQGm/6UApgGm/6UBpv+lAFoBWv5ZA1r8WQRa/VkBWgFa/lkCWv9ZAVr+WQJa/lkCWv9ZAFoAWv9ZAlr+WQFaAFr/WQJa/lkBWgBa/1kCWv5ZAVoBWv1ZBFr8WQRa/VkCWv5ZAlr+WQJa/1kAWgFa/1kAWgFa/lkDWv1ZAlr/WQBaAab+pQKm/6UApgGm/6UBpgCm/6UBpv+lAab/pQKm/qUApgGm/6UBpgCm/6UBpv+lAKYBpv+lAqb9pQKm/qUCpgCm/6UBpv6lAqb/pQGm/6UBpv6lA6b9pQOm/aUDpv2lBKb8pQOm/qUBpgCmAKYApgCm/6UBpgCmAKb/pQGm/6UBpgCm/6UApgKm/qUBpgCm/6UCpv6lAaYApv+lAqb+pQGmAKb/pQGmAKYApgCm/6UBpgCmAKYApv+lAqb+pQKm/6X/pQKm/qUBpgKm/KUDpv6lAaYBpv+l/6UBpgGm/qUCpv6lAaYBpv6lAqb+pQKm/qUCpv+lAKYApgCmAab/pQGm/6UApgGm/6UBpv+lAab/pQCmAab/pQGm/6UBpv+lAqb9pQOm/aUDpv+l/6UCpv6lAaYApv+lAqb/pf+lAqb+pQGmAKYApgCmAab+pQKm/6UApgGm/qUDpv2lAaYApgCmAKYBpv2lA6b9pQSm/aUBpgCm/6UCpv2lBKb8pQSm/aUBpgCmAKYApgCmAKYApgCmAKb/pQKm/qUBpgCm/6UCpv6lAaYApgCmAKb/pQKm/qUDpvylA6b/pQCmAab+pQKm/1kAWgFa/lkDWv1ZAlr/WQBaAVr/WQBaAVr+WQNa/VkCWv9ZAVr/WQFa/1kAWgJa/VkCWv9ZAFoBWv9ZAFoAWgBaAVr+WQNa/FkEWv1ZAlr+WQNa/VkCWv9ZAFoBWv9ZAVr/WQFa/1kAWgFaAFr/WQFa/qUCpgCm/6UBpv+lAKYBpv+lAKYBpv+lAKYBpv6lAaYBpv6lAqb+pQGmAKb/pQKm/aUDpv2lA6b9pQOm/aUDpv2lA6b9pQSm+6UFpvylA6b+pQGmAKb/pQKm/aUDpv6lAqb+pQKm/aUDpv+lAKYBpv6lAqb+pQGmAab+pQOm/KUDpv6lA6b8pQSm/aUBpgKm/KUDpv+lAKYBpv6lAqb+pQOm/aUDpvylBKb+pQGm/6UApgGm/6UBpv+lAaYApv+lAKYApgKm/qUCpvylBKb+pQGmAKb/pQGmAKYApv+lAqb+pQKm/6X/pQKm/6UApgGm/aUFpvulBKb+pf+lA6b8pQSm/qUApgGm/qUCpv+lAKYApgCmAKYApgCmAKb/pQKm/qUCpv2lBKb8pQOm/6UApgCmAab9pQSm/aUCpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUDpvylBKb9pQKm/6UApgCmAKYBpv6lAqb+pQKm/qUCpv6lAqb+pQKm/qUCpv+lAKYApgGm/6UBpv+lAKYBpv+lAab/pQCmAKYApgCmAab9pQOm/qUCpv+l/6UBpgCmAKYApgCm/6UCpv2lBKb8pQNa/lkBWgBaAFoAWgBaAFoBWv5ZAlr+WQNa/VkDWvxZBFr9WQNa/lkAWgBaAVr+WQNa/FkEWv1ZAlr+WQFaAVr+WQJa/lkBWgFa/lkCWv1ZA1r+WQFaAVr+WQFaAFr/WQJa/lkCWv5ZAlr/WQBaAFoAWgCmAab/pf+lAqb+pQOm/aUCpv6lA6b9pQOm/aUCpgCm/6UBpv+lAKYBpv+lAab/pQGm/6UApgKm/aUEpvulBab8pQKmAab9pQSm+6UFpvulBab8pQKm/6UApgCmAab+pQKm/qUCpv6lAaYApv+lA6b7pQWm+6UEpv+l/6UBpgCm/qUDpv6lAaYApv+lAaYApv+lAab/pQGm/6UBpv6lA6b9pQKm/qUCpv6lAqb/pf+lA6b8pQSm/KUEpv2lAqb/pQCmAKYBpv+lAab+pQKm/6UBpv+lAKYBpv6lA6b8pQSm/qUApgGm/qUCpv+lAab/pQCmAKYBpv6lA6b9pQKm/6UApgGm/6UBpv6lAqYApv+lAab/pQCmAab/pQGm/6UBpv+lAab+pQOm/KUFpvulBKb+pQCmAab/pQCmAqb9pQOm/aUCpgCm/6UBpv+lAKYBpv+lAab/pQGm/6UBpv+lAab+pQKmAKb/pQGm/6UApgGm/6UBpv+lAab/pQCmAKYBpv+lAKYBpv6lAqb/pf+lA6b8pQSm/aUBpgCmAKYApgCmAKb/pQOm/KUEpvylA6b+pQKm/qUCpv6lAaYApgCm/6UCWv1ZA1r+WQFaAFr/WQJa/VkDWv5ZAVoBWv1ZA1r+WQFaAFr/WQJa/VkEWvxZBFr8WQNa/lkCWv5ZAlr+WQJa/lkCWv5ZAlr+WQJa/lkCWv5ZAlr/WQBaAFoAWgBaAFoAWgFa/VkEWvtZBVr9WQFa/1kBpv+lAqb9pQOm/aUDpv6lAKYCpv2lA6b+pQGm/6UBpv+lAqb+pQGm/6UBpgCmAKYApgCm/6UBpgCmAKYBpv2lA6b+pQKm/6UApgCmAKYBpv+lAab/pQGmAKb/pQKm/qUBpgGm/aUFpvqlBab9pQGmAab+pQKm/6UApv+lAqb+pQKm/qUBpgCm/6UBpv+lAab/pQGm/6UApgGm/qUCpv+lAKYBpv+lAKYBpv+lAab/pQGm/6UBpgCm/6UBpv+lAqb9pQSm+6UFpv2lAaYApv+lAqb+pQKm/qUBpgCmAKb/pQKm/aUDpv6lAaYApv+lAab/pQGmAKYApv6lA6b9pQKmAab8pQWm/KUDpv2lBKb7pQWm/KUCpgCm/6UBpv+lAaYApv+lAaYApv+lAqb9pQOm/qUBpv+lAab+pQOm/aUDpv2lA6b9pQOm/aUDpv2lA6b+pQCmAqb9pQOm/aUDpv6lAaYApv6lA6b9pQKm/6UBpv6lA6b8pQSm/qUBpv+lAqb9pQSm/KUDpv6lAqb+pQKm/qUCpv6lAqb+pQGmAab+pQKm/qUCpv6lAqb+pQGmAKb/pQGmAKb+pQOm/aUCpv+lAVr+WQNa/lkAWgFa/1kBWgBa/1kBWv9ZAVr/WQFa/1kBWv5ZAlr/WQBaAVr+WQJa/1kAWgBaAVr+WQJa/lkCWv5ZA1r8WQRa/FkDWv9ZAFoAWgFa/VkEWvxZBFr9WQJa/lkCWv5ZAlr+WQFaAFr/WQJa/qUBpgCm/6UBpgCm/6UCpv2lBKb8pQOm/qUApgKm/qUBpgCmAKb/pQKm/aUDpv6lAqb9pQOm/qUBpgCmAKb+pQSm/KUDpv6lAab/pQGmAKb/pQKm/aUDpv2lA6b+pQGmAKb/pQGm/6UCpv2lA6b+pQGm/6UBpv6lA6b+pQCmAab+pQOm/aUDpv6lAab/pQGm/6UCpv2lA6b9pQKm/6UApgGm/qUCpv6lAqb/pQCmAab/pQCmAab/pQGmAKb/pQGm/6UBpv+lAab/pQGm/6UBpv+lAKYBpv+lAKYBpv6lAqYApv6lAqb/pQCmAab/pQCmAaYApv+lAab/pQGm/6UBpv+lAaYApv+lAab+pQOm/aUCpv+lAab/pQGm/qUCpgCm/6UBpv+lAKYBpv6lA6b9pQKm/6X/pQOm/aUCpv+lAKYApgCmAab+pQKm/qUBpgCmAKYApgCm/6UCpv2lBKb8pQOm/qUCpv6lAqb+pQGmAKYApgGm/qUBpgCmAKYApgCmAKYApgCmAKYApgCmAab+pQKm/6UApgGm/6UBpv6lA6b8pQSm/aUCpv+lAKYApgCmAKYApgGm/qUCpv6lAqb+pQFaAFr/WQJa/lkBWgBa/1kCWv5ZAlr+WQJa/lkCWv1ZA1r+WQFa/1kCWv1ZA1r9WQNa/lkBWgBa/1kCWv5ZAVoAWgBa/1kCWv5ZAlr+WQJa/VkEWvxZA1r/WQBaAFoAWgBaAFoBWv5ZAlr/WQBaAFoAWgCmAKYBpv6lAqb+pQKm/6UApgGm/qUCpv+l/6UCpv+lAKYApv+lAqb9pQSm+6UFpvylAqb/pQKm/aUDpv2lA6b+pQGm/6UBpgCmAKb/pQGm/6UBpgGm/aUDpv2lA6b+pQGm/6UBpv+lAab+pQOm/aUDpv2lAqb+pQOm/qUApgGm/qUDpv2lAqb/pQGm/qUDpvylBKb+pQCmAab/pQCmAab/pQCmAKYBpv+lAab+pQGmAab/pQCmAKb/pQKm/qUCpv6lAaYApv+lA6b8pQSm/KUDpv6lAab/pQKm/aUCpv+lAKYCpv2lAqb+pQOm/qUBpv+lAKYBpgCm/6UCpv2lA6b9pQOm/qUBpgCm/6UBpgCmAKYApv+lAaYApgCmAKb/pQGm/6UCpv6lAab/pQGmAKb/pQKm/aUDpv6lAKYBpgCm/6UCpv2lA6b+pQKm/qUCpv6lAqb/pQCmAKYApgCmAab/pQCmAKYApgCmAab/pQCmAab/pQCmAab/pQGm/6UApgCmAKYBpv6lAqb+pQKm/qUDpvylBKb8pQOm/6UApgCmAKb/pQKm/qUDpvylBKb8pQOm/6UApgGm/qUBpgCm/6UCpv9ZAFoAWv9ZAVoAWgBaAFr/WQFaAFoAWgBa/1kCWv5ZAlr/WQBaAFoAWv9ZAVoBWv1ZBFr8WQJaAFoAWv9ZAlr9WQRa/VkBWgBa/1kBWgBaAFoAWgBa/1kCWv5ZAVoAWv9ZAlr+WQFaAFr/WQJa/lkCWv6lAqb/pQCmAKYApgCmAab+pQKm/qUBpgGm/qUCpv2lA6b+pQGmAKb/pQGmAKb/pQKm/qUBpgCm/6UCpv6lAaYApv+lAab/pQKm/qUBpgCm/6UBpgCmAKb/pQKm/aUEpv2lAaYApv+lA6b8pQSm/aUBpgCmAKYApgCmAKb/pQKm/qUBpgCm/6UBpgCm/qUDpv6lAKYBpv6lAqb/pQCmAab+pQKm/qUCpv+lAab+pQKm/qUCpv+lAKYApgCmAKYApgCmAKYApgCmAKYApgCmAKYApgCmAKYApgCmAKYApv+lAqb+pQKm/aUEpvylA6b+pQGm/6UCpv6lAab/pQGm/6UBpv+lAKYBpgCm/6UBpv6lA6b+pQKm/aUCpgCm/6UBpv+lAKYBpv6lA6b8pQSm/KUEpvylBKb8pQSm/aUBpgGm/qUCpv+lAKYBpv+lAKYBpv6lA6b9pQOm/aUCpv6lAqb/pQCmAab+pQKm/qUCpv+lAKYBpv6lAaYBpv+lAab/pQCmAKYBpv+lAab+pQKm/qUCpv+lAKYBpv+lAKYBpv+lAaYApv+lAab/pQGmAKb/pQGm/6UBpv+lAab/pQGm/6UAWgFa/lkCWv9ZAFoBWv5ZAlr+WQFaAFoAWgBaAFr/WQFa/1kBWgBa/1kCWv1ZA1r+WQFaAFr/WQFaAFr/WQJa/VkCWgBa/1kBWv9ZAFoBWv9ZAVr/WQFa/lkDWv1ZA1r+WQFaAFoAWv9ZAVoAWgBaAVr+pQGmAKYApgGm/qUCpv6lAqb+pQKm/aUEpvylBKb8pQOm/aUEpvylBKb7pQWm/KUEpvylA6b+pQGmAKYApv+lAaYApv+lAqb+pQCmAqb9pQOm/qUBpgCm/6UCpv2lA6b+pQGmAKb/pQKm/aUEpvulBab8pQOm/6X/pQKm/qUCpv+lAKYApgCmAKYApgGm/qUCpv6lAqb+pQKm/qUCpv6lAqb+pQGmAKYApgCmAKYApgCmAab+pQKm/6UBpv6lA6b8pQSm/aUCpv+l/6UCpv6lAqb/pf+lAqb+pQKm/6X/pQOm/KUEpv2lAqb/pQCmAab+pQOm/aUDpv6lAKYBpv+lAqb+pQGmAKb+pQSm+6UEpv+l/qUDpv2lAqb/pQGmAKb/pQGm/6UBpgCm/6UBpgCm/6UCpv2lA6b+pQCmAqb9pQOm/aUCpv+lAKYBpv6lAqb+pQKm/6UBpv6lAqb+pQKm/6UApgGm/qUBpgCmAKYApgCmAKYApgCmAKb/pQOm/KUDpv+l/6UCpv6lAKYCpv6lAqb+pQCmAaYApv+lAqb9pQSm/KUDpv2lA6b+pQGmAKb/pQKm/aUDpv6lAaYApgCmAFoAWv9ZAVoAWgFa/VkEWvtZBlr7WQNa/lkCWv5ZAlr9WQRa/FkEWvxZA1r9WQRa/VkCWv5ZAFoCWv5ZAlr+WQFa/1kCWv5ZAVoAWv9ZAVoAWv9ZAVr/WQBaAlr9WQJaAFr/WQJa/VkDWv5ZAlr+WQFa/6UBpgCm/6UCpv2lA6b9pQOm/aUDpv6lAKYBpv+lAaYApv6lA6b9pQOm/qUBpv+lAqb9pQOm/qUBpgCmAKYApv+lAab/pQKm/qUCpv2lA6b+pQKm/6UApgGm/6UApgGm/6UBpgCm/6UApgGm/6UBpv+lAab+pQKm/qUCpv+lAKb/pQGmAKYApgCmAKb/pQKm/qUCpv+l/6UCpv6lAqb+pQGmAKb/pQOm+6UEpv6lAKYCpv2lAqb/pQGm/6UBpv6lA6b9pQOm/aUCpv+lAab/pQCmAab+pQKm/qUCpv+lAKYApgCmAKYApgCmAab/pQGm/qUCpv6lA6b9pQOm/KUDpv6lAqb/pQCmAKYApgCmAKYApgCmAab+pQKm/qUCpv+lAKYApgCmAKYApgCm/6UCpv2lA6b+pQCmAqb9pQOm/qUApgGmAKb/pQKm/qUBpv+lAqb+pQKm/qUApgGmAKb/pQGm/6UApgGm/6UApgKm/aUDpv6lAKYBpv+lAqb+pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQGm/6UCpv2lA6b+pQGmAKb/pQGm/6UBpv+lAab/pQCmAab/pQGm/qUCpv9ZAVr/WQFa/1kBWv9ZAVr/WQFa/1kCWv1ZAlr/WQFaAFr/WQBaAVr/WQFa/lkCWv5ZA1r8WQRa/FkDWv9Z/1kDWvxZBFr8WQRa/VkCWv9ZAFoAWgFa/1kAWgFa/lkCWv9ZAFoAWgBaAFoAWgBaAFoAWgCmAKYApgCmAKYApgCmAKYApgCm/6UCpv6lAqb/pf+lAaYBpv6lA6b8pQOm/6X/pQOm/KUEpvylA6b+pQGmAKb/pQGm/6UBpv+lAKYBpv+lAab/pQCmAaYApv+lAab/pQCmAab/pQGm/6UApgCmAab/pQGm/qUCpv+lAab/pQCmAKYApgCmAab/pQCmAab/pQCmAab/pQGmAKb/pQGm/6UBpv+lAab/pQGm/6UBpv+lAab/pQGmAKb/pQGmAKb/pQGm/6UBpv+lAab/pQCmAab/pQGm/6UApgGm/6UBpgCm/qUEpvulBab8pQOm/qUBpgCmAKb/pQKm/qUBpgCm/6UCpv6lAab/pQGmAKb/pQGm/6UBpv+lAab/pQGm/6UBpv+lAaYApv6lBKb8pQOm/qUBpgCmAKYApv+lAqb+pQGmAKYApv+lAqb9pQOm/qUBpgCm/6UCpv2lA6b+pQGmAKb/pQKm/aUEpvulBqb6pQWm/KUDpv6lAqb9pQSm/KUDpv+l/6UCpv6lAaYApgCmAKYApgCmAKYApgCmAab+pQOm/aUBpgKm/aUDpv2lAqYApgCm/6UCpv2lBKb8pQOm/6X/WQJa/lkCWv9ZAFoAWgBaAVr+WQJa/1n/WQJa/lkCWv1ZBFr7WQVa/FkCWgBa/1kBWv9ZAVoAWv9ZAFoBWv9ZAVr/WQBaAVr+WQNa/FkEWv1ZAlr/WQBaAVr/WQBaAVr/WQFa/1kBWv9ZAVr+WQJa/1kBpv+l/6UCpv+lAKYBpv6lAqb/pQCmAKYBpv+lAKYBpv6lA6b9pQKm/qUDpv2lAqb+pQKm/6UApgGm/qUCpv+lAab/pQGm/qUCpv+lAaYApv6lAqb/pQCmAab+pQKm/qUCpv6lAqb+pQKm/qUCpv+lAKYBpv6lA6b9pQOm/aUDpv2lAqb/pQGmAKb+pQOm/aUDpv6lAKYBpv+lAqb9pQOm/aUCpgCm/6UBpv+lAab/pQGm/6UBpv+lAab/pQCmAqb9pQOm/qUApgKm/aUDpv6lAab/pQGmAKYApgCm/6UCpv6lAqb+pQGmAKb/pQKm/aUEpvulBab8pQOm/qUBpv+lAqb9pQOm/aUCpv+lAaYApv+lAKYApgGm/6UBpv+lAab/pQCmAab/pQKm/aUCpv+lAqb9pQOm/aUCpv+lAab/pQGm/qUCpv+lAaYApv6lAqYApv+lAab/pQGm/6UBpv+lAab/pQKm/aUEpvulBKb+pQGmAKYApv6lBKb8pQOm/qUBpgCm/6UCpv2lA6b9pQKm/6UBpv+lAKYBpv6lA6b9pQKmAKb9pQWm+6UEpv6lAKYBpv+lAKYCpv2lA6b9pQKm/1kBWv9ZAVr+WQNa/FkFWvtZBFr9WQJa/1kAWgBaAFoAWgBaAVr9WQVa+lkGWvtZA1r/WQBaAVr+WQJa/lkCWv9Z/1kCWv5ZAlr+WQFaAFr/WQJa/lkBWgBa/1kBWgBa/1kCWv1ZAlr/WQBaAVoAWv5ZAqb/pQCmAqb9pQOm/aUDpv2lAqYApv+lAab/pQCmAab/pQGmAKb/pQGm/6UApgGm/6UApgGm/qUDpv2lAqb/pQGm/6UCpv2lA6b+pQGm/6UBpgCm/qUDpv2lAqYApv6lA6b8pQSm/aUDpv6lAKYApgGm/qUDpv2lA6b9pQKm/6UBpv+lAab+pQOm/aUCpgCm/qUCpv6lA6f9pgOn/aYBpwKn/aYDp/2mAqf/pgGn/6YBp/6mAqf/pgCnAaf+pgKn/qYCp/+m/6YDp/ymA6f/pv+mAqf+pgGnAKcAp/+mAqf9pgOn/qYBp/+mAaf/pgGn/6YApwCnAaf/pgCnAaf+pgOn/aYCp/+mAKcBp/6mA6f8pgSn/KYDp/6mAacAp/+mAqf9pgKn/6YBpwCn/6YBp/6mA6f9pgSn+6YFp/umBaf8pgOn/aYDp/6mAacAp/+mAqf+pgGnAKf/pgKn/qYCp/6mAKcCp/2mBKf9pgGnAKf/pgGnAaf/pv+mAqf9pgSn/aYBpwGn/aYEp/2mAqf+pgKn/qYCp/+mAKcApwCnAKcApwCnAaf+pgKn/6YApwGn/qYCp/6mAqf/pv+mAqf/pv+mA1n8WANZAFn9WARZ/VgCWf5YAln9WARZ/FgDWf9YAFkAWf9YAVkAWQBZAFn/WAJZ/lgAWQJZ/VgDWf5YAVkAWQBZ/1gBWQBZAFkAWQFZ/VgFWfpYBln8WAFZAVn+WANZ/lj/WAJZ/lgCWf9Y/1gCWf5YAqf+pgKn/qYCp/+mAKcBp/+mAaf/pgCnAaf/pgKn/aYCpwCn/qYEp/umBaf8pgOn/qYCp/+mAKf/pgOn/aYDp/ymBKf9pgOn/aYBpwGn/6YBp/+mAaf/pgGn/6YBpwCn/6YCp/2mA6f9pgOn/qYBpwCn/6YCp/2mA6f9pgSn+6YGp/mmBqf8pgKnAKf/pgCnAaf/pgGnAKf+pgOn/aYCpwCn/6YBp/+mAKcBp/+mAaf/pgCnAaf+pgOn/KYEp/ymA6f/pgCnAaf+pgGnAaf+pgOn/aYCp/+mAKcApwGn/qYDp/2mAqf+pgKn/qYDp/ymBKf8pgOn/6b/pgOn+6YGp/qmBaf9pgCnA6f8pgOn/qYBpwCnAKcApwCnAKcAp/+mAqf+pgGnAKf/pgKn/aYDp/6mAacBp/6mAqf+pgKn/6YApwGn/qYCp/6mAqf/pgCnAKcAp/+mA6f9pgKn/qYBp/+mAqf/pv+mAqf8pgan+aYGp/ymAqcBp/ymBKf9pgOn/aYCp/+mAaf/pgGn/qYDp/2mAqf+pgOn/aYDp/ymA6f/pgCnAKcApwCnAaf+pgKn/qYDp/2mAqf/pgGnAKcAp/9YAVkAWf9YAln9WARZ+1gGWfpYBFn/WP5YBFn8WANZ/lgBWQBZ/1gBWQBZ/1gBWQBZ/1gBWf9YAVkAWQBZ/1gBWf9YAln9WANZ/lgBWQBZ/1gBWQBZAFn/WAFZ/1gBWQBZ/1gCWfxYBVn8WANZ/1j/WAKn/qYCp/6mAacBp/6mAqf+pgKn/6YApwCnAKcBp/6mAqf+pgKn/qYCp/6mAqf+pgGn/6YDp/ymA6f+pgCnA6f9pgCnAqf+pgKn/6b/pgKn/qYBpwGn/qYCp/6mAacApwCn/6YBpwCnAKf/pgGn/6YApwOn+6YEp/6mAKcCp/2mAqf/pgGn/6YApwGn/qYCp/+mAKcBp/6mAacApwCnAKcAp/+mAacApwCnAKf/pgGnAKf/pgKn/aYEp/ymA6f9pgOn/6YApwCn/6YBpwCnAKcApwCn/6YBpwCnAKf/pgGn/6YBpwCn/6YBpwCn/6YCp/2mA6f+pgGnAKcAp/+mAaf/pgGn/6YBp/+mAaf/pgGn/6YApwKn/aYDp/2mAqcApwCn/6YBp/+mAaf/pgGn/6YBp/+mAKcBp/6mA6f9pgOn/qYApwGnAKf/pgKn/aYDp/6mAqf+pgGn/6YBpwCnAKcAp/+mAaf/pgKn/qYBpwCn/qYEp/ymA6f+pgGn/6YBpwCn/6YBpwCn/6YCp/6mAacApwGn/6YApwGn/6YBp/+mAaf/pgGn/6YBp/+mAaf/pgCnAqf9pgOn/aYCpwCn/6YAWQFZ/lgDWf1YAln/WAFZ/lgDWf1YA1n+WABZAVkAWf9YAVn/WAFZAFkAWf9YAln9WARZ/FgDWf5YAln+WAJZ/lgBWQBZAVn9WARZ/FgDWf9Y/1gCWf5YAVkBWf5YAln+WAFZAFkAWQBZ/1gBWQBZ/1gCp/2mAqcAp/+mAqf9pgSn/KYDp/6mAacApwCnAKf/pgKn/aYEp/ymA6f+pgGnAKcApwCn/6YBp/+mAacAp/+mAacAp/+mAqf+pgGnAaf+pgKn/6YApwGn/qYCp/6mA6f8pgSn/aYBpwGn/aYEp/ymBKf8pgOn/qYCp/2mBKf8pgSn/aYCp/6mA6f9pgKn/6YApwGn/6YApwGn/qYDp/ymBKf9pgKn/6YApwGn/qYDp/2mAqcAp/6mA6f8pgSn/aYCp/+m/6YCp/6mAqf+pgKn/qYDp/2mAacApwCnAaf+pgOn+6YGp/qmBaf9pgKn/qYBp/+mAacApwCnAKf/pgGn/6YCp/6mAqf9pgSn/KYDp/6mAacApwGn/aYEp/ymBKf9pgGnAaf/pgGn/6YApwGn/6YBp/+mAaf/pgCnAKcBpwCn/6YApwGn/6YBp/+mAaf/pgGn/qYCp/+mAaf/pgGn/qYCp/6mAqcAp/6mA6f8pgOn/qYBpwCnAaf+pgGn/6YBp/+mAqf9pgOn/aYCp/+mAaf/pgGn/6YApwKn/aYDp/6mAKcBp/+mAacAp/+mAaf/pgKn/aYEp/ymA6f+pgGn/1gCWf1YA1n+WAFZAFn/WAFZAFn/WAFZAFn/WAJZ/VgDWf5YAVkBWf1YBFn8WANZ/lgCWf5YAln+WAFZAFkAWQFZ/lgCWf5YAVkBWf5YAVkAWQBZAFkAWQBZAFkBWf9YAFkAWQBZAFkBWf9Y/1gCWf5YAqf/pv+mA6f8pgSn/KYEp/2mAqf+pgKn/qYCp/6mAqf/pgCnAKcApwCnAaf/pgGn/6YApwGn/6YBpwCn/qYDp/2mA6f+pgCnAqf+pgGnAKf/pgKn/qYCp/6mAacApwCn/6YDp/umBqf6pgSn/6b/pgOn+6YEp/6mAacBp/6mAKcCp/2mBKf8pgOn/qYBpwCnAKcApwCnAKcApwGn/qYCp/+mAaf+pgOn/KYEp/2mAqf+pgOn/KYEp/2mAqf+pgKn/qYDp/2mAqf9pgSn/aYCp/+mAKcBp/6mA6f9pgOn/aYDp/2mA6f+pgGn/6YApwCnAKcBp/6mAqf9pgOn/qYBpwCn/6YBpwCnAKf/pgGnAKf/pgKn/qYApwKn/aYDp/2mAqf/pgCnAaf+pgKn/qYCp/+mAKcApwGn/qYDp/ymBKf9pgKn/6b/pgKn/qYCp/6mAacAp/+mAaf/pgGnAKcAp/+mAaf/pgKn/qYCp/6mAqf+pgKn/aYEp/ymBKf8pgSn/KYDp/6mAacBp/6mAaf/pgGnAKcAp/+mAqf9pgOn/qYCp/6mAqf+pgKn/6YApwCnAKcApwGn/qYCp/6mAqf+pgJZ/lgCWf5YAln+WAJZ/lgBWQBZAFkAWQBZAFkAWQBZ/1gDWfxYBFn9WAFZAVn+WAFZAFn/WANZ+1gFWfxYAlkAWf9YAVkAWf9YAVkAWf9YAln+WAFZAFkAWQBZ/1gBWf9YAln9WANZ/VgDWf5YAVn/WAGnAKcApwCnAKcApwCnAKcBp/6mA6f8pgSn/aYDp/2mAqf+pgOn/aYCp/+mAKcApwCnAKcApwCn/6YCp/6mAqf9pgOn/aYEp/ymAqcAp/+mAacAp/+mAqf+pgKn/qYCp/+mAKcBp/6mAqf/pgCnAKcBp/6mAqf+pgKn/6YApwGn/qYCp/+m/6YDp/ymBKf8pgOn/6YApwCnAKcApwGn/qYDp/2mA6f9pgOn/aYDp/2mAqcAp/+mAaf/pgCnAqf9pgOn/qYBpwCn/6YCp/2mBKf8pgOn/qYBpwCnAKcAp/+mAqf+pgKn/qYCp/6mAqf/pgCnAKcBp/6mA6f9pgKn/6YApwGn/qYCp/6mAqf+pgKn/qYCp/6mAqf/pgCnAaf+pgOn/aYDp/2mAqf/pgGn/6YBp/+mAKcApwGn/qYDp/ymA6f/pgCnAKf/pgKn/aYEp/ymA6f/pv+mAqf9pgSn/KYEp/2mAaf/pgKn/qYCp/6mAacApwGn/aYEp/ymBKf8pgOn/qYBpwCn/6YBpwCn/6YBpwCnAKf/pgKn/qYBpwGn/qYCp/+m/6YCp/+mAKcBp/6mAqf/pgCnAaf+pgKn/6YApwBZAFkAWQBZAVn9WARZ/FgEWfxYBFn9WAFZAFkAWQBZAVn+WAFZAFkBWf1YBFn8WANZ/1j/WAJZ/lgCWf5YAln+WAJZ/lgCWf5YAln+WAFZAFkAWf9YAln9WANZ/lgAWQJZ/VgCWQBZ/lgDWf1YAlkAWf+mAKcBp/+mAacAp/6mA6f+pgGnAKf/pgGnAKcAp/+mAacAp/+mAqf9pgKnAKf+pgOn/aYDp/2mAqf+pgKn/6YApwGn/qYCp/6mAacBp/6mAqf/pgCnAaf+pgGnAKcApwGn/qYCp/2mA6f+pgKn/qYBpwCn/6YCp/6mAKcCp/2mBKf8pgOn/qYBpwGn/aYEp/ymA6f/pv+mAqf+pgGnAKcApwGn/6YApwGn/6YBp/+mAacAp/+mAaf+pgSn+6YFp/umBKf9pgKn/qYDp/ymBKf8pgOn/6YApwCnAKcApwGn/qYCp/+mAKcBp/6mAqf+pgOn/KYEp/ymA6f/pgCnAKcAp/+mAqf/pgCnAKf/pgGnAKcAp/+mAqf9pgOn/qYBp/+mAqf9pgSn/KYDp/6mAacApwCnAKcApwCnAKcApwCnAKcApwCnAKcApwCnAKf/pgGn/6YCp/6mAaf/pgGn/6YCp/2mA6f+pgGnAKf/pgGnAKf/pgOn/KYDp/6mAacApwCn/6YBpwCn/6YBp/+mAacApwCnAKcApwCn/6YCp/6mAqf/pv+mAqf+pgGnAKcApwCnAKcAp/+mAacAp/+mAqf9WANZ/lgBWQBZ/1gBWf9YAln+WAFZ/1gBWf9YAln+WAFZ/1gBWQBZ/1gBWQBZ/1gCWf1YA1n+WAFZAFkAWQBZ/1gCWf5YAln+WAFZAFn/WAJZ/VgDWf5YAVkAWf9YAln9WAVZ+lgGWfpYBVn9WAJZ/lgBp/+mAqf/pgCnAKf/pgKn/qYCp/6mAqf+pgGn/6YCp/6mAacAp/+mAqf+pgGnAKf/pgKn/qYCp/6mAacApwCnAKcApwGn/aYEp/ymA6f+pgKn/aYEp/ymA6f/pv+mA6f7pgan+6YEp/2mAacApwCnAKcBp/6mAqf+pgKn/qYDp/2mAacBp/2mBKf9pgKn/qYCp/6mAacApwCnAKcApwCn/6YCp/6mAacAp/+mAaf/pgGn/6YBp/6mA6f+pgCnAqf9pgOn/qYBpwCn/6YCp/6mAacAp/+mAqf+pgGn/6YBpwCn/6YBp/+mAaf/pgCnAaf/pgGn/6b/pgKn/6YApwGn/qYBpwGn/qYCp/+mAKcApwCnAaf+pgOn/KYEp/2mAacBp/6mAqf+pgKn/qYCp/6mAqf+pgGnAKf/pgKn/qYBp/+mAKcBpwCn/6YBp/+mAacAp/+mAacApwCnAKf/pgKn/qYCp/6mAqf+pgKn/qYCp/+mAKcApwCnAKcApwCnAKcApwCn/6YBpwGn/aYEp/ymA6f+pgGn/6YCp/6mAaf/pgGn/6YBpwCn/6YBp/+mAaf/pgKn/qYBp/+mAaf/pgGn/1gBWf9YAVn9WAVZ/FgCWQBZ/lgDWf5YAVkAWf9YAln+WAJZ/lgBWQFZ/lgDWfxYA1n/WABZAFkAWQBZAFkAWQBZ/1gCWf5YAVkAWf9YAln+WAFZAFn/WAFZAFkAWf9YAln9WANZ/lgBWQBZAFn/WAFZAKf/pgOn/KYDp/6mAacApwGn/6b/pgKn/aYEp/2mAacBp/6mAacAp/+mA6f9pgKn/qYCp/+mAaf/pgGnAKf/pgKn/aYDp/6mAqf+pgGn/6YBpwCnAKcAp/+mAqf+pgKn/qYCp/6mA6f9pgGnAaf/pgGnAKf/pgCnAqf9pgOn/aYDp/2mA6f9pgGnAaf+pgKn/6b/pgKn/qYCp/6mAacApwCnAKcApwCn/6YCp/6mAacAp/+mAqf+pgGn/6YCp/6mAqf+pgCnAqf+pgGnAKf/pgGnAKf/pgGnAKcApwCn/6YCp/2mBaf6pgWn/KYDp/6mAqf+pgGn/6YCp/2mA6f+pgGnAKf/pgGn/6YBp/+mAacAp/+mAaf+pgOn/qYBpwCn/6YBpwCn/6YBpwCnAKcApwCn/6YBpwCnAKcApwCn/6YBpwCn/6YCp/2mA6f+pgGnAKf/pgGn/6YCp/2mBKf7pgSn/6b+pgOn/aYDp/2mA6f9pgOn/qYApwGn/6YCp/2mAqf/pgGnAKf/pgCnAKcBp/+mAaf/pgCnAaf/pgCnAaf/pgCnAaf+pgOn/aYCp/+mAKcBp/+mAacAp/+mAaf/pgFZAFkAWQBZ/1gBWQBZAFkAWQBZAFkAWf9YAVkAWQBZAFn+WAJZ/1gAWQFZ/lgDWf1YAVkAWQBZAFkBWf9YAFkBWf5YA1n9WANZ/VgDWf5YAFkBWf9YAVkAWf9YAVkAWf9YAVkAWQBZAFkAWf9YAln+WAGnAKf/pgOn+6YFp/ymA6f+pgGn/6YBp/+mAaf/pgGn/qYCp/+mAKcBp/6mAqf/pgCnAKcApwGn/6YBp/6mAqf/pgCnAaf/pgGn/6YApwGn/6YCp/2mAqf/pgGn/6YCp/2mAqcAp/6mA6f9pgOn/aYDp/2mAqcAp/6mA6f+pgCnAqf9pgKnAKf/pgGn/6YApwGn/6YApwGn/qYCpwCn/qYCp/+mAKcCp/2mA6f8pgWn/KYDp/2mA6f9pgOn/qYApwKn/aYCp/+mAaf/pgGn/qYCp/+mAKcBp/6mAqf/pgCnAKcApwCnAKcAp/+mAqf/pgCnAKf/pgKn/6YApwGn/6YApwGn/6YBp/+mAacAp/+mAqf9pgSn+6YFp/umBaf8pgKnAKf/pgGn/6YBpwCnAKf/pgKn/qYBpwCn/6YCp/2mA6f9pgOn/qYBp/+mAaf/pgGn/6YBp/+mAKcBp/+mAKcApwCnAKcBp/6mAqf+pgKn/qYCp/6mAqf+pgGnAKf/pgOn/KYDp/6mAacApwGn/aYFp/qmBaf9pgGnAaf/pgCnAKf/pgGnAaf+pgKn/qYApwKn/qYCp/+m/6YBpwCnAKcBWf5YAVkAWQBZAFkBWf5YAln/WP9YA1n8WARZ/VgBWQFZ/lgCWf5YAln+WAJZ/1gAWQFZ/lgDWfxYBFn9WANZ/lgAWQFZ/1gBWQBZ/lgEWftYBVn7WARZ/lgBWQBZ/lgDWf1YA1n+WABZAVn/WAFZ/1gApwKn/aYDp/6mAKcCp/6mAacAp/+mAacAp/+mAaf/pgGnAKf/pgGn/6YApwKn/aYCp/+mAaf+pgOn/aYBpwGn/qYCpwCn/qYCp/+mAKcApwGn/qYDp/2mAqf+pgKn/6YBp/+mAKcBp/+mAqf9pgKn/6YBp/+mAaf+pgOn/aYCp/+mAKcBpwCn/qYDp/2mAqcAp/6mA6f9pgOn/aYCp/+mAKcBp/+mAaf/pgCnAaf+pgOn/qYApwGn/6YApwKn/aYCp/+mAaf/pgCnAaf+pgOn/aYCp/+mAaf/pgGn/6YBp/+mAaf/pgGn/6YApwGn/6YBp/+mAKcBp/+mAacAp/+mAacAp/+mAqf9pgSn/KYDp/2mAqcApwCnAKf/pgGn/6YBpwCnAKcAp/+mAaf/pgKn/qYBp/+mAKcCp/2mA6f9pgKn/6YBp/+mAaf/pgCnAaf/pgCnAaf/pgCnAaf9pgSn/aYCp/6mAqf9pgSn/KYDp/6mAqf+pgKn/qYCp/+mAKcApwCnAaf+pgKn/qYBpwCn/6YCp/2mBKf7pgWn/KYDp/6mAqf9pgOn/6b/pgKn/qYApwOn/KYDp/+m/6YBpwCn/6YCWf5YAFkCWf1YA1n+WAFZAFkAWf9YAVkAWQBZAFn/WAFZAFkAWQBZAFkAWQBZAFkAWQBZAVn+WAFZAFn/WANZ/FgEWfxYBFn9WAJZ/lgCWf9YAFkBWf5YAln+WAJZ/lgCWf5YAln/WABZ/1gCWf5YA1n8pgOn/qYCp/+mAKcApwCnAKcBp/6mA6f9pgOn/aYCp/+mAacAp/6mA6f9pgOn/aYCp/+mAaf/pgCnAaf/pgGn/qYDp/ymBaf7pgSn/aYCp/+mAKcBp/6mAqf/pgCnAaf+pgKn/6YBp/+mAKcBp/+mAaf/pgCnAaf/pgGn/qYCp/+mAacAp/+mAaf/pgGn/6YBp/+mAaf/pgCnAKcBp/+mAKcBp/6mA6f9pgKn/6YApwKn/aYCp/+mAKcBpwCn/qYDp/2mAqf/pgGn/6YBp/+mAaf/pgGn/6YBp/+mAacAp/6mA6f9pgKnAKf+pgKn/qYCp/+mAKcApwCnAKcApwCnAKcAp/+mAqf+pgKn/qYBpwCnAKcBp/2mBKf9pgKn/qYBpwCnAaf/pgCnAKf/pgOn/KYEp/2mAqf+pgKn/qYCp/+mAKcApwCnAKcApwCnAKcApwGn/qYCp/6mAacBp/6mAqf+pgKn/qYCp/2mBKf9pgGnAKcApwCnAaf9pgOn/qYCp/6mAqf+pgKn/qYCp/6mAqf/pgCnAaf+pgKn/6YApwGn/qYCp/+mAKcApwGn/qYCp/6mAqf/pgGn/6b/pgOn/VgCWQBZ/lgCWf9YAVn+WANZ/FgEWf5YAFkAWQFZ/lgDWf5Y/1gCWf9Y/1gDWfxYA1n/WP9YAln/WABZAVn+WAJZ/1gBWf9YAFkBWf5YAln+WAJZ/1gAWQBZAFkAWQBZAFkAWQBZAFkAWQBZAFn/WAJZ/qYCp/6mAacApwCn/6YBpwCn/6YCp/2mA6f+pgCnAqf9pgSn/KYCpwCn/6YCp/6mAacBp/6mAqf+pgKn/6YBp/+mAKcBp/+mAaf/pgCnAacAp/+mAaf/pgCnAqf9pgKn/6YApwGn/qYCp/+m/6YDp/ymA6cAp/6mA6f9pgKn/6YApwGn/qYEp/umBKf9pgGnAaf/pgCnAaf9pgWn+qYHp/mmBqf7pgSn/qYApwKn/KYFp/ymAqf/pgCnAaf/pgCnAaf+pgKn/qYCp/+mAKcAp/+mAqf/pgCnAKcAp/+mA6f8pgOn/6b+pgWn+qYFp/ymAqcApwCnAKf/pgGnAKf/pgKn/aYDp/6mAacApwCn/6YCp/6mAqf+pgGnAaf+pgKn/qYBpwGn/6b/pgKn/qYCp/+m/6YBpwCnAKcAp/+mAacAp/+mAqf+pgGnAKf/pgGnAKf/pgGnAKf/pgKn/aYEp/ymBKf8pgOn/qYCp/6mAqf9pgOn/qYBpwCn/6YBpwCn/6YCp/6mAacBp/2mA6f/pgCnAKcAp/+mAqf/pgCnAaf/pgCnAKcBp/6mA6f8pgOn/6b/pgOn/KYEp/2mAqf/pgFZ/lgDWf1YA1n9WANZ/VgCWQBZ/1gCWf1YA1n9WANZ/VgCWf9YAFkBWf5YAln/WABZAVn+WAJZ/lgCWf5YAln+WAFZAFkAWQBZAFn/WAJZ/lgCWf5YAVkAWQBZ/1gCWf5YAln/WABZAFkBWf9YAFkBWf+mAaf/pgGn/6YBp/+mAKcCp/2mAqf/pgCnAaf+pgKn/qYDp/2mAacApwCnAKcBp/6mAaf/pgKn/aYEp/ymAqf/pgGn/6YCp/2mA6f9pgOn/qYBp/+mAaf/pgKn/aYCpwCn/qYEp/umBKf+pgCnAqf9pgKn/6YBp/+mAKcApwCnAaf/pgCnAKcApwCnAaf/pgCnAaf+pgKn/6YApwGn/qYCp/6mAqf+pgKn/qYCp/6mAqf9pgSn/KYEp/ymA6f+pgGnAKcApwCnAKcApwCnAKcApwCnAaf+pgKn/qYCp/+mAKcBp/6mAqf/pgCnAaf+pgKn/6YApwCnAKcBp/6mAqf+pgKn/6b/pgKn/aYDp/+m/6YCp/2mAqcBp/6mAqf9pgSn/aYCp/+mAKcApwGn/qYDp/2mAqf/pgCnAaf+pgOn/KYEp/2mAacBp/6mAqf/pgCnAKcBp/6mA6f8pgSn/aYDp/2mAqf/pgGn/6YBp/+mAaf/pgGn/6YApwGn/qYDp/6mAKcApwCnAKcCp/ymBKf8pgSn/aYBpwCnAaf+pgOn+6YGp/umA6f/pgCnAKcApwCnAKcAp/+mAqf+pgGnAKf/WAJZ/lgBWf9YAln+WAFZAFn/WAJZ/VgEWftYBVn8WAJZAFn/WAJZ/VgCWQBZ/1gBWf9YAVkAWf9YAVn/WAJZ/lgBWQBZ/1gCWf5YAln/WP9YAln+WAJZ/1j/WAJZ/lgCWf5YAln9WARZ/FgDWf5YAln+pgKn/qYBpwCnAKf/pgKn/aYDp/6mAacAp/+mAacApwCn/6YCp/6mAacAp/+mAacApwCnAKf/pgGnAKf/pgKn/aYDp/6mAKcCp/2mBKf8pgKnAKcApwCn/6YCp/6mAqf9pgOn/qYBpwGn/KYFp/umBaf9pgGn/6YBp/+mAqf/pv+mAqf9pgSn/KYEp/umBqf6pgWn/KYDp/6mAacApwCnAKf/pgGnAKcApwCnAKf/pgKn/qYCp/+mAKcApwGn/6YBp/+mAKcBp/6mA6f8pgSn/aYCp/6mAqf+pgKn/qYCp/6mAacAp/+mAqf+pgGn/6YBp/+mAqf+pgGn/6YBpwCnAKf/pgGnAKcAp/+mAaf/pgGnAKf/pgGn/6YBp/+mAqf+pgGnAKf/pgOn/KYDp/6mAacApwCn/6YBpwCn/6YCp/2mA6f+pgGnAaf+pgGnAKf/pgKn/6b/pgOn+6YGp/umA6f/pgCnAKcApwCnAKcApwCnAKcApwGn/qYBpwCnAKcBp/6mAqf+pgKn/6YApwCnAKcApwCnAKcApwCnAKcAp/+mAqf9pgOn/6b/pgKn/aYDp/+m/6YCp/2mA6f+pgGnAFn/WABZAVn/WAJZ/lgAWQJZ/VgEWfxYA1n+WAFZAFn/WAJZ/lgAWQJZ/VgDWf5YAVn/WAFZ/1gBWQBZ/1gBWf9YAVkAWf9YAln9WANZ/lgBWQBZ/1gBWQBZ/1gBWQBZ/1gCWf1YA1n+WAFZAFn/WAFZAKcAp/+mAaf/pgKn/qYCp/2mA6f+pgGnAKf/pgKn/aYDp/6mAacAp/+mAaf/pgGn/6YBp/6mA6f9pgKn/6YApwGn/6YBp/+mAKcBp/+mAaf/pgCnAKcApwCnAaf+pgKn/qYBpwGn/aYEp/ymA6f+pgGnAKcAp/+mAacApwCnAKcAp/+mAqf+pgGnAKcApwCnAKf/pgGnAKcApwCn/6YCp/6mAacAp/+mAqf+pgKn/aYEp/ymA6f+pgGnAKcAp/+mAaf/pgGnAKf/pgGn/6YApwGn/6YApwCn/6YDp/2mAqf+pgGnAaf/pgGn/6YApwGn/6YApwGn/6YApwGn/qYCp/+mAaf+pgOn/aYBpwGn/qYCp/+m/6YCp/6mAacAp/+mAqf9pgOn/6b/pgKn/aYDp/+mAKcApwCnAKcBp/6mA6f9pgKn/6YApwCnAaf+pgKn/6YApwCnAaf+pgKn/6YApwCnAaf+pgKn/qYBpwCn/6YCp/2mA6f9pgKn/qYDp/2mAqf+pgKn/6YBp/+mAKcBp/+mAaf/pgGn/6YBp/+mAKcBp/+mAaf/pgGn/6YBp/+mAaf/pgGn/6YBp/+mAaf/pgFZ/1gBWf9YAln+WAFZ/1gBWQBZAFn/WAFZ/1gBWQBZ/1gBWf9YAVkAWf9YAVn/WAFZ/1gBWf5YA1n+WABZAVn9WAVZ/FgCWf9Y/1gDWfxYBFn8WARZ/FgEWftYBVn8WANZ/lgAWQFZAFn/WAJZ/FgFWfymA6f+pgGn/6YBpwCn/6YCp/2mAqcAp/+mAqf+pgGn/6YBpwCn/6YCp/2mA6f+pgGnAKcAp/+mAqf9pgOn/6b/pgKn/KYFp/ymA6f+pgGnAKcAp/+mAacApwCnAKf/pgKn/qYCp/6mAacApwCnAKcBp/6mAqf+pgGnAaf+pgKn/qYBpwCnAKcApwCnAKf/pgKn/qYCp/6mAaf/pgKn/qYBp/+mAaf/pgKn/aYDp/2mA6f+pgGn/6YBp/+mAqf9pgOn/qYBp/+mAaf/pgKn/qYApwGn/6YBp/+mAaf/pgGn/6YApwGn/6YBp/+mAKcBp/+mAaf/pgGn/6YBp/6mA6f9pgOn/aYCp/+mAKcBp/6mAqf/pgCnAKcAp/+mAqf+pgKn/qYBpwCnAKcAp/+mAqf+pgOn/KYEp/umBqf6pgWn/aYApwKn/aYCp/+mAKcBpwCn/6YBp/6mAqcAp/+mAqf8pgSn/qYApwKn/KYEp/6mAacAp/+mAacAp/+mAqf+pgKn/aYDp/6mAacAp/+mAKcBp/+mAKcCp/ymBKf9pgOn/aYCp/+mAacAp/+mAKcBp/+mAaf+pgKn/qYDp/ymA6f+pgFZAFn/WAJZ/VgDWf5YAVkAWQBZ/1gCWf5YAln+WAJZ/lgCWf5YAln+WAJZ/lgCWf5YAVkAWQBZAFkAWQBZ/1gCWf5YAln+WAJZ/lgCWf5YA1n8WARZ/FgEWf5YAVn/WABZAFkBWf9YAVn/WABZAVn/WACnAaf+pgSn+6YFp/umBaf7pgan+qYGp/qmBaf8pgSn/aYCp/2mBKf9pgGnAKf/pgGnAKf/pgGnAKf/pgCnAaf+pgSn/KYDp/2mAqcApwCn/6YBp/+mAacAp/+mAaf/pgGn/6YBp/+mAacAp/+mAaf/pgGnAKf/pgCnAacAp/+mAaf+pgOn/aYCpwCn/qYDp/ymA6cAp/+mAKcBp/2mBqf6pgOnAKf+pgSn+6YFp/umBaf8pgKnAKf/pgGn/6YBp/+mAaf/pgGn/qYCp/+mAKcBp/+mAKcBp/6mAqf/pgCnAaf/pgCnAKcApwCnAaf/pgCnAKcBp/6mA6f9pgOn/aYCpwCn/6YCp/6mAacAp/+mAqf9pgSn+6YFp/umBKf9pgKn/6YApwCnAKcApwCnAKcApwCnAKcApwCnAKf/pgKn/qYBpwCn/6YBpwCn/6YBpwCn/6YBp/+mAaf/pgKn/aYDp/6mAacApwCnAKf/pgKn/qYCp/+m/6YCp/6mAqf/pgCnAKcApwCnAKcBp/2mBKf8pgOn/qYBp/+mAqf9pgOn/aYCpwCn/6YBp/+mAKcBp/+mAaf/pgCnAaf+pgKnAKf+WAJZ/1gAWQFZ/1gAWQFZ/1gAWQFZ/1gAWQJZ/FgEWf1YAln/WABZAFkBWf9YAVn+WAJZ/1gBWf9YAFkBWf5YA1n9WAJZ/1gAWQFZ/1gAWQBZAVn+WANZ/FgDWf9YAFkAWQFZ/lgDWf1YAVkBWf9YAVn/pgCnAaf/pgCnAKcBp/+mAaf+pgKn/qYCp/+mAKcBp/6mAacApwGn/qYCp/+mAKcApwCnAaf/pgGn/qYCp/+mAaf/pgCnAaf/pgGnAKf/pgGn/6YBpwCn/6YBp/+mAaf/pgCnAaf/pgCnAaf+pgOn/KYEp/ymBKf9pgKn/qYCp/6mAqf/pgCnAaf/pgCnAKcBp/+mAaf/pgCnAqf8pgan+aYGp/2mAKcDp/ymA6f+pgKn/qYCp/6mAqf+pgGnAKf/pgKn/qYCp/6mAacAp/+mA6f8pgOn/6b/pgGnAKf/pgKn/aYDp/2mA6f+pgCnAaf/pgGn/6YBp/+mAqf+pgGn/6YBpwGn/qYBpwCnAKcBp/6mAacApwCnAaf+pgGnAKf/pgKn/qYBpwCn/6YBpwCn/6YCp/2mAqcAp/+mAaf/pgCnAaf+pgOn/KYEp/2mAqf/pgCnAaf+pgOn/qYBp/+mAaf/pgKn/aYDp/2mA6f9pgOn/aYDp/2mA6f+pgKn/aYDp/6mAqf/pgCn/6YCp/6mA6f8pgOn/qYCp/+mAKf/pgOn/KYFp/umA6f/pgGn/qYDp/2mAacCp/ymBKf9pgGnAVn+WANZ/VgCWf9YAFkBWf9YAVkAWf9YAFkAWQFZAFn/WAFZ/lgCWQBZ/1gBWf9YAFkBWf9YAVn/WAFZ/lgCWf9YAVn/WAFZ/lgDWf1YA1n9WANZ/VgDWf5YAFkBWf5YA1n9WANZ/FgEWf1YAln/WABZAaf+pgKn/6YApwCnAKf/pgOn/KYEp/ymA6f/pv+mA6f9pgGnAaf+pgKn/qYCp/6mAqf+pgGnAKf/pgKn/qYBp/+mAaf/pgGnAKf/pgGn/6YBp/+mAaf/pgGn/6YCp/ymBaf8pgKnAKf+pgOn/aYDp/2mAqf/pgCnAaf/pgCnAaf+pgOn/aYCp/+mAKcBp/+mAaf/pgCnAaf/pgGn/6YBp/+mAaf/pgCnAaf/pgGn/qYDp/2mAqf/pgCnAqf+pgCnAaf/pgKn/qYBpwCn/6YCp/6mAacBp/6mAqf+pgKn/6YBp/+m/6YDp/2mAqf/pv+mAqf/pgCnAKf/pgKn/qYCp/6mAacAp/+mAqf+pgGnAKf/pgGnAKf/pgGn/6YApwGn/6YApwGn/qYDp/2mAqcAp/+mAaf/pgGnAKcAp/+mAacAp/+mAacAp/+mAqf+pgCnAqf+pgGnAKf/pgGnAaf9pgSn+6YEp/6mAaf/pgGn/qYCp/+mAKcBp/6mAqf/pgGn/qYCp/6mA6f9pgKn/6YApwGn/6YApwGn/6YBp/+mAKcBp/6mA6f9pgGnAaf+pgKn/6YApwGn/6YBp/6mA6f9pgNZ/VgDWf1YA1n9WANZ/VgDWf1YA1n9WANZ/FgEWf1YA1n8WARZ/FgEWf1YAln+WAJZ/1gAWQBZAVn+WAJZ/1gAWQFZ/1gAWQFZ/1gBWf9YAVn/WAFZAFn/WAFZ/1gBWf9YAVkAWf9YAln8WAVZ/FgCWQGn/aYDp/2mAqcAp/+mAaf/pgGn/6YBpwCn/qYDp/6mAacAp/+mAacBp/6mAaf/pgGnAaf+pgGn/6YBpwCnAKcAp/+mAqf+pgKn/6b/pgKn/qYDp/2mAacApwCnAKcApwCn/6YCp/2mA6f9pgOn/aYCp/+mAKcApwGn/qYBpwCnAKcApwCnAKf/pgKn/qYBpwCn/6YCp/6mAacApwCnAKcApwCn/6YCp/6mAqf+pgGn/6YBp/+mAacAp/+mAaf/pgGn/6YBpwCn/6YCp/2mA6f+pgGnAKcAp/+mAacAp/+mAqf9pgOn/qYCp/6mAKcCp/2mA6f/pv6mBKf7pgWn/KYDp/6mAacAp/+mAqf+pgGnAKf/pgGnAKf/pgGn/6YBp/+mAaf+pgOn/qYApwGn/6YBp/+mAaf/pgGn/6YBp/+mAaf/pgCnAqf8pgSn/aYCpwCn/qYCp/+mAaf/pgGn/6YBp/+mAaf/pgKn/aYDp/2mA6f+pgGnAKf/pgGn/6YBpwCnAKcApwCn/6YBpwCnAKcApwCn/6YCp/6mAacApwCnAKcApwCn/6YDp/ymBKf9pgGnAaf+pgKn/6b/pgOn/KYFWfpYBln7WANZAFn+WANZ/VgCWf5YAln/WABZAFkAWf9YA1n8WARZ/FgEWfxYBFn9WAFZAFn/WAFZAFn/WAFZ/1gBWf9YAVn/WAFZ/1gBWQBZAFkAWf9YAln+WANZ/FgDWf9Y/1gCWf1YA1n+WAJZ/VgDp/2mA6f+pgGnAKcAp/+mAqf9pgSn/KYDp/6mAqf+pgGnAKcAp/+mAqf9pgOn/6b/pgGn/6YBpwCn/6YCp/2mBKf7pgWn/KYCpwCn/6YBp/+mAKcApwGn/6YApwCnAKcBp/+mAKcApwCnAaf/pgCnAKcApwCnAKcBp/6mAacBp/2mBaf7pgOnAKf+pgKnAKf+pgSn/KYBpwGn/6YBpwCn/qYCp/+mAKcBp/+mAacAp/6mA6f+pgGnAKf/pgGnAKf/pgGnAKf+pgOn/aYDp/2mAqf/pgGn/6YBp/+mAKcBp/+mAKcCp/umB6f5pgan+6YEp/2mA6f+pgCnAaf/pgGnAKf/pgGn/6YBpwCn/6YBp/+mAaf/pgKn/aYDp/2mAqcAp/+mAaf/pgCnAqf9pgOn/aYDp/6mAaf/pgGn/6YCp/2mA6f9pgKnAKf+pgSn+6YEp/6mAKcBpwCn/6YBp/+mAaf/pgKn/qYApwKn/aYDp/6mAaf/pgKn/aYCpwCn/6YCp/2mAqf/pgKn/qYBp/+mAKcBpwCnAKf/pgGn/6YBpwCn/6YCp/6mAacAp/+mAqf+pgGnAKcApwCn/6YCp/6mAqf+WAFZAFkAWQBZAFkAWf9YAVkAWQBZAFn+WANZ/VgCWQBZ/lgDWf1YAln/WAFZ/lgEWfpYBln8WAJZAFn+WAJZAFn/WAFZ/1gBWQBZ/1gBWf9YAln+WAFZAFkAWQBZAFkAWf9YA1n8WANZ/1j+WARZ/FgDp/2mA6f9pgOn/qYApwGn/qYDp/2mAqf/pgCnAaf/pgGn/qYDp/6mAaf/pgGn/6YCp/6mAacAp/+mAacBp/2mA6f+pgCnAaf/pgCnAaf/pgGn/qYDp/2mAqcAp/+mAqf9pgOn/aYDp/6mAacAp/+mAaf/pgGn/6YCp/2mA6f9pgKn/6YCp/2mBKf7pgWn/KYDp/6mAqf+pgKn/qYBpwCnAKf/pgGn/6YCp/2mBKf7pgSn/6b+pgSn/KYDp/+m/6YBpwGn/qYCp/6mAacApwCn/6YBp/+mAKcBp/6mAqf+pgKn/6YApwCnAaf+pgOn/aYCpwCn/qYDp/6mAaf/pgGn/6YCp/6mAKcCp/2mBKf8pgOn/aYDp/6mAaf/pgGn/6YBpwCn/qYDp/2mAqcAp/+mAacAp/+mAqf+pgGnAKcApwGn/6YAp/+mA6f8pgWn+qYFp/2mAqf/pv+mA6f7pgen+aYGp/umA6f+pgKn/6YBp/6mAqf+pgKn/6YApwGn/qYCp/6mAacApwCnAKcAp/+mAaf/pgKn/qYBpwCn/6YBp/+mAqf+pgKn/qYBpwCnAKcApwCnAKcApwCnAKcAp/+mA1n8WARZ/FgDWf9YAFkAWf9YAln+WAJZ/lgBWQBZ/1gCWf5YAVkAWf9YAln+WAFZAFn/WAJZ/lgBWf9YAVkAWf9YAVn/WAFZ/1gBWQBZ/1gBWf9YAVkAWf9YAVn/WAFZ/1gBWf9YAVn/WABZAFkBWf9YAKcApwCnAaf+pgKn/qYCp/+mAKcApwCnAKcApwCnAKcApwCnAKcApwCnAKcApwCnAKcApwCn/6YCp/2mBKf7pgan+qYFp/ymA6f+pgGnAKcAp/+mAqf9pgSn/KYDp/2mA6f+pgKn/qYBp/+mAaf/pgGn/6YBp/6mAqf/pgCnAKcApwCnAaf/pgGn/qYDp/ymBaf7pgSn/aYCp/6mA6f8pgSn/KYEp/ymBKf9pgGnAKf/pgKn/6YApwCn/6YCp/6mAqf+pgKn/qYCp/6mAqf+pgOn/KYEp/ymA6f/pv+mAqf+pgGnAaf9pgSn/KYDp/+mAKcApwCnAKcApwCnAKcApwCnAKcAp/+mAqf+pgKn/qYCp/6mAqf/pgCnAKcApwCnAaf+pgKn/aYEp/ymA6f/pv6mBKf8pgOn/qYBp/+mAqf9pgOn/aYDp/6mAKcBp/+mAaf/pgGn/6YBp/+mAKcBp/+mAKcBp/6mAqf+pgKn/6YApwCn/6YDp/2mA6f9pgKn/qYCp/+mAacAp/+mAKcBp/+mAacAp/+mAacAp/+mAacAp/+mAqf+pgGnAKcApwCnAKcApwCnAaf+pgOn/aYDp/1YA1n9WANZ/VgDWf1YA1n9WANZ/VgCWf9YAVn/WAJZ/FgEWf5YAFkCWf1YAlkAWf5YA1n9WANZ/lgAWQFZ/1gBWQBZ/1gBWQBZAFn/WAFZAFkAWQBZAFn/WAJZ/lgCWf9YAFkBWf5YAln/WABZAVn+WAGnAKcAp/+mAaf/pgGn/6YBp/6mA6f+pgGn/6YBp/+mAqf9pgOn/aYDp/6mAKcBp/6mAqcAp/2mBKf8pgOn/6b/pgGnAKcAp/+mAqf9pgSn/KYDp/2mA6f+pgKn/aYDp/2mBKf8pgOn/qYBpwCnAKcApwCnAKcAp/+mAqf/pgGn/qYBpwCnAKcApwGn/aYEp/ymAqcBp/6mAacAp/+mAqf+pgGnAKcAp/+mAqf9pgSn/KYDp/6mAacAp/+mAacApwCn/6YBp/+mAqf+pgGnAKf/pgGnAKcApwCnAKf/pgGnAKcApwCnAKf/pgGnAKcApwCn/6YCp/2mBKf8pgOn/qYCp/6mAacAp/+mA6f7pgan+6YDp/+m/6YDp/2mAacBp/6mA6f9pgKn/6YApwGn/6YBp/+mAKcBp/+mAaf+pgOn/KYEp/6mAKcBp/+mAKcBp/+mAaf/pgGn/6YBpwCn/6YApwKn/KYFp/umBKf+pgCnAaf+pgOn/qYApwKn/aYDp/2mA6f9pgOn/aYDp/6mAacAp/+mAacBp/6mA6f8pgKnAKcApwCnAKf+pgOn/aYDp/2mAqf/pgGnAKf+pgOn/KYFWftYA1n/WABZAVn+WAJZ/lgDWf1YAln/WABZAFkBWf5YAln+WAFZAVn+WAJZ/1j/WANZ/FgEWf1YAln+WANZ/VgBWQBZ/1gDWf1YAln9WARZ/FgEWfxYA1n/WP9YAln9WANZ/1j/WAJZ/VgDWf9YAFn/pgKn/qYCp/6mAacApwCnAKcAp/+mAqf9pgOn/qYBp/+mAaf+pgOn/aYDp/2mA6f9pgKnAKf+pgOn/aYBpwGn/qYCp/6mAqf+pgKn/6YApwGn/6YApwGn/6YBp/+mAaf+pgOn/KYEp/2mAqf/pgCnAKcApwCnAKcApwGn/qYCp/6mAacBp/6mAqf+pgGnAaf+pgKn/qYCp/+mAaf/pgCnAqf9pgOn/qYBp/+mAaf/pgGn/6YBp/+mAacAp/6mBKf8pgOn/qYBpwCnAKcAp/6mBKf7pgWn/KYCpwCn/6YBp/+mAqf9pgOn/qYBpwCn/6YApwKn/aYDp/2mAqf/pgGnAKf/pgGn/6YBpwCn/6YBpwCn/6YCp/2mA6f+pgGnAKf/pgGnAKf/pgGn/6YApwGn/6YBp/+mAKcBp/+mAaf/pgCnAaf/pgCnAaf/pgCnAKcApwGn/6YBp/6mA6f9pgOn/aYCpwCn/6YCp/6mAaf/pgGnAaf+pgGnAKf/pgKn/qYBpwCnAKcAp/+mAqf/pgCnAKf/pgKn/qYCp/+m/6YBp/+mAqf/pv+mAqf9pgSn/aYBpwCnAKcApwCnAKf/pgKn/lgBWQBZ/1gCWf5YAVkAWf9YAln+WAFZAFn/WAJZ/lgBWf9YAFkBWQBZ/lgDWfxYBFn9WAJZ/1gAWQFZ/1gAWQFZ/lgDWf1YA1n9WAJZ/1gBWf9YAVn/WAFZ/1gBWf5YA1n9WAJZ/1gAWQBZAFkBWf5YA6f8pgSn/qYApwGn/6YApwKn/aYDp/ymBaf7pgSn/qYApwGn/6YBp/+mAaf/pgGnAKf/pgGn/6YBpwCn/6YBpwCn/qYDp/2mA6f+pgGn/6YBpwCn/6YBpwCn/6YCp/2mA6f+pgGnAKf/pgKn/qYBpwCn/6YCp/6mAaf/pgGn/6YBp/+mAKcBp/+mAKcBp/+mAacAp/6mBKf7pgWn/aYBpwCnAKf/pgKn/qYCp/6mAacApwCnAKcAp/+mAqf+pgGnAKf/pgGnAaf9pgOn/qYBpwCnAKf/pgKn/qYCp/6mAqf+pgKn/6YApwCnAKcApwCnAKcApwCnAKcAp/+mAqf/pv+mAqf+pgGnAKf/pgGnAKcAp/+mAqf9pgOn/qYBpwCn/6YCp/2mA6f+pgGnAKf/pgGnAKcApwCn/6YBpwCnAaf+pgGn/6YBpwCnAKf/pgGn/6YBpwCn/6YBp/+mAacAp/6mA6f9pgKnAKf+pgOn/aYCpwCn/6YCp/2mA6f+pgGnAKcAp/+mAqf+pgGnAKf/pgKn/qYCp/2mBKf7pgWn/KYCpwCn/6YBp/+mAKcBp/+mAaf/pgCnAaf/pgGn/6YBp/+mAVn/WAJZ/VgEWftYBFn+WAFZAFn/WAFZ/1gBWQBZ/1gBWf9YAln+WAJZ/VgDWf9Y/1gCWf5YAVkAWQBZ/1gBWQBZ/1gCWf1YAln/WABZAln9WANZ/VgCWQBZ/1gCWf1YA1n+WAFZAFn/WAFZ/1gBWQBZ/qYDp/6mAKcCp/ymBKf+pgCnAaf+pgKn/6YBp/6mAqf+pgGnAaf+pwKo/qcAqAKo/qcCqP6nAagAqACoAaj9pwSo/acCqP+nAKgAqACoAaj+pwKo/qcCqP6nAqj+pwKo/qcBqACo/6cCqP6nAqj9pwOo/acDqP+n/6cCqP6nAaj/pwKo/acEqPynAqgAqP+nAaj/pwGo/6cBqACo/6cCqP6nAagAqACoAaj+pwKo/qcBqAGo/qcCqP2nA6j+pwKo/qcAqAGo/6cCqP6nAaj/pwGo/6cCqP6nAaj/pwGo/6cBqACo/qcEqPunBKj+pwGo/6cBqP+nAaj/pwCoAaj/pwGo/6cAqACoAqj9pwKo/6cAqAGoAKj+pwKo/6cBqP+nAaj+pwOo/acDqP2nA6j9pwOo/acDqP6nAagAqP+nAagAqP+nAqj+pwGoAKj/pwKo/qcBqAGo/acEqP2nAagBqP2nBKj9pwGoAKj/pwKo/qcBqACo/6cBqACoAKgAqP+nAaj/pwKo/qcBqACo/6cBqACo/6cCqP6nAqj9pwSo/KcEqP2nAagAqP+nAqj+pwKo/qcBqACoAKgAqACoAKgAqABYAFgAWP9XAlj+VwFYAVj+VwFYAFgAWABYAVj+VwFYAVj+VwJY/1cAWABYAFgAWAFY/1f/VwJY/1cAWAFY/VcEWP1XAlj/VwBYAFgBWP5XA1j9VwJYAFj/VwFY/1cBWP9XAVgAWP5XA1j9VwJY/1cAWAGo/6cBqP+nAaj/pwGo/6cBqACo/6cBqP+nAagAqP+nAaj/pwGo/6cBqP+nAKgAqACoAaj/pwCoAKgAqACoAqj9pwOo/acDqP2nBKj8pwSo/KcDqP6nAqj+pwKo/qcBqACo/6cBqACo/6cBqP+nAaj/pwGo/6cAqAGo/6cBqP+nAKgBqP6nAqgAqP6nA6j9pwKo/6cBqP+nAaj/pwCoAaj/pwGo/6cBqACo/6cCqP6nAagBqP6nAqj/p/+nA6j8pwSo/KcEqP2nAagAqACoAKgAqACoAKgAqACoAKj/pwKo/qcBqACo/6cBqACo/6cBqACo/6cBqACo/6cBqACo/6cBqP+nAagAqP+nAaj+pwSo/KcDqP6nAKgCqP6nAagAqP+nAagAqP+nAagAqP6nA6j9pwKoAKj+pwOo/KcEqPynBKj9pwKo/6f/pwKo/qcBqACo/6cCqP6nAaj/pwGo/6cCqP6nAagBqP2nBKj8pwSo/KcEqP2nAagAqP+nAqj+pwKo/acEqPynA6j+pwKo/qcCqP2nBKj8pwOo/qcBqACo/6cBqP+nAaj/pwGo/6cBqP+nAaj/pwGo/6cAqAKo/KcFWPxXAlj/VwFY/1cBWP9XAVj/VwFY/1cAWAJY/VcDWP1XA1j+VwFY/1cAWAJY/lcBWABY/1cBWAFY/VcEWPxXA1j/V/9XAlj9VwNY/lcBWABYAFgAWABYAFgAWABYAVj+VwNY/FcEWP1XAlj/VwBYAFgBqP6nAqj/pwCoAaj/pwCoAaj+pwOo/acDqP2nAqj/pwCoAaj+pwOo/acCqP+n/6cDqP2nAqj/p/+nA6j9pwKo/6f/pwKo/6cAqACoAKgAqACoAKgAqACoAKgAqACoAKgAqP+nAqj+pwGoAKj+pwSo/KcCqACo/qcEqPunBaj8pwKo/6cBqACoAKj/pwCoAagAqACo/6cBqP6nA6j+pwGo/6cAqAGoAKgAqACo/qcDqP6nAqj+pwGo/6cBqP+nAaj/pwGoAKj+pwOo/acDqP6nAKgBqP+nAaj/pwGo/qcEqPunBKj+pwGoAKj/pwGo/6cCqP6nAKgCqP2nA6j+pwCoAqj9pwOo/acCqP+nAaj/pwCoAaj+pwOo/KcEqP2nA6j8pwSo/acDqP2nA6j9pwOo/qcBqACoAKgAqP+nAqj+pwKo/qcCqP+nAKgBqP6nAqj/pwGo/6cBqP+nAaj/pwGo/6cBqACo/6cBqP+nAaj/pwGo/6cAqAKo/acCqP+nAKgBqP+nAKgBqP6nA6j8pwSo/acCqP+nAKgAqACoAKgAqACoAKgAqP+nAqj+pwKo/qcBqP+nAqj+pwGo/6cBqACo/1cBWABY/1cCWP5XAVgAWABY/1cCWP5XAlj+VwJY/lcCWP9XAFgBWP9XAFgAWAFY/lcDWPxXA1j+VwJY/lcCWP5XAVgAWABYAFgBWP1XA1j+VwFYAVj9VwNY/VcEWPxXA1j9VwNY/lcBWABY/lcDWP5XAKgBqP+nAKgCqPynBKj9pwKoAKj/pwCoAaj+pwSo+6cFqPynAqgAqP+nAqj9pwSo+6cFqPynA6j+pwKo/acEqPynBKj8pwSo/acBqAGo/qcCqP+nAKgAqAGo/qcCqP+nAKgAqAGo/qcCqP+n/6cDqPynBKj9pwGoAaj9pwWo+6cDqP6nAagBqP6nAqj+pwGoAaj+pwGoAaj+pwOo/acCqP6nA6j9pwKo/6cAqAGo/qcDqP2nA6j9pwKo/6cCqP2nA6j8pwWo/KcCqP+nAKgBqP+nAKgAqAGo/6cBqP6nAqj+pwOo/qcAqAGo/6cAqAGo/6cAqAGo/qcCqP+nAKgBqP6nAqj+pwKo/6cAqACoAaj9pwWo+qcFqP6nAKgAqACoAKgAqAGo/qcCqP6nAagAqAGo/qcCqP6nAagBqP6nA6j9pwKo/qcCqP+nAKgBqP6nAqj+pwGoAKgBqP6nAqj+pwKo/6cAqACoAaj+pwKo/qcBqACoAKgAqACo/6cBqACo/6cCqP6nAKgDqPunBaj8pwKoAaj+pwGo/6cAqAOo+6cFqPynAqgAqP6nA6j+pwCoAaj+pwKo/6cAqAGo/6cAqABYAVgAWP5XA1j9VwNY/lcAWAFY/1cAWAFY/1cCWPxXBVj6VwdY+lcEWP5XAFgBWP9XAVgAWP9XAVj/VwFYAFj/VwJY/VcDWP5XAVgAWP9XAVj/VwJY/VcEWPtXBVj9VwFYAFgAWABYAFgAWABYAFgAWP+nAagAqACoAKj/pwGoAKgAqACo/6cCqP6nAqj+pwGoAKgAqACoAKgAqP+nAqj+pwGoAKj/pwGoAKj+pwOo/KcEqP6nAKgBqP6nAagBqP+nAKgAqACoAKgAqACoAKgAqAGo/acFqPunBKj+pwCoAaj/pwGo/6cCqP2nA6j+pwCoA6j7pwao+qcEqP+n/6cCqP6nAKgDqPunBqj7pwOo/6cAqACoAKgAqAGo/qcCqP6nAqj+pwKo/6f/pwOo/KcEqP2nAagBqP2nBKj8pwOo/6cAqP+nAagAqACoAaj+pwGo/6cDqPynBKj8pwOo/6cAqACoAKgAqACoAKgAqACoAaj+pwKo/6f/pwOo/acCqP+n/6cCqP6nAagAqP6nBKj8pwKoAKj+pwOo/acCqACo/6cBqP6nAqgAqP+nAaj/pwGoAKj/pwKo/acEqPynBKj9pwKo/6cAqAGo/6cBqP+nAKgBqP+nAaj/pwCoAaj/pwGo/qcDqP2nA6j8pwSo/acCqP+nAKgBqP");
 
 module.exports = beeps;
-},{}],17:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 /*
  bindWithDelay jQuery plugin
  Author: Brian Grinstead
@@ -31631,7 +36415,501 @@ $.fn.bindWithDelay = function (events, data, fn, timeout, throttle) {
         $(this).on(events, data, cb);
     });
 };
-},{}],18:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
+/*
+* jQuery File Download Plugin v1.4.5
+*
+* http://www.johnculviner.com
+*
+* Copyright (c) 2013 - John Culviner
+*
+* Licensed under the MIT license:
+*   http://www.opensource.org/licenses/mit-license.php
+*
+* !!!!NOTE!!!!
+* You must also write a cookie in conjunction with using this plugin as mentioned in the orignal post:
+* http://johnculviner.com/jquery-file-download-plugin-for-ajax-like-feature-rich-file-downloads/
+* !!!!NOTE!!!!
+*/
+
+(function($, window){
+    // i'll just put them here to get evaluated on script load
+    var htmlSpecialCharsRegEx = /[<>&\r\n"']/gm;
+    var htmlSpecialCharsPlaceHolders = {
+        '<': 'lt;',
+        '>': 'gt;',
+        '&': 'amp;',
+        '\r': "#13;",
+        '\n': "#10;",
+        '"': 'quot;',
+        "'": '#39;' /*single quotes just to be safe, IE8 doesn't support &apos;, so use &#39; instead */
+    };
+
+    $.extend({
+        //
+        //$.fileDownload('/path/to/url/', options)
+        //  see directly below for possible 'options'
+        fileDownload: function (fileUrl, options) {
+
+            //provide some reasonable defaults to any unspecified options below
+            var settings = $.extend({
+
+                //
+                //Requires jQuery UI: provide a message to display to the user when the file download is being prepared before the browser's dialog appears
+                //
+                preparingMessageHtml: null,
+
+                //
+                //Requires jQuery UI: provide a message to display to the user when a file download fails
+                //
+                failMessageHtml: null,
+
+                //
+                //the stock android browser straight up doesn't support file downloads initiated by a non GET: http://code.google.com/p/android/issues/detail?id=1780
+                //specify a message here to display if a user tries with an android browser
+                //if jQuery UI is installed this will be a dialog, otherwise it will be an alert
+                //Set to null to disable the message and attempt to download anyway
+                //
+                androidPostUnsupportedMessageHtml: "Unfortunately your Android browser doesn't support this type of file download. Please try again with a different browser.",
+
+                //
+                //Requires jQuery UI: options to pass into jQuery UI Dialog
+                //
+                dialogOptions: { modal: true },
+
+                //
+                //a function to call while the dowload is being prepared before the browser's dialog appears
+                //Args:
+                //  url - the original url attempted
+                //
+                prepareCallback: function (url) { },
+
+                //
+                //a function to call after a file download successfully completed
+                //Args:
+                //  url - the original url attempted
+                //
+                successCallback: function (url) { },
+
+                //
+                //a function to call after a file download request was canceled
+                //Args:
+                //  url - the original url attempted
+                //
+                abortCallback: function (url) { },
+
+                //
+                //a function to call after a file download failed
+                //Args:
+                //  responseHtml    - the html that came back in response to the file download. this won't necessarily come back depending on the browser.
+                //                      in less than IE9 a cross domain error occurs because 500+ errors cause a cross domain issue due to IE subbing out the
+                //                      server's error message with a "helpful" IE built in message
+                //  url             - the original url attempted
+                //  error           - original error cautch from exception
+                //
+                failCallback: function (responseHtml, url, error) { },
+
+                //
+                // the HTTP method to use. Defaults to "GET".
+                //
+                httpMethod: "GET",
+
+                //
+                // if specified will perform a "httpMethod" request to the specified 'fileUrl' using the specified data.
+                // data must be an object (which will be $.param serialized) or already a key=value param string
+                //
+                data: null,
+
+                //
+                //a period in milliseconds to poll to determine if a successful file download has occured or not
+                //
+                checkInterval: 100,
+
+                //
+                //the cookie name to indicate if a file download has occured
+                //
+                cookieName: "fileDownload",
+
+                //
+                //the cookie value for the above name to indicate that a file download has occured
+                //
+                cookieValue: "true",
+
+                //
+                //the cookie path for above name value pair
+                //
+                cookiePath: "/",
+
+                //
+                //if specified it will be used when attempting to clear the above name value pair
+                //useful for when downloads are being served on a subdomain (e.g. downloads.example.com)
+                //
+                cookieDomain: null,
+
+                //
+                //the title for the popup second window as a download is processing in the case of a mobile browser
+                //
+                popupWindowTitle: "Initiating file download...",
+
+                //
+                //Functionality to encode HTML entities for a POST, need this if data is an object with properties whose values contains strings with quotation marks.
+                //HTML entity encoding is done by replacing all &,<,>,',",\r,\n characters.
+                //Note that some browsers will POST the string htmlentity-encoded whilst others will decode it before POSTing.
+                //It is recommended that on the server, htmlentity decoding is done irrespective.
+                //
+                encodeHTMLEntities: true
+
+            }, options);
+
+            var deferred = new $.Deferred();
+
+            //Setup mobile browser detection: Partial credit: http://detectmobilebrowser.com/
+            var userAgent = (navigator.userAgent || navigator.vendor || window.opera).toLowerCase();
+
+            var isIos;                  //has full support of features in iOS 4.0+, uses a new window to accomplish this.
+            var isAndroid;              //has full support of GET features in 4.0+ by using a new window. Non-GET is completely unsupported by the browser. See above for specifying a message.
+            var isOtherMobileBrowser;   //there is no way to reliably guess here so all other mobile devices will GET and POST to the current window.
+
+            if (/ip(ad|hone|od)/.test(userAgent)) {
+
+                isIos = true;
+
+            } else if (userAgent.indexOf('android') !== -1) {
+
+                isAndroid = true;
+
+            } else {
+
+                isOtherMobileBrowser = /avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|playbook|silk|iemobile|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(userAgent) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|e\-|e\/|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(di|rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|xda(\-|2|g)|yas\-|your|zeto|zte\-/i.test(userAgent.substr(0, 4));
+
+            }
+
+            var httpMethodUpper = settings.httpMethod.toUpperCase();
+
+            if (isAndroid && httpMethodUpper !== "GET" && settings.androidPostUnsupportedMessageHtml) {
+                //the stock android browser straight up doesn't support file downloads initiated by non GET requests: http://code.google.com/p/android/issues/detail?id=1780
+
+                if ($().dialog) {
+                    $("<div>").html(settings.androidPostUnsupportedMessageHtml).dialog(settings.dialogOptions);
+                } else {
+                    alert(settings.androidPostUnsupportedMessageHtml);
+                }
+
+                return deferred.reject();
+            }
+
+            var $preparingDialog = null;
+
+            var internalCallbacks = {
+
+                onPrepare: function (url) {
+
+                    //wire up a jquery dialog to display the preparing message if specified
+                    if (settings.preparingMessageHtml) {
+
+                        $preparingDialog = $("<div>").html(settings.preparingMessageHtml).dialog(settings.dialogOptions);
+
+                    } else if (settings.prepareCallback) {
+
+                        settings.prepareCallback(url);
+
+                    }
+
+                },
+
+                onSuccess: function (url) {
+
+                    //remove the perparing message if it was specified
+                    if ($preparingDialog) {
+                        $preparingDialog.dialog('close');
+                    }
+
+                    settings.successCallback(url);
+
+                    deferred.resolve(url);
+                },
+
+                onAbort: function (url) {
+
+                    //remove the perparing message if it was specified
+                    if ($preparingDialog) {
+                        $preparingDialog.dialog('close');
+                    };
+
+                    settings.abortCallback(url);
+
+                    deferred.reject(url);
+                },
+
+                onFail: function (responseHtml, url, error) {
+
+                    //remove the perparing message if it was specified
+                    if ($preparingDialog) {
+                        $preparingDialog.dialog('close');
+                    }
+
+                    //wire up a jquery dialog to display the fail message if specified
+                    if (settings.failMessageHtml) {
+                        $("<div>").html(settings.failMessageHtml).dialog(settings.dialogOptions);
+                    }
+
+                    settings.failCallback(responseHtml, url, error);
+
+                    deferred.reject(responseHtml, url);
+                }
+            };
+
+            internalCallbacks.onPrepare(fileUrl);
+
+            //make settings.data a param string if it exists and isn't already
+            if (settings.data !== null && typeof settings.data !== "string") {
+                settings.data = $.param(settings.data);
+            }
+
+
+            var $iframe,
+                downloadWindow,
+                formDoc,
+                $form;
+
+            if (httpMethodUpper === "GET") {
+
+                if (settings.data !== null) {
+                    //need to merge any fileUrl params with the data object
+
+                    var qsStart = fileUrl.indexOf('?');
+
+                    if (qsStart !== -1) {
+                        //we have a querystring in the url
+
+                        if (fileUrl.substring(fileUrl.length - 1) !== "&") {
+                            fileUrl = fileUrl + "&";
+                        }
+                    } else {
+
+                        fileUrl = fileUrl + "?";
+                    }
+
+                    fileUrl = fileUrl + settings.data;
+                }
+
+                if (isIos || isAndroid) {
+
+                    downloadWindow = window.open(fileUrl);
+                    downloadWindow.document.title = settings.popupWindowTitle;
+                    window.focus();
+
+                } else if (isOtherMobileBrowser) {
+
+                    window.location(fileUrl);
+
+                } else {
+
+                    //create a temporary iframe that is used to request the fileUrl as a GET request
+                    $iframe = $("<iframe>")
+                        .hide()
+                        .prop("src", fileUrl)
+                        .appendTo("body");
+                }
+
+            } else {
+
+                var formInnerHtml = "";
+
+                if (settings.data !== null) {
+
+                    $.each(settings.data.replace(/\+/g, ' ').split("&"), function () {
+
+                        var kvp = this.split("=");
+
+                        //Issue: When value contains sign '=' then the kvp array does have more than 2 items. We have to join value back
+                        var k = kvp[0];
+                        kvp.shift();
+                        var v = kvp.join("=");
+                        kvp = [k, v];
+
+                        var key = settings.encodeHTMLEntities ? htmlSpecialCharsEntityEncode(decodeURIComponent(kvp[0])) : decodeURIComponent(kvp[0]);
+                        if (key) {
+                            var value = settings.encodeHTMLEntities ? htmlSpecialCharsEntityEncode(decodeURIComponent(kvp[1])) : decodeURIComponent(kvp[1]);
+                            formInnerHtml += '<input type="hidden" name="' + key + '" value="' + value + '" />';
+                        }
+                    });
+                }
+
+                if (isOtherMobileBrowser) {
+
+                    $form = $("<form>").appendTo("body");
+                    $form.hide()
+                        .prop('method', settings.httpMethod)
+                        .prop('action', fileUrl)
+                        .html(formInnerHtml);
+
+                } else {
+
+                    if (isIos) {
+
+                        downloadWindow = window.open("about:blank");
+                        downloadWindow.document.title = settings.popupWindowTitle;
+                        formDoc = downloadWindow.document;
+                        window.focus();
+
+                    } else {
+
+                        $iframe = $("<iframe style='display: none' src='about:blank'></iframe>").appendTo("body");
+                        formDoc = getiframeDocument($iframe);
+                    }
+
+                    formDoc.write("<html><head></head><body><form method='" + settings.httpMethod + "' action='" + fileUrl + "'>" + formInnerHtml + "</form>" + settings.popupWindowTitle + "</body></html>");
+                    $form = $(formDoc).find('form');
+                }
+
+                $form.submit();
+            }
+
+
+            //check if the file download has completed every checkInterval ms
+            setTimeout(checkFileDownloadComplete, settings.checkInterval);
+
+
+            function checkFileDownloadComplete() {
+                //has the cookie been written due to a file download occuring?
+
+                var cookieValue = settings.cookieValue;
+                if(typeof cookieValue == 'string') {
+                    cookieValue = cookieValue.toLowerCase();
+                }
+
+                var lowerCaseCookie = settings.cookieName.toLowerCase() + "=" + cookieValue;
+
+                if (document.cookie.toLowerCase().indexOf(lowerCaseCookie) > -1) {
+
+                    //execute specified callback
+                    internalCallbacks.onSuccess(fileUrl);
+
+                    //remove cookie
+                    var cookieData = settings.cookieName + "=; path=" + settings.cookiePath + "; expires=" + new Date(0).toUTCString() + ";";
+                    if (settings.cookieDomain) cookieData += " domain=" + settings.cookieDomain + ";";
+                    document.cookie = cookieData;
+
+                    //remove iframe
+                    cleanUp(false);
+
+                    return;
+                }
+
+                //has an error occured?
+                //if neither containers exist below then the file download is occuring on the current window
+                if (downloadWindow || $iframe) {
+
+                    //has an error occured?
+                    try {
+
+                        var formDoc = downloadWindow ? downloadWindow.document : getiframeDocument($iframe);
+
+                        if (formDoc && formDoc.body !== null && formDoc.body.innerHTML.length) {
+
+                            var isFailure = true;
+
+                            if ($form && $form.length) {
+                                var $contents = $(formDoc.body).contents().first();
+
+                                try {
+                                    if ($contents.length && $contents[0] === $form[0]) {
+                                        isFailure = false;
+                                    }
+                                } catch (e) {
+                                    if (e && e.number == -2146828218) {
+                                        // IE 8-10 throw a permission denied after the form reloads on the "$contents[0] === $form[0]" comparison
+                                        isFailure = true;
+                                    } else {
+                                        throw e;
+                                    }
+                                }
+                            }
+
+                            if (isFailure) {
+                                // IE 8-10 don't always have the full content available right away, they need a litle bit to finish
+                                setTimeout(function () {
+                                    internalCallbacks.onFail(formDoc.body.innerHTML, fileUrl);
+                                    cleanUp(true);
+                                }, 100);
+
+                                return;
+                            }
+                        }
+                    }
+                    catch (err) {
+
+                        //500 error less than IE9
+                        internalCallbacks.onFail('', fileUrl, err);
+
+                        cleanUp(true);
+
+                        return;
+                    }
+                }
+
+
+                //keep checking...
+                setTimeout(checkFileDownloadComplete, settings.checkInterval);
+            }
+
+            //gets an iframes document in a cross browser compatible manner
+            function getiframeDocument($iframe) {
+                var iframeDoc = $iframe[0].contentWindow || $iframe[0].contentDocument;
+                if (iframeDoc.document) {
+                    iframeDoc = iframeDoc.document;
+                }
+                return iframeDoc;
+            }
+
+            function cleanUp(isFailure) {
+
+                setTimeout(function() {
+
+                    if (downloadWindow) {
+
+                        if (isAndroid) {
+                            downloadWindow.close();
+                        }
+
+                        if (isIos) {
+                            if (downloadWindow.focus) {
+                                downloadWindow.focus(); //ios safari bug doesn't allow a window to be closed unless it is focused
+                                if (isFailure) {
+                                    downloadWindow.close();
+                                }
+                            }
+                        }
+                    }
+
+                    //iframe cleanup appears to randomly cause the download to fail
+                    //not doing it seems better than failure...
+                    //if ($iframe) {
+                    //    $iframe.remove();
+                    //}
+
+                }, 0);
+            }
+
+
+            function htmlSpecialCharsEntityEncode(str) {
+                return str.replace(htmlSpecialCharsRegEx, function(match) {
+                    return '&' + htmlSpecialCharsPlaceHolders[match];
+                });
+            }
+            var promise = deferred.promise();
+            promise.abort = function() {
+                cleanUp();
+                $iframe.attr('src', '').html('');
+                internalCallbacks.onAbort(fileUrl);
+            };
+            return promise;
+        }
+    });
+
+})(jQuery, this || window);
+},{}],33:[function(require,module,exports){
 /**
  * overwrite jQuery-QueryBuilder validate method to
  * - use moment.js in strict mode
@@ -31836,7 +37114,7 @@ QueryBuilder.extend({
         return result;
     }
 });
-},{}],19:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 /**
  * Brings something like PHP's sprintf to js.
  * Use it like "{0} string {1}".format("Handy", "replacement");
@@ -31852,7 +37130,7 @@ if (!String.prototype.format) {
         });
     };
 }
-},{}],20:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 (function (global){
 /**
  * load dependencies
@@ -31864,13 +37142,28 @@ require("jquery-ui/ui/data");
 require("jquery-ui/ui/version");
 require("jquery-ui/ui/ie");
 require("jquery-ui/ui/scroll-parent");
+require("jquery-ui/ui/plugin");
+require("jquery-ui/ui/disable-selection");
+require("jquery-ui/ui/unique-id");
+require("jquery-ui/ui/safe-blur");
+require("jquery-ui/ui/safe-active-element");
+require("jquery-ui/ui/position");
+require("jquery-ui/ui/keycode");
+require("jquery-ui/ui/focusable");
+require("jquery-ui/ui/tabbable");
 require("jquery-ui/ui/widget");
 require('jquery-ui/ui/widgets/mouse');
 require('jquery-ui/ui/widgets/datepicker');
 require('jquery-ui/ui/widgets/sortable');
+require('jquery-ui/ui/widgets/button');
+require('jquery-ui/ui/widgets/draggable');
+require('jquery-ui/ui/widgets/resizable');
+require('jquery-ui/ui/widgets/dialog');
 require('select2');
+require('jquery.cookie');
 require('./assets/jQueryBindWithDelay');
 require('./assets/sprintf');
+require('./assets/jquery.fileDownload');
 
 /**
  * get instance of the general module and expose it as app to the global scope
@@ -31888,12 +37181,61 @@ $(document).ready(function () {
     General.init();
 });
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./assets/jQueryBindWithDelay":17,"./assets/sprintf":19,"./modules/general.js":21,"jquery":13,"jquery-ui":9,"jquery-ui/ui/data":5,"jquery-ui/ui/ie":6,"jquery-ui/ui/scroll-parent":7,"jquery-ui/ui/version":8,"jquery-ui/ui/widget":9,"jquery-ui/ui/widgets/datepicker":10,"jquery-ui/ui/widgets/mouse":11,"jquery-ui/ui/widgets/sortable":12,"select2":15}],21:[function(require,module,exports){
+},{"./assets/jQueryBindWithDelay":31,"./assets/jquery.fileDownload":32,"./assets/sprintf":34,"./modules/general.js":37,"jquery":27,"jquery-ui":18,"jquery-ui/ui/data":5,"jquery-ui/ui/disable-selection":6,"jquery-ui/ui/focusable":7,"jquery-ui/ui/ie":8,"jquery-ui/ui/keycode":9,"jquery-ui/ui/plugin":10,"jquery-ui/ui/position":11,"jquery-ui/ui/safe-active-element":12,"jquery-ui/ui/safe-blur":13,"jquery-ui/ui/scroll-parent":14,"jquery-ui/ui/tabbable":15,"jquery-ui/ui/unique-id":16,"jquery-ui/ui/version":17,"jquery-ui/ui/widget":18,"jquery-ui/ui/widgets/button":19,"jquery-ui/ui/widgets/datepicker":20,"jquery-ui/ui/widgets/dialog":21,"jquery-ui/ui/widgets/draggable":22,"jquery-ui/ui/widgets/mouse":23,"jquery-ui/ui/widgets/resizable":24,"jquery-ui/ui/widgets/sortable":25,"jquery.cookie":26,"select2":29}],36:[function(require,module,exports){
+/**
+ * handles all the exporting
+ */
+function ExporterModule(General) {
+    "use strict";
+
+    /**
+     * having our class always accessible can get handy
+     */
+    var self = this;
+
+    /**
+     * make the general module accessible
+     */
+    this.General = General;
+
+    /**
+     * start up
+     */
+    this.init = function () {
+        var $export_button = $('.export-button');
+
+        if ($export_button.length < 1) {
+            return;
+        }
+
+        $export_button.click(function (e) {
+            e.preventDefault();
+            $.removeCookie('fileDownload', {path: urlbase});
+            self.fileDownload(this);
+        });
+    };
+
+    /**
+     * setup file download
+     */
+    this.fileDownload = function (el) {
+        var url = $(el).attr('href');
+
+        $.fileDownload(url, {
+            preparingMessageHtml: trans.preparing_report,
+            failMessageHtml: trans.preparing_report_failed
+        });
+    };
+}
+
+module.exports = ExporterModule;
+},{}],37:[function(require,module,exports){
 var VarietiesModule = require('./varieties.js');
 var TreesModule = require('./trees.js');
 var MarksModule = require('./marks.js');
 var QueriesViewSelectorModule = require('./queries/view_selector.js');
 var QueriesWhereBuilderModule = require('./queries/where_builder.js');
+var Exporter = require('./exporter.js');
 
 /**
  * handles all the general stuff
@@ -31920,6 +37262,7 @@ function GeneralModule() {
     this.Marks = new MarksModule(self);
     this.QueriesViewSelector = new QueriesViewSelectorModule(self);
     this.QueriesWhereBuilder = new QueriesWhereBuilderModule(self);
+    this.Exporter = new Exporter(self);
 
     /*
      * start up
@@ -31945,6 +37288,7 @@ function GeneralModule() {
         this.Marks.unlockScannerField();
         this.QueriesViewSelector.init();
         this.QueriesWhereBuilder.init();
+        this.Exporter.init();
     };
 
     /*
@@ -32309,7 +37653,7 @@ function GeneralModule() {
 }
 
 module.exports = GeneralModule;
-},{"./../assets/beeps.js":16,"./marks.js":22,"./queries/view_selector.js":23,"./queries/where_builder.js":24,"./trees.js":25,"./varieties.js":26}],22:[function(require,module,exports){
+},{"./../assets/beeps.js":30,"./exporter.js":36,"./marks.js":38,"./queries/view_selector.js":39,"./queries/where_builder.js":40,"./trees.js":41,"./varieties.js":42}],38:[function(require,module,exports){
 /**
  * handles all the marks stuff
  */
@@ -32658,7 +38002,7 @@ function MarksModule(General) {
 }
 
 module.exports = MarksModule;
-},{}],23:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 /**
  * handles all the queries stuff
  */
@@ -32878,7 +38222,7 @@ function QueriesViewSelectorModule(General) {
 }
 
 module.exports = QueriesViewSelectorModule;
-},{}],24:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 (function (global){
 global.moment = require('moment');
 global.QueryBuilder = require('jQuery-QueryBuilder');
@@ -33098,7 +38442,7 @@ function QueriesWhereBuilderModule(General) {
 
 module.exports = QueriesWhereBuilderModule;
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../assets/queryBuilder-validate":18,"jQuery-QueryBuilder":2,"jQuery-QueryBuilder/src/plugins/change-filters/plugin":3,"moment":14}],25:[function(require,module,exports){
+},{"../../assets/queryBuilder-validate":33,"jQuery-QueryBuilder":2,"jQuery-QueryBuilder/src/plugins/change-filters/plugin":3,"moment":28}],41:[function(require,module,exports){
 /**
  * handles all the trees stuff
  */
@@ -33158,7 +38502,7 @@ function TreesModule(General) {
 }
 
 module.exports = TreesModule;
-},{}],26:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 /**
  * handles all the varieties stuff
  */
@@ -33252,4 +38596,4 @@ function VarietiesModule(General) {
 }
 
 module.exports = VarietiesModule;
-},{}]},{},[20])
+},{}]},{},[35])
