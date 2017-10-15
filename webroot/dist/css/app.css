@@ -140,7 +140,8 @@ table .actions {
     background: #966600;
 }
 
-.print-button {
+.print-button,
+.export-button {
     float: right;
 }
 

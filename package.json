@@ -21,6 +21,7 @@
     "jQuery-QueryBuilder": "^2.4.4",
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",
+    "jquery.cookie": "^1.4.1",
     "moment": "^2.18.1",
     "select2": "^4.0.3"
   },

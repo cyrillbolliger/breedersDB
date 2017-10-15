@@ -2,6 +2,11 @@
     <?= $this->element('Query/nav'); ?>
 </nav>
 <div class="queries view large-9 medium-8 columns content">
+    <?= $this->Html->link(
+        __('Export to excel'),
+        ['action' => 'export', $query->id],
+        ['class' => 'button export-button']);
+    ?>
     <h3><?= __('Query:') .' '. h($query->code) ?></h3>
     <table class="vertical-table">
         <tr>
