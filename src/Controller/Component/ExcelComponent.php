@@ -95,6 +95,10 @@ class ExcelComponent extends Component
      */
     protected function _implode($data, string $glue = '; '): string
     {
+        if (empty($data)) {
+            return '';
+        }
+        
         if ( ! is_array($data)) {
             return $data;
         }
