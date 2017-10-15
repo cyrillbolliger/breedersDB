@@ -254,4 +254,8 @@ class QueriesController extends AppController
         
         return $this->redirect(['action' => 'index']);
     }
+    
+    public function test() {
+    
+    }
 }

@@ -67,13 +67,16 @@ class BatchesViewTable extends Table
         
         $this->belongsTo('CrossingsView', [
             'foreignKey' => 'crossing_id',
-            'joinType'   => 'INNER'
+            'joinType'   => 'INNER',
+            'strategy'   => 'select'
         ]);
         $this->hasMany('MarksView', [
-            'foreignKey' => 'batch_id'
+            'foreignKey' => 'batch_id',
+            'strategy'   => 'select'
         ]);
         $this->hasMany('VarietiesView', [
-            'foreignKey' => 'batch_id'
+            'foreignKey' => 'batch_id',
+            'strategy'   => 'select'
         ]);
     }
     

@@ -39,18 +39,15 @@ class ExcelComponent extends Component
         // load data extractor
         $extractor = new \App\Utility\DataExtractorUtility();
         
-        // get data to export
-        $in = $query->toArray();
-        
         // prepare data
-        $out = array();
+        $data = array();
         
-        foreach ($in as $row_in) {
+        foreach ($query as $row_in) {
             $row = array();
             foreach ($columns as $column_key => $column_name) {
                 $row[] = $this->_implode($extractor->getCell($column_key, $row_in));
             }
-            $out[] = $row;
+            $data[] = $row;
         }
         
         // create excel obj
@@ -68,7 +65,7 @@ class ExcelComponent extends Component
         
         // write data
         $i = 2;
-        foreach ($out as $row) {
+        foreach ($data as $row) {
             $excel->getActiveSheet()->fromArray($row, null, 'A' . $i);
             $i++;
         }

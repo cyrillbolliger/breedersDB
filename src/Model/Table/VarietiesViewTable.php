@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -53,36 +54,42 @@ class VarietiesViewTable extends Table
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
-
+        
         $this->table('varieties_view');
-    
+        
         $this->displayField('code');
         $this->primaryKey('id');
         
         $this->belongsTo('BatchesView', [
             'foreignKey' => 'batch_id',
-            'joinType'   => 'INNER'
+            'joinType'   => 'INNER',
+            'strategy'   => 'select'
         ]);
         $this->hasMany('ScionsBundlesView', [
-            'foreignKey' => 'variety_id'
+            'foreignKey' => 'variety_id',
+            'strategy'   => 'select'
         ]);
         $this->hasMany('TreesView', [
-            'foreignKey' => 'variety_id'
+            'foreignKey' => 'variety_id',
+            'strategy'   => 'select'
         ]);
         $this->hasMany('MarksView', [
-            'foreignKey' => 'variety_id'
+            'foreignKey' => 'variety_id',
+            'strategy'   => 'select'
         ]);
     }
-
+    
     /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
@@ -91,40 +98,41 @@ class VarietiesViewTable extends Table
             ->integer('id')
             ->requirePresence('id', 'create')
             ->notEmpty('id');
-
+        
         $validator
             ->requirePresence('convar', 'create')
             ->notEmpty('convar');
-
+        
         $validator
             ->allowEmpty('official_name');
-
+        
         $validator
             ->allowEmpty('acronym');
-
+        
         $validator
             ->allowEmpty('plant_breeder');
-
+        
         $validator
             ->allowEmpty('registration');
-
+        
         $validator
             ->allowEmpty('description');
-
+        
         return $validator;
     }
-
+    
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     *
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['batch_id'], 'Batches'));
-
+        
         return $rules;
     }
 }

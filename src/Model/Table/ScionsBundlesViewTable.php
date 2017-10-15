@@ -65,7 +65,8 @@ class ScionsBundlesViewTable extends Table
         
         $this->belongsTo('VarietiesView', [
             'foreignKey' => 'variety_id',
-            'joinType'   => 'INNER'
+            'joinType'   => 'INNER',
+            'strategy'   => 'select'
         ]);
     }
     

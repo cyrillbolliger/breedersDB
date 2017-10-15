@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -53,31 +54,36 @@ class MarksViewTable extends Table
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
-
+        
         $this->table('marks_view');
         $this->displayField('name');
         $this->primaryKey('id');
-
+        
         $this->belongsTo('TreesView', [
-            'foreignKey' => 'tree_id'
+            'foreignKey' => 'tree_id',
+            'strategy'   => 'select'
         ]);
         $this->belongsTo('VarietiesView', [
-            'foreignKey' => 'variety_id'
+            'foreignKey' => 'variety_id',
+            'strategy'   => 'select'
         ]);
         $this->belongsTo('BatchesView', [
-            'foreignKey' => 'batch_id'
+            'foreignKey' => 'batch_id',
+            'strategy'   => 'select'
         ]);
     }
-
+    
     /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
@@ -85,39 +91,40 @@ class MarksViewTable extends Table
         $validator
             ->date('date')
             ->allowEmpty('date');
-
+        
         $validator
             ->allowEmpty('author');
-
+        
         $validator
             ->requirePresence('value', 'create')
             ->notEmpty('value');
-
+        
         $validator
             ->boolean('exceptional_mark')
             ->requirePresence('exceptional_mark', 'create')
             ->notEmpty('exceptional_mark');
-
+        
         $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name');
-
+        
         $validator
             ->requirePresence('field_type', 'create')
             ->notEmpty('field_type');
-
+        
         $validator
             ->requirePresence('mark_form_property_type', 'create')
             ->notEmpty('mark_form_property_type');
-
+        
         return $validator;
     }
-
+    
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     *
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules)
@@ -125,7 +132,7 @@ class MarksViewTable extends Table
         $rules->add($rules->existsIn(['tree_id'], 'Trees'));
         $rules->add($rules->existsIn(['variety_id'], 'Varieties'));
         $rules->add($rules->existsIn(['batch_id'], 'Batches'));
-
+        
         return $rules;
     }
 }

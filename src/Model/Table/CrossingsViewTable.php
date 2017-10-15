@@ -66,10 +66,12 @@ class CrossingsViewTable extends Table
         $this->primaryKey('id');
         
         $this->hasMany('BatchesView', [
-            'foreignKey' => 'crossing_id'
+            'foreignKey' => 'crossing_id',
+            'strategy'   => 'select'
         ]);
         $this->hasMany('MotherTreesView', [
-            'foreignKey' => 'crossing_id'
+            'foreignKey' => 'crossing_id',
+            'strategy'   => 'select'
         ]);
     }
     

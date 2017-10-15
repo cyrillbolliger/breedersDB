@@ -67,13 +67,16 @@ class TreesViewTable extends Table
         
         $this->belongsTo('VarietiesView', [
             'foreignKey' => 'variety_id',
-            'joinType'   => 'INNER'
+            'joinType'   => 'INNER',
+            'strategy'   => 'select'
         ]);
         $this->hasMany('MarksView', [
-            'foreignKey' => 'tree_id'
+            'foreignKey' => 'tree_id',
+            'strategy'   => 'select'
         ]);
         $this->hasMany('MotherTreesView', [
-            'foreignKey' => 'tree_id'
+            'foreignKey' => 'tree_id',
+            'strategy'   => 'select'
         ]);
     }
     
