@@ -239,6 +239,13 @@ class ComposerStaticInit95e7d59b91a632617d05cb1c758ea7aa
     );
 
     public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'PHPExcel' => 
+            array (
+                0 => __DIR__ . '/..' . '/phpoffice/phpexcel/Classes',
+            ),
+        ),
         'J' => 
         array (
             'JakubOnderka\\PhpConsoleHighlighter' => 
