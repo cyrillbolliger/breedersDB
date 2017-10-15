@@ -44,6 +44,7 @@ class Updater
         'tests',
         '.htaccess',
         '.git',
+        'tmp' . DIRECTORY_SEPARATOR . 'debug_kit.sqlite',
         // $backupFolder <-- gets pushed dynamically
         // $tempDir <-- gets pushed dynamically
     ];
