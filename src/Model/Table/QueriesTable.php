@@ -48,7 +48,7 @@ class QueriesTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('RulesToConditionsConvertible');
         $this->addBehavior('GetFilterData');
-        $this->addBehavior('TranslateableFields');
+        $this->addBehavior('TranslatableFields');
         
         $this->belongsTo('QueryGroups', [
             'foreignKey' => 'query_group_id',

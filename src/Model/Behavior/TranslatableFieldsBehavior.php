@@ -9,8 +9,9 @@
 namespace App\Model\Behavior;
 
 use Cake\ORM\Behavior;
+use Cake\Core\Exception\Exception;
 
-class TranslateableFieldsBehavior extends Behavior
+class TranslatableFieldsBehavior extends Behavior
 {
     /**
      * Translate field names
