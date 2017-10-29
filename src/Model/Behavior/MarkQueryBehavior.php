@@ -10,6 +10,7 @@ namespace App\Model\Behavior;
 
 use App\Model\Entity\MarksView;
 use App\Utility\MarksAggregatorUtility;
+use Cake\Cache\Cache;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Core\Exception\Exception;
@@ -21,9 +22,9 @@ use Cake\ORM\TableRegistry;
 class MarkQueryBehavior extends Behavior
 {
     /**
-     * @var bool load data from cache if possible
+     * @var bool clean query cache
      */
-    private $fromCache;
+    private $clearCached;
     
     /**
      * @var array with the field as key and the direction as value
@@ -43,12 +44,12 @@ class MarkQueryBehavior extends Behavior
     /**
      * @var array of mark properties we want to use in the query
      */
-    private $properties;
+    private $markProperties;
     
     /**
-     * @var array with fields to display
+     * @var array with used fields in dot notation
      */
-    private $display;
+    private $fields;
     
     /**
      * @var array with the filter data
@@ -56,50 +57,43 @@ class MarkQueryBehavior extends Behavior
     private $filter;
     
     /**
-     * @var Query used to retrieve the unfiltered data
+     * @var array @see $this->mode
      */
-    private $query;
-    
-    /**
-     * @var Collection containing intermediate data
-     */
-    private $data;
+    private $allowedModes = [
+        'trees',
+        'varieties',
+        'convar',
+        'batches',
+    ];
     
     /**
      * ToDo: proper description
      *
-     * @param bool $fromCache
-     * @param array $orderBy
+     * @param string $mode allowed values: 'trees', 'varieties', 'convar', 'batches'
+     * @param array $display fields to display in dot notation
+     * @param array $markProperties the name of the mark properties to display or filter
+     * @param bool $clearCache set to true to rebuild the cache
+     * @param array $orderBy with the field key as key and the direction as value
      *
      * @return CollectionInterface
      */
-    public function customFindMarks(bool $fromCache, array $orderBy): CollectionInterface
-    {
-        $this->fromCache = $fromCache;
+    public function customFindMarks(
+        string $mode,
+        array $display,
+        array $markProperties,
+        bool $clearCache,
+        array $orderBy
+    ): CollectionInterface {
+        if ( ! in_array($mode, $this->allowedModes)) {
+            throw new Exception("'{$mode}' mode is not defined.'");
+        }
         
-        $this->orderBy = $orderBy;
+        $this->mode           = $mode;
+        $this->clearCached    = $clearCache;
+        $this->orderBy        = $orderBy;
+        $this->markProperties = $markProperties;
         
-        $this->mode = 'trees';
-        
-        $this->properties = [
-            'H_Gesamteindruck Frucht',
-            'K1_Schorf Blatt',
-        ];
-        
-        $display = [
-            'TreesView.id',
-            'TreesView.publicid',
-            'TreesView.convar',
-        ];
-        
-        $this->display = array_merge($display, [
-            'MarksView.tree_id',
-            'MarksView.variety_id',
-            'MarksView.batch_id',
-            'MarksView.value',
-            'MarksView.name',
-            'MarksView.field_type',
-        ]);
+        $this->_setFields($display);
         
         $this->filter = [];
         
@@ -109,27 +103,77 @@ class MarkQueryBehavior extends Behavior
         return $sorted;
     }
     
-    private function _sort(CollectionInterface $data) {
-        // todo
-        return $data;
+    /**
+     * Merge internally used field into the fields used to to display results and store it in $this->fields
+     *
+     * @param array $display fields to display in dot notation
+     */
+    private function _setFields(array $display)
+    {
+        $markFields = [
+            'MarksView.value',
+            'MarksView.name',
+            'MarksView.field_type',
+        ];
+        
+        switch ($this->mode) {
+            case 'trees':
+                $obj_fields = [
+                    'MarksView.tree_id',
+                    'TreesView.publicid',
+                ];
+                break;
+            
+            case 'varieties':
+                $obj_fields = [
+                    'MarksView.variety_id',
+                    'VarietiesView.convar',
+                ];
+                break;
+            
+            case 'batches':
+                $obj_fields = [
+                    'MarksView.batch_id',
+                    'BatchesView.crossing_batch'
+                ];
+                break;
+            
+            case 'convar':
+                $obj_fields = [
+                    'MarksView.tree_id',
+                    'MarksView.variety_id',
+                    'TreesView.publicid',
+                    'TreesView.variety_id',
+                    'TreesView.convar',
+                    'VarietiesView.convar',
+                ];
+                break;
+            
+            default:
+                throw new Exception("'{$this->mode}' mode is not defined.'");
+        }
+        
+        $this->fields = array_merge($display, $markFields, $obj_fields);
     }
     
     /**
      * Return breeding objects according to $this->mode ('convar' will return varieties)
      * containing the marks specified in $this->properties and the fields specified
      * in $this->display, all filtered by $this->filter. If a valid cache exists and
-     * $this->fromCache is set to true, the results will be served from cache. The
-     * cache is mainly used to speed up sorting and browsing using the paginator.
+     * $this->clearCache is set to false, the intermediate results will be served from
+     * cache. The cache is mainly used to speed up sorting and browsing using the paginator.
      *
      * @return CollectionInterface
      */
     private function _getData(): CollectionInterface
     {
-        if ($this->fromCache && $this->_cacheExists()) {
-            return $this->_fromCache();
+        if (! $this->clearCached) {
+            $this->_clearCache();
         }
         
         $query                = $this->_getQuery();
+        $this->_cacheResults($query);
+        
         $filtered             = $this->_filterAllButMarkValues($query);
         $groupedByMark        = $this->_groupByMark($filtered);
         $aggregated           = $this->_aggregate($groupedByMark);
@@ -137,32 +181,18 @@ class MarkQueryBehavior extends Behavior
         $markedObj            = $this->_moveMarksIntoBreedingObjects($groupedByObj);
         $filteredByMarkValues = $this->_filterByMarkValues($markedObj);
         
-        if (! $this->fromCache) {
-            // todo: return $this->_cacheResults($filteredByMarkValues);
-        }
-        
         return $filteredByMarkValues;
     }
     
     /**
-     * Test if a valid cache file with the same filter criteria and the same display fields exists.
+     * Delete cached query
      *
-     * @return bool
+     * @return CollectionInterface|boolean false if no cache exists
      */
-    private function _cacheExists(): bool
+    private function _clearCache()
     {
-        // todo
-        return false;
-    }
-    
-    /**
-     * Get results from cache
-     *
-     * @return CollectionInterface
-     */
-    private function _fromCache(): CollectionInterface
-    {
-        // todo
+        $key = 'markQuery_' . md5($this->mode . implode('', $this->markProperties) . implode('', $this->filter));
+        return Cache::delete($key);
     }
     
     /**
@@ -193,7 +223,7 @@ class MarkQueryBehavior extends Behavior
                 throw new Exception("'{$this->mode}' is not an defined mode.'");
         }
         
-        return $marks->find()->select($this->display)->contain($associations);
+        return $marks->find()->select($this->fields)->contain($associations);
     }
     
     /**
@@ -207,7 +237,7 @@ class MarkQueryBehavior extends Behavior
     {
         return $query->filter(function ($item) {
             // filter by property
-            if ( ! in_array($item->name, $this->properties)) {
+            if ( ! in_array($item->name, $this->markProperties)) {
                 return false;
             }
             
@@ -247,14 +277,13 @@ class MarkQueryBehavior extends Behavior
                 throw new Exception("'{$this->mode}' is not an defined mode.'");
         }
         
-        $empty = true;
         foreach ((array)$fields as $field) {
-            if ($empty) {
-                $empty = empty($item->$field);
+            if (! empty($item->$field)) {
+                return true;
             }
         }
         
-        return ! $empty;
+        return false;
     }
     
     /**
@@ -267,8 +296,27 @@ class MarkQueryBehavior extends Behavior
     private function _groupByMark(CollectionInterface $marks): CollectionInterface
     {
         return $marks->groupBy(function ($mark) {
+            switch ($this->mode) {
+                case 'trees':
+                    return $mark->tree_id . $mark->name;
+                
+                case 'varieties':
+                    return $mark->variety_id . $mark->name;
+                
+                case 'batches':
+                    return $mark->batch_id . $mark->name;
+                
+                case 'convar':
+                    if ( ! empty($mark->variety_id)) {
+                        return $mark->variety_id . $mark->name;
+                    }
+                    
+                    return $mark->trees_view->variety_id . $mark->name;
+                
+                default:
+                    throw new Exception("'{$this->mode}' is not an defined mode.'");
+            }
             // group by mark AND breeders object otherwise the stats will aggregate all objects
-            return $mark->tree_id . $mark->variety_id . $mark->batch_id . $mark->name;
         });
     }
     
@@ -312,7 +360,7 @@ class MarkQueryBehavior extends Behavior
             
             case 'convar':
                 return $marks->groupBy(function ($mark) {
-                    return ! empty($mark->tree_id) ? 'trees_view.convar' : 'varieties_view.convar';
+                    return empty($mark->tree_id) ? $mark->varieties_view->convar : $mark->trees_view->convar;
                 });
             
             default:
@@ -388,5 +436,29 @@ class MarkQueryBehavior extends Behavior
     {
         // todo
         return $markedObj;
+    }
+    
+    /**
+     * Cache results
+     *
+     * @param Query $query
+     */
+    private function _cacheResults(Query $query)
+    {
+        $key = 'markQuery_' . md5($this->mode . implode('', $this->markProperties) . implode('', $this->filter));
+        $query->cache($key);
+    }
+    
+    /**
+     * Return data sorted according to $this->sort
+     *
+     * @param CollectionInterface $data
+     *
+     * @return CollectionInterface
+     */
+    private function _sort(CollectionInterface $data)
+    {
+        // todo
+        return $data;
     }
 }

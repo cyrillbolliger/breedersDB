@@ -2,9 +2,6 @@
 
 namespace App\Controller;
 
-use App\Controller\AppController;
-use Cake\ORM\TableRegistry;
-
 /**
  * Queries Controller
  *
@@ -257,15 +254,37 @@ class QueriesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
     
-    public function test1()
+    
+    public function viewMarkQuery()
     {
-        $orderBy = ['sort'=>'id','direction'=>'asc'];
-        $fromCache = false;
+        $orderBy   = ['sort' => 'id', 'direction' => 'asc'];
+        $clearCache = false;
+        $mode      = 'varieties';
         
+        // todo: see view $columns
+        $display = [];
         
+        $properties = [
+            'H_Gesamteindruck Frucht',
+            'K1_Schorf Blatt',
+        ];
         
-        $data = $this->Queries->customFindMarks($fromCache, $orderBy);
+        $columns = [
+            'convar'
+        ];
         
-        var_dump($data->toArray());
+        $columns = array_merge($columns, $properties);
+        
+        $data = $this->Queries->customFindMarks($mode, $display, $properties, $clearCache, $orderBy);
+        
+        $results = $data->take(20,0);
+        
+    
+        $this->loadModel('QueryGroups');
+        $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
+        $query_groups = $this->QueryGroups->find('list')->order('code');
+    
+        $this->set(compact('query', 'query_groups', 'queryGroups', 'results', 'columns', 'properties'));
+        $this->set('_serialize', ['query', 'query_groups', 'queryGroups', 'results', 'columns', 'properties']);
     }
 }

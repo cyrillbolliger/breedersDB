@@ -27,16 +27,6 @@ class MarksAggregatorUtility
     private $mode;
     
     /**
-     * @var array @see MarkQueryBehavior::mode
-     */
-    private $allowedModes = [
-        'trees',
-        'varieties',
-        'convar',
-        'batches',
-    ];
-    
-    /**
      * @var array with properties that must be excluded from aggregated results
      */
     private $nonAggregatableMarkProperties = [
@@ -56,10 +46,6 @@ class MarksAggregatorUtility
      */
     public function __construct(string $mode)
     {
-        if ( ! in_array($mode, $this->allowedModes)) {
-            throw new Exception("'{$mode}' mode is not defined in the marks aggregator utility.'");
-        }
-        
         $this->mode = $mode;
     }
     
@@ -168,6 +154,8 @@ class MarksAggregatorUtility
      * @param MarksView $mark
      *
      * @return string
+     *
+     * @throws Exception if $this->mode is not defined
      */
     private function _getMarkType(MarksView $mark): string
     {
@@ -181,15 +169,16 @@ class MarksAggregatorUtility
             case 'batches':
                 return 'batch';
             
+            case 'convar':
+                if ( ! empty($mark->tree_id)) {
+                    return 'tree';
+                }
+    
+                return 'variety';
+                
             default:
-                // case 'convar': see below
+                throw new Exception("'{$this->mode}' mode is not defined.'");
         }
-        
-        if ( ! empty($mark->tree_id)) {
-            return 'tree';
-        }
-        
-        return 'variety';
     }
     
     /**
