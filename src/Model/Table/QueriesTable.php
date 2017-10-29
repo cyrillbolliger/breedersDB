@@ -49,6 +49,7 @@ class QueriesTable extends Table
         $this->addBehavior('RulesToConditionsConvertible');
         $this->addBehavior('GetFilterData');
         $this->addBehavior('TranslateableFields');
+        $this->addBehavior('MarkQuery');
         
         $this->belongsTo('QueryGroups', [
             'foreignKey' => 'query_group_id',

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Queries Controller
@@ -48,9 +49,9 @@ class QueriesController extends AppController
         
         $query->query = json_decode($query->query);
         
-        $q = $this->Queries->buildViewQuery($query->query);
+        $q       = $this->Queries->buildViewQuery($query->query);
         $results = $this->paginate($q);
-    
+        
         $columns = $this->Queries->getViewQueryColumns($query->query);
         
         $this->loadModel('QueryGroups');
@@ -69,21 +70,22 @@ class QueriesController extends AppController
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function export($id = null) {
-        $query = $this->Queries->get($id);
+    public function export($id = null)
+    {
+        $query        = $this->Queries->get($id);
         $query->query = json_decode($query->query);
-    
-        $q = $this->Queries->buildViewQuery($query->query);
+        
+        $q       = $this->Queries->buildViewQuery($query->query);
         $columns = $this->Queries->getViewQueryColumns($query->query);
-        $file = $this->Excel->export($q, $columns, $query->code);
+        $file    = $this->Excel->export($q, $columns, $query->code);
         
         $this->response->type('xlsx');
-        $this->response->file($file, ['download' => true ]);
+        $this->response->file($file, ['download' => true]);
         
         // used for jquery.fileDownload.js
         $this->Cookie->configKey('fileDownload', 'encryption', false);
         $this->Cookie->write('fileDownload', 'true');
-    
+        
         // prevent rendering
         $this->autoRender = false;
     }
@@ -114,14 +116,14 @@ class QueriesController extends AppController
         $default_root_view = 'MarksView';
         $root_view         = $default_root_view;
         
-        $active_views = array(); // ToDo: Get good defaults
+        $active_views  = array(); // ToDo: Get good defaults
         $active_fields = array(); // ToDo: Get good defaults
         
         $associations = array();
         foreach (array_keys($views) as $view_name) {
             $associations[$view_name] = $this->Queries->getAssociationsOf($view_name);
         }
-    
+        
         $filter_data = $this->Queries->getFilterData();
         $where_rules = json_encode(null);
         
@@ -184,14 +186,14 @@ class QueriesController extends AppController
                 $this->Flash->error(__('The query could not be saved. Please, try again.'));
             }
         }
-    
+        
         $q = json_decode($query->query);
         
         $views             = $this->Queries->getViewNames();
         $view_fields       = $this->Queries->getTranslatedFieldsOf(array_keys($views));
         $default_root_view = $q->root_view;
         
-        $active_views = $this->Queries->getActiveViewTables($q);
+        $active_views  = $this->Queries->getActiveViewTables($q);
         $active_fields = $this->Queries->getActiveFields($q);
         
         $associations = array();
@@ -253,5 +255,17 @@ class QueriesController extends AppController
         }
         
         return $this->redirect(['action' => 'index']);
+    }
+    
+    public function test1()
+    {
+        $orderBy = ['sort'=>'id','direction'=>'asc'];
+        $fromCache = false;
+        
+        
+        
+        $data = $this->Queries->customFindMarks($fromCache, $orderBy);
+        
+        var_dump($data->toArray());
     }
 }
