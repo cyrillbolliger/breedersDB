@@ -24,7 +24,7 @@ class MarkQueryBehavior extends Behavior
     /**
      * @var bool clean query cache
      */
-    private $clearCached;
+    private $clearCache;
     
     /**
      * @var array with the field as key and the direction as value
@@ -89,7 +89,7 @@ class MarkQueryBehavior extends Behavior
         }
         
         $this->mode           = $mode;
-        $this->clearCached    = $clearCache;
+        $this->clearCache     = $clearCache;
         $this->orderBy        = $orderBy;
         $this->markProperties = $markProperties;
         
@@ -114,6 +114,9 @@ class MarkQueryBehavior extends Behavior
             'MarksView.value',
             'MarksView.name',
             'MarksView.field_type',
+            'MarksView.date',
+            'MarksView.author',
+            'MarksView.exceptional_mark',
         ];
         
         switch ($this->mode) {
@@ -167,7 +170,7 @@ class MarkQueryBehavior extends Behavior
      */
     private function _getData(): CollectionInterface
     {
-        if (! $this->clearCached) {
+        if ($this->clearCache) {
             $this->_clearCache();
         }
         

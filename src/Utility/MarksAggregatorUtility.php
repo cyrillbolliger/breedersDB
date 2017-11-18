@@ -139,6 +139,7 @@ class MarksAggregatorUtility
             $return['obj_type']       = $mark_type;
             $return['reference_id']   = $mark->{$mark_type . '_id'};
             $return['reference_code'] = $this->_getReferenceCode($mark, $mark_type);
+            $return['date']           = $mark->date;
             
             return (object)$return;
         });

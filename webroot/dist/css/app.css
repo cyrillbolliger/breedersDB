@@ -189,6 +189,30 @@ table .actions {
     width: 40%;
 }
 
+.mark_plot {
+    width: 100px;
+    padding: 0;
+    border-left: solid 1px;
+    border-right: solid 1px;
+    position:relative;
+}
+
+.mark_plot-line {
+    position: absolute;
+    top: 0;
+}
+
+.mark_plot-extremes {
+    height: 50%;
+    border-bottom: solid 1px;
+}
+
+.mark_plot-median {
+    height: 100%;
+    border-right: solid 1px;
+}
+
+
 /* --------- Side nav ------- */
 .side-nav li.editable-nav-item a {
     display: inline-block;

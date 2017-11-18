@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Cake\ORM\TableRegistry;
+
 /**
  * Queries Controller
  *
@@ -269,22 +271,34 @@ class QueriesController extends AppController
             'K1_Schorf Blatt',
         ];
         
-        $columns = [
-            'convar'
-        ];
-        
-        $columns = array_merge($columns, $properties);
-        
         $data = $this->Queries->customFindMarks($mode, $display, $properties, $clearCache, $orderBy);
         
         $results = $data->take(20,0);
+    
+        $regular_columns = [
+            'convar' => $this->Queries->translateFields('VarietiesView.convar'),
+        ];
+        
+        $mark_columns = [];
+        foreach ($properties as $property) {
+            $markProperties = TableRegistry::get('MarkFormProperties');
+            $markProperty = $markProperties->find()->where(['name'=>$property])->firstOrFail();
+            
+            $mark_columns[$property] = (object) [
+                'name' => $property,
+                'aggregated' => in_array($markProperty->field_type, ['INTEGER', 'FLOAT']),
+                'max' => (float) $markProperty->validation_rule['max'],
+                'min' => (float) $markProperty->validation_rule['min'],
+                'display' => 'median', // todo: add correct field
+            ];
+        }
         
     
         $this->loadModel('QueryGroups');
         $queryGroups  = $this->QueryGroups->find('all')->contain('Queries')->order('code');
         $query_groups = $this->QueryGroups->find('list')->order('code');
     
-        $this->set(compact('query', 'query_groups', 'queryGroups', 'results', 'columns', 'properties'));
-        $this->set('_serialize', ['query', 'query_groups', 'queryGroups', 'results', 'columns', 'properties']);
+        $this->set(compact('query', 'query_groups', 'queryGroups', 'results', 'regular_columns', 'mark_columns'));
+        $this->set('_serialize', ['query', 'query_groups', 'queryGroups', 'results', 'regular_columns', 'mark_columns']);
     }
 }
