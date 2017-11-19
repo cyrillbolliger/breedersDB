@@ -169,7 +169,7 @@ function QueriesViewSelectorModule(General) {
                     break;
 
                 case 'convar':
-                    possible = ['TreesView', 'VarietiesView'];
+                    possible = ['VarietiesView'];
                     break;
 
                 default:
@@ -261,7 +261,7 @@ function QueriesViewSelectorModule(General) {
      */
     this.bindMarkPropertySelectorEvents = function () {
         $('.mark-property-selector').click(function() {
-            self.setMarkPropertyModeSelectorVisibility($(this));
+            self.setMarkPropertyFilterSelectorVisibility($(this));
         });
     };
 
@@ -270,11 +270,11 @@ function QueriesViewSelectorModule(General) {
      *
      * @param $switch jQuery object of a mark property selector
      */
-    this.setMarkPropertyModeSelectorVisibility = function($switch) {
+    this.setMarkPropertyFilterSelectorVisibility = function($switch) {
         if ($switch.is(':checked')) {
-            $switch.parent().find('.mark-property-mode-selector').show();
+            $switch.parent().find('.mark-property-filter-selector').show();
         } else {
-            $switch.parent().find('.mark-property-mode-selector').hide();
+            $switch.parent().find('.mark-property-filter-selector').hide();
         }
     };
 

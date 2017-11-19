@@ -153,22 +153,38 @@ class QueriesTable extends Table
      */
     public function patchEntityWithQueryData($entity, $request)
     {
-        $data['root_view'] = $request['root_view'];
+        // add root view
+    	$data['root_view'] = $request['root_view'];
         unset($request['root_view']);
         
+        // add breeding object aggregation mode
+        if ('MarksView' === $data['root_view']) {
+        	$tmp = $request['breeding_object_aggregation_mode'];
+        } else {
+        	$tmp = null;
+        }
+	    $data['breeding_obj_aggregation_mode'] = $tmp;
+        unset($request['breeding_object_aggregation_mode']);
+        
+        // add fields
         $views = array_keys($this->getViewNames());
         $query = array();
-        
         foreach ($views as $view) {
             $query[$view] = $request[$view];
             unset($request[$view]);
         }
         
+        // manually add mark property fields, because there is no corresponding view
+        $query['MarkProperties'] = $request['MarkProperties'];
+        unset($request['MarkProperties']);
+        
         $data['fields'] = $query;
         
+        // add filter
         $data['where'] = $request['where_query'];
         unset($request['where_query']);
         
+        // pack it all in the database' query field
         $request['query'] = json_encode($data);
         
         return $this->patchEntity($entity, $request);

@@ -176,7 +176,7 @@ class QueriesController extends AppController {
 			}
 		}
 		
-		$mark_selectors                            = $this->Queries->getMarksSelectorData();
+		$mark_selectors                           = $this->Queries->getMarksSelectorData();
 		$breeding_object_aggregation_modes        = $this->Queries->getBreedingObjectAggregationModes();
 		$default_breeding_object_aggregation_mode = 'convar';
 		
@@ -332,38 +332,64 @@ class QueriesController extends AppController {
 	}
 	
 	
-	public function viewMarkQuery() {
-		$orderBy    = [ 'sort' => 'id', 'direction' => 'asc' ];
-		$clearCache = false;
-		$mode       = 'varieties';
+	public function viewMarkQuery( int $id, bool $clearCache = false ) {
+		// we'll use later on
+		$markProperties = TableRegistry::get( 'MarkFormProperties' );
 		
-		// todo: see view $columns
-		$display = [];
+		// get query
+		$query        = $this->Queries->get( $id );
+		$query->query = json_decode( $query->query );
 		
-		$properties = [
-			'H_Gesamteindruck Frucht',
-			'K1_Schorf Blatt',
-		];
+		// get mark properties and its display modes
+		$mark_fields = [];
+		foreach ( $query->query->fields->MarkProperties as $slug => $obj ) {
+			if ( $obj->check ) {
+				$name                  = $markProperties->getNameBySlug( $slug );
+				$mark_fields[]          = $name;
+				$display_mode[ $name ] = $obj->mode;
+			}
+		}
+		unset( $query->query->fields->MarkProperties );
 		
-		$data = $this->Queries->customFindMarks( $mode, $display, $properties, $clearCache, $orderBy );
+		// set order
+		$orderBy = [ 'sort' => 'id', 'direction' => 'asc' ];
 		
+		// set breeding object aggregation mode
+		$mode = $query->query->breeding_obj_aggregation_mode;
+		
+		// get the selected fields (apart from the mark fields)
+		$regular_fields = $this->Queries->getActiveFields( $query->query );
+		
+		// get conditions for regular fields
+		$where_rules = json_decode($this->Queries->getWhereRules($query->query));
+		$regular_conditions  = $this->Queries->convertRulesetToConditions($where_rules);
+		
+		$mark_conditions = []; // todo
+		
+		// query the data
+		$data = $this->Queries->customFindMarks( $mode, $regular_fields, $mark_fields, $regular_conditions, $mark_conditions, $clearCache, $orderBy );
+		
+		// set pagination
 		$results = $data->take( 20, 0 );
 		
-		$regular_columns = [
-			'convar' => $this->Queries->translateFields( 'VarietiesView.convar' ),
-		];
+		// set regular columns
+		$regular_columns = [];
+		foreach( $regular_fields as $field ) {
+			$key = explode('.',$field)[1];
+			$regular_columns[$key] = $this->Queries->translateFields( $field );
+		}
 		
+		// set mark columns
 		$mark_columns = [];
-		foreach ( $properties as $property ) {
-			$markProperties = TableRegistry::get( 'MarkFormProperties' );
-			$markProperty   = $markProperties->find()->where( [ 'name' => $property ] )->firstOrFail();
+		foreach ( $mark_fields as $property ) {
+			$markProperty = $markProperties->find()->where( [ 'name' => $property ] )->firstOrFail();
 			
 			$mark_columns[ $property ] = (object) [
 				'name'       => $property,
 				'aggregated' => in_array( $markProperty->field_type, [ 'INTEGER', 'FLOAT' ] ),
 				'max'        => (float) $markProperty->validation_rule['max'],
 				'min'        => (float) $markProperty->validation_rule['min'],
-				'display'    => 'median', // todo: add correct field
+				'display'    => $display_mode[ $property ],
 			];
 		}
 		

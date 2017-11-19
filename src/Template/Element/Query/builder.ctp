@@ -54,12 +54,7 @@ foreach ( $views as $view_key => $view_name ) {
 				'checked'  => in_array( $field['id'], $active_fields ),
 			] );
 			echo $this->Form->label( 'MarkProperties[' . $field['id'] . '][check]', $field['label'] );
-			echo '<span class="mark-property-mode-selector">';
-			echo $this->Form->select( 'MarkProperties[' . $field['id'] . '][mode]', $field['aggregations'], [
-				'empty' => false,
-				'class' => 'mark-property-mode no-select2',
-			] );
-			echo '</span>';
+			echo $this->element('Query/mark_property_filter', ['field'=>$field]);
 			echo '</div>';
 		}
 	}

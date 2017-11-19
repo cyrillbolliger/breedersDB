@@ -30,7 +30,7 @@
             
             <?php foreach ($mark_columns as $column): ?>
                 <?= $this->element('Query/mark_value', [
-                        'mark' => $result->marks[$column->name],
+                        'mark' => array_key_exists($column->name, $result->marks) ? $result->marks[$column->name] : null,
                         'meta' => $column
                 ]); ?>
             <?php endforeach; ?>

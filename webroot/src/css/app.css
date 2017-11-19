@@ -276,8 +276,22 @@ input[type="checkbox"].field-selector {
     margin-bottom: 0;
 }
 
-.mark-property-mode-selector {
+.mark-property-filter-selector {
     display: none;
+}
+
+.mark-property-filter-selector input {
+    width: 272px;
+    display: inline-block;
+}
+
+.mark-property-filter-selector input[type="radio"] {
+    width: auto;
+}
+
+.mark-property-filter-selector label {
+    display: inline-block;
+    margin: 0 1rem;
 }
 
 .mark-property {

@@ -51,9 +51,14 @@ class MarkQueryBehavior extends Behavior {
 	private $fields;
 	
 	/**
-	 * @var array with the filter data
+	 * @var array with the filter conditions for all fields but the mark fields
 	 */
-	private $filter;
+	private $regularFieldsFilter;
+	
+	/**
+	 * @var array with the filter conditions for the mark fields
+	 */
+	private $markFieldFilter;
 	
 	/**
 	 * @var array @see $this->mode
@@ -71,6 +76,8 @@ class MarkQueryBehavior extends Behavior {
 	 * @param string $mode allowed values: 'trees', 'varieties', 'convar', 'batches'
 	 * @param array $display fields to display in dot notation
 	 * @param array $markProperties the name of the mark properties to display or filter
+	 * @param array $regularFieldsFilter the where conditions for the display fields
+	 * @param array $markFieldFilter the where conditions for the marks
 	 * @param bool $clearCache set to true to rebuild the cache
 	 * @param array $orderBy with the field key as key and the direction as value
 	 *
@@ -80,6 +87,8 @@ class MarkQueryBehavior extends Behavior {
 		string $mode,
 		array $display,
 		array $markProperties,
+		array $regularFieldsFilter,
+		array $markFieldFilter,
 		bool $clearCache,
 		array $orderBy
 	): CollectionInterface {
@@ -94,7 +103,8 @@ class MarkQueryBehavior extends Behavior {
 		
 		$this->_setFields( $display );
 		
-		$this->filter = [];
+		$this->regularFieldsFilter = $regularFieldsFilter;
+		$this->markFieldFilter     = $markFieldFilter;
 		
 		$data   = $this->_getData();
 		$sorted = $this->_sort( $data );
@@ -160,7 +170,7 @@ class MarkQueryBehavior extends Behavior {
 	/**
 	 * Return breeding objects according to $this->mode ('convar' will return varieties)
 	 * containing the marks specified in $this->properties and the fields specified
-	 * in $this->display, all filtered by $this->filter. If a valid cache exists and
+	 * in $this->display, all filtered by $this->regularFieldsFilter. If a valid cache exists and
 	 * $this->clearCache is set to false, the intermediate results will be served from
 	 * cache. The cache is mainly used to speed up sorting and browsing using the paginator.
 	 *
@@ -174,7 +184,7 @@ class MarkQueryBehavior extends Behavior {
 		$query = $this->_getQuery();
 		$this->_cacheResults( $query );
 		
-		$filtered             = $this->_filterAllButMarkValues( $query );
+		$filtered             = $this->_preFilterResults( $query );
 		$groupedByMark        = $this->_groupByMark( $filtered );
 		$aggregated           = $this->_aggregate( $groupedByMark );
 		$groupedByObj         = $this->_groupByBreedingObject( $aggregated );
@@ -196,7 +206,8 @@ class MarkQueryBehavior extends Behavior {
 	}
 	
 	/**
-	 * Set query according to $this->mode. Only extract fields defined in $this->display
+	 * Set query according to $this->mode. Only extract fields defined in $this->display.
+	 * Set where clause as given in $this->regularFieldsFilter
 	 *
 	 * @return Query
 	 * @throws Exception if $this->mode is not defined
@@ -222,7 +233,10 @@ class MarkQueryBehavior extends Behavior {
 				throw new Exception( "'{$this->mode}' is not an defined mode.'" );
 		}
 		
-		return $marks->find()->select( $this->fields )->contain( $associations );
+		return $marks->find()
+		             ->select( $this->fields )
+		             ->contain( $associations )
+		             ->where( $this->regularFieldsFilter );
 	}
 	
 	/**
@@ -236,13 +250,13 @@ class MarkQueryBehavior extends Behavior {
 	}
 	
 	/**
-	 * Filter the query data by property and mode as well as all the user given filter criteria excepting mark values.
+	 * Remove unused mark properties and entities without marks
 	 *
 	 * @param Query $query
 	 *
 	 * @return CollectionInterface with the filtered data
 	 */
-	private function _filterAllButMarkValues( Query $query ): CollectionInterface {
+	private function _preFilterResults( Query $query ): CollectionInterface {
 		return $query->filter( function ( $item ) {
 			// filter by property
 			if ( ! in_array( $item->name, $this->markProperties ) ) {
@@ -254,7 +268,6 @@ class MarkQueryBehavior extends Behavior {
 				return false;
 			}
 			
-			// todo: filter by other stuff except mark values
 			return true;
 		} );
 	}
@@ -437,6 +450,21 @@ class MarkQueryBehavior extends Behavior {
 	private function _filterByMarkValues( CollectionInterface $markedObj ): CollectionInterface {
 		// todo
 		return $markedObj;
+		
+		
+		return $query->filter( function ( $item ) {
+			// filter by property
+			if ( ! in_array( $item->name, $this->markProperties ) ) {
+				return false;
+			}
+			
+			// filter mode
+			if ( ! $this->_hasItemDataForCurrentMode( $item ) ) {
+				return false;
+			}
+			
+			return true;
+		} );
 	}
 	
 	/**
@@ -456,7 +484,7 @@ class MarkQueryBehavior extends Behavior {
 	 *
 	 * @return array
 	 */
-	public function getBreedingObjectAggregationModes():array {
+	public function getBreedingObjectAggregationModes(): array {
 		return [
 			'trees'     => __( 'Trees' ),
 			'varieties' => __( 'Varieties' ),
