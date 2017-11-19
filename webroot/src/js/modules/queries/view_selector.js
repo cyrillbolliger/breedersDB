@@ -283,7 +283,6 @@ function QueriesViewSelectorModule(General) {
      */
     this.bindBreedingObjectAggregationModeSelectorEvents = function () {
         $('#breeding-object-aggregation-mode').change(function() {
-            console.log('change');
             $('#root-view').trigger('change');
         });
     };

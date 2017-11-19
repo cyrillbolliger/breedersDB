@@ -120,15 +120,16 @@ function QueriesWhereBuilderModule(General) {
         var newFilters = this.getFilters();
         var oldFilters = this.$query_where_builder[0].queryBuilder.filters;
 
-        oldFilters.forEach(function (oel) {
-            if (!self.inValues(newFilters, oel.id)) {
-                self.$query_where_builder.queryBuilder('removeFilter', oel.id, true);
-            }
-        });
-
         newFilters.forEach(function (nel) {
             if (!self.inValues(oldFilters, nel.id)) {
                 self.$query_where_builder.queryBuilder('addFilter', nel);
+            }
+        });
+
+        // remove old filters after adding new ones to prevent an empty filter list
+        oldFilters.forEach(function (oel) {
+            if (!self.inValues(newFilters, oel.id)) {
+                self.$query_where_builder.queryBuilder('removeFilter', oel.id, true);
             }
         });
 
