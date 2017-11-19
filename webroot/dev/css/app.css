@@ -263,6 +263,35 @@ input[type="checkbox"].field-selector {
     color: #aaa;
 }
 
+.breeding-object-aggregation-mode-selector {
+    display: none;
+}
+
+.MarksView-field-selector-container div.input.select {
+    display: inline-block;
+}
+
+.mark-property-mode {
+    width: auto;
+    margin-bottom: 0;
+}
+
+.mark-property-mode-selector {
+    display: none;
+}
+
+.mark-property {
+    font-size: 0.875rem;
+}
+
+.mark-property .select2-container {
+    margin-bottom: 0;
+}
+
+.mark-property input[type="checkbox"]+label {
+    margin-left: 0;
+}
+
 .query_builder_validation_error {
     background-color: #FDD;
     color: red;

@@ -23,6 +23,8 @@ function QueriesViewSelectorModule(General) {
         self.bindRootViewSelectorEvents();
         self.setRootViewSelectorInitState();
         self.uncheckOrphanedProperties();
+        self.bindMarkPropertySelectorEvents();
+        self.bindBreedingObjectAggregationModeSelectorEvents();
     };
 
     /**
@@ -38,12 +40,12 @@ function QueriesViewSelectorModule(General) {
     /**
      * Uncheck all properties if table is unchecked before form is submitted
      */
-    this.uncheckOrphanedProperties = function() {
-        $('#query_builder_form').submit(function() {
-            $('.view-selector').not(':checked').each(function() {
-                $('.'+$(this).attr('name')+'-field-selector-container')
+    this.uncheckOrphanedProperties = function () {
+        $('#query_builder_form').submit(function () {
+            $('.view-selector').not(':checked').each(function () {
+                $('.' + $(this).attr('name') + '-field-selector-container')
                     .find('input[type="checkbox"]')
-                    .prop('checked',false);
+                    .prop('checked', false);
             });
         });
     };
@@ -71,6 +73,11 @@ function QueriesViewSelectorModule(General) {
                 .prop('disabled', true)
                 .addClass('root_view_lock');
             $el.trigger('change');
+            if ('MarksView' === $(this).val()) {
+                $('.breeding-object-aggregation-mode-selector').show();
+            } else {
+                $('.breeding-object-aggregation-mode-selector').hide();
+            }
         });
     };
 
@@ -116,7 +123,7 @@ function QueriesViewSelectorModule(General) {
         valid.push(input.shift());
 
         while (i < valid.length) {
-            possible = query_builder_associations[valid[i]];
+            possible = self.getPossibleAssociationsOf(valid[i]);
             for (var j = 0; j < possible.length; j++) {
                 in_input = $.inArray(possible[j], input);
                 if (0 <= in_input && -1 === $.inArray(possible[j], valid)) {
@@ -136,6 +143,40 @@ function QueriesViewSelectorModule(General) {
             name = $('label[for="' + $invalid.filter(':checkbox').attr('id') + '"]').text();
             alert(String(trans.impossible_selection).format(name));
         });
+    };
+
+    /**
+     * Return array with possible associations respecting the limitations of the marks
+     *
+     * @param root string
+     *
+     * @return array
+     */
+    this.getPossibleAssociationsOf = function(root) {
+        var possible = query_builder_associations[root];
+        if ('MarksView' === $('#root-view').val()) {
+            switch ($('#breeding-object-aggregation-mode').val()) {
+                case 'trees':
+                    possible = ['TreesView'];
+                    break;
+
+                case 'varieties':
+                    possible = ['VarietiesView'];
+                    break;
+
+                case 'batches':
+                    possible = ['BatchesView'];
+                    break;
+
+                case 'convar':
+                    possible = ['TreesView', 'VarietiesView'];
+                    break;
+
+                default:
+                    throw new Error('Unknown breeding object aggreation mode.');
+            }
+        }
+        return possible;
     };
 
     /**
@@ -166,7 +207,7 @@ function QueriesViewSelectorModule(General) {
         $checked.each(function () {
             tmp = $(this).attr('name');
             enable.push(tmp);
-            $.each(query_builder_associations[tmp], function (idx, val) {
+            $.each(self.getPossibleAssociationsOf(tmp), function (idx, val) {
                 enable.push(val);
             });
         });
@@ -213,6 +254,38 @@ function QueriesViewSelectorModule(General) {
         } else {
             $target.hide();
         }
+    };
+
+    /**
+     * Bind events of the mark property check boxes
+     */
+    this.bindMarkPropertySelectorEvents = function () {
+        $('.mark-property-selector').click(function() {
+            self.setMarkPropertyModeSelectorVisibility($(this));
+        });
+    };
+
+    /**
+     * control the visibility of the mark property mode selector
+     *
+     * @param $switch jQuery object of a mark property selector
+     */
+    this.setMarkPropertyModeSelectorVisibility = function($switch) {
+        if ($switch.is(':checked')) {
+            $switch.parent().find('.mark-property-mode-selector').show();
+        } else {
+            $switch.parent().find('.mark-property-mode-selector').hide();
+        }
+    };
+
+    /**
+     * Bind events breeding object aggregation mode selector
+     */
+    this.bindBreedingObjectAggregationModeSelectorEvents = function () {
+        $('#breeding-object-aggregation-mode').change(function() {
+            console.log('change');
+            $('#root-view').trigger('change');
+        });
     };
 }
 
