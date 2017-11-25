@@ -182,7 +182,7 @@ class MarkQueryBehavior extends Behavior {
 		}
 		
 		$query = $this->_getQuery();
-		$this->_cacheResults( $query );
+		//$this->_cacheResults( $query ); // todo: uncomment and fix
 		
 		$filtered             = $this->_preFilterResults( $query );
 		$groupedByMark        = $this->_groupByMark( $filtered );
@@ -207,7 +207,8 @@ class MarkQueryBehavior extends Behavior {
 	
 	/**
 	 * Set query according to $this->mode. Only extract fields defined in $this->display.
-	 * Set where clause as given in $this->regularFieldsFilter
+	 * Set where clause as given in $this->regularFieldsFilter and select only marks
+	 * with properties as in $this->markProperties.
 	 *
 	 * @return Query
 	 * @throws Exception if $this->mode is not defined
@@ -236,17 +237,8 @@ class MarkQueryBehavior extends Behavior {
 		return $marks->find()
 		             ->select( $this->fields )
 		             ->contain( $associations )
-		             ->where( $this->regularFieldsFilter );
-	}
-	
-	/**
-	 * Cache results
-	 *
-	 * @param Query $query
-	 */
-	private function _cacheResults( Query $query ) {
-		$key = 'markQuery_' . md5( $this->mode . implode( '', $this->markProperties ) . implode( '', $this->filter ) );
-		$query->cache( $key );
+		             ->where( $this->regularFieldsFilter )
+		             ->andWhere( [ 'MarksView.name IN' => $this->markProperties ] );
 	}
 	
 	/**
@@ -273,7 +265,7 @@ class MarkQueryBehavior extends Behavior {
 	}
 	
 	/**
-	 * Check if the given item has data for the current mode ($this->>mode).
+	 * Check if the given item has data for the current mode ($this->mode).
 	 *
 	 * @param MarksView $item
 	 *
@@ -314,6 +306,7 @@ class MarkQueryBehavior extends Behavior {
 	 * @return CollectionInterface
 	 */
 	private function _groupByMark( CollectionInterface $marks ): CollectionInterface {
+		// group by mark AND breeders object otherwise we'll aggregate all objects
 		return $marks->groupBy( function ( $mark ) {
 			switch ( $this->mode ) {
 				case 'trees':
@@ -335,7 +328,6 @@ class MarkQueryBehavior extends Behavior {
 				default:
 					throw new Exception( "'{$this->mode}' is not an defined mode.'" );
 			}
-			// group by mark AND breeders object otherwise the stats will aggregate all objects
 		} );
 	}
 	
@@ -401,7 +393,7 @@ class MarkQueryBehavior extends Behavior {
 			foreach ( $marks as $mark ) {
 				$obj->marks[ $mark->name ] = (object) [
 					'name'                    => $mark->name,
-					'value'                   => $mark->value,
+					'value'                   => $mark->aggregated_value,
 					'values'                  => $mark->values,
 					'field_type'              => $mark->field_type,
 					'mark_form_property_type' => $mark->mark_form_property_type,
@@ -447,24 +439,102 @@ class MarkQueryBehavior extends Behavior {
 		}
 	}
 	
+	/**
+	 * Return collection filtered by mark values using MarkQueryBehavior::markFieldFilter
+	 *
+	 * @param CollectionInterface $markedObj
+	 *
+	 * @return CollectionInterface
+	 */
 	private function _filterByMarkValues( CollectionInterface $markedObj ): CollectionInterface {
-		// todo
-		return $markedObj;
-		
-		
-		return $query->filter( function ( $item ) {
-			// filter by property
-			if ( ! in_array( $item->name, $this->markProperties ) ) {
-				return false;
-			}
-			
-			// filter mode
-			if ( ! $this->_hasItemDataForCurrentMode( $item ) ) {
-				return false;
+		return $markedObj->filter( function ( $item ) {
+			foreach ( $this->markFieldFilter as $name => $filter ) {
+				// if no filtering was defined
+				if ( '' === $filter['operator'] ) {
+					continue;
+				}
+				
+				// if mark is not present
+				if ( ! isset( $item->marks[ $name ] ) ) {
+					return false;
+				}
+				
+				// if filter mode = all
+				if ( 'all' === $filter['mode'] ) {
+					foreach ( $item->marks[ $name ]->values as $value ) {
+						if ( ! $this->_passesMarkFilter( $value->value, $filter ) ) {
+							return false;
+						}
+					}
+					continue;
+				}
+				
+				// if filter mode = any
+				if ( 'any' === $filter['mode'] ) {
+					foreach ( $item->marks[ $name ]->values as $value ) {
+						if ( $this->_passesMarkFilter( $value->value, $filter ) ) {
+							continue 2;
+						}
+					}
+					
+					return false;
+				}
+				
+				
+				if ( ! $this->_passesMarkFilter( $item->marks[ $name ]->value->{$filter['mode']}, $filter ) ) {
+					return false;
+				}
 			}
 			
 			return true;
 		} );
+	}
+	
+	/**
+	 * Test value against given filter.
+	 *
+	 * @param mixed $value
+	 * @param array $filter with a key 'operator' and a key 'value'
+	 *
+	 * @return bool
+	 */
+	private function _passesMarkFilter( $value, array $filter ): bool {
+		settype( $filter['value'], gettype( $value ) );
+		
+		switch ( $filter['operator'] ) {
+			case 'equal':
+				return $value === $filter['value'];
+			case 'not_equal':
+				return $value !== $filter['value'];
+			case 'less':
+				return $value < $filter['value'];
+			case 'less_or_equal':
+				return $value <= $filter['value'];
+			case 'greater':
+				return $value > $filter['value'];
+			case 'greater_or_equal':
+				return $value >= $filter['value'];
+			case 'is_null':
+				return $value === null;
+			case 'is_not_null':
+				return $value !== null;
+			case 'begins_with':
+				return 0 === strpos( $value, $filter['value'] );
+			case 'doesnt_begin_with':
+				return 0 !== strpos( $value, $filter['value'] );
+			case 'contains':
+				return false !== strpos( $value, $filter['value'] );
+			case 'doenst_contain':
+				return false === strpos( $value, $filter['value'] );
+			case 'ends_with':
+				return strlen( $value ) - strlen( $filter['value'] ) === strpos( $value, $filter['value'] );
+			case 'doesnt_end_with':
+				return strlen( $value ) - strlen( $filter['value'] ) !== strpos( $value, $filter['value'] );
+			case 'is_empty':
+				return in_array( $value, [ '', null ] );
+			case 'is_not_empty':
+				return ! in_array( $value, [ '', null ] );
+		}
 	}
 	
 	/**
@@ -491,5 +561,15 @@ class MarkQueryBehavior extends Behavior {
 			'batches'   => __( 'Batches' ),
 			'convar'    => __( 'Convar' ),
 		];
+	}
+	
+	/**
+	 * Cache results
+	 *
+	 * @param Query $query
+	 */
+	private function _cacheResults( Query $query ) {
+		$key = 'markQuery_' . md5( $this->mode . implode( '', $this->markProperties ) . implode( '', $this->filter ) );
+		$query->cache( $key );
 	}
 }

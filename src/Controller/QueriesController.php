@@ -340,13 +340,16 @@ class QueriesController extends AppController {
 		$query        = $this->Queries->get( $id );
 		$query->query = json_decode( $query->query );
 		
-		// get mark properties and its display modes
-		$mark_fields = [];
+		// get mark properties, its display modes and its filters
+		$mark_fields     = [];
+		$display_mode    = [];
+		$mark_conditions = [];
 		foreach ( $query->query->fields->MarkProperties as $slug => $obj ) {
 			if ( $obj->check ) {
-				$name                  = $markProperties->getNameBySlug( $slug );
-				$mark_fields[]          = $name;
-				$display_mode[ $name ] = $obj->mode;
+				$name                     = $markProperties->getNameBySlug( $slug );
+				$mark_fields[]            = $name;
+				$display_mode[ $name ]    = $obj->mode;
+				$mark_conditions[ $name ] = [ 'operator' => $obj->operator, 'value' => $obj->value, 'mode'=> $obj->mode];
 			}
 		}
 		unset( $query->query->fields->MarkProperties );
@@ -361,22 +364,28 @@ class QueriesController extends AppController {
 		$regular_fields = $this->Queries->getActiveFields( $query->query );
 		
 		// get conditions for regular fields
-		$where_rules = json_decode($this->Queries->getWhereRules($query->query));
-		$regular_conditions  = $this->Queries->convertRulesetToConditions($where_rules);
-		
-		$mark_conditions = []; // todo
+		$where_rules        = json_decode( $this->Queries->getWhereRules( $query->query ) );
+		$regular_conditions = $this->Queries->convertRulesetToConditions( $where_rules );
 		
 		// query the data
-		$data = $this->Queries->customFindMarks( $mode, $regular_fields, $mark_fields, $regular_conditions, $mark_conditions, $clearCache, $orderBy );
+		$data = $this->Queries->customFindMarks(
+			$mode,
+			$regular_fields,
+			$mark_fields,
+			$regular_conditions,
+			$mark_conditions,
+			$clearCache,
+			$orderBy
+		);
 		
 		// set pagination
 		$results = $data->take( 20, 0 );
 		
 		// set regular columns
 		$regular_columns = [];
-		foreach( $regular_fields as $field ) {
-			$key = explode('.',$field)[1];
-			$regular_columns[$key] = $this->Queries->translateFields( $field );
+		foreach ( $regular_fields as $field ) {
+			$key                     = explode( '.', $field )[1];
+			$regular_columns[ $key ] = $this->Queries->translateFields( $field );
 		}
 		
 		// set mark columns
@@ -387,8 +396,8 @@ class QueriesController extends AppController {
 			$mark_columns[ $property ] = (object) [
 				'name'       => $property,
 				'aggregated' => in_array( $markProperty->field_type, [ 'INTEGER', 'FLOAT' ] ),
-				'max'        => (float) $markProperty->validation_rule['max'],
-				'min'        => (float) $markProperty->validation_rule['min'],
+				'max'        => isset($markProperty->validation_rule['max']) ? (float) $markProperty->validation_rule['max'] : null,
+				'min'        => isset($markProperty->validation_rule['min']) ? (float) $markProperty->validation_rule['min'] : null,
 				'display'    => $display_mode[ $property ],
 			];
 		}

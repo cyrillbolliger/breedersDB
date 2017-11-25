@@ -123,23 +123,23 @@ class MarksAggregatorUtility {
 		// aggregate according to the field type
 		switch ( $aggregated->field_type ) {
 			case 'INTEGER':
-				$aggregated->value = (object) $this->_calculateStats( $values );
+				$aggregated->aggregated_value = (object) $this->_calculateStats( $values, 'integer' );
 				break;
 			
 			case 'FLOAT':
-				$aggregated->value = (object) $this->_calculateStats( $values );
+				$aggregated->aggregated_value = (object) $this->_calculateStats( $values, 'float' );
 				break;
 			
 			case 'VARCHAR':
-				$aggregated->value = implode( '; ', $values );
+				$aggregated->aggregated_value = implode( '; ', $values );
 				break;
 			
 			case 'BOOLEAN':
-				$aggregated->value = (bool) array_sum( $values );
+				$aggregated->aggregated_value = (bool) array_sum( $values );
 				break;
 			
 			case 'DATE':
-				$aggregated->value = implode( '; ', $values );
+				$aggregated->aggregated_value = implode( '; ', $values );
 				break;
 			
 			default:
@@ -246,10 +246,18 @@ class MarksAggregatorUtility {
 	 * Return array with count, avg, min, max, median and std (standard deviation) from given values
 	 *
 	 * @param array $values
+	 * @param string $cast
 	 *
 	 * @return array stats
 	 */
-	private function _calculateStats( array $values ): array {
+	private function _calculateStats( array $values, string $cast = null ): array {
+		// typecast the values first, since they are all saved as strings in the db
+		if ($cast){
+			foreach($values as &$value) {
+				settype($value, $cast);
+			}
+		}
+		
 		// calculate reused stats
 		$count = count( $values );
 		$avg   = (float) array_sum( $values ) / $count;

@@ -153,7 +153,7 @@ class QueriesTable extends Table
      */
     public function patchEntityWithQueryData($entity, $request)
     {
-        // add root view
+    	// add root view
     	$data['root_view'] = $request['root_view'];
         unset($request['root_view']);
         
@@ -180,7 +180,7 @@ class QueriesTable extends Table
         
         $data['fields'] = $query;
         
-        // add filter
+        // add regular filter
         $data['where'] = $request['where_query'];
         unset($request['where_query']);
         
