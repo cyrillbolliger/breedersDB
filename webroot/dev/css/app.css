@@ -278,11 +278,13 @@ input[type="checkbox"].field-selector {
 
 .mark-property-filter-selector {
     display: none;
+    margin-bottom: 1rem;
 }
 
 .mark-property-filter-selector input {
     width: 272px;
     display: inline-block;
+    margin-bottom: 0;
 }
 
 .mark-property-filter-selector input[type="radio"] {

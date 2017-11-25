@@ -24,6 +24,7 @@ function QueriesViewSelectorModule(General) {
         self.setRootViewSelectorInitState();
         self.uncheckOrphanedProperties();
         self.bindMarkPropertySelectorEvents();
+        self.bindMarkPropertyFilterOperationSelectorEvents();
         self.bindBreedingObjectAggregationModeSelectorEvents();
     };
 
@@ -152,7 +153,7 @@ function QueriesViewSelectorModule(General) {
      *
      * @return array
      */
-    this.getPossibleAssociationsOf = function(root) {
+    this.getPossibleAssociationsOf = function (root) {
         var possible = query_builder_associations[root];
         if ('MarksView' === $('#root-view').val()) {
             switch ($('#breeding-object-aggregation-mode').val()) {
@@ -260,7 +261,8 @@ function QueriesViewSelectorModule(General) {
      * Bind events of the mark property check boxes
      */
     this.bindMarkPropertySelectorEvents = function () {
-        $('.mark-property-selector').click(function() {
+        $('.mark-property-selector').click(function () {
+            $('.mark-property-mode').trigger('change');
             self.setMarkPropertyFilterSelectorVisibility($(this));
         });
     };
@@ -270,7 +272,7 @@ function QueriesViewSelectorModule(General) {
      *
      * @param $switch jQuery object of a mark property selector
      */
-    this.setMarkPropertyFilterSelectorVisibility = function($switch) {
+    this.setMarkPropertyFilterSelectorVisibility = function ($switch) {
         if ($switch.is(':checked')) {
             $switch.parent().find('.mark-property-filter-selector').show();
         } else {
@@ -282,9 +284,34 @@ function QueriesViewSelectorModule(General) {
      * Bind events breeding object aggregation mode selector
      */
     this.bindBreedingObjectAggregationModeSelectorEvents = function () {
-        $('#breeding-object-aggregation-mode').change(function() {
+        $('#breeding-object-aggregation-mode').change(function () {
             $('#root-view').trigger('change');
         });
+    };
+
+    /**
+     * Bind events for the filter operator selector of mark properties
+     */
+    this.bindMarkPropertyFilterOperationSelectorEvents = function () {
+        $('.mark-property-filter-operator').change(function () {
+            self.setMarkPropertyFilterValueVisibility($(this));
+        });
+    };
+
+    /**
+     * Control the visibility of the mark property filter value.
+     *
+     * Make invisible if the filter operation is empty or doesn't require any input.
+     *
+     * @param $switch jQuery object of a mark filter operator selector
+     */
+    this.setMarkPropertyFilterValueVisibility = function ($switch) {
+        var hide = ['', 'is_empty', 'is_not_empty', 'is_null', 'is_not_null'];
+        if (-1 !== $.inArray($switch.val(), hide)) {
+            $switch.parent().find('.mark-property-filter-value').hide();
+        } else {
+            $switch.parent().find('.mark-property-filter-value').show();
+        }
     };
 }
 
