@@ -6,24 +6,19 @@
  * Time: 17:49
  */
 
-namespace App\Model\Behavior;
+namespace App\Utility;
 
-
-use Cake\ORM\Behavior;
-use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Cake\I18n\Date;
 use Cake\I18n\Time;
 
 /**
- * @deprecated
- *
- * Class RulesToConditionsConvertibleBehavior is used to convert rules
+ * Class RulesetToConditionsConverter is used to convert rules
  * from the where query builder to cakephp conforming where conditions.
  * @see http://querybuilder.js.org/
  *
  * @package App\Model\Behavior
  */
-class RulesToConditionsConvertibleBehavior extends Behavior
+class RulesetToConditionsConverter
 {
     /**
      * Convert rules from the where query builder to cake conforming where conditions
@@ -32,7 +27,7 @@ class RulesToConditionsConvertibleBehavior extends Behavior
      *
      * @return array
      */
-    public function convertRulesetToConditions($ruleset): array
+    public function convertRuleset($ruleset): array
     {
         if (empty($ruleset)) {
             return [];
@@ -46,14 +41,14 @@ class RulesToConditionsConvertibleBehavior extends Behavior
         ) { // it's a ruleset
             $tmp = [];
             foreach ($ruleset->rules as $r) {
-                $tmp[$ruleset->condition][] = $this->convertRulesetToConditions($r);
+                $tmp[$ruleset->condition][] = $this->convertRuleset($r);
             }
             $conditions[] = $tmp;
         } else { // it's a rule
             
             if ( ! $this->_isMarkProperty($ruleset->id)) {
                 // if it's not a Mark Property
-                return $this->_convertRuleToCondition($ruleset);
+                return $this->_convertRule($ruleset);
             } else {
                 // if it is a Mark Property
                 return $this->_getMarkPropertyConditionFromRule($ruleset);
@@ -82,7 +77,7 @@ class RulesToConditionsConvertibleBehavior extends Behavior
      *
      * @return array
      */
-    private function _convertRuleToCondition(\stdClass $rule): array
+    private function _convertRule(\stdClass $rule): array
     {
         $this->_typecastValue($rule);
         
@@ -124,7 +119,7 @@ class RulesToConditionsConvertibleBehavior extends Behavior
             case 'is_not_null':
                 return ['NOT' => [$rule->field . ' IS NULL']];
             default:
-                throw new \InvalidArgumentException("Given operator is not supported");
+                throw new \InvalidArgumentException("Given operator {$rule->operator} is not supported");
         }
     }
     
@@ -132,6 +127,8 @@ class RulesToConditionsConvertibleBehavior extends Behavior
      * Typecast the where query typed value(s) to cakephps orm understandable values
      *
      * @param \stdClass $rule
+     *
+     * @throws \InvalidArgumentException if the given rule type is not defined
      */
     private function _typecastValue(\stdClass &$rule): void
     {
@@ -166,7 +163,7 @@ class RulesToConditionsConvertibleBehavior extends Behavior
             }
         }
         
-        throw new InvalidTypeException('The given type is not supported');
+        throw new \InvalidArgumentException("The given type '{$rule->type}' is not supported.");
     }
     
     /**
@@ -176,6 +173,8 @@ class RulesToConditionsConvertibleBehavior extends Behavior
      * @param string $value
      *
      * @return string
+     *
+     * @throws \InvalidArgumentException  if the given time type is not defined
      */
     private function _parseTime(string $type, string $value): string
     {
@@ -196,7 +195,7 @@ class RulesToConditionsConvertibleBehavior extends Behavior
                 return $date->format('Y-m-d H:i:s');
             
             default:
-                throw new InvalidTypeException('The given type is not supported');
+                throw new \InvalidArgumentException("The given type '{$type}' is not supported.");
         }
         
     }
@@ -217,7 +216,7 @@ class RulesToConditionsConvertibleBehavior extends Behavior
         return [
             'AND' => [
                 'MarksView.name' => $property,
-                $this->_convertRuleToCondition($rule),
+                $this->_convertRule($rule),
             ]
         ];
     }

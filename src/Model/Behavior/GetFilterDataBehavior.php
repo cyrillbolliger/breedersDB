@@ -248,6 +248,8 @@ class GetFilterDataBehavior extends Behavior {
 	}
 	
 	/**
+	 * @deprecated use the mark form property entity directly
+	 *
 	 * Return array with the mark properties using the following structure:
 	 * [
 	 *  'name' => 'H_Gesamteindruck Frucht',
@@ -290,6 +292,8 @@ class GetFilterDataBehavior extends Behavior {
 	}
 	
 	/**
+	 * @deprecated use the mark form property entity directly
+	 *
 	 * Return array with mark property filter data according to the needs of http://querybuilder.js.org/#filters
 	 *
 	 * @param string $field
@@ -314,6 +318,8 @@ class GetFilterDataBehavior extends Behavior {
 	}
 	
 	/**
+	 * @deprecated use the mark form property entity directly
+	 *
 	 * Add a key 'type' with the the property type as value to the given array.
 	 * Also add a key 'db_type with the property type as stored in the db as value.
 	 * The array must contain a key 'name' with its property name as stored in the db.
@@ -330,6 +336,8 @@ class GetFilterDataBehavior extends Behavior {
 	}
 	
 	/**
+	 * @deprecated use the mark form property entity directly
+	 *
 	 * Add a key 'input' with the the input type as value to the given array.
 	 * The array must contain a key 'type' with its property type as added
 	 * by @see GetFilterDataBehavior::_addMarkPropertyType().
@@ -349,6 +357,8 @@ class GetFilterDataBehavior extends Behavior {
 	}
 	
 	/**
+	 * @deprecated use the mark form property entity directly
+	 *
 	 * Add an array with the possible aggregation functions to the given array using the key 'aggregations'
 	 *
 	 * @param array $markProperty
@@ -358,6 +368,8 @@ class GetFilterDataBehavior extends Behavior {
 	}
 	
 	/**
+	 * @deprecated use the mark form property entity directly
+	 *
 	 * Add possible operators to mark property
 	 *
 	 * @param array $markProperty

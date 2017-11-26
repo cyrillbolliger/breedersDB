@@ -163,7 +163,7 @@ class QueriesController extends AppController {
 	 *
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
-	public function addMarkQuery( $query_group_id ) {
+	public function addMarkQuery( int $query_group_id ) {
 		$query = $this->Queries->newEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$query = $this->Queries->patchEntityWithQueryData( $query, $this->request->data );
@@ -176,8 +176,9 @@ class QueriesController extends AppController {
 			}
 		}
 		
-		$mark_selectors                           = $this->Queries->getMarksSelectorData();
-		$breeding_object_aggregation_modes        = $this->Queries->getBreedingObjectAggregationModes();
+		$markProperties = TableRegistry::get( 'MarkFormProperties' );
+		$mark_selectors = $markProperties->find( 'all' )->order( [ 'name' => 'asc' ] );
+		
 		$default_breeding_object_aggregation_mode = 'convar';
 		
 		$views             = $this->Queries->getViewNames();
@@ -215,7 +216,6 @@ class QueriesController extends AppController {
 			'active_fields',
 			'filter_data',
 			'where_rules',
-			'breeding_object_aggregation_modes',
 			'default_breeding_object_aggregation_mode',
 			'mark_selectors'
 		) );
@@ -233,7 +233,6 @@ class QueriesController extends AppController {
 			'active_fields',
 			'filter_data',
 			'where_rules',
-			'breeding_object_aggregation_modes',
 			'default_breeding_object_aggregation_mode',
 			'mark_selectors'
 		] );
@@ -333,47 +332,20 @@ class QueriesController extends AppController {
 	
 	
 	public function viewMarkQuery( int $id, bool $clearCache = false ) {
-		// we'll use later on
-		$markProperties = TableRegistry::get( 'MarkFormProperties' );
-		
 		// get query
-		$query        = $this->Queries->get( $id );
-		$query->query = json_decode( $query->query );
-		
-		// get mark properties, its display modes and its filters
-		$mark_fields     = [];
-		$display_mode    = [];
-		$mark_conditions = [];
-		foreach ( $query->query->fields->MarkProperties as $slug => $obj ) {
-			if ( $obj->check ) {
-				$name                     = $markProperties->getNameBySlug( $slug );
-				$mark_fields[]            = $name;
-				$display_mode[ $name ]    = $obj->mode;
-				$mark_conditions[ $name ] = [ 'operator' => $obj->operator, 'value' => $obj->value, 'mode'=> $obj->mode];
-			}
-		}
-		unset( $query->query->fields->MarkProperties );
+		$query = $this->Queries->get( $id );
 		
 		// set order
 		$orderBy = [ 'sort' => 'id', 'direction' => 'asc' ];
 		
-		// set breeding object aggregation mode
-		$mode = $query->query->breeding_obj_aggregation_mode;
-		
-		// get the selected fields (apart from the mark fields)
-		$regular_fields = $this->Queries->getActiveFields( $query->query );
-		
-		// get conditions for regular fields
-		$where_rules        = json_decode( $this->Queries->getWhereRules( $query->query ) );
-		$regular_conditions = $this->Queries->convertRulesetToConditions( $where_rules );
-		
 		// query the data
-		$data = $this->Queries->customFindMarks(
-			$mode,
-			$regular_fields,
-			$mark_fields,
-			$regular_conditions,
-			$mark_conditions,
+		$marksViewTable = TableRegistry::get( 'MarksView' );
+		$data           = $marksViewTable->customFindMarks(
+			$query->mode,
+			$query->regular_fields,
+			$query->mark_field_ids,
+			$query->regular_conditions,
+			$query->mark_conditions,
 			$clearCache,
 			$orderBy
 		);
@@ -383,30 +355,24 @@ class QueriesController extends AppController {
 		
 		// set regular columns
 		$regular_columns = [];
-		foreach ( $regular_fields as $field ) {
+		foreach ( $query->regular_fields as $field ) {
 			$key                     = explode( '.', $field )[1];
 			$regular_columns[ $key ] = $this->Queries->translateFields( $field );
 		}
 		
 		// set mark columns
-		$mark_columns = [];
-		foreach ( $mark_fields as $property ) {
-			$markProperty = $markProperties->find()->where( [ 'name' => $property ] )->firstOrFail();
-			
-			$mark_columns[ $property ] = (object) [
-				'name'       => $property,
-				'aggregated' => in_array( $markProperty->field_type, [ 'INTEGER', 'FLOAT' ] ),
-				'max'        => isset($markProperty->validation_rule['max']) ? (float) $markProperty->validation_rule['max'] : null,
-				'min'        => isset($markProperty->validation_rule['min']) ? (float) $markProperty->validation_rule['min'] : null,
-				'display'    => $display_mode[ $property ],
-			];
+		$markProperties = TableRegistry::get( 'MarkFormProperties' );
+		$mark_columns   = [];
+		foreach ( $query->mark_field_ids as $property_id ) {
+			$mark_columns[ $property_id ] = $markProperties->get( $property_id );
 		}
 		
-		
+		// get navigation stuff
 		$this->loadModel( 'QueryGroups' );
 		$queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
 		$query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
 		
+		// set view vars
 		$this->set( compact( 'query', 'query_groups', 'queryGroups', 'results', 'regular_columns', 'mark_columns' ) );
 		$this->set( '_serialize',
 			[ 'query', 'query_groups', 'queryGroups', 'results', 'regular_columns', 'mark_columns' ] );

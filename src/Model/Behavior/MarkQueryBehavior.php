@@ -8,15 +8,14 @@
 
 namespace App\Model\Behavior;
 
-use App\Model\Entity\MarksView;
-use App\Utility\MarksAggregatorUtility;
+use App\Model\Entity\AggregatedMark;
 use Cake\Cache\Cache;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
-use Cake\Core\Exception\Exception;
+use Cake\Collection\Iterator\ReplaceIterator;
 use Cake\ORM\Behavior;
-use Cake\ORM\Entity;
 use Cake\ORM\Query;
+use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
 class MarkQueryBehavior extends Behavior {
@@ -74,14 +73,16 @@ class MarkQueryBehavior extends Behavior {
 	 * ToDo: proper description
 	 *
 	 * @param string $mode allowed values: 'trees', 'varieties', 'convar', 'batches'
-	 * @param array $display fields to display in dot notation
-	 * @param array $markProperties the name of the mark properties to display or filter
+	 * @param array $display fields to display - in dot notation
+	 * @param array $markProperties the ids of the mark properties to display or filter
 	 * @param array $regularFieldsFilter the where conditions for the display fields
 	 * @param array $markFieldFilter the where conditions for the marks
 	 * @param bool $clearCache set to true to rebuild the cache
 	 * @param array $orderBy with the field key as key and the direction as value
 	 *
 	 * @return CollectionInterface
+	 *
+	 * @throws \Exception if the given mode is not defined
 	 */
 	public function customFindMarks(
 		string $mode,
@@ -93,15 +94,14 @@ class MarkQueryBehavior extends Behavior {
 		array $orderBy
 	): CollectionInterface {
 		if ( ! in_array( $mode, $this->allowedModes ) ) {
-			throw new Exception( "'{$mode}' mode is not defined.'" );
+			throw new \Exception( "The mode '{$mode}' is not defined.'" );
 		}
 		
 		$this->mode           = $mode;
 		$this->clearCache     = $clearCache;
 		$this->orderBy        = $orderBy;
 		$this->markProperties = $markProperties;
-		
-		$this->_setFields( $display );
+		$this->fields         = $display;
 		
 		$this->regularFieldsFilter = $regularFieldsFilter;
 		$this->markFieldFilter     = $markFieldFilter;
@@ -110,61 +110,6 @@ class MarkQueryBehavior extends Behavior {
 		$sorted = $this->_sort( $data );
 		
 		return $sorted;
-	}
-	
-	/**
-	 * Merge internally used field into the fields used to to display results and store it in $this->fields
-	 *
-	 * @param array $display fields to display in dot notation
-	 */
-	private function _setFields( array $display ) {
-		$markFields = [
-			'MarksView.value',
-			'MarksView.name',
-			'MarksView.field_type',
-			'MarksView.date',
-			'MarksView.author',
-			'MarksView.exceptional_mark',
-		];
-		
-		switch ( $this->mode ) {
-			case 'trees':
-				$obj_fields = [
-					'MarksView.tree_id',
-					'TreesView.publicid',
-				];
-				break;
-			
-			case 'varieties':
-				$obj_fields = [
-					'MarksView.variety_id',
-					'VarietiesView.convar',
-				];
-				break;
-			
-			case 'batches':
-				$obj_fields = [
-					'MarksView.batch_id',
-					'BatchesView.crossing_batch'
-				];
-				break;
-			
-			case 'convar':
-				$obj_fields = [
-					'MarksView.tree_id',
-					'MarksView.variety_id',
-					'TreesView.publicid',
-					'TreesView.variety_id',
-					'TreesView.convar',
-					'VarietiesView.convar',
-				];
-				break;
-			
-			default:
-				throw new Exception( "'{$this->mode}' mode is not defined.'" );
-		}
-		
-		$this->fields = array_merge( $display, $markFields, $obj_fields );
 	}
 	
 	/**
@@ -181,17 +126,23 @@ class MarkQueryBehavior extends Behavior {
 			$this->_clearCache();
 		}
 		
+		/*$cached = $this->_getCachedResults();
+		if (false !== $cached) {
+			return $cached; // todo: fix it
+		}*/
+		
 		$query = $this->_getQuery();
-		//$this->_cacheResults( $query ); // todo: uncomment and fix
 		
-		$filtered             = $this->_preFilterResults( $query );
-		$groupedByMark        = $this->_groupByMark( $filtered );
-		$aggregated           = $this->_aggregate( $groupedByMark );
-		$groupedByObj         = $this->_groupByBreedingObject( $aggregated );
-		$markedObj            = $this->_moveMarksIntoBreedingObjects( $groupedByObj );
-		$filteredByMarkValues = $this->_filterByMarkValues( $markedObj );
+		$filtered              = $this->_preFilterResults( $query );
+		$groupedByMark         = $this->_groupByMark( $filtered );
+		$aggregated            = $this->_aggregate( $groupedByMark );
+		$groupedByObj          = $this->_groupByBreedingObject( $aggregated );
+		$filteredByMarkValues  = $this->_filterByMarkValues( $groupedByObj );
+		$markedBreedingObjects = $this->_loadAssociatedObjects( $filteredByMarkValues );
 		
-		return $filteredByMarkValues;
+		$this->_cacheResults( $markedBreedingObjects );
+		
+		return $markedBreedingObjects;
 	}
 	
 	/**
@@ -200,9 +151,22 @@ class MarkQueryBehavior extends Behavior {
 	 * @return CollectionInterface|boolean false if no cache exists
 	 */
 	private function _clearCache() {
-		$key = 'markQuery_' . md5( $this->mode . implode( '', $this->markProperties ) . implode( '', $this->filter ) );
-		
-		return Cache::delete( $key );
+		return Cache::delete( $this->_getCacheKey() );
+	}
+	
+	/**
+	 * Create a hash over the changing input fields to make sure we only use the cache when it hasn't changed.
+	 *
+	 * @return string
+	 */
+	private function _getCacheKey(): string {
+		return 'markQuery_' . md5(
+				json_encode( $this->mode ) .
+				json_encode( $this->fields ) .
+				json_encode( $this->markProperties ) .
+				json_encode( $this->regularFieldsFilter ) .
+				json_encode( $this->markFieldFilter )
+			);
 	}
 	
 	/**
@@ -211,7 +175,8 @@ class MarkQueryBehavior extends Behavior {
 	 * with properties as in $this->markProperties.
 	 *
 	 * @return Query
-	 * @throws Exception if $this->mode is not defined
+	 *
+	 * @throws \Exception if the given mode is not defined.
 	 */
 	private function _getQuery(): Query {
 		$marks = TableRegistry::get( 'MarksView' );
@@ -219,26 +184,86 @@ class MarkQueryBehavior extends Behavior {
 		$associations = null;
 		switch ( $this->mode ) {
 			case 'trees':
-				$associations = 'TreesView';
+				$associations             = 'TreesView';
+				$breedingObjectConditions = [ 'NOT' => [ 'MarksView.tree_id IS NULL' ] ];
 				break;
 			case 'varieties':
-				$associations = 'VarietiesView';
+				$associations             = 'VarietiesView';
+				$breedingObjectConditions = [ 'NOT' => [ 'MarksView.variety_id IS NULL' ] ];
 				break;
 			case 'batches':
-				$associations = 'BatchesView';
+				$associations             = 'BatchesView';
+				$breedingObjectConditions = [ 'NOT' => [ 'MarksView.batch_id IS NULL' ] ];
 				break;
 			case 'convar':
-				$associations = [ 'TreesView', 'VarietiesView' ];
+				$associations             = [ 'TreesView', 'VarietiesView' ];
+				$breedingObjectConditions = [
+					'AND' => [
+						'NOT' => [
+							[ 'MarksView.tree_id IS NULL' ],
+							[ 'MarksView.variety_id IS NULL' ]
+						]
+					]
+				];
 				break;
 			default:
-				throw new Exception( "'{$this->mode}' is not an defined mode.'" );
+				throw new \Exception( "The mode '{$this->mode}' is not defined." );
 		}
 		
 		return $marks->find()
-		             ->select( $this->fields )
+		             ->select( $this->_getInterallyNeededFields() )
 		             ->contain( $associations )
 		             ->where( $this->regularFieldsFilter )
-		             ->andWhere( [ 'MarksView.name IN' => $this->markProperties ] );
+		             ->andWhere( [ 'MarksView.property_id IN' => $this->markProperties ] )
+		             ->andWhere( $breedingObjectConditions );
+	}
+	
+	/**
+	 * Return array with all fields that are used internally
+	 *
+	 * @return array
+	 * @throws \Exception
+	 */
+	private function _getInterallyNeededFields(): array {
+		$markFields = [
+			'MarksView.id',
+			'MarksView.value',
+			'MarksView.property_id',
+			'MarksView.field_type',
+		];
+		
+		switch ( $this->mode ) {
+			case 'trees':
+				$obj_fields = [
+					'MarksView.tree_id',
+				];
+				break;
+			
+			case 'varieties':
+				$obj_fields = [
+					'MarksView.variety_id',
+				];
+				break;
+			
+			case 'batches':
+				$obj_fields = [
+					'MarksView.batch_id',
+				];
+				break;
+			
+			case 'convar':
+				$obj_fields = [
+					'MarksView.tree_id',
+					'MarksView.variety_id',
+					'TreesView.variety_id',
+				];
+				break;
+			
+			default:
+				throw new \Exception( "The mode '{$this->mode}' is not defined." );
+		}
+		
+		return array_merge( $markFields, $obj_fields );
 	}
 	
 	/**
@@ -250,52 +275,11 @@ class MarkQueryBehavior extends Behavior {
 	 */
 	private function _preFilterResults( Query $query ): CollectionInterface {
 		return $query->filter( function ( $item ) {
-			// filter by property
-			if ( ! in_array( $item->name, $this->markProperties ) ) {
-				return false;
-			}
 			
-			// filter mode
-			if ( ! $this->_hasItemDataForCurrentMode( $item ) ) {
-				return false;
-			}
+			// todo: check if this mathod can be removed
 			
 			return true;
 		} );
-	}
-	
-	/**
-	 * Check if the given item has data for the current mode ($this->mode).
-	 *
-	 * @param MarksView $item
-	 *
-	 * @return bool
-	 */
-	private function _hasItemDataForCurrentMode( MarksView $item ): bool {
-		switch ( $this->mode ) {
-			case 'trees':
-				$fields = 'tree_id';
-				break;
-			case 'varieties':
-				$fields = 'variety_id';
-				break;
-			case 'batches':
-				$fields = 'batch_id';
-				break;
-			case 'convar':
-				$fields = [ 'tree_id', 'variety_id' ];
-				break;
-			default:
-				throw new Exception( "'{$this->mode}' is not an defined mode.'" );
-		}
-		
-		foreach ( (array) $fields as $field ) {
-			if ( ! empty( $item->$field ) ) {
-				return true;
-			}
-		}
-		
-		return false;
 	}
 	
 	/**
@@ -304,29 +288,29 @@ class MarkQueryBehavior extends Behavior {
 	 * @param CollectionInterface $marks
 	 *
 	 * @return CollectionInterface
+	 *
+	 * @throws \Exception if the given mode is not defined.
 	 */
 	private function _groupByMark( CollectionInterface $marks ): CollectionInterface {
 		// group by mark AND breeders object otherwise we'll aggregate all objects
 		return $marks->groupBy( function ( $mark ) {
 			switch ( $this->mode ) {
 				case 'trees':
-					return $mark->tree_id . $mark->name;
+					return $mark->tree_id . '_' . $mark->property_id;
 				
 				case 'varieties':
-					return $mark->variety_id . $mark->name;
+					return $mark->variety_id . '_' . $mark->property_id;
 				
 				case 'batches':
-					return $mark->batch_id . $mark->name;
+					return $mark->batch_id . '_' . $mark->property_id;
 				
 				case 'convar':
-					if ( ! empty( $mark->variety_id ) ) {
-						return $mark->variety_id . $mark->name;
-					}
+					$variety_id = null === $mark->variety_id ? $mark->trees_view->variety_id : $mark->variety_id;
 					
-					return $mark->trees_view->variety_id . $mark->name;
+					return $variety_id . '_' . $mark->property_id;
 				
 				default:
-					throw new Exception( "'{$this->mode}' is not an defined mode.'" );
+					throw new \Exception( "The mode '{$this->mode}' is not defined." );
 			}
 		} );
 	}
@@ -343,7 +327,7 @@ class MarkQueryBehavior extends Behavior {
 	private function _aggregate( CollectionInterface $groupedMarks ): CollectionInterface {
 		return $groupedMarks->map( function ( $marks ) {
 			$collection = new Collection( $marks );
-			$aggregator = new MarksAggregatorUtility( $this->mode );
+			$aggregator = new AggregatedMark( $this->mode );
 			
 			return $aggregator->aggregate( $collection );
 		} );
@@ -355,88 +339,19 @@ class MarkQueryBehavior extends Behavior {
 	 * @param CollectionInterface $marks
 	 *
 	 * @return CollectionInterface
+	 *
+	 * @throws \Exception if the given mode is not defined.
 	 */
 	private function _groupByBreedingObject( CollectionInterface $marks ): CollectionInterface {
-		switch ( $this->mode ) {
-			case 'trees':
-				return $marks->groupBy( 'tree_id' );
-			
-			case 'varieties':
-				return $marks->groupBy( 'variety_id' );
-			
-			case 'batches':
-				return $marks->groupBy( 'batch_id' );
-			
-			case 'convar':
-				return $marks->groupBy( function ( $mark ) {
-					return empty( $mark->tree_id ) ? $mark->varieties_view->convar : $mark->trees_view->convar;
-				} );
-			
-			default:
-				throw new Exception( "'{$this->mode}' is not an defined mode.'" );
-		}
-	}
-	
-	/**
-	 * Return the breeders object (ex. tree) with its marks added to the field marks (array).
-	 *
-	 * @param CollectionInterface $breedersObjectsMarks
-	 *
-	 * @return CollectionInterface
-	 */
-	private function _moveMarksIntoBreedingObjects( CollectionInterface $breedersObjectsMarks ): CollectionInterface {
-		return $breedersObjectsMarks->map( function ( $marks ) {
-			$obj = $this->_getBreedersObjectFromMarks( $marks );
-			
-			$obj->marks = array();
-			
-			foreach ( $marks as $mark ) {
-				$obj->marks[ $mark->name ] = (object) [
-					'name'                    => $mark->name,
-					'value'                   => $mark->aggregated_value,
-					'values'                  => $mark->values,
-					'field_type'              => $mark->field_type,
-					'mark_form_property_type' => $mark->mark_form_property_type,
-				];
-			}
-			
-			return $obj;
+		return $marks->groupBy( function ( $mark ) {
+			// aggregate by breeders obj
+			return $mark->parent_id;
+		} )->map( function ( $breeding_obj ) {
+			// make sure the marks have their property id as keys
+			return ( new Collection( $breeding_obj ) )->indexBy( function ( $mark ) {
+				return $mark->property_id;
+			} );
 		} );
-	}
-	
-	/**
-	 * Return breeders object (ex. tree) from given mark respecting $this->mode.
-	 * If the mode 'convar' is selected the breeders object will always be the variety.
-	 *
-	 * @param array $marks
-	 *
-	 * @return Entity
-	 */
-	private function _getBreedersObjectFromMarks( array $marks ): Entity {
-		switch ( $this->mode ) {
-			case 'trees':
-				return $marks[0]->trees_view;
-			
-			case 'varieties':
-				return $marks[0]->varieties_view;
-			
-			case 'batches':
-				return $marks[0]->batches_view;
-			
-			case 'convar': // always return varieties_view as breeders obj
-				if ( ! empty( $marks[0]->varieties_view ) ) {
-					// if its already loaded return it directly
-					return $marks[0]->varieties_view;
-				}
-				
-				// if the varieties_view is missing query it
-				$varieties = TableRegistry::get( 'VarietiesView' );
-				
-				return $varieties->get( $marks[0]->trees_view->variety_id );
-			
-			default:
-				throw new Exception( "'{$this->mode}' is not an defined mode.'" );
-		}
 	}
 	
 	/**
@@ -448,40 +363,14 @@ class MarkQueryBehavior extends Behavior {
 	 */
 	private function _filterByMarkValues( CollectionInterface $markedObj ): CollectionInterface {
 		return $markedObj->filter( function ( $item ) {
-			foreach ( $this->markFieldFilter as $name => $filter ) {
-				// if no filtering was defined
-				if ( '' === $filter['operator'] ) {
-					continue;
-				}
-				
+			foreach ( $this->markFieldFilter as $property_id => $filter ) {
 				// if mark is not present
-				if ( ! isset( $item->marks[ $name ] ) ) {
+				if ( ! isset( $item->toArray()[ $property_id ] ) ) {
 					return false;
 				}
 				
-				// if filter mode = all
-				if ( 'all' === $filter['mode'] ) {
-					foreach ( $item->marks[ $name ]->values as $value ) {
-						if ( ! $this->_passesMarkFilter( $value->value, $filter ) ) {
-							return false;
-						}
-					}
-					continue;
-				}
-				
-				// if filter mode = any
-				if ( 'any' === $filter['mode'] ) {
-					foreach ( $item->marks[ $name ]->values as $value ) {
-						if ( $this->_passesMarkFilter( $value->value, $filter ) ) {
-							continue 2;
-						}
-					}
-					
-					return false;
-				}
-				
-				
-				if ( ! $this->_passesMarkFilter( $item->marks[ $name ]->value->{$filter['mode']}, $filter ) ) {
+				// if we don't meet the filter test
+				if ( ! $filter->test( $item->toArray()[ $property_id ] ) ) {
 					return false;
 				}
 			}
@@ -491,50 +380,68 @@ class MarkQueryBehavior extends Behavior {
 	}
 	
 	/**
-	 * Test value against given filter.
+	 * Return collection of filtered breeders objects with aggregated and filtered marks
 	 *
-	 * @param mixed $value
-	 * @param array $filter with a key 'operator' and a key 'value'
+	 * @param CollectionInterface $items
 	 *
-	 * @return bool
+	 * @return CollectionInterface
 	 */
-	private function _passesMarkFilter( $value, array $filter ): bool {
-		settype( $filter['value'], gettype( $value ) );
+	private function _loadAssociatedObjects( CollectionInterface $items ): CollectionInterface {
+		$table = $this->_getTable();
 		
-		switch ( $filter['operator'] ) {
-			case 'equal':
-				return $value === $filter['value'];
-			case 'not_equal':
-				return $value !== $filter['value'];
-			case 'less':
-				return $value < $filter['value'];
-			case 'less_or_equal':
-				return $value <= $filter['value'];
-			case 'greater':
-				return $value > $filter['value'];
-			case 'greater_or_equal':
-				return $value >= $filter['value'];
-			case 'is_null':
-				return $value === null;
-			case 'is_not_null':
-				return $value !== null;
-			case 'begins_with':
-				return 0 === strpos( $value, $filter['value'] );
-			case 'doesnt_begin_with':
-				return 0 !== strpos( $value, $filter['value'] );
-			case 'contains':
-				return false !== strpos( $value, $filter['value'] );
-			case 'doenst_contain':
-				return false === strpos( $value, $filter['value'] );
-			case 'ends_with':
-				return strlen( $value ) - strlen( $filter['value'] ) === strpos( $value, $filter['value'] );
-			case 'doesnt_end_with':
-				return strlen( $value ) - strlen( $filter['value'] ) !== strpos( $value, $filter['value'] );
-			case 'is_empty':
-				return in_array( $value, [ '', null ] );
-			case 'is_not_empty':
-				return ! in_array( $value, [ '', null ] );
+		return $items->map( function ( $item ) use ( $table ) {
+			$entity        = $table->get( $item->first()->parent_id, [
+				'select' => $this->fields
+			] );
+			$entity->marks = $item;
+			
+			return $entity;
+		} );
+	}
+	
+	/**
+	 * Return the table object that corresponds to the current mode
+	 *
+	 * @throws \Exception if the given mode is not defined.
+	 */
+	private function _getTable(): Table {
+		switch ( $this->mode ) {
+			case 'trees':
+				$table = 'TreesView';
+				break;
+			
+			case 'convar':
+			case 'varieties':
+				$table = 'VarietiesView';
+				break;
+			
+			case 'batches':
+				$table = 'BatchesView';
+				break;
+			
+			default:
+				throw new \Exception( "The mode '{$this->mode}' is not defined." );
 		}
+		
+		return TableRegistry::get( $table );
+	}
+	
+	/**
+	 * Cache results
+	 *
+	 * @param ReplaceIterator $obj
+	 */
+	private function _cacheResults( ReplaceIterator $obj ) {
+		Cache::write( $this->_getCacheKey(), $obj );
+	}
+	
+	/**
+	 * Get cached results
+	 *
+	 * @return ReplaceIterator|false
+	 */
+	private function _getCachedResults() {
+		return Cache::read($this->_getCacheKey());
 	}
 	
 	/**
@@ -547,29 +454,5 @@ class MarkQueryBehavior extends Behavior {
 	private function _sort( CollectionInterface $data ) {
 		// todo
 		return $data;
-	}
-	
-	/**
-	 * Return array with all possible breeding object aggregation modes.
-	 *
-	 * @return array
-	 */
-	public function getBreedingObjectAggregationModes(): array {
-		return [
-			'trees'     => __( 'Trees' ),
-			'varieties' => __( 'Varieties' ),
-			'batches'   => __( 'Batches' ),
-			'convar'    => __( 'Convar' ),
-		];
-	}
-	
-	/**
-	 * Cache results
-	 *
-	 * @param Query $query
-	 */
-	private function _cacheResults( Query $query ) {
-		$key = 'markQuery_' . md5( $this->mode . implode( '', $this->markProperties ) . implode( '', $this->filter ) );
-		$query->cache( $key );
 	}
 }

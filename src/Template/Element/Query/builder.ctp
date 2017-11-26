@@ -14,7 +14,7 @@ echo '<div class="breeding-object-aggregation-mode-selector">';
 $this->Form->unlockField( 'breeding_object_aggregation_mode' );
 echo $this->Form->input( 'breeding_object_aggregation_mode', [
 	'label'   => __( 'Group marks by' ),
-	'options' => $breeding_object_aggregation_modes,
+	'options' => $query->breeding_object_aggregation_modes,
 	'default' => $default_breeding_object_aggregation_mode,
 	'empty'   => false,
 	'class'   => 'no-select2', // because of select 2 bug https://github.com/select2/select2/issues/3992
@@ -48,13 +48,14 @@ foreach ( $views as $view_key => $view_name ) {
 	if ( 'MarksView' === $view_key ) {
 		foreach ( $mark_selectors as $field ) {
 			echo '<div class="mark-property">';
-			echo $this->Form->checkbox( 'MarkProperties[' . $field['id'] . '][check]', [
-				'class'    => 'field-selector ' . $field['id'] . '-field-selector mark-property-selector',
+			echo $this->Form->checkbox( 'MarkProperties[' . $field->id . '][check]', [
+				'class'    => 'field-selector ' . 'mark-property-' . $field->id . '-field-selector mark-property-selector',
 				'required' => false,
-				'checked'  => in_array( $field['id'], $active_fields ),
+				'checked'  => in_array( $field->id, $active_fields ),
 			] );
-			echo $this->Form->label( 'MarkProperties[' . $field['id'] . '][check]', $field['label'] );
-			echo $this->element('Query/mark_property_filter', ['field'=>$field]);
+			echo $this->Form->label( 'MarkProperties[' . $field->id . '][check]',
+				__( 'Mark Property' ) . ' -> ' . $field->name );
+			echo $this->element( 'Query/mark_property_filter', [ 'field' => $field ] );
 			echo '</div>';
 		}
 	}

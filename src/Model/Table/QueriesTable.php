@@ -49,7 +49,6 @@ class QueriesTable extends Table
         $this->addBehavior('RulesToConditionsConvertible');
         $this->addBehavior('GetFilterData');
         $this->addBehavior('TranslateableFields');
-        $this->addBehavior('MarkQuery');
         
         $this->belongsTo('QueryGroups', [
             'foreignKey' => 'query_group_id',
@@ -159,12 +158,9 @@ class QueriesTable extends Table
         
         // add breeding object aggregation mode
         if ('MarksView' === $data['root_view']) {
-        	$tmp = $request['breeding_object_aggregation_mode'];
-        } else {
-        	$tmp = null;
+	        $data['breeding_obj_aggregation_mode'] = $request['breeding_object_aggregation_mode'];
+	        unset($request['breeding_object_aggregation_mode']);
         }
-	    $data['breeding_obj_aggregation_mode'] = $tmp;
-        unset($request['breeding_object_aggregation_mode']);
         
         // add fields
         $views = array_keys($this->getViewNames());
@@ -185,8 +181,8 @@ class QueriesTable extends Table
         unset($request['where_query']);
         
         // pack it all in the database' query field
-        $request['query'] = json_encode($data);
-        
+        $request['my_query'] = json_encode($data);
+	    
         return $this->patchEntity($entity, $request);
     }
     
@@ -234,6 +230,8 @@ class QueriesTable extends Table
     }
     
     /**
+     * @deprecated todo: delete
+     *
      * Return active fields from given query data.
      *
      * The $query_data must be a stdClass with at least the properties:
@@ -527,6 +525,8 @@ class QueriesTable extends Table
     }
     
     /**
+     * @deprecated todo delete
+     *
      * Return the where data as JSON or null
      *
      * @param $query_data
