@@ -276,7 +276,7 @@ class MarkQueryBehavior extends Behavior {
 	private function _preFilterResults( Query $query ): CollectionInterface {
 		return $query->filter( function ( $item ) {
 			
-			// todo: check if this mathod can be removed
+			// todo: check if this method can be removed
 			
 			return true;
 		} );

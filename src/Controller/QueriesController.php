@@ -19,7 +19,7 @@ class QueriesController extends AppController {
 	/**
 	 * Index method
 	 *
-	 * @return \Cake\Network\Response|null
+	 * @return void
 	 */
 	public function index() {
 		$this->loadModel( 'QueryGroups' );
@@ -32,10 +32,14 @@ class QueriesController extends AppController {
 	/**
 	 * View method
 	 *
+	 * If the query with the given id appears to be a mark query,
+	 * the user will be redirected to the self::viewMarkQuery function
+	 *
 	 * @param string|null $id Query id.
 	 *
 	 * @return \Cake\Network\Response|null
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @throws \Exception if association type of selected tables is not implemented
 	 */
 	public function view( $id = null ) {
 		$query = $this->Queries->get( $id, [
@@ -46,10 +50,10 @@ class QueriesController extends AppController {
 			return $this->redirect( [ 'action' => 'viewMarkQuery', $id ] );
 		}
 		
-		$q       = $this->Queries->buildViewQuery( $query->query );
+		$q       = $this->Queries->buildViewQuery( $query );
 		$results = $this->paginate( $q );
 		
-		$columns = $this->Queries->getViewQueryColumns( $query->query );
+		$columns = $this->Queries->getViewQueryColumns( $query );
 		
 		$this->loadModel( 'QueryGroups' );
 		$queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
@@ -60,19 +64,75 @@ class QueriesController extends AppController {
 	}
 	
 	/**
+	 * View mark query method
+	 *
+	 * @param int $id
+	 * @param bool $clearCache
+	 *
+	 * @throws \Exception
+	 */
+	public function viewMarkQuery( int $id, bool $clearCache = false ) {
+		// get query
+		$query = $this->Queries->get( $id );
+		
+		// set order
+		$orderBy = [ 'sort' => 'id', 'direction' => 'asc' ];
+		
+		// query the data
+		$marksViewTable = TableRegistry::get( 'MarksView' );
+		$data           = $marksViewTable->customFindMarks(
+			$query->breeding_object_aggregation_mode,
+			$query->active_regular_fields,
+			$query->active_mark_field_ids,
+			$query->regular_conditions,
+			$query->mark_conditions,
+			$clearCache,
+			$orderBy
+		);
+		
+		// set pagination
+		$results = $data->take( 20, 0 );
+		
+		// set regular columns
+		$regular_columns = [];
+		foreach ( $query->active_regular_fields as $field ) {
+			$key                     = explode( '.', $field )[1];
+			$regular_columns[ $key ] = $this->Queries->translateFields( $field );
+		}
+		
+		// set mark columns
+		$markProperties = TableRegistry::get( 'MarkFormProperties' );
+		$mark_columns   = [];
+		foreach ( $query->active_mark_field_ids as $property_id ) {
+			$mark_columns[ $property_id ] = $markProperties->get( $property_id );
+		}
+		
+		// get navigation stuff
+		$this->loadModel( 'QueryGroups' );
+		$queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
+		$query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
+		
+		// set view vars
+		$this->set( compact( 'query', 'query_groups', 'queryGroups', 'results', 'regular_columns', 'mark_columns' ) );
+		$this->set( '_serialize',
+			[ 'query', 'query_groups', 'queryGroups', 'results', 'regular_columns', 'mark_columns' ] );
+	}
+	
+	/**
 	 * Export method
 	 *
 	 * @param string|null $id Query id.
 	 *
-	 * @return \Cake\Network\Response|null
+	 * @return void
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+	 * @throws \Exception if association type of selected tables is not implemented
 	 */
 	public function export( $id = null ) {
 		$query        = $this->Queries->get( $id );
 		$query->query = json_decode( $query->query );
 		
-		$q       = $this->Queries->buildViewQuery( $query->query );
-		$columns = $this->Queries->getViewQueryColumns( $query->query );
+		$q       = $this->Queries->buildViewQuery( $query );
+		$columns = $this->Queries->getViewQueryColumns( $query );
 		$file    = $this->Excel->export( $q, $columns, $query->code );
 		
 		$this->response->type( 'xlsx' );
@@ -92,6 +152,8 @@ class QueriesController extends AppController {
 	 * @param int $query_group_id Query group the query will be added to
 	 *
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
+	 *
+	 * @throws \Exception if any filter data fields validator type is unknown.
 	 */
 	public function add( int $query_group_id ) {
 		$query = $this->Queries->newEntity();
@@ -167,7 +229,9 @@ class QueriesController extends AppController {
 	 * @param string|null $id Query id.
 	 *
 	 * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
+	 *
 	 * @throws \Cake\Network\Exception\NotFoundException When record not found.
+	 * @throws \Exception if any filter data fields validator type is unknown.
 	 */
 	public function edit( $id = null ) {
 		$query = $this->Queries->get( $id, [
@@ -254,53 +318,5 @@ class QueriesController extends AppController {
 		}
 		
 		return $this->redirect( [ 'action' => 'index' ] );
-	}
-	
-	
-	public function viewMarkQuery( int $id, bool $clearCache = false ) {
-		// get query
-		$query = $this->Queries->get( $id );
-		
-		// set order
-		$orderBy = [ 'sort' => 'id', 'direction' => 'asc' ];
-		
-		// query the data
-		$marksViewTable = TableRegistry::get( 'MarksView' );
-		$data           = $marksViewTable->customFindMarks(
-			$query->breeding_object_aggregation_mode,
-			$query->active_regular_fields,
-			$query->active_mark_field_ids,
-			$query->regular_conditions,
-			$query->mark_conditions,
-			$clearCache,
-			$orderBy
-		);
-		
-		// set pagination
-		$results = $data->take( 20, 0 );
-		
-		// set regular columns
-		$regular_columns = [];
-		foreach ( $query->active_regular_fields as $field ) {
-			$key                     = explode( '.', $field )[1];
-			$regular_columns[ $key ] = $this->Queries->translateFields( $field );
-		}
-		
-		// set mark columns
-		$markProperties = TableRegistry::get( 'MarkFormProperties' );
-		$mark_columns   = [];
-		foreach ( $query->active_mark_field_ids as $property_id ) {
-			$mark_columns[ $property_id ] = $markProperties->get( $property_id );
-		}
-		
-		// get navigation stuff
-		$this->loadModel( 'QueryGroups' );
-		$queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
-		$query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
-		
-		// set view vars
-		$this->set( compact( 'query', 'query_groups', 'queryGroups', 'results', 'regular_columns', 'mark_columns' ) );
-		$this->set( '_serialize',
-			[ 'query', 'query_groups', 'queryGroups', 'results', 'regular_columns', 'mark_columns' ] );
 	}
 }

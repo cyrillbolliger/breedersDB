@@ -17,7 +17,7 @@ class TranslateableFieldsBehavior extends Behavior {
 	 * @param string $key
 	 *
 	 * @return string
-	 * @throws \Cake\Core\Exception\Exception if given key doesn't exist in translations array
+	 * @throws \Exception if given key doesn't exist in translations array
 	 */
 	public function translateFields( string $key ) {
 		$translations = [

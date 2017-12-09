@@ -252,6 +252,15 @@ class Query extends Entity {
 	}
 	
 	/**
+	 * Return a stdClass containing the where rules
+	 *
+	 * @return \stdClass
+	 */
+	protected function _getWhereRules(): \stdClass {
+		return json_decode($this->_getWhereRulesJson());
+	}
+	
+	/**
 	 * Return array with the mark property ids as keys and the mark properties as values.
 	 *
 	 * Example:

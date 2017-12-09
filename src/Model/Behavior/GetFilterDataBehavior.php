@@ -18,6 +18,8 @@ class GetFilterDataBehavior extends Behavior {
 	 * Return data for the query where builder
 	 *
 	 * @return array
+	 *
+	 * @throws \Exception if any fields filter data validator types is unknown
 	 */
 	public function getFilterData() {
 		$queries = TableRegistry::get( 'Queries' );
@@ -43,6 +45,8 @@ class GetFilterDataBehavior extends Behavior {
 	 * @param string $type
 	 *
 	 * @return array
+	 *
+	 * @throws \Exception if the fields type is unknown
 	 */
 	private function _getFieldFilterData( string $table, string $field, string $type ): array {
 		$queries = TableRegistry::get( 'Queries' );
@@ -128,7 +132,7 @@ class GetFilterDataBehavior extends Behavior {
 	 *
 	 * @param array $field
 	 *
-	 * @throws \Exception
+	 * @throws \Exception if the fields type is unknown
 	 */
 	private function _addValidator( array &$field ): void {
 		switch ( $field['type'] ) {
@@ -208,7 +212,7 @@ class GetFilterDataBehavior extends Behavior {
 				break;
 			
 			default:
-				throw new \Exception( 'Unknown type given.' );
+				throw new \Exception( "The type '{$field['type']} is not defined." );
 		}
 	}
 	
@@ -245,214 +249,5 @@ class GetFilterDataBehavior extends Behavior {
 		}
 		
 		return $values;
-	}
-	
-	/**
-	 * @deprecated use the mark form property entity directly
-	 *
-	 * Return array with the mark properties using the following structure:
-	 * [
-	 *  'name' => 'H_Gesamteindruck Frucht',
-	 *  'id' => 'H_Gesamteindruck Frucht',
-	 *  'label' => 'H_Gesamteindruck Frucht',
-	 *  'db_type' => 'INTEGER',
-	 *  'type' => 'integer',
-	 *  'aggregations' => [
-	 *      'count' => 'Count',
-	 *      'avg' => 'Average',
-	 *      'min' => 'Min',
-	 *      'max' => 'Max',
-	 *      'median' => 'Median',
-	 *      'std' => 'Standard deviation'
-	 *  ]
-	 * ]
-	 *
-	 * @see MarksAggregatorUtility::getAggregationFunctions() for details about the aggregations.
-	 *
-	 * @return array
-	 */
-	public function getMarksSelectorData() {
-		// get mark properties
-		$properties = $this->_getDistinctValuesOf( 'MarksView', 'name' );
-		
-		$fields = [];
-		foreach ( $properties as $property ) {
-			$markProperty = $this->_getMarkPropertyFieldFilterData( $property );
-			
-			// we must overwrite this to make sure we don't break serialization of forms
-			$markProperty['id'] = Text::slug( $property );
-			
-			$this->_addMarkPropertyAggregations( $markProperty );
-			$this->_addMarkPropertyOperator( $markProperty );
-			
-			$fields[] = $markProperty;
-		}
-		
-		return $fields;
-	}
-	
-	/**
-	 * @deprecated use the mark form property entity directly
-	 *
-	 * Return array with mark property filter data according to the needs of http://querybuilder.js.org/#filters
-	 *
-	 * @param string $field
-	 *
-	 * @return array
-	 */
-	private function _getMarkPropertyFieldFilterData( string $field ): array {
-		$markProperty = [
-			'name'  => $field,
-			'id'    => 'MarkProperty.' . $field,
-			'label' => __( 'Mark Property' ) . ' -> ' . $field,
-		];
-		
-		$this->_addMarkPropertyType( $markProperty );
-		$this->_addMarkPropertyFilterInputType( $markProperty );
-		
-		$this->_addValidator( $markProperty );
-		
-		$this->_addRadioButtonProperties( $markProperty );
-		
-		return $markProperty;
-	}
-	
-	/**
-	 * @deprecated use the mark form property entity directly
-	 *
-	 * Add a key 'type' with the the property type as value to the given array.
-	 * Also add a key 'db_type with the property type as stored in the db as value.
-	 * The array must contain a key 'name' with its property name as stored in the db.
-	 *
-	 * @see GetFilterDataBehavior::_getFieldTypeForFilter() for more information about the types.
-	 *
-	 * @param array $markProperty
-	 */
-	private function _addMarkPropertyType( array &$markProperty ) {
-		$marks                   = TableRegistry::get( 'MarksView' );
-		$type                    = $marks->find()->select( 'field_type' )->where( [ 'name' => $markProperty['name'] ] )->firstOrFail()->field_type;
-		$markProperty['db_type'] = $type;
-		$markProperty['type']    = $this->_getFieldTypeForFilter( $type );
-	}
-	
-	/**
-	 * @deprecated use the mark form property entity directly
-	 *
-	 * Add a key 'input' with the the input type as value to the given array.
-	 * The array must contain a key 'type' with its property type as added
-	 * by @see GetFilterDataBehavior::_addMarkPropertyType().
-	 *
-	 * @param array $markProperty
-	 */
-	private function _addMarkPropertyFilterInputType( array &$markProperty ) {
-		$typeInputTypeMap = [
-			'integer' => 'number',
-			'double'  => 'number',
-			'string'  => 'text',
-			'boolean' => 'radio',
-			'date'    => 'text'
-		];
-		
-		$markProperty['input'] = $typeInputTypeMap[ $markProperty['type'] ];
-	}
-	
-	/**
-	 * @deprecated use the mark form property entity directly
-	 *
-	 * Add an array with the possible aggregation functions to the given array using the key 'aggregations'
-	 *
-	 * @param array $markProperty
-	 */
-	private function _addMarkPropertyAggregations( array &$markProperty ): void {
-		$markProperty['aggregations'] = MarksAggregatorUtility::getAggregationFunctions( $markProperty['db_type'] );
-	}
-	
-	/**
-	 * @deprecated use the mark form property entity directly
-	 *
-	 * Add possible operators to mark property
-	 *
-	 * @param array $markProperty
-	 */
-	private function _addMarkPropertyOperator( array &$markProperty ) {
-		$operators = [];
-		switch ( $markProperty['type'] ) {
-			case 'integer': // fall through
-			case 'date': // fall through
-			case 'double':
-				$operators = [
-					'equal'            => __( 'equal' ),
-					'not_equal'        => __( 'not equal' ),
-					'less'             => __( 'less' ),
-					'less_or_equal'    => __( 'less or equal' ),
-					'greater'          => __( 'greater' ),
-					'greater_or_equal' => __( 'greater or equal' ),
-					'is_null'          => __( 'is null' ),
-					'is_not_null'      => __( 'is not null' ),
-				];
-				break;
-			case 'string':
-				$operators = [
-					'equal'             => __( 'equal' ),
-					'not_equal'         => __( 'not equal' ),
-					'begins_with'       => __( 'begins with' ),
-					'doesnt_begin_with' => __( "doesn't begin with" ),
-					'contains'          => __( 'contains' ),
-					'doenst_contain'    => __( "doesn't contain" ),
-					'ends_with'         => __( 'end with' ),
-					'doesnt_end_with'   => __( "doesn't end with" ),
-					'is_empty'          => __( 'is empty' ),
-					'is_not_empty'      => __( 'is not empty' ),
-				];
-				break;
-			case 'boolean':
-				$operators = [
-					'equal' => __( 'equal' ),
-				];
-				break;
-		}
-		
-		$markProperty['operators'] = $operators;
-	}
-	
-	/**
-	 * Return array with mark properties using the following structure
-	 * to be compatible to the needs of http://querybuilder.js.org/#filters
-	 *
-	 * Structure:
-	 * [
-	 *  'id' => 'MarkProperty.K7_Feuerbrand',
-	 *  'label' => 'Mark Property -> K7_Feuerbrand',
-	 *  'type' => 'integer',
-	 *  'input' => 'number',
-	 *  'validation' => [
-	 *      'step' => (int) 1,
-	 *      'min' => (int) -9223372036854775808,
-	 *      'max' => (int) 9223372036854775807,
-	 *      'allow_empty_value' => false,
-	 *      'messages' => [
-	 *          'number_nan' => 'Please enter a number',
-	 *          'number_not_integer' => 'Only integers allowed',
-	 *          'step' => 'Only integers allowed',
-	 *          'allow_empty_value' => 'Please enter a number',
-	 *          'min' => 'The given number must not be smaller then -9223372036854775808',
-	 *          'man' => 'The given number must not be greater then 9223372036854775807'
-	 *      ]
-	 *  ]
-	 * ]
-	 *
-	 * @return array
-	 */
-	private function _getMarkPropertiesForFilter(): array {
-		$fields = [];
-		
-		// get mark properties
-		$table      = 'MarksView';
-		$properties = $this->_getDistinctValuesOf( $table, 'name' );
-		foreach ( $properties as $property ) {
-			$fields[ $table ][] = $this->_getMarkPropertyFieldFilterData( $property );
-		}
-		
-		return $fields;
 	}
 }
