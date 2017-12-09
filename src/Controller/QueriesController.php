@@ -42,7 +42,9 @@ class QueriesController extends AppController {
 			'contain' => [ 'QueryGroups' ]
 		] );
 		
-		$query->query = json_decode( $query->query );
+		if ('MarksView' === $query->query->root_view) {
+			return $this->redirect( [ 'action' => 'viewMarkQuery', $id ] );
+		}
 		
 		$q       = $this->Queries->buildViewQuery( $query->query );
 		$results = $this->paginate( $q );
@@ -85,85 +87,13 @@ class QueriesController extends AppController {
 	}
 	
 	/**
-	 * Add method
+	 * Add query method
 	 *
 	 * @param int $query_group_id Query group the query will be added to
 	 *
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
-	public function add( $query_group_id ) {
-		$query = $this->Queries->newEntity();
-		if ( $this->request->is( 'post' ) ) {
-			$query = $this->Queries->patchEntityWithQueryData( $query, $this->request->data );
-			if ( $this->Queries->save( $query ) ) {
-				$this->Flash->success( __( 'The query has been saved.' ) );
-				
-				return $this->redirect( [ 'action' => 'view', $query->id ] );
-			} else {
-				$this->Flash->error( __( 'The query could not be saved. Please, try again.' ) );
-			}
-		}
-		
-		$views             = $this->Queries->getViewNames();
-		$view_fields       = $this->Queries->getTranslatedFieldsOf( array_keys( $views ) );
-		$default_root_view = 'MarksView';
-		$root_view         = $default_root_view;
-		
-		$active_views  = array(); // ToDo: Get good defaults
-		$active_fields = array(); // ToDo: Get good defaults
-		
-		$associations = array();
-		foreach ( array_keys( $views ) as $view_name ) {
-			$associations[ $view_name ] = $this->Queries->getAssociationsOf( $view_name );
-		}
-		
-		$filter_data = $this->Queries->getFilterData();
-		$where_rules = json_encode( null );
-		
-		$this->loadModel( 'QueryGroups' );
-		$queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
-		$query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
-		
-		$this->set( compact(
-			'default_root_view',
-			'root_view',
-			'query_group_id',
-			'query',
-			'query_groups',
-			'queryGroups',
-			'views',
-			'view_fields',
-			'associations',
-			'active_views',
-			'active_fields',
-			'filter_data',
-			'where_rules'
-		) );
-		$this->set( '_serialize', [
-			'default_root_view',
-			'root_view',
-			'query_group_id',
-			'query',
-			'query_groups',
-			'queryGroups',
-			'views',
-			'view_fields',
-			'associations',
-			'active_views',
-			'active_fields',
-			'filter_data',
-			'where_rules'
-		] );
-	}
-	
-	/**
-	 * Add mark query method
-	 *
-	 * @param int $query_group_id Query group the query will be added to
-	 *
-	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
-	 */
-	public function addMarkQuery( int $query_group_id ) {
+	public function add( int $query_group_id ) {
 		$query = $this->Queries->newEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$query = $this->Queries->patchEntityWithQueryData( $query, $this->request->data );
@@ -179,17 +109,14 @@ class QueriesController extends AppController {
 		$markProperties = TableRegistry::get( 'MarkFormProperties' );
 		$mark_selectors = $markProperties->find( 'all' )->order( [ 'name' => 'asc' ] );
 		
-		$default_breeding_object_aggregation_mode = 'convar';
+		$views       = $this->Queries->getViewNames();
+		$view_fields = $this->Queries->getTranslatedFieldsOf( array_keys( $views ) );
 		
-		$views             = $this->Queries->getViewNames();
-		$view_fields       = $this->Queries->getTranslatedFieldsOf( array_keys( $views ) );
-		$default_root_view = 'MarksView';
-		$root_view         = $default_root_view;
+		$active_views          = [];
+		$active_regular_fields = [];
+		$mark_fields    = [];
 		
-		$active_views  = array(); // ToDo: Get good defaults
-		$active_fields = array(); // ToDo: Get good defaults
-		
-		$associations = array();
+		$associations = [];
 		foreach ( array_keys( $views ) as $view_name ) {
 			$associations[ $view_name ] = $this->Queries->getAssociationsOf( $view_name );
 		}
@@ -203,8 +130,6 @@ class QueriesController extends AppController {
 		$query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
 		
 		$this->set( compact(
-			'default_root_view',
-			'root_view',
 			'query_group_id',
 			'query',
 			'query_groups',
@@ -213,15 +138,13 @@ class QueriesController extends AppController {
 			'view_fields',
 			'associations',
 			'active_views',
-			'active_fields',
+			'active_regular_fields',
+			'mark_fields',
 			'filter_data',
 			'where_rules',
-			'default_breeding_object_aggregation_mode',
 			'mark_selectors'
 		) );
 		$this->set( '_serialize', [
-			'default_root_view',
-			'root_view',
 			'query_group_id',
 			'query',
 			'query_groups',
@@ -230,10 +153,10 @@ class QueriesController extends AppController {
 			'view_fields',
 			'associations',
 			'active_views',
-			'active_fields',
+			'active_regular_fields',
+			'mark_fields',
 			'filter_data',
 			'where_rules',
-			'default_breeding_object_aggregation_mode',
 			'mark_selectors'
 		] );
 	}
@@ -261,14 +184,15 @@ class QueriesController extends AppController {
 			}
 		}
 		
-		$q = json_decode( $query->query );
+		$markProperties = TableRegistry::get( 'MarkFormProperties' );
+		$mark_selectors = $markProperties->find( 'all' )->order( [ 'name' => 'asc' ] );
 		
-		$views             = $this->Queries->getViewNames();
-		$view_fields       = $this->Queries->getTranslatedFieldsOf( array_keys( $views ) );
-		$default_root_view = $q->root_view;
+		$views       = $this->Queries->getViewNames();
+		$view_fields = $this->Queries->getTranslatedFieldsOf( array_keys( $views ) );
+		$mark_fields = $query->mark_fields;
 		
-		$active_views  = $this->Queries->getActiveViewTables( $q );
-		$active_fields = $this->Queries->getActiveFields( $q );
+		$active_views          = $query->active_view_tables;
+		$active_regular_fields = $query->active_regular_fields;
 		
 		$associations = array();
 		foreach ( array_keys( $views ) as $view_name ) {
@@ -276,7 +200,7 @@ class QueriesController extends AppController {
 		}
 		
 		$filter_data = $this->Queries->getFilterData();
-		$where_rules = $this->Queries->getWhereRules( $q );
+		$where_rules = $query->where_rules_json;
 		
 		$this->loadModel( 'QueryGroups' );
 		$queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
@@ -287,26 +211,28 @@ class QueriesController extends AppController {
 			'query_groups',
 			'queryGroups',
 			'views',
-			'default_root_view',
 			'view_fields',
 			'active_views',
-			'active_fields',
+			'active_regular_fields',
+			'mark_fields',
 			'associations',
 			'filter_data',
-			'where_rules'
+			'where_rules',
+			'mark_selectors'
 		) );
 		$this->set( '_serialize', [
 			'query',
 			'query_groups',
 			'queryGroups',
 			'views',
-			'default_root_view',
 			'view_fields',
 			'active_views',
-			'active_fields',
+			'active_regular_fields',
+			'mark_fields',
 			'associations',
 			'filter_data',
-			'where_rules'
+			'where_rules',
+			'mark_selectors'
 		] );
 	}
 	
@@ -341,9 +267,9 @@ class QueriesController extends AppController {
 		// query the data
 		$marksViewTable = TableRegistry::get( 'MarksView' );
 		$data           = $marksViewTable->customFindMarks(
-			$query->mode,
-			$query->regular_fields,
-			$query->mark_field_ids,
+			$query->breeding_object_aggregation_mode,
+			$query->active_regular_fields,
+			$query->active_mark_field_ids,
 			$query->regular_conditions,
 			$query->mark_conditions,
 			$clearCache,
@@ -355,7 +281,7 @@ class QueriesController extends AppController {
 		
 		// set regular columns
 		$regular_columns = [];
-		foreach ( $query->regular_fields as $field ) {
+		foreach ( $query->active_regular_fields as $field ) {
 			$key                     = explode( '.', $field )[1];
 			$regular_columns[ $key ] = $this->Queries->translateFields( $field );
 		}
@@ -363,7 +289,7 @@ class QueriesController extends AppController {
 		// set mark columns
 		$markProperties = TableRegistry::get( 'MarkFormProperties' );
 		$mark_columns   = [];
-		foreach ( $query->mark_field_ids as $property_id ) {
+		foreach ( $query->active_mark_field_ids as $property_id ) {
 			$mark_columns[ $property_id ] = $markProperties->get( $property_id );
 		}
 		

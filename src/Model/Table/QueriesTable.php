@@ -230,7 +230,7 @@ class QueriesTable extends Table
     }
     
     /**
-     * @deprecated todo: delete
+     * @deprecated moved into entities
      *
      * Return active fields from given query data.
      *
@@ -247,6 +247,8 @@ class QueriesTable extends Table
     }
     
     /**
+     * @deprecated not yet implemented
+     *
      * Return array with fields or tables
      *
      * @param \stdClass $query
@@ -525,7 +527,7 @@ class QueriesTable extends Table
     }
     
     /**
-     * @deprecated todo delete
+     * @deprecated moved into entities
      *
      * Return the where data as JSON or null
      *
@@ -543,6 +545,8 @@ class QueriesTable extends Table
     }
     
     /**
+     * @deprecated moved into entities
+     *
      * Return active tables from given query data.
      *
      * The $query_data must be a stdClass with at least the properties:

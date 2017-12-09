@@ -144,11 +144,25 @@ class MarkFormProperty extends Entity {
 			
 			case 'BOOLEAN':
 				return [
-					'equal' => __( 'equal' ),
+					'equal'     => __( 'equal' ),
+					'not_equal' => __( 'not equal' ),
 				];
 			
 			default:
 				throw new \Exception( "The field type '{$this->_properties['field_type']}' is not defined." );
 		}
+	}
+	
+	/**
+	 * Return array with possible values for boolean fields. Return null for all other fields.
+	 *
+	 * @return array|null
+	 */
+	protected function _getValues() {
+		if ( 'BOOLEAN' === $this->_properties['field_type'] ) {
+			return [ 0 => __( 'True' ), 1 => __( 'False' ) ];
+		}
+		
+		return null;
 	}
 }

@@ -6,7 +6,7 @@
 echo $this->Form->input( 'root_view', [
 	'label'   => __( 'Main table' ),
 	'options' => $views,
-	'default' => $default_root_view,
+	'default' => isset( $query->query->root_view ) ? $query->query->root_view : 'MarksView',
 	'class'   => 'no-select2', // because of select 2 bug https://github.com/select2/select2/issues/3992
 ] );
 
@@ -15,7 +15,7 @@ $this->Form->unlockField( 'breeding_object_aggregation_mode' );
 echo $this->Form->input( 'breeding_object_aggregation_mode', [
 	'label'   => __( 'Group marks by' ),
 	'options' => $query->breeding_object_aggregation_modes,
-	'default' => $default_breeding_object_aggregation_mode,
+	'default' => $query->breeding_object_aggregation_mode,
 	'empty'   => false,
 	'class'   => 'no-select2', // because of select 2 bug https://github.com/select2/select2/issues/3992
 ] );
@@ -42,7 +42,7 @@ foreach ( $views as $view_key => $view_name ) {
 			'type'     => 'checkbox',
 			'class'    => 'field-selector ' . $field_key . '-field-selector',
 			'required' => false,
-			'checked'  => in_array( $field_key, $active_fields ),
+			'checked'  => in_array( $field_key, $active_regular_fields ),
 		] );
 	}
 	if ( 'MarksView' === $view_key ) {
@@ -51,11 +51,14 @@ foreach ( $views as $view_key => $view_name ) {
 			echo $this->Form->checkbox( 'MarkProperties[' . $field->id . '][check]', [
 				'class'    => 'field-selector ' . 'mark-property-' . $field->id . '-field-selector mark-property-selector',
 				'required' => false,
-				'checked'  => in_array( $field->id, $active_fields ),
+				'checked'  => array_key_exists( (string) $field->id, $mark_fields ) ? $mark_fields[$field->id]->check : false,
 			] );
 			echo $this->Form->label( 'MarkProperties[' . $field->id . '][check]',
 				__( 'Mark Property' ) . ' -> ' . $field->name );
-			echo $this->element( 'Query/mark_property_filter', [ 'field' => $field ] );
+			echo $this->element( 'Query/mark_property_filter', [
+				'field' => $field,
+				'data'  => array_key_exists( (string) $field->id, $mark_fields ) ? $mark_fields[$field->id] : null
+			] );
 			echo '</div>';
 		}
 	}

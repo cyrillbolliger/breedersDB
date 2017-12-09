@@ -38031,6 +38031,7 @@ function QueriesViewSelectorModule(General) {
         self.bindMarkPropertySelectorEvents();
         self.bindMarkPropertyFilterOperationSelectorEvents();
         self.bindBreedingObjectAggregationModeSelectorEvents();
+        self.setMarkPropertyFilterSelectorInitState();
     };
 
     /**
@@ -38081,8 +38082,11 @@ function QueriesViewSelectorModule(General) {
             $el.trigger('change');
             if ('MarksView' === $(this).val()) {
                 $('.breeding-object-aggregation-mode-selector').show();
+                $('.mark-property').show();
             } else {
                 $('.breeding-object-aggregation-mode-selector').hide();
+                $('.mark-property').hide();
+                $('.mark-property-selector').prop('checked', false);
             }
         });
     };
@@ -38267,6 +38271,16 @@ function QueriesViewSelectorModule(General) {
      */
     this.bindMarkPropertySelectorEvents = function () {
         $('.mark-property-selector').click(function () {
+            $('.mark-property-mode').trigger('change');
+            self.setMarkPropertyFilterSelectorVisibility($(this));
+        });
+    };
+
+    /**
+     * Set the initial state of the mark property filter selectors
+     */
+    this.setMarkPropertyFilterSelectorInitState = function() {
+        $('.mark-property-selector').each(function(){
             $('.mark-property-mode').trigger('change');
             self.setMarkPropertyFilterSelectorVisibility($(this));
         });
