@@ -79,6 +79,8 @@ class MarkFilter {
 	 * @param AggregatedMark $mark
 	 *
 	 * @return bool
+	 *
+	 * @throws \Exception if the marks operator is not defined
 	 */
 	public function test( AggregatedMark $mark ): bool {
 		// if no filtering was defined
@@ -89,14 +91,14 @@ class MarkFilter {
 		// if filter mode = all
 		if ( 'all' === $this->mode ) {
 			return $mark->values->every( function ( $value ) {
-				return $this->_testValue( $value->value );
+				return $this->_testValue( array_values( $value )[0] );
 			} );
 		}
 		
 		// if filter mode = any
 		if ( 'any' === $this->mode ) {
 			return $mark->values->some( function ( $value ) {
-				return $this->_testValue( $value->value );
+				return $this->_testValue( array_values( $value )[0] );
 			} );
 		}
 		
