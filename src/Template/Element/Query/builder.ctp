@@ -37,6 +37,7 @@ foreach ( $views as $view_key => $view_name ) {
 	] );
 	echo '<div class="field-selector-container ' . $view_key . '-field-selector-container">';
 	foreach ( $view_fields[ $view_key ] as $field_key => $field_name ) {
+		echo '<div class="regular-property">';
 		echo $this->Form->input( $field_key, [
 			'label'    => $field_name,
 			'type'     => 'checkbox',
@@ -44,6 +45,7 @@ foreach ( $views as $view_key => $view_name ) {
 			'required' => false,
 			'checked'  => in_array( $field_key, $active_regular_fields ),
 		] );
+		echo '</div>';
 	}
 	if ( 'MarksView' === $view_key ) {
 		foreach ( $mark_selectors as $field ) {

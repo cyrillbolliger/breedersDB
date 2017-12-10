@@ -78,9 +78,11 @@ function QueriesViewSelectorModule(General) {
             if ('MarksView' === $(this).val()) {
                 $('.breeding-object-aggregation-mode-selector').show();
                 $('.mark-property').show();
+                $('.MarksView-field-selector-container > .regular-property').hide();
             } else {
                 $('.breeding-object-aggregation-mode-selector').hide();
                 $('.mark-property').hide();
+                $('.MarksView-field-selector-container > .regular-property').show();
                 $('.mark-property-selector').prop('checked', false);
             }
         });
