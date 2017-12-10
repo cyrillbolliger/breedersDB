@@ -107,6 +107,8 @@ class QueriesTable extends Table {
 	 * @param array $tables
 	 *
 	 * @return array
+	 *
+	 * @throws \Exception if field key doesn't exist in translations array
 	 */
 	public function getTranslatedFieldsOf( array $tables ) {
 		$view_fields_type_map = $this->getFieldTypeMapOf( $tables );
@@ -205,6 +207,8 @@ class QueriesTable extends Table {
 	 * @param $query
 	 *
 	 * @return array
+	 *
+	 * @throws \Exception if field key doesn't exist in translations array
 	 */
 	public function getViewQueryColumns( Query $query ) {
 		$tmp = $this->_getTranslatedFieldsFromList( $query->active_regular_fields );
@@ -225,6 +229,8 @@ class QueriesTable extends Table {
 	 * @param array $list
 	 *
 	 * @return array
+	 *
+	 * @throws \Exception if field key doesn't exist in translations array
 	 */
 	private function _getTranslatedFieldsFromList( array $list ) {
 		$fields = [];
@@ -454,5 +460,43 @@ class QueriesTable extends Table {
 		}
 		
 		return $root->name() . '.' . $root->foreignKey() . ' = ' . $leaf->name() . '.' . $leaf->bindingKey();
+	}
+	
+	/**
+	 * Return array with the field key as key and the translated field name as name
+	 *
+	 * @param Query $markQuery
+	 *
+	 * @return array
+	 *
+	 * @throws \Exception if field key doesn't exist in translations array
+	 */
+	public function getRegularColumns( Query $markQuery ): array {
+		$columns = [];
+		foreach ( $markQuery->active_regular_fields as $field ) {
+			$key             = explode( '.', $field )[1];
+			$columns[ $key ] = $this->translateFields( $field );
+		}
+		
+		return $columns;
+	}
+	
+	/**
+	 * Return array with the field key as key and the MarkFormProperty as value
+	 *
+	 * @param Query $markQuery
+	 *
+	 * @return array
+	 *
+	 * @throws \Exception if field key doesn't exist in translations array
+	 */
+	public function getMarkColumns( Query $markQuery ): array {
+		$markProperties = TableRegistry::get( 'MarkFormProperties' );
+		$columns   = [];
+		foreach ( $markQuery->active_mark_field_ids as $property_id ) {
+			$columns[ $property_id ] = $markProperties->get( $property_id );
+		}
+		
+		return $columns;
 	}
 }

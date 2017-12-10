@@ -4,7 +4,7 @@
 <div class="queries view large-9 medium-8 columns content">
     <?= $this->Html->link(
         __('Export to excel'),
-        ['action' => 'export', 1],//$query->id],
+        ['action' => 'export', $query->id],
         ['class' => 'button export-button']);
     ?>
     

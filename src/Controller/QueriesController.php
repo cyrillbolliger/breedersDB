@@ -10,9 +10,8 @@ use Cake\ORM\TableRegistry;
  * Queries Controller
  *
  * @property \App\Model\Table\QueriesTable $Queries
- *
- * @mixin ExcelComponent
- * @mixin CollectionPaginatorComponent
+ * @property ExcelComponent $Excel
+ * @property CollectionPaginatorComponent $CollectionPaginator
  */
 class QueriesController extends AppController {
 	public function initialize() {
@@ -93,19 +92,9 @@ class QueriesController extends AppController {
 		// get paginated results
 		$results = $this->CollectionPaginator->paginate( $data, [ $marksViewTable, 'sort' ] );
 		
-		// set regular columns
-		$regular_columns = [];
-		foreach ( $query->active_regular_fields as $field ) {
-			$key                     = explode( '.', $field )[1];
-			$regular_columns[ $key ] = $this->Queries->translateFields( $field );
-		}
-		
-		// set mark columns
-		$markProperties = TableRegistry::get( 'MarkFormProperties' );
-		$mark_columns   = [];
-		foreach ( $query->active_mark_field_ids as $property_id ) {
-			$mark_columns[ $property_id ] = $markProperties->get( $property_id );
-		}
+		// get columns
+		$regular_columns = $this->Queries->getRegularColumns( $query );
+		$mark_columns = $this->Queries->getMarkColumns( $query );
 		
 		// get navigation stuff
 		$this->loadModel( 'QueryGroups' );
@@ -141,12 +130,7 @@ class QueriesController extends AppController {
 	 * @throws \Exception if association type of selected tables is not implemented
 	 */
 	public function export( $id = null ) {
-		$query        = $this->Queries->get( $id );
-		$query->query = json_decode( $query->query );
-		
-		$q       = $this->Queries->buildViewQuery( $query );
-		$columns = $this->Queries->getViewQueryColumns( $query );
-		$file    = $this->Excel->export( $q, $columns, $query->code );
+		$file = $this->_getExportFile( $id );
 		
 		$this->response->type( 'xlsx' );
 		$this->response->file( $file, [ 'download' => true ] );
@@ -157,6 +141,35 @@ class QueriesController extends AppController {
 		
 		// prevent rendering
 		$this->autoRender = false;
+	}
+	
+	private function _getExportFile( $id ): string {
+		$query = $this->Queries->get( $id );
+		
+		// if its a regular query
+		if ( 'MarksView' !== $query->query->root_view ) {
+			$q       = $this->Queries->buildViewQuery( $query );
+			$columns = $this->Queries->getViewQueryColumns( $query );
+			
+			return $this->Excel->exportFromQuery( $q, $columns, $query->code );
+		}
+		
+		// -- if its a mark query --
+		// query the data
+		$marksViewTable = TableRegistry::get( 'MarksView' );
+		$data           = $marksViewTable->customFindMarks(
+			$query->breeding_object_aggregation_mode,
+			$query->active_regular_fields,
+			$query->active_mark_field_ids,
+			$query->regular_conditions,
+			$query->mark_conditions
+		);
+		
+		// get columns
+		$regular_columns = $this->Queries->getRegularColumns( $query );
+		$mark_columns = $this->Queries->getMarkColumns( $query );
+		
+		return $this->Excel->exportFromMarkCollection($data, $regular_columns, $mark_columns, $query->code);
 	}
 	
 	/**

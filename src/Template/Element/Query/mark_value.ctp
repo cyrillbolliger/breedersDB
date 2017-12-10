@@ -18,6 +18,8 @@
 			<?php endforeach; ?>
         </ul>
     </td>
+<?php else: ?>
+    <td><?= $mark->value ?></td>
 <?php endif; ?>
 <td class="index_inline_list">
     <ul>
