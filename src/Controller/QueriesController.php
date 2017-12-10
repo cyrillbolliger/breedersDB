@@ -73,11 +73,10 @@ class QueriesController extends AppController {
 	 * View mark query method
 	 *
 	 * @param int $id
-	 * @param bool $clearCache
 	 *
 	 * @throws \Exception
 	 */
-	public function viewMarkQuery( int $id, bool $clearCache = false ) {
+	public function viewMarkQuery( int $id ) {
 		// get query
 		$query = $this->Queries->get( $id );
 		
@@ -88,8 +87,7 @@ class QueriesController extends AppController {
 			$query->active_regular_fields,
 			$query->active_mark_field_ids,
 			$query->regular_conditions,
-			$query->mark_conditions,
-			$clearCache
+			$query->mark_conditions
 		);
 		
 		// get paginated results

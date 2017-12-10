@@ -9,21 +9,14 @@
 namespace App\Model\Behavior;
 
 use App\Model\Entity\AggregatedMark;
-use Cake\Cache\Cache;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
-use Cake\Collection\Iterator\ReplaceIterator;
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
 class MarkQueryBehavior extends Behavior {
-	/**
-	 * @var bool clean query cache
-	 */
-	private $clearCache;
-	
 	/**
 	 * @var string which holds the way we want to retrieve the breeding object (and which breeding objects).
 	 * Possible values:
@@ -55,7 +48,7 @@ class MarkQueryBehavior extends Behavior {
 	private $markFieldFilter;
 	
 	/**
-	 * @var array @see $this->mode
+	 * @var array @see self::mode
 	 */
 	private $allowedModes = [
 		'trees',
@@ -65,14 +58,27 @@ class MarkQueryBehavior extends Behavior {
 	];
 	
 	/**
-	 * ToDo: proper description
+	 * Custom finder to find data with the marks view as root table.
+	 *
+	 * This finder does return a collection instead of a query object, since
+	 * it uses highly complex map reduce jobs for filtering and intermediate
+	 * calculations.
+	 *
+	 * The regular fields filter is a classical orm where argument. The mark
+	 * field filter however must be an array containing MarkFilter objects.
+	 * While the regular fields filter conditions are applied directly
+	 * when querying the database, the mark field filter are applied only
+	 * after preprocessing the results, since they depend on calculations
+	 * made during preprocessing. Therefore they can't be nested with regular
+	 * field filters. Mark field filters are always applied with a 'and'
+	 * conjunction (between each other, but also between them and the regular
+	 * field filters).
 	 *
 	 * @param string $mode allowed values: 'trees', 'varieties', 'convar', 'batches'
 	 * @param array $display fields to display - in dot notation
 	 * @param array $markProperties the ids of the mark properties to display or filter
 	 * @param array $regularFieldsFilter the where conditions for the display fields
-	 * @param array $markFieldFilter the where conditions for the marks
-	 * @param bool $clearCache set to true to rebuild the cache
+	 * @param array $markFieldFilter the where conditions for the marks (MarkFilter)
 	 *
 	 * @return CollectionInterface
 	 *
@@ -83,22 +89,20 @@ class MarkQueryBehavior extends Behavior {
 		array $display,
 		array $markProperties,
 		array $regularFieldsFilter,
-		array $markFieldFilter,
-		bool $clearCache
+		array $markFieldFilter
 	): CollectionInterface {
 		if ( ! in_array( $mode, $this->allowedModes ) ) {
 			throw new \Exception( "The mode '{$mode}' is not defined.'" );
 		}
 		
 		$this->mode           = $mode;
-		$this->clearCache     = $clearCache;
 		$this->markProperties = $markProperties;
 		$this->fields         = $display;
 		
 		$this->regularFieldsFilter = $regularFieldsFilter;
 		$this->markFieldFilter     = $markFieldFilter;
 		
-		$data   = $this->_getData();
+		$data = $this->_getData();
 		
 		return $data;
 	}
@@ -106,58 +110,22 @@ class MarkQueryBehavior extends Behavior {
 	/**
 	 * Return breeding objects according to $this->mode ('convar' will return varieties)
 	 * containing the marks specified in $this->properties and the fields specified
-	 * in $this->display, all filtered by $this->regularFieldsFilter. If a valid cache exists and
-	 * $this->clearCache is set to false, the intermediate results will be served from
-	 * cache. The cache is mainly used to speed up sorting and browsing using the paginator.
+	 * in $this->display, all filtered by $this->regularFieldsFilter.
 	 *
 	 * @return CollectionInterface
+	 *
+	 * @throws \Exception if the given mode is not defined.
 	 */
 	private function _getData(): CollectionInterface {
-		if ( $this->clearCache ) {
-			$this->_clearCache();
-		}
-		
-		/*$cached = $this->_getCachedResults();
-		if (false !== $cached) {
-			return $cached; // todo: fix it
-		}*/
-		
 		$query = $this->_getQuery();
 		
-		$filtered              = $this->_preFilterResults( $query );
-		$groupedByMark         = $this->_groupByMark( $filtered );
+		$groupedByMark         = $this->_groupByMark( $query );
 		$aggregated            = $this->_aggregate( $groupedByMark );
 		$groupedByObj          = $this->_groupByBreedingObject( $aggregated );
 		$filteredByMarkValues  = $this->_filterByMarkValues( $groupedByObj );
 		$markedBreedingObjects = $this->_loadAssociatedObjects( $filteredByMarkValues );
 		
-		$this->_cacheResults( $markedBreedingObjects );
-		
 		return $markedBreedingObjects;
-	}
-	
-	/**
-	 * Delete cached query
-	 *
-	 * @return CollectionInterface|boolean false if no cache exists
-	 */
-	private function _clearCache() {
-		return Cache::delete( $this->_getCacheKey() );
-	}
-	
-	/**
-	 * Create a hash over the changing input fields to make sure we only use the cache when it hasn't changed.
-	 *
-	 * @return string
-	 */
-	private function _getCacheKey(): string {
-		return 'markQuery_' . md5(
-				json_encode( $this->mode ) .
-				json_encode( $this->fields ) .
-				json_encode( $this->markProperties ) .
-				json_encode( $this->regularFieldsFilter ) .
-				json_encode( $this->markFieldFilter )
-			);
 	}
 	
 	/**
@@ -258,31 +226,15 @@ class MarkQueryBehavior extends Behavior {
 	}
 	
 	/**
-	 * Remove unused mark properties and entities without marks
-	 *
-	 * @param Query $query
-	 *
-	 * @return CollectionInterface with the filtered data
-	 */
-	private function _preFilterResults( Query $query ): CollectionInterface {
-		return $query->filter( function ( $item ) {
-			
-			// todo: check if this method can be removed
-			
-			return true;
-		} );
-	}
-	
-	/**
 	 * Return collection grouped by mark and breeders object
 	 *
-	 * @param CollectionInterface $marks
+	 * @param Query $marks
 	 *
 	 * @return CollectionInterface
 	 *
 	 * @throws \Exception if the given mode is not defined.
 	 */
-	private function _groupByMark( CollectionInterface $marks ): CollectionInterface {
+	private function _groupByMark( Query $marks ): CollectionInterface {
 		// group by mark AND breeders object otherwise we'll aggregate all objects
 		return $marks->groupBy( function ( $mark ) {
 			switch ( $this->mode ) {
@@ -379,6 +331,8 @@ class MarkQueryBehavior extends Behavior {
 	 * @param CollectionInterface $items
 	 *
 	 * @return CollectionInterface
+	 *
+	 * @throws \Exception if the given mode is not defined.
 	 */
 	private function _loadAssociatedObjects( CollectionInterface $items ): CollectionInterface {
 		$table = $this->_getTable();
@@ -421,15 +375,6 @@ class MarkQueryBehavior extends Behavior {
 	}
 	
 	/**
-	 * Cache results
-	 *
-	 * @param ReplaceIterator $obj
-	 */
-	private function _cacheResults( ReplaceIterator $obj ) {
-		Cache::write( $this->_getCacheKey(), $obj );
-	}
-	
-	/**
 	 * Callback function for Collection::sortBy() used
 	 * in the CollectionPaginatorComponent to sort mark
 	 * view results.
@@ -448,17 +393,9 @@ class MarkQueryBehavior extends Behavior {
 		
 		// if we want to sort by a mark value, return callback
 		$mark_id = str_replace( 'mark-', '', $sort );
+		
 		return function ( $obj ) use ( $mark_id ) {
 			return $obj->marks->toArray()[ $mark_id ]->sort_value;
 		};
-	}
-	
-	/**
-	 * Get cached results
-	 *
-	 * @return ReplaceIterator|false
-	 */
-	private function _getCachedResults() {
-		return Cache::read( $this->_getCacheKey() );
 	}
 }
