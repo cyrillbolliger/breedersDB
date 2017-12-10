@@ -2,11 +2,15 @@
     <thead>
     <tr>
 		<?php foreach ( $regular_columns as $column_key => $column_name ): ?>
-            <th scope="col" rowspan="2"><?= $column_name ?></th>
+            <th scope="col" rowspan="2">
+                <?= $this->Paginator->sort($column_key, $column_name) ?>
+            </th>
 		<?php endforeach; ?>
 		<?php foreach ( $mark_columns as $column ): ?>
 			<?php $colspan = $column->is_numerical ? 3 : 2 ?>
-            <th scope="col" colspan="<?= $colspan ?>"><?= $column->name ?></th>
+            <th scope="col" colspan="<?= $colspan ?>">
+                <?= $this->Paginator->sort('mark-'.$column->id, $column->name) ?>
+            </th>
 		<?php endforeach; ?>
     </tr>
     <tr>

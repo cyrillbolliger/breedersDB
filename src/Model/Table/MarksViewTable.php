@@ -2,6 +2,7 @@
 
 namespace App\Model\Table;
 
+use App\Model\Behavior\MarkQueryBehavior;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -20,6 +21,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\MarksView patchEntity( \Cake\Datasource\EntityInterface $entity, array $data, array $options = [] )
  * @method \App\Model\Entity\MarksView[] patchEntities( $entities, array $data, array $options = [] )
  * @method \App\Model\Entity\MarksView findOrCreate( $search, callable $callback = null, $options = [] )
+ *
+ * @mixin MarkQueryBehavior
  */
 class MarksViewTable extends Table {
 	/**

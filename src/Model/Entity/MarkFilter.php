@@ -25,7 +25,7 @@ class MarkFilter {
 	 *
 	 * @var string
 	 */
-	private $mode;
+	public $mode;
 	
 	/**
 	 * The compare operator.

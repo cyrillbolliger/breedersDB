@@ -2,18 +2,24 @@
 
 namespace App\Controller;
 
+use App\Controller\Component\CollectionPaginatorComponent;
+use App\Controller\Component\ExcelComponent;
 use Cake\ORM\TableRegistry;
 
 /**
  * Queries Controller
  *
  * @property \App\Model\Table\QueriesTable $Queries
+ *
+ * @mixin ExcelComponent
+ * @mixin CollectionPaginatorComponent
  */
 class QueriesController extends AppController {
 	public function initialize() {
 		parent::initialize();
 		
 		$this->loadComponent( 'Excel' );
+		$this->loadComponent( 'CollectionPaginator' );
 	}
 	
 	/**
@@ -46,7 +52,7 @@ class QueriesController extends AppController {
 			'contain' => [ 'QueryGroups' ]
 		] );
 		
-		if ('MarksView' === $query->query->root_view) {
+		if ( 'MarksView' === $query->query->root_view ) {
 			return $this->redirect( [ 'action' => 'viewMarkQuery', $id ] );
 		}
 		
@@ -75,9 +81,6 @@ class QueriesController extends AppController {
 		// get query
 		$query = $this->Queries->get( $id );
 		
-		// set order
-		$orderBy = [ 'sort' => 'id', 'direction' => 'asc' ];
-		
 		// query the data
 		$marksViewTable = TableRegistry::get( 'MarksView' );
 		$data           = $marksViewTable->customFindMarks(
@@ -86,12 +89,11 @@ class QueriesController extends AppController {
 			$query->active_mark_field_ids,
 			$query->regular_conditions,
 			$query->mark_conditions,
-			$clearCache,
-			$orderBy
+			$clearCache
 		);
 		
-		// set pagination
-		$results = $data->take( 20, 0 );
+		// get paginated results
+		$results = $this->CollectionPaginator->paginate( $data, [ $marksViewTable, 'sort' ] );
 		
 		// set regular columns
 		$regular_columns = [];
@@ -113,9 +115,22 @@ class QueriesController extends AppController {
 		$query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
 		
 		// set view vars
-		$this->set( compact( 'query', 'query_groups', 'queryGroups', 'results', 'regular_columns', 'mark_columns' ) );
-		$this->set( '_serialize',
-			[ 'query', 'query_groups', 'queryGroups', 'results', 'regular_columns', 'mark_columns' ] );
+		$this->set( compact(
+			'query',
+			'query_groups',
+			'queryGroups',
+			'results',
+			'regular_columns',
+			'mark_columns'
+		) );
+		$this->set( '_serialize', [
+			'query',
+			'query_groups',
+			'queryGroups',
+			'results',
+			'regular_columns',
+			'mark_columns'
+		] );
 	}
 	
 	/**
@@ -176,7 +191,7 @@ class QueriesController extends AppController {
 		
 		$active_views          = [];
 		$active_regular_fields = [];
-		$mark_fields    = [];
+		$mark_fields           = [];
 		
 		$associations = [];
 		foreach ( array_keys( $views ) as $view_name ) {

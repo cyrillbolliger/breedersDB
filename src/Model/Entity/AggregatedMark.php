@@ -29,6 +29,11 @@ class AggregatedMark {
 	public $value;
 	
 	/**
+	 * @var mixed the values used for sorting
+	 */
+	public $sort_value;
+	
+	/**
 	 * @var int the id of the parent breeders object
 	 */
 	public $parent_id;
@@ -39,61 +44,19 @@ class AggregatedMark {
 	private $mode;
 	
 	/**
+	 * @var string defining what we want to be in self::sort_value
+	 */
+	private $sort_by;
+	
+	/**
 	 * AggregatedMark constructor.
 	 *
 	 * @param string $mode
+	 * @param string $sort_by
 	 */
-	public function __construct( string $mode ) {
+	public function __construct( string $mode, string $sort_by ) {
 		$this->mode = $mode;
-	}
-	
-	/**
-	 * @deprecated user the MarkFormProperty itself
-	 *
-	 * Return an array with all possible aggregation types for the given type.
-	 * The keys are holding the internal function name, the values the translated
-	 * names for the form.
-	 *
-	 * @param string $type
-	 *
-	 * @return array
-	 *
-	 * @throws \Exception if the type of the first mark is unknown.
-	 */
-	public static function getAggregationFunctions( string $type ): array {
-		$nummeric = [
-			'count'  => __( 'Count' ),
-			'avg'    => __( 'Average' ),
-			'min'    => __( 'Min' ),
-			'max'    => __( 'Max' ),
-			'median' => __( 'Median' ),
-			'std'    => __( 'Standard deviation' ),
-		];
-		
-		$boolean = [
-			'all' => __( 'All' ),
-			'any' => __( 'Any' ),
-		];
-		
-		switch ( $type ) {
-			case 'INTEGER':
-				return $nummeric;
-			
-			case 'FLOAT':
-				return $nummeric;
-			
-			case 'VARCHAR':
-				return $boolean;
-			
-			case 'BOOLEAN':
-				return $boolean;
-			
-			case 'DATE':
-				return $boolean;
-			
-			default:
-				throw new \Exception( "The field type '{$type}' is not an defined." );
-		}
+		$this->sort_by = $sort_by;
 	}
 	
 	/**
@@ -136,15 +99,19 @@ class AggregatedMark {
 			case 'INTEGER':
 			case 'FLOAT':
 				$this->value = (object) $this->_calculateStats( $values, $type );
+				$this->sort_value = &$this->value->{$this->sort_by};
 				break;
 			
 			case 'DATE':
 			case 'VARCHAR':
 				$this->value = implode( '; ', $values );
+				$this->sort_value = &$this->value;
 				break;
 			
 			case 'BOOLEAN':
-				$this->value = (bool) array_sum( $values );
+				$sum = array_sum( $values );
+				$this->value = (bool) $sum;
+				$this->sort_value = $sum / count($values);
 				break;
 			
 			default:

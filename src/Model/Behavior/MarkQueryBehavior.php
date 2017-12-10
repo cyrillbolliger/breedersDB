@@ -25,11 +25,6 @@ class MarkQueryBehavior extends Behavior {
 	private $clearCache;
 	
 	/**
-	 * @var array with the field as key and the direction as value
-	 */
-	private $orderBy;
-	
-	/**
 	 * @var string which holds the way we want to retrieve the breeding object (and which breeding objects).
 	 * Possible values:
 	 * - 'trees': get marks of trees only, group by tree
@@ -78,7 +73,6 @@ class MarkQueryBehavior extends Behavior {
 	 * @param array $regularFieldsFilter the where conditions for the display fields
 	 * @param array $markFieldFilter the where conditions for the marks
 	 * @param bool $clearCache set to true to rebuild the cache
-	 * @param array $orderBy with the field key as key and the direction as value
 	 *
 	 * @return CollectionInterface
 	 *
@@ -90,8 +84,7 @@ class MarkQueryBehavior extends Behavior {
 		array $markProperties,
 		array $regularFieldsFilter,
 		array $markFieldFilter,
-		bool $clearCache,
-		array $orderBy
+		bool $clearCache
 	): CollectionInterface {
 		if ( ! in_array( $mode, $this->allowedModes ) ) {
 			throw new \Exception( "The mode '{$mode}' is not defined.'" );
@@ -99,7 +92,6 @@ class MarkQueryBehavior extends Behavior {
 		
 		$this->mode           = $mode;
 		$this->clearCache     = $clearCache;
-		$this->orderBy        = $orderBy;
 		$this->markProperties = $markProperties;
 		$this->fields         = $display;
 		
@@ -107,9 +99,8 @@ class MarkQueryBehavior extends Behavior {
 		$this->markFieldFilter     = $markFieldFilter;
 		
 		$data   = $this->_getData();
-		$sorted = $this->_sort( $data );
 		
-		return $sorted;
+		return $data;
 	}
 	
 	/**
@@ -317,7 +308,7 @@ class MarkQueryBehavior extends Behavior {
 	
 	/**
 	 * Reduce marks into one mark element containing the aggregated values in the field value
-	 * and the single values with their reference in the field values.
+	 * and the single values with their reference in the field values. Also add a sort_value.
 	 * @see MarksAggregatorUtility::aggregate() for more details.
 	 *
 	 * @param CollectionInterface $groupedMarks
@@ -326,8 +317,11 @@ class MarkQueryBehavior extends Behavior {
 	 */
 	private function _aggregate( CollectionInterface $groupedMarks ): CollectionInterface {
 		return $groupedMarks->map( function ( $marks ) {
+			$property_id = $marks[0]['property_id'];
+			$sort_by     = $this->markFieldFilter[ $property_id ]->mode;
+			
 			$collection = new Collection( $marks );
-			$aggregator = new AggregatedMark( $this->mode );
+			$aggregator = new AggregatedMark( $this->mode, $sort_by );
 			
 			return $aggregator->aggregate( $collection );
 		} );
@@ -436,23 +430,35 @@ class MarkQueryBehavior extends Behavior {
 	}
 	
 	/**
+	 * Callback function for Collection::sortBy() used
+	 * in the CollectionPaginatorComponent to sort mark
+	 * view results.
+	 *
+	 * @param string sort the field to sort by
+	 *
+	 * @return string|callable that takes the object
+	 * to sort and returns the value to sort by or
+	 * the dot noted field name to sort by as string.
+	 */
+	public function sort( string $sort ) {
+		// if we we sort by a regular field, just return the field name
+		if ( false === strpos( $sort, 'mark-' ) ) {
+			return $sort;
+		}
+		
+		// if we want to sort by a mark value, return callback
+		$mark_id = str_replace( 'mark-', '', $sort );
+		return function ( $obj ) use ( $mark_id ) {
+			return $obj->marks->toArray()[ $mark_id ]->sort_value;
+		};
+	}
+	
+	/**
 	 * Get cached results
 	 *
 	 * @return ReplaceIterator|false
 	 */
 	private function _getCachedResults() {
-		return Cache::read($this->_getCacheKey());
-	}
-	
-	/**
-	 * Return data sorted according to $this->sort
-	 *
-	 * @param CollectionInterface $data
-	 *
-	 * @return CollectionInterface
-	 */
-	private function _sort( CollectionInterface $data ) {
-		// todo
-		return $data;
+		return Cache::read( $this->_getCacheKey() );
 	}
 }
