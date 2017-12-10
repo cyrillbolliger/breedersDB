@@ -60,7 +60,7 @@ class CollectionPaginatorComponent extends Component {
 		$direction = array_key_exists( 'direction', $options ) ? $options['direction'] : $directionDefault;
 		$order = [ $sort => $direction ];
 		
-		$sorted     = $this->_sort( $collection, $options['sort'], $options['direction'], $sortFunction );
+		$sorted     = $this->_sort( $collection, key( $order ), current( $order ), $sortFunction );
 		
 		$offset     = $options['limit'] * ( $options['page'] - 1 );
 		$results    = $sorted->take( $options['limit'], $offset );
