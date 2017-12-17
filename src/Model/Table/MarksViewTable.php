@@ -66,15 +66,12 @@ class MarksViewTable extends Table {
 		
 		$this->belongsTo( 'TreesView', [
 			'foreignKey' => 'tree_id',
-			'strategy'   => 'select'
 		] );
 		$this->belongsTo( 'VarietiesView', [
 			'foreignKey' => 'variety_id',
-			'strategy'   => 'select'
 		] );
 		$this->belongsTo( 'BatchesView', [
 			'foreignKey' => 'batch_id',
-			'strategy'   => 'select'
 		] );
 	}
 	
