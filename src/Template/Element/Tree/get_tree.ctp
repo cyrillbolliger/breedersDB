@@ -6,7 +6,7 @@
         <th scope="row"><?= __('Experiment Site') ?></th>
         <th scope="row"><?= __('Row') ?></th>
         <th scope="row"><?= __('Offset') ?></th>
-        <?php if ($zpl): ?>
+        <?php if (isset($zpl) && $zpl): ?>
             <th scope="row" class="actions noprint"><?= __('Actions') ?></th>
         <?php endif; ?>
     </tr>
@@ -16,7 +16,7 @@
         <td><?= $tree->has('experiment_site') ? $tree->experiment_site->name : '' ?></td>
         <td><?= $tree->has('row') ? $tree->row->code : '' ?></td>
         <td><?= $this->Number->format($tree->offset) ?></td>
-        <?php if ($zpl): ?>
+        <?php if (isset($zpl) && $zpl): ?>
             <td class="actions noprint">
             <?= $this->Html->link('<i class="fa fa-print print-icon" aria-hidden="true"></i>',
                 false,
@@ -29,7 +29,7 @@
     </tr>
 </table>
 
-<?php if ($zpl): ?>
+<?php if (isset($zpl) && $zpl): ?>
     <script>
         app.instantiatePrintButtons();
     </script>
