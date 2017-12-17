@@ -244,12 +244,17 @@ table .actions {
 .mark_value_tooltip {
     width: 300px;
     min-height: 400px;
+    background: #fafafa;
 }
 
 .mark_value_tooltip h3 {
     font-size: 1em;
     color: #be140b;
     border-bottom: 2px solid #be140b;
+}
+
+.mark_value_tooltip table {
+    background: transparent;
 }
 
 .mark_value_tooltip table tr td,
