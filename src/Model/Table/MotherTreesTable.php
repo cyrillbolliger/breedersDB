@@ -158,7 +158,7 @@ class MotherTreesTable extends Table
      *
      * @param string $term
      *
-     * @return Cake\ORM\Query
+     * @return \Cake\ORM\Query
      */
     public function filterCodes(string $term)
     {

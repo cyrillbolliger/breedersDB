@@ -45,7 +45,10 @@
         var trans = {
             dateformat: '<?= __x('Date format', 'dd.mm.yy') ?>',
             searching: '<?= __('Searching...') ?>',
+            loading: '<?= __('Loading...') ?>',
+            loading_error: '<?= __x('{0} is replaced by an entity name.', 'There was an error loading {0}') ?>',
             create_new_variety: '<?= __('Nothing found. Create new covar of:') ?>',
+            mark: '<?= __x('The entitiy','mark') ?>',
             uc_new: '<?= __('NEW') ?>',
             brain_prefill: '<?= __('Automatically prefilled') ?>',
             delete_element: '<?= __x('after the : the name of the element to delete is inserted',

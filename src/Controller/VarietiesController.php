@@ -135,7 +135,6 @@ class VarietiesController extends AppController
     public function addOfficialVariety()
     {
         $variety = $this->Varieties->newEntity();
-        $batches = array();
         if ($this->request->is('post')) {
             $variety = $this->Varieties->patchEntity($variety, $this->request->data);
             if ($this->Varieties->save($variety)) {

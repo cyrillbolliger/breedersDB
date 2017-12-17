@@ -4,6 +4,7 @@ var MarksModule = require('./marks.js');
 var QueriesViewSelectorModule = require('./queries/view_selector.js');
 var QueriesWhereBuilderModule = require('./queries/where_builder.js');
 var Exporter = require('./exporter.js');
+var ResultsViewer = require('./queries/results_viewer.js');
 
 /**
  * handles all the general stuff
@@ -31,6 +32,7 @@ function GeneralModule() {
     this.QueriesViewSelector = new QueriesViewSelectorModule(self);
     this.QueriesWhereBuilder = new QueriesWhereBuilderModule(self);
     this.Exporter = new Exporter(self);
+    this.ResultsViewer = new ResultsViewer(self);
 
     /*
      * start up
@@ -57,6 +59,7 @@ function GeneralModule() {
         this.QueriesViewSelector.init();
         this.QueriesWhereBuilder.init();
         this.Exporter.init();
+        this.ResultsViewer.init();
     };
 
     /*
@@ -73,7 +76,7 @@ function GeneralModule() {
      */
     this.instantiateSelect2 = function () {
         // default select2
-        $('select').not('.hide, .hidden').select2({
+        $('select').not('.hide, .hidden, .no-select2').select2({
             minimumResultsForSearch: 12
         });
     };

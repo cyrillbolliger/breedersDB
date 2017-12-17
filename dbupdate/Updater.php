@@ -36,6 +36,10 @@ class Updater
         if (1 === version_compare('1.1.0', $currentVersion)) {
             $this->updateTo1dot1dot0();
         }
+	
+	    if (1 === version_compare('1.2.0', $currentVersion)) {
+		    $this->updateTo1dot2dot0();
+	    }
     }
     
     public function update(string $currentVersion): bool
@@ -99,6 +103,19 @@ class Updater
         // add field to table
         $query1 = "ALTER TABLE `mark_form_properties` ADD COLUMN `note` TEXT NULL DEFAULT NULL AFTER `field_type`";
         $this->db->exec($query1);
+    }
+	
+	/**
+	 * Add mark_property_id to marks view
+	 */
+	private function updateTo1dot2dot0(){
+    	// replace marks view
+		$query1 = "DROP TABLE IF EXISTS `marks_view`; CREATE OR REPLACE VIEW `marks_view` AS SELECT	mark_values.id, marks.`date`, marks.author, marks.tree_id, marks.variety_id, marks.batch_id, mark_values.`value`, mark_values.exceptional_mark, mark_form_properties.`name`, mark_form_properties.id AS property_id, mark_form_properties.field_type, mark_form_property_types.`name` AS property_type FROM marks INNER JOIN mark_values ON marks.id = mark_values.mark_id INNER JOIN mark_form_properties ON mark_values.mark_form_property_id = mark_form_properties.id INNER JOIN mark_form_property_types ON mark_form_properties.mark_form_property_type_id = mark_form_property_types.id;";
+		$this->db->exec($query1);
+		
+		// rename queries.query to queries.query_data
+		$query2 = "ALTER TABLE `queries` CHANGE COLUMN `query` `my_query` TEXT NULL DEFAULT NULL;";
+		$this->db->exec($query2);
     }
     
     private function getAssoc(string $query): array

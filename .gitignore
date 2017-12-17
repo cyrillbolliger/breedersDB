@@ -6,7 +6,5 @@
 /node_modules/*
 /npm-debug.log
 /backup/*
-/bin/*
 /tests/*
 /.editorconfig
-/gulpfile.js

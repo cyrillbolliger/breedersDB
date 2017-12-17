@@ -2,14 +2,14 @@
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
-use Cake\Validation\Validator;
 use App\Model\Rule\IsNotReferredBy;
-use Cake\Event\Event;
 use ArrayObject;
 use Cake\Database\Schema\Table as Schema;
+use Cake\Event\Event;
+use Cake\ORM\RulesChecker;
+use Cake\ORM\Table;
+use Cake\Utility\Text;
+use Cake\Validation\Validator;
 
 
 /**
@@ -31,7 +31,8 @@ use Cake\Database\Schema\Table as Schema;
  */
 class MarkFormPropertiesTable extends Table
 {
-    
+	private $namesBySlug;
+	
     protected function _initializeSchema(Schema $schema)
     {
         $schema->columnType('validation_rule', 'json');
@@ -249,7 +250,7 @@ class MarkFormPropertiesTable extends Table
      *
      * @param string $term
      *
-     * @return Cake\ORM\Query
+     * @return \Cake\ORM\Query
      */
     public function filter(string $term)
     {
@@ -261,4 +262,31 @@ class MarkFormPropertiesTable extends Table
         
         return $query;
     }
+	
+	/**
+	 * Return the name of a property by its slug
+	 *
+	 * @param string $slug
+	 *
+	 * @return string
+	 *
+	 * @throws \Exception if no name matches the given slug.
+	 */
+	public function getNameBySlug( string $slug ): string {
+		if ( empty( $this->namesBySlug ) ) {
+			$names = $this->find()->select( 'name' );
+			
+			$this->namesBySlug = [];
+			foreach ( $names as $item ) {
+				$s                       = Text::slug( $item->name );
+				$this->namesBySlug[ $s ] = $item->name;
+			}
+		}
+		
+		if ( ! in_array( $slug, array_keys( $this->namesBySlug ) ) ) {
+			throw new \Exception( "There is no mark property belonging to the given slug '{$this->namesBySlug}'" );
+		}
+		
+		return $this->namesBySlug[ $slug ];
+	}
 }

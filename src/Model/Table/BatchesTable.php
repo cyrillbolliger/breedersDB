@@ -150,7 +150,7 @@ class BatchesTable extends Table
      *
      * @param string $term
      *
-     * @return Cake\ORM\Query
+     * @return \Cake\ORM\Query
      */
     public function searchCrossingBatchs(string $term)
     {
@@ -183,7 +183,7 @@ class BatchesTable extends Table
      *
      * @param string $term
      *
-     * @return Cake\ORM\Query
+     * @return \Cake\ORM\Query
      */
     public function filterCrossingBatches(string $term)
     {

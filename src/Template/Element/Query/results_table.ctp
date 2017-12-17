@@ -1,8 +1,8 @@
 <table cellpadding="0" cellspacing="0">
     <thead>
     <tr>
-        <?php foreach ($columns as $column): ?>
-            <th scope="col"><?= $column ?></th>
+        <?php foreach ($columns as $column_key => $column_name): ?>
+            <th scope="col"><?= $this->Paginator->sort($column_key, $column_name) ?></th>
         <?php endforeach; ?>
     </tr>
     </thead>
