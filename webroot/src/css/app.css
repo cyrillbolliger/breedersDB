@@ -3,6 +3,11 @@
     Author     : cyrillbolliger
 */
 
+/* ------ general ------ */
+.scroll-box {
+    overflow: scroll;
+}
+
 /* ------ top-nav ------ */
 ul.top-nav {
     float: left;
@@ -190,7 +195,7 @@ table .actions {
 }
 
 .mark_plot {
-    width: 100px;
+    min-width: 90px;
     padding: 0;
     border-left: solid 1px #ebebec;
     border-right: solid 1px #ebebec;

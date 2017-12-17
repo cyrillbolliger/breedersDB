@@ -7,10 +7,10 @@
         ['action' => 'export', $query->id],
         ['class' => 'button export-button']);
     ?>
-    
+    <h3><?=  __('Query:') .' '. h($query->code) ?></h3>
+    <div class="clearfix"></div>
+	<?= $this->Text->autoParagraph(h($query->description)); ?>
     <div class="row">
-        <h3><?=  __('Query:') .' '. h($query->code) ?></h3>
-        <?= $this->Text->autoParagraph(h($query->description)); ?>
-        <?= $this->element('Query/mark_results_table'); ?>
+	        <?= $this->element('Query/mark_results_table'); ?>
     </div>
 </div>
