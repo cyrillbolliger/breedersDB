@@ -41,11 +41,15 @@ class MarkValue extends Entity
      * Return nicely formatted date if its a date. Else just return the value as it is.
      * The conversion to the ymd format at saving is done in the beforeMarshalling method of the table.
      *
-     * @return string
+     * @return string|void
      */
     protected function _getValue()
     {
-        $MarkFormProperties = TableRegistry::get('MarkFormProperties');
+        if ($this->isNew()) {
+        	return;
+        }
+    	
+    	$MarkFormProperties = TableRegistry::get('MarkFormProperties');
         
         $type = $MarkFormProperties->get($this->_properties['mark_form_property_id'])->field_type;
         
