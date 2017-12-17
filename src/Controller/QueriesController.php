@@ -143,7 +143,17 @@ class QueriesController extends AppController {
 		$this->autoRender = false;
 	}
 	
-	private function _getExportFile( $id ): string {
+	/**
+	 * Export the results of a query into a excel file and return the path to it
+	 *
+	 * @param int $id of the query who's data shall be exported
+	 *
+	 * @return string with the path to the exported file
+	 * @throws \Exception
+	 * @throws \PHPExcel_Exception
+	 * @throws \PHPExcel_Writer_Exception
+	 */
+	private function _getExportFile( int $id ): string {
 		$query = $this->Queries->get( $id );
 		
 		// if its a regular query
