@@ -289,6 +289,7 @@ class QueriesTable extends Table {
 		$rootTable = TableRegistry::get( $this->viewQueryRoot );
 		$orm_query = $rootTable
 			->find( 'all' )
+			->distinct()
 			->contain( $associations )
 			->join( $joins )
 			->where( $conditions );
