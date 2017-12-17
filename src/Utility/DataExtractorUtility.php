@@ -41,7 +41,9 @@ class DataExtractorUtility {
 		} );
 		
 		// clean out null values
-		$clean = array_filter( $flat );
+		$clean = array_filter( $flat, function($val) {
+			return null !== $val;
+		} );
 		
 		return $clean;
 	}

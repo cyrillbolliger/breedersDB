@@ -2,6 +2,7 @@
 
 namespace App\View\Helper;
 
+use App\Utility\DataExtractorUtility;
 use Cake\View\Helper;
 
 class DataExtractorHelper extends Helper {
@@ -16,7 +17,7 @@ class DataExtractorHelper extends Helper {
 	 * @return string
 	 */
 	public function getCell( $key, $data ) {
-		$extractor = new \App\Utility\DataExtractorUtility();
+		$extractor = new DataExtractorUtility();
 		$cell      = $extractor->getCell( $key, $data );
 		
 		if ( ! is_array( $cell ) ) {
