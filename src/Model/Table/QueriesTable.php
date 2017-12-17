@@ -3,7 +3,7 @@
 namespace App\Model\Table;
 
 use App\Model\Behavior\GetFilterDataBehavior;
-use App\Model\Behavior\TranslateableFieldsBehavior;
+use App\Model\Behavior\TranslatableFieldsBehavior;
 use App\Model\Entity\Query;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\HasMany;
@@ -28,7 +28,7 @@ use SoftDelete\Model\Table\SoftDeleteTrait;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  * @mixin GetFilterDataBehavior
- * @mixin TranslateableFieldsBehavior
+ * @mixin TranslatableFieldsBehavior
  */
 class QueriesTable extends Table {
 	use SoftDeleteTrait;
@@ -49,7 +49,7 @@ class QueriesTable extends Table {
 		
 		$this->addBehavior( 'Timestamp' );
 		$this->addBehavior( 'GetFilterData' );
-		$this->addBehavior( 'TranslateableFields' );
+		$this->addBehavior( 'TranslatableFields' );
 		
 		$this->belongsTo( 'QueryGroups', [
 			'foreignKey' => 'query_group_id',

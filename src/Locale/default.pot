@@ -541,311 +541,311 @@ msgctxt "moment.js time format"
 msgid "The given time must match the format HH:mm:ss"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:24
+#: Model/Behavior/TranslatableFieldsBehavior.php:24
 msgid "Batch -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:25
+#: Model/Behavior/TranslatableFieldsBehavior.php:25
 msgid "Batch -> Crossing.Batch"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:26
+#: Model/Behavior/TranslatableFieldsBehavior.php:26
 msgid "Batch -> Date Sowed"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:27
+#: Model/Behavior/TranslatableFieldsBehavior.php:27
 msgid "Batch -> Numb Seeds Sowed"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:28
+#: Model/Behavior/TranslatableFieldsBehavior.php:28
 msgid "Batch -> Numb Sprouts Grown"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:29
+#: Model/Behavior/TranslatableFieldsBehavior.php:29
 msgid "Batch -> Seed Tray"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:30
+#: Model/Behavior/TranslatableFieldsBehavior.php:30
 msgid "Batch -> Date Planted"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:31
+#: Model/Behavior/TranslatableFieldsBehavior.php:31
 msgid "Batch -> Numb Sprouts Planted"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:32
+#: Model/Behavior/TranslatableFieldsBehavior.php:32
 msgid "Batch -> Patch"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:33
+#: Model/Behavior/TranslatableFieldsBehavior.php:33
 msgid "Batch -> Note"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:34
+#: Model/Behavior/TranslatableFieldsBehavior.php:34
 msgid "Batch -> Crossing Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:35
+#: Model/Behavior/TranslatableFieldsBehavior.php:35
 msgid "Crossing -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:36
+#: Model/Behavior/TranslatableFieldsBehavior.php:36
 msgid "Crossing -> Code"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:37
+#: Model/Behavior/TranslatableFieldsBehavior.php:37
 msgid "Crossing -> Mother Variety"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:38
+#: Model/Behavior/TranslatableFieldsBehavior.php:38
 msgid "Crossing -> Father Variety"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:39
+#: Model/Behavior/TranslatableFieldsBehavior.php:39
 msgid "Mark -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:40
+#: Model/Behavior/TranslatableFieldsBehavior.php:40
 msgid "Mark -> Date"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:41
+#: Model/Behavior/TranslatableFieldsBehavior.php:41
 msgid "Mark -> Author"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:42
+#: Model/Behavior/TranslatableFieldsBehavior.php:42
 msgid "Mark -> Tree Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:43
+#: Model/Behavior/TranslatableFieldsBehavior.php:43
 msgid "Mark -> Variety Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:44
+#: Model/Behavior/TranslatableFieldsBehavior.php:44
 msgid "Mark -> Batch Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:45
+#: Model/Behavior/TranslatableFieldsBehavior.php:45
 msgid "Mark -> Value"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:46
+#: Model/Behavior/TranslatableFieldsBehavior.php:46
 msgid "Mark -> Exceptional Mark"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:47
+#: Model/Behavior/TranslatableFieldsBehavior.php:47
 msgid "Mark -> Property"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:48
+#: Model/Behavior/TranslatableFieldsBehavior.php:48
 msgid "Mark -> Property Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:49
+#: Model/Behavior/TranslatableFieldsBehavior.php:49
 msgid "Mark -> Data Type"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:50
+#: Model/Behavior/TranslatableFieldsBehavior.php:50
 msgid "Mark -> Property Type"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:51
+#: Model/Behavior/TranslatableFieldsBehavior.php:51
 msgid "Mother Tree -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:52
+#: Model/Behavior/TranslatableFieldsBehavior.php:52
 msgid "Mother Tree -> Crossing"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:53
+#: Model/Behavior/TranslatableFieldsBehavior.php:53
 msgid "Mother Tree -> Identification"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:54
+#: Model/Behavior/TranslatableFieldsBehavior.php:54
 msgid "Mother Tree -> Planed"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:55
+#: Model/Behavior/TranslatableFieldsBehavior.php:55
 msgid "Mother Tree -> Date Pollen Harvested"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:56
+#: Model/Behavior/TranslatableFieldsBehavior.php:56
 msgid "Mother Tree -> Date Impregnated"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:57
+#: Model/Behavior/TranslatableFieldsBehavior.php:57
 msgid "Mother Tree -> Date Fruit Harvested"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:58
+#: Model/Behavior/TranslatableFieldsBehavior.php:58
 msgid "Mother Tree -> Numb Portions"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:59
+#: Model/Behavior/TranslatableFieldsBehavior.php:59
 msgid "Mother Tree -> Numb Flowers"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:60
+#: Model/Behavior/TranslatableFieldsBehavior.php:60
 msgid "Mother Tree -> Numb Seeds"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:61
+#: Model/Behavior/TranslatableFieldsBehavior.php:61
 msgid "Mother Tree -> Target"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:62
+#: Model/Behavior/TranslatableFieldsBehavior.php:62
 msgid "Mother Tree -> Note"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:63
+#: Model/Behavior/TranslatableFieldsBehavior.php:63
 msgid "Mother Tree -> Convar"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:64
+#: Model/Behavior/TranslatableFieldsBehavior.php:64
 msgid "Mother Tree -> Publicid"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:65
+#: Model/Behavior/TranslatableFieldsBehavior.php:65
 msgid "Mother Tree -> Offset"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:66
+#: Model/Behavior/TranslatableFieldsBehavior.php:66
 msgid "Mother Tree -> Row"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:67
+#: Model/Behavior/TranslatableFieldsBehavior.php:67
 msgid "Mother Tree -> Experiment Site"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:68
+#: Model/Behavior/TranslatableFieldsBehavior.php:68
 msgid "Mother Tree -> Tree Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:69
+#: Model/Behavior/TranslatableFieldsBehavior.php:69
 msgid "Mother Tree -> Crossing Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:70
+#: Model/Behavior/TranslatableFieldsBehavior.php:70
 msgid "Scions Bundle -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:71
+#: Model/Behavior/TranslatableFieldsBehavior.php:71
 msgid "Scions Bundle -> Identification"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:72
+#: Model/Behavior/TranslatableFieldsBehavior.php:72
 msgid "Scions Bundle -> Convar"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:73
+#: Model/Behavior/TranslatableFieldsBehavior.php:73
 msgid "Scions Bundle -> Numb Scions"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:74
+#: Model/Behavior/TranslatableFieldsBehavior.php:74
 msgid "Scions Bundle -> Date Scions Harvest"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:75
+#: Model/Behavior/TranslatableFieldsBehavior.php:75
 msgid "Scions Bundle -> Descents (Publicids)"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:76
+#: Model/Behavior/TranslatableFieldsBehavior.php:76
 msgid "Scions Bundle -> Note"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:77
+#: Model/Behavior/TranslatableFieldsBehavior.php:77
 msgid "Scions Bundle -> Reserved for external partners"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:78
+#: Model/Behavior/TranslatableFieldsBehavior.php:78
 msgid "Scions Bundle -> Varienty Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:79
+#: Model/Behavior/TranslatableFieldsBehavior.php:79
 msgid "Tree -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:80
+#: Model/Behavior/TranslatableFieldsBehavior.php:80
 msgid "Tree -> Publicid"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:81
+#: Model/Behavior/TranslatableFieldsBehavior.php:81
 msgid "Tree -> Convar"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:82
+#: Model/Behavior/TranslatableFieldsBehavior.php:82
 msgid "Tree -> Date Grafted"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:83
+#: Model/Behavior/TranslatableFieldsBehavior.php:83
 msgid "Tree -> Date Planted"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:84
+#: Model/Behavior/TranslatableFieldsBehavior.php:84
 msgid "Tree -> Date Eliminated"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:85
+#: Model/Behavior/TranslatableFieldsBehavior.php:85
 msgid "Tree -> Genuine Seedling"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:86
+#: Model/Behavior/TranslatableFieldsBehavior.php:86
 msgid "Tree -> Offset"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:87
+#: Model/Behavior/TranslatableFieldsBehavior.php:87
 msgid "Tree -> Row"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:88
+#: Model/Behavior/TranslatableFieldsBehavior.php:88
 msgid "Tree -> Note"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:89
+#: Model/Behavior/TranslatableFieldsBehavior.php:89
 msgid "Tree -> Variety Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:90
+#: Model/Behavior/TranslatableFieldsBehavior.php:90
 msgid "Tree -> Grafting"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:91
+#: Model/Behavior/TranslatableFieldsBehavior.php:91
 msgid "Tree -> Rootstock"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:92
+#: Model/Behavior/TranslatableFieldsBehavior.php:92
 msgid "Tree -> Experiment Site"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:93
+#: Model/Behavior/TranslatableFieldsBehavior.php:93
 msgid "Varieties -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:94
+#: Model/Behavior/TranslatableFieldsBehavior.php:94
 msgid "Varieties -> Convar"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:95
+#: Model/Behavior/TranslatableFieldsBehavior.php:95
 msgid "Varieties -> Official Name"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:96
+#: Model/Behavior/TranslatableFieldsBehavior.php:96
 msgid "Varieties -> Acronym"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:97
+#: Model/Behavior/TranslatableFieldsBehavior.php:97
 msgid "Varieties -> Plant Breeder"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:98
+#: Model/Behavior/TranslatableFieldsBehavior.php:98
 msgid "Varieties -> Registration"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:99
+#: Model/Behavior/TranslatableFieldsBehavior.php:99
 msgid "Varieties -> Description"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:100
+#: Model/Behavior/TranslatableFieldsBehavior.php:100
 msgid "Varieties -> Batch Id"
 msgstr ""
 
