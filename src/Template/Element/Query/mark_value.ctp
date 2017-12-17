@@ -50,7 +50,7 @@
 						<?php
 						if ( isset( $values[ $count ] ) ) {
 							echo '<span class="mark_value mark_value-' . key( $values[ $count ] ) . '">' .
-							        current( $values[ $count ] ) .
+							     current( $values[ $count ] ) .
 							     '</span>';
 						}
 						$count ++;

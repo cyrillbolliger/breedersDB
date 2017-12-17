@@ -1,21 +1,21 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <?= $this->element('Tree/nav'); ?>
+	<?= $this->element( 'Tree/nav' ); ?>
 </nav>
 
-<?php $filter = json_encode([
-    'controller' => 'trees',
-    'action'     => 'getTree',
-    'element'    => 'eliminate_form',
-    'fields'     => [
-        'publicid'
-    ]
-]); ?>
+<?php $filter = json_encode( [
+	'controller' => 'trees',
+	'action'     => 'getTree',
+	'element'    => 'eliminate_form',
+	'fields'     => [
+		'publicid'
+	]
+] ); ?>
 
 <div class="large-9 medium-8 columns content">
-    <h3><?= __('Eliminate Tree') ?></h3>
+    <h3><?= __( 'Eliminate Tree' ) ?></h3>
     <div>
         <input type="text" class="get_tree" autofocus="autofocus" data-filter='<?= $filter ?>'
-               placeholder="<?= __('Enter publicid...') ?>">
+               placeholder="<?= __( 'Enter publicid...' ) ?>">
     </div>
 </div>
 

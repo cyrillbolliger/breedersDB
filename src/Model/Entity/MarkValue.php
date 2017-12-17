@@ -20,44 +20,43 @@ use Cake\I18n\Date;
  * @property \App\Model\Entity\MarkFormProperty $mark_form_property
  * @property \App\Model\Entity\Mark $mark
  */
-class MarkValue extends Entity
-{
-    
-    /**
-     * Fields that can be mass assigned using newEntity() or patchEntity().
-     *
-     * Note that when '*' is set to true, this allows all unspecified fields to
-     * be mass assigned. For security purposes, it is advised to set '*' to false
-     * (or remove it), and explicitly make individual fields accessible as needed.
-     *
-     * @var array
-     */
-    protected $_accessible = [
-        '*'  => true,
-        'id' => false
-    ];
-    
-    /**
-     * Return nicely formatted date if its a date. Else just return the value as it is.
-     * The conversion to the ymd format at saving is done in the beforeMarshalling method of the table.
-     *
-     * @return string|void
-     */
-    protected function _getValue()
-    {
-        if ($this->isNew()) {
-        	return;
-        }
-    	
-    	$MarkFormProperties = TableRegistry::get('MarkFormProperties');
-        
-        $type = $MarkFormProperties->get($this->_properties['mark_form_property_id'])->field_type;
-        
-        if ('DATE' === $type) {
-            $date = Date::parse($this->_properties['value']);
-            return $date->i18nFormat();
-        }
-        
-        return $this->_properties['value'];
-    }
+class MarkValue extends Entity {
+	
+	/**
+	 * Fields that can be mass assigned using newEntity() or patchEntity().
+	 *
+	 * Note that when '*' is set to true, this allows all unspecified fields to
+	 * be mass assigned. For security purposes, it is advised to set '*' to false
+	 * (or remove it), and explicitly make individual fields accessible as needed.
+	 *
+	 * @var array
+	 */
+	protected $_accessible = [
+		'*'  => true,
+		'id' => false
+	];
+	
+	/**
+	 * Return nicely formatted date if its a date. Else just return the value as it is.
+	 * The conversion to the ymd format at saving is done in the beforeMarshalling method of the table.
+	 *
+	 * @return string|void
+	 */
+	protected function _getValue() {
+		if ( $this->isNew() ) {
+			return;
+		}
+		
+		$MarkFormProperties = TableRegistry::get( 'MarkFormProperties' );
+		
+		$type = $MarkFormProperties->get( $this->_properties['mark_form_property_id'] )->field_type;
+		
+		if ( 'DATE' === $type ) {
+			$date = Date::parse( $this->_properties['value'] );
+			
+			return $date->i18nFormat();
+		}
+		
+		return $this->_properties['value'];
+	}
 }

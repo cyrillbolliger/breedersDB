@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -20,7 +21,6 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Crossing $crossing
  */
-class BatchesView extends Entity
-{
+class BatchesView extends Entity {
 
 }

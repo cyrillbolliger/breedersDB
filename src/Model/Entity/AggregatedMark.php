@@ -55,7 +55,7 @@ class AggregatedMark {
 	 * @param string $sort_by
 	 */
 	public function __construct( string $mode, string $sort_by ) {
-		$this->mode = $mode;
+		$this->mode    = $mode;
 		$this->sort_by = $sort_by;
 	}
 	
@@ -98,20 +98,20 @@ class AggregatedMark {
 		switch ( $type ) {
 			case 'INTEGER':
 			case 'FLOAT':
-				$this->value = (object) $this->_calculateStats( $values, $type );
+				$this->value      = (object) $this->_calculateStats( $values, $type );
 				$this->sort_value = &$this->value->{$this->sort_by};
 				break;
 			
 			case 'DATE':
 			case 'VARCHAR':
-				$this->value = implode( '; ', $values );
+				$this->value      = implode( '; ', $values );
 				$this->sort_value = &$this->value;
 				break;
 			
 			case 'BOOLEAN':
-				$sum = array_sum( $values );
-				$this->value = (bool) $sum;
-				$this->sort_value = $sum / count($values);
+				$sum              = array_sum( $values );
+				$this->value      = (bool) $sum;
+				$this->sort_value = $sum / count( $values );
 				break;
 			
 			default:

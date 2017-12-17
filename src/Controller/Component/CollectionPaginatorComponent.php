@@ -56,14 +56,14 @@ class CollectionPaginatorComponent extends Component {
 			$directionDefault = current( $defaults['order'] );
 		}
 		
-		$sort = array_key_exists( 'sort', $options ) ? $options['sort'] : $sortDefault;
+		$sort      = array_key_exists( 'sort', $options ) ? $options['sort'] : $sortDefault;
 		$direction = array_key_exists( 'direction', $options ) ? $options['direction'] : $directionDefault;
-		$order = [ $sort => $direction ];
+		$order     = [ $sort => $direction ];
 		
-		$sorted     = $this->_sort( $collection, key( $order ), current( $order ), $sortFunction );
+		$sorted = $this->_sort( $collection, key( $order ), current( $order ), $sortFunction );
 		
-		$offset     = $options['limit'] * ( $options['page'] - 1 );
-		$results    = $sorted->take( $options['limit'], $offset );
+		$offset  = $options['limit'] * ( $options['page'] - 1 );
+		$results = $sorted->take( $options['limit'], $offset );
 		
 		$numResults = count( $results->toArray() );
 		$count      = $numResults ? count( $collection->toArray() ) : 0;

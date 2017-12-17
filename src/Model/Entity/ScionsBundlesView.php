@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -18,7 +19,6 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Variety $variety
  */
-class ScionsBundlesView extends Entity
-{
+class ScionsBundlesView extends Entity {
 
 }

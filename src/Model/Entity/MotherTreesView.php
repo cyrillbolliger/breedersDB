@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -27,7 +28,6 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Crossing $crossing
  * @property \App\Model\Entity\Tree $tree
  */
-class MotherTreesView extends Entity
-{
+class MotherTreesView extends Entity {
 
 }

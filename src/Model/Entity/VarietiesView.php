@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -17,7 +18,6 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Batch $batch
  */
-class VarietiesView extends Entity
-{
+class VarietiesView extends Entity {
 
 }

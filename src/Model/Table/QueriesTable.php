@@ -492,7 +492,7 @@ class QueriesTable extends Table {
 	 */
 	public function getMarkColumns( Query $markQuery ): array {
 		$markProperties = TableRegistry::get( 'MarkFormProperties' );
-		$columns   = [];
+		$columns        = [];
 		foreach ( $markQuery->active_mark_field_ids as $property_id ) {
 			$columns[ $property_id ] = $markProperties->get( $property_id );
 		}

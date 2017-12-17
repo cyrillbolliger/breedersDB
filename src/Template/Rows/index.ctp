@@ -1,22 +1,22 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <?= $this->element('Row/nav'); ?>
+	<?= $this->element( 'Row/nav' ); ?>
 </nav>
 
-<?php $filter = json_encode([
-    'controller' => 'rows',
-    'action'     => 'filter',
-    'fields'     => [
-        'code'
-    ]
-]); ?>
+<?php $filter = json_encode( [
+	'controller' => 'rows',
+	'action'     => 'filter',
+	'fields'     => [
+		'code'
+	]
+] ); ?>
 
 <div class="rows index large-9 medium-8 columns content">
-    <h3><?= __('Rows') ?></h3>
+    <h3><?= __( 'Rows' ) ?></h3>
     <div>
         <input type="text" class="filter noprint" data-filter='<?= $filter ?>'
-               placeholder="<?= __('Filter by name...') ?>">
+               placeholder="<?= __( 'Filter by name...' ) ?>">
     </div>
     <div id="index_table">
-        <?= $this->element('Row/index_table'); ?>
+		<?= $this->element( 'Row/index_table' ); ?>
     </div>
 </div>

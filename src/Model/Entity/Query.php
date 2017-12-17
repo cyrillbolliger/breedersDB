@@ -239,6 +239,15 @@ class Query extends Entity {
 	}
 	
 	/**
+	 * Return a stdClass containing the where rules
+	 *
+	 * @return \stdClass
+	 */
+	protected function _getWhereRules(): \stdClass {
+		return json_decode( $this->_getWhereRulesJson() );
+	}
+	
+	/**
 	 * Return the where data as JSON or null
 	 *
 	 * @return string JSON of the where data
@@ -249,15 +258,6 @@ class Query extends Entity {
 		}
 		
 		return $this->_getQuery()->where;
-	}
-	
-	/**
-	 * Return a stdClass containing the where rules
-	 *
-	 * @return \stdClass
-	 */
-	protected function _getWhereRules(): \stdClass {
-		return json_decode($this->_getWhereRulesJson());
 	}
 	
 	/**

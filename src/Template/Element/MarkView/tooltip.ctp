@@ -26,32 +26,32 @@
             <td><?= h( $batch->crossing_batch ); ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Date Sowed') ?></th>
-            <td><?= h($batch->date_sowed) ?></td>
+            <th scope="row"><?= __( 'Date Sowed' ) ?></th>
+            <td><?= h( $batch->date_sowed ) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Numb Seeds Sowed') ?></th>
-            <td><?= $this->Number->format($batch->numb_seeds_sowed) ?></td>
+            <th scope="row"><?= __( 'Numb Seeds Sowed' ) ?></th>
+            <td><?= $this->Number->format( $batch->numb_seeds_sowed ) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Numb Sprouts Grown') ?></th>
-            <td><?= $this->Number->format($batch->numb_sprouts_grown) ?></td>
+            <th scope="row"><?= __( 'Numb Sprouts Grown' ) ?></th>
+            <td><?= $this->Number->format( $batch->numb_sprouts_grown ) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Seed Tray') ?></th>
-            <td><?= h($batch->seed_tray) ?></td>
+            <th scope="row"><?= __( 'Seed Tray' ) ?></th>
+            <td><?= h( $batch->seed_tray ) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Date Planted') ?></th>
-            <td><?= h($batch->date_planted) ?></td>
+            <th scope="row"><?= __( 'Date Planted' ) ?></th>
+            <td><?= h( $batch->date_planted ) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Numb Sprouts Planted') ?></th>
-            <td><?= $this->Number->format($batch->numb_sprouts_planted) ?></td>
+            <th scope="row"><?= __( 'Numb Sprouts Planted' ) ?></th>
+            <td><?= $this->Number->format( $batch->numb_sprouts_planted ) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Patch') ?></th>
-            <td><?= h($batch->patch) ?></td>
+            <th scope="row"><?= __( 'Patch' ) ?></th>
+            <td><?= h( $batch->patch ) ?></td>
         </tr>
         <tr>
             <td colspan="2" class="inline-note">
@@ -76,20 +76,20 @@
             <td><?= h( $variety->official_name ); ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Acronym') ?></th>
-            <td><?= h($variety->acronym) ?></td>
+            <th scope="row"><?= __( 'Acronym' ) ?></th>
+            <td><?= h( $variety->acronym ) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Breeder Variety Code') ?></th>
-            <td><?= h($variety->breeder_variety_code) ?></td>
+            <th scope="row"><?= __( 'Breeder Variety Code' ) ?></th>
+            <td><?= h( $variety->breeder_variety_code ) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Plant Breeder') ?></th>
-            <td><?= h($variety->plant_breeder) ?></td>
+            <th scope="row"><?= __( 'Plant Breeder' ) ?></th>
+            <td><?= h( $variety->plant_breeder ) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Registration') ?></th>
-            <td><?= h($variety->registration) ?></td>
+            <th scope="row"><?= __( 'Registration' ) ?></th>
+            <td><?= h( $variety->registration ) ?></td>
         </tr>
         <tr>
             <td colspan="2" class="inline-note">
@@ -138,7 +138,7 @@
         <tr>
             <td colspan="2" class="inline-note">
                 <span class="inline-note-title"><?= __( 'Note' ) ?></span>
-                <?= $this->Text->autoParagraph( h( $tree->note ) ); ?>
+				<?= $this->Text->autoParagraph( h( $tree->note ) ); ?>
             </td>
         </tr>
     </table>

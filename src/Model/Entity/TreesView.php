@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -23,7 +24,6 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Variety $variety
  */
-class TreesView extends Entity
-{
+class TreesView extends Entity {
 
 }

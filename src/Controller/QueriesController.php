@@ -94,7 +94,7 @@ class QueriesController extends AppController {
 		
 		// get columns
 		$regular_columns = $this->Queries->getRegularColumns( $query );
-		$mark_columns = $this->Queries->getMarkColumns( $query );
+		$mark_columns    = $this->Queries->getMarkColumns( $query );
 		
 		// get navigation stuff
 		$this->loadModel( 'QueryGroups' );
@@ -167,9 +167,9 @@ class QueriesController extends AppController {
 		
 		// get columns
 		$regular_columns = $this->Queries->getRegularColumns( $query );
-		$mark_columns = $this->Queries->getMarkColumns( $query );
+		$mark_columns    = $this->Queries->getMarkColumns( $query );
 		
-		return $this->Excel->exportFromMarkCollection($data, $regular_columns, $mark_columns, $query->code);
+		return $this->Excel->exportFromMarkCollection( $data, $regular_columns, $mark_columns, $query->code );
 	}
 	
 	/**

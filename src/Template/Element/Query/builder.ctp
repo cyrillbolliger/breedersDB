@@ -53,13 +53,14 @@ foreach ( $views as $view_key => $view_name ) {
 			echo $this->Form->checkbox( 'MarkProperties[' . $field->id . '][check]', [
 				'class'    => 'field-selector ' . 'mark-property-' . $field->id . '-field-selector mark-property-selector',
 				'required' => false,
-				'checked'  => array_key_exists( (string) $field->id, $mark_fields ) ? $mark_fields[$field->id]->check : false,
+				'checked'  => array_key_exists( (string) $field->id,
+					$mark_fields ) ? $mark_fields[ $field->id ]->check : false,
 			] );
 			echo $this->Form->label( 'MarkProperties[' . $field->id . '][check]',
 				__( 'Mark Property' ) . ' -> ' . $field->name );
 			echo $this->element( 'Query/mark_property_filter', [
 				'field' => $field,
-				'data'  => array_key_exists( (string) $field->id, $mark_fields ) ? $mark_fields[$field->id] : null
+				'data'  => array_key_exists( (string) $field->id, $mark_fields ) ? $mark_fields[ $field->id ] : null
 			] );
 			echo '</div>';
 		}

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -11,7 +12,6 @@ use Cake\ORM\Entity;
  * @property string $mother_variety
  * @property string $father_variety
  */
-class CrossingsView extends Entity
-{
+class CrossingsView extends Entity {
 
 }
