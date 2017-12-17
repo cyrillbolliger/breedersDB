@@ -36,7 +36,7 @@ class MarksReaderComponent extends Component
      * Is called after the controller’s beforeFilter method but before the
      * controller executes the current action handler.
      *
-     * @param Cake\Event\Event $event
+     * @param \Cake\Event\Event $event
      */
     public function startup(Event $event)
     {
@@ -83,7 +83,7 @@ class MarksReaderComponent extends Component
      * @param int|null $batchId
      * @param int|null $markId
      *
-     * @return Cake\ORM\Query
+     * @return \Cake\ORM\Query
      */
     protected function _findByType(int $typeId, $treeId, $varietyId, $batchId, $markId)
     {

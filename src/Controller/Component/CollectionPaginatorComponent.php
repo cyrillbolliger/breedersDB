@@ -65,7 +65,7 @@ class CollectionPaginatorComponent extends Component {
 		$offset     = $options['limit'] * ( $options['page'] - 1 );
 		$results    = $sorted->take( $options['limit'], $offset );
 		
-		$numResults = count( $results );
+		$numResults = count( $results->toArray() );
 		$count      = $numResults ? count( $collection->toArray() ) : 0;
 		
 		$defaults = $this->Paginator->getDefaults( $alias, [] );

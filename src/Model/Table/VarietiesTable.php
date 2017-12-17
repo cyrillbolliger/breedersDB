@@ -127,7 +127,7 @@ class VarietiesTable extends Table
      *
      * @param string $term
      *
-     * @return Cake\ORM\Query
+     * @return \Cake\ORM\Query
      */
     public function filter(string $term)
     {
@@ -147,7 +147,7 @@ class VarietiesTable extends Table
      *
      * @param string $term
      *
-     * @return Cake\ORM\Query
+     * @return \Cake\ORM\Query
      */
     public function filterBreederVarietyCode(string $term)
     {
@@ -164,7 +164,7 @@ class VarietiesTable extends Table
      *
      * @param string $term
      *
-     * @return Cake\ORM\Query
+     * @return \Cake\ORM\Query
      */
     public function filterConvars(string $term)
     {
@@ -187,7 +187,7 @@ class VarietiesTable extends Table
      *
      * @param string $term
      *
-     * @return Cake\ORM\Query
+     * @return \Cake\ORM\Query
      */
     public function searchConvars(string $term)
     {

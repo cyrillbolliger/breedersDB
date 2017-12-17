@@ -44,7 +44,7 @@ class BrainComponent extends Component
      * Is called after the controller’s beforeFilter method but before the
      * controller executes the current action handler.
      *
-     * @param Cake\Event\Event $event
+     * @param \Cake\Event\Event $event
      */
     public function startup(Event $event)
     {
@@ -67,7 +67,6 @@ class BrainComponent extends Component
         
         $keys = array_intersect($fields, array_keys($data));
         
-        $memory = array();
         foreach ($keys as $key) {
             $session->write("Brain.$controller.$key", $data[$key]);
         }
@@ -78,10 +77,10 @@ class BrainComponent extends Component
      * as key to get the memorized value and return it. If $fields are defined
      * do only prepopulate the defined fields.
      *
-     * @param Cake\ORM\Entity|String $entity
+     * @param \Cake\ORM\Entity|String $entity
      * @param array|null $fields
      *
-     * @return Cake\ORM\Entity
+     * @return \Cake\ORM\Entity
      */
     public function remember($entity, $fields = null)
     {

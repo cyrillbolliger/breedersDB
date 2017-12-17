@@ -44,4 +44,3 @@ switch ( $field->inputType ) {
 		] );
 }
 echo '</div>';
-?>

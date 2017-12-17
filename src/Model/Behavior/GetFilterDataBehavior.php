@@ -8,10 +8,8 @@
 
 namespace App\Model\Behavior;
 
-use App\Utility\MarksAggregatorUtility;
 use Cake\ORM\Behavior;
 use Cake\ORM\TableRegistry;
-use Cake\Utility\Text;
 
 class GetFilterDataBehavior extends Behavior {
 	/**
