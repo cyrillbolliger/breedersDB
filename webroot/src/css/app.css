@@ -192,8 +192,8 @@ table .actions {
 .mark_plot {
     width: 100px;
     padding: 0;
-    border-left: solid 1px;
-    border-right: solid 1px;
+    border-left: solid 1px #ebebec;
+    border-right: solid 1px #ebebec;
     position:relative;
 }
 
@@ -204,14 +204,88 @@ table .actions {
 
 .mark_plot-extremes {
     height: 50%;
-    border-bottom: solid 1px;
+    border-bottom: solid 1px #be140b;
 }
 
 .mark_plot-median {
     height: 100%;
-    border-right: solid 1px;
+    border-right: solid 1px #222;
 }
 
+.mark_stats {
+    margin:0;
+}
+
+.mark_stats td{
+    padding: 0;
+    font-size: 0.8em;
+}
+
+.mark_stats tr:last-of-type {
+    border-bottom: none;
+}
+
+.mark_value {
+    padding: 0.25em 0.5em;
+    cursor: default;
+}
+
+.mark_value:hover {
+    color: #be140b;
+    background: #e6e6e6;
+    border-radius: 3px;
+}
+
+.mark_value_tooltip {
+    width: 300px;
+    min-height: 400px;
+}
+
+.mark_value_tooltip h3 {
+    font-size: 1em;
+    color: #be140b;
+    border-bottom: 2px solid #be140b;
+}
+
+.mark_value_tooltip table tr td,
+.mark_value_tooltip table tr th {
+    font-size: 0.8em;
+    padding: 0.28125em 0.4125em;
+}
+
+.mark_value_tooltip .inline-note {
+    text-align: left;
+}
+
+.mark_value_tooltip .inline-note .inline-note-title {
+    color: #1798A5;
+    font-weight: bold;
+}
+
+.mark_value_tooltip .inline-note p {
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.mark_results_table thead tr {
+    border-bottom: none;
+}
+
+.mark_col {
+    border-left: solid 1px #ebebec;
+    border-right: solid 1px #ebebec;
+}
+
+.mark_col_header {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.mark_col_subheader {
+    padding-top: 0;
+    border-bottom: 2px solid #1798A5;
+    font-weight: normal;
+}
 
 /* --------- Side nav ------- */
 .side-nav li.editable-nav-item a {

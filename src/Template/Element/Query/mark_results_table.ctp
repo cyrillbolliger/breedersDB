@@ -1,4 +1,4 @@
-<table cellpadding="0" cellspacing="0">
+<table cellpadding="0" cellspacing="0" class="mark_results_table">
     <thead>
     <tr>
 		<?php foreach ( $regular_columns as $column_key => $column_name ): ?>
@@ -8,7 +8,7 @@
 		<?php endforeach; ?>
 		<?php foreach ( $mark_columns as $column ): ?>
 			<?php $colspan = $column->is_numerical ? 3 : 2 ?>
-            <th scope="col" colspan="<?= $colspan ?>">
+            <th scope="col" colspan="<?= $colspan ?>" class="mark_col mark_col_header">
                 <?= $this->Paginator->sort('mark-'.$column->id, $column->name) ?>
             </th>
 		<?php endforeach; ?>
@@ -16,12 +16,12 @@
     <tr>
 		<?php foreach ( $mark_columns as $column ): ?>
 			<?php if ( $column->is_numerical ): ?>
-                <td><?= __( 'Plot' ) ?></td>
-                <td><?= __( 'Stats' ) ?></td>
+                <td class="mark_col mark_col_subheader"><?= __( 'Plot' ) ?></td>
+                <td class="mark_col mark_col_subheader"><?= __( 'Stats' ) ?></td>
 			<?php else: ?>
-                <td><?= __( 'Value' ) ?></td>
+                <td class="mark_col mark_col_subheader"><?= __( 'Value' ) ?></td>
 			<?php endif; ?>
-            <td><?= __( 'Values' ) ?></td>
+            <td class="mark_col mark_col_subheader"><?= __( 'Values' ) ?></td>
 		<?php endforeach; ?>
     </tr>
     </thead>

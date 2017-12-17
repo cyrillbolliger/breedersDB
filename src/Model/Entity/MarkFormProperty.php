@@ -60,8 +60,8 @@ class MarkFormProperty extends Entity {
 		}
 		
 		return [
-			'all' => __( 'All' ),
-			'any' => __( 'Any' ),
+			'all' => __x( 'every', 'Every' ),
+			'any' => __x( 'at least one', 'Any' ),
 		];
 		
 	}

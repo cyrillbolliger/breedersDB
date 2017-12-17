@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2017-10-07 17:39+0000\n"
+"POT-Creation-Date: 2017-12-10 19:30+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -270,19 +270,19 @@ msgstr ""
 msgid "The mother tree could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/QueriesController.php:71;147
+#: Controller/QueriesController.php:189;269
 msgid "The query has been saved."
 msgstr ""
 
-#: Controller/QueriesController.php:75;151
+#: Controller/QueriesController.php:193;273
 msgid "The query could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/QueriesController.php:217
+#: Controller/QueriesController.php:341
 msgid "The query has been deleted."
 msgstr ""
 
-#: Controller/QueriesController.php:219
+#: Controller/QueriesController.php:343
 msgid "The query could not be deleted. Please, try again."
 msgstr ""
 
@@ -414,48 +414,89 @@ msgstr ""
 msgid "The variety could not be deleted. Please, try again."
 msgstr ""
 
+#: Controller/Component/ExcelComponent.php:97;98
+msgid "Breeders Database"
+msgstr ""
+
+#: Controller/Component/ExcelComponent.php:188
+msgid "median"
+msgstr ""
+
+#: Controller/Component/ExcelComponent.php:189
+msgid "average"
+msgstr ""
+
+#: Controller/Component/ExcelComponent.php:190
+msgid "count"
+msgstr ""
+
+#: Controller/Component/ExcelComponent.php:191
+msgid "min"
+msgstr ""
+
+#: Template/Element/Query/mark_value.ctp:19
+msgctxt "short: minimum"
+msgid "min"
+msgstr ""
+
+#: Controller/Component/ExcelComponent.php:192
+msgid "max"
+msgstr ""
+
+#: Template/Element/Query/mark_value.ctp:20
+msgctxt "short: maximum"
+msgid "max"
+msgstr ""
+
+#: Controller/Component/ExcelComponent.php:193
+msgid "standard deviation"
+msgstr ""
+
+#: Controller/Component/ExcelComponent.php:195
+msgid "value"
+msgstr ""
+
+#: Controller/Component/ExcelComponent.php:197
+msgid "values"
+msgstr ""
+
 #: Controller/Component/MarksReaderComponent.php:63
 msgid "Invalid arguments."
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:91
-#: Template/MarkForms/view.ctp:30
-msgid "Mark Property"
-msgstr ""
-
-#: Model/Behavior/GetFilterDataBehavior.php:157;160;173;175
+#: Model/Behavior/GetFilterDataBehavior.php:150;153;167;169
 msgid "Please enter a number"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:158;159
+#: Model/Behavior/GetFilterDataBehavior.php:151;152
 msgid "Only integers allowed"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:161
+#: Model/Behavior/GetFilterDataBehavior.php:154
 msgid "The given number must not be smaller then %s"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:163
+#: Model/Behavior/GetFilterDataBehavior.php:156
 msgid "The given number must not be greater then %s"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:174
+#: Model/Behavior/GetFilterDataBehavior.php:168
 msgid "Only numbers allowed"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:189
+#: Model/Behavior/GetFilterDataBehavior.php:185
 msgid "Please enter a date"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:200
+#: Model/Behavior/GetFilterDataBehavior.php:197
 msgid "Please enter date and time"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:211
+#: Model/Behavior/GetFilterDataBehavior.php:209
 msgid "Please enter a time"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:228
+#: Model/Behavior/GetFilterDataBehavior.php:226
 #: Template/Marks/view.ctp:69
 #: Template/MotherTrees/view.ctp:24
 #: Template/ScionsBundles/view.ctp:30
@@ -463,345 +504,494 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:228
+#: Model/Behavior/GetFilterDataBehavior.php:226
 #: Template/MotherTrees/view.ctp:24
 #: Template/ScionsBundles/view.ctp:30
 #: Template/Trees/view.ctp:37;63
 msgid "No"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:184
+#: Model/Behavior/GetFilterDataBehavior.php:180
 msgctxt "moment.js date format"
 msgid "DD.MM.YYYY"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:187
+#: Model/Behavior/GetFilterDataBehavior.php:183
 msgctxt "moment.js date format"
 msgid "The given date must match the format DD.MM.YYYY"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:195
+#: Model/Behavior/GetFilterDataBehavior.php:192
 msgctxt "moment.js datetime format"
 msgid "DD.MM.YYYY HH:mm:ss"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:198
+#: Model/Behavior/GetFilterDataBehavior.php:195
 msgctxt "moment.js datetime format"
 msgid "The given date and time must match the format DD.MM.YYYY HH:mm:ss"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:206
+#: Model/Behavior/GetFilterDataBehavior.php:204
 msgctxt "moment.js time format"
 msgid "HH:mm:ss"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:209
+#: Model/Behavior/GetFilterDataBehavior.php:207
 msgctxt "moment.js time format"
 msgid "The given time must match the format HH:mm:ss"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:26
+#: Model/Behavior/TranslateableFieldsBehavior.php:24
 msgid "Batch -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:27
+#: Model/Behavior/TranslateableFieldsBehavior.php:25
 msgid "Batch -> Crossing.Batch"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:28
+#: Model/Behavior/TranslateableFieldsBehavior.php:26
 msgid "Batch -> Date Sowed"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:29
+#: Model/Behavior/TranslateableFieldsBehavior.php:27
 msgid "Batch -> Numb Seeds Sowed"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:30
+#: Model/Behavior/TranslateableFieldsBehavior.php:28
 msgid "Batch -> Numb Sprouts Grown"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:31
+#: Model/Behavior/TranslateableFieldsBehavior.php:29
 msgid "Batch -> Seed Tray"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:32
+#: Model/Behavior/TranslateableFieldsBehavior.php:30
 msgid "Batch -> Date Planted"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:33
+#: Model/Behavior/TranslateableFieldsBehavior.php:31
 msgid "Batch -> Numb Sprouts Planted"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:34
+#: Model/Behavior/TranslateableFieldsBehavior.php:32
 msgid "Batch -> Patch"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:35
+#: Model/Behavior/TranslateableFieldsBehavior.php:33
 msgid "Batch -> Note"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:36
+#: Model/Behavior/TranslateableFieldsBehavior.php:34
 msgid "Batch -> Crossing Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:37
+#: Model/Behavior/TranslateableFieldsBehavior.php:35
 msgid "Crossing -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:38
+#: Model/Behavior/TranslateableFieldsBehavior.php:36
 msgid "Crossing -> Code"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:39
+#: Model/Behavior/TranslateableFieldsBehavior.php:37
 msgid "Crossing -> Mother Variety"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:40
+#: Model/Behavior/TranslateableFieldsBehavior.php:38
 msgid "Crossing -> Father Variety"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:41
+#: Model/Behavior/TranslateableFieldsBehavior.php:39
 msgid "Mark -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:42
+#: Model/Behavior/TranslateableFieldsBehavior.php:40
 msgid "Mark -> Date"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:43
+#: Model/Behavior/TranslateableFieldsBehavior.php:41
 msgid "Mark -> Author"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:44
+#: Model/Behavior/TranslateableFieldsBehavior.php:42
 msgid "Mark -> Tree Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:45
+#: Model/Behavior/TranslateableFieldsBehavior.php:43
 msgid "Mark -> Variety Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:46
+#: Model/Behavior/TranslateableFieldsBehavior.php:44
 msgid "Mark -> Batch Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:47
+#: Model/Behavior/TranslateableFieldsBehavior.php:45
 msgid "Mark -> Value"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:48
+#: Model/Behavior/TranslateableFieldsBehavior.php:46
 msgid "Mark -> Exceptional Mark"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:49
+#: Model/Behavior/TranslateableFieldsBehavior.php:47
 msgid "Mark -> Property"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:50
+#: Model/Behavior/TranslateableFieldsBehavior.php:48
+msgid "Mark -> Property Id"
+msgstr ""
+
+#: Model/Behavior/TranslateableFieldsBehavior.php:49
 msgid "Mark -> Data Type"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:51
+#: Model/Behavior/TranslateableFieldsBehavior.php:50
 msgid "Mark -> Property Type"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:52
+#: Model/Behavior/TranslateableFieldsBehavior.php:51
 msgid "Mother Tree -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:53
+#: Model/Behavior/TranslateableFieldsBehavior.php:52
 msgid "Mother Tree -> Crossing"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:54
+#: Model/Behavior/TranslateableFieldsBehavior.php:53
 msgid "Mother Tree -> Identification"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:55
+#: Model/Behavior/TranslateableFieldsBehavior.php:54
 msgid "Mother Tree -> Planed"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:56
+#: Model/Behavior/TranslateableFieldsBehavior.php:55
 msgid "Mother Tree -> Date Pollen Harvested"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:57
+#: Model/Behavior/TranslateableFieldsBehavior.php:56
 msgid "Mother Tree -> Date Impregnated"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:58
+#: Model/Behavior/TranslateableFieldsBehavior.php:57
 msgid "Mother Tree -> Date Fruit Harvested"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:59
+#: Model/Behavior/TranslateableFieldsBehavior.php:58
 msgid "Mother Tree -> Numb Portions"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:60
+#: Model/Behavior/TranslateableFieldsBehavior.php:59
 msgid "Mother Tree -> Numb Flowers"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:61
+#: Model/Behavior/TranslateableFieldsBehavior.php:60
 msgid "Mother Tree -> Numb Seeds"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:62
+#: Model/Behavior/TranslateableFieldsBehavior.php:61
 msgid "Mother Tree -> Target"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:63
+#: Model/Behavior/TranslateableFieldsBehavior.php:62
 msgid "Mother Tree -> Note"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:64
+#: Model/Behavior/TranslateableFieldsBehavior.php:63
 msgid "Mother Tree -> Convar"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:65
+#: Model/Behavior/TranslateableFieldsBehavior.php:64
 msgid "Mother Tree -> Publicid"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:66
+#: Model/Behavior/TranslateableFieldsBehavior.php:65
 msgid "Mother Tree -> Offset"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:67
+#: Model/Behavior/TranslateableFieldsBehavior.php:66
 msgid "Mother Tree -> Row"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:68
+#: Model/Behavior/TranslateableFieldsBehavior.php:67
 msgid "Mother Tree -> Experiment Site"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:69
+#: Model/Behavior/TranslateableFieldsBehavior.php:68
 msgid "Mother Tree -> Tree Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:70
+#: Model/Behavior/TranslateableFieldsBehavior.php:69
 msgid "Mother Tree -> Crossing Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:71
+#: Model/Behavior/TranslateableFieldsBehavior.php:70
 msgid "Scions Bundle -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:72
+#: Model/Behavior/TranslateableFieldsBehavior.php:71
 msgid "Scions Bundle -> Identification"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:73
+#: Model/Behavior/TranslateableFieldsBehavior.php:72
 msgid "Scions Bundle -> Convar"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:74
+#: Model/Behavior/TranslateableFieldsBehavior.php:73
 msgid "Scions Bundle -> Numb Scions"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:75
+#: Model/Behavior/TranslateableFieldsBehavior.php:74
 msgid "Scions Bundle -> Date Scions Harvest"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:76
+#: Model/Behavior/TranslateableFieldsBehavior.php:75
 msgid "Scions Bundle -> Descents (Publicids)"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:77
+#: Model/Behavior/TranslateableFieldsBehavior.php:76
 msgid "Scions Bundle -> Note"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:78
+#: Model/Behavior/TranslateableFieldsBehavior.php:77
 msgid "Scions Bundle -> Reserved for external partners"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:79
+#: Model/Behavior/TranslateableFieldsBehavior.php:78
 msgid "Scions Bundle -> Varienty Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:80
+#: Model/Behavior/TranslateableFieldsBehavior.php:79
 msgid "Tree -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:81
+#: Model/Behavior/TranslateableFieldsBehavior.php:80
 msgid "Tree -> Publicid"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:82
+#: Model/Behavior/TranslateableFieldsBehavior.php:81
 msgid "Tree -> Convar"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:83
+#: Model/Behavior/TranslateableFieldsBehavior.php:82
 msgid "Tree -> Date Grafted"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:84
+#: Model/Behavior/TranslateableFieldsBehavior.php:83
 msgid "Tree -> Date Planted"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:85
+#: Model/Behavior/TranslateableFieldsBehavior.php:84
 msgid "Tree -> Date Eliminated"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:86
+#: Model/Behavior/TranslateableFieldsBehavior.php:85
 msgid "Tree -> Genuine Seedling"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:87
+#: Model/Behavior/TranslateableFieldsBehavior.php:86
 msgid "Tree -> Offset"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:88
+#: Model/Behavior/TranslateableFieldsBehavior.php:87
 msgid "Tree -> Row"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:89
+#: Model/Behavior/TranslateableFieldsBehavior.php:88
 msgid "Tree -> Note"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:90
+#: Model/Behavior/TranslateableFieldsBehavior.php:89
 msgid "Tree -> Variety Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:91
+#: Model/Behavior/TranslateableFieldsBehavior.php:90
 msgid "Tree -> Grafting"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:92
+#: Model/Behavior/TranslateableFieldsBehavior.php:91
 msgid "Tree -> Rootstock"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:93
+#: Model/Behavior/TranslateableFieldsBehavior.php:92
 msgid "Tree -> Experiment Site"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:94
+#: Model/Behavior/TranslateableFieldsBehavior.php:93
 msgid "Varieties -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:95
+#: Model/Behavior/TranslateableFieldsBehavior.php:94
 msgid "Varieties -> Convar"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:96
+#: Model/Behavior/TranslateableFieldsBehavior.php:95
 msgid "Varieties -> Official Name"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:97
+#: Model/Behavior/TranslateableFieldsBehavior.php:96
 msgid "Varieties -> Acronym"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:98
+#: Model/Behavior/TranslateableFieldsBehavior.php:97
 msgid "Varieties -> Plant Breeder"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:99
+#: Model/Behavior/TranslateableFieldsBehavior.php:98
 msgid "Varieties -> Registration"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:100
+#: Model/Behavior/TranslateableFieldsBehavior.php:99
 msgid "Varieties -> Description"
 msgstr ""
 
-#: Model/Behavior/TranslateableFieldsBehavior.php:101
+#: Model/Behavior/TranslateableFieldsBehavior.php:100
 msgid "Varieties -> Batch Id"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:53
+msgid "Count"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:54
+msgid "Average"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:55
+msgid "Min"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:56
+msgid "Max"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:57
+msgid "Median"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:58
+msgid "Standard deviation"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:120;133;147
+msgid "equal"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:121;134;148
+msgid "not equal"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:122
+msgid "less"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:123
+msgid "less or equal"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:124
+msgid "greater"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:125
+msgid "greater or equal"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:126
+msgid "is null"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:127
+msgid "is not null"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:135
+msgid "begins with"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:136
+msgid "doesn't begin with"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:137
+msgid "contains"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:138
+msgid "doesn't contain"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:139
+msgid "end with"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:140
+msgid "doesn't end with"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:141
+msgid "is empty"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:142
+msgid "is not empty"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:163
+#: Template/Element/Mark/field.ctp:24
+#: Template/Element/Mark/list.ctp:41
+msgid "True"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:163
+#: Template/Element/Mark/field.ctp:25
+msgid "False"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:63
+msgctxt "every"
+msgid "Every"
+msgstr ""
+
+#: Model/Entity/MarkFormProperty.php:64
+msgctxt "at least one"
+msgid "Any"
+msgstr ""
+
+#: Model/Entity/Query.php:193
+#: Model/Table/QueriesTable.php:199
+#: Template/Element/top_nav.ctp:5
+#: Template/Element/Tree/nav.ctp:2
+#: Template/MarkFormProperties/add.ctp:47
+#: Template/MarkFormProperties/edit.ctp:50
+#: Template/Trees/index.ctp:15
+msgid "Trees"
+msgstr ""
+
+#: Model/Entity/Query.php:194
+#: Model/Table/QueriesTable.php:200
+#: Template/Element/top_nav.ctp:4
+#: Template/Element/Variety/nav.ctp:2
+#: Template/MarkFormProperties/add.ctp:48
+#: Template/MarkFormProperties/edit.ctp:51
+#: Template/Varieties/index.ctp:15
+msgid "Varieties"
+msgstr ""
+
+#: Model/Entity/Query.php:195
+#: Model/Table/QueriesTable.php:194
+#: Template/Batches/index.ctp:14
+#: Template/Element/top_nav.ctp:3
+#: Template/Element/Batch/nav.ctp:2
+#: Template/MarkFormProperties/add.ctp:49
+#: Template/MarkFormProperties/edit.ctp:52
+msgid "Batches"
+msgstr ""
+
+#: Model/Entity/Query.php:196
+#: Template/Batches/view.ctp:68
+#: Template/Element/Tree/related_table.ctp:5
+msgid "Convar"
 msgstr ""
 
 #: Model/Table/BatchesTable.php:85
@@ -829,51 +1019,51 @@ msgstr ""
 
 #: Model/Table/ExperimentSitesTable.php:80
 #: Model/Table/GraftingsTable.php:80
-#: Model/Table/MarkFormPropertiesTable.php:195
+#: Model/Table/MarkFormPropertiesTable.php:196
 #: Model/Table/MarkFormPropertyTypesTable.php:80
 #: Model/Table/MarkFormsTable.php:96
 #: Model/Table/RootstocksTable.php:80
 msgid "This name has already been used. Please use a unique name."
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:93
+#: Model/Table/MarkFormPropertiesTable.php:94
 #: Model/Table/MarkFormsTable.php:79
 msgid "This name has already been used."
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:113
+#: Model/Table/MarkFormPropertiesTable.php:114
 msgid "The min value is required and must be smaller than the max value"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:125
+#: Model/Table/MarkFormPropertiesTable.php:126
 msgid "The max value is required and must be greater than the max value"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:137
+#: Model/Table/MarkFormPropertiesTable.php:138
 msgid "The step value is required and must be greater than zero and smaller or equal to the difference between the max and the min value."
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:149;161;173
+#: Model/Table/MarkFormPropertiesTable.php:150;162;174
 msgid "Select at least one domain"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:239
+#: Model/Table/MarkFormPropertiesTable.php:240
 msgid "Integer"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:240
+#: Model/Table/MarkFormPropertiesTable.php:241
 msgid "Floating-point number"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:241
+#: Model/Table/MarkFormPropertiesTable.php:242
 msgid "Text ( < 255 characters)"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:242
+#: Model/Table/MarkFormPropertiesTable.php:243
 msgid "Boolean"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:243
+#: Model/Table/MarkFormPropertiesTable.php:244
 #: Template/Element/Mark/list.ctp:4
 #: Template/Marks/view.ctp:28
 msgid "Date"
@@ -919,23 +1109,14 @@ msgstr ""
 msgid "The variety of the mother tree must match the mother variety of the crossing."
 msgstr ""
 
-#: Model/Table/QueriesTable.php:184
-#: Template/Batches/index.ctp:14
-#: Template/Element/top_nav.ctp:3
-#: Template/Element/Batch/nav.ctp:2
-#: Template/MarkFormProperties/add.ctp:48
-#: Template/MarkFormProperties/edit.ctp:51
-msgid "Batches"
-msgstr ""
-
-#: Model/Table/QueriesTable.php:185
+#: Model/Table/QueriesTable.php:195
 #: Template/Crossings/index.ctp:14
 #: Template/Element/top_nav.ctp:2
 #: Template/Element/Crossing/nav.ctp:2
 msgid "Crossings"
 msgstr ""
 
-#: Model/Table/QueriesTable.php:186
+#: Model/Table/QueriesTable.php:196
 #: Template/Element/top_nav.ctp:8
 #: Template/Element/Mark/index_table.ctp:6
 #: Template/Element/Mark/nav.ctp:2
@@ -943,35 +1124,17 @@ msgstr ""
 msgid "Marks"
 msgstr ""
 
-#: Model/Table/QueriesTable.php:187
+#: Model/Table/QueriesTable.php:197
 #: Template/Element/Crossing/nav.ctp:5
 #: Template/MotherTrees/index.ctp:15
 msgid "Mother Trees"
 msgstr ""
 
-#: Model/Table/QueriesTable.php:188
+#: Model/Table/QueriesTable.php:198
 #: Template/Element/top_nav.ctp:6
 #: Template/Element/ScionsBundle/nav.ctp:2
 #: Template/ScionsBundles/index.ctp:15
 msgid "Scions Bundles"
-msgstr ""
-
-#: Model/Table/QueriesTable.php:189
-#: Template/Element/top_nav.ctp:5
-#: Template/Element/Tree/nav.ctp:2
-#: Template/MarkFormProperties/add.ctp:46
-#: Template/MarkFormProperties/edit.ctp:49
-#: Template/Trees/index.ctp:15
-msgid "Trees"
-msgstr ""
-
-#: Model/Table/QueriesTable.php:190
-#: Template/Element/top_nav.ctp:4
-#: Template/Element/Variety/nav.ctp:2
-#: Template/MarkFormProperties/add.ctp:47
-#: Template/MarkFormProperties/edit.ctp:50
-#: Template/Varieties/index.ctp:15
-msgid "Varieties"
 msgstr ""
 
 #: Model/Table/TreesTable.php:99
@@ -1001,8 +1164,8 @@ msgstr ""
 #: Template/ExperimentSites/edit.ctp:12
 #: Template/Graftings/add.ctp:12
 #: Template/Graftings/edit.ctp:12
-#: Template/MarkFormProperties/add.ctp:52
-#: Template/MarkFormProperties/edit.ctp:55
+#: Template/MarkFormProperties/add.ctp:53
+#: Template/MarkFormProperties/edit.ctp:56
 #: Template/MarkFormPropertyTypes/add.ctp:12
 #: Template/MarkFormPropertyTypes/edit.ctp:12
 #: Template/MarkForms/add.ctp:35
@@ -1014,6 +1177,7 @@ msgstr ""
 #: Template/MotherTrees/add.ctp:55
 #: Template/MotherTrees/edit.ctp:42
 #: Template/Queries/add.ctp:19
+#: Template/Queries/add_mark_query.ctp:19
 #: Template/Queries/edit.ctp:19
 #: Template/QueryGroups/add.ctp:12
 #: Template/QueryGroups/edit.ctp:12
@@ -1061,13 +1225,13 @@ msgstr ""
 #: Template/Element/Tree/related_table.ctp:3
 #: Template/ExperimentSites/view.ctp:8
 #: Template/Graftings/view.ctp:8
-#: Template/MarkFormProperties/view.ctp:8;56
+#: Template/MarkFormProperties/view.ctp:8;60
 #: Template/MarkFormPropertyTypes/view.ctp:8;21
 #: Template/MarkForms/view.ctp:8;29
 #: Template/MarkScannerCodes/view.ctp:13
 #: Template/Marks/view.ctp:24;58
 #: Template/MotherTrees/view.ctp:9
-#: Template/Queries/view.ctp:8
+#: Template/Queries/view.ctp:13
 #: Template/Rootstocks/view.ctp:8
 #: Template/Rows/view.ctp:8
 #: Template/ScionsBundles/view.ctp:8
@@ -1121,7 +1285,7 @@ msgstr ""
 #: Template/MarkForms/view.ctp:12
 #: Template/Marks/view.ctp:45
 #: Template/MotherTrees/view.ctp:51
-#: Template/Queries/view.ctp:16
+#: Template/Queries/view.ctp:21
 #: Template/Rows/view.ctp:20
 #: Template/ScionsBundles/view.ctp:33
 #: Template/Trees/view.ctp:66
@@ -1133,12 +1297,12 @@ msgstr ""
 #: Template/Batches/view.ctp:54
 #: Template/Crossings/view.ctp:26
 #: Template/Element/Tree/related_table.ctp:10
-#: Template/MarkFormProperties/view.ctp:47;58
+#: Template/MarkFormProperties/view.ctp:47;62
 #: Template/MarkFormPropertyTypes/view.ctp:23
 #: Template/MarkForms/view.ctp:16;32
 #: Template/Marks/view.ctp:49;62
 #: Template/MotherTrees/view.ctp:55
-#: Template/Queries/view.ctp:20
+#: Template/Queries/view.ctp:25
 #: Template/Rows/view.ctp:24
 #: Template/ScionsBundles/view.ctp:37
 #: Template/Trees/view.ctp:70
@@ -1149,6 +1313,7 @@ msgstr ""
 
 #: Template/Batches/view.ctp:59
 #: Template/Element/Tree/related_table.ctp:8
+#: Template/MarkFormProperties/view.ctp:52
 #: Template/MotherTrees/view.ctp:64
 #: Template/Rows/view.ctp:29
 #: Template/ScionsBundles/view.ctp:42
@@ -1160,11 +1325,6 @@ msgstr ""
 msgid "Related Varieties"
 msgstr ""
 
-#: Template/Batches/view.ctp:68
-#: Template/Element/Tree/related_table.ctp:5
-msgid "Convar"
-msgstr ""
-
 #: Template/Batches/view.ctp:69
 #: Template/Crossings/view.ctp:42;85
 #: Template/Element/Batch/index_table.ctp:11
@@ -1172,7 +1332,7 @@ msgstr ""
 #: Template/Element/Mark/index_table.ctp:8
 #: Template/Element/Mark/list.ctp:10
 #: Template/Element/MarkForm/index_table.ctp:8
-#: Template/Element/MarkFormProperty/index_table.ctp:9
+#: Template/Element/MarkFormProperty/index_table.ctp:10
 #: Template/Element/MarkScannerCode/index_table.ctp:8
 #: Template/Element/MotherTree/index_table.ctp:12
 #: Template/Element/Row/index_table.ctp:10
@@ -1183,7 +1343,7 @@ msgstr ""
 #: Template/Element/Variety/index_table.ctp:10
 #: Template/ExperimentSites/index.ctp:11
 #: Template/Graftings/index.ctp:11
-#: Template/MarkFormProperties/view.ctp:59
+#: Template/MarkFormProperties/view.ctp:63
 #: Template/MarkFormPropertyTypes/index.ctp:11
 #: Template/MarkFormPropertyTypes/view.ctp:24
 #: Template/Marks/view.ctp:63
@@ -1200,7 +1360,7 @@ msgstr ""
 #: Template/Element/Mark/index_table.ctp:42
 #: Template/Element/Mark/list.ctp:45
 #: Template/Element/MarkForm/index_table.ctp:20
-#: Template/Element/MarkFormProperty/index_table.ctp:22
+#: Template/Element/MarkFormProperty/index_table.ctp:24
 #: Template/Element/MarkScannerCode/index_table.ctp:25
 #: Template/Element/MotherTree/index_table.ctp:28
 #: Template/Element/Row/index_table.ctp:24
@@ -1210,7 +1370,7 @@ msgstr ""
 #: Template/Element/Variety/index_table.ctp:24
 #: Template/ExperimentSites/index.ctp:21
 #: Template/Graftings/index.ctp:21
-#: Template/MarkFormProperties/view.ctp:69
+#: Template/MarkFormProperties/view.ctp:73
 #: Template/MarkFormPropertyTypes/index.ctp:22
 #: Template/MarkFormPropertyTypes/view.ctp:34
 #: Template/Rootstocks/index.ctp:21
@@ -1226,7 +1386,7 @@ msgstr ""
 #: Template/Element/Mark/index_table.ctp:44
 #: Template/Element/Mark/list.ctp:48
 #: Template/Element/MarkForm/index_table.ctp:22
-#: Template/Element/MarkFormProperty/index_table.ctp:24
+#: Template/Element/MarkFormProperty/index_table.ctp:26
 #: Template/Element/MarkScannerCode/index_table.ctp:27
 #: Template/Element/MotherTree/index_table.ctp:30
 #: Template/Element/Query/nav.ctp:7;24
@@ -1237,7 +1397,7 @@ msgstr ""
 #: Template/Element/Variety/index_table.ctp:26
 #: Template/ExperimentSites/index.ctp:23
 #: Template/Graftings/index.ctp:23
-#: Template/MarkFormProperties/view.ctp:72
+#: Template/MarkFormProperties/view.ctp:76
 #: Template/MarkFormPropertyTypes/index.ctp:25
 #: Template/MarkFormPropertyTypes/view.ctp:37
 #: Template/Marks/view.ctp:80
@@ -1254,7 +1414,7 @@ msgstr ""
 #: Template/Element/Mark/index_table.ctp:48
 #: Template/Element/Mark/list.ctp:52
 #: Template/Element/MarkForm/index_table.ctp:26
-#: Template/Element/MarkFormProperty/index_table.ctp:28
+#: Template/Element/MarkFormProperty/index_table.ctp:30
 #: Template/Element/MarkScannerCode/index_table.ctp:31
 #: Template/Element/MotherTree/index_table.ctp:34
 #: Template/Element/Query/nav.ctp:12;28
@@ -1280,7 +1440,7 @@ msgstr ""
 #: Template/Element/Crossing/index_table.ctp:39
 #: Template/Element/Mark/list.ctp:53
 #: Template/Element/MarkForm/index_table.ctp:27
-#: Template/Element/MarkFormProperty/index_table.ctp:29
+#: Template/Element/MarkFormProperty/index_table.ctp:31
 #: Template/Element/MotherTree/index_table.ctp:35
 #: Template/Element/Row/index_table.ctp:31
 #: Template/Element/ScionsBundle/index_table.ctp:34
@@ -1411,9 +1571,10 @@ msgstr ""
 #: Template/Element/Crossing/index_table.ctp:49
 #: Template/Element/Mark/index_table.ctp:58
 #: Template/Element/MarkForm/index_table.ctp:37
-#: Template/Element/MarkFormProperty/index_table.ctp:39
+#: Template/Element/MarkFormProperty/index_table.ctp:41
 #: Template/Element/MarkScannerCode/index_table.ctp:42
 #: Template/Element/MotherTree/index_table.ctp:45
+#: Template/Element/Query/mark_results_table.ctp:48
 #: Template/Element/Query/results_table.ctp:21
 #: Template/Element/Row/index_table.ctp:40
 #: Template/Element/ScionsBundle/index_table.ctp:44
@@ -1431,9 +1592,10 @@ msgstr ""
 #: Template/Element/Crossing/index_table.ctp:50
 #: Template/Element/Mark/index_table.ctp:59
 #: Template/Element/MarkForm/index_table.ctp:38
-#: Template/Element/MarkFormProperty/index_table.ctp:40
+#: Template/Element/MarkFormProperty/index_table.ctp:42
 #: Template/Element/MarkScannerCode/index_table.ctp:43
 #: Template/Element/MotherTree/index_table.ctp:46
+#: Template/Element/Query/mark_results_table.ctp:49
 #: Template/Element/Query/results_table.ctp:22
 #: Template/Element/Row/index_table.ctp:41
 #: Template/Element/ScionsBundle/index_table.ctp:45
@@ -1451,9 +1613,10 @@ msgstr ""
 #: Template/Element/Crossing/index_table.ctp:52
 #: Template/Element/Mark/index_table.ctp:61
 #: Template/Element/MarkForm/index_table.ctp:40
-#: Template/Element/MarkFormProperty/index_table.ctp:42
+#: Template/Element/MarkFormProperty/index_table.ctp:44
 #: Template/Element/MarkScannerCode/index_table.ctp:45
 #: Template/Element/MotherTree/index_table.ctp:48
+#: Template/Element/Query/mark_results_table.ctp:51
 #: Template/Element/Query/results_table.ctp:24
 #: Template/Element/Row/index_table.ctp:43
 #: Template/Element/ScionsBundle/index_table.ctp:47
@@ -1471,9 +1634,10 @@ msgstr ""
 #: Template/Element/Crossing/index_table.ctp:53
 #: Template/Element/Mark/index_table.ctp:62
 #: Template/Element/MarkForm/index_table.ctp:41
-#: Template/Element/MarkFormProperty/index_table.ctp:43
+#: Template/Element/MarkFormProperty/index_table.ctp:45
 #: Template/Element/MarkScannerCode/index_table.ctp:46
 #: Template/Element/MotherTree/index_table.ctp:49
+#: Template/Element/Query/mark_results_table.ctp:52
 #: Template/Element/Query/results_table.ctp:25
 #: Template/Element/Row/index_table.ctp:44
 #: Template/Element/ScionsBundle/index_table.ctp:48
@@ -1491,9 +1655,10 @@ msgstr ""
 #: Template/Element/Crossing/index_table.ctp:55
 #: Template/Element/Mark/index_table.ctp:64
 #: Template/Element/MarkForm/index_table.ctp:43
-#: Template/Element/MarkFormProperty/index_table.ctp:45
+#: Template/Element/MarkFormProperty/index_table.ctp:47
 #: Template/Element/MarkScannerCode/index_table.ctp:48
 #: Template/Element/MotherTree/index_table.ctp:51
+#: Template/Element/Query/mark_results_table.ctp:54
 #: Template/Element/Query/results_table.ctp:27
 #: Template/Element/Row/index_table.ctp:46
 #: Template/Element/ScionsBundle/index_table.ctp:50
@@ -1551,15 +1716,6 @@ msgstr ""
 msgid "The date must be valid and match one of the following formats: 'dd.mm.yyyy' or 'dd-mm-yyyy' or 'dd/mm/yyyy'"
 msgstr ""
 
-#: Template/Element/Mark/field.ctp:24
-#: Template/Element/Mark/list.ctp:41
-msgid "True"
-msgstr ""
-
-#: Template/Element/Mark/field.ctp:25
-msgid "False"
-msgstr ""
-
 #: Template/Element/Mark/index_table.ctp:5
 #: Template/Marks/view.ctp:41
 msgid "Object"
@@ -1594,6 +1750,7 @@ msgstr ""
 
 #: Template/Element/Mark/list.ctp:6
 #: Template/Element/MarkScannerCode/index_table.ctp:7
+#: Template/Element/Query/mark_results_table.ctp:22
 #: Template/MarkScannerCodes/add.ctp:20
 #: Template/MarkScannerCodes/view.ctp:26
 #: Template/Marks/view.ctp:60
@@ -1682,6 +1839,7 @@ msgid "Print Submit Form Label"
 msgstr ""
 
 #: Template/Element/MarkForm/index_table.ctp:16
+#: Template/Element/MarkFormProperty/index_table.ctp:20
 #: Template/Element/Row/index_table.ctp:18
 #: Template/Element/Tree/index_table.ctp:25
 #: Template/Element/Tree/related_table.ctp:20
@@ -1723,12 +1881,54 @@ msgstr ""
 msgid "Main table"
 msgstr ""
 
-#: Template/Element/Query/builder.ctp:14
+#: Template/Element/Query/builder.ctp:16
+msgid "Group marks by"
+msgstr ""
+
+#: Template/Element/Query/builder.ctp:26
 msgid "Select columns shown in the results"
 msgstr ""
 
-#: Template/Element/Query/builder.ctp:50
+#: Template/Element/Query/builder.ctp:59
+#: Template/MarkForms/view.ctp:30
+msgid "Mark Property"
+msgstr ""
+
+#: Template/Element/Query/builder.ctp:81
 msgid "Set filter criteria"
+msgstr ""
+
+#: Template/Element/Query/mark_results_table.ctp:19
+msgid "Plot"
+msgstr ""
+
+#: Template/Element/Query/mark_results_table.ctp:20
+msgid "Stats"
+msgstr ""
+
+#: Template/Element/Query/mark_results_table.ctp:24
+#: Template/Marks/view.ctp:54
+msgid "Values"
+msgstr ""
+
+#: Template/Element/Query/mark_value.ctp:16
+msgctxt "short: count"
+msgid "cnt"
+msgstr ""
+
+#: Template/Element/Query/mark_value.ctp:17
+msgctxt "short: median"
+msgid "med"
+msgstr ""
+
+#: Template/Element/Query/mark_value.ctp:18
+msgctxt "short: average"
+msgid "avg"
+msgstr ""
+
+#: Template/Element/Query/mark_value.ctp:21
+msgctxt "short: standard deviation"
+msgid "std"
 msgstr ""
 
 #: Template/Element/Query/nav.ctp:13
@@ -1956,54 +2156,62 @@ msgstr ""
 msgid "Grafting:"
 msgstr ""
 
-#: Template/Layout/default.ctp:46
+#: Template/Layout/default.ctp:47
 msgid "Searching..."
 msgstr ""
 
-#: Template/Layout/default.ctp:47
+#: Template/Layout/default.ctp:48
 msgid "Nothing found. Create new covar of:"
 msgstr ""
 
-#: Template/Layout/default.ctp:48
+#: Template/Layout/default.ctp:49
 msgid "NEW"
 msgstr ""
 
-#: Template/Layout/default.ctp:49
+#: Template/Layout/default.ctp:50
 msgid "Automatically prefilled"
 msgstr ""
 
-#: Template/Layout/default.ctp:52
+#: Template/Layout/default.ctp:53
 msgid "{0} matching elements for this mark were found."
 msgstr ""
 
-#: Template/Layout/default.ctp:53
+#: Template/Layout/default.ctp:54
 msgid "No tree could be found"
 msgstr ""
 
-#: Template/Layout/default.ctp:67
-msgid "Location: {0}"
+#: Template/Layout/default.ctp:56
+msgid "Please wait, while your report is generated. This may take up to few minutes."
+msgstr ""
+
+#: Template/Layout/default.ctp:57
+msgid "Sorry, your report couldn't be generated. Please try again."
 msgstr ""
 
 #: Template/Layout/default.ctp:70
+msgid "Location: {0}"
+msgstr ""
+
+#: Template/Layout/default.ctp:73
 #: Template/Settings/index.ctp:6
 msgid "Settings"
 msgstr ""
 
-#: Template/Layout/default.ctp:71
+#: Template/Layout/default.ctp:74
 msgid "Logout"
 msgstr ""
 
-#: Template/Layout/default.ctp:45
+#: Template/Layout/default.ctp:46
 msgctxt "Date format"
 msgid "dd.mm.yy"
 msgstr ""
 
-#: Template/Layout/default.ctp:50
+#: Template/Layout/default.ctp:51
 msgctxt "after the : the name of the element to delete is inserted"
 msgid "Are you sure you want to delete:"
 msgstr ""
 
-#: Template/Layout/default.ctp:54
+#: Template/Layout/default.ctp:55
 msgctxt "Query builder. {0} is replaced by the table name."
 msgid "{0} will be deselected, since they aren't connected to the other selected entities."
 msgstr ""
@@ -2032,8 +2240,8 @@ msgstr ""
 msgid "Maximum Value"
 msgstr ""
 
-#: Template/MarkFormProperties/add.ctp:44
-#: Template/MarkFormProperties/edit.ctp:47
+#: Template/MarkFormProperties/add.ctp:45
+#: Template/MarkFormProperties/edit.ctp:48
 msgid "This property serves to mark:"
 msgstr ""
 
@@ -2059,11 +2267,11 @@ msgstr ""
 msgid "Step"
 msgstr ""
 
-#: Template/MarkFormProperties/view.ctp:52
+#: Template/MarkFormProperties/view.ctp:56
 msgid "Related Mark Forms"
 msgstr ""
 
-#: Template/MarkFormProperties/view.ctp:57
+#: Template/MarkFormProperties/view.ctp:61
 #: Template/Marks/view.ctp:36
 msgid "Mark Form"
 msgstr ""
@@ -2101,7 +2309,7 @@ msgid "Mark Form:"
 msgstr ""
 
 #: Template/MarkForms/view.ctp:21
-#: Template/Queries/view.ctp:29
+#: Template/Queries/view.ctp:34
 #: Template/Varieties/view.ctp:42
 msgid "Description"
 msgstr ""
@@ -2165,10 +2373,6 @@ msgstr ""
 msgid "Mark:"
 msgstr ""
 
-#: Template/Marks/view.ctp:54
-msgid "Values"
-msgstr ""
-
 #: Template/Marks/view.ctp:61
 msgid "Exceptional Mark"
 msgstr ""
@@ -2210,6 +2414,7 @@ msgid "Target"
 msgstr ""
 
 #: Template/Queries/add.ctp:7
+#: Template/Queries/add_mark_query.ctp:7
 msgid "Add Query"
 msgstr ""
 
@@ -2217,19 +2422,25 @@ msgstr ""
 msgid "Edit Query"
 msgstr ""
 
-#: Template/Queries/view.ctp:5
+#: Template/Queries/view.ctp:6
+#: Template/Queries/view_mark_query.ctp:6
+msgid "Export to excel"
+msgstr ""
+
+#: Template/Queries/view.ctp:10
 msgid "Query:"
 msgstr ""
 
-#: Template/Queries/view.ctp:12
+#: Template/Queries/view.ctp:17
 msgid "Query Group"
 msgstr ""
 
-#: Template/Queries/view.ctp:25
+#: Template/Queries/view.ctp:30
 msgid "Query"
 msgstr ""
 
-#: Template/Queries/view.ctp:33
+#: Template/Queries/view.ctp:38
+#: Template/Queries/view_mark_query.ctp:12
 msgid "Results"
 msgstr ""
 

@@ -9,7 +9,8 @@
     ?>
     
     <div class="row">
-        <h4><?= __('Results') ?></h4>
+        <h3><?=  __('Query:') .' '. h($query->code) ?></h3>
+        <?= $this->Text->autoParagraph(h($query->description)); ?>
         <?= $this->element('Query/mark_results_table'); ?>
     </div>
 </div>

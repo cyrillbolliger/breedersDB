@@ -11,25 +11,54 @@
         <div class="mark_plot-line mark_plot-extremes" style="left: <?= $min ?>%; width: <?= $length ?>%;"></div>
         <div class="mark_plot-line mark_plot-median" style="left: 0; width: <?= $median ?>%;"></div>
     </td>
-    <td class="index_inline_list">
-        <ul>
-			<?php foreach ( $mark->value as $key => $value ): ?>
-                <li><?= $key . ': ' . $value ?></li>
-			<?php endforeach; ?>
-        </ul>
+    <td class="mark_col">
+        <table class="mark_stats">
+            <tr>
+                <td><?= __x( 'short: median', 'med' ) ?></td>
+                <td><?= number_format( $mark->value->median, 1 ) ?></td>
+                <td><?= __x( 'short: count', 'cnt' ) ?></td>
+                <td><?= $mark->value->count ?></td>
+            </tr>
+            <tr>
+                <td><?= __x( 'short: average', 'avg' ) ?></td>
+                <td><?= number_format( $mark->value->avg, 1 ) ?></td>
+                <td><?= __x( 'short: minimum', 'min' ) ?></td>
+                <td><?= $mark->value->min ?></td>
+            </tr>
+            <tr>
+                <td><?= __x( 'short: standard deviation', 'std' ) ?></td>
+                <td><?= number_format( $mark->value->std, 1 ) ?></td>
+                <td><?= __x( 'short: maximum', 'max' ) ?></td>
+                <td><?= $mark->value->max ?></td>
+            </tr>
+        </table>
     </td>
 <?php else: ?>
-    <td><?= $mark->value ?></td>
+    <td class="mark_col"><?= $mark->value ?></td>
 <?php endif; ?>
-<td class="index_inline_list">
-    <ul>
-		<?php foreach ( $mark->values as $value ): ?>
-			<?php foreach ( $value as $mark_id => $v ): ?>
-                <li><?= $v ?>
-                    <div class="mark_details"><?php // todo: get mark obj ?></div>
-                </li>
-			<?php endforeach; ?>
-		<?php endforeach; ?>
-    </ul>
+<td class="mark_col">
+    <table class="mark_stats">
+		<?php
+		$values = $mark->values->toArray();
+		$count  = 0;
+		$perRow = 4;
+		$rows   = ceil( count( $values ) / $perRow );
+		for ( $i = 0; $i < $rows && isset( $values[ $count ] ); $i ++ ): ?>
+            <tr>
+				<?php for ( $j = 0; $j < $perRow; $j ++ ): ?>
+                    <td>
+						<?php
+						if ( isset( $values[ $count ] ) ) {
+							echo '<span class="mark_value mark_value-' . key( $values[ $count ] ) . '">' .
+							        current( $values[ $count ] ) .
+							     '</span>';
+						}
+						$count ++;
+						?>
+                    </td>
+				<?php endfor; ?>
+            </tr>
+		<?php endfor; ?>
+    </table>
 </td>
 
