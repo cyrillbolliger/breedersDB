@@ -13,7 +13,8 @@ use Cake\Event\Event;
  */
 class MarkFormsController extends AppController {
 	public $paginate = [
-		'order' => [ 'modified' => 'desc' ]
+		'order' => [ 'modified' => 'desc' ],
+		'limit' => 100,
 	];
 	
 	public function beforeFilter( Event $event ) {

@@ -14,6 +14,7 @@ class RowsController extends AppController {
 	
 	public $paginate = [
 		'order' => [ 'modified' => 'desc' ],
+		'limit' => 100,
 	];
 	
 	/**

@@ -19,7 +19,8 @@ class MarkScannerCodesController extends AppController {
 	 */
 	public function index() {
 		$this->paginate   = [
-			'contain' => [ 'MarkFormProperties' ]
+			'contain' => [ 'MarkFormProperties' ],
+			'limit' => 100,
 		];
 		$markScannerCodes = $this->paginate( $this->MarkScannerCodes );
 		$properties       = $this->MarkScannerCodes->MarkFormProperties

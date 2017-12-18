@@ -13,6 +13,7 @@ use Cake\Core\Exception\Exception;
 class CrossingsController extends AppController {
 	public $paginate = [
 		'order' => [ 'modified' => 'desc' ],
+		'limit' => 100,
 	];
 	
 	/**

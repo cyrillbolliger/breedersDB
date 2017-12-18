@@ -15,6 +15,7 @@ class MarksController extends AppController {
 	
 	public $paginate = [
 		'order' => [ 'modified' => 'desc' ],
+		'limit' => 100,
 	];
 	
 	public function initialize() {

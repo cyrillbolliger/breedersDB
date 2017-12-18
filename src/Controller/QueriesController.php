@@ -14,6 +14,10 @@ use Cake\ORM\TableRegistry;
  * @property CollectionPaginatorComponent $CollectionPaginator
  */
 class QueriesController extends AppController {
+	public $paginate = [
+		'limit' => 100,
+	];
+	
 	public function initialize() {
 		parent::initialize();
 		
