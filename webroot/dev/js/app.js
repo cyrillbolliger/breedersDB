@@ -39047,7 +39047,8 @@ function QueriesWhereBuilderModule(General) {
             icons: icons,
             filters: filters,
             rules: query_where_builder_rules,
-            operators: operators
+            operators: operators,
+            allow_empty: true
         });
     };
 
