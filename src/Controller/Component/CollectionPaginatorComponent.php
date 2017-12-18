@@ -9,6 +9,7 @@
 namespace App\Controller\Component;
 
 
+use App\Controller\AppController;
 use Cake\Collection\CollectionInterface;
 use Cake\Controller\Component;
 use Cake\Network\Exception\NotFoundException;
@@ -18,6 +19,8 @@ use Cake\Network\Exception\NotFoundException;
  *
  * Class CollectionPaginatorComponent
  * @package App\Controller\Component
+ *
+ * @mixin AppController
  */
 class CollectionPaginatorComponent extends Component {
 	// load the pagination component
@@ -34,19 +37,27 @@ class CollectionPaginatorComponent extends Component {
 	 * @param callable $sortFunction must return either
 	 *  the name of the field to sort by in dot notation
 	 *  or a callable that returns the sort value itself.
+	 * @param array $settings The settings/configuration used for pagination.
 	 *
 	 * @return CollectionInterface the paginated collection
 	 */
-	public function paginate( CollectionInterface $collection, callable $sortFunction ): CollectionInterface {
-		// buffer the results to perform calculations without having to reiterate the collection
+	public function paginate(
+		CollectionInterface $collection,
+		callable $sortFunction,
+		array $settings = []
+	): CollectionInterface {
+		// buffer the results to perform calculations without changing the collection
 		$collection->buffered();
 		
-		$alias = $this->_registry->getController()->loadModel()->alias();
+		if ( property_exists( $this->_registry->getController(), 'paginate' ) ) {
+			$settings = array_merge( $this->_registry->getController()->paginate, $settings );
+		}
 		
-		$options = $this->Paginator->mergeOptions( $alias, $this->request->query ?? [] );
+		$alias   = $this->_registry->getController()->loadModel()->alias();
+		$options = $this->Paginator->mergeOptions( $alias, $settings );
 		$options = $this->Paginator->checkLimit( $options );
 		
-		$options         += [ 'page' => 1, 'scope' => $alias ];
+		$options         += [ 'page' => 1, 'scope' => null ];
 		$options['page'] = (int) $options['page'] < 1 ? 1 : (int) $options['page'];
 		$finder          = 'all';
 		
@@ -68,7 +79,7 @@ class CollectionPaginatorComponent extends Component {
 		$numResults = count( $results->toArray() );
 		$count      = $numResults ? count( $collection->toArray() ) : 0;
 		
-		$defaults = $this->Paginator->getDefaults( $alias, [] );
+		$defaults = $this->Paginator->getDefaults( $alias, $settings );
 		unset( $defaults[0] );
 		
 		$page          = $options['page'];
