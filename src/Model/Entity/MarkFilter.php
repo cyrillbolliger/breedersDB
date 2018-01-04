@@ -84,7 +84,7 @@ class MarkFilter {
 	 */
 	public function test( AggregatedMark $mark ): bool {
 		// if no filtering was defined
-		if ( '' === $this->operator ) {
+		if ( $this->isEmpty() ) {
 			return true;
 		}
 		
@@ -103,6 +103,15 @@ class MarkFilter {
 		}
 		
 		return $this->_testValue( $mark->value->{$this->mode} );
+	}
+	
+	/**
+	 * Return true if no filter condition is set
+	 *
+	 * @return bool
+	 */
+	public function isEmpty(): bool {
+		return '' === $this->operator;
 	}
 	
 	/**

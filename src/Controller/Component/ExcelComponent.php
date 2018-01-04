@@ -207,24 +207,37 @@ class ExcelComponent extends Component {
 				$row[] = $row_in->$column_key;
 			}
 			foreach ( $mark_columns as $col ) {
-				$marks = $row_in->marks->toArray()[ $col->id ];
-				if ( $col->is_numerical ) {
-					$row[] = $marks->value->median;
-					$row[] = $marks->value->avg;
-					$row[] = $marks->value->count;
-					$row[] = $marks->value->min;
-					$row[] = $marks->value->max;
-					$row[] = $marks->value->std;
+				if ( ! isset( $row_in->marks->toArray()[ $col->id ] ) ) {
+					if ( $col->is_numerical ) {
+						$row[] = "";
+						$row[] = "";
+						$row[] = "";
+						$row[] = "";
+						$row[] = "";
+						$row[] = "";
+					} else {
+						$row[] = "";
+					}
+					$row[] = "";
 				} else {
-					$row[] = $marks->value;
+					$marks = $row_in->marks->toArray()[ $col->id ];
+					if ( $col->is_numerical ) {
+						$row[] = $marks->value->median;
+						$row[] = $marks->value->avg;
+						$row[] = $marks->value->count;
+						$row[] = $marks->value->min;
+						$row[] = $marks->value->max;
+						$row[] = $marks->value->std;
+					} else {
+						$row[] = $marks->value;
+					}
+					$row[] = $this->_implode( $marks->values->unfold()->toArray() );
 				}
-				$row[] = $this->_implode( $marks->values->unfold()->toArray() );
 			}
 			$out[] = $row;
 		}
 		
 		return $this->_export( $out, $columns, $title );
-		
 	}
 	
 	

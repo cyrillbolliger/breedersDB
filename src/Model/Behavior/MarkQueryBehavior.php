@@ -310,6 +310,11 @@ class MarkQueryBehavior extends Behavior {
 	private function _filterByMarkValues( CollectionInterface $markedObj ): CollectionInterface {
 		return $markedObj->filter( function ( $item ) {
 			foreach ( $this->markFieldFilter as $property_id => $filter ) {
+				// if no filter is set
+				if ( $filter->isEmpty() ) {
+					continue;
+				}
+				
 				// if mark is not present
 				if ( ! isset( $item->toArray()[ $property_id ] ) ) {
 					return false;
@@ -395,6 +400,13 @@ class MarkQueryBehavior extends Behavior {
 		$mark_id = str_replace( 'mark-', '', $sort );
 		
 		return function ( $obj ) use ( $mark_id ) {
+			
+			// if the mark is missing return "" to indicate that it is smaller
+			if ( ! isset( $obj->marks->toArray()[ $mark_id ] ) ) {
+				return "";
+			}
+			
+			
 			return $obj->marks->toArray()[ $mark_id ]->sort_value;
 		};
 	}
