@@ -160,7 +160,7 @@ class MarkFormProperty extends Entity {
 	 */
 	protected function _getValues() {
 		if ( 'BOOLEAN' === $this->_properties['field_type'] ) {
-			return [ 0 => __( 'True' ), 1 => __( 'False' ) ];
+			return [ 1 => __( 'True' ), 0 => __( 'False' ) ];
 		}
 		
 		return null;
