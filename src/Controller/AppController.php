@@ -85,10 +85,6 @@ class AppController extends Controller {
 			'unauthorizedRedirect' => $this->referer() // If unauthorized, return them to page they were just on
 		] );
 		
-		// Allow the display action so our pages controller
-		// continues to work.
-		$this->Auth->allow( [ 'display' ] );
-		
 		// Set format to accept localized date, time and datetime input
 		Type::build( 'time' )->useLocaleParser()->setLocaleFormat( __x( 'time format', 'HH:mm' ) );
 		Type::build( 'date' )->useLocaleParser()->setLocaleFormat( __x( 'date format', 'dd.MM.yyyy' ) );
