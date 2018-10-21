@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2018-10-21 19:37+0000\n"
-"PO-Revision-Date: 2018-10-21 21:41+0200\n"
+"POT-Creation-Date: 2018-10-21 20:20+0000\n"
+"PO-Revision-Date: 2018-10-21 22:26+0200\n"
 "Last-Translator: Cyrill Bolliger <bolliger@gmx.ch>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -200,11 +200,6 @@ msgid "The mark form could not be deleted. Please, try again."
 msgstr ""
 "Das Bewertungsformular konnte nicht gelöscht werden. Bitte versuche es "
 "erneut."
-
-#: Controller/MarkScannerCodesController.php:31
-#: Controller/MarksController.php:69
-msgid "(all)"
-msgstr "(alle)"
 
 #: Controller/MarkScannerCodesController.php:68
 msgid "{0}: {1} has been saved."
@@ -2611,118 +2606,3 @@ msgstr "Verwandte Reiserbündel"
 #: Template/Varieties/view.ctp:54
 msgid "External Use"
 msgstr "Externer gebrauch"
-
-#~ msgid "Query Group"
-#~ msgstr "Abfragengruppe"
-
-#~ msgid "Query"
-#~ msgstr "Abfrage"
-
-#~ msgid "Results"
-#~ msgstr "Resultate"
-
-#~ msgctxt "short: median"
-#~ msgid "median"
-#~ msgstr "Med"
-
-#~ msgctxt "short: count"
-#~ msgid "count"
-#~ msgstr "Anz"
-
-#~ msgctxt "every"
-#~ msgid "All"
-#~ msgstr "Alle"
-
-#~ msgid "No printable content given."
-#~ msgstr "Keine druckbaren Inhalte gegeben."
-
-#~ msgid "None"
-#~ msgstr "Nichts drucken"
-
-#~ msgid "Filter by convar..."
-#~ msgstr "Nach Convar filtern..."
-
-#~ msgid "The publicid must not be empty."
-#~ msgstr "Die Publicid darf nicht leer sein."
-
-#~ msgid "Mark Varienty"
-#~ msgstr "Sorte bewerten"
-
-#, fuzzy
-#~| msgid "Property"
-#~ msgid "Property type"
-#~ msgstr "Neuer Eigenschaftstyp des Bewertungsformulars"
-
-#~ msgid "List Mark Form Property Types"
-#~ msgstr "Eigenschaftstypen des Bewertungsformulars auflisten"
-
-#~ msgid "New Mark Form Property Type"
-#~ msgstr "Neuer Eigenschaftstyp des Bewertungsformulars"
-
-#~ msgid "Mark Form Property Type"
-#~ msgstr "Eigenschaftstyp des Bewertungsformulars"
-
-#~ msgid "Field Type"
-#~ msgstr "Datentyp des Feldes"
-
-#~ msgid "Select"
-#~ msgstr "Auswählen"
-
-#~ msgid "Mother"
-#~ msgstr "Mutter"
-
-#~ msgid "Father"
-#~ msgstr "Vater"
-
-#~ msgid "List Mark Form Fields"
-#~ msgstr "Felder des Bewertungsformulars auflisten"
-
-#~ msgid "List Mark Forms"
-#~ msgstr "Bewertungsformular auflisten"
-
-#~ msgid "New Mark Form"
-#~ msgstr "Neues Bewertungsformular"
-
-#~ msgid "List Mark Form Properties"
-#~ msgstr "Eigenschaften des Bewertungsformulars auflisten"
-
-#~ msgid "New Mark Form Property"
-#~ msgstr "Neue Eigenschaft des Bewertungsformulars"
-
-#~ msgid "Add Mark Form Field"
-#~ msgstr "Feld des Bewertungsformulars hinzufügen"
-
-#~ msgid "Are you sure you want to delete # {0}?"
-#~ msgstr "{0} wirklich löschen?"
-
-#~ msgid "Edit Mark Form Field"
-#~ msgstr "Feld des Bewertungsformulars bearbeiten"
-
-#~ msgid "New Mark Form Field"
-#~ msgstr "Neues Feld des Bewertungsformulars"
-
-#~ msgid "Mark Form Fields"
-#~ msgstr "Felder des Bewertungsformulars"
-
-#~ msgid "Delete Mark Form Field"
-#~ msgstr "Feld des Bewertungsformulars löschen"
-
-#~ msgid "This code hase already been used."
-#~ msgstr "Dieser Code wurde bereits verwendet."
-
-#~ msgid "email"
-#~ msgstr "E-Mail"
-
-#~ msgid "password"
-#~ msgstr "Kennwort"
-
-#, fuzzy
-#~ msgid "Deleted"
-#~ msgstr "Gelöscht"
-
-#, fuzzy
-#~ msgid "Locked"
-#~ msgstr "Gesperrt"
-
-#~ msgid "Rootstock Id"
-#~ msgstr "Unterlagen Id"

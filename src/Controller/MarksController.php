@@ -66,7 +66,7 @@ class MarksController extends AppController {
 			->order( [ 'name' => 'asc' ] )
 			->toArray();
 		
-		$all[0]                   = __( '(all)' );
+		$all[0]                   = '(all)'; // dont translate, because of bug in cakephp
 		$mark_form_property_types = $all + $types;
 		
 		$this->set( compact( 'marks', 'mark_form_property_types' ) );

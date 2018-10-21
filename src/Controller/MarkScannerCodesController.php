@@ -28,7 +28,7 @@ class MarkScannerCodesController extends AppController {
 			->order( [ 'name' => 'asc' ] )
 			->toArray();
 		
-		$all                  = [ 0 => __( '(all)' ) ];
+		$all                  = [ 0 => '(all)']; // dont translate, because of bug in cakephp
 		$mark_form_properties = $all + $properties;
 		
 		$this->set( compact( 'markScannerCodes', 'mark_form_properties' ) );
