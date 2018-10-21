@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2017-12-17 17:46+0000\n"
-"PO-Revision-Date: 2017-12-17 18:49+0100\n"
+"POT-Creation-Date: 2018-10-21 19:37+0000\n"
+"PO-Revision-Date: 2018-10-21 21:41+0200\n"
 "Last-Translator: Cyrill Bolliger <bolliger@gmx.ch>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -13,76 +13,76 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.2\n"
 
-#: Controller/AppController.php:93
+#: Controller/AppController.php:89
 msgctxt "time format"
 msgid "HH:mm"
 msgstr "HH:mm"
 
-#: Controller/AppController.php:94;98;100
+#: Controller/AppController.php:90;94;96
 msgctxt "date format"
 msgid "dd.MM.yyyy"
 msgstr "dd.MM.yyyy"
 
-#: Controller/AppController.php:95;97;99
+#: Controller/AppController.php:91;93;95
 msgctxt "datetime format"
 msgid "dd.MM.yyyy HH:mm"
 msgstr "dd.MM.yyyy HH:mm"
 
-#: Controller/BatchesController.php:93;120
+#: Controller/BatchesController.php:94;121
 msgid "The batch has been saved."
 msgstr "Das Los wurde gespeichert."
 
-#: Controller/BatchesController.php:97;124
+#: Controller/BatchesController.php:98;125
 msgid "The batch could not be saved. Please, try again."
 msgstr "Das Los konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/BatchesController.php:144
+#: Controller/BatchesController.php:145
 msgid "The batch has been deleted."
 msgstr "Das Los wurde gelöscht."
 
-#: Controller/BatchesController.php:146
+#: Controller/BatchesController.php:147
 msgid "The batch could not be deleted. Please, try again."
 msgstr "Das Los konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/BatchesController.php:175 Controller/CrossingsController.php:180
-#: Controller/MarkFormPropertiesController.php:171
-#: Controller/MarkFormsController.php:235
-#: Controller/MarkScannerCodesController.php:155;176
-#: Controller/MarksController.php:356 Controller/MarksViewController.php:25
-#: Controller/MotherTreesController.php:155 Controller/RowsController.php:138
-#: Controller/ScionsBundlesController.php:150
-#: Controller/TreesController.php:293;406;431
-#: Controller/VarietiesController.php:215;234;253;283
+#: Controller/BatchesController.php:176 Controller/CrossingsController.php:181
+#: Controller/MarkFormPropertiesController.php:172
+#: Controller/MarkFormsController.php:236
+#: Controller/MarkScannerCodesController.php:156;177
+#: Controller/MarksController.php:357 Controller/MarksViewController.php:25
+#: Controller/MotherTreesController.php:156 Controller/RowsController.php:139
+#: Controller/ScionsBundlesController.php:151
+#: Controller/TreesController.php:294;407;432
+#: Controller/VarietiesController.php:216;235;254;284
 msgid "Direct access not allowed."
 msgstr "Direkter Zugriff nicht erlaubt."
 
-#: Controller/BatchesController.php:201
-#: Controller/MarkScannerCodesController.php:194;215
-#: Controller/TreesController.php:460
+#: Controller/BatchesController.php:202
+#: Controller/MarkScannerCodesController.php:195;216
+#: Controller/TreesController.php:461
 msgid "Regular"
 msgstr "Normal"
 
-#: Controller/CrossingsController.php:73;115
+#: Controller/CrossingsController.php:74;116
 msgid "The crossing has been saved."
 msgstr "Die Kreuzung wurde gespeichert."
 
-#: Controller/CrossingsController.php:77
+#: Controller/CrossingsController.php:78
 msgid "The crossing could not be saved. Please try again."
 msgstr ""
 "Die Kreuzung konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/CrossingsController.php:119
+#: Controller/CrossingsController.php:120
 msgid "The crossing could not be saved. Please, try again."
 msgstr ""
 "Die Kreuzung konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/CrossingsController.php:149
+#: Controller/CrossingsController.php:150
 msgid "The crossing has been deleted."
 msgstr "Die Kreuzung wurde gelöscht."
 
-#: Controller/CrossingsController.php:151
+#: Controller/CrossingsController.php:152
 msgid "The crossing could not be deleted. Please, try again."
 msgstr "Die Kreuzung konnte nicht gelöscht werden. Bitte versuche es erneut."
 
@@ -141,21 +141,21 @@ msgstr ""
 "Das Feld des Bewertungsformulars konnte nicht gespeichert werden. Bitte "
 "versuche es erneut."
 
-#: Controller/MarkFormPropertiesController.php:59;87
+#: Controller/MarkFormPropertiesController.php:60;88
 msgid "The mark form property has been saved."
 msgstr "Die Eigenschaft des Bewertungsformulars wurde gespeichert."
 
-#: Controller/MarkFormPropertiesController.php:63;91
+#: Controller/MarkFormPropertiesController.php:64;92
 msgid "The mark form property could not be saved. Please, try again."
 msgstr ""
 "Die Eigenschaft des Bewertungsformulars konnte nicht gespeichert werden. "
 "Bitte versuche es erneut."
 
-#: Controller/MarkFormPropertiesController.php:112
+#: Controller/MarkFormPropertiesController.php:113
 msgid "The mark form property has been deleted."
 msgstr "Die Eigenschaft des Bewertungsformulars wurde gelöscht."
 
-#: Controller/MarkFormPropertiesController.php:114
+#: Controller/MarkFormPropertiesController.php:115
 msgid "The mark form property could not be deleted. Please, try again."
 msgstr ""
 "Die Eigenschaft des Bewertungsformulars konnte nicht gelöscht werden. Bitte "
@@ -181,50 +181,50 @@ msgstr ""
 "Der Eigenschaftstyp des Bewertungsformulars konnte nicht gelöscht werden. "
 "Bitte versuche es erneut."
 
-#: Controller/MarkFormsController.php:83;152
+#: Controller/MarkFormsController.php:84;153
 msgid "The mark form has been saved."
 msgstr "Das Bewertungsformular wurde gespeichert."
 
-#: Controller/MarkFormsController.php:87;156
+#: Controller/MarkFormsController.php:88;157
 msgid "The mark form could not be saved. Please, try again."
 msgstr ""
 "Das Bewertungsformular konnte nicht gespeichert werden. Bitte versuche es "
 "erneut."
 
-#: Controller/MarkFormsController.php:204
+#: Controller/MarkFormsController.php:205
 msgid "The mark form has been deleted."
 msgstr "Das Bewertungsformular wurde gelöscht."
 
-#: Controller/MarkFormsController.php:206
+#: Controller/MarkFormsController.php:207
 msgid "The mark form could not be deleted. Please, try again."
 msgstr ""
 "Das Bewertungsformular konnte nicht gelöscht werden. Bitte versuche es "
 "erneut."
 
-#: Controller/MarkScannerCodesController.php:30
-#: Controller/MarksController.php:68
+#: Controller/MarkScannerCodesController.php:31
+#: Controller/MarksController.php:69
 msgid "(all)"
 msgstr "(alle)"
 
-#: Controller/MarkScannerCodesController.php:67
+#: Controller/MarkScannerCodesController.php:68
 msgid "{0}: {1} has been saved."
 msgstr "{0}: {1} wurde gespeichert."
 
-#: Controller/MarkScannerCodesController.php:77;104
+#: Controller/MarkScannerCodesController.php:78;105
 msgid "The mark scanner code could not be saved. Please, try again."
 msgstr ""
 "Der Bewertungsscannercode konnte nicht gespeichert werden. Bitte versuche es "
 "erneut."
 
-#: Controller/MarkScannerCodesController.php:100
+#: Controller/MarkScannerCodesController.php:101
 msgid "The mark scanner code has been saved."
 msgstr "Der Bewertungsscannercode wurde gespeichert."
 
-#: Controller/MarkScannerCodesController.php:124
+#: Controller/MarkScannerCodesController.php:125
 msgid "The mark scanner code has been deleted."
 msgstr "Der Bewertungsscannercode wurde gelöscht."
 
-#: Controller/MarkScannerCodesController.php:126
+#: Controller/MarkScannerCodesController.php:127
 msgid "The mark scanner code could not be deleted. Please, try again."
 msgstr ""
 "Der Bewertungsscannercode konnte nicht gelöscht werden. Bitte versuche es "
@@ -250,19 +250,19 @@ msgstr ""
 "Der Wert der Bewertung konnte nicht gelöscht werden. Bitte versuche es "
 "erneut."
 
-#: Controller/MarksController.php:122;167;216;277
+#: Controller/MarksController.php:123;168;217;278
 msgid "The mark has been saved."
 msgstr "Die Bewertung wurde gespeichert."
 
-#: Controller/MarksController.php:126;171;220;281
+#: Controller/MarksController.php:127;172;221;282
 msgid "The mark could not be saved."
 msgstr "Die Bewertung konnte nicht gespeichert werden."
 
-#: Controller/MarksController.php:129
+#: Controller/MarksController.php:130
 msgid "Please select a tree by public id."
 msgstr "Bitte wähle einen Baum über seine Publicid."
 
-#: Controller/MarksController.php:132;177;226
+#: Controller/MarksController.php:133;178;227
 msgid ""
 "One of the mark values violates the validation rules. Please check data "
 "types."
@@ -270,52 +270,52 @@ msgstr ""
 "Einer der Werte der Bewertung verstößt gegen die Regeln der "
 "Gültigkeitsprüfung. Bitte überprüfe die Datentypen."
 
-#: Controller/MarksController.php:174
+#: Controller/MarksController.php:175
 msgid "Please select a variety."
 msgstr "Bitte wähle eine Sorte aus."
 
-#: Controller/MarksController.php:223
+#: Controller/MarksController.php:224
 msgid "Please select a batch."
 msgstr "Bitte wähle ein Los aus."
 
-#: Controller/MarksController.php:304
+#: Controller/MarksController.php:305
 msgid "The mark has been deleted."
 msgstr "Die Bewertung wurde gelöscht."
 
-#: Controller/MarksController.php:306
+#: Controller/MarksController.php:307
 msgid "The mark could not be deleted. Please, try again."
 msgstr "Die Bewertung konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/MotherTreesController.php:64;98
+#: Controller/MotherTreesController.php:65;99
 msgid "The mother tree has been saved."
 msgstr "Der Mutterbaum wurde gespeichert."
 
-#: Controller/MotherTreesController.php:68;102
+#: Controller/MotherTreesController.php:69;103
 msgid "The mother tree could not be saved. Please, try again."
 msgstr ""
 "Der Mutterbaum konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/MotherTreesController.php:124
+#: Controller/MotherTreesController.php:125
 msgid "The mother tree has been deleted."
 msgstr "Der Mutterbaum wurde gelöscht."
 
-#: Controller/MotherTreesController.php:126
+#: Controller/MotherTreesController.php:127
 msgid "The mother tree could not be deleted. Please, try again."
 msgstr "Der Mutterbaum konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/QueriesController.php:189;269
+#: Controller/QueriesController.php:203;283
 msgid "The query has been saved."
 msgstr "Die Abfrage wurde gespeichert."
 
-#: Controller/QueriesController.php:193;273
+#: Controller/QueriesController.php:207;287
 msgid "The query could not be saved. Please, try again."
 msgstr "Die Abfrage konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/QueriesController.php:341
+#: Controller/QueriesController.php:355
 msgid "The query has been deleted."
 msgstr "Die Abfrage wurde gelöscht."
 
-#: Controller/QueriesController.php:343
+#: Controller/QueriesController.php:357
 msgid "The query could not be deleted. Please, try again."
 msgstr "Die Abfrage konnte nicht gelöscht werden. Bitte versuche es erneut."
 
@@ -354,57 +354,57 @@ msgstr "Die Unterlage wurde gelöscht."
 msgid "The rootstock could not be deleted. Please, try again."
 msgstr "Die Unterlage konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/RowsController.php:58;84
+#: Controller/RowsController.php:59;85
 msgid "The row has been saved."
 msgstr "Die Zeile wurde gespeichert."
 
-#: Controller/RowsController.php:62;88
+#: Controller/RowsController.php:63;89
 msgid "The row could not be saved. Please, try again."
 msgstr "Die Zeile konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/RowsController.php:107
+#: Controller/RowsController.php:108
 msgid "The row has been deleted."
 msgstr "Die Zeile wurde gelöscht."
 
-#: Controller/RowsController.php:109
+#: Controller/RowsController.php:110
 msgid "The row could not be deleted. Please, try again."
 msgstr "Die Zeile konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/ScionsBundlesController.php:63;94
+#: Controller/ScionsBundlesController.php:64;95
 msgid "The scions bundle has been saved."
 msgstr "Das Reiserbündel wude gespeichert."
 
-#: Controller/ScionsBundlesController.php:67;98
+#: Controller/ScionsBundlesController.php:68;99
 msgid "The scions bundle could not be saved. Please, try again."
 msgstr ""
 "Das Reiserbündel konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/ScionsBundlesController.php:119
+#: Controller/ScionsBundlesController.php:120
 msgid "The scions bundle has been deleted."
 msgstr "Das Reiserbündel wurde gelöscht."
 
-#: Controller/ScionsBundlesController.php:121
+#: Controller/ScionsBundlesController.php:122
 msgid "The scions bundle could not be deleted. Please, try again."
 msgstr ""
 "Das Reiserbündel konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/TreesController.php:108;144;180;220;257
+#: Controller/TreesController.php:109;145;181;221;258
 msgid "The tree has been saved."
 msgstr "Der Baum wurde gespeichert."
 
-#: Controller/TreesController.php:112;148;184;224;259
+#: Controller/TreesController.php:113;149;185;225;260
 msgid "The tree could not be saved. Please, try again."
 msgstr "Der Baum konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/TreesController.php:337
+#: Controller/TreesController.php:338
 msgid "The tree has been deleted."
 msgstr "Der Baum wurde gelöscht."
 
-#: Controller/TreesController.php:339
+#: Controller/TreesController.php:340
 msgid "The tree could not be deleted. Please, try again."
 msgstr "Der Baum konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/TreesController.php:464
+#: Controller/TreesController.php:465
 msgid "Anonymous"
 msgstr "Anonymisiert"
 
@@ -437,19 +437,19 @@ msgstr "Das System ist auf dem neuesten Stand."
 msgid "Your username or password is incorrect."
 msgstr "Dein Benutzername oder Passwort ist nicht korrekt."
 
-#: Controller/VarietiesController.php:108;134;161
+#: Controller/VarietiesController.php:109;135;162
 msgid "The variety has been saved."
 msgstr "Die Sorte wurde gespeichert."
 
-#: Controller/VarietiesController.php:112;138;165
+#: Controller/VarietiesController.php:113;139;166
 msgid "The variety could not be saved. Please, try again."
 msgstr "Die Sorte konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/VarietiesController.php:195
+#: Controller/VarietiesController.php:196
 msgid "The variety has been deleted."
 msgstr "Die Sorte wurde gelöscht."
 
-#: Controller/VarietiesController.php:197
+#: Controller/VarietiesController.php:198
 msgid "The variety could not be deleted. Please, try again."
 msgstr "Die Sorte konnte nicht gelöscht werden. Bitte versuche es erneut."
 
@@ -473,7 +473,7 @@ msgstr "Anzahl"
 msgid "min"
 msgstr "Min"
 
-#: Template/Element/Query/mark_value.ctp:25
+#: Template/Element/Query/mark_value.ctp:29
 msgctxt "short: minimum"
 msgid "min"
 msgstr "Min"
@@ -482,7 +482,7 @@ msgstr "Min"
 msgid "max"
 msgstr "Max"
 
-#: Template/Element/Query/mark_value.ctp:31
+#: Template/Element/Query/mark_value.ctp:35
 msgctxt "short: maximum"
 msgid "max"
 msgstr "Max"
@@ -536,15 +536,15 @@ msgid "Please enter a time"
 msgstr "Bitte gib eine Uhrzeit ein"
 
 #: Model/Behavior/GetFilterDataBehavior.php:224
-#: Template/Element/MarkView/tooltip.ctp:13 Template/Marks/view.ctp:70
+#: Template/Element/MarkView/tooltip.ctp:21 Template/Marks/view.ctp:70
 #: Template/MotherTrees/view.ctp:24 Template/ScionsBundles/view.ctp:30
-#: Template/Trees/view.ctp:37;63
+#: Template/Trees/view.ctp:37;63;67
 msgid "Yes"
 msgstr "Ja"
 
 #: Model/Behavior/GetFilterDataBehavior.php:224
-#: Template/Element/MarkView/tooltip.ctp:13 Template/MotherTrees/view.ctp:24
-#: Template/ScionsBundles/view.ctp:30 Template/Trees/view.ctp:37;63
+#: Template/Element/MarkView/tooltip.ctp:21 Template/MotherTrees/view.ctp:24
+#: Template/ScionsBundles/view.ctp:30 Template/Trees/view.ctp:37;63;67
 msgid "No"
 msgstr "Nein"
 
@@ -1017,7 +1017,7 @@ msgid "Batches"
 msgstr "Lose"
 
 #: Model/Entity/Query.php:196 Template/Batches/view.ctp:68
-#: Template/Element/MarkView/tooltip.ctp:71;115
+#: Template/Element/MarkView/tooltip.ctp:79;123
 #: Template/Element/Tree/related_table.ctp:5
 msgid "Convar"
 msgstr "Convar"
@@ -1042,14 +1042,14 @@ msgstr ""
 "Eingabe nicht gültig. Der Code darf nur alphanumerische Zeichen (ohne "
 "Umlaute) enthalten. Länge zwischen vier und acht Zeichen."
 
-#: Model/Table/CrossingsTable.php:100 Model/Table/MotherTreesTable.php:146
+#: Model/Table/CrossingsTable.php:103 Model/Table/MotherTreesTable.php:147
 #: Model/Table/RowsTable.php:93 Model/Table/ScionsBundlesTable.php:101
 msgid "This code has already been used. Please use a unique code."
 msgstr ""
 "Dieser Code wurde bereits verwendet. Bitte wähle einen unverwechselbaren "
 "Code."
 
-#: Model/Table/CrossingsTable.php:105
+#: Model/Table/CrossingsTable.php:108
 msgid ""
 "A crossing with the same mother variety and the same father variety already "
 "exists."
@@ -1109,7 +1109,7 @@ msgid "Boolean"
 msgstr "Boole'scher Wert"
 
 #: Model/Table/MarkFormPropertiesTable.php:232 Template/Element/Mark/list.ctp:4
-#: Template/Element/MarkView/tooltip.ctp:4 Template/Marks/view.ctp:28
+#: Template/Element/MarkView/tooltip.ctp:12 Template/Marks/view.ctp:28
 msgid "Date"
 msgstr "Datum"
 
@@ -1198,9 +1198,9 @@ msgid "Add Batch"
 msgstr "Los hinzufügen"
 
 #: Template/Batches/add.ctp:33 Template/Batches/edit.ctp:33
-#: Template/Crossings/add.ctp:24 Template/Crossings/edit.ctp:22
+#: Template/Crossings/add.ctp:25 Template/Crossings/edit.ctp:23
 #: Template/Element/Mark/basic_mark_form.ctp:36
-#: Template/Element/Tree/eliminate_form.ctp:19
+#: Template/Element/Tree/eliminate_form.ctp:24
 #: Template/Element/Tree/plant_form.ctp:27 Template/ExperimentSites/add.ctp:12
 #: Template/ExperimentSites/edit.ctp:12 Template/Graftings/add.ctp:12
 #: Template/Graftings/edit.ctp:12 Template/MarkFormProperties/add.ctp:53
@@ -1216,8 +1216,8 @@ msgstr "Los hinzufügen"
 #: Template/Rootstocks/add.ctp:12 Template/Rootstocks/edit.ctp:12
 #: Template/Rows/add.ctp:20 Template/Rows/edit.ctp:25
 #: Template/ScionsBundles/add.ctp:32 Template/ScionsBundles/edit.ctp:32
-#: Template/Trees/add.ctp:52 Template/Trees/add_genuine_seedling.ctp:28
-#: Template/Trees/add_graft_tree.ctp:44 Template/Trees/edit.ctp:56
+#: Template/Trees/add.ctp:53 Template/Trees/add_genuine_seedling.ctp:28
+#: Template/Trees/add_graft_tree.ctp:44 Template/Trees/edit.ctp:57
 #: Template/Users/add.ctp:17 Template/Users/edit.ctp:17
 #: Template/Varieties/add_breeder_variety.ctp:23
 #: Template/Varieties/add_official_variety.ctp:30
@@ -1243,7 +1243,7 @@ msgstr "Etikette drucken"
 msgid "Batch:"
 msgstr "Los:"
 
-#: Template/Batches/view.ctp:13;67 Template/Crossings/view.ctp:8;35;78
+#: Template/Batches/view.ctp:13;67 Template/Crossings/view.ctp:8;39;82
 #: Template/Element/Mark/list.ctp:3 Template/Element/Tree/related_table.ctp:3
 #: Template/ExperimentSites/view.ctp:8 Template/Graftings/view.ctp:8
 #: Template/MarkFormProperties/view.ctp:8;60
@@ -1256,49 +1256,49 @@ msgstr "Los:"
 msgid "Id"
 msgstr "Id"
 
-#: Template/Batches/view.ctp:17 Template/Element/MarkView/tooltip.ctp:25
+#: Template/Batches/view.ctp:17 Template/Element/MarkView/tooltip.ctp:33
 #: Template/MotherTrees/view.ctp:18
 msgid "Crossing"
 msgstr "Kreuzung"
 
-#: Template/Batches/view.ctp:22 Template/Crossings/view.ctp:37
-#: Template/Element/MarkView/tooltip.ctp:29
+#: Template/Batches/view.ctp:22 Template/Crossings/view.ctp:41
+#: Template/Element/MarkView/tooltip.ctp:37
 msgid "Date Sowed"
 msgstr "Datum Aussaat"
 
-#: Template/Batches/view.ctp:26 Template/Crossings/view.ctp:38
-#: Template/Element/MarkView/tooltip.ctp:33
+#: Template/Batches/view.ctp:26 Template/Crossings/view.ctp:42
+#: Template/Element/MarkView/tooltip.ctp:41
 msgid "Numb Seeds Sowed"
 msgstr "Anzahl ausgesäte Samen"
 
-#: Template/Batches/view.ctp:30 Template/Element/MarkView/tooltip.ctp:37
+#: Template/Batches/view.ctp:30 Template/Element/MarkView/tooltip.ctp:45
 msgid "Numb Sprouts Grown"
 msgstr "Anzahl gewachsener Sprossen"
 
-#: Template/Batches/view.ctp:34 Template/Crossings/view.ctp:39
-#: Template/Element/MarkView/tooltip.ctp:41
+#: Template/Batches/view.ctp:34 Template/Crossings/view.ctp:43
+#: Template/Element/MarkView/tooltip.ctp:49
 msgid "Seed Tray"
 msgstr "Saatschale"
 
-#: Template/Batches/view.ctp:38 Template/Crossings/view.ctp:40
-#: Template/Element/MarkView/tooltip.ctp:45 Template/Trees/view.ctp:54
+#: Template/Batches/view.ctp:38 Template/Crossings/view.ctp:44
+#: Template/Element/MarkView/tooltip.ctp:53 Template/Trees/view.ctp:54
 msgid "Date Planted"
 msgstr "Pflanzdatum"
 
-#: Template/Batches/view.ctp:42 Template/Element/MarkView/tooltip.ctp:49
+#: Template/Batches/view.ctp:42 Template/Element/MarkView/tooltip.ctp:57
 msgid "Numb Sprouts Planted"
 msgstr "Anzahl ausgepflanzter Sprossen"
 
-#: Template/Batches/view.ctp:46 Template/Crossings/view.ctp:41
-#: Template/Element/MarkView/tooltip.ctp:53
+#: Template/Batches/view.ctp:46 Template/Crossings/view.ctp:45
+#: Template/Element/MarkView/tooltip.ctp:61
 msgid "Patch"
 msgstr "Beet"
 
 #: Template/Batches/view.ctp:50 Template/Crossings/view.ctp:22
 #: Template/MarkFormProperties/view.ctp:43 Template/MarkForms/view.ctp:12
-#: Template/Marks/view.ctp:45 Template/MotherTrees/view.ctp:51
+#: Template/Marks/view.ctp:45 Template/MotherTrees/view.ctp:55
 #: Template/Rows/view.ctp:20 Template/ScionsBundles/view.ctp:33
-#: Template/Trees/view.ctp:66 Template/Users/view.ctp:20
+#: Template/Trees/view.ctp:70 Template/Users/view.ctp:20
 #: Template/Varieties/view.ctp:33
 msgid "Created"
 msgstr "Erstellt"
@@ -1307,18 +1307,18 @@ msgstr "Erstellt"
 #: Template/Element/Tree/related_table.ctp:10
 #: Template/MarkFormProperties/view.ctp:47;62
 #: Template/MarkFormPropertyTypes/view.ctp:23 Template/MarkForms/view.ctp:16;32
-#: Template/Marks/view.ctp:49;62 Template/MotherTrees/view.ctp:55
+#: Template/Marks/view.ctp:49;62 Template/MotherTrees/view.ctp:59
 #: Template/Rows/view.ctp:24 Template/ScionsBundles/view.ctp:37
-#: Template/Trees/view.ctp:70 Template/Users/view.ctp:24
+#: Template/Trees/view.ctp:74 Template/Users/view.ctp:24
 #: Template/Varieties/view.ctp:37;55
 msgid "Modified"
 msgstr "Geändert"
 
-#: Template/Batches/view.ctp:59 Template/Element/MarkView/tooltip.ctp:58;140
+#: Template/Batches/view.ctp:59 Template/Element/MarkView/tooltip.ctp:66;148
 #: Template/Element/Tree/related_table.ctp:8
 #: Template/MarkFormProperties/view.ctp:52 Template/MotherTrees/view.ctp:64
 #: Template/Rows/view.ctp:29 Template/ScionsBundles/view.ctp:42
-#: Template/Trees/view.ctp:75
+#: Template/Trees/view.ctp:79
 msgid "Note"
 msgstr "Bemerkung"
 
@@ -1326,14 +1326,14 @@ msgstr "Bemerkung"
 msgid "Related Varieties"
 msgstr "Verwandte Sorten"
 
-#: Template/Batches/view.ctp:69 Template/Crossings/view.ctp:42;85
+#: Template/Batches/view.ctp:69 Template/Crossings/view.ctp:46;89
 #: Template/Element/Batch/index_table.ctp:11
 #: Template/Element/Crossing/index_table.ctp:8
 #: Template/Element/Mark/index_table.ctp:8 Template/Element/Mark/list.ctp:10
 #: Template/Element/MarkForm/index_table.ctp:8
 #: Template/Element/MarkFormProperty/index_table.ctp:10
 #: Template/Element/MarkScannerCode/index_table.ctp:8
-#: Template/Element/MotherTree/index_table.ctp:12
+#: Template/Element/MotherTree/index_table.ctp:13
 #: Template/Element/Row/index_table.ctp:10
 #: Template/Element/ScionsBundle/index_table.ctp:11
 #: Template/Element/Tree/get_tree.ctp:10
@@ -1349,14 +1349,14 @@ msgstr "Verwandte Sorten"
 msgid "Actions"
 msgstr "Aktionen"
 
-#: Template/Batches/view.ctp:78 Template/Crossings/view.ctp:56;99
+#: Template/Batches/view.ctp:78 Template/Crossings/view.ctp:60;103
 #: Template/Element/Batch/index_table.ctp:26
 #: Template/Element/Crossing/index_table.ctp:32
 #: Template/Element/Mark/index_table.ctp:42 Template/Element/Mark/list.ctp:45
 #: Template/Element/MarkForm/index_table.ctp:21
 #: Template/Element/MarkFormProperty/index_table.ctp:26
 #: Template/Element/MarkScannerCode/index_table.ctp:25
-#: Template/Element/MotherTree/index_table.ctp:28
+#: Template/Element/MotherTree/index_table.ctp:30
 #: Template/Element/Row/index_table.ctp:24
 #: Template/Element/ScionsBundle/index_table.ctp:27
 #: Template/Element/Tree/index_table.ctp:30
@@ -1370,14 +1370,14 @@ msgstr "Aktionen"
 msgid "View"
 msgstr "Anzeigen"
 
-#: Template/Batches/view.ctp:81 Template/Crossings/view.ctp:59;102
+#: Template/Batches/view.ctp:81 Template/Crossings/view.ctp:63;106
 #: Template/Element/Batch/index_table.ctp:28
 #: Template/Element/Crossing/index_table.ctp:34
 #: Template/Element/Mark/index_table.ctp:44 Template/Element/Mark/list.ctp:48
 #: Template/Element/MarkForm/index_table.ctp:23
 #: Template/Element/MarkFormProperty/index_table.ctp:29
 #: Template/Element/MarkScannerCode/index_table.ctp:27
-#: Template/Element/MotherTree/index_table.ctp:30
+#: Template/Element/MotherTree/index_table.ctp:32
 #: Template/Element/Query/nav.ctp:7;24 Template/Element/Row/index_table.ctp:26
 #: Template/Element/ScionsBundle/index_table.ctp:29
 #: Template/Element/Tree/index_table.ctp:32
@@ -1392,14 +1392,14 @@ msgstr "Anzeigen"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: Template/Batches/view.ctp:85 Template/Crossings/view.ctp:63;106
+#: Template/Batches/view.ctp:85 Template/Crossings/view.ctp:67;110
 #: Template/Element/Batch/index_table.ctp:32
 #: Template/Element/Crossing/index_table.ctp:38
 #: Template/Element/Mark/index_table.ctp:48 Template/Element/Mark/list.ctp:52
 #: Template/Element/MarkForm/index_table.ctp:27
 #: Template/Element/MarkFormProperty/index_table.ctp:33
 #: Template/Element/MarkScannerCode/index_table.ctp:31
-#: Template/Element/MotherTree/index_table.ctp:34
+#: Template/Element/MotherTree/index_table.ctp:36
 #: Template/Element/Query/nav.ctp:12;28 Template/Element/Row/index_table.ctp:30
 #: Template/Element/ScionsBundle/index_table.ctp:33
 #: Template/Element/Tree/index_table.ctp:36
@@ -1413,13 +1413,13 @@ msgstr "Bearbeiten"
 msgid "Delete"
 msgstr "Löschen"
 
-#: Template/Batches/view.ctp:86 Template/Crossings/view.ctp:64;107
+#: Template/Batches/view.ctp:86 Template/Crossings/view.ctp:68;111
 #: Template/Element/Batch/index_table.ctp:33
 #: Template/Element/Crossing/index_table.ctp:39
 #: Template/Element/Mark/list.ctp:53
 #: Template/Element/MarkForm/index_table.ctp:28
 #: Template/Element/MarkFormProperty/index_table.ctp:34
-#: Template/Element/MotherTree/index_table.ctp:35
+#: Template/Element/MotherTree/index_table.ctp:37
 #: Template/Element/Row/index_table.ctp:31
 #: Template/Element/ScionsBundle/index_table.ctp:34
 #: Template/Element/Tree/index_table.ctp:37
@@ -1465,43 +1465,47 @@ msgid "Father variety"
 msgstr "Vatersorte"
 
 #: Template/Crossings/view.ctp:31
+msgid "Target"
+msgstr "Ziel"
+
+#: Template/Crossings/view.ctp:35
 msgid "Related Batches"
 msgstr "Verwandte Lose"
 
-#: Template/Crossings/view.ctp:36;79 Template/MarkScannerCodes/view.ctp:30
+#: Template/Crossings/view.ctp:40;83 Template/MarkScannerCodes/view.ctp:30
 #: Template/Varieties/view.ctp:51
 msgid "Code"
 msgstr "Code"
 
-#: Template/Crossings/view.ctp:74
+#: Template/Crossings/view.ctp:78
 msgid "Related Mother Trees"
 msgstr "Verwandte Mutterbäume"
 
-#: Template/Crossings/view.ctp:80 Template/Element/MarkView/tooltip.ctp:109
+#: Template/Crossings/view.ctp:84 Template/Element/MarkView/tooltip.ctp:117
 #: Template/Element/MotherTree/index_table.ctp:6
 #: Template/Element/Tree/get_tree.ctp:4
 #: Template/Element/Tree/related_table.ctp:4
 msgid "Publicid"
 msgstr "Publicid"
 
-#: Template/Crossings/view.ctp:81 Template/MotherTrees/view.ctp:23
+#: Template/Crossings/view.ctp:85 Template/MotherTrees/view.ctp:23
 msgid "Planed"
 msgstr "Geplant"
 
-#: Template/Crossings/view.ctp:82 Template/MotherTrees/view.ctp:27
+#: Template/Crossings/view.ctp:86 Template/MotherTrees/view.ctp:27
 msgid "Numb Portions"
 msgstr "Anz. Portionen"
 
-#: Template/Crossings/view.ctp:83 Template/MotherTrees/view.ctp:31
+#: Template/Crossings/view.ctp:87 Template/MotherTrees/view.ctp:31
 msgid "Numb Flowers"
 msgstr "Anz. Blüten"
 
-#: Template/Crossings/view.ctp:84 Template/MotherTrees/view.ctp:35
+#: Template/Crossings/view.ctp:88 Template/MotherTrees/view.ctp:39
 msgid "Numb Seeds"
 msgstr "Anz. Samen"
 
-#: Template/Crossings/view.ctp:91
-#: Template/Element/MotherTree/index_table.ctp:20
+#: Template/Crossings/view.ctp:95
+#: Template/Element/MotherTree/index_table.ctp:21
 msgid "Mother tree not set."
 msgstr "Kein Mutterbaum gesetzt."
 
@@ -1540,9 +1544,9 @@ msgstr "Kreuzung.Sorte"
 #: Template/Element/MarkForm/index_table.ctp:38
 #: Template/Element/MarkFormProperty/index_table.ctp:45
 #: Template/Element/MarkScannerCode/index_table.ctp:42
-#: Template/Element/MotherTree/index_table.ctp:45
+#: Template/Element/MotherTree/index_table.ctp:47
 #: Template/Element/Query/mark_results_table.ctp:50
-#: Template/Element/Query/results_table.ctp:23
+#: Template/Element/Query/results_table.ctp:29
 #: Template/Element/Row/index_table.ctp:40
 #: Template/Element/ScionsBundle/index_table.ctp:44
 #: Template/Element/Tree/index_table.ctp:47
@@ -1559,9 +1563,9 @@ msgstr "erste"
 #: Template/Element/MarkForm/index_table.ctp:39
 #: Template/Element/MarkFormProperty/index_table.ctp:46
 #: Template/Element/MarkScannerCode/index_table.ctp:43
-#: Template/Element/MotherTree/index_table.ctp:46
+#: Template/Element/MotherTree/index_table.ctp:48
 #: Template/Element/Query/mark_results_table.ctp:51
-#: Template/Element/Query/results_table.ctp:24
+#: Template/Element/Query/results_table.ctp:30
 #: Template/Element/Row/index_table.ctp:41
 #: Template/Element/ScionsBundle/index_table.ctp:45
 #: Template/Element/Tree/index_table.ctp:48
@@ -1578,9 +1582,9 @@ msgstr "zurück"
 #: Template/Element/MarkForm/index_table.ctp:41
 #: Template/Element/MarkFormProperty/index_table.ctp:48
 #: Template/Element/MarkScannerCode/index_table.ctp:45
-#: Template/Element/MotherTree/index_table.ctp:48
+#: Template/Element/MotherTree/index_table.ctp:50
 #: Template/Element/Query/mark_results_table.ctp:53
-#: Template/Element/Query/results_table.ctp:26
+#: Template/Element/Query/results_table.ctp:32
 #: Template/Element/Row/index_table.ctp:43
 #: Template/Element/ScionsBundle/index_table.ctp:47
 #: Template/Element/Tree/index_table.ctp:50
@@ -1597,9 +1601,9 @@ msgstr "weiter"
 #: Template/Element/MarkForm/index_table.ctp:42
 #: Template/Element/MarkFormProperty/index_table.ctp:49
 #: Template/Element/MarkScannerCode/index_table.ctp:46
-#: Template/Element/MotherTree/index_table.ctp:49
+#: Template/Element/MotherTree/index_table.ctp:51
 #: Template/Element/Query/mark_results_table.ctp:54
-#: Template/Element/Query/results_table.ctp:27
+#: Template/Element/Query/results_table.ctp:33
 #: Template/Element/Row/index_table.ctp:44
 #: Template/Element/ScionsBundle/index_table.ctp:48
 #: Template/Element/Tree/index_table.ctp:51
@@ -1616,9 +1620,9 @@ msgstr "letzte"
 #: Template/Element/MarkForm/index_table.ctp:44
 #: Template/Element/MarkFormProperty/index_table.ctp:51
 #: Template/Element/MarkScannerCode/index_table.ctp:48
-#: Template/Element/MotherTree/index_table.ctp:51
+#: Template/Element/MotherTree/index_table.ctp:53
 #: Template/Element/Query/mark_results_table.ctp:56
-#: Template/Element/Query/results_table.ctp:29
+#: Template/Element/Query/results_table.ctp:35
 #: Template/Element/Row/index_table.ctp:46
 #: Template/Element/ScionsBundle/index_table.ctp:50
 #: Template/Element/Tree/index_table.ctp:53
@@ -1699,26 +1703,28 @@ msgstr "Bewertung mit der id {0} wirklich löschen?"
 
 #: Template/Element/Mark/list.ctp:5
 #: Template/Element/MarkScannerCode/index_table.ctp:6
-#: Template/MarkScannerCodes/add.ctp:12 Template/MarkScannerCodes/edit.ctp:18
-#: Template/MarkScannerCodes/view.ctp:17 Template/Marks/view.ctp:59
+#: Template/Element/MarkView/tooltip.ctp:4 Template/MarkScannerCodes/add.ctp:12
+#: Template/MarkScannerCodes/edit.ctp:18 Template/MarkScannerCodes/view.ctp:17
+#: Template/Marks/view.ctp:59
 msgid "Property"
 msgstr "Eigenschaft"
 
 #: Template/Element/Mark/list.ctp:6
 #: Template/Element/MarkScannerCode/index_table.ctp:7
+#: Template/Element/MarkView/tooltip.ctp:8
 #: Template/Element/Query/mark_results_table.ctp:23
 #: Template/MarkScannerCodes/add.ctp:20 Template/MarkScannerCodes/view.ctp:26
 #: Template/Marks/view.ctp:60
 msgid "Value"
 msgstr "Wert"
 
-#: Template/Element/Mark/list.ctp:7 Template/Element/MarkView/tooltip.ctp:8
+#: Template/Element/Mark/list.ctp:7 Template/Element/MarkView/tooltip.ctp:16
 #: Template/Marks/view.ctp:32
 msgid "Author"
 msgstr "Autor"
 
 #: Template/Element/Mark/list.ctp:8
-#: Template/Element/MarkView/tooltip.ctp:21;67;105
+#: Template/Element/MarkView/tooltip.ctp:29;75;113
 msgid "Marked object"
 msgstr "Bewertetes Objekt"
 
@@ -1726,7 +1732,7 @@ msgstr "Bewertetes Objekt"
 msgid "Exceptional"
 msgstr "Ausserplanmässig"
 
-#: Template/Element/Mark/list.ctp:26 Template/Element/MarkView/tooltip.ctp:22
+#: Template/Element/Mark/list.ctp:26 Template/Element/MarkView/tooltip.ctp:30
 msgid "Batch"
 msgstr "Los"
 
@@ -1820,68 +1826,68 @@ msgstr "{0} wirklich löschen (id: {1})?"
 msgid "Mark details"
 msgstr "Details der Bewertung"
 
-#: Template/Element/MarkView/tooltip.ctp:12 Template/Marks/view.ctp:61
+#: Template/Element/MarkView/tooltip.ctp:20 Template/Marks/view.ctp:61
 msgid "Exceptional Mark"
 msgstr "Ausserplanmässige Bewertung"
 
-#: Template/Element/MarkView/tooltip.ctp:16
+#: Template/Element/MarkView/tooltip.ctp:24
 msgid "Details about the marked object"
 msgstr "Details zum bewerteten Objekt"
 
-#: Template/Element/MarkView/tooltip.ctp:68
+#: Template/Element/MarkView/tooltip.ctp:76
 #: Template/Element/Tree/get_tree.ctp:5 Template/ScionsBundles/view.ctp:16
 #: Template/Trees/view.ctp:17
 msgid "Variety"
 msgstr "Sorte"
 
-#: Template/Element/MarkView/tooltip.ctp:75 Template/Varieties/view.ctp:13
+#: Template/Element/MarkView/tooltip.ctp:83 Template/Varieties/view.ctp:13
 msgid "Official Name"
 msgstr "Offizieller Name"
 
-#: Template/Element/MarkView/tooltip.ctp:79 Template/Varieties/view.ctp:17
+#: Template/Element/MarkView/tooltip.ctp:87 Template/Varieties/view.ctp:17
 msgid "Acronym"
 msgstr "Kürzel"
 
-#: Template/Element/MarkView/tooltip.ctp:83 Template/Varieties/view.ctp:21
+#: Template/Element/MarkView/tooltip.ctp:91 Template/Varieties/view.ctp:21
 msgid "Breeder Variety Code"
 msgstr "Züchter-Sorten-Code"
 
-#: Template/Element/MarkView/tooltip.ctp:87 Template/Varieties/view.ctp:25
+#: Template/Element/MarkView/tooltip.ctp:95 Template/Varieties/view.ctp:25
 msgid "Plant Breeder"
 msgstr "Züchter"
 
-#: Template/Element/MarkView/tooltip.ctp:91 Template/Varieties/view.ctp:29
+#: Template/Element/MarkView/tooltip.ctp:99 Template/Varieties/view.ctp:29
 msgid "Registration"
 msgstr "Registrierung"
 
-#: Template/Element/MarkView/tooltip.ctp:96 Template/MarkForms/view.ctp:21
+#: Template/Element/MarkView/tooltip.ctp:104 Template/MarkForms/view.ctp:21
 #: Template/Varieties/view.ctp:42
 msgid "Description"
 msgstr "Beschreibung"
 
-#: Template/Element/MarkView/tooltip.ctp:106
+#: Template/Element/MarkView/tooltip.ctp:114
 msgid "Tree"
 msgstr "Baum"
 
-#: Template/Element/MarkView/tooltip.ctp:119
+#: Template/Element/MarkView/tooltip.ctp:127
 msgid "Date planted"
 msgstr "Pflanzdatum"
 
-#: Template/Element/MarkView/tooltip.ctp:123
+#: Template/Element/MarkView/tooltip.ctp:131
 msgid "Date eliminated"
 msgstr "Eliminierungsdatum"
 
-#: Template/Element/MarkView/tooltip.ctp:127
+#: Template/Element/MarkView/tooltip.ctp:135
 msgid "Experiment site"
 msgstr "Versuchsort"
 
-#: Template/Element/MarkView/tooltip.ctp:131
+#: Template/Element/MarkView/tooltip.ctp:139
 #: Template/Element/Tree/get_tree.ctp:7
 #: Template/Element/Tree/related_table.ctp:6 Template/Trees/view.ctp:27
 msgid "Row"
 msgstr "Zeile"
 
-#: Template/Element/MarkView/tooltip.ctp:135
+#: Template/Element/MarkView/tooltip.ctp:143
 #: Template/Element/Tree/get_tree.ctp:8
 #: Template/Element/Tree/related_table.ctp:7 Template/Trees/view.ctp:32
 msgid "Offset"
@@ -1930,22 +1936,22 @@ msgstr "Statistiken"
 msgid "Values"
 msgstr "Werte"
 
-#: Template/Element/Query/mark_value.ctp:17
+#: Template/Element/Query/mark_value.ctp:21
 msgctxt "short: median"
 msgid "med"
 msgstr "Med"
 
-#: Template/Element/Query/mark_value.ctp:19
+#: Template/Element/Query/mark_value.ctp:23
 msgctxt "short: count"
 msgid "cnt"
 msgstr "Anz"
 
-#: Template/Element/Query/mark_value.ctp:23
+#: Template/Element/Query/mark_value.ctp:27
 msgctxt "short: average"
 msgid "avg"
 msgstr "Ø"
 
-#: Template/Element/Query/mark_value.ctp:29
+#: Template/Element/Query/mark_value.ctp:33
 msgctxt "short: standard deviation"
 msgid "std"
 msgstr "Abw"
@@ -2053,6 +2059,10 @@ msgstr "Benutzer auflisten"
 #: Template/Element/Setting/nav.ctp:20
 msgid "New User"
 msgstr "Neuer Benutzer"
+
+#: Template/Element/Tree/eliminate_form.ctp:4
+msgid "For this tree the don't eliminate flag was set!"
+msgstr "Bei diesem Baum wurde das \"Nicht eliminieren\"-Häkchen gesetzt!"
 
 #: Template/Element/Tree/get_tree.ctp:6 Template/Trees/view.ctp:22
 msgid "Experiment Site"
@@ -2391,21 +2401,21 @@ msgstr "Mutterbaum:"
 msgid "Mother Tree"
 msgstr "Mutterbaum"
 
-#: Template/MotherTrees/view.ctp:39
+#: Template/MotherTrees/view.ctp:35
+msgid "Numb Fruits"
+msgstr "Anz. Früchte"
+
+#: Template/MotherTrees/view.ctp:43
 msgid "Date Pollen Harvested"
 msgstr "Datum Pollenernte"
 
-#: Template/MotherTrees/view.ctp:43
+#: Template/MotherTrees/view.ctp:47
 msgid "Date Impregnated"
 msgstr "Datum Befruchtung"
 
-#: Template/MotherTrees/view.ctp:47
+#: Template/MotherTrees/view.ctp:51
 msgid "Date Fruit Harvested"
 msgstr "Datum Fruchternte"
-
-#: Template/MotherTrees/view.ctp:60
-msgid "Target"
-msgstr "Ziel"
 
 #: Template/Queries/add.ctp:7 Template/Queries/add_mark_query.ctp:7
 msgid "Add Query"
@@ -2545,6 +2555,10 @@ msgstr "Veredelung"
 #: Template/Trees/view.ctp:62
 msgid "Migrated Tree"
 msgstr "Migrierter Baum"
+
+#: Template/Trees/view.ctp:66
+msgid "Don't Eliminate"
+msgstr "Nicht eliminieren"
 
 #: Template/Users/add.ctp:7
 msgid "Add User"
