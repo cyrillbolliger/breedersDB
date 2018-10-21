@@ -1,6 +1,14 @@
 <h3><?= __( 'Mark details' ) ?></h3>
 <table class="vertical-table">
     <tr>
+        <th scope="row"><?= __( 'Property' ) ?></th>
+        <td><?= h( $marksView->name ); ?></td>
+    </tr>
+    <tr>
+        <th scope="row"><?= __( 'Value' ) ?></th>
+        <td><?= h( $marksView->value ); ?></td>
+    </tr>
+    <tr>
         <th scope="row"><?= __( 'Date' ) ?></th>
         <td><?= h( $marksView->date ); ?></td>
     </tr>

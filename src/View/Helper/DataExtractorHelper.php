@@ -17,8 +17,8 @@ class DataExtractorHelper extends Helper {
 	 * @return string
 	 */
 	public function getCell( $key, $data ) {
-		$extractor = new DataExtractorUtility();
-		$cell      = $extractor->getCell( $key, $data );
+        $extractor = new DataExtractorUtility();
+        $cell = $extractor->getCell( $key, $data );
 		
 		if ( ! is_array( $cell ) ) {
 			return h( $cell );
@@ -26,7 +26,31 @@ class DataExtractorHelper extends Helper {
 		
 		return $this->_makeList( $cell );
 	}
-	
+    
+    /**
+     * Return content of given cell ($key is the dot notated path) from $data.
+     * $data will be recursively scanned and every matching $key will me returned.
+     * Multiple matches will be returned as unordered list, with limited char
+     * length and a hover box.
+     *
+     * @param $key
+     * @param $data
+     *
+     * @return string
+     */
+	public function getMarkValueCell($key, $data) {
+        $extractor = new DataExtractorUtility();
+        $cell = $extractor->getMarkValueCell( $key, $data );
+        
+        $html = '<ul>';
+        foreach ( $cell as $id => $value ) {
+            $html .= '<li><span class="mark_value mark_value-'.$id.'">' . h( $value ) . '</span></li>';
+        }
+        $html .= '</ul>';
+        
+        return $html;
+    }
+    
 	/**
 	 * Return unordered HTML-list from given array
 	 *
