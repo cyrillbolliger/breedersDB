@@ -118,6 +118,10 @@ class MotherTreesTable extends Table {
 		$validator
 			->integer( 'numb_flowers' )
 			->allowEmpty( 'numb_flowers' );
+        
+        $validator
+            ->integer( 'numb_fruits' )
+            ->allowEmpty( 'numb_fruits' );
 		
 		$validator
 			->integer( 'numb_seeds' )

@@ -40,6 +40,10 @@ class Updater
 	    if (1 === version_compare('1.2.0', $currentVersion)) {
 		    $this->updateTo1dot2dot0();
 	    }
+	    
+	    if (1 === version_compare('1.4.0', $currentVersion)) {
+            $this->updateTo1dot4dot0();
+        }
     }
     
     public function update(string $currentVersion): bool
@@ -116,6 +120,19 @@ class Updater
 		// rename queries.query to queries.query_data
 		$query2 = "ALTER TABLE `queries` CHANGE COLUMN `query` `my_query` TEXT NULL DEFAULT NULL;";
 		$this->db->exec($query2);
+    }
+    
+    /**
+     * Add numb_fruits to to mother_trees
+     */
+    private function updateTo1dot4dot0(){
+        // add column
+        $query2 = "ALTER TABLE `mother_trees_view` ADD COLUMN `numb_fruits` INT(11) NULL DEFAULT NULL AFTER `numb_flowers`;";
+        $this->db->exec($query2);
+        
+        // update view
+        $query1 = "DROP TABLE IF EXISTS `mother_trees_view`; CREATE OR REPLACE VIEW `mother_trees_view` AS SELECT mother_trees.id, crossings.`code` AS crossing, mother_trees.`code`, mother_trees.planed, mother_trees.date_pollen_harvested, mother_trees.date_impregnated, mother_trees.date_fruit_harvested, mother_trees.numb_portions, mother_trees.numb_flowers, mother_trees.numb_fruits, mother_trees.numb_seeds, mother_trees.target, mother_trees.note, trees_view.publicid, trees_view.convar, trees_view.`offset`, trees_view.`row`, trees_view.experiment_site, mother_trees.tree_id, mother_trees.crossing_id FROM mother_trees INNER JOIN trees_view ON mother_trees.tree_id = trees_view.id INNER JOIN crossings ON mother_trees.crossing_id = crossings.id WHERE mother_trees.deleted IS NULL";
+        $this->db->exec($query1);
     }
     
     private function getAssoc(string $query): array

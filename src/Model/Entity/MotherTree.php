@@ -16,6 +16,7 @@ use Cake\ORM\TableRegistry;
  * @property \Cake\I18n\Time $date_fruit_harvested
  * @property int $numb_portions
  * @property int $numb_flowers
+ * @property int $numb_fruits
  * @property int $numb_seeds
  * @property string $target
  * @property string $note

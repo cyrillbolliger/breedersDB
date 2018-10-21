@@ -32,6 +32,10 @@
             <td><?= $this->Number->format( $motherTree->numb_flowers ) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __( 'Numb Fruits' ) ?></th>
+            <td><?= $this->Number->format( $motherTree->numb_fruits ) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __( 'Numb Seeds' ) ?></th>
             <td><?= $this->Number->format( $motherTree->numb_seeds ) ?></td>
         </tr>
