@@ -18,7 +18,6 @@ use Cake\ORM\TableRegistry;
  * @property int $numb_flowers
  * @property int $numb_fruits
  * @property int $numb_seeds
- * @property string $target
  * @property string $note
  * @property int $tree_id
  * @property int $crossing_id

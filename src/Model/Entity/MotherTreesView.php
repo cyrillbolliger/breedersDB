@@ -17,7 +17,6 @@ use Cake\ORM\Entity;
  * @property int $numb_flowers
  * @property int $numb_fruits
  * @property int $numb_seeds
- * @property string $target
  * @property string $note
  * @property string $publicid
  * @property float $offset

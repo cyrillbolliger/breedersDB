@@ -82,6 +82,9 @@ class CrossingsTable extends Table {
 				},
 				'message' => __( 'Input not valid. The code must only contain alphanumerical characters (without umlauts). Length between four and eight characters.' ),
 			] );
+        
+        $validator
+            ->allowEmpty( 'target' );
 		
 		return $validator;
 	}

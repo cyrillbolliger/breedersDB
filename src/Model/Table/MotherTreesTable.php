@@ -128,9 +128,6 @@ class MotherTreesTable extends Table {
 			->allowEmpty( 'numb_seeds' );
 		
 		$validator
-			->allowEmpty( 'target' );
-		
-		$validator
 			->allowEmpty( 'note' );
 		
 		return $validator;

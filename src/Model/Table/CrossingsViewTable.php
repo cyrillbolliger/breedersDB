@@ -93,6 +93,9 @@ class CrossingsViewTable extends Table {
 		
 		$validator
 			->allowEmpty( 'father_variety' );
+        
+        $validator
+            ->allowEmpty( 'target' );
 		
 		return $validator;
 	}

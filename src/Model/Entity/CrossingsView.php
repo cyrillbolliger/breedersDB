@@ -11,6 +11,7 @@ use Cake\ORM\Entity;
  * @property string $code
  * @property string $mother_variety
  * @property string $father_variety
+ * @property string $target
  */
 class CrossingsView extends Entity {
 

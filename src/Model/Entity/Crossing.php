@@ -12,6 +12,7 @@ use Cake\ORM\TableRegistry;
  * @property string $code
  * @property int $mother_variety_id
  * @property int $father_variety_id
+ * @property string $target
  * @property \Cake\I18n\Time $deleted
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
