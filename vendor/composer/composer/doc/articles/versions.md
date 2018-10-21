@@ -74,11 +74,11 @@ correct location in your `vendor` directory.
 
 ### Branches
 
-If you want Composer to check out a branch instead of a tag, you need to point it to the branch using the special `dev-*` prefix (or sometimes suffix; see below). If you're checking out a branch, it's assumed that you want to *work* on the branch and Composer actually clones the repo into the correct place in your `vendor` directory. For tags, it just copies the right files without actually cloning the repo. (You can modify this behavior with --prefer-source and --prefer-dist, see [install options](../03-cli.md#install).) 
+If you want Composer to check out a branch instead of a tag, you need to point it to the branch using the special `dev-*` prefix (or sometimes suffix; see below). If you're checking out a branch, it's assumed that you want to *work* on the branch and Composer actually clones the repo into the correct place in your `vendor` directory. For tags, it copies the right files without actually cloning the repo. (You can modify this behavior with --prefer-source and --prefer-dist, see [install options](../03-cli.md#install).)
 
 In the above example, if you wanted to check out the `my-feature` branch, you would specify `dev-my-feature` as the version constraint in your `require` clause. This would result in Composer cloning the `my-library` repository into my `vendor` directory and checking out the `my-feature` branch.
 
-When branch names look like versions, we have to clarify for composer that we're trying to check out a branch and not a tag. In the above example, we have two version branches: `v1` and `v2`. To get Composer to check out one of these branches, you must specify a version constraint that looks like this: `v1.x-dev`. The `.x` is an arbitrary string that Composer requires to tell it that we're talking about the `v1` branch and not a `v1` tag (alternatively, you can just name the branch `v1.x` instead of `v1`). In the case of a branch with a version-like name (`v1`, in this case), you append `-dev` as a suffix, rather than using `dev-` as a prefix.
+When branch names look like versions, we have to clarify for composer that we're trying to check out a branch and not a tag. In the above example, we have two version branches: `v1` and `v2`. To get Composer to check out one of these branches, you must specify a version constraint that looks like this: `v1.x-dev`. The `.x` is an arbitrary string that Composer requires to tell it that we're talking about the `v1` branch and not a `v1` tag (alternatively, you can name the branch `v1.x` instead of `v1`). In the case of a branch with a version-like name (`v1`, in this case), you append `-dev` as a suffix, rather than using `dev-` as a prefix.
 
 ### Minimum Stability
 
@@ -109,7 +109,7 @@ will be treated as a **logical OR**. AND has higher precedence than OR.
 
 > **Note:** Be careful when using unbounded ranges as you might end up
 > unexpectedly installing versions that break backwards compatibility.
-> Consider using the [caret](#caret) operator instead for safety.
+> Consider using the [caret](#caret-version-range-) operator instead for safety.
 
 Examples:
 
@@ -140,7 +140,7 @@ Example: `1.0.*`
 The `~` operator is best explained by example: `~1.2` is equivalent to
 `>=1.2 <2.0.0`, while `~1.2.3` is equivalent to `>=1.2.3 <1.3.0`. As you can see
 it is mostly useful for projects respecting [semantic
-versioning](http://semver.org/). A common usage would be to mark the minimum
+versioning](https://semver.org/). A common usage would be to mark the minimum
 minor version you depend on, like `~1.2` (which allows anything up to, but not
 including, 2.0). Since in theory there should be no backwards compatibility
 breaks until 2.0, that works well. Another way of looking at it is that using
@@ -199,6 +199,28 @@ however, you may use [stability-flags](../04-schema.md#package-links) like
 can be installed in a different stability than your default minimum-stability
 setting. All available stability flags are listed on the minimum-stability
 section of the [schema page](../04-schema.md#minimum-stability).
+
+## Summary
+```json
+"require": {
+    "vendor/package": "1.3.2", // exactly 1.3.2
+
+    // >, <, >=, <= | specify upper / lower bounds
+    "vendor/package": ">=1.3.2", // anything above or equal to 1.3.2
+    "vendor/package": "<1.3.2", // anything below 1.3.2
+
+    // * | wildcard
+    "vendor/package": "1.3.*", // >=1.3.0 <1.4.0
+
+    // ~ | allows last digit specified to go up
+    "vendor/package": "~1.3.2", // >=1.3.2 <1.4.0
+    "vendor/package": "~1.3", // >=1.3.0 <2.0.0
+
+    // ^ | doesn't allow breaking changes (major version fixed - following semver)
+    "vendor/package": "^1.3.2", // >=1.3.2 <2.0.0
+    "vendor/package": "^0.3.2", // >=0.3.2 <0.4.0 // except if major version is 0
+}
+```
 
 ## Testing Version Constraints
 

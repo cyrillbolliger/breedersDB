@@ -16,12 +16,16 @@ use Composer\Config;
 use Composer\Cache;
 use Composer\Factory;
 use Composer\IO\IOInterface;
+use Composer\IO\NullIO;
+use Composer\Package\Comparer\Comparer;
 use Composer\Package\PackageInterface;
+use Composer\Package\Version\VersionParser;
 use Composer\Plugin\PluginEvents;
 use Composer\Plugin\PreFileDownloadEvent;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\Util\Filesystem;
 use Composer\Util\RemoteFilesystem;
+use Composer\Util\Url as UrlUtil;
 
 /**
  * Base downloader for files
@@ -31,7 +35,7 @@ use Composer\Util\RemoteFilesystem;
  * @author François Pluchino <francois.pluchino@opendisplay.com>
  * @author Nils Adermann <naderman@naderman.de>
  */
-class FileDownloader implements DownloaderInterface
+class FileDownloader implements DownloaderInterface, ChangeReportInterface
 {
     protected $io;
     protected $config;
@@ -133,8 +137,11 @@ class FileDownloader implements DownloaderInterface
             $checksum = $package->getDistSha1Checksum();
             $cacheKey = $this->getCacheKey($package, $processedUrl);
 
-            // download if we don't have it in cache or the cache is invalidated
-            if (!$this->cache || ($checksum && $checksum !== $this->cache->sha1($cacheKey)) || !$this->cache->copyTo($cacheKey, $fileName)) {
+            // use from cache if it is present and has a valid checksum or we have no checksum to check against
+            if ($this->cache && (!$checksum || $checksum === $this->cache->sha1($cacheKey)) && $this->cache->copyTo($cacheKey, $fileName)) {
+                $this->io->writeError('Loading from cache', false);
+            } else {
+                // download if cache restore failed
                 if (!$this->outputProgress) {
                     $this->io->writeError('Downloading', false);
                 }
@@ -164,8 +171,6 @@ class FileDownloader implements DownloaderInterface
                     $this->lastCacheWrites[$package->getName()] = $cacheKey;
                     $this->cache->copyFrom($cacheKey, $fileName);
                 }
-            } else {
-                $this->io->writeError('Loading from cache', false);
             }
 
             if (!file_exists($fileName)) {
@@ -213,7 +218,8 @@ class FileDownloader implements DownloaderInterface
         $from = $initial->getPrettyVersion();
         $to = $target->getPrettyVersion();
 
-        $this->io->writeError("  - Updating <info>" . $name . "</info> (<comment>" . $from . "</comment> => <comment>" . $to . "</comment>): ", false);
+        $actionName = VersionParser::isUpgrade($initial->getVersion(), $target->getVersion()) ? 'Updating' : 'Downgrading';
+        $this->io->writeError("  - " . $actionName . " <info>" . $name . "</info> (<comment>" . $from . "</comment> => <comment>" . $to . "</comment>): ", false);
 
         $this->remove($initial, $path, false);
         $this->download($target, $path, false);
@@ -260,6 +266,10 @@ class FileDownloader implements DownloaderInterface
             throw new \RuntimeException('You must enable the openssl extension to download files via https');
         }
 
+        if ($package->getDistReference()) {
+            $url = UrlUtil::updateDistReference($this->config, $url, $package->getDistReference());
+        }
+
         return $url;
     }
 
@@ -272,5 +282,41 @@ class FileDownloader implements DownloaderInterface
         $cacheKey = sha1($processedUrl);
 
         return $package->getName().'/'.$cacheKey.'.'.$package->getDistType();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws \RuntimeException
+     */
+    public function getLocalChanges(PackageInterface $package, $targetDir)
+    {
+        $prevIO = $this->io;
+        $prevProgress = $this->outputProgress;
+
+        $this->io = new NullIO;
+        $this->io->loadConfiguration($this->config);
+        $this->outputProgress = false;
+        $e = null;
+
+        try {
+            $this->download($package, $targetDir.'_compare', false);
+
+            $comparer = new Comparer();
+            $comparer->setSource($targetDir.'_compare');
+            $comparer->setUpdate($targetDir);
+            $comparer->doCompare();
+            $output = $comparer->getChanged(true, true);
+            $this->filesystem->removeDirectory($targetDir.'_compare');
+        } catch (\Exception $e) {
+        }
+
+        $this->io = $prevIO;
+        $this->outputProgress = $prevProgress;
+
+        if ($e) {
+            throw $e;
+        }
+
+        return trim($output);
     }
 }

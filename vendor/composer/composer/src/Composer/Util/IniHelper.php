@@ -12,6 +12,8 @@
 
 namespace Composer\Util;
 
+use Composer\XdebugHandler\XdebugHandler;
+
 /**
  * Provides ini file location functions that work with and without a restart.
  * When the process has restarted it uses a tmp ini and stores the original
@@ -21,8 +23,6 @@ namespace Composer\Util;
  */
 class IniHelper
 {
-    const ENV_ORIGINAL = 'COMPOSER_ORIGINAL_INIS';
-
     /**
      * Returns an array of php.ini locations with at least one entry
      *
@@ -33,21 +33,11 @@ class IniHelper
      */
     public static function getAll()
     {
-        if ($env = strval(getenv(self::ENV_ORIGINAL))) {
-            return explode(PATH_SEPARATOR, $env);
-        }
-
-        $paths = array(strval(php_ini_loaded_file()));
-
-        if ($scanned = php_ini_scanned_files()) {
-            $paths = array_merge($paths, array_map('trim', explode(',', $scanned)));
-        }
-
-        return $paths;
+        return XdebugHandler::getAllIniFiles();
     }
 
     /**
-     * Describes the location of the loaded php.ini file
+     * Describes the location of the loaded php.ini file(s)
      *
      * @return string
      */
@@ -56,9 +46,19 @@ class IniHelper
         $paths = self::getAll();
 
         if (empty($paths[0])) {
+            array_shift($paths);
+        }
+
+        $ini = array_shift($paths);
+
+        if (empty($ini)) {
             return 'A php.ini file does not exist. You will have to create one.';
         }
 
-        return 'The php.ini used by your command-line PHP is: '.$paths[0];
+        if (!empty($paths)) {
+            return 'Your command-line PHP is using multiple ini files. Run `php --ini` to show them.';
+        }
+
+        return 'The php.ini used by your command-line PHP is: '.$ini;
     }
 }

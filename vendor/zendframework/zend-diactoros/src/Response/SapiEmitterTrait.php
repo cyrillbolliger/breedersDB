@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/zendframework/zend-diactoros for the canonical source repository
- * @copyright Copyright (c) 2015-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2015-2018 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
@@ -10,6 +10,16 @@ namespace Zend\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
+use function ob_get_length;
+use function ob_get_level;
+use function sprintf;
+use function str_replace;
+use function ucwords;
+
+/**
+ * @deprecated since 1.8.0. The package zendframework/zend-httphandlerrunner
+ *     now provides this functionality.
+ */
 trait SapiEmitterTrait
 {
     /**
@@ -38,17 +48,25 @@ trait SapiEmitterTrait
      * Emits the status line using the protocol version and status code from
      * the response; if a reason phrase is available, it, too, is emitted.
      *
+     * It is important to mention that this method should be called after
+     * `emitHeaders()` in order to prevent PHP from changing the status code of
+     * the emitted response.
+     *
      * @param ResponseInterface $response
+     *
+     * @see \Zend\Diactoros\Response\SapiEmitterTrait::emitHeaders()
      */
     private function emitStatusLine(ResponseInterface $response)
     {
         $reasonPhrase = $response->getReasonPhrase();
+        $statusCode   = $response->getStatusCode();
+
         header(sprintf(
             'HTTP/%s %d%s',
             $response->getProtocolVersion(),
-            $response->getStatusCode(),
+            $statusCode,
             ($reasonPhrase ? ' ' . $reasonPhrase : '')
-        ));
+        ), true, $statusCode);
     }
 
     /**
@@ -63,6 +81,8 @@ trait SapiEmitterTrait
      */
     private function emitHeaders(ResponseInterface $response)
     {
+        $statusCode = $response->getStatusCode();
+
         foreach ($response->getHeaders() as $header => $values) {
             $name  = $this->filterHeader($header);
             $first = $name === 'Set-Cookie' ? false : true;
@@ -71,7 +91,7 @@ trait SapiEmitterTrait
                     '%s: %s',
                     $name,
                     $value
-                ), $first);
+                ), $first, $statusCode);
                 $first = false;
             }
         }

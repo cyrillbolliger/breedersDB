@@ -29,9 +29,9 @@ use Composer\Package\Archiver\ArchiveManager;
  */
 class Composer
 {
-    const VERSION = '1.5.2';
+    const VERSION = '1.7.2';
     const BRANCH_ALIAS_VERSION = '';
-    const RELEASE_DATE = '2017-09-11 16:59:25';
+    const RELEASE_DATE = '2018-08-16 16:57:12';
 
     /**
      * @var Package\RootPackageInterface

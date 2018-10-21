@@ -113,7 +113,7 @@ class BinaryInstaller
         }
 
         // attempt removing the bin dir in case it is left empty
-        if ((is_dir($this->binDir)) && ($this->filesystem->isDirEmpty($this->binDir))) {
+        if (is_dir($this->binDir) && $this->filesystem->isDirEmpty($this->binDir)) {
             Silencer::call('rmdir', $this->binDir);
         }
     }
@@ -194,21 +194,14 @@ class BinaryInstaller
         $proxyCode = <<<PROXY
 #!/usr/bin/env sh
 
-dir=$(d=\${0%[/\\\\]*}; cd "\$d" > /dev/null; cd $binDir && pwd)
+dir=\$(cd "\${0%[/\\\\]*}" > /dev/null; cd $binDir && pwd)
 
-# See if we are running in Cygwin by checking for cygpath program
-if command -v 'cygpath' >/dev/null 2>&1; then
-	# Cygwin paths start with /cygdrive/ which will break windows PHP,
-	# so we need to translate the dir path to windows format. However
-	# we could be using cygwin PHP which does not require this, so we
-	# test if the path to PHP starts with /cygdrive/ rather than /usr/bin
-	if [[ $(which php) == /cygdrive/* ]]; then
-		dir=$(cygpath -m "\$dir");
-	fi
+if [ -d /proc/cygdrive ] && [[ \$(which php) == \$(readlink -n /proc/cygdrive)/* ]]; then
+   # We are in Cgywin using Windows php, so the path must be translated
+   dir=\$(cygpath -m "\$dir");
 fi
 
-dir=$(echo \$dir | sed 's/ /\ /g')
-"\${dir}/$binFile" "$@"
+"\${dir}/$binFile" "\$@"
 
 PROXY;
 

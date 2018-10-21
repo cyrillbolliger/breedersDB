@@ -17,10 +17,11 @@ use DateTimeZone;
 
 /**
  * An extension to the DateTimeInterface for a friendlier API
+ *
+ * @method static modify(string $relative)
  */
 interface ChronosInterface extends DateTimeInterface
 {
-
     /**
      * The day constants
      */
@@ -996,7 +997,7 @@ interface ChronosInterface extends DateTimeInterface
     public function secondsSinceMidnight();
 
     /**
-     * The number of seconds until 23:23:59.
+     * The number of seconds until 23:59:59.
      *
      * @return int
      */

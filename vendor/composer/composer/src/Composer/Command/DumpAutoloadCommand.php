@@ -36,7 +36,8 @@ class DumpAutoloadCommand extends BaseCommand
                 new InputOption('apcu', null, InputOption::VALUE_NONE, 'Use APCu to cache found/not-found classes.'),
                 new InputOption('no-dev', null, InputOption::VALUE_NONE, 'Disables autoload-dev rules.'),
             ))
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 <info>php composer.phar dump-autoload</info>
 EOT
             )
@@ -59,7 +60,9 @@ EOT
         $authoritative = $input->getOption('classmap-authoritative') || $config->get('classmap-authoritative');
         $apcu = $input->getOption('apcu') || $config->get('apcu-autoloader');
 
-        if ($optimize || $authoritative) {
+        if ($authoritative) {
+            $this->getIO()->writeError('<info>Generating optimized autoload files (authoritative)</info>');
+        } elseif ($optimize) {
             $this->getIO()->writeError('<info>Generating optimized autoload files</info>');
         } else {
             $this->getIO()->writeError('<info>Generating autoload files</info>');

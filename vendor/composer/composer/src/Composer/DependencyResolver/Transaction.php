@@ -49,7 +49,7 @@ class Transaction
             $package = $this->pool->literalToPackage($literal);
 
             // wanted & installed || !wanted & !installed
-            if (($literal > 0) == (isset($this->installedMap[$package->id]))) {
+            if (($literal > 0) == isset($this->installedMap[$package->id])) {
                 continue;
             }
 
@@ -111,16 +111,16 @@ class Transaction
             $packageId = $package->id;
 
             if (!isset($visited[$packageId])) {
-                array_push($queue, $package);
+                $queue[] = $package;
 
                 if ($package instanceof AliasPackage) {
-                    array_push($queue, $package->getAliasOf());
+                    $queue[] = $package->getAliasOf();
                 } else {
                     foreach ($package->getRequires() as $link) {
                         $possibleRequires = $this->pool->whatProvides($link->getTarget(), $link->getConstraint());
 
                         foreach ($possibleRequires as $require) {
-                            array_push($queue, $require);
+                            $queue[] = $require;
                         }
                     }
                 }

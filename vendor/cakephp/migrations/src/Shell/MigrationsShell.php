@@ -20,6 +20,13 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  * A wrapper shell for phinx migrations, used to inject our own
  * console actions so that database configuration already defined
  * for the application can be reused.
+ *
+ * @property \Migrations\Shell\Task\CreateTask $Create
+ * @property \Migrations\Shell\Task\DumpTask $Dump
+ * @property \Migrations\Shell\Task\MarkMigratedTask $MarkMigrated
+ * @property \Migrations\Shell\Task\MigrateTask $Migrate
+ * @property \Migrations\Shell\Task\RollbackTask $Rollback
+ * @property \Migrations\Shell\Task\StatusTask $Status
  */
 class MigrationsShell extends Shell
 {
@@ -153,6 +160,7 @@ class MigrationsShell extends Shell
     {
         array_unshift($argv, 'migrations');
         $this->argv = $argv;
+
         return parent::runCommand($argv, $autoMethod, $extra);
     }
 

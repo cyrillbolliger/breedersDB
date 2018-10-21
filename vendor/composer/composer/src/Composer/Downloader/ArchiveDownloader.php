@@ -27,6 +27,8 @@ abstract class ArchiveDownloader extends FileDownloader
 {
     /**
      * {@inheritDoc}
+     * @throws \RuntimeException
+     * @throws \UnexpectedValueException
      */
     public function download(PackageInterface $package, $path, $output = true)
     {
@@ -35,7 +37,9 @@ abstract class ArchiveDownloader extends FileDownloader
         while ($retries--) {
             $fileName = parent::download($package, $path, $output);
 
-            $this->io->writeError(' Extracting archive', false, IOInterface::VERBOSE);
+            if ($output) {
+                $this->io->writeError(' Extracting archive', false, IOInterface::VERBOSE);
+            }
 
             try {
                 $this->filesystem->ensureDirectoryExists($temporaryDir);
@@ -102,32 +106,6 @@ abstract class ArchiveDownloader extends FileDownloader
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function processUrl(PackageInterface $package, $url)
-    {
-        if ($package->getDistReference() && strpos($url, 'github.com')) {
-            if (preg_match('{^https?://(?:www\.)?github\.com/([^/]+)/([^/]+)/(zip|tar)ball/(.+)$}i', $url, $match)) {
-                // update legacy github archives to API calls with the proper reference
-                $url = 'https://api.github.com/repos/' . $match[1] . '/'. $match[2] . '/' . $match[3] . 'ball/' . $package->getDistReference();
-            } elseif ($package->getDistReference() && preg_match('{^https?://(?:www\.)?github\.com/([^/]+)/([^/]+)/archive/.+\.(zip|tar)(?:\.gz)?$}i', $url, $match)) {
-                // update current github web archives to API calls with the proper reference
-                $url = 'https://api.github.com/repos/' . $match[1] . '/'. $match[2] . '/' . $match[3] . 'ball/' . $package->getDistReference();
-            } elseif ($package->getDistReference() && preg_match('{^https?://api\.github\.com/repos/([^/]+)/([^/]+)/(zip|tar)ball(?:/.+)?$}i', $url, $match)) {
-                // update api archives to the proper reference
-                $url = 'https://api.github.com/repos/' . $match[1] . '/'. $match[2] . '/' . $match[3] . 'ball/' . $package->getDistReference();
-            }
-        } elseif ($package->getDistReference() && strpos($url, 'bitbucket.org')) {
-            if (preg_match('{^https?://(?:www\.)?bitbucket\.org/([^/]+)/([^/]+)/get/(.+)\.(zip|tar\.gz|tar\.bz2)$}i', $url, $match)) {
-                // update Bitbucket archives to the proper reference
-                $url = 'https://bitbucket.org/' . $match[1] . '/'. $match[2] . '/get/' . $package->getDistReference() . '.' . $match[4];
-            }
-        }
-
-        return parent::processUrl($package, $url);
-    }
-
-    /**
      * Extract file to directory
      *
      * @param string $file Extracted file
@@ -148,6 +126,7 @@ abstract class ArchiveDownloader extends FileDownloader
         $finder = Finder::create()
             ->ignoreVCS(false)
             ->ignoreDotFiles(false)
+            ->notName('.DS_Store')
             ->depth(0)
             ->in($dir);
 
