@@ -26,7 +26,7 @@ require('jquery-ui/ui/widgets/draggable');
 require('jquery-ui/ui/widgets/resizable');
 require('jquery-ui/ui/widgets/dialog');
 require('jquery-ui/ui/widgets/tooltip');
-require('select2');
+require('select2')($);
 require('jquery.cookie');
 require('./assets/jQueryBindWithDelay');
 require('./assets/sprintf');
