@@ -125,6 +125,7 @@ class Updater
     /**
      * Add numb_fruits to to mother_trees
      * Move target from mother_trees to crossings
+     * Trees add property dont_eliminate
      */
     private function updateTo1dot4dot0(){
         // add column numb_fruits
@@ -146,6 +147,14 @@ class Updater
         // remove column target
         $query5 = "ALTER TABLE `mother_trees` DROP COLUMN `target`;";
         $this->db->exec($query5);
+        
+        // add column dont_eliminate
+        $query6 = "ALTER TABLE `trees` ADD COLUMN `dont_eliminate` BOOLEAN NULL DEFAULT NULL AFTER `offset`;";
+        $this->db->exec($query6);
+    
+        // update trees view
+        $query4 = "DROP TABLE IF EXISTS `trees_view`; CREATE OR REPLACE VIEW `trees_view` AS SELECT trees.id, trees.publicid, varieties_view.convar, trees.date_grafted, trees.date_planted, trees.date_eliminated, trees.genuine_seedling, trees.`offset`, `rows`.`code` AS `row`, trees.dont_eliminate, trees.note, trees.variety_id, graftings.`name` AS grafting, rootstocks.`name` AS rootstock, experiment_sites.`name` AS experiment_site FROM trees LEFT JOIN `rows` ON trees.row_id = `rows`.id LEFT JOIN graftings ON trees.grafting_id = graftings.id LEFT JOIN rootstocks ON trees.rootstock_id = rootstocks.id INNER JOIN experiment_sites ON trees.experiment_site_id = experiment_sites.id INNER JOIN varieties_view ON trees.variety_id = varieties_view.id WHERE trees.deleted IS NULL";
+        $this->db->exec($query4);
     }
     
     private function getAssoc(string $query): array

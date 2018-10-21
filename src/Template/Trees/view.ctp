@@ -63,6 +63,10 @@
             <td><?= $tree->migrated_tree ? __( 'Yes' ) : __( 'No' ); ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __( "Don't Eliminate" ) ?></th>
+            <td><?= $tree->dont_eliminate ? __( 'Yes' ) : __( 'No' ); ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __( 'Created' ) ?></th>
             <td><?= h( $this->LocalizedTime->getUserTime( $tree->created ) ) ?></td>
         </tr>

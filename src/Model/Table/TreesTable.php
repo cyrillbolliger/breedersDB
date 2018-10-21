@@ -129,6 +129,9 @@ class TreesTable extends Table {
 		$validator
 			->numeric( 'offset' )
 			->allowEmpty( 'offset' );
+        
+        $validator
+            ->allowEmpty( 'dont_eliminate' );
 		
 		$validator
 			->allowEmpty( 'note' );

@@ -120,7 +120,10 @@ class TreesViewTable extends Table {
 		
 		$validator
 			->allowEmpty( 'row' );
-		
+        
+        $validator
+            ->allowEmpty( 'dont_eliminate' );
+        
 		$validator
 			->allowEmpty( 'note' );
 		

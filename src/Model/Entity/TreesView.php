@@ -16,6 +16,7 @@ use Cake\ORM\Entity;
  * @property bool $genuine_seedling
  * @property float $offset
  * @property string $row
+ * @property string $dont_eliminate
  * @property string $note
  * @property int $variety_id
  * @property string $grafting

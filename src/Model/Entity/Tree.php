@@ -16,6 +16,7 @@ use Cake\ORM\TableRegistry;
  * @property bool $genuine_seedling
  * @property bool $migrated_tree
  * @property float $offset
+ * @property string $dont_eliminate
  * @property string $note
  * @property bool $deleted
  * @property bool $locked

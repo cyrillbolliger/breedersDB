@@ -46,6 +46,7 @@
 			'empty'   => true
 		] );
 		echo $this->Form->input( 'offset' );
+		echo $this->Form->input( 'dont_eliminate' );
 		echo $this->Form->input( 'note' );
 		?>
     </fieldset>
