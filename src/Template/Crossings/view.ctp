@@ -27,6 +27,10 @@
             <td><?= h( $this->LocalizedTime->getUserTime( $crossing->modified ) ) ?></td>
         </tr>
     </table>
+    <div class="row">
+        <h4><?= __( 'Target' ) ?></h4>
+        <?= $this->Text->autoParagraph( h( $crossing->target ) ); ?>
+    </div>
     <div class="related">
         <h4><?= __( 'Related Batches' ) ?></h4>
 		<?php if ( ! empty( $crossing->batches ) ): ?>

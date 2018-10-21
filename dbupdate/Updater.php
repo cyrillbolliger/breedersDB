@@ -124,15 +124,28 @@ class Updater
     
     /**
      * Add numb_fruits to to mother_trees
+     * Move target from mother_trees to crossings
      */
     private function updateTo1dot4dot0(){
-        // add column
-        $query2 = "ALTER TABLE `mother_trees_view` ADD COLUMN `numb_fruits` INT(11) NULL DEFAULT NULL AFTER `numb_flowers`;";
+        // add column numb_fruits
+        $query1 = "ALTER TABLE `mother_trees` ADD COLUMN `numb_fruits` INT(11) NULL DEFAULT NULL AFTER `numb_flowers`;";
+        $this->db->exec($query1);
+    
+        // add column target
+        $query2 = "ALTER TABLE `crossings` ADD COLUMN `target` TEXT NULL DEFAULT NULL AFTER `father_variety_id`;";
         $this->db->exec($query2);
         
-        // update view
-        $query1 = "DROP TABLE IF EXISTS `mother_trees_view`; CREATE OR REPLACE VIEW `mother_trees_view` AS SELECT mother_trees.id, crossings.`code` AS crossing, mother_trees.`code`, mother_trees.planed, mother_trees.date_pollen_harvested, mother_trees.date_impregnated, mother_trees.date_fruit_harvested, mother_trees.numb_portions, mother_trees.numb_flowers, mother_trees.numb_fruits, mother_trees.numb_seeds, mother_trees.target, mother_trees.note, trees_view.publicid, trees_view.convar, trees_view.`offset`, trees_view.`row`, trees_view.experiment_site, mother_trees.tree_id, mother_trees.crossing_id FROM mother_trees INNER JOIN trees_view ON mother_trees.tree_id = trees_view.id INNER JOIN crossings ON mother_trees.crossing_id = crossings.id WHERE mother_trees.deleted IS NULL";
-        $this->db->exec($query1);
+        // update mother tree view
+        $query3 = "DROP TABLE IF EXISTS `mother_trees_view`; CREATE OR REPLACE VIEW `mother_trees_view` AS SELECT mother_trees.id, crossings.`code` AS crossing, mother_trees.`code`, mother_trees.planed, mother_trees.date_pollen_harvested, mother_trees.date_impregnated, mother_trees.date_fruit_harvested, mother_trees.numb_portions, mother_trees.numb_flowers, mother_trees.numb_fruits, mother_trees.numb_seeds, mother_trees.note, trees_view.publicid, trees_view.convar, trees_view.`offset`, trees_view.`row`, trees_view.experiment_site, mother_trees.tree_id, mother_trees.crossing_id FROM mother_trees INNER JOIN trees_view ON mother_trees.tree_id = trees_view.id INNER JOIN crossings ON mother_trees.crossing_id = crossings.id WHERE mother_trees.deleted IS NULL";
+        $this->db->exec($query3);
+        
+        // update crossings view
+        $query4 = "DROP TABLE IF EXISTS `crossings_view`; CREATE OR REPLACE VIEW `crossings_view` AS SELECT crossings.id, crossings.`code`, mother_varieties.convar AS mother_variety, father_varieties.convar AS father_variety, crossings.target FROM crossings LEFT JOIN varieties_view AS mother_varieties ON crossings.mother_variety_id = mother_varieties.id LEFT JOIN varieties_view AS father_varieties ON crossings.father_variety_id = father_varieties.id WHERE crossings.deleted IS NULL";
+        $this->db->exec($query4);
+    
+        // remove column target
+        $query5 = "ALTER TABLE `mother_trees` DROP COLUMN `target`;";
+        $this->db->exec($query5);
     }
     
     private function getAssoc(string $query): array

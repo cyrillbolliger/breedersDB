@@ -19,6 +19,7 @@
 			'class'   => 'select2convar',
 			'label'   => __( 'Father Variety' ),
 		] );
+        echo $this->Form->input( 'target' );
 		?>
     </fieldset>
 	<?= $this->Form->button( __( 'Submit' ) ) ?>

@@ -61,10 +61,6 @@
         </tr>
     </table>
     <div class="row">
-        <h4><?= __( 'Target' ) ?></h4>
-		<?= $this->Text->autoParagraph( h( $motherTree->target ) ); ?>
-    </div>
-    <div class="row">
         <h4><?= __( 'Note' ) ?></h4>
 		<?= $this->Text->autoParagraph( h( $motherTree->note ) ); ?>
     </div>

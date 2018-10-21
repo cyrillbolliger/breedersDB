@@ -36,7 +36,6 @@
 		echo $this->Form->input( 'numb_flowers' );
 		echo $this->Form->input( 'numb_fruits' );
 		echo $this->Form->input( 'numb_seeds' );
-		echo $this->Form->input( 'target' );
 		echo $this->Form->input( 'note' );
 		?>
     </fieldset>

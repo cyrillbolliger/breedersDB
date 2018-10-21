@@ -17,6 +17,7 @@
 			'empty'   => true,
 			'class'   => 'select2convar',
 		] );
+        echo $this->Form->input( 'target' );
 		?>
     </fieldset>
 	<?= $this->Form->button( __( 'Submit' ) ) ?>
