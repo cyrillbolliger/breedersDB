@@ -253,6 +253,12 @@ table .actions {
     display: inline-block;
 }
 
+.mark_value--small {
+    padding: 0 0.5em;
+    height: 1em;
+    line-height: 1.125rem;
+}
+
 .mark_value:hover {
     color: #be140b;
     background: #e6e6e6;

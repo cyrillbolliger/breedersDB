@@ -15,7 +15,6 @@
     display: block;
     width: 100%;
     padding: 25px;
-    margin: 25px 0;
 }
 
 .margin-bottom-25 {
@@ -252,6 +251,12 @@ table .actions {
     white-space: nowrap;
     max-width: 200px;
     display: inline-block;
+}
+
+.mark_value--small {
+    padding: 0 0.5em;
+    height: 1em;
+    line-height: 1.125rem;
 }
 
 .mark_value:hover {
