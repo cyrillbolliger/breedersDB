@@ -44,7 +44,7 @@ class DataExtractorHelper extends Helper {
         
         $html = '<ul>';
         foreach ( $cell as $id => $value ) {
-            $html .= '<li><span class="mark_value mark_value-'.$id.'">' . h( $value ) . '</span></li>';
+            $html .= '<li><span class="mark_value mark_vlaue--small mark_value-'.$id.'">' . h( $value ) . '</span></li>';
         }
         $html .= '</ul>';
         
