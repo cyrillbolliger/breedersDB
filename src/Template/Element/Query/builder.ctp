@@ -84,7 +84,7 @@ echo $this->Form->input( 'where_query', [
 <div id="query_where_builder"></div>
 
 <script>
-    var query_builder_associations = $.parseJSON('<?= json_encode( $associations )?>');
-    var query_where_builder_filters = $.parseJSON('<?= json_encode( $filter_data )?>');
-    var query_where_builder_rules = $.parseJSON('<?= $where_rules ?>');
+    var query_builder_associations = <?= json_encode( $associations )?>;
+    var query_where_builder_filters = <?= json_encode( $filter_data )?>;
+    var query_where_builder_rules = <?= $where_rules ?>;
 </script>
