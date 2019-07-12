@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    ports:
+      - '8000:80'
+    volumes:
+      - .:/var/www/html
+      - .docker/php.ini:/usr/local/etc/php/php.ini
+      - .docker/apache-vhost.conf:/etc/apache2/sites-available/custom-vhost.conf
+    container_name: poc_app
+    restart: always
+    environment:
+      DB_HOST: mysql
+      DB_DATABASE: poc
+      DB_USERNAME: poc
+      DB_PASSWORD: poc
+      DB_PORT: 3306
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mariadb:latest
+    volumes:
+      - .docker/mysql/data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: poc
+      MYSQL_DATABASE: poc
+      MYSQL_USER: poc
+      MYSQL_PASSWORD: poc
+    container_name: poc_mariadb
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - '8010:80'
+    environment:
+      MYSQL_ROOT_PASSWORD: poc
+      PMA_HOST: mysql
+      PMA_PORT: '3306'
+      PMA_USER: root
+      PMA_PASSWORD: poc
+    container_name: poc_phpmyadmin
