@@ -8,6 +8,7 @@
 /backup/*
 /tests/*
 /.editorconfig
+.docker/mysql
 
 # dont check in .mo files. cake throws an error if you do provide them!
 *.mo
