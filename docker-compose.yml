@@ -23,7 +23,7 @@ services:
       - mysql
 
   mysql:
-    image: mariadb:latest
+    image: mysql:5.7
     volumes:
       - .docker/mysql/data:/var/lib/mysql
     restart: always
@@ -32,7 +32,7 @@ services:
       MYSQL_DATABASE: poc
       MYSQL_USER: poc
       MYSQL_PASSWORD: poc
-    container_name: poc_mariadb
+    container_name: poc_mysql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -41,7 +41,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: poc
       PMA_HOST: mysql
-      PMA_PORT: '3306'
+      PMA_PORT: 3306
       PMA_USER: root
       PMA_PASSWORD: poc
     container_name: poc_phpmyadmin
