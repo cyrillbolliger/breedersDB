@@ -45,7 +45,7 @@ This optional value is added to the restart command-line and is needed to force 
 
 If the original command-line contains an argument that pattern matches this value (for example `--no-ansi`, `--colors=never`) then _$colorOption_ is ignored.
 
-If the pattern match ends with `=auto` (for example `--colors=auto`), the argument is replaced by _$colorOption_. Otherwise it is added at either the end of the command-line, or preceeding the first double-dash `--` delimiter.
+If the pattern match ends with `=auto` (for example `--colors=auto`), the argument is replaced by _$colorOption_. Otherwise it is added at either the end of the command-line, or preceding the first double-dash `--` delimiter.
 
 ## Advanced Usage
 
@@ -139,7 +139,7 @@ DEBUG    No restart (MYAPP_ALLOW_XDEBUG=1)
 // Failed restart
 DEBUG    Checking MYAPP_ALLOW_XDEBUG
 DEBUG    The xdebug extension is loaded (2.5.0)
-WARNING  No restart (Unable to create temporary ini file)
+WARNING  No restart (Unable to create temp ini file at: ...)
 ```
 
 Status messages can also be output with `XDEBUG_HANDLER_DEBUG`. See [Troubleshooting](#troubleshooting).
@@ -152,7 +152,7 @@ Configures the restart using [persistent settings](#persistent-settings), so tha
 
 Use this method if your application invokes one or more PHP sub-process and the xdebug extension is not needed. This avoids the overhead of implementing specific [sub-process](#sub-processes) strategies.
 
-Alternatively, this method can be used to set up a _default_ xdebug-free environment which can be changed if a sub-process requires xdebug, then restored afterwards:
+Alternatively, this method can be used to set up a default _xdebug-free_ environment which can be changed if a sub-process requires xdebug, then restored afterwards:
 
 ```php
 function SubProcessWithXdebug()
@@ -238,12 +238,18 @@ By default the process will restart if xdebug is loaded. Extending this method a
 Note that the [setMainScript()](#setmainscriptscript) and [setPersistent()](#setpersistent) setters can be used here, if required.
 
 #### _restart($command)_
-An application can extend this to modify the temporary ini file, its location given in the `tmpIni` property. Remember to finish with `parent::restart($command)`.
+An application can extend this to modify the temporary ini file, its location given in the `tmpIni` property. New settings can be safely appended to the end of the data, which is `PHP_EOL` terminated.
 
 Note that the `$command` parameter is the escaped command-line string that will be used for the new process and must be treated accordingly.
 
+Remember to finish with `parent::restart($command)`.
+
 #### Example
-This either forces a restart if `phar.readonly` is set (even when xdebug is not loaded) and unsets it in the temporary ini file for the new process, or skips the restart if a help command has been called.
+This example demonstrates two ways to extend basic functionality:
+
+* To avoid the overhead of spinning up a new process, the restart is skipped if a simple help command is requested.
+
+* The application needs write-access to phar files, so it will force a restart if `phar.readonly` is set (regardless of whether xdebug is loaded) and change this value in the temporary ini file.
 
 ```php
 use Composer\XdebugHandler\XdebugHandler;
@@ -256,6 +262,7 @@ class MyRestarter extends XdebugHandler
     protected function requiresRestart($isLoaded)
     {
         if (Command::isHelp()) {
+            # No need to disable xdebug for this
             return false;
         }
 
@@ -266,6 +273,7 @@ class MyRestarter extends XdebugHandler
     protected function restart($command)
     {
         if ($this->required) {
+            # Add required ini setting to tmpIni
             $content = file_get_contents($this->tmpIni);
             $content .= 'phar.readonly=0'.PHP_EOL;
             file_put_contents($this->tmpIni, $content);

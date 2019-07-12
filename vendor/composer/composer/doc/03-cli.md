@@ -138,7 +138,7 @@ php composer.phar update vendor/package vendor/package2
 You can also use wildcards to update a bunch of packages at once:
 
 ```sh
-php composer.phar update vendor/*
+php composer.phar update "vendor/*"
 ```
 
 ### Options
@@ -491,7 +491,7 @@ php composer.phar validate
 
 ### Options
 
-* **--no-check-all:** Do not emit a warning if requirements in `composer.json` use unbound version constraints.
+* **--no-check-all:** Do not emit a warning if requirements in `composer.json` use unbound or overly strict version constraints.
 * **--no-check-lock:** Do not emit an error if `composer.lock` exists and is not up to date.
 * **--no-check-publish:** Do not emit an error if `composer.json` is unsuitable for publishing as a package on Packagist but is otherwise valid.
 * **--with-dependencies:** Also validate the composer.json of all installed dependencies.
@@ -856,9 +856,9 @@ is a hidden, global (per-user on the machine) directory that is shared between
 all projects.
 
 By default it points to `C:\Users\<user>\AppData\Roaming\Composer` on Windows
-and `/Users/<user>/.composer` on OSX. On *nix systems that follow the [XDG Base
+and `/Users/<user>/.composer` on macOS. On \*nix systems that follow the [XDG Base
 Directory Specifications](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html),
-it points to `$XDG_CONFIG_HOME/composer`. On other *nix systems, it points to
+it points to `$XDG_CONFIG_HOME/composer`. On other \*nix systems, it points to
 `/home/<user>/.composer`.
 
 #### COMPOSER_HOME/config.json
@@ -878,7 +878,7 @@ configuration in the project's `composer.json` always wins.
 The `COMPOSER_CACHE_DIR` var allows you to change the Composer cache directory,
 which is also configurable via the [`cache-dir`](06-config.md#cache-dir) option.
 
-By default it points to `$COMPOSER_HOME/cache` on \*nix and OSX, and
+By default it points to `$COMPOSER_HOME/cache` on \*nix and macOS, and
 `C:\Users\<user>\AppData\Local\Composer` (or `%LOCALAPPDATA%/Composer`) on Windows.
 
 ### COMPOSER_PROCESS_TIMEOUT

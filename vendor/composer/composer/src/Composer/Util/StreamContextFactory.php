@@ -40,7 +40,7 @@ final class StreamContextFactory
         ));
 
         // Handle HTTP_PROXY/http_proxy on CLI only for security reasons
-        if (PHP_SAPI === 'cli' && (!empty($_SERVER['HTTP_PROXY']) || !empty($_SERVER['http_proxy']))) {
+        if ((PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg') && (!empty($_SERVER['HTTP_PROXY']) || !empty($_SERVER['http_proxy']))) {
             $proxy = parse_url(!empty($_SERVER['http_proxy']) ? $_SERVER['http_proxy'] : $_SERVER['HTTP_PROXY']);
         }
 
@@ -142,7 +142,7 @@ final class StreamContextFactory
         if (!isset($options['http']['header']) || false === stripos(implode('', $options['http']['header']), 'user-agent')) {
             $options['http']['header'][] = sprintf(
                 'User-Agent: Composer/%s (%s; %s; %s%s)',
-                Composer::VERSION === '@package_version@' ? 'source' : Composer::VERSION,
+                Composer::getVersion(),
                 function_exists('php_uname') ? php_uname('s') : 'Unknown',
                 function_exists('php_uname') ? php_uname('r') : 'Unknown',
                 $phpVersion,
@@ -160,7 +160,7 @@ final class StreamContextFactory
      * This method fixes the array by moving the content-type header to the end
      *
      * @link https://bugs.php.net/bug.php?id=61548
-     * @param $header
+     * @param string|array $header
      * @return array
      */
     private static function fixHttpHeaderField($header)

@@ -22,6 +22,7 @@ use Composer\Repository\CompositeRepository;
 use Composer\Repository\PlatformRepository;
 use Composer\Repository\RepositoryFactory;
 use Composer\Util\ProcessExecutor;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -71,6 +72,7 @@ in the current directory.
 
 <info>php composer.phar init</info>
 
+Read more at https://getcomposer.org/doc/03-cli.md#init
 EOT
             )
         ;
@@ -145,6 +147,11 @@ EOT
                 }
             }
         }
+
+        $question = 'Would you like to install dependencies now [<comment>yes</comment>]? ';
+        if ($input->isInteractive() && $this->hasDependencies($options) && $io->askConfirmation($question, true)) {
+            $this->installDependencies($output);
+        }
     }
 
     /**
@@ -204,11 +211,11 @@ EOT
                 $name = get_current_user() . '/' . $name;
             } else {
                 // package names must be in the format foo/bar
-                $name = $name . '/' . $name;
+                $name .= '/' . $name;
             }
             $name = strtolower($name);
         } else {
-            if (!preg_match('{^[a-z0-9_.-]+/[a-z0-9_.-]+$}', $name)) {
+            if (!preg_match('{^[a-z0-9_.-]+/[a-z0-9_.-]+$}D', $name)) {
                 throw new \InvalidArgumentException(
                     'The package name '.$name.' is invalid, it should be lowercase and have a vendor name, a forward slash, and a package name, matching: [a-z0-9_.-]+/[a-z0-9_.-]+'
                 );
@@ -222,7 +229,7 @@ EOT
                     return $name;
                 }
 
-                if (!preg_match('{^[a-z0-9_.-]+/[a-z0-9_.-]+$}', $value)) {
+                if (!preg_match('{^[a-z0-9_.-]+/[a-z0-9_.-]+$}D', $value)) {
                     throw new \InvalidArgumentException(
                         'The package name '.$value.' is invalid, it should be lowercase and have a vendor name, a forward slash, and a package name, matching: [a-z0-9_.-]+/[a-z0-9_.-]+'
                     );
@@ -381,7 +388,7 @@ EOT
         return $this->repos;
     }
 
-    protected function determineRequirements(InputInterface $input, OutputInterface $output, $requires = array(), $phpVersion = null, $preferredStability = 'stable')
+    protected function determineRequirements(InputInterface $input, OutputInterface $output, $requires = array(), $phpVersion = null, $preferredStability = 'stable', $checkProvidedVersions = true)
     {
         if ($requires) {
             $requires = $this->normalizeRequirements($requires);
@@ -404,7 +411,7 @@ EOT
                     ));
                 } else {
                     // check that the specified version/constraint exists before we proceed
-                    list($name, $version) = $this->findBestVersionAndNameForPackage($input, $requirement['name'], $phpVersion, $preferredStability, $requirement['version'], 'dev');
+                    list($name, $version) = $this->findBestVersionAndNameForPackage($input, $requirement['name'], $phpVersion, $preferredStability, $checkProvidedVersions ? $requirement['version'] : null, 'dev');
 
                     // replace package name from packagist.org
                     $requirement['name'] = $name;
@@ -551,7 +558,12 @@ EOT
         $finder = new ExecutableFinder();
         $gitBin = $finder->find('git');
 
-        $cmd = new Process(sprintf('%s config -l', ProcessExecutor::escape($gitBin)));
+        // TODO in v3 always call with an array
+        if (method_exists('Symfony\Component\Process\Process', 'fromShellCommandline')) {
+            $cmd = new Process(array($gitBin, 'config', '-l'));
+        } else {
+            $cmd = new Process(sprintf('%s config -l', ProcessExecutor::escape($gitBin)));
+        }
         $cmd->run();
 
         if ($cmd->isSuccessful()) {
@@ -683,15 +695,22 @@ EOT
     {
         // find the latest version allowed in this pool
         $versionSelector = new VersionSelector($this->getPool($input, $minimumStability));
-        $package = $versionSelector->findBestCandidate($name, $requiredVersion, $phpVersion, $preferredStability);
+        $ignorePlatformReqs = $input->hasOption('ignore-platform-reqs') && $input->getOption('ignore-platform-reqs');
 
-        // retry without phpVersion if platform requirements are ignored in case nothing was found
-        if ($input->hasOption('ignore-platform-reqs') && $input->getOption('ignore-platform-reqs')) {
+        // ignore phpVersion if platform requirements are ignored
+        if ($ignorePlatformReqs) {
             $phpVersion = null;
-            $package = $versionSelector->findBestCandidate($name, $requiredVersion, $phpVersion, $preferredStability);
         }
 
+        $package = $versionSelector->findBestCandidate($name, $requiredVersion, $phpVersion, $preferredStability);
+
         if (!$package) {
+            // platform packages can not be found in the pool in versions other than the local platform's has
+            // so if platform reqs are ignored we just take the user's word for it
+            if ($ignorePlatformReqs && preg_match(PlatformRepository::PLATFORM_PACKAGE_REGEX, $name)) {
+                return array($name, $requiredVersion ?: '*');
+            }
+
             // Check whether the PHP version was the problem
             if ($phpVersion && $versionSelector->findBestCandidate($name, $requiredVersion, null, $preferredStability)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -766,5 +785,24 @@ EOT
         asort($similarPackages);
 
         return array_keys(array_slice($similarPackages, 0, 5));
+    }
+
+    private function installDependencies($output)
+    {
+        try {
+            $installCommand = $this->getApplication()->find('install');
+            $installCommand->run(new ArrayInput(array()), $output);
+        } catch (\Exception $e) {
+            $this->getIO()->writeError('Could not install dependencies. Run `composer install` to see more information.');
+        }
+
+    }
+
+    private function hasDependencies($options)
+    {
+        $requires = (array) $options['require'];
+        $devRequires = isset($options['require-dev']) ? (array) $options['require-dev'] : array();
+
+        return !empty($requires) || !empty($devRequires);
     }
 }
