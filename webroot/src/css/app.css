@@ -207,6 +207,11 @@ table .actions {
     width: 40%;
 }
 
+.sticky_header {
+    position: sticky;
+    top: 0;
+}
+
 .mark_plot {
     min-width: 90px;
     padding: 0;

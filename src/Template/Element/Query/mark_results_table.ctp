@@ -1,5 +1,5 @@
 <div class="scroll-box">
-    <table cellpadding="0" cellspacing="0" class="mark_results_table">
+    <table class="mark_results_table">
         <thead>
         <tr>
             <?php foreach ( $regular_columns as $column_key => $column_name ): ?>
@@ -9,7 +9,11 @@
             <?php endforeach; ?>
             <?php foreach ( $mark_columns as $column ): ?>
                 <?php $colspan = $column->is_numerical ? 3 : 2 ?>
-                <th scope="col" <?php if(!$column->is_text) echo 'colspan="'.$colspan.'"' ?> class="mark_col mark_col_header">
+                <th scope="col"
+                    <?php if ( ! $column->is_text ): ?>
+                        <?= 'colspan="' . $colspan . '"' ?>
+                    <?php endif; ?>
+                    class="mark_col mark_col_header">
                     <?= $this->Paginator->sort( 'mark-' . $column->id, $column->name ) ?>
                 </th>
             <?php endforeach; ?>
@@ -19,7 +23,7 @@
                 <?php if ( $column->is_numerical ): ?>
                     <td class="mark_col mark_col_subheader"><?= __( 'Plot' ) ?></td>
                     <td class="mark_col mark_col_subheader"><?= __( 'Stats' ) ?></td>
-                <?php elseif (!$column->is_text): ?>
+                <?php elseif ( ! $column->is_text ): ?>
                     <td class="mark_col mark_col_subheader"><?= __( 'Value' ) ?></td>
                 <?php endif; ?>
                 <td class="mark_col mark_col_subheader"><?= __( 'Values' ) ?></td>
