@@ -52,12 +52,12 @@ class CollectionPaginatorComponent extends Component {
 		if ( property_exists( $this->_registry->getController(), 'paginate' ) ) {
 			$settings = array_merge( $this->_registry->getController()->paginate, $settings );
 		}
-		
+
 		$alias   = $this->_registry->getController()->loadModel()->alias();
 		$options = $this->Paginator->mergeOptions( $alias, $settings );
 		$options = $this->Paginator->checkLimit( $options );
-		
-		$options         += [ 'page' => 1, 'scope' => null ];
+
+        $options         += [ 'page' => 1, 'scope' => null ];
 		$options['page'] = (int) $options['page'] < 1 ? 1 : (int) $options['page'];
 		$finder          = 'all';
 		
