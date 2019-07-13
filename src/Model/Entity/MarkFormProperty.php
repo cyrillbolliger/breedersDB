@@ -74,6 +74,15 @@ class MarkFormProperty extends Entity {
 	protected function _getIsNumerical(): bool {
 		return in_array( $this->_properties['field_type'], [ 'INTEGER', 'FLOAT' ] );
 	}
+
+    /**
+     * Return true if entity has field_type VARCHAR
+     *
+     * @return bool
+     */
+    protected function _getIsText(): bool {
+        return 'VARCHAR' === $this->_properties['field_type'];
+    }
 	
 	/**
 	 * Return a string with the input type

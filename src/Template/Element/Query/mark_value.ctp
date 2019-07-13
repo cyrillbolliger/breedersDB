@@ -41,7 +41,7 @@
 <?php else: ?>
 	<?php if ( empty( $mark ) ): ?>
         <td></td>
-	<?php else: ?>
+	<?php elseif (! $column->is_text ): ?>
         <td class="mark_col"><?= $mark->value ?></td>
 	<?php endif; ?>
 <?php endif; ?>
@@ -49,11 +49,11 @@
     <td></td>
 <?php else: ?>
     <td class="mark_col">
-        <table class="mark_stats">
+        <table class="mark_values">
 			<?php
 			$values = $mark->values->toArray();
 			$count  = 0;
-			$perRow = 4;
+			$perRow = $column->is_text ? 1 : 4;
 			$rows   = ceil( count( $values ) / $perRow );
 			for ( $i = 0; $i < $rows && isset( $values[ $count ] ); $i ++ ): ?>
                 <tr>
