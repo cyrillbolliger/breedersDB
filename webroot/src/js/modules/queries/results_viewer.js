@@ -98,6 +98,12 @@ function ResultsViewer(General) {
             $toggleButtonIcon = $('.toggle-icon'),
             $content = $('.content.queries');
 
+        // only make sidebar absolute positioned if we have a toggle button
+        // there are some forms, where we do have problems else.
+        if ($('#action-sidebar-toggle-button').length) {
+            $sidebar.css('position', 'absolute');
+        }
+
         $('#action-sidebar-toggle-button').click(function () {
             // if sidebar is open
             if ($(this).hasClass('is-open')) {

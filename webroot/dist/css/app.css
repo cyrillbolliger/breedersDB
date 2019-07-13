@@ -394,7 +394,7 @@ table .actions {
 }
 
 #actions-sidebar {
-    position: absolute;
+    position: static;
 }
 
 #action-sidebar-toggle-button {
