@@ -1,9 +1,9 @@
 <?php if ( $column->is_numerical ): ?>
 	<?php if ( empty( $mark ) ): ?>
-        <td></td>
-        <td></td>
+        <div class="query_result_cell"></div>
+        <div class="query_result_cell"></div>
 	<?php else: ?>
-        <td class="mark_plot">
+        <div class="query_result_cell mark_plot">
 			<?php
 			$min    = $column->validation_rule['min'];
 			$max    = $column->validation_rule['max'];
@@ -14,8 +14,8 @@
 			?>
             <div class="mark_plot-line mark_plot-extremes" style="left: <?= $min ?>%; width: <?= $length ?>%;"></div>
             <div class="mark_plot-line mark_plot-median" style="left: 0; width: <?= $median ?>%;"></div>
-        </td>
-        <td class="mark_col">
+        </div>
+        <div class="query_result_cell mark_col">
             <table class="mark_stats">
                 <tr>
                     <td><?= __x( 'short: median', 'med' ) ?></td>
@@ -36,19 +36,19 @@
                     <td><?= $mark->value->max ?></td>
                 </tr>
             </table>
-        </td>
+        </div>
 	<?php endif; ?>
 <?php else: ?>
 	<?php if ( empty( $mark ) ): ?>
-        <td></td>
+        <div class="query_result_cell"></div>
 	<?php elseif (! $column->is_text ): ?>
-        <td class="mark_col"><?= $mark->value ?></td>
+        <div class="mark_col query_result_cell"><?= $mark->value ?></div>
 	<?php endif; ?>
 <?php endif; ?>
 <?php if ( empty( $mark ) ): ?>
-    <td></td>
+    <div class="query_result_cell"></div>
 <?php else: ?>
-    <td class="mark_col">
+    <div class="query_result_cell mark_col">
         <table class="mark_values">
 			<?php
 			$values = $mark->values->toArray();
@@ -72,5 +72,5 @@
                 </tr>
 			<?php endfor; ?>
         </table>
-    </td>
+    </div>
 <?php endif; ?>

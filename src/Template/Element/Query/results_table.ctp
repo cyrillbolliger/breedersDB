@@ -1,29 +1,23 @@
-<div class="scroll-box">
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-        <tr>
-            <?php foreach ( $columns as $column_key => $column_name ): ?>
-                <th scope="col"><?= $this->Paginator->sort( $column_key, $column_name ) ?></th>
-            <?php endforeach; ?>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ( $results as $result ): ?>
-            <tr>
-                <?php foreach ( $columns as $column_key => $column_translation ): ?>
-                    <?php if ( false !== strpos( $column_key, 'MarksView.value' ) ) {
-                        $cell = $this->DataExtractor->getMarkValueCell( $column_key, $result );
-                    } else {
-                        $cell = $this->DataExtractor->getCell( $column_key, $result );
-                    }
-                    ?>
-                    <td class="index_inline_list"><?= $cell ?></td>
-                <?php endforeach; ?>
-            </tr>
+<div class="query_results_table" style="grid-template-columns: repeat(<?= count( $columns ) ?>, 1fr)">
+    <?php foreach ( $columns as $column_key => $column_name ): ?>
+        <div class="query_table_header query_table_header_last">
+            <?= $this->Paginator->sort( $column_key, $column_name ) ?>
+        </div>
+    <?php endforeach; ?>
+
+    <?php foreach ( $results as $result ): ?>
+        <?php foreach ( $columns as $column_key => $column_translation ): ?>
+            <?php if ( false !== strpos( $column_key, 'MarksView.value' ) ) {
+                $cell = $this->DataExtractor->getMarkValueCell( $column_key, $result );
+            } else {
+                $cell = $this->DataExtractor->getCell( $column_key, $result );
+            }
+            ?>
+            <div class="query_result_cell index_inline_list"><?= $cell ?></div>
         <?php endforeach; ?>
-        </tbody>
-    </table>
+    <?php endforeach; ?>
 </div>
+
 <div class="paginator">
     <ul class="pagination">
         <?= $this->Paginator->first( '<< ' . __( 'first' ) ) ?>

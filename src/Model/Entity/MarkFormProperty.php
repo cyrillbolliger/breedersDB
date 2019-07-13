@@ -76,12 +76,12 @@ class MarkFormProperty extends Entity {
 	}
 
     /**
-     * Return true if entity has field_type VARCHAR
+     * Return true if entity has field_type VARCHAR or DATE
      *
      * @return bool
      */
     protected function _getIsText(): bool {
-        return 'VARCHAR' === $this->_properties['field_type'];
+        return in_array( $this->_properties['field_type'], [ 'VARCHAR', 'DATE' ] );
     }
 	
 	/**

@@ -47,6 +47,12 @@ ul.meta-nav li > a {
     color: #B7E3EC;
 }
 
+/* ------ layout ------- */
+.content, #actions-sidebar {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
 /* ------ fields ------ */
 input[type="text"].datepicker {
     width: 272px;
@@ -207,9 +213,23 @@ table .actions {
     width: 40%;
 }
 
-.sticky_header {
+.query_table_header {
     position: sticky;
     top: 0;
+    background: #ffffff;
+    text-align: center;
+    z-index: 1;
+    border-right: solid 1px #ebebec;
+}
+
+.query_table_header,
+.query_table_header a {
+    font-weight: bold;
+}
+
+.query_result_cell {
+    padding: 0.25em 0.5em;
+    border-bottom: solid 1px #ebebec;
 }
 
 .mark_plot {
@@ -320,12 +340,11 @@ table .actions {
     margin: 0;
 }
 
-.mark_results_table thead tr {
-    border-bottom: none;
+.query_results_table {
+    display: grid;
 }
 
 .mark_col {
-    border-left: solid 1px #ebebec;
     border-right: solid 1px #ebebec;
 }
 
@@ -336,6 +355,10 @@ table .actions {
 
 .mark_col_subheader {
     padding-top: 0;
+    top: 24px;
+}
+
+.query_table_header_last {
     border-bottom: 2px solid #1798A5;
     font-weight: normal;
 }
