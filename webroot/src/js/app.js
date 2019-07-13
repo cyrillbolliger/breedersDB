@@ -28,6 +28,7 @@ require('jquery-ui/ui/widgets/dialog');
 require('jquery-ui/ui/widgets/tooltip');
 require('select2')($);
 require('jquery.cookie');
+require('jquery-validation');
 require('./assets/jQueryBindWithDelay');
 require('./assets/sprintf');
 require('./assets/jquery.fileDownload');

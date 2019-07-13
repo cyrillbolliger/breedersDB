@@ -53,12 +53,13 @@ function TreesModule(General) {
     this.submitForm = function () {
         var $form = $('form');
 
-        if (1 === $form.length) {
+        if (1 === $form.length && $form.valid()) {
             self.General.beep('success');
             $form.submit();
-        } else {
-            self.General.beep('error');
+            return;
         }
+
+        self.General.beep('error');
     };
 
     /**
