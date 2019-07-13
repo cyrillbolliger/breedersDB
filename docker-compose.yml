@@ -45,3 +45,13 @@ services:
       PMA_USER: root
       PMA_PASSWORD: poc
     container_name: poc_phpmyadmin
+
+  node:
+    image: node:8
+    working_dir: /home/node/app
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - '8030:8081'
+    command: npm run watch
+    container_name: poc_node

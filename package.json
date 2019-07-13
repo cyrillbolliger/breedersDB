@@ -9,7 +9,9 @@
   "description": "Breeders Database",
   "main": "app.js",
   "directories": {},
-  "scripts": {},
+  "scripts": {
+      "watch": "gulp watch"
+  },
   "author": "Cyrill Bolliger",
   "license": "proprietary",
   "devDependencies": {
