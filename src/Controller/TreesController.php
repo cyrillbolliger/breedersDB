@@ -277,6 +277,13 @@ class TreesController extends AppController {
 	public function eliminate() {
 		// just see the view
 	}
+
+    /**
+     * Eliminate method
+     */
+    public function eliminateByScanner() {
+        // just see the view
+    }
 	
 	/**
 	 * Return tree

@@ -60,7 +60,8 @@
             preparing_report: "<?= __( 'Please wait, while your report is generated. This may take up to few minutes.' ) ?>",
             preparing_report_failed: "<?= __( "Sorry, your report couldn't be generated. Please try again." ) ?>",
             invalid_query_builder_rules: "<?= __( "There were invalid rules in the query builder we could not restore. Please rebuild the ruleset." ) ?>",
-            no_marks_selected: "<?= __('If marks are your main table, you must select some marks to display.') ?>"
+            no_marks_selected: "<?= __( 'If marks are your main table, you must select some marks to display.' ) ?>",
+            multiple_forms_error: "<?= __( 'There are multiple forms on this page. Submitting by scanner does not work!' ) ?>"
         };
     </script>
 </head>
