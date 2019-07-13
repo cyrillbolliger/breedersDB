@@ -39036,7 +39036,7 @@ function ResultsViewer(General) {
 
         $mark_values.tooltip({
             items: 'span.mark_value',
-            //track: true,
+            track: true,
             tooltipClass: 'mark_value_tooltip',
             position: {
                 my: "left+30 center",
@@ -39093,6 +39093,7 @@ function ResultsViewer(General) {
 }
 
 module.exports = ResultsViewer;
+
 },{}],41:[function(require,module,exports){
 /**
  * handles all the queries stuff
@@ -39428,6 +39429,7 @@ function QueriesViewSelectorModule(General) {
 }
 
 module.exports = QueriesViewSelectorModule;
+
 },{}],42:[function(require,module,exports){
 (function (global){
 global.moment = require('moment');
@@ -39468,9 +39470,8 @@ function QueriesWhereBuilderModule(General) {
         self.autoAddUtilities();
         self.instantiateWhereBuilder();
         self.onViewSelectorChange();
+        self.bindSubmitEvents();
         self.bindValidatorEvents();
-        self.saveQueryWhereData();
-
     };
 
     /**
@@ -39518,12 +39519,12 @@ function QueriesWhereBuilderModule(General) {
         // handles a rare edge case, with an unknown source, where
         // the query builder contains filter values that are not
         // available (because the fields are not checked)
-        if (this.hasInvalidRuleProperties(filters, query_where_builder_rules)){
+        if (this.hasInvalidRuleProperties(filters, query_where_builder_rules)) {
             alert(trans.invalid_query_builder_rules);
             query_where_builder_rules = {
                 condition: "AND",
                 rules: [],
-                valid: false
+                valid: true
             };
         }
 
@@ -39628,12 +39629,42 @@ function QueriesWhereBuilderModule(General) {
      * Write data of the query builder in the hidden #where_query field before submitting the form
      */
     this.saveQueryWhereData = function () {
-        $('#query_builder_form').submit(function () {
-            var rules = JSON.stringify(self.$query_where_builder.queryBuilder('getRules'));
-            $('#where-query').val(rules);
-            self.$query_where_builder.remove();
+        var rules = JSON.stringify(self.$query_where_builder.queryBuilder('getRules'));
+        $('#where-query').val(rules);
+        self.$query_where_builder.remove();
+    };
+
+    /**
+     * hook into the form submission
+     */
+    this.bindSubmitEvents = function () {
+        var valid = false;
+        $('#query_builder_form').submit(function (e) {
+            valid = self.validateMarkProperties(e);
+            if (valid){
+                self.saveQueryWhereData();
+            } else {
+                e.preventDefault();
+            }
         });
     };
+
+    /**
+     * warn if marks view is selected as root table but no mark was chosen to display
+     */
+    this.validateMarkProperties = function () {
+        if ('MarksView' !== $('#root-view').val()) {
+            return true;
+        }
+
+        if (0 === $('.mark-property-selector:checked').length) {
+            alert(trans.no_marks_selected);
+            return false;
+        }
+
+        return true;
+    };
+
 
     /**
      * Handle query where builder validation

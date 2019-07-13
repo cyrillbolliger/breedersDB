@@ -225,7 +225,7 @@ class QueriesController extends AppController {
 		
 		$filter_data = $this->Queries->getFilterData();
 		
-		$where_rules = json_encode( null );
+		$where_rules = null;
 		
 		$this->loadModel( 'QueryGroups' );
 		$queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
