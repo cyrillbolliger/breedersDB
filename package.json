@@ -26,7 +26,7 @@
     "jquery.cookie": "^1.4.1",
     "moment": "^2.22.2",
     "natives": "^1.1.6",
-    "select2": "^4.0.3"
+      "select2": "^4.0.7"
   },
   "browser": {}
 }

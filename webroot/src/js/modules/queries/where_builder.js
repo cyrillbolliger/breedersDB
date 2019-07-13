@@ -207,7 +207,7 @@ function QueriesWhereBuilderModule(General) {
         var valid = false;
         $('#query_builder_form').submit(function (e) {
             valid = self.validateMarkProperties(e);
-            if (valid){
+            if (valid) {
                 self.saveQueryWhereData();
             } else {
                 e.preventDefault();
@@ -277,8 +277,11 @@ function QueriesWhereBuilderModule(General) {
      */
     this.addUtilities = function () {
         if (self.autoAddUtilitiesSwitch) {
-            self.General.instantiateSelect2();
-            self.General.instantiateDatepicker();
+            // wait one second to be sure the query where builder has fully loaded
+            window.setTimeout(function () {
+                self.General.instantiateSelect2();
+                self.General.instantiateDatepicker();
+            }, 1000);
         }
     };
 }
