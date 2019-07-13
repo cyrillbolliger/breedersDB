@@ -237,7 +237,7 @@ table .actions {
     padding: 0;
     border-left: solid 1px #ebebec;
     border-right: solid 1px #ebebec;
-    position:relative;
+    position: relative;
 }
 
 .mark_plot-line {
@@ -256,20 +256,20 @@ table .actions {
 }
 
 .mark_stats {
-    margin:0;
+    margin: 0;
 }
 
 .mark_stats td,
-.mark_values td{
+.mark_values td {
     padding: 0;
     font-size: 0.8em;
 }
 
-.mark_stats td:nth-child(2){
+.mark_stats td:nth-child(2) {
     padding: 0 0.4em 0 0.15em;
 }
 
-.mark_stats td:nth-child(4){
+.mark_stats td:nth-child(4) {
     padding: 0 0 0 0.15em;
 }
 
@@ -395,7 +395,28 @@ table .actions {
 
 .side-nav li a.add-nav-item {
     font-style: italic;
-    color: rgba(21, 132, 143, 0.5)
+    color: rgba(21, 132, 143, 0.5);
+}
+
+#actions-sidebar {
+    position: absolute;
+}
+
+#action-sidebar-toggle-button {
+    height: 2em;
+    width: 2em;
+    color: #1798A5;
+    position: absolute;
+    right: -2em;
+    background: #fafafa;
+    padding: 0.3em 0.6em;
+    cursor: pointer;
+    z-index: 1;
+}
+
+#action-sidebar-toggle-button:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: rgb(21, 119, 130);
 }
 
 /* -------- Queries -------- */
@@ -405,7 +426,7 @@ table .actions {
 }
 
 input[type="checkbox"].field-selector {
-    margin-bottom:0.25rem;
+    margin-bottom: 0.25rem;
 }
 
 .disabled-checkbox {
@@ -454,7 +475,7 @@ input[type="checkbox"].field-selector {
     margin-bottom: 0;
 }
 
-.mark-property input[type="checkbox"]+label {
+.mark-property input[type="checkbox"] + label {
     margin-left: 0;
 }
 

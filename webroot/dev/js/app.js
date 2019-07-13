@@ -39030,6 +39030,8 @@ function ResultsViewer(General) {
     this.init = function () {
         var $mark_values = $('.mark_value');
 
+        this.initToggleSideNav();
+
         if ($mark_values.length < 1) {
             return;
         }
@@ -39088,6 +39090,42 @@ function ResultsViewer(General) {
         }).fail(function (jqXHR, textStatus, errorThrown) {
             callback(String(trans.loading_error).format(trans.mark + ' ' + id));
             console.log(errorThrown);
+        });
+    };
+
+    /**
+     * Hide / show side navigation (for more screen space)
+     */
+    this.initToggleSideNav = function () {
+        var $sidebar = $('#actions-sidebar'),
+            $toggleButtonIcon = $('.toggle-icon'),
+            $content = $('.content.queries');
+
+        $('#action-sidebar-toggle-button').click(function () {
+            // if sidebar is open
+            if ($(this).hasClass('is-open')) {
+                $(this).removeClass('is-open');
+                $sidebar.css('left', -$sidebar.outerWidth());
+                $toggleButtonIcon
+                    .removeClass('fa-chevron-left')
+                    .addClass('fa-chevron-right');
+                $content
+                    .removeClass('large-9')
+                    .removeClass('medium-8')
+                    .addClass('large-12')
+                    .addClass('medium-12');
+            } else { // if sidebar is closed
+                $(this).addClass('is-open');
+                $sidebar.css('left', 0);
+                $toggleButtonIcon
+                    .removeClass('fa-chevron-right')
+                    .addClass('fa-chevron-left');
+                $content
+                    .removeClass('large-12')
+                    .removeClass('medium-12')
+                    .addClass('large-9')
+                    .addClass('medium-8');
+            }
         });
     };
 }
