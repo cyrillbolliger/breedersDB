@@ -83,6 +83,18 @@ function QueriesWhereBuilderModule(General) {
             {type: 'is_not_null', nb_inputs: 0, multiple: false, apply_to: ['number', 'datetime', 'boolean']}
         ];
 
+        // handles a rare edge case, with an unknown source, where
+        // the query builder contains filter values that are not
+        // available (because the fields are not checked)
+        if (this.hasInvalidRuleProperties(filters, query_where_builder_rules)){
+            alert(trans.invalid_query_builder_rules);
+            query_where_builder_rules = {
+                condition: "AND",
+                rules: [],
+                valid: false
+            };
+        }
+
         this.$query_where_builder.queryBuilder({
             icons: icons,
             filters: filters,
@@ -90,6 +102,32 @@ function QueriesWhereBuilderModule(General) {
             operators: operators,
             allow_empty: true
         });
+    };
+
+    /**
+     * Returns true if the ruleset contains elements that are not available
+     * (= not in the filters)
+     *
+     * @param filters
+     * @param ruleset
+     * @returns {boolean}
+     */
+    this.hasInvalidRuleProperties = function (filters, ruleset) {
+        var invalid;
+        if (ruleset.hasOwnProperty('rules')) {
+            for (var i = 0; i < ruleset.rules.length; i++) {
+                invalid = this.hasInvalidRuleProperties(filters, ruleset.rules[i]);
+                if (invalid) {
+                    return invalid;
+                }
+            }
+        } else {
+            if (!ruleset.hasOwnProperty('id')) {
+                return false;
+            }
+
+            return !this.inValues(filters, ruleset.id);
+        }
     };
 
     /**

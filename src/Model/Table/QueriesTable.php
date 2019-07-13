@@ -76,9 +76,6 @@ class QueriesTable extends Table {
 			->add( 'code', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 		
 		$validator
-			->allowEmpty( 'query' );
-		
-		$validator
 			->allowEmpty( 'description' );
 		
 		return $validator;
@@ -177,7 +174,7 @@ class QueriesTable extends Table {
 		// add regular filter
 		$data['where'] = $request['where_query'];
 		unset( $request['where_query'] );
-		
+
 		// pack it all in the database' query field
 		$request['my_query'] = json_encode( $data );
 		
