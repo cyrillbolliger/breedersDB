@@ -24,6 +24,7 @@ class BrainComponent extends Component {
 		'grafting_id',
 		'date_planted',
 		'date_eliminated',
+        'date_labeled',
 		'genuine_seedling',
 		'row_id',
 		'date',

@@ -22,10 +22,10 @@
 			'class'   => $tree->dirty( 'row_id' ) ? 'brain-prefilled' : '',
 		] );
 		echo $this->Form->input( 'offset' );
-        echo $this->Form->input( 'date_planted', [
+        echo $this->Form->input( 'date_labeled', [
             'empty' => true,
             'type'  => 'text',
-            'class' => 'datepicker ' . ( $tree->dirty( 'date_planted' ) ? 'brain-prefilled' : '' ),
+            'class' => 'datepicker ' . ( $tree->dirty( 'date_labeled' ) ? 'brain-prefilled' : '' ),
         ] );
 		echo $this->Form->input( 'note' );
 		?>

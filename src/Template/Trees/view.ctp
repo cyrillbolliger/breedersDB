@@ -37,13 +37,17 @@
             <td><?= $tree->genuine_seedling ? __( 'Yes' ) : __( 'No' ); ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __( 'Date Labeled' ) ?></th>
+            <td><?= h( $tree->date_labeled ) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __( 'Date Grafted' ) ?></th>
             <td><?= h( $tree->date_grafted ) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __( 'Rootstock' ) ?></th>
             <td><?= $tree->has( 'rootstock' ) ? $this->Html->link( $tree->rootstock->name,
-					[ 'controller' => 'Rootstocks', 'action' => 'view', $tree->rootstock->id ] ) : '' ?></td>
+                    [ 'controller' => 'Rootstocks', 'action' => 'view', $tree->rootstock->id ] ) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __( 'Grafting' ) ?></th>

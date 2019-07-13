@@ -37,6 +37,11 @@
 			'type'  => 'text',
 			'class' => 'datepicker ' . ( $tree->dirty( 'date_eliminated' ) ? 'brain-prefilled' : '' ),
 		] );
+        echo $this->Form->input( 'date_labeled', [
+            'empty' => true,
+            'type'  => 'text',
+            'class' => 'datepicker ' . ( $tree->dirty( 'date_labeled' ) ? 'brain-prefilled' : '' ),
+        ] );
 		echo $this->Form->input( 'genuine_seedling', [
 			'class' => $tree->dirty( 'genuine_seedling' ) ? 'brain-prefilled' : '',
 		] );
