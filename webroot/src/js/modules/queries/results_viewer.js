@@ -33,7 +33,7 @@ function ResultsViewer(General) {
 
         $mark_values.tooltip({
             items: 'span.mark_value',
-            //track: true,
+            track: true,
             tooltipClass: 'mark_value_tooltip',
             position: {
                 my: "left+30 center",
