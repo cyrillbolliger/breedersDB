@@ -45,10 +45,11 @@ function TreesModule(General) {
         } else {
             self.ajaxSearchTree(true);
         }
-
-        $filter.val('');
     };
 
+    /**
+     * Submit form, if there is no ambiguity
+     */
     this.submitForm = function () {
         var $form = $('form');
 
@@ -57,12 +58,14 @@ function TreesModule(General) {
             $form.submit();
         } else {
             self.General.beep('error');
-            return;
         }
-
-
     };
 
+    /**
+     * Search tree using the params provided in the filter field
+     *
+     * @param {boolean} byScanner
+     */
     this.ajaxSearchTree = function (byScanner) {
         var $filter = $('.get_tree').first();
         var $container = $('#tree_container').first();
@@ -81,6 +84,9 @@ function TreesModule(General) {
                 if ('success' === status) {
                     $container.html(resp);
                     self.General.beep('success');
+                    if (byScanner) {
+                        $filter.val('');
+                    }
                 } else {
                     $container.html('<div class="nothing_found">' + trans.no_tree_found + '</div>');
                     if (0 < $filter.val().length || byScanner) {
