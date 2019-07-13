@@ -230,13 +230,12 @@ table .actions {
 .query_result_cell {
     padding: 0.25em 0.5em;
     border-bottom: solid 1px #ebebec;
+    border-right: solid 1px #ebebec;
 }
 
 .mark_plot {
     min-width: 90px;
     padding: 0;
-    border-left: solid 1px #ebebec;
-    border-right: solid 1px #ebebec;
     position: relative;
 }
 
@@ -342,10 +341,6 @@ table .actions {
 
 .query_results_table {
     display: grid;
-}
-
-.mark_col {
-    border-right: solid 1px #ebebec;
 }
 
 .mark_col_header {
