@@ -68,6 +68,9 @@ function TreesModule(General) {
      * @param {boolean} byScanner
      */
     this.ajaxSearchTree = function (byScanner) {
+        // make sure we don't treat event object as true
+        byScanner = true === byScanner;
+
         var $filter = $('.get_tree').first();
         var $container = $('#tree_container').first();
         var printable = $filter.hasClass('get_printable_tree_with_date') ? 'with_date' : false;

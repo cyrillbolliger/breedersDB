@@ -18305,7 +18305,8 @@ return $.ui.tooltip;
             // If we can't parse the cookie, ignore it, it's unusable.
             s = decodeURIComponent(s.replace(pluses, ' '));
             return config.json ? JSON.parse(s) : s;
-        } catch(e) {}
+        } catch (e) {
+        }
     }
 
     function read(s, converter) {
@@ -18328,9 +18329,9 @@ return $.ui.tooltip;
             return (document.cookie = [
                 encode(key), '=', stringifyCookieValue(value),
                 options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-                options.path    ? '; path=' + options.path : '',
-                options.domain  ? '; domain=' + options.domain : '',
-                options.secure  ? '; secure' : ''
+                options.path ? '; path=' + options.path : '',
+                options.domain ? '; domain=' + options.domain : '',
+                options.secure ? '; secure' : ''
             ].join(''));
         }
 
@@ -18371,7 +18372,7 @@ return $.ui.tooltip;
         }
 
         // Must not alter options, thus extending a fresh object...
-        $.cookie(key, '', $.extend({}, options, { expires: -1 }));
+        $.cookie(key, '', $.extend({}, options, {expires: -1}));
         return !$.cookie(key);
     };
 
@@ -34735,7 +34736,7 @@ S2.define('select2/selection/base',[
         self.$selection.focus();
       }, 0);
 
-      self._detachCloseHandler(container);
+        self._detachCloseHandler(container);
     });
 
     container.on('enable', function () {
@@ -35171,7 +35172,7 @@ S2.define('select2/selection/allowClear',[
       return;
     }
 
-    var removeAll = this.options.get('translations').get('removeAllItems');
+      var removeAll = this.options.get('translations').get('removeAllItems');
 
     var $remove = $(
       '<span class="select2-selection__clear" title="' + removeAll() +'">' +
@@ -41678,6 +41679,9 @@ function TreesModule(General) {
      * @param {boolean} byScanner
      */
     this.ajaxSearchTree = function (byScanner) {
+        // make sure we dont treat event object as true
+        byScanner = true === byScanner;
+
         var $filter = $('.get_tree').first();
         var $container = $('#tree_container').first();
         var printable = $filter.hasClass('get_printable_tree_with_date') ? 'with_date' : false;
