@@ -23,7 +23,7 @@ class ExcelComponent extends Component {
 	 * @var string
 	 */
 	private $exportPath = TMP . 'export' . DS;
-	
+
 	/**
 	 * Generate excel file from data of given query and return path to file.
 	 *
@@ -40,25 +40,25 @@ class ExcelComponent extends Component {
 	public function exportFromQuery( Query $query, array $columns, string $title ): string {
 		// load data extractor
 		$extractor = new \App\Utility\DataExtractorUtility();
-		
+
 		// get data to export
 		$in = $query->toArray();
-		
-		// prepare data
+
+        // prepare data
 		$out = array();
-		
-		foreach ( $in as $row_in ) {
+
+        foreach ( $in as $row_in ) {
 			$row = array();
 			foreach ( $columns as $column_key => $column_name ) {
 				$row[] = $this->_implode( $extractor->getCell( $column_key, $row_in ) );
 			}
 			$out[] = $row;
 		}
-		
-		return $this->_export( $out, $columns, $title );
+
+        return $this->_export( $out, $columns, $title );
 	}
-	
-	/**
+
+    /**
 	 * Make sure to return a string from given data.
 	 * If data was an array, join the values with the glue.
 	 *
@@ -71,11 +71,11 @@ class ExcelComponent extends Component {
 		if ( ! is_array( $data ) ) {
 			return (string) $data;
 		}
-		
-		return implode( $glue, $data );
+
+        return implode( $glue, $data );
 	}
-	
-	/**
+
+    /**
 	 * Generate excel file from given data using columns as headers and filename
 	 * as filename prefix. Return path to file.
 	 *
@@ -97,32 +97,32 @@ class ExcelComponent extends Component {
 		      ->setCreator( __( 'Breeders Database' ) )
 		      ->setLastModifiedBy( __( 'Breeders Database' ) )
 		      ->setTitle( $title );
-		
-		// select sheet
+
+        // select sheet
 		$excel->setActiveSheetIndex( 0 );
-		
-		// write header
+
+        // write header
 		$excel->getActiveSheet()->fromArray( $columns, null, 'A1' );
-		
-		// write data
+
+        // write data
 		$i = 2;
 		foreach ( $data as $row ) {
 			$excel->getActiveSheet()->fromArray( $row, null, 'A' . $i );
 			$i ++;
 		}
-		
-		// save file
+
+        // save file
 		$file        = $this->_prepareExportFile( $title );
 		$excelWriter = new PHPExcel_Writer_Excel2007( $excel );
 		$excelWriter->save( $file );
-		
-		// delete old files to prevent a huge tmp
+
+        // delete old files to prevent a huge tmp
 		$this->_cleanUpCache( '1 Day' );
-		
-		return $file;
+
+        return $file;
 	}
-	
-	/**
+
+    /**
 	 * Return path to export file in the tmp/export folder.
 	 * Make sure the folder exists.
 	 *
@@ -133,34 +133,34 @@ class ExcelComponent extends Component {
 		$date     = date( 'Ymd' );
 		$random   = substr( sha1( uniqid( 'asdfzui', true ) ), 0, 15 );
 		$tmp_file = $slug . '_' . $date . '_' . $random . '.xlsx';
-		
-		if ( ! is_dir( $this->exportPath ) ) {
+
+        if ( ! is_dir( $this->exportPath ) ) {
 			mkdir( $this->exportPath, 0700, true );
 		}
-		
-		return $this->exportPath . $tmp_file;
+
+        return $this->exportPath . $tmp_file;
 	}
-	
-	/**
+
+    /**
 	 * Delete files in the export directory if they are older than the given date
 	 *
 	 * @param string $maxAge as used by `strtotime`
 	 */
 	protected function _cleanUpCache( string $maxAge ) {
 		$max = - strtotime( $maxAge ) + 2 * time();
-		
-		// loop through all files in the directory
+
+        // loop through all files in the directory
 		foreach ( glob( $this->exportPath . '*' ) as $file ) {
-			
-			// if file is older than $maxAge delete it
+
+            // if file is older than $maxAge delete it
 			if ( filectime( $file ) < $max ) {
 				unlink( $file );
 			}
 		}
-		
-	}
-	
-	/**
+
+    }
+
+    /**
 	 * Return path to excel file generated from given mark collection.
 	 *
 	 * This method requires a collection returned by MarksView::customFindMarks().
@@ -185,22 +185,22 @@ class ExcelComponent extends Component {
 		$columns = array_values( $regular_columns );
 		foreach ( $mark_columns as $col ) {
 			if ( $col->is_numerical ) {
-				$columns[] = $col->name . ' -> ' . __( 'median' );
-				$columns[] = $col->name . ' -> ' . __( 'average' );
-				$columns[] = $col->name . ' -> ' . __( 'count' );
-				$columns[] = $col->name . ' -> ' . __( 'min' );
-				$columns[] = $col->name . ' -> ' . __( 'max' );
-				$columns[] = $col->name . ' -> ' . __( 'standard deviation' );
-			} else {
+                $columns[] = $col->name . ' -> ' . __( 'median' );
+                $columns[] = $col->name . ' -> ' . __( 'average' );
+                $columns[] = $col->name . ' -> ' . __( 'count' );
+                $columns[] = $col->name . ' -> ' . __x( 'short: minimum', 'min' );
+                $columns[] = $col->name . ' -> ' . __x( 'short: maximum', 'max' );
+                $columns[] = $col->name . ' -> ' . __( 'standard deviation' );
+            } else {
 				$columns[] = $col->name . ' -> ' . __( 'value' );
 			}
 			$columns[] = $col->name . ' -> ' . __( 'values' );
 		}
-		
-		// prepare data
+
+        // prepare data
 		$out = array();
-		
-		// get data
+
+        // get data
 		foreach ( $data as $row_in ) {
 			$row = array();
 			foreach ( $regular_columns as $column_key => $column_name ) {
@@ -236,13 +236,13 @@ class ExcelComponent extends Component {
 			}
 			$out[] = $row;
 		}
-		
-		return $this->_export( $out, $columns, $title );
+
+        return $this->_export( $out, $columns, $title );
 	}
-	
-	
+
+
 }
 
 
 
-        
+
