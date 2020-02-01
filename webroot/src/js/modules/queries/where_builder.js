@@ -206,12 +206,24 @@ function QueriesWhereBuilderModule(General) {
     this.bindSubmitEvents = function () {
         var valid = false;
         $('#query_builder_form').submit(function (e) {
+            self.clearUncheckedMarkPropertyFilters();
+
             valid = self.validateMarkProperties(e);
             if (valid) {
                 self.saveQueryWhereData();
             } else {
                 e.preventDefault();
             }
+        });
+    };
+
+    /**
+     * remove all filter values of unchecked mark properties
+     * (so we dont have any validation issues of hidden fields)
+     */
+    this.clearUncheckedMarkPropertyFilters = function () {
+        $('.mark-property-selector:not(:checked)').each(function () {
+            $(this).parent().find('.mark-property-filter-value').val('');
         });
     };
 

@@ -6525,7 +6525,7 @@ QueryBuilder.extend(/** @lends module:plugins.ChangeFilters.prototype */ {
  *
  * Copyright 2014-2016 Damien "Mistic" Sorel (http://www.strangeplanet.fr)
  * Licensed under MIT (http://opensource.org/licenses/MIT)
- * 
+ *
  * Based on jQuery.extend by jQuery Foundation, Inc. and other contributors
  */
 
@@ -34731,7 +34731,7 @@ S2.define('select2/selection/base',[
       window.setTimeout(function () {
         self.$selection.focus();
       }, 0);
-    
+
       self._detachCloseHandler(container);
     });
 
@@ -35168,7 +35168,7 @@ S2.define('select2/selection/allowClear',[
       return;
     }
 
-    var removeAll = this.options.get('translations').get('removeAllItems');   
+    var removeAll = this.options.get('translations').get('removeAllItems');
 
     var $remove = $(
       '<span class="select2-selection__clear" title="' + removeAll() +'">' +
@@ -41475,12 +41475,24 @@ function QueriesWhereBuilderModule(General) {
     this.bindSubmitEvents = function () {
         var valid = false;
         $('#query_builder_form').submit(function (e) {
+            self.clearUncheckedMarkPropertyFilters();
+
             valid = self.validateMarkProperties(e);
             if (valid) {
                 self.saveQueryWhereData();
             } else {
                 e.preventDefault();
             }
+        });
+    };
+
+    /**
+     * remove all filter values of unchecked mark properties
+     * (so we dont have any validation issues of hidden fields)
+     */
+    this.clearUncheckedMarkPropertyFilters = function () {
+        $('.mark-property-selector:not(:checked)').each(function () {
+            $(this).parent().find('.mark-property-filter-value').val('');
         });
     };
 
