@@ -206,8 +206,6 @@ function QueriesWhereBuilderModule(General) {
     this.bindSubmitEvents = function () {
         var valid = false;
         $('#query_builder_form').submit(function (e) {
-            self.clearUncheckedMarkPropertyFilters();
-
             valid = self.validateMarkProperties(e);
             if (valid) {
                 self.saveQueryWhereData();
@@ -250,6 +248,10 @@ function QueriesWhereBuilderModule(General) {
     this.bindValidatorEvents = function () {
         var valid = false;
         $('.validate_query_where_builder').on('click submit change', function (e) {
+
+            // remove all values of hidden property filters first!
+            self.clearUncheckedMarkPropertyFilters();
+
             // start off with an empty error list
             $('.query_builder_validation_error').find('ul').html('');
 
