@@ -33,6 +33,7 @@ services:
       MYSQL_USER: poc
       MYSQL_PASSWORD: poc
     container_name: poc_mysql
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -42,7 +43,7 @@ services:
       MYSQL_ROOT_PASSWORD: poc
       PMA_HOST: mysql
       PMA_PORT: 3306
-      PMA_USER: root
+      PMA_USER: poc
       PMA_PASSWORD: poc
     container_name: poc_phpmyadmin
 
