@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2019-07-13 18:15+0000\n"
+"POT-Creation-Date: 2020-01-31 19:38+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -426,24 +426,6 @@ msgstr ""
 msgid "count"
 msgstr ""
 
-#: Controller/Component/ExcelComponent.php:191
-msgid "min"
-msgstr ""
-
-#: Template/Element/Query/mark_value.ctp:29
-msgctxt "short: minimum"
-msgid "min"
-msgstr ""
-
-#: Controller/Component/ExcelComponent.php:192
-msgid "max"
-msgstr ""
-
-#: Template/Element/Query/mark_value.ctp:35
-msgctxt "short: maximum"
-msgid "max"
-msgstr ""
-
 #: Controller/Component/ExcelComponent.php:193
 msgid "standard deviation"
 msgstr ""
@@ -454,6 +436,18 @@ msgstr ""
 
 #: Controller/Component/ExcelComponent.php:197
 msgid "values"
+msgstr ""
+
+#: Controller/Component/ExcelComponent.php:191
+#: Template/Element/Query/mark_value.ctp:29
+msgctxt "short: minimum"
+msgid "min"
+msgstr ""
+
+#: Controller/Component/ExcelComponent.php:192
+#: Template/Element/Query/mark_value.ctp:35
+msgctxt "short: maximum"
+msgid "max"
 msgstr ""
 
 #: Controller/Component/MarksReaderComponent.php:60

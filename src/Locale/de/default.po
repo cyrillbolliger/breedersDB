@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2019-07-13 18:15+0000\n"
-"PO-Revision-Date: 2019-07-13 20:20+0200\n"
+"POT-Creation-Date: 2020-01-31 19:38+0000\n"
+"PO-Revision-Date: 2020-01-31 20:39+0100\n"
 "Last-Translator: Cyrill Bolliger <bolliger@gmx.ch>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: Controller/AppController.php:89
 msgctxt "time format"
@@ -464,24 +464,6 @@ msgstr "Durchschnitt"
 msgid "count"
 msgstr "Anzahl"
 
-#: Controller/Component/ExcelComponent.php:191
-msgid "min"
-msgstr "Min"
-
-#: Template/Element/Query/mark_value.ctp:29
-msgctxt "short: minimum"
-msgid "min"
-msgstr "Min"
-
-#: Controller/Component/ExcelComponent.php:192
-msgid "max"
-msgstr "Max"
-
-#: Template/Element/Query/mark_value.ctp:35
-msgctxt "short: maximum"
-msgid "max"
-msgstr "Max"
-
 #: Controller/Component/ExcelComponent.php:193
 msgid "standard deviation"
 msgstr "Standardabweichung"
@@ -493,6 +475,18 @@ msgstr "Wert"
 #: Controller/Component/ExcelComponent.php:197
 msgid "values"
 msgstr "Werte"
+
+#: Controller/Component/ExcelComponent.php:191
+#: Template/Element/Query/mark_value.ctp:29
+msgctxt "short: minimum"
+msgid "min"
+msgstr "Min"
+
+#: Controller/Component/ExcelComponent.php:192
+#: Template/Element/Query/mark_value.ctp:35
+msgctxt "short: maximum"
+msgid "max"
+msgstr "Max"
 
 #: Controller/Component/MarksReaderComponent.php:60
 msgid "Invalid arguments."
@@ -2648,6 +2642,12 @@ msgstr "Verwandte Reiserbündel"
 #: Template/Varieties/view.ctp:54
 msgid "External Use"
 msgstr "Externer gebrauch"
+
+#~ msgid "min"
+#~ msgstr "Min"
+
+#~ msgid "max"
+#~ msgstr "Max"
 
 #~ msgid "Mother Tree -> Target"
 #~ msgstr "Mutterbaum -> Kreuzungsziel"
