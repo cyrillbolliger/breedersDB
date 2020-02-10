@@ -9,7 +9,8 @@ RUN apt-get update -y \
     unzip \
     git \
     vim \
-    libicu-dev
+    libicu-dev \
+    libzip-dev
 
 # install & enable mysql driver
 RUN docker-php-ext-install pdo_mysql
@@ -22,6 +23,10 @@ RUN docker-php-ext-enable xdebug
 RUN docker-php-ext-configure intl --enable-intl
 RUN docker-php-ext-install intl
 RUN docker-php-ext-enable intl
+
+# install & enable php zip
+RUN docker-php-ext-install zip
+RUN docker-php-ext-enable zip
 
 # change uid and gid of apache to docker user uid/gid
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
