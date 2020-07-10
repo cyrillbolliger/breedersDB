@@ -163,7 +163,7 @@ class AppController extends Controller {
 		 */
 		$controller = $this->request->getParam('controller');
 		$action     = $this->request->getParam('action');
-		$arg1       = isset( $this->request->params['pass'][0] ) ? $this->request->params['pass'][0] : null;
+		$arg1       = $this->request->getParam('pass.0' ) ? $this->request->getParam('pass.0' ) : null;
 		$session    = $this->request->getSession();
 
 		// exclude this controllers an actions form redirect

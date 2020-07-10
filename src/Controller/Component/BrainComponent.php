@@ -59,8 +59,8 @@ class BrainComponent extends Component {
 	 */
 	public function memorize() {
 		$session    = $this->request->getSession();
-		$data       = $this->request->data;
-		$controller = $this->request->params['controller'];
+		$data       = $this->request->getData();
+		$controller = $this->request->getParam('controller');
 		$fields     = $this->memorize;
 
 		$keys = array_intersect( $fields, array_keys( $data ) );
@@ -82,7 +82,7 @@ class BrainComponent extends Component {
 	 */
 	public function remember( $entity, $fields = null ) {
 		$session    = $this->request->getSession()();
-		$controller = $this->request->params['controller'];
+		$controller = $this->request->getParam('controller');
 
 		if ( ! isset( $session->read( 'Brain' )[ $controller ] ) ) {
 			return $entity;

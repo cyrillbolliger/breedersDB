@@ -106,7 +106,7 @@ class CollectionPaginatorComponent extends Component {
 		];
 
 		$paging_params = [ $alias => $paging ];
-		$this->request->addParams( [ 'paging' => $paging_params ] );
+		$this->request->withParam( 'paging', $paging_params );
 
 		if ( $requestedPage > $page ) {
 			throw new NotFoundException();

@@ -28,8 +28,8 @@ class MarkFormsController extends AppController {
 	 * Unlock the dynamically added fields in the security component
 	 */
 	public function unlockDynamicallyAddedFields() {
-		if ( ! empty( $this->request->data['mark_form_fields']['mark_form_properties'] ) ) {
-			$ids = array_keys( $this->request->data['mark_form_fields']['mark_form_properties'] );
+		if ( ! empty( $this->request->getData('mark_form_fields.mark_form_properties') ) ) {
+			$ids = array_keys( $this->request->getData('mark_form_fields.mark_form_properties' ) );
 			foreach ( $ids as $id ) {
 				$this->Security->setConfig( 'unlockedFields',
 					[ 'mark_form_fields.mark_form_properties.' . $id . '.mark_values.value' ] );
@@ -78,8 +78,8 @@ class MarkFormsController extends AppController {
 		$markForm = $this->MarkForms->newEntity();
 		if ( $this->request->is( 'post' ) ) {
 			// make form fields savable
-			$this->_prepareFormFields();
-			$markForm = $this->MarkForms->patchEntity( $markForm, $this->request->getData());
+			$data = $this->_prepareFormFields();
+			$markForm = $this->MarkForms->patchEntity( $markForm, $data );
 			if ( $this->MarkForms->save( $markForm ) ) {
 				$this->Flash->success( __( 'The mark form has been saved.' ) );
 
@@ -97,15 +97,18 @@ class MarkFormsController extends AppController {
 	 * Make the request data ready to be persited: put the form fields in the right form and add the priority
 	 *
 	 * @param  int|null $id of the form to update or null if it's an insert
+     * @return array
 	 */
 	protected function _prepareFormFields( $id = null ) {
-		if ( ! empty( $this->request->data['mark_form_fields']['mark_form_properties'] ) ) {
-			$fields = array_keys( $this->request->data['mark_form_fields']['mark_form_properties'] );
-			unset( $this->request->data['mark_form_fields'] );
+	    $data = $this->request->getData();
+
+		if ( ! empty( $data['mark_form_fields']['mark_form_properties'] ) ) {
+			$fields = array_keys( $data['mark_form_fields']['mark_form_properties'] );
+			unset( $data['mark_form_fields'] );
 
 			$i = 0;
 			foreach ( $fields as $field ) {
-				$this->request->data['mark_form_fields'][ $i ] = [
+				$data['mark_form_fields'][ $i ] = [
 					'mark_form_property_id' => $field,
 					'priority'              => $i,
 				];
@@ -121,12 +124,14 @@ class MarkFormsController extends AppController {
 					                                         ->first();
 
 					if ( ! empty( $query->id ) ) {
-						$this->request->data['mark_form_fields'][ $i ]['id'] = $query->id;
+						$data['mark_form_fields'][ $i ]['id'] = $query->id;
 					}
 				}
 				$i ++;
 			}
 		}
+
+		return $data;
 	}
 
 	/**
@@ -146,8 +151,8 @@ class MarkFormsController extends AppController {
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
 			// make form fields savable
-			$this->_prepareFormFields( $id );
-			$markForm = $this->MarkForms->patchEntity( $markForm, $this->request->getData());
+			$data = $this->_prepareFormFields( $id );
+			$markForm = $this->MarkForms->patchEntity( $markForm, $data );
 			if ( $this->MarkForms->save( $markForm ) ) {
 				$this->_deleteDeletedFields( $markForm->id );
 				$this->Flash->success( __( 'The mark form has been saved.' ) );
