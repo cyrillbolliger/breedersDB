@@ -3,7 +3,7 @@
 
 <?php
 
-echo $this->Form->input( 'root_view', [
+echo $this->Form->control( 'root_view', [
     'label'   => __( 'Main table' ),
     'options' => $views,
     'default' => isset( $query->query->root_view ) ? $query->query->root_view : 'MarksView',
@@ -12,7 +12,7 @@ echo $this->Form->input( 'root_view', [
 
 echo '<div class="breeding-object-aggregation-mode-selector">';
 $this->Form->unlockField( 'breeding_object_aggregation_mode' );
-echo $this->Form->input( 'breeding_object_aggregation_mode', [
+echo $this->Form->control( 'breeding_object_aggregation_mode', [
     'label'   => __( 'Group marks by' ),
     'options' => $query->breeding_object_aggregation_modes,
     'default' => $query->breeding_object_aggregation_mode,
@@ -29,7 +29,7 @@ echo '</div>';
 <?php
 foreach ( $views as $view_key => $view_name ) {
     $this->Form->unlockField( $view_key );
-    echo $this->Form->input( $view_key, [
+    echo $this->Form->control( $view_key, [
         'label'   => $view_name,
         'type'    => 'checkbox',
         'class'   => 'view-selector ' . $view_key . '-view-selector',
@@ -38,7 +38,7 @@ foreach ( $views as $view_key => $view_name ) {
     echo '<div class="field-selector-container ' . $view_key . '-field-selector-container">';
     foreach ( $view_fields[ $view_key ] as $field_key => $field_name ) {
         echo '<div class="regular-property">';
-        echo $this->Form->input( $field_key, [
+        echo $this->Form->control( $field_key, [
             'label'    => $field_name,
             'type'     => 'checkbox',
             'class'    => 'field-selector ' . $field_key . '-field-selector',
@@ -72,7 +72,7 @@ foreach ( $views as $view_key => $view_name ) {
 <?php
 
 $this->Form->unlockField( 'where_query' );
-echo $this->Form->input( 'where_query', [
+echo $this->Form->control( 'where_query', [
     'type' => 'hidden',
 ] );
 

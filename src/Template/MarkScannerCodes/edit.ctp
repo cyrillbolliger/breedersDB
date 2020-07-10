@@ -6,14 +6,14 @@
     <fieldset>
         <legend><?= __( 'Edit Scanner Code' ) ?></legend>
 		<?php
-		echo $this->Form->input( 'code', [ 'disabled' => 'disabled' ] );
+		echo $this->Form->control( 'code', [ 'disabled' => 'disabled' ] );
 		echo $this->element( 'Mark/field', [
 			'markFormProperty' => $markScannerCode->mark_form_property,
 			'required'         => 'required',
 			'name'             => 'mark_value',
 			'markValue'        => $markScannerCode->mark_value,
 		] );
-		echo $this->Form->input( 'mark_form_property_id', [
+		echo $this->Form->control( 'mark_form_property_id', [
 			'options' => $markFormProperties,
 			'label'   => __( 'Property' ),
 		] );

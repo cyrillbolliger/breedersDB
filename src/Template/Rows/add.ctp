@@ -6,15 +6,15 @@
     <fieldset>
         <legend><?= __( 'Add Row' ) ?></legend>
 		<?php
-		echo $this->Form->input( 'code', [
+		echo $this->Form->control( 'code', [
 			'label' => __( 'Name' ),
 		] );
-		echo $this->Form->input( 'date_created', [
+		echo $this->Form->control( 'date_created', [
 			'empty' => true,
 			'type'  => 'text',
 			'class' => 'datepicker',
 		] );
-		echo $this->Form->input( 'note' );
+		echo $this->Form->control( 'note' );
 		?>
     </fieldset>
 	<?= $this->Form->button( __( 'Submit' ) ) ?>

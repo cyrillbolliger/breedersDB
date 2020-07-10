@@ -18,7 +18,7 @@ class LocalizedTimeHelper extends Helper {
 	 * @return mixed
 	 */
 	public function getUserTime( $time, $format = null ) {
-		$time_zone = $this->_View->request->getSession()->read( 'time_zone' );
+		$time_zone = $this->_View->getRequest()->getSession()->read( 'time_zone' );
 
 		return $this->Time->format(
 			$time,

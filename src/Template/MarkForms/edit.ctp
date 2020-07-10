@@ -5,8 +5,8 @@
 	<?= $this->Form->create( $markForm ) ?>
     <fieldset>
         <legend><?= __( 'Edit Mark Form' ) ?></legend>
-		<?= $this->Form->input( 'name' ); ?>
-		<?= $this->Form->input( 'description' ); ?>
+		<?= $this->Form->control( 'name' ); ?>
+		<?= $this->Form->control( 'description' ); ?>
         <fieldset>
             <legend><?= __( 'Fields' ) ?></legend>
             <div class="mark_form_fields sortable">
@@ -22,7 +22,7 @@
             </div>
             <div class="mark_form_fields_adder">
 				<?php
-				echo $this->Form->input( 'mark_form_properties', [
+				echo $this->Form->control( 'mark_form_properties', [
 					'options'   => $markFormProperties,
 					'class'     => 'add_mark_form_field',
 					'label'     => __( 'Add mark field to form' ),

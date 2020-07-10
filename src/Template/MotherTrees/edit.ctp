@@ -9,34 +9,34 @@
 		<?= $this->element( 'Tree/get_tree', [ 'tree' => $motherTree->tree ] ); ?>
 		<?php
 		$this->Form->unlockField( 'tree_id' );
-		echo $this->Form->input( 'crossing_id', [
+		echo $this->Form->control( 'crossing_id', [
 			'options'  => $crossings,
 			'required' => 'required',
 		] );
-		echo $this->Form->input( 'code', [
+		echo $this->Form->control( 'code', [
 			'label' => __( 'Identification' ),
 		] );
-		echo $this->Form->input( 'planed' );
-		echo $this->Form->input( 'date_pollen_harvested', [
+		echo $this->Form->control( 'planed' );
+		echo $this->Form->control( 'date_pollen_harvested', [
 			'empty' => true,
 			'type'  => 'text',
 			'class' => 'datepicker ' . ( $motherTree->dirty( 'date_pollen_harvested' ) ? 'brain-prefilled' : '' ),
 		] );
-		echo $this->Form->input( 'date_impregnated', [
+		echo $this->Form->control( 'date_impregnated', [
 			'empty' => true,
 			'type'  => 'text',
 			'class' => 'datepicker ' . ( $motherTree->dirty( 'date_impregnated' ) ? 'brain-prefilled' : '' ),
 		] );
-		echo $this->Form->input( 'date_fruit_harvested', [
+		echo $this->Form->control( 'date_fruit_harvested', [
 			'empty' => true,
 			'type'  => 'text',
 			'class' => 'datepicker ' . ( $motherTree->dirty( 'date_fruit_harvested' ) ? 'brain-prefilled' : '' ),
 		] );
-		echo $this->Form->input( 'numb_portions' );
-		echo $this->Form->input( 'numb_flowers' );
-		echo $this->Form->input( 'numb_fruits' );
-		echo $this->Form->input( 'numb_seeds' );
-		echo $this->Form->input( 'note' );
+		echo $this->Form->control( 'numb_portions' );
+		echo $this->Form->control( 'numb_flowers' );
+		echo $this->Form->control( 'numb_fruits' );
+		echo $this->Form->control( 'numb_seeds' );
+		echo $this->Form->control( 'note' );
 		?>
     </fieldset>
 	<?= $this->Form->button( __( 'Submit' ) ) ?>

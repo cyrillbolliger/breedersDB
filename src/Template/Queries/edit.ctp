@@ -6,12 +6,12 @@
     <fieldset>
         <legend><?= __( 'Edit Query' ) ?></legend>
 		<?php
-		echo $this->Form->input( 'code' );
-		echo $this->Form->input( 'query_group_id', [
+		echo $this->Form->control( 'code' );
+		echo $this->Form->control( 'query_group_id', [
 			'options'  => $query_groups,
 			'required' => 'required',
 		] );
-		echo $this->Form->input( 'description' );
+		echo $this->Form->control( 'description' );
 		echo $this->element( 'Query/builder' );
 		echo $this->element( 'Query/validation_message' );
 		?>

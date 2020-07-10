@@ -7,27 +7,27 @@
     <fieldset>
         <legend><?= __( 'Edit Batch' ) ?></legend>
 		<?php
-		echo $this->Form->input( 'crossing_id', [
+		echo $this->Form->control( 'crossing_id', [
 			'options' => $crossings,
 			'class'   => 'select2',
 		] );
-		echo $this->Form->input( 'code' );
-		echo $this->Form->input( 'date_sowed', [
+		echo $this->Form->control( 'code' );
+		echo $this->Form->control( 'date_sowed', [
 			'empty' => true,
 			'type'  => 'text',
 			'class' => 'datepicker',
 		] );
-		echo $this->Form->input( 'numb_seeds_sowed' );
-		echo $this->Form->input( 'numb_sprouts_grown' );
-		echo $this->Form->input( 'seed_tray' );
-		echo $this->Form->input( 'date_planted', [
+		echo $this->Form->control( 'numb_seeds_sowed' );
+		echo $this->Form->control( 'numb_sprouts_grown' );
+		echo $this->Form->control( 'seed_tray' );
+		echo $this->Form->control( 'date_planted', [
 			'empty' => true,
 			'type'  => 'text',
 			'class' => 'datepicker',
 		] );
-		echo $this->Form->input( 'numb_sprouts_planted' );
-		echo $this->Form->input( 'patch' );
-		echo $this->Form->input( 'note' );
+		echo $this->Form->control( 'numb_sprouts_planted' );
+		echo $this->Form->control( 'patch' );
+		echo $this->Form->control( 'note' );
 		?>
     </fieldset>
 	<?= $this->Form->button( __( 'Submit' ) ) ?>

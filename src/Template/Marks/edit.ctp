@@ -10,34 +10,34 @@
 			echo $this->element( 'Tree/get_tree', [ 'tree' => $mark->tree ] );
 			$this->Form->unlockField( 'tree_id' );
 		}
-		
+
 		if ( $mark->batch ) {
-			echo $this->Form->input( 'batch_id', [
+			echo $this->Form->control( 'batch_id', [
 				'options'  => [ $mark->batch->id => $mark->batch->crossing_batch ],
 				'required' => 'required',
 				'class'    => 'select2batch_id',
 				'label'    => __( 'Crossing.Batch' ),
 			] );
 		}
-		
+
 		if ( $mark->variety ) {
-			echo $this->Form->input( 'variety_id', [
+			echo $this->Form->control( 'variety_id', [
 				'options'  => [ $mark->variety->id => $mark->variety->convar ],
 				'required' => 'required',
 				'class'    => 'select2convar select2convar_add',
 			] );
 		}
-		
-		echo $this->Form->input( 'date', [
+
+		echo $this->Form->control( 'date', [
 			'type'     => 'text',
 			'class'    => $mark->dirty( 'date' ) ? 'datepicker brain-prefilled' : 'datepicker',
 			'required' => 'required',
 		] );
-		echo $this->Form->input( 'author', [
+		echo $this->Form->control( 'author', [
 			'class'    => $mark->dirty( 'author' ) ? 'brain-prefilled' : '',
 			'required' => 'required',
 		] );
-		echo $this->Form->input( 'mark_form_id', [
+		echo $this->Form->control( 'mark_form_id', [
 			'options'  => $markForms,
 			'class'    => $mark->dirty( 'mark_form_id' ) ? 'brain-prefilled form-field-selector' : 'form-field-selector',
 			'required' => 'required',
@@ -56,7 +56,7 @@
 			<?php endforeach; ?>
 		<?php endif; ?>
     </fieldset>
-	
+
 	<?= $this->Form->button( __( 'Submit' ) ) ?>
 	<?= $this->Form->end() ?>
 </div>

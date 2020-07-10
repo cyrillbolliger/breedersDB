@@ -6,7 +6,7 @@
     <fieldset>
         <legend><?= __( 'Add Query Group' ) ?></legend>
 		<?php
-		echo $this->Form->input( 'code' );
+		echo $this->Form->control( 'code' );
 		?>
     </fieldset>
 	<?= $this->Form->button( __( 'Submit' ) ) ?>

@@ -6,10 +6,10 @@
     <fieldset>
         <legend><?= __( 'Edit User' ) ?></legend>
 		<?php
-		echo $this->Form->input( 'email' );
-		echo $this->Form->input( 'password' );
-		echo $this->Form->input( 'level' );
-		echo $this->Form->input( 'time_zone', [
+		echo $this->Form->control( 'email' );
+		echo $this->Form->control( 'password' );
+		echo $this->Form->control( 'level' );
+		echo $this->Form->control( 'time_zone', [
 			'options' => $time_zones,
 		] );
 		?>

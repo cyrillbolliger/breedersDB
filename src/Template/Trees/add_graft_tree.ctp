@@ -6,39 +6,39 @@
     <fieldset>
         <legend><?= __( 'Add Graft Tree' ) ?></legend>
 		<?php
-		echo $this->Form->input( 'variety_id', [
+		echo $this->Form->control( 'variety_id', [
 			'options'  => $varieties,
 			'required' => 'required',
 			'class'    => 'select2convar select2convar_add',
 		] );
-		echo $this->Form->input( 'publicid' );
-		echo $this->Form->input( 'date_grafted', [
+		echo $this->Form->control( 'publicid' );
+		echo $this->Form->control( 'date_grafted', [
 			'empty' => true,
 			'type'  => 'text',
 			'class' => 'datepicker ' . ( $tree->dirty( 'date_grafted' ) ? 'brain-prefilled' : '' ),
 		] );
-		echo $this->Form->input( 'rootstock_id', [
+		echo $this->Form->control( 'rootstock_id', [
 			'options' => $rootstocks,
 			'empty'   => true,
 			'class'   => $tree->dirty( 'rootstock_id' ) ? 'brain-prefilled' : '',
 		] );
-		echo $this->Form->input( 'grafting_id', [
+		echo $this->Form->control( 'grafting_id', [
 			'options' => $graftings,
 			'empty'   => true,
 			'class'   => $tree->dirty( 'grafting_id' ) ? 'brain-prefilled' : '',
 		] );
-		echo $this->Form->input( 'date_planted', [
+		echo $this->Form->control( 'date_planted', [
 			'empty' => true,
 			'type'  => 'text',
 			'class' => 'datepicker ' . ( $tree->dirty( 'date_planted' ) ? 'brain-prefilled' : '' ),
 		] );
-		echo $this->Form->input( 'row_id', [
+		echo $this->Form->control( 'row_id', [
 			'options' => $rows,
 			'empty'   => true,
 			'class'   => $tree->dirty( 'row_id' ) ? 'brain-prefilled' : '',
 		] );
-		echo $this->Form->input( 'offset' );
-		echo $this->Form->input( 'note' );
+		echo $this->Form->control( 'offset' );
+		echo $this->Form->control( 'note' );
 		?>
     </fieldset>
 	<?= $this->Form->button( __( 'Submit' ) ) ?>

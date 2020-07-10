@@ -39,7 +39,7 @@
 	<?= $this->fetch( 'script' ) ?>
 
     <script>
-        var csrfToken = '<?= $this->request->params['_csrfToken'] ?>';
+        var csrfToken = '<?= $this->request->getParam('_csrfToken') ?>';
         var webroot = '<?= $this->Url->build( '/', true ); ?>';
         var urlbase = '<?= $this->Url->build( '/', false ); ?>';
         var trans = {

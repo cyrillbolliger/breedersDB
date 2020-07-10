@@ -49,7 +49,7 @@ class UsersTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmptyString( 'id', 'create' );
+			->allowEmptyString( 'id', __('This field is required'), 'create' );
 
 		$validator
 			->email( 'email' )

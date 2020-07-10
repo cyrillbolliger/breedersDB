@@ -6,17 +6,17 @@
     <fieldset>
         <legend><?= __( 'Add Property' ) ?></legend>
 		<?php
-		echo $this->Form->input( 'name' );
-		echo $this->Form->input( 'mark_form_property_type_id', [
+		echo $this->Form->control( 'name' );
+		echo $this->Form->control( 'mark_form_property_type_id', [
 			'options' => $markFormPropertyTypes,
 			'label'   => __( 'Property Type' ),
 		] );
-		echo $this->Form->input( 'field_type', [
+		echo $this->Form->control( 'field_type', [
 			'options' => $fieldTypes,
 			'class'   => 'mark_field_type',
 			'label'   => __( 'Data Type' ),
 		] );
-		echo $this->Form->input( 'min', [
+		echo $this->Form->control( 'min', [
 			'type'     => 'number',
 			'step'     => 'any',
 			'class'    => 'mark_validation_rule mark_validation_rule_min',
@@ -24,7 +24,7 @@
 			'label'    => __( 'Minimum Value' ),
 		] );
 		$this->Form->unlockField( 'min' );
-		echo $this->Form->input( 'max', [
+		echo $this->Form->control( 'max', [
 			'type'     => 'number',
 			'step'     => 'any',
 			'class'    => 'mark_validation_rule mark_validation_rule_max',
@@ -32,21 +32,21 @@
 			'label'    => __( 'Maximum Value' ),
 		] );
 		$this->Form->unlockField( 'max' );
-		echo $this->Form->input( 'step', [
+		echo $this->Form->control( 'step', [
 			'type'     => 'number',
 			'step'     => 'any',
 			'class'    => 'mark_validation_rule mark_validation_rule_step',
 			'required' => 'required',
 		] );
 		$this->Form->unlockField( 'step' );
-		echo $this->Form->input( 'note' );
+		echo $this->Form->control( 'note' );
 		?>
         <fieldset>
             <legend><?= __( 'This property serves to mark:' ) ?></legend>
 			<?php
-			echo $this->Form->input( 'tree_property', [ 'label' => __( 'Trees' ) ] );
-			echo $this->Form->input( 'variety_property', [ 'label' => __( 'Varieties' ) ] );
-			echo $this->Form->input( 'batch_property', [ 'label' => __( 'Batches' ) ] );
+			echo $this->Form->control( 'tree_property', [ 'label' => __( 'Trees' ) ] );
+			echo $this->Form->control( 'variety_property', [ 'label' => __( 'Varieties' ) ] );
+			echo $this->Form->control( 'batch_property', [ 'label' => __( 'Batches' ) ] );
 			?>
         </fieldset>
     </fieldset>

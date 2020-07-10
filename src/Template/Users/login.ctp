@@ -2,8 +2,8 @@
     <div class="login">
         <h3><?= __( 'Login' ) ?></h3>
 		<?= $this->Form->create() ?>
-		<?= $this->Form->input( 'email' ) ?>
-		<?= $this->Form->input( 'password' ) ?>
+		<?= $this->Form->control( 'email' ) ?>
+		<?= $this->Form->control( 'password' ) ?>
 		<?= $this->Form->button( __( 'Login' ) ) ?>
 		<?= $this->Form->end() ?>
     </div>

@@ -69,7 +69,7 @@ class BatchesTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmptyString( 'id', 'create' )
+			->allowEmptyString( 'id', __('This field is required'), 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator

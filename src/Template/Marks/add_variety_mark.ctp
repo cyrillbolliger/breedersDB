@@ -7,7 +7,7 @@
     <fieldset>
         <legend><?= __( 'Mark Variety' ) ?></legend>
 <?php
-echo $this->Form->input( 'variety_id', [
+echo $this->Form->control( 'variety_id', [
 	'options'  => $varieties,
 	'required' => 'required',
 	'class'    => 'select2convar select2convar_add',

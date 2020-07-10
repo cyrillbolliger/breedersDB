@@ -6,7 +6,7 @@
     <fieldset>
         <legend><?= __( 'Edit Grafting' ) ?></legend>
 		<?php
-		echo $this->Form->input( 'name' );
+		echo $this->Form->control( 'name' );
 		?>
     </fieldset>
 	<?= $this->Form->button( __( 'Submit' ) ) ?>

@@ -7,17 +7,17 @@
     <fieldset>
         <legend><?= __( 'Add Breeder Variety' ) ?></legend>
 		<?php
-		echo $this->Form->input( 'batch_id', [
+		echo $this->Form->control( 'batch_id', [
 			'options'  => $batches,
 			'required' => 'required',
 			'class'    => 'select2batch_id',
 			'label'    => __( 'Crossing.Batch' ),
 		] );
-		echo $this->Form->input( 'code', [
+		echo $this->Form->control( 'code', [
 			'disabled' => $disabled,
 			'pattern'  => '\d{3}',
 		] );
-		echo $this->Form->input( 'description' );
+		echo $this->Form->control( 'description' );
 		?>
     </fieldset>
 	<?= $this->Form->button( __( 'Submit' ) ) ?>

@@ -11,7 +11,7 @@
 			'required'         => false,
 			'markValue'        => $markValue->value
 		] );
-		echo $this->Form->input( 'exceptional_mark' );
+		echo $this->Form->control( 'exceptional_mark' );
 		?>
     </fieldset>
 	<?= $this->Form->button( __( 'Submit' ) ) ?>

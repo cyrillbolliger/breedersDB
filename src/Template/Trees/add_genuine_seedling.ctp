@@ -6,28 +6,28 @@
     <fieldset>
         <legend><?= __( 'Add Genuine Seedling' ) ?></legend>
 		<?php
-		echo $this->Form->input( 'variety_id', [
+		echo $this->Form->control( 'variety_id', [
 			'options'  => $varieties,
 			'required' => 'required',
 			'class'    => 'select2convar select2convar_add',
 		] );
-		echo $this->Form->input( 'publicid' );
-		echo $this->Form->input( 'genuine_seedling', [
+		echo $this->Form->control( 'publicid' );
+		echo $this->Form->control( 'genuine_seedling', [
 			'checked' => 'checked',
 			'class'   => $tree->dirty( 'genuine_seedling' ) ? 'brain-prefilled' : '',
 		] );
-		echo $this->Form->input( 'row_id', [
+		echo $this->Form->control( 'row_id', [
 			'options' => $rows,
 			'empty'   => true,
 			'class'   => $tree->dirty( 'row_id' ) ? 'brain-prefilled' : '',
 		] );
-		echo $this->Form->input( 'offset' );
-        echo $this->Form->input( 'date_labeled', [
+		echo $this->Form->control( 'offset' );
+        echo $this->Form->control( 'date_labeled', [
             'empty' => true,
             'type'  => 'text',
             'class' => 'datepicker ' . ( $tree->dirty( 'date_labeled' ) ? 'brain-prefilled' : '' ),
         ] );
-		echo $this->Form->input( 'note' );
+		echo $this->Form->control( 'note' );
 		?>
     </fieldset>
 	<?= $this->Form->button( __( 'Submit' ) ) ?>

@@ -7,7 +7,7 @@
     <fieldset>
         <legend><?= __( 'Mark Batch' ) ?></legend>
 <?php
-echo $this->Form->input( 'batch_id', [
+echo $this->Form->control( 'batch_id', [
 	'options'  => $batches,
 	'required' => 'required',
 	'class'    => 'select2batch_id',

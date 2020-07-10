@@ -6,20 +6,20 @@
     <fieldset>
         <legend><?= __( 'Add Crossing' ) ?></legend>
 		<?php
-		echo $this->Form->input( 'code' );
-		echo $this->Form->input( 'mother_variety_id', [
+		echo $this->Form->control( 'code' );
+		echo $this->Form->control( 'mother_variety_id', [
 			'options'  => $mother_varieties,
 			'required' => 'required',
 			'class'    => 'select2convar',
 			'label'    => __( 'Mother Variety' ),
 		] );
-		echo $this->Form->input( 'father_variety_id', [
+		echo $this->Form->control( 'father_variety_id', [
 			'options' => $father_varieties,
 			'empty'   => true,
 			'class'   => 'select2convar',
 			'label'   => __( 'Father Variety' ),
 		] );
-        echo $this->Form->input( 'target' );
+        echo $this->Form->control( 'target' );
 		?>
     </fieldset>
 	<?= $this->Form->button( __( 'Submit' ) ) ?>
