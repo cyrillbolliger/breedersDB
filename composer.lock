@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "baee6a21fb71f0ba4ce57daeb02adcab",
+    "content-hash": "5423c6530c14a3a153e8914a34052055",
     "packages": [
         {
             "name": "aura/intl",
@@ -295,6 +295,50 @@
             "time": "2019-11-12T10:21:19+00:00"
         },
         {
+            "name": "fredckl/cakephp3-soft-delete",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fredckl/cakephp3-soft-delete.git",
+                "reference": "0e9ae861daa3ae3918a17d087d1b447710015f35"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fredckl/cakephp3-soft-delete/zipball/0e9ae861daa3ae3918a17d087d1b447710015f35",
+                "reference": "0e9ae861daa3ae3918a17d087d1b447710015f35",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.5",
+                "cakephp/plugin-installer": "*",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5|^6"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "SoftDelete\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "SoftDelete plugin for CakePHP",
+            "homepage": "https://github.com/fredckl/cakephp3-soft-delete",
+            "keywords": [
+                "cakephp",
+                "cakephp 3",
+                "deletable",
+                "delete",
+                "plugin",
+                "soft"
+            ],
+            "time": "2019-10-28T07:12:09+00:00"
+        },
+        {
             "name": "laminas/laminas-diactoros",
             "version": "1.8.7p2",
             "source": {
@@ -523,50 +567,6 @@
                 "random"
             ],
             "time": "2018-07-02T15:55:56+00:00"
-        },
-        {
-            "name": "pgbi/cakephp3-soft-delete",
-            "version": "1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PGBI/cakephp3-soft-delete.git",
-                "reference": "3326dc72af78f1d87117f0ad13666d10b8d1a5bd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PGBI/cakephp3-soft-delete/zipball/3326dc72af78f1d87117f0ad13666d10b8d1a5bd",
-                "reference": "3326dc72af78f1d87117f0ad13666d10b8d1a5bd",
-                "shasum": ""
-            },
-            "require": {
-                "cakephp/cakephp": "~3.0",
-                "cakephp/plugin-installer": "*",
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "*"
-            },
-            "type": "cakephp-plugin",
-            "autoload": {
-                "psr-4": {
-                    "SoftDelete\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "SoftDelete plugin for CakePHP",
-            "homepage": "https://github.com/pgbi/cakephp3-soft-delete",
-            "keywords": [
-                "cakephp",
-                "cakephp 3",
-                "deletable",
-                "delete",
-                "plugin",
-                "soft"
-            ],
-            "time": "2015-10-18T01:46:04+00:00"
         },
         {
             "name": "phpoffice/phpexcel",

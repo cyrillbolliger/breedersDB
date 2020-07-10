@@ -12,7 +12,7 @@
         "cakephp/migrations": "~2.4",
         "cakephp/plugin-installer": "*",
         "xety/cake3-cookieauth": "1.*",
-        "pgbi/cakephp3-soft-delete": "~1.0",
+        "fredckl/cakephp3-soft-delete": "~2.0",
         "phpoffice/phpexcel": "^1.8"
     },
     "require-dev": {
