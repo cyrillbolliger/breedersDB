@@ -34,7 +34,6 @@ class CollectionPaginatorComponent extends Component {
      * work with collections out of the box. The paginator behavior
      * is required.
      *
-     * @param ServerRequest $request
      * @param CollectionInterface $collection
      * @param callable $sortFunction must return either
      *  the name of the field to sort by in dot notation
@@ -44,7 +43,6 @@ class CollectionPaginatorComponent extends Component {
      * @return CollectionInterface the paginated collection
      */
 	public function paginate(
-        ServerRequest $request,
 		CollectionInterface $collection,
 		callable $sortFunction,
 		array $settings = []
@@ -106,10 +104,15 @@ class CollectionPaginatorComponent extends Component {
 			'sortDefault'      => $sortDefault,
 			'directionDefault' => $directionDefault,
 			'scope'            => $options['scope'],
+            'start'            => $page * $limit,
+            'end'              => ( $page + 1 ) * $limit - 1,
 		];
 
 		$paging_params = [ $alias => $paging ];
-		$request->withParam( 'paging', $paging_params );
+
+		$requestReference = &$this->_registry->getController()->request;
+		$request = $requestReference->withParam( 'paging', $paging_params );
+		$this->_registry->getController()->request = $request;
 
 		if ( $requestedPage > $page ) {
 			throw new NotFoundException();
