@@ -12,6 +12,7 @@ namespace App\Controller\Component;
 use App\Controller\AppController;
 use Cake\Collection\CollectionInterface;
 use Cake\Controller\Component;
+use Cake\Http\ServerRequest;
 use Cake\Network\Exception\NotFoundException;
 
 /**
@@ -26,22 +27,24 @@ class CollectionPaginatorComponent extends Component {
 	// load the pagination component
 	public $components = [ 'Paginator' ];
 
-	/**
-	 * Add the pagination parameters to the request object and return paginated results.
-	 *
-	 * This function is needed, because the paginator doesn't
-	 * work with collections out of the box. The paginator behavior
-	 * is required.
-	 *
-	 * @param CollectionInterface $collection
-	 * @param callable $sortFunction must return either
-	 *  the name of the field to sort by in dot notation
-	 *  or a callable that returns the sort value itself.
-	 * @param array $settings The settings/configuration used for pagination.
-	 *
-	 * @return CollectionInterface the paginated collection
-	 */
+    /**
+     * Add the pagination parameters to the request object and return paginated results.
+     *
+     * This function is needed, because the paginator doesn't
+     * work with collections out of the box. The paginator behavior
+     * is required.
+     *
+     * @param ServerRequest $request
+     * @param CollectionInterface $collection
+     * @param callable $sortFunction must return either
+     *  the name of the field to sort by in dot notation
+     *  or a callable that returns the sort value itself.
+     * @param array $settings The settings/configuration used for pagination.
+     *
+     * @return CollectionInterface the paginated collection
+     */
 	public function paginate(
+        ServerRequest $request,
 		CollectionInterface $collection,
 		callable $sortFunction,
 		array $settings = []
@@ -106,7 +109,7 @@ class CollectionPaginatorComponent extends Component {
 		];
 
 		$paging_params = [ $alias => $paging ];
-		$this->request->withParam( 'paging', $paging_params );
+		$request->withParam( 'paging', $paging_params );
 
 		if ( $requestedPage > $page ) {
 			throw new NotFoundException();

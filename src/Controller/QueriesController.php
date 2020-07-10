@@ -95,7 +95,7 @@ class QueriesController extends AppController {
         );
 
         // get paginated results
-        $results = $this->CollectionPaginator->paginate( $data, [ $marksViewTable, 'sort' ] );
+        $results = $this->CollectionPaginator->paginate( $this->request, $data, [ $marksViewTable, 'sort' ], );
 
         // get columns
         $regular_columns = $this->Queries->getRegularColumns( $query );

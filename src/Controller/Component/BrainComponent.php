@@ -40,6 +40,11 @@ class BrainComponent extends Component {
 	 */
 	protected $session;
 
+    /**
+     * The request object available in the controller
+     */
+	protected $controllerRequest;
+
 	/**
 	 * Is called after the controller’s beforeFilter method but before the
 	 * controller executes the current action handler.
@@ -47,8 +52,8 @@ class BrainComponent extends Component {
 	 * @param \Cake\Event\Event $event
 	 */
 	public function startup( Event $event ) {
-		$controller    = $event->getSubject();
-		$this->request = $controller->request;
+		$controller              = $event->getSubject();
+		$this->controllerRequest = $controller->request;
 
 		$this->memorize();
 	}
@@ -58,9 +63,9 @@ class BrainComponent extends Component {
 	 * in the request data. Also store empty values.
 	 */
 	public function memorize() {
-		$session    = $this->request->getSession();
-		$data       = $this->request->getData();
-		$controller = $this->request->getParam('controller');
+		$session    = $this->controllerRequest->getSession();
+		$data       = $this->controllerRequest->getData();
+		$controller = $this->controllerRequest->getParam('controller');
 		$fields     = $this->memorize;
 
 		$keys = array_intersect( $fields, array_keys( $data ) );
@@ -81,8 +86,8 @@ class BrainComponent extends Component {
 	 * @return \Cake\ORM\Entity
 	 */
 	public function remember( $entity, $fields = null ) {
-		$session    = $this->request->getSession();
-		$controller = $this->request->getParam('controller');
+		$session    = $this->controllerRequest->getSession();
+		$controller = $this->controllerRequest->getParam('controller');
 
 		if ( ! isset( $session->read( 'Brain' )[ $controller ] ) ) {
 			return $entity;
