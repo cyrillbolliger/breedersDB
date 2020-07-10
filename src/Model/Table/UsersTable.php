@@ -49,25 +49,25 @@ class UsersTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' );
+			->allowEmptyString( 'id', 'create' );
 
 		$validator
 			->email( 'email' )
 			->requirePresence( 'email', 'create' )
-			->notEmpty( 'email' );
+			->notEmptyString( 'email' );
 
 		$validator
 			->requirePresence( 'password', 'create' )
-			->notEmpty( 'password' );
+			->notEmptyString( 'password' );
 
 		$validator
 			->requirePresence( 'time_zone', 'create' )
-			->notEmpty( 'time_zone' );
+			->notEmptyString( 'time_zone' );
 
 		$validator
 			->integer( 'level' )
 			->requirePresence( 'level', 'create' )
-			->notEmpty( 'level' );
+			->notEmptyString( 'level' );
 
 		return $validator;
 	}

@@ -82,20 +82,20 @@ class CrossingsViewTable extends Table {
 		$validator
 			->integer( 'id' )
 			->requirePresence( 'id', 'create' )
-			->notEmpty( 'id' );
+			->notEmptyString( 'id' );
 
 		$validator
 			->requirePresence( 'code', 'create' )
-			->notEmpty( 'code' );
+			->notEmptyString( 'code' );
 
 		$validator
-			->allowEmpty( 'mother_variety' );
+			->allowEmptyString( 'mother_variety' );
 
 		$validator
-			->allowEmpty( 'father_variety' );
+			->allowEmptyString( 'father_variety' );
 
         $validator
-            ->allowEmpty( 'target' );
+            ->allowEmptyString( 'target' );
 
 		return $validator;
 	}

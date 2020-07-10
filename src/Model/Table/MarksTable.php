@@ -76,15 +76,15 @@ class MarksTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' )
+			->allowEmptyString( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator
 			->localizedTime( 'date', 'date' )
-			->allowEmpty( 'date' );
+			->allowEmptyDate( 'date' );
 
 		$validator
-			->notEmpty( 'tree_id', __( 'Please select a tree' ), function ( $context ) {
+			->notEmptyString( 'tree_id', __( 'Please select a tree' ), function ( $context ) {
 				return empty( $context['data']['variety_id'] ) && empty( $context['data']['batch_id'] );
 			} )
 			->add( 'tree_id', 'custom', [
@@ -95,7 +95,7 @@ class MarksTable extends Table {
 			] );
 
 		$validator
-			->notEmpty( 'variety_id', __( 'Please select a variety' ), function ( $context ) {
+			->notEmptyString( 'variety_id', __( 'Please select a variety' ), function ( $context ) {
 				return empty( $context['data']['tree_id'] ) && empty( $context['data']['batch_id'] );
 			} )
 			->add( 'variety_id', 'custom', [
@@ -106,7 +106,7 @@ class MarksTable extends Table {
 			] );
 
 		$validator
-			->notEmpty( 'batch_id', __( 'Please select a batch' ), function ( $context ) {
+			->notEmptyString( 'batch_id', __( 'Please select a batch' ), function ( $context ) {
 				return empty( $context['data']['tree_id'] ) && empty( $context['data']['variety_id'] );
 			} )
 			->add( 'batch_id', 'custom', [

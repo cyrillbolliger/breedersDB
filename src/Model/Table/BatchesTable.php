@@ -69,12 +69,12 @@ class BatchesTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' )
+			->allowEmptyString( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator
 			->requirePresence( 'code', 'create' )
-			->notEmpty( 'code' )
+			->notEmptyString( 'code' )
 			->add( 'code', 'custom', [
 				'rule'    => function ( $value, $context ) {
 					return (bool) preg_match( '/^(\d{2}[A-Z]|000)$/', $value );
@@ -84,36 +84,36 @@ class BatchesTable extends Table {
 
 		$validator
 			->localizedTime( 'date_sowed', 'date' )
-			->allowEmpty( 'date_sowed' );
+			->allowEmptyDate( 'date_sowed' );
 
 		$validator
 			->integer( 'numb_seeds_sowed' )
-			->allowEmpty( 'numb_seeds_sowed' );
+			->allowEmptyString( 'numb_seeds_sowed' );
 
 		$validator
 			->integer( 'numb_sprouts_grown' )
-			->allowEmpty( 'numb_sprouts_grown' );
+			->allowEmptyString( 'numb_sprouts_grown' );
 
 		$validator
-			->allowEmpty( 'seed_tray' );
+			->allowEmptyString( 'seed_tray' );
 
 		$validator
 			->localizedTime( 'date_planted', 'date' )
-			->allowEmpty( 'date_planted' );
+			->allowEmptyString( 'date_planted' );
 
 		$validator
 			->integer( 'numb_sprouts_planted' )
-			->allowEmpty( 'numb_sprouts_planted' );
+			->allowEmptyString( 'numb_sprouts_planted' );
 
 		$validator
-			->allowEmpty( 'patch' );
+			->allowEmptyString( 'patch' );
 
 		$validator
-			->allowEmpty( 'note' );
+			->allowEmptyString( 'note' );
 
 		$validator
 			->integer( 'crossing_id' )
-			->notEmpty( 'crossing_id' );
+			->notEmptyString( 'crossing_id' );
 
 		return $validator;
 	}

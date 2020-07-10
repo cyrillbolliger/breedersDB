@@ -83,66 +83,66 @@ class MotherTreesViewTable extends Table {
 		$validator
 			->integer( 'id' )
 			->requirePresence( 'id', 'create' )
-			->notEmpty( 'id' );
+			->notEmptyString( 'id' );
 
 		$validator
 			->requirePresence( 'crossing', 'create' )
-			->notEmpty( 'crossing' );
+			->notEmptyString( 'crossing' );
 
 		$validator
 			->requirePresence( 'code', 'create' )
-			->notEmpty( 'code' );
+			->notEmptyString( 'code' );
 
 		$validator
 			->boolean( 'planed' )
 			->requirePresence( 'planed', 'create' )
-			->notEmpty( 'planed' );
+			->notEmptyString( 'planed' );
 
 		$validator
 			->date( 'date_pollen_harvested' )
-			->allowEmpty( 'date_pollen_harvested' );
+			->allowEmptyDate( 'date_pollen_harvested' );
 
 		$validator
 			->date( 'date_impregnated' )
-			->allowEmpty( 'date_impregnated' );
+			->allowEmptyDate( 'date_impregnated' );
 
 		$validator
 			->date( 'date_fruit_harvested' )
-			->allowEmpty( 'date_fruit_harvested' );
+			->allowEmptyDate( 'date_fruit_harvested' );
 
 		$validator
 			->integer( 'numb_portions' )
-			->allowEmpty( 'numb_portions' );
+			->allowEmptyString( 'numb_portions' );
 
 		$validator
 			->integer( 'numb_flowers' )
-			->allowEmpty( 'numb_flowers' );
+			->allowEmptyString( 'numb_flowers' );
 
         $validator
             ->integer( 'numb_fruits' )
-            ->allowEmpty( 'numb_fruits' );
+            ->allowEmptyString( 'numb_fruits' );
 
 		$validator
 			->integer( 'numb_seeds' )
-			->allowEmpty( 'numb_seeds' );
+			->allowEmptyString( 'numb_seeds' );
 
 		$validator
-			->allowEmpty( 'note' );
+			->allowEmptyString( 'note' );
 
 		$validator
 			->requirePresence( 'publicid', 'create' )
-			->notEmpty( 'publicid' );
+			->notEmptyString( 'publicid' );
 
 		$validator
 			->numeric( 'offset' )
-			->allowEmpty( 'offset' );
+			->allowEmptyString( 'offset' );
 
 		$validator
-			->allowEmpty( 'row' );
+			->allowEmptyString( 'row' );
 
 		$validator
 			->requirePresence( 'experiment_site', 'create' )
-			->notEmpty( 'experiment_site' );
+			->notEmptyString( 'experiment_site' );
 
 		return $validator;
 	}

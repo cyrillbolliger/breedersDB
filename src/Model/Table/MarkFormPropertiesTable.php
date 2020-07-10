@@ -73,11 +73,11 @@ class MarkFormPropertiesTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' );
+			->allowEmptyString( 'id', 'create' );
 
 		$validator
 			->requirePresence( 'name', 'create' )
-			->notEmpty( 'name' )
+			->notEmptyString( 'name' )
 			->add( 'name', 'unique', [
 				'rule'     => 'validateUnique',
 				'provider' => 'table',
@@ -86,11 +86,11 @@ class MarkFormPropertiesTable extends Table {
 
 		$validator
 			->requirePresence( 'field_type', 'create' )
-			->notEmpty( 'field_type' );
+			->notEmptyString( 'field_type' );
 
 		$validator
 			->requirePresence( 'validation_rule', 'create' )
-			->allowEmpty( 'validation_rule' );
+			->allowEmptyString( 'validation_rule' );
 
 		$validator
 			->add( 'min', 'custom', [
@@ -166,7 +166,7 @@ class MarkFormPropertiesTable extends Table {
 
 		$validator
 			->requirePresence( 'mark_form_property_type_id', 'create' )
-			->notEmpty( 'mark_form_property_type_id' );
+			->notEmptyString( 'mark_form_property_type_id' );
 
 		return $validator;
 	}

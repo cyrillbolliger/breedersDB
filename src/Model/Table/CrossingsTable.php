@@ -70,12 +70,12 @@ class CrossingsTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' )
+			->allowEmptyString( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator
 			->requirePresence( 'code', 'create' )
-			->notEmpty( 'code' )
+			->notEmptyString( 'code' )
 			->add( 'code', 'custom', [
 				'rule'    => function ( $value, $context ) {
 					return (bool) preg_match( '/^[a-zA-Z0-9]{4,8}$/', $value );
@@ -84,7 +84,7 @@ class CrossingsTable extends Table {
 			] );
 
         $validator
-            ->allowEmpty( 'target' );
+            ->allowEmptyString( 'target' );
 
 		return $validator;
 	}

@@ -57,15 +57,15 @@ class MarkScannerCodesTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' );
+			->allowEmptyString( 'id', 'create' );
 
 		$validator
 			->requirePresence( 'code', 'create' )
-			->notEmpty( 'code' );
+			->notEmptyString( 'code' );
 
 		$validator
 			->requirePresence( 'mark_value', 'create' )
-			->notEmpty( 'mark_value' );
+			->notEmptyString( 'mark_value' );
 
 		return $validator;
 	}

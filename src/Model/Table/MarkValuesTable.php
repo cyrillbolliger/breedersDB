@@ -81,12 +81,12 @@ class MarkValuesTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' )
+			->allowEmptyString( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator
 			->requirePresence( 'value', 'create' )
-			->notEmpty( 'value' )
+			->notEmptyString( 'value' )
 			->add( 'value', 'custom', [
 				'rule'    => function ( $value, $context ) {
 					return $this->_validateValue( $value, $context );
@@ -97,7 +97,7 @@ class MarkValuesTable extends Table {
 		$validator
 			->boolean( 'exceptional_mark' )
 			->requirePresence( 'exceptional_mark', 'create' )
-			->notEmpty( 'exceptional_mark' );
+			->notEmptyString( 'exceptional_mark' );
 
 		return $validator;
 	}

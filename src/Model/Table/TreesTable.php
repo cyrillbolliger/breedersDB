@@ -84,12 +84,12 @@ class TreesTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' )
+			->allowEmptyString( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator
 			->requirePresence( 'publicid', 'create' )
-			->notEmpty( 'publicid' )
+			->notEmptyString( 'publicid' )
 			->add( 'publicid', 'unique', [
 				'rule'     => 'validateUnique',
 				'provider' => 'table',
@@ -108,38 +108,38 @@ class TreesTable extends Table {
 
 		$validator
 			->localizedTime( 'date_grafted', 'date' )
-			->allowEmpty( 'date_grafted' );
+			->allowEmptyDate( 'date_grafted' );
 
 		$validator
 			->localizedTime( 'date_planted', 'date' )
-			->allowEmpty( 'date_planted' );
+			->allowEmptyDate( 'date_planted' );
 
 		$validator
 			->localizedTime( 'date_eliminated', 'date' )
-			->allowEmpty( 'date_eliminated' );
+			->allowEmptyDate( 'date_eliminated' );
 
 		$validator
 			->boolean( 'genuine_seedling' )
-			->notEmpty( 'genuine_seedling' );
+			->notEmptyString( 'genuine_seedling' );
 
 		$validator
 			->boolean( 'migrated_tree' )
-			->notEmpty( 'migrated_tree' );
+			->notEmptyString( 'migrated_tree' );
 
 		$validator
 			->numeric( 'offset' )
-			->allowEmpty( 'offset' );
+			->allowEmptyString( 'offset' );
 
         $validator
-            ->allowEmpty( 'dont_eliminate' );
+            ->allowEmptyString( 'dont_eliminate' );
 
 		$validator
-			->allowEmpty( 'note' );
+			->allowEmptyString( 'note' );
 
 		$validator
 			->integer( 'experiment_site_id' )
 			->requirePresence( 'experiment_site_id', 'create' )
-			->notEmpty( 'experiment_site_id' );
+			->notEmptyString( 'experiment_site_id' );
 
 		return $validator;
 	}

@@ -61,13 +61,13 @@ class MarkFormFieldsTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' )
+			->allowEmptyString( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator
 			->integer( 'priority' )
 			->requirePresence( 'priority', 'create' )
-			->notEmpty( 'priority' );
+			->notEmptyString( 'priority' );
 
 		return $validator;
 	}

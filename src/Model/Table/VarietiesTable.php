@@ -71,24 +71,24 @@ class VarietiesTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' )
+			->allowEmptyString( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator
 			->requirePresence( 'code', 'create' )
-			->notEmpty( 'code' );
+			->notEmptyString( 'code' );
 
 		$validator
-			->allowEmpty( 'official_name' );
+			->allowEmptyString( 'official_name' );
 
 		$validator
-			->allowEmpty( 'plant_breeder' );
+			->allowEmptyString( 'plant_breeder' );
 
 		$validator
-			->allowEmpty( 'registration' );
+			->allowEmptyString( 'registration' );
 
 		$validator
-			->allowEmpty( 'description' );
+			->allowEmptyString( 'description' );
 
 		return $validator;
 	}

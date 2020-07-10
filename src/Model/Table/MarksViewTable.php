@@ -86,31 +86,31 @@ class MarksViewTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->date( 'date' )
-			->allowEmpty( 'date' );
+			->allowEmptyDate( 'date' );
 
 		$validator
-			->allowEmpty( 'author' );
+			->allowEmptyString( 'author' );
 
 		$validator
 			->requirePresence( 'value', 'create' )
-			->notEmpty( 'value' );
+			->notEmptyString( 'value' );
 
 		$validator
 			->boolean( 'exceptional_mark' )
 			->requirePresence( 'exceptional_mark', 'create' )
-			->notEmpty( 'exceptional_mark' );
+			->notEmptyString( 'exceptional_mark' );
 
 		$validator
 			->requirePresence( 'name', 'create' )
-			->notEmpty( 'name' );
+			->notEmptyString( 'name' );
 
 		$validator
 			->requirePresence( 'field_type', 'create' )
-			->notEmpty( 'field_type' );
+			->notEmptyString( 'field_type' );
 
 		$validator
 			->requirePresence( 'mark_form_property_type', 'create' )
-			->notEmpty( 'mark_form_property_type' );
+			->notEmptyString( 'mark_form_property_type' );
 
 		return $validator;
 	}

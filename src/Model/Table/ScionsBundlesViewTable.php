@@ -77,34 +77,34 @@ class ScionsBundlesViewTable extends Table {
 		$validator
 			->integer( 'id' )
 			->requirePresence( 'id', 'create' )
-			->notEmpty( 'id' );
+			->notEmptyString( 'id' );
 
 		$validator
 			->requirePresence( 'identification', 'create' )
-			->notEmpty( 'identification' );
+			->notEmptyString( 'identification' );
 
 		$validator
 			->requirePresence( 'convar', 'create' )
-			->notEmpty( 'convar' );
+			->notEmptyString( 'convar' );
 
 		$validator
 			->integer( 'numb_scions' )
-			->allowEmpty( 'numb_scions' );
+			->allowEmptyString( 'numb_scions' );
 
 		$validator
 			->date( 'date_scions_harvest' )
-			->allowEmpty( 'date_scions_harvest' );
+			->allowEmptyDate( 'date_scions_harvest' );
 
 		$validator
-			->allowEmpty( 'descents_publicid_list' );
+			->allowEmptyString( 'descents_publicid_list' );
 
 		$validator
-			->allowEmpty( 'note' );
+			->allowEmptyString( 'note' );
 
 		$validator
 			->boolean( 'external_use' )
 			->requirePresence( 'external_use', 'create' )
-			->notEmpty( 'external_use' );
+			->notEmptyString( 'external_use' );
 
 		return $validator;
 	}

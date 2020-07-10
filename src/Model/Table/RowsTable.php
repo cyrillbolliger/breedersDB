@@ -58,23 +58,23 @@ class RowsTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' )
+			->allowEmptyString( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator
 			->requirePresence( 'code', 'create' )
-			->notEmpty( 'code' );
+			->notEmptyString( 'code' );
 
 		$validator
 			->localizedTime( 'date_created', 'date' )
-			->allowEmpty( 'date_created' );
+			->allowEmptyDate( 'date_created' );
 
 		$validator
 			->localizedTime( 'date_eliminated', 'date' )
-			->allowEmpty( 'date_eliminated' );
+			->allowEmptyDate( 'date_eliminated' );
 
 		$validator
-			->allowEmpty( 'note' );
+			->allowEmptyString( 'note' );
 
 		return $validator;
 	}

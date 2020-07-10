@@ -53,12 +53,12 @@ class GraftingsTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' )
+			->allowEmptyString( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator
 			->requirePresence( 'name', 'create' )
-			->notEmpty( 'name' );
+			->notEmptyString( 'name' );
 
 		return $validator;
 	}

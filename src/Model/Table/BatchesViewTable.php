@@ -87,40 +87,40 @@ class BatchesViewTable extends Table {
 		$validator
 			->integer( 'id' )
 			->requirePresence( 'id', 'create' )
-			->notEmpty( 'id' );
+			->notEmptyString( 'id' );
 
 		$validator
 			->requirePresence( 'crossing_batch', 'create' )
-			->notEmpty( 'crossing_batch' );
+			->notEmptyString( 'crossing_batch' );
 
 		$validator
 			->date( 'date_sowed' )
-			->allowEmpty( 'date_sowed' );
+			->allowEmptyDate( 'date_sowed' );
 
 		$validator
 			->integer( 'numb_seeds_sowed' )
-			->allowEmpty( 'numb_seeds_sowed' );
+			->allowEmptyString( 'numb_seeds_sowed' );
 
 		$validator
 			->integer( 'numb_sprouts_grown' )
-			->allowEmpty( 'numb_sprouts_grown' );
+			->allowEmptyString( 'numb_sprouts_grown' );
 
 		$validator
-			->allowEmpty( 'seed_tray' );
+			->allowEmptyString( 'seed_tray' );
 
 		$validator
 			->date( 'date_planted' )
-			->allowEmpty( 'date_planted' );
+			->allowEmptyDate( 'date_planted' );
 
 		$validator
 			->integer( 'numb_sprouts_planted' )
-			->allowEmpty( 'numb_sprouts_planted' );
+			->allowEmptyString( 'numb_sprouts_planted' );
 
 		$validator
-			->allowEmpty( 'patch' );
+			->allowEmptyString( 'patch' );
 
 		$validator
-			->allowEmpty( 'note' );
+			->allowEmptyString( 'note' );
 
 		return $validator;
 	}

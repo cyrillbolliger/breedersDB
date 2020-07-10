@@ -87,55 +87,55 @@ class TreesViewTable extends Table {
 		$validator
 			->integer( 'id' )
 			->requirePresence( 'id', 'create' )
-			->notEmpty( 'id' );
+			->notEmptyString( 'id' );
 
 		$validator
 			->requirePresence( 'publicid', 'create' )
-			->notEmpty( 'publicid' );
+			->notEmptyString( 'publicid' );
 
 		$validator
 			->requirePresence( 'convar', 'create' )
-			->notEmpty( 'convar' );
+			->notEmptyString( 'convar' );
 
 		$validator
 			->date( 'date_grafted' )
-			->allowEmpty( 'date_grafted' );
+			->allowEmptyDate( 'date_grafted' );
 
 		$validator
 			->date( 'date_planted' )
-			->allowEmpty( 'date_planted' );
+			->allowEmptyDate( 'date_planted' );
 
 		$validator
 			->date( 'date_eliminated' )
-			->allowEmpty( 'date_eliminated' );
+			->allowEmptyDate( 'date_eliminated' );
 
 		$validator
 			->boolean( 'genuine_seedling' )
 			->requirePresence( 'genuine_seedling', 'create' )
-			->notEmpty( 'genuine_seedling' );
+			->notEmptyString( 'genuine_seedling' );
 
 		$validator
 			->numeric( 'offset' )
-			->allowEmpty( 'offset' );
+			->allowEmptyString( 'offset' );
 
 		$validator
-			->allowEmpty( 'row' );
+			->allowEmptyString( 'row' );
 
         $validator
-            ->allowEmpty( 'dont_eliminate' );
+            ->allowEmptyString( 'dont_eliminate' );
 
 		$validator
-			->allowEmpty( 'note' );
+			->allowEmptyString( 'note' );
 
 		$validator
-			->allowEmpty( 'grafting' );
+			->allowEmptyString( 'grafting' );
 
 		$validator
-			->allowEmpty( 'rootstock' );
+			->allowEmptyString( 'rootstock' );
 
 		$validator
 			->requirePresence( 'experiment_site', 'create' )
-			->notEmpty( 'experiment_site' );
+			->notEmptyString( 'experiment_site' );
 
 		return $validator;
 	}

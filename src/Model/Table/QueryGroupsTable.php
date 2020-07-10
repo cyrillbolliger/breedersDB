@@ -59,12 +59,12 @@ class QueryGroupsTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' )
+			->allowEmptyString( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator
 			->requirePresence( 'code', 'create' )
-			->notEmpty( 'code' )
+			->notEmptyString( 'code' )
 			->add( 'code', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		return $validator;

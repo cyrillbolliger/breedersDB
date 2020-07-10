@@ -92,26 +92,26 @@ class VarietiesViewTable extends Table {
 		$validator
 			->integer( 'id' )
 			->requirePresence( 'id', 'create' )
-			->notEmpty( 'id' );
+			->notEmptyString( 'id' );
 
 		$validator
 			->requirePresence( 'convar', 'create' )
-			->notEmpty( 'convar' );
+			->notEmptyString( 'convar' );
 
 		$validator
-			->allowEmpty( 'official_name' );
+			->allowEmptyString( 'official_name' );
 
 		$validator
-			->allowEmpty( 'acronym' );
+			->allowEmptyString( 'acronym' );
 
 		$validator
-			->allowEmpty( 'plant_breeder' );
+			->allowEmptyString( 'plant_breeder' );
 
 		$validator
-			->allowEmpty( 'registration' );
+			->allowEmptyString( 'registration' );
 
 		$validator
-			->allowEmpty( 'description' );
+			->allowEmptyString( 'description' );
 
 		return $validator;
 	}

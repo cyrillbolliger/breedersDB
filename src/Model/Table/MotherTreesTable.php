@@ -62,16 +62,16 @@ class MotherTreesTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' )
+			->allowEmptyString( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator
 			->requirePresence( 'code', 'create' )
-			->notEmpty( 'code' );
+			->notEmptyString( 'code' );
 
 		$validator
 			->integer( 'tree_id' )
-			->allowEmpty( 'tree_id' );
+			->allowEmptyString( 'tree_id' );
 
 		$validator
 			->integer( 'crossing_id' )
@@ -97,38 +97,38 @@ class MotherTreesTable extends Table {
 		$validator
 			->boolean( 'planed' )
 			->requirePresence( 'planed', 'create' )
-			->notEmpty( 'planed' );
+			->notEmptyString( 'planed' );
 
 		$validator
 			->localizedTime( 'date_pollen_harvested', 'date' )
-			->allowEmpty( 'date_pollen_harvested' );
+			->allowEmptyDate( 'date_pollen_harvested' );
 
 		$validator
 			->localizedTime( 'date_impregnated', 'date' )
-			->allowEmpty( 'date_impregnated' );
+			->allowEmptyDate( 'date_impregnated' );
 
 		$validator
 			->localizedTime( 'date_fruit_harvested', 'date' )
-			->allowEmpty( 'date_fruit_harvested' );
+			->allowEmptyDate( 'date_fruit_harvested' );
 
 		$validator
 			->integer( 'numb_portions' )
-			->allowEmpty( 'numb_portions' );
+			->allowEmptyString( 'numb_portions' );
 
 		$validator
 			->integer( 'numb_flowers' )
-			->allowEmpty( 'numb_flowers' );
+			->allowEmptyString( 'numb_flowers' );
 
         $validator
             ->integer( 'numb_fruits' )
-            ->allowEmpty( 'numb_fruits' );
+            ->allowEmptyString( 'numb_fruits' );
 
 		$validator
 			->integer( 'numb_seeds' )
-			->allowEmpty( 'numb_seeds' );
+			->allowEmptyString( 'numb_seeds' );
 
 		$validator
-			->allowEmpty( 'note' );
+			->allowEmptyString( 'note' );
 
 		return $validator;
 	}

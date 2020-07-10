@@ -58,31 +58,31 @@ class ScionsBundlesTable extends Table {
 	public function validationDefault( Validator $validator ) {
 		$validator
 			->integer( 'id' )
-			->allowEmpty( 'id', 'create' )
+			->allowEmptyString( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator
 			->requirePresence( 'code', 'create' )
-			->notEmpty( 'code' );
+			->notEmptyString( 'code' );
 
 		$validator
 			->integer( 'numb_scions' )
-			->allowEmpty( 'numb_scions' );
+			->allowEmptyString( 'numb_scions' );
 
 		$validator
 			->localizedTime( 'date_scions_harvest', 'date' )
-			->allowEmpty( 'date_scions_harvest' );
+			->allowEmptyDate( 'date_scions_harvest' );
 
 		$validator
-			->allowEmpty( 'descents_publicid_list' );
+			->allowEmptyString( 'descents_publicid_list' );
 
 		$validator
-			->allowEmpty( 'note' );
+			->allowEmptyString( 'note' );
 
 		$validator
 			->boolean( 'external_use' )
 			->requirePresence( 'external_use', 'create' )
-			->notEmpty( 'external_use' );
+			->notEmptyString( 'external_use' );
 
 		return $validator;
 	}
