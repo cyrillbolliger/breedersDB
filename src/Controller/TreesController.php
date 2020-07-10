@@ -101,9 +101,9 @@ class TreesController extends AppController {
 		$varieties = array();
 
 		if ( $this->request->is( 'post' ) ) {
-			$session            = $this->request->getSession()();
+			$session            = $this->request->getSession();
 			$experiment_site_id = (int) $session->read( 'experiment_site_id' );
-			$tree               = $this->Trees->patchEntity( $tree, $this->request->data,
+			$tree               = $this->Trees->patchEntity( $tree, $this->request->getData(),
 				[ 'experiment_site_id' => $experiment_site_id ] );
 			if ( $this->Trees->save( $tree ) ) {
 				$this->Flash->success( __( 'The tree has been saved.' ) );
@@ -137,9 +137,9 @@ class TreesController extends AppController {
 		$varieties = array();
 
 		if ( $this->request->is( 'post' ) ) {
-			$session            = $this->request->getSession()();
+			$session            = $this->request->getSession();
 			$experiment_site_id = (int) $session->read( 'experiment_site_id' );
-			$tree               = $this->Trees->patchEntity( $tree, $this->request->data,
+			$tree               = $this->Trees->patchEntity( $tree, $this->request->getData(),
 				[ 'experiment_site_id' => $experiment_site_id ] );
 			if ( $this->Trees->save( $tree ) ) {
 				$this->Flash->success( __( 'The tree has been saved.' ) );
@@ -173,9 +173,9 @@ class TreesController extends AppController {
 		$varieties = array();
 
 		if ( $this->request->is( 'post' ) ) {
-			$session            = $this->request->getSession()();
+			$session            = $this->request->getSession();
 			$experiment_site_id = (int) $session->read( 'experiment_site_id' );
-			$tree               = $this->Trees->patchEntity( $tree, $this->request->data,
+			$tree               = $this->Trees->patchEntity( $tree, $this->request->getData(),
 				[ 'experiment_site_id' => $experiment_site_id ] );
 			if ( $this->Trees->save( $tree ) ) {
 				$this->Flash->success( __( 'The tree has been saved.' ) );
@@ -215,8 +215,8 @@ class TreesController extends AppController {
 		$varieties = array();
 
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$this->request->data = $this->Trees->prefixPublicidOnElimination( $id, $this->request->getData());
-			$tree                = $this->Trees->patchEntity( $tree, $this->request->getData());
+			$data = $this->Trees->prefixPublicidOnElimination( $id, $this->request->getData());
+			$tree = $this->Trees->patchEntity( $tree, $data );
 			if ( $this->Trees->save( $tree ) ) {
 				$this->Flash->success( __( 'The tree has been saved.' ) );
 
@@ -250,10 +250,8 @@ class TreesController extends AppController {
 		$tree = $this->Trees->get( $id );
 
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$session             = $this->request->getSession()();
-			$experiment_site_id  = (int) $session->read( 'experiment_site_id' );
-			$this->request->data = $this->Trees->prefixPublicidOnElimination( $id, $this->request->getData());
-			$tree                = $this->Trees->patchEntity( $tree, $this->request->getData());
+			$data = $this->Trees->prefixPublicidOnElimination( $id, $this->request->getData());
+			$tree                = $this->Trees->patchEntity( $tree, $data);
 			if ( $this->Trees->save( $tree ) ) {
 				$this->Flash->success( __( 'The tree has been saved.' ) );
 			} else {

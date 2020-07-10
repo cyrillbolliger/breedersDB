@@ -23,8 +23,8 @@ class MarkValuesController extends AppController {
 			'contain' => [ 'MarkFormProperties' ]
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$this->_prepareValues( $markValue );
-			$markValue = $this->MarkValues->patchEntity( $markValue, $this->request->getData());
+			$data = $this->_prepareValues( $markValue );
+			$markValue = $this->MarkValues->patchEntity( $markValue, $data );
 			if ( $this->MarkValues->save( $markValue ) ) {
 				$this->Flash->success( __( 'The mark value has been saved.' ) );
 
@@ -39,18 +39,23 @@ class MarkValuesController extends AppController {
 
 	/**
 	 * Put data in the correct format
+     *
+     * @return array
 	 */
 	protected function _prepareValues( $markValue ) {
-		if ( isset( $this->request->data['mark_form_fields']['mark_form_properties'] ) ) {
+	    $data = $this->request->getData();
+		if ( isset( $data['mark_form_fields']['mark_form_properties'] ) ) {
 
-			$key = array_keys( $this->request->data['mark_form_fields']['mark_form_properties'] )[0];
+			$key = array_keys( $data['mark_form_fields']['mark_form_properties'] )[0];
 
-			$value = $this->request->data['mark_form_fields']['mark_form_properties'][ $key ]['mark_values']['value'];
-			unset( $this->request->data['mark_form_fields'] );
+			$value = $data['mark_form_fields']['mark_form_properties'][ $key ]['mark_values']['value'];
+			unset( $data['mark_form_fields'] );
 
-			$this->request->data['value']                 = $value;
-			$this->request->data['mark_form_property_id'] = $markValue->mark_form_property_id;
+			$data['value']                 = $value;
+			$data['mark_form_property_id'] = $markValue->mark_form_property_id;
 		}
+
+		return $data;
 	}
 
 	/**

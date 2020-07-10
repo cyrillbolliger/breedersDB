@@ -81,7 +81,7 @@ class BrainComponent extends Component {
 	 * @return \Cake\ORM\Entity
 	 */
 	public function remember( $entity, $fields = null ) {
-		$session    = $this->request->getSession()();
+		$session    = $this->request->getSession();
 		$controller = $this->request->getParam('controller');
 
 		if ( ! isset( $session->read( 'Brain' )[ $controller ] ) ) {

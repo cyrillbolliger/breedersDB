@@ -71,7 +71,7 @@
     <div class="top-bar-section">
         <ul class="right meta-nav">
 			<?php
-			$location = $this->request->getSession()()->read( 'experiment_site_name' );
+			$location = $this->request->getSession()->read( 'experiment_site_name' );
 			if ( $location ) :
 				?>
                 <li><?= $this->Html->link( __( 'Location: {0}', $location ),

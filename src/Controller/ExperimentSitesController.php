@@ -119,7 +119,7 @@ class ExperimentSitesController extends AppController {
 			$experimentSite = $this->ExperimentSites->get( $id );
 
 			// add the site to the session
-			$session = $this->request->getSession()();
+			$session = $this->request->getSession();
 			$session->write( 'experiment_site_id', (int) $id );
 			$session->write( 'experiment_site_name', $experimentSite->name );
 
