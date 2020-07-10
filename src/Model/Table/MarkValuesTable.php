@@ -27,7 +27,7 @@ use ArrayObject;
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class MarkValuesTable extends Table {
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -37,13 +37,13 @@ class MarkValuesTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'mark_values' );
-		$this->displayField( 'id' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'mark_values' );
+		$this->setDisplayField( 'id' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'Timestamp' );
-		
+
 		$this->belongsTo( 'MarkFormProperties', [
 			'foreignKey' => 'mark_form_property_id',
 			'joinType'   => 'INNER'
@@ -53,7 +53,7 @@ class MarkValuesTable extends Table {
 			'joinType'   => 'INNER'
 		] );
 	}
-	
+
 	/**
 	 * Modify data before saving
 	 *
@@ -64,13 +64,13 @@ class MarkValuesTable extends Table {
 	public function beforeMarshal( Event $event, ArrayObject &$data, ArrayObject $options ) {
 		// convert date data into the yyyy-mm-dd format
 		$type = $this->MarkFormProperties->get( $data['mark_form_property_id'] )->field_type;
-		
+
 		if ( 'DATE' === $type ) {
 			$tmp           = preg_split( '/[.-\/]/', $data['value'] );
 			$data['value'] = $tmp[2] . '-' . $tmp[1] . '-' . $tmp[0];
 		}
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -83,7 +83,7 @@ class MarkValuesTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->requirePresence( 'value', 'create' )
 			->notEmpty( 'value' )
@@ -93,15 +93,15 @@ class MarkValuesTable extends Table {
 				},
 				'message' => __( 'The validation rules of this data type has been violated. Please check data type again.' ),
 			] );
-		
+
 		$validator
 			->boolean( 'exceptional_mark' )
 			->requirePresence( 'exceptional_mark', 'create' )
 			->notEmpty( 'exceptional_mark' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Validation rules for the value column
 	 *
@@ -119,26 +119,26 @@ class MarkValuesTable extends Table {
 					       && (int) $value >= (int) $mark_form_property->validation_rule['min']
 					       && (int) $value <= (int) $mark_form_property->validation_rule['max'];
 					break;
-				
+
 				case 'FLOAT':
 					return Validation::decimal( $value )
 					       && (float) $value >= (float) $mark_form_property->validation_rule['min']
 					       && (float) $value <= (float) $mark_form_property->validation_rule['max'];
 					break;
-				
+
 				case 'VARCHAR':
 					return Validation::notBlank( $value )
 					       && Validation::maxLength( $value, 255 );
 					break;
-				
+
 				case 'BOOLEAN':
 					return Validation::boolean( $value );
 					break;
-				
+
 				case 'DATE':
 					return Validation::date( $value, 'ymd' );
 					break;
-				
+
 				default:
 					return false;
 					break;
@@ -147,7 +147,7 @@ class MarkValuesTable extends Table {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -160,7 +160,7 @@ class MarkValuesTable extends Table {
 		$rules->add( $rules->isUnique( [ 'id' ] ) );
 		$rules->add( $rules->existsIn( [ 'mark_form_property_id' ], 'MarkFormProperties' ) );
 		$rules->add( $rules->existsIn( [ 'mark_id' ], 'Marks' ) );
-		
+
 		return $rules;
 	}
 }

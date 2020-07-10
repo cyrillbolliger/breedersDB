@@ -31,7 +31,7 @@ use Cake\Validation\Validator;
  */
 class MarkFormPropertiesTable extends Table {
 	private $namesBySlug;
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -41,13 +41,13 @@ class MarkFormPropertiesTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'mark_form_properties' );
-		$this->displayField( 'name' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'mark_form_properties' );
+		$this->setDisplayField( 'name' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'Timestamp' );
-		
+
 		$this->belongsTo( 'MarkFormPropertyTypes', [
 			'foreignKey' => 'mark_form_property_type_id',
 			'joinType'   => 'INNER'
@@ -62,7 +62,7 @@ class MarkFormPropertiesTable extends Table {
 			'foreignKey' => 'mark_form_property_id'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -74,7 +74,7 @@ class MarkFormPropertiesTable extends Table {
 		$validator
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' );
-		
+
 		$validator
 			->requirePresence( 'name', 'create' )
 			->notEmpty( 'name' )
@@ -83,15 +83,15 @@ class MarkFormPropertiesTable extends Table {
 				'provider' => 'table',
 				'message'  => __( 'This name has already been used.' ),
 			] );
-		
+
 		$validator
 			->requirePresence( 'field_type', 'create' )
 			->notEmpty( 'field_type' );
-		
+
 		$validator
 			->requirePresence( 'validation_rule', 'create' )
 			->allowEmpty( 'validation_rule' );
-		
+
 		$validator
 			->add( 'min', 'custom', [
 				'rule'    => function ( $value, $context ) {
@@ -103,7 +103,7 @@ class MarkFormPropertiesTable extends Table {
 				},
 				'message' => __( 'The min value is required and must be smaller than the max value' ),
 			] );
-		
+
 		$validator
 			->add( 'max', 'custom', [
 				'rule'    => function ( $value, $context ) {
@@ -115,7 +115,7 @@ class MarkFormPropertiesTable extends Table {
 				},
 				'message' => __( 'The max value is required and must be greater than the max value' ),
 			] );
-		
+
 		$validator
 			->add( 'step', 'custom', [
 				'rule'    => function ( $value, $context ) {
@@ -127,7 +127,7 @@ class MarkFormPropertiesTable extends Table {
 				},
 				'message' => __( 'The step value is required and must be greater than zero and smaller or equal to the difference between the max and the min value.' ),
 			] );
-		
+
 		$validator
 			->add( 'tree_property', 'custom', [
 				'rule'    => function ( $value, $context ) {
@@ -139,7 +139,7 @@ class MarkFormPropertiesTable extends Table {
 				},
 				'message' => __( 'Select at least one domain' ),
 			] );
-		
+
 		$validator
 			->add( 'variety_property', 'custom', [
 				'rule'    => function ( $value, $context ) {
@@ -151,7 +151,7 @@ class MarkFormPropertiesTable extends Table {
 				},
 				'message' => __( 'Select at least one domain' ),
 			] );
-		
+
 		$validator
 			->add( 'batch_property', 'custom', [
 				'rule'    => function ( $value, $context ) {
@@ -163,14 +163,14 @@ class MarkFormPropertiesTable extends Table {
 				},
 				'message' => __( 'Select at least one domain' ),
 			] );
-		
+
 		$validator
 			->requirePresence( 'mark_form_property_type_id', 'create' )
 			->notEmpty( 'mark_form_property_type_id' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -184,19 +184,19 @@ class MarkFormPropertiesTable extends Table {
 		$rules->add( $rules->existsIn( [ 'mark_form_property_type_id' ], 'MarkFormPropertyTypes' ) );
 		$rules->add( $rules->isUnique( [ 'name' ],
 			__( 'This name has already been used. Please use a unique name.' ) ) );
-		
+
 		$rules->addDelete( new IsNotReferredBy( [ 'MarkFormFields' => 'mark_form_property_id' ] ), 'isNotReferredBy' );
 		$rules->addDelete( new IsNotReferredBy( [ 'MarkValues' => 'mark_form_property_id' ] ), 'isNotReferredBy' );
 		$rules->addDelete( new IsNotReferredBy( [ 'MarkScannerCodes' => 'mark_form_property_id' ] ),
 			'isNotReferredBy' );
-		
+
 		return $rules;
 	}
-	
+
 	public function beforeMarshal( Event $event, ArrayObject $data, ArrayObject $options ) {
 		$data['validation_rule'] = $this->buildValidationRuleFieldData( $data );
 	}
-	
+
 	/**
 	 * Return a JSON with the validation rules
 	 *
@@ -206,7 +206,7 @@ class MarkFormPropertiesTable extends Table {
 	 */
 	public function buildValidationRuleFieldData( ArrayObject $data ) {
 		$validation_rule = array();
-		
+
 		if ( in_array( $data['field_type'], [ 'INTEGER', 'FLOAT' ] ) ) {
 			$validation_rule = [
 				'min'  => isset( $data['min'] ) ? $data['min'] : PHP_INT_MIN,
@@ -214,10 +214,10 @@ class MarkFormPropertiesTable extends Table {
 				'step' => isset( $data['step'] ) ? $data['step'] : 1,
 			];
 		}
-		
+
 		return $validation_rule;
 	}
-	
+
 	/**
 	 * Return array with field type as key and description as value
 	 *
@@ -232,7 +232,7 @@ class MarkFormPropertiesTable extends Table {
 			'DATE'    => __( 'Date' ),
 		];
 	}
-	
+
 	/**
 	 * Return query filtered by given search term searching the name
 	 *
@@ -242,14 +242,14 @@ class MarkFormPropertiesTable extends Table {
 	 */
 	public function filter( string $term ) {
 		$where = trim( $term );
-		
+
 		$query = $this->find()
 		              ->contain( [ 'MarkFormPropertyTypes' ] )
 		              ->where( [ 'MarkFormProperties.name LIKE' => '%' . $where . '%' ] );
-		
+
 		return $query;
 	}
-	
+
 	/**
 	 * Return the name of a property by its slug
 	 *
@@ -262,24 +262,24 @@ class MarkFormPropertiesTable extends Table {
 	public function getNameBySlug( string $slug ): string {
 		if ( empty( $this->namesBySlug ) ) {
 			$names = $this->find()->select( 'name' );
-			
+
 			$this->namesBySlug = [];
 			foreach ( $names as $item ) {
 				$s                       = Text::slug( $item->name );
 				$this->namesBySlug[ $s ] = $item->name;
 			}
 		}
-		
+
 		if ( ! in_array( $slug, array_keys( $this->namesBySlug ) ) ) {
 			throw new \Exception( "There is no mark property belonging to the given slug '{$this->namesBySlug}'" );
 		}
-		
+
 		return $this->namesBySlug[ $slug ];
 	}
-	
+
 	protected function _initializeSchema( Schema $schema ) {
 		$schema->columnType( 'validation_rule', 'json' );
-		
+
 		return $schema;
 	}
 }

@@ -10,7 +10,7 @@ use App\Controller\AppController;
  * @property \App\Model\Table\ExperimentSitesTable $ExperimentSites
  */
 class ExperimentSitesController extends AppController {
-	
+
 	/**
 	 * Index method
 	 *
@@ -18,11 +18,11 @@ class ExperimentSitesController extends AppController {
 	 */
 	public function index() {
 		$experimentSites = $this->paginate( $this->ExperimentSites );
-		
+
 		$this->set( compact( 'experimentSites' ) );
 		$this->set( '_serialize', [ 'experimentSites' ] );
 	}
-	
+
 	/**
 	 * View method
 	 *
@@ -35,11 +35,11 @@ class ExperimentSitesController extends AppController {
 		$experimentSite = $this->ExperimentSites->get( $id, [
 			'contain' => [ 'Trees' ]
 		] );
-		
+
 		$this->set( 'experimentSite', $experimentSite );
 		$this->set( '_serialize', [ 'experimentSite' ] );
 	}
-	
+
 	/**
 	 * Add method
 	 *
@@ -48,10 +48,10 @@ class ExperimentSitesController extends AppController {
 	public function add() {
 		$experimentSite = $this->ExperimentSites->newEntity();
 		if ( $this->request->is( 'post' ) ) {
-			$experimentSite = $this->ExperimentSites->patchEntity( $experimentSite, $this->request->data );
+			$experimentSite = $this->ExperimentSites->patchEntity( $experimentSite, $this->request->getData());
 			if ( $this->ExperimentSites->save( $experimentSite ) ) {
 				$this->Flash->success( __( 'The experiment site has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The experiment site could not be saved. Please, try again.' ) );
@@ -60,7 +60,7 @@ class ExperimentSitesController extends AppController {
 		$this->set( compact( 'experimentSite' ) );
 		$this->set( '_serialize', [ 'experimentSite' ] );
 	}
-	
+
 	/**
 	 * Edit method
 	 *
@@ -74,10 +74,10 @@ class ExperimentSitesController extends AppController {
 			'contain' => []
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$experimentSite = $this->ExperimentSites->patchEntity( $experimentSite, $this->request->data );
+			$experimentSite = $this->ExperimentSites->patchEntity( $experimentSite, $this->request->getData());
 			if ( $this->ExperimentSites->save( $experimentSite ) ) {
 				$this->Flash->success( __( 'The experiment site has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The experiment site could not be saved. Please, try again.' ) );
@@ -86,7 +86,7 @@ class ExperimentSitesController extends AppController {
 		$this->set( compact( 'experimentSite' ) );
 		$this->set( '_serialize', [ 'experimentSite' ] );
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -103,26 +103,26 @@ class ExperimentSitesController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The experiment site could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( [ 'action' => 'index' ] );
 	}
-	
+
 	/**
 	 * Select method
 	 */
 	public function select() {
-		// if site was selected        
+		// if site was selected
 		if ( $this->request->is( 'post' ) && ! empty( $this->request->data['experiment_site_id'] ) ) {
-			
+
 			// get site data
 			$id             = (int) $this->request->data['experiment_site_id'];
 			$experimentSite = $this->ExperimentSites->get( $id );
-			
+
 			// add the site to the session
 			$session = $this->request->session();
 			$session->write( 'experiment_site_id', (int) $id );
 			$session->write( 'experiment_site_name', $experimentSite->name );
-			
+
 			// and redirect the user
 			if ( $session->read( 'redirect_after_action' ) ) {
 				$redirect = $this->redirect( $session->read( 'redirect_after_action' ) );
@@ -130,10 +130,10 @@ class ExperimentSitesController extends AppController {
 			} else {
 				$redirect = $this->redirect( [ 'controller' => 'Trees', 'action' => 'index' ] );
 			}
-			
+
 			return $redirect;
 		}
-		
+
 		// show the selection form
 		$experimentSites = $this->ExperimentSites->find( 'list' );
 		$this->set( compact( 'experimentSites' ) );

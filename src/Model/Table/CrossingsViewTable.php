@@ -27,26 +27,26 @@ class CrossingsViewTable extends Table {
 	 * boolean fields
 	 */
 	private $boolean = [];
-	
+
 	/**
 	 * select fields
 	 */
 	private $select = [];
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getBooleanFields() {
 		return $this->boolean;
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getSelectFields() {
 		return $this->select;
 	}
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -56,11 +56,11 @@ class CrossingsViewTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'crossings_view' );
-		$this->displayField( 'code' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'crossings_view' );
+		$this->setDisplayField( 'code' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->hasMany( 'BatchesView', [
 			'foreignKey' => 'crossing_id',
 			'strategy'   => 'select'
@@ -70,7 +70,7 @@ class CrossingsViewTable extends Table {
 			'strategy'   => 'select'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -83,20 +83,20 @@ class CrossingsViewTable extends Table {
 			->integer( 'id' )
 			->requirePresence( 'id', 'create' )
 			->notEmpty( 'id' );
-		
+
 		$validator
 			->requirePresence( 'code', 'create' )
 			->notEmpty( 'code' );
-		
+
 		$validator
 			->allowEmpty( 'mother_variety' );
-		
+
 		$validator
 			->allowEmpty( 'father_variety' );
-        
+
         $validator
             ->allowEmpty( 'target' );
-		
+
 		return $validator;
 	}
 }

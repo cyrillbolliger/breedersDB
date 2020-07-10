@@ -25,9 +25,9 @@ use SoftDelete\Model\Table\SoftDeleteTrait;
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class QueryGroupsTable extends Table {
-	
+
 	use SoftDeleteTrait;
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -37,18 +37,18 @@ class QueryGroupsTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'query_groups' );
-		$this->displayField( 'code' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'query_groups' );
+		$this->setDisplayField( 'code' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'Timestamp' );
-		
+
 		$this->hasMany( 'Queries', [
 			'foreignKey' => 'query_group_id'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -61,15 +61,15 @@ class QueryGroupsTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->requirePresence( 'code', 'create' )
 			->notEmpty( 'code' )
 			->add( 'code', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -81,9 +81,9 @@ class QueryGroupsTable extends Table {
 	public function buildRules( RulesChecker $rules ) {
 		$rules->add( $rules->isUnique( [ 'id' ] ) );
 		$rules->add( $rules->isUnique( [ 'code' ] ) );
-		
+
 		$rules->addDelete( new IsNotReferredBy( [ 'Queries' => 'query_group_id' ] ), 'isNotReferredBy' );
-		
+
 		return $rules;
 	}
 }

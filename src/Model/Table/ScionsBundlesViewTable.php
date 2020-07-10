@@ -25,26 +25,26 @@ class ScionsBundlesViewTable extends Table {
 	 * boolean fields
 	 */
 	private $boolean = [ 'external_use' ];
-	
+
 	/**
 	 * select fields
 	 */
 	private $select = [];
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getBooleanFields() {
 		return $this->boolean;
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getSelectFields() {
 		return $this->select;
 	}
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -54,18 +54,18 @@ class ScionsBundlesViewTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'scions_bundles_view' );
-		$this->displayField( 'code' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'scions_bundles_view' );
+		$this->setDisplayField( 'code' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->belongsTo( 'VarietiesView', [
 			'foreignKey' => 'variety_id',
 			'joinType'   => 'INNER',
 			'strategy'   => 'select'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -78,37 +78,37 @@ class ScionsBundlesViewTable extends Table {
 			->integer( 'id' )
 			->requirePresence( 'id', 'create' )
 			->notEmpty( 'id' );
-		
+
 		$validator
 			->requirePresence( 'identification', 'create' )
 			->notEmpty( 'identification' );
-		
+
 		$validator
 			->requirePresence( 'convar', 'create' )
 			->notEmpty( 'convar' );
-		
+
 		$validator
 			->integer( 'numb_scions' )
 			->allowEmpty( 'numb_scions' );
-		
+
 		$validator
 			->date( 'date_scions_harvest' )
 			->allowEmpty( 'date_scions_harvest' );
-		
+
 		$validator
 			->allowEmpty( 'descents_publicid_list' );
-		
+
 		$validator
 			->allowEmpty( 'note' );
-		
+
 		$validator
 			->boolean( 'external_use' )
 			->requirePresence( 'external_use', 'create' )
 			->notEmpty( 'external_use' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -119,7 +119,7 @@ class ScionsBundlesViewTable extends Table {
 	 */
 	public function buildRules( RulesChecker $rules ) {
 		$rules->add( $rules->existsIn( [ 'variety_id' ], 'Varieties' ) );
-		
+
 		return $rules;
 	}
 }

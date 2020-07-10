@@ -27,7 +27,7 @@ use SoftDelete\Model\Table\SoftDeleteTrait;
  */
 class MotherTreesTable extends Table {
 	use SoftDeleteTrait;
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -37,13 +37,13 @@ class MotherTreesTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'mother_trees' );
-		$this->displayField( 'code' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'mother_trees' );
+		$this->setDisplayField( 'code' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'Timestamp' );
-		
+
 		$this->belongsTo( 'Crossings', [
 			'foreignKey' => 'crossing_id'
 		] );
@@ -51,7 +51,7 @@ class MotherTreesTable extends Table {
 			'foreignKey' => 'tree_id'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -64,15 +64,15 @@ class MotherTreesTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->requirePresence( 'code', 'create' )
 			->notEmpty( 'code' );
-		
+
 		$validator
 			->integer( 'tree_id' )
 			->allowEmpty( 'tree_id' );
-		
+
 		$validator
 			->integer( 'crossing_id' )
 			->requirePresence( 'crossing_id' )
@@ -88,51 +88,51 @@ class MotherTreesTable extends Table {
 						// there is nothing to validate
 						return true;
 					}
-					
+
 					return $crossing->mother_variety_id === $tree->variety_id;
 				},
 				'message' => __( 'The variety of the mother tree must match the mother variety of the crossing.' ),
 			] );
-		
+
 		$validator
 			->boolean( 'planed' )
 			->requirePresence( 'planed', 'create' )
 			->notEmpty( 'planed' );
-		
+
 		$validator
 			->localizedTime( 'date_pollen_harvested', 'date' )
 			->allowEmpty( 'date_pollen_harvested' );
-		
+
 		$validator
 			->localizedTime( 'date_impregnated', 'date' )
 			->allowEmpty( 'date_impregnated' );
-		
+
 		$validator
 			->localizedTime( 'date_fruit_harvested', 'date' )
 			->allowEmpty( 'date_fruit_harvested' );
-		
+
 		$validator
 			->integer( 'numb_portions' )
 			->allowEmpty( 'numb_portions' );
-		
+
 		$validator
 			->integer( 'numb_flowers' )
 			->allowEmpty( 'numb_flowers' );
-        
+
         $validator
             ->integer( 'numb_fruits' )
             ->allowEmpty( 'numb_fruits' );
-		
+
 		$validator
 			->integer( 'numb_seeds' )
 			->allowEmpty( 'numb_seeds' );
-		
+
 		$validator
 			->allowEmpty( 'note' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -147,10 +147,10 @@ class MotherTreesTable extends Table {
 			__( 'This code has already been used. Please use a unique code.' ) ) );
 		$rules->add( $rules->existsIn( [ 'tree_id' ], 'Trees' ) );
 		$rules->add( $rules->existsIn( [ 'crossing_id' ], 'Crossings' ) );
-		
+
 		return $rules;
 	}
-	
+
 	/**
 	 * Return query filtered by given search term searching the code
 	 *
@@ -159,9 +159,9 @@ class MotherTreesTable extends Table {
 	 * @return \Cake\ORM\Query
 	 */
 	public function filterCodes( string $term ) {
-		
+
 		$publicid = $this->Trees->fillPublicId( $term );
-		
+
 		return $this->find()
 		            ->contain( [ 'Trees' ] )
 		            ->where( [ 'MotherTrees.code LIKE' => $term . '%' ] )

@@ -27,26 +27,26 @@ class TreesViewTable extends Table {
 	 * boolean fields
 	 */
 	private $boolean = [ 'genuine_seedling' ];
-	
+
 	/**
 	 * select fields
 	 */
 	private $select = [ 'row', 'grafting', 'rootstock', 'experiment_site' ];
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getBooleanFields() {
 		return $this->boolean;
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getSelectFields() {
 		return $this->select;
 	}
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -56,11 +56,11 @@ class TreesViewTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'trees_view' );
-		$this->displayField( 'publicid' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'trees_view' );
+		$this->setDisplayField( 'publicid' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->belongsTo( 'VarietiesView', [
 			'foreignKey' => 'variety_id',
 			'joinType'   => 'INNER',
@@ -75,7 +75,7 @@ class TreesViewTable extends Table {
 			'strategy'   => 'select'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -88,58 +88,58 @@ class TreesViewTable extends Table {
 			->integer( 'id' )
 			->requirePresence( 'id', 'create' )
 			->notEmpty( 'id' );
-		
+
 		$validator
 			->requirePresence( 'publicid', 'create' )
 			->notEmpty( 'publicid' );
-		
+
 		$validator
 			->requirePresence( 'convar', 'create' )
 			->notEmpty( 'convar' );
-		
+
 		$validator
 			->date( 'date_grafted' )
 			->allowEmpty( 'date_grafted' );
-		
+
 		$validator
 			->date( 'date_planted' )
 			->allowEmpty( 'date_planted' );
-		
+
 		$validator
 			->date( 'date_eliminated' )
 			->allowEmpty( 'date_eliminated' );
-		
+
 		$validator
 			->boolean( 'genuine_seedling' )
 			->requirePresence( 'genuine_seedling', 'create' )
 			->notEmpty( 'genuine_seedling' );
-		
+
 		$validator
 			->numeric( 'offset' )
 			->allowEmpty( 'offset' );
-		
+
 		$validator
 			->allowEmpty( 'row' );
-        
+
         $validator
             ->allowEmpty( 'dont_eliminate' );
-        
+
 		$validator
 			->allowEmpty( 'note' );
-		
+
 		$validator
 			->allowEmpty( 'grafting' );
-		
+
 		$validator
 			->allowEmpty( 'rootstock' );
-		
+
 		$validator
 			->requirePresence( 'experiment_site', 'create' )
 			->notEmpty( 'experiment_site' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -150,7 +150,7 @@ class TreesViewTable extends Table {
 	 */
 	public function buildRules( RulesChecker $rules ) {
 		$rules->add( $rules->existsIn( [ 'variety_id' ], 'Varieties' ) );
-		
+
 		return $rules;
 	}
 }

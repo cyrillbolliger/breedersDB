@@ -24,7 +24,7 @@ use Cake\Validation\Validator;
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class MarkFormFieldsTable extends Table {
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -34,13 +34,13 @@ class MarkFormFieldsTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'mark_form_fields' );
-		$this->displayField( 'id' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'mark_form_fields' );
+		$this->setDisplayField( 'id' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'Timestamp' );
-		
+
 		$this->belongsTo( 'MarkForms', [
 			'foreignKey' => 'mark_form_id',
 			'joinType'   => 'INNER'
@@ -50,7 +50,7 @@ class MarkFormFieldsTable extends Table {
 			'joinType'   => 'INNER'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -63,15 +63,15 @@ class MarkFormFieldsTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->integer( 'priority' )
 			->requirePresence( 'priority', 'create' )
 			->notEmpty( 'priority' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -84,7 +84,7 @@ class MarkFormFieldsTable extends Table {
 		$rules->add( $rules->isUnique( [ 'id' ] ) );
 		$rules->add( $rules->existsIn( [ 'mark_form_id' ], 'MarkForms' ) );
 		$rules->add( $rules->existsIn( [ 'mark_form_property_id' ], 'MarkFormProperties' ) );
-		
+
 		return $rules;
 	}
 }

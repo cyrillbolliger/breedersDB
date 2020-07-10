@@ -27,26 +27,26 @@ class BatchesViewTable extends Table {
 	 * boolean fields
 	 */
 	private $boolean = [];
-	
+
 	/**
 	 * select fields
 	 */
 	private $select = [];
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getBooleanFields() {
 		return $this->boolean;
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getSelectFields() {
 		return $this->select;
 	}
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -56,11 +56,11 @@ class BatchesViewTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'batches_view' );
-		$this->displayField( 'code' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'batches_view' );
+		$this->setDisplayField( 'code' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->belongsTo( 'CrossingsView', [
 			'foreignKey' => 'crossing_id',
 			'joinType'   => 'INNER',
@@ -75,7 +75,7 @@ class BatchesViewTable extends Table {
 			'strategy'   => 'select'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -88,43 +88,43 @@ class BatchesViewTable extends Table {
 			->integer( 'id' )
 			->requirePresence( 'id', 'create' )
 			->notEmpty( 'id' );
-		
+
 		$validator
 			->requirePresence( 'crossing_batch', 'create' )
 			->notEmpty( 'crossing_batch' );
-		
+
 		$validator
 			->date( 'date_sowed' )
 			->allowEmpty( 'date_sowed' );
-		
+
 		$validator
 			->integer( 'numb_seeds_sowed' )
 			->allowEmpty( 'numb_seeds_sowed' );
-		
+
 		$validator
 			->integer( 'numb_sprouts_grown' )
 			->allowEmpty( 'numb_sprouts_grown' );
-		
+
 		$validator
 			->allowEmpty( 'seed_tray' );
-		
+
 		$validator
 			->date( 'date_planted' )
 			->allowEmpty( 'date_planted' );
-		
+
 		$validator
 			->integer( 'numb_sprouts_planted' )
 			->allowEmpty( 'numb_sprouts_planted' );
-		
+
 		$validator
 			->allowEmpty( 'patch' );
-		
+
 		$validator
 			->allowEmpty( 'note' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -135,7 +135,7 @@ class BatchesViewTable extends Table {
 	 */
 	public function buildRules( RulesChecker $rules ) {
 		$rules->add( $rules->existsIn( [ 'crossing_id' ], 'Crossings' ) );
-		
+
 		return $rules;
 	}
 }

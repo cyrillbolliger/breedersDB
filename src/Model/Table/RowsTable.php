@@ -26,7 +26,7 @@ use App\Model\Rule\IsNotReferredBy;
  */
 class RowsTable extends Table {
 	use SoftDeleteTrait;
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -36,18 +36,18 @@ class RowsTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'rows' );
-		$this->displayField( 'code' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'rows' );
+		$this->setDisplayField( 'code' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'Timestamp' );
-		
+
 		$this->hasMany( 'Trees', [
 			'foreignKey' => 'row_id'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -60,25 +60,25 @@ class RowsTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->requirePresence( 'code', 'create' )
 			->notEmpty( 'code' );
-		
+
 		$validator
 			->localizedTime( 'date_created', 'date' )
 			->allowEmpty( 'date_created' );
-		
+
 		$validator
 			->localizedTime( 'date_eliminated', 'date' )
 			->allowEmpty( 'date_eliminated' );
-		
+
 		$validator
 			->allowEmpty( 'note' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -91,12 +91,12 @@ class RowsTable extends Table {
 		$rules->add( $rules->isUnique( [ 'id' ] ) );
 		$rules->add( $rules->isUnique( [ 'code' ],
 			__( 'This code has already been used. Please use a unique code.' ) ) );
-		
+
 		$rules->addDelete( new IsNotReferredBy( [ 'Trees' => 'row_id' ] ), 'isNotReferredBy' );
-		
+
 		return $rules;
 	}
-	
+
 	/**
 	 * Return query filtered by given search term searching the code
 	 *
@@ -105,10 +105,10 @@ class RowsTable extends Table {
 	 * @return \Cake\ORM\Query
 	 */
 	public function filter( string $term ) {
-		
+
 		$query = $this->find()
 		              ->where( [ 'code LIKE' => '%' . $term . '%' ] );
-		
+
 		return $query;
 	}
 }

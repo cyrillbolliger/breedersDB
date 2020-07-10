@@ -26,27 +26,27 @@ class MotherTreesViewTable extends Table {
 	 * boolean fields
 	 */
 	private $boolean = [ 'planed' ];
-	
+
 	/**
 	 * select fields
 	 */
 	private $select = [ 'row', 'experiment_site' ];
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getBooleanFields() {
 		return $this->boolean;
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getSelectFields() {
 		return $this->select;
 	}
-	
-	
+
+
 	/**
 	 * Initialize method
 	 *
@@ -56,11 +56,11 @@ class MotherTreesViewTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'mother_trees_view' );
-		$this->displayField( 'code' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'mother_trees_view' );
+		$this->setDisplayField( 'code' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->belongsTo( 'TreesView', [
 			'foreignKey' => 'tree_id',
 			'strategy'   => 'select'
@@ -71,7 +71,7 @@ class MotherTreesViewTable extends Table {
 			'strategy'   => 'select'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -84,69 +84,69 @@ class MotherTreesViewTable extends Table {
 			->integer( 'id' )
 			->requirePresence( 'id', 'create' )
 			->notEmpty( 'id' );
-		
+
 		$validator
 			->requirePresence( 'crossing', 'create' )
 			->notEmpty( 'crossing' );
-		
+
 		$validator
 			->requirePresence( 'code', 'create' )
 			->notEmpty( 'code' );
-		
+
 		$validator
 			->boolean( 'planed' )
 			->requirePresence( 'planed', 'create' )
 			->notEmpty( 'planed' );
-		
+
 		$validator
 			->date( 'date_pollen_harvested' )
 			->allowEmpty( 'date_pollen_harvested' );
-		
+
 		$validator
 			->date( 'date_impregnated' )
 			->allowEmpty( 'date_impregnated' );
-		
+
 		$validator
 			->date( 'date_fruit_harvested' )
 			->allowEmpty( 'date_fruit_harvested' );
-		
+
 		$validator
 			->integer( 'numb_portions' )
 			->allowEmpty( 'numb_portions' );
-		
+
 		$validator
 			->integer( 'numb_flowers' )
 			->allowEmpty( 'numb_flowers' );
-        
+
         $validator
             ->integer( 'numb_fruits' )
             ->allowEmpty( 'numb_fruits' );
-		
+
 		$validator
 			->integer( 'numb_seeds' )
 			->allowEmpty( 'numb_seeds' );
-		
+
 		$validator
 			->allowEmpty( 'note' );
-		
+
 		$validator
 			->requirePresence( 'publicid', 'create' )
 			->notEmpty( 'publicid' );
-		
+
 		$validator
 			->numeric( 'offset' )
 			->allowEmpty( 'offset' );
-		
+
 		$validator
 			->allowEmpty( 'row' );
-		
+
 		$validator
 			->requirePresence( 'experiment_site', 'create' )
 			->notEmpty( 'experiment_site' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -158,7 +158,7 @@ class MotherTreesViewTable extends Table {
 	public function buildRules( RulesChecker $rules ) {
 		$rules->add( $rules->existsIn( [ 'tree_id' ], 'Trees' ) );
 		$rules->add( $rules->existsIn( [ 'crossing_id' ], 'Crossings' ) );
-		
+
 		return $rules;
 	}
 }

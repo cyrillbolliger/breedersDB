@@ -21,7 +21,7 @@ use Cake\Validation\Validator;
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class UsersTable extends Table {
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -31,14 +31,14 @@ class UsersTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'users' );
-		$this->displayField( 'id' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'users' );
+		$this->setDisplayField( 'id' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'Timestamp' );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -50,28 +50,28 @@ class UsersTable extends Table {
 		$validator
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' );
-		
+
 		$validator
 			->email( 'email' )
 			->requirePresence( 'email', 'create' )
 			->notEmpty( 'email' );
-		
+
 		$validator
 			->requirePresence( 'password', 'create' )
 			->notEmpty( 'password' );
-		
+
 		$validator
 			->requirePresence( 'time_zone', 'create' )
 			->notEmpty( 'time_zone' );
-		
+
 		$validator
 			->integer( 'level' )
 			->requirePresence( 'level', 'create' )
 			->notEmpty( 'level' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -83,10 +83,10 @@ class UsersTable extends Table {
 	public function buildRules( RulesChecker $rules ) {
 		$rules->add( $rules->isUnique( [ 'id' ] ) );
 		$rules->add( $rules->isUnique( [ 'email' ] ) );
-		
+
 		return $rules;
 	}
-	
+
 	/**
 	 * Return a selection of timezones as arry with a timeszone string as key and a description as value
 	 *

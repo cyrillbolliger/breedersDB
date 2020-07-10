@@ -23,7 +23,7 @@ use App\Model\Rule\IsNotReferredBy;
  * @method \App\Model\Entity\ExperimentSite findOrCreate( $search, callable $callback = null, $options = [] )
  */
 class ExperimentSitesTable extends Table {
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -33,16 +33,16 @@ class ExperimentSitesTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'experiment_sites' );
-		$this->displayField( 'name' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'experiment_sites' );
+		$this->setDisplayField( 'name' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->hasMany( 'Trees', [
 			'foreignKey' => 'experiment_site_id'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -55,14 +55,14 @@ class ExperimentSitesTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->requirePresence( 'name', 'create' )
 			->notEmpty( 'name' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -75,9 +75,9 @@ class ExperimentSitesTable extends Table {
 		$rules->add( $rules->isUnique( [ 'id' ] ) );
 		$rules->add( $rules->isUnique( [ 'name' ],
 			__( 'This name has already been used. Please use a unique name.' ) ) );
-		
+
 		$rules->addDelete( new IsNotReferredBy( [ 'Trees' => 'experiment_site_id' ] ), 'isNotReferredBy' );
-		
+
 		return $rules;
 	}
 }

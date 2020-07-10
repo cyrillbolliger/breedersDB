@@ -10,7 +10,7 @@ use App\Controller\AppController;
  * @property \App\Model\Table\MarkFormPropertyTypesTable $MarkFormPropertyTypes
  */
 class MarkFormPropertyTypesController extends AppController {
-	
+
 	/**
 	 * Index method
 	 *
@@ -18,11 +18,11 @@ class MarkFormPropertyTypesController extends AppController {
 	 */
 	public function index() {
 		$markFormPropertyTypes = $this->paginate( $this->MarkFormPropertyTypes );
-		
+
 		$this->set( compact( 'markFormPropertyTypes' ) );
 		$this->set( '_serialize', [ 'markFormPropertyTypes' ] );
 	}
-	
+
 	/**
 	 * View method
 	 *
@@ -35,11 +35,11 @@ class MarkFormPropertyTypesController extends AppController {
 		$markFormPropertyType = $this->MarkFormPropertyTypes->get( $id, [
 			'contain' => [ 'MarkFormProperties' ]
 		] );
-		
+
 		$this->set( 'markFormPropertyType', $markFormPropertyType );
 		$this->set( '_serialize', [ 'markFormPropertyType' ] );
 	}
-	
+
 	/**
 	 * Add method
 	 *
@@ -49,10 +49,10 @@ class MarkFormPropertyTypesController extends AppController {
 		$markFormPropertyType = $this->MarkFormPropertyTypes->newEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$markFormPropertyType = $this->MarkFormPropertyTypes->patchEntity( $markFormPropertyType,
-				$this->request->data );
+				$this->request->getData());
 			if ( $this->MarkFormPropertyTypes->save( $markFormPropertyType ) ) {
 				$this->Flash->success( __( 'The mark form property type has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The mark form property type could not be saved. Please, try again.' ) );
@@ -61,7 +61,7 @@ class MarkFormPropertyTypesController extends AppController {
 		$this->set( compact( 'markFormPropertyType' ) );
 		$this->set( '_serialize', [ 'markFormPropertyType' ] );
 	}
-	
+
 	/**
 	 * Edit method
 	 *
@@ -76,10 +76,10 @@ class MarkFormPropertyTypesController extends AppController {
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
 			$markFormPropertyType = $this->MarkFormPropertyTypes->patchEntity( $markFormPropertyType,
-				$this->request->data );
+				$this->request->getData());
 			if ( $this->MarkFormPropertyTypes->save( $markFormPropertyType ) ) {
 				$this->Flash->success( __( 'The mark form property type has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The mark form property type could not be saved. Please, try again.' ) );
@@ -88,7 +88,7 @@ class MarkFormPropertyTypesController extends AppController {
 		$this->set( compact( 'markFormPropertyType' ) );
 		$this->set( '_serialize', [ 'markFormPropertyType' ] );
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -105,7 +105,7 @@ class MarkFormPropertyTypesController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The mark form property type could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( [ 'action' => 'index' ] );
 	}
 }

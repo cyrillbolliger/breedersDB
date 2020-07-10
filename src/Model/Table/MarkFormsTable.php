@@ -26,7 +26,7 @@ use App\Model\Rule\IsNotReferredBy;
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class MarkFormsTable extends Table {
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -36,13 +36,13 @@ class MarkFormsTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'mark_forms' );
-		$this->displayField( 'name' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'mark_forms' );
+		$this->setDisplayField( 'name' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'Timestamp' );
-		
+
 		$this->hasMany( 'MarkFormFields', [
 			'foreignKey' => 'mark_form_id'
 		] );
@@ -53,7 +53,7 @@ class MarkFormsTable extends Table {
 			'joinTable' => 'MarkFormFields'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -66,7 +66,7 @@ class MarkFormsTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->requirePresence( 'name', 'create' )
 			->notEmpty( 'name' )
@@ -75,10 +75,10 @@ class MarkFormsTable extends Table {
 				'provider' => 'table',
 				'message'  => __( 'This name has already been used.' ),
 			] );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -91,13 +91,13 @@ class MarkFormsTable extends Table {
 		$rules->add( $rules->isUnique( [ 'id' ] ) );
 		$rules->add( $rules->isUnique( [ 'name' ],
 			__( 'This name has already been used. Please use a unique name.' ) ) );
-		
+
 		$rules->addDelete( new IsNotReferredBy( [ 'Marks' => 'mark_form_id' ] ), 'isNotReferredBy' );
 		$rules->addDelete( new IsNotReferredBy( [ 'MarkFormFields' => 'mark_form_id' ] ), 'isNotReferredBy' );
-		
+
 		return $rules;
 	}
-	
+
 	/**
 	 * Return query filtered by given search term searching the name
 	 *
@@ -107,10 +107,10 @@ class MarkFormsTable extends Table {
 	 */
 	public function filter( string $term ) {
 		$where = trim( $term );
-		
+
 		$query = $this->find()
 		              ->where( [ 'name LIKE' => '%' . $where . '%' ] );
-		
+
 		return $query;
 	}
 }

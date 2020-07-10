@@ -29,7 +29,7 @@ use App\Model\Rule\IsNotReferredBy;
  */
 class CrossingsTable extends Table {
 	use SoftDeleteTrait;
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -39,13 +39,13 @@ class CrossingsTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'crossings' );
-		$this->displayField( 'code' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'crossings' );
+		$this->setDisplayField( 'code' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'Timestamp' );
-		
+
 		$this->belongsTo( 'Varieties', [
 			'foreignKey' => 'mother_variety_id'
 		] );
@@ -59,7 +59,7 @@ class CrossingsTable extends Table {
 			'foreignKey' => 'crossing_id'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -72,7 +72,7 @@ class CrossingsTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->requirePresence( 'code', 'create' )
 			->notEmpty( 'code' )
@@ -82,13 +82,13 @@ class CrossingsTable extends Table {
 				},
 				'message' => __( 'Input not valid. The code must only contain alphanumerical characters (without umlauts). Length between four and eight characters.' ),
 			] );
-        
+
         $validator
             ->allowEmpty( 'target' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -107,13 +107,13 @@ class CrossingsTable extends Table {
 			[ 'mother_variety_id', 'father_variety_id' ],
 			__( 'A crossing with the same mother variety and the same father variety already exists.' )
 		) );
-		
+
 		$rules->addDelete( new IsNotReferredBy( [ 'Batches' => 'crossing_id' ] ), 'isNotReferredBy' );
 		$rules->addDelete( new IsNotReferredBy( [ 'MotherTrees' => 'crossing_id' ] ), 'isNotReferredBy' );
-		
+
 		return $rules;
 	}
-	
+
 	/**
 	 * Return query filtered by given search term searching the code
 	 *
@@ -122,7 +122,7 @@ class CrossingsTable extends Table {
 	 * @return \Cake\ORM\Query
 	 */
 	public function filterCodes( string $term ) {
-		
+
 		return $this->find()
 		            ->where( [ 'code LIKE' => $term . '%' ] );
 	}

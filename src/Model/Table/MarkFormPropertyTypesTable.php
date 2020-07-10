@@ -23,7 +23,7 @@ use App\Model\Rule\IsNotReferredBy;
  * @method \App\Model\Entity\MarkFormPropertyType findOrCreate( $search, callable $callback = null, $options = [] )
  */
 class MarkFormPropertyTypesTable extends Table {
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -33,16 +33,16 @@ class MarkFormPropertyTypesTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'mark_form_property_types' );
-		$this->displayField( 'name' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'mark_form_property_types' );
+		$this->setDisplayField( 'name' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->hasMany( 'MarkFormProperties', [
 			'foreignKey' => 'mark_form_property_type_id'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -55,14 +55,14 @@ class MarkFormPropertyTypesTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->requirePresence( 'name', 'create' )
 			->notEmpty( 'name' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -75,10 +75,10 @@ class MarkFormPropertyTypesTable extends Table {
 		$rules->add( $rules->isUnique( [ 'id' ] ) );
 		$rules->add( $rules->isUnique( [ 'name' ],
 			__( 'This name has already been used. Please use a unique name.' ) ) );
-		
+
 		$rules->addDelete( new IsNotReferredBy( [ 'MarkFormProperties' => 'mark_form_property_type_id' ] ),
 			'isNotReferredBy' );
-		
+
 		return $rules;
 	}
 }

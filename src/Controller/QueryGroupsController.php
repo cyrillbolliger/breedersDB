@@ -10,7 +10,7 @@ use App\Controller\AppController;
  * @property \App\Model\Table\QueryGroupsTable $QueryGroups
  */
 class QueryGroupsController extends AppController {
-	
+
 	/**
 	 * Add method
 	 *
@@ -19,10 +19,10 @@ class QueryGroupsController extends AppController {
 	public function add() {
 		$queryGroup = $this->QueryGroups->newEntity();
 		if ( $this->request->is( 'post' ) ) {
-			$queryGroup = $this->QueryGroups->patchEntity( $queryGroup, $this->request->data );
+			$queryGroup = $this->QueryGroups->patchEntity( $queryGroup, $this->request->getData());
 			if ( $this->QueryGroups->save( $queryGroup ) ) {
 				$this->Flash->success( __( 'The query group has been saved.' ) );
-				
+
 				return $this->redirect( [ 'controller' => 'Queries', 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The query group could not be saved. Please, try again.' ) );
@@ -32,7 +32,7 @@ class QueryGroupsController extends AppController {
 		$this->set( compact( 'queryGroup', 'queryGroups' ) );
 		$this->set( '_serialize', [ 'queryGroup', 'queryGroups' ] );
 	}
-	
+
 	/**
 	 * Edit method
 	 *
@@ -46,10 +46,10 @@ class QueryGroupsController extends AppController {
 			'contain' => []
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$queryGroup = $this->QueryGroups->patchEntity( $queryGroup, $this->request->data );
+			$queryGroup = $this->QueryGroups->patchEntity( $queryGroup, $this->request->getData());
 			if ( $this->QueryGroups->save( $queryGroup ) ) {
 				$this->Flash->success( __( 'The query group has been saved.' ) );
-				
+
 				return $this->redirect( [ 'controller' => 'Queries', 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The query group could not be saved. Please, try again.' ) );
@@ -59,7 +59,7 @@ class QueryGroupsController extends AppController {
 		$this->set( compact( 'queryGroup', 'queryGroups' ) );
 		$this->set( '_serialize', [ 'queryGroup' ] );
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -76,7 +76,7 @@ class QueryGroupsController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The query group could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( [ 'controller' => 'Queries', 'action' => 'index' ] );
 	}
 }

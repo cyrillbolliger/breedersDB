@@ -35,7 +35,7 @@ Use Cake\I18n\Time;
  */
 class TreesTable extends Table {
 	use SoftDeleteTrait;
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -45,14 +45,14 @@ class TreesTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'trees' );
-		$this->displayField( 'publicid' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'trees' );
+		$this->setDisplayField( 'publicid' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'Timestamp' );
 		$this->addBehavior( 'Printable' );
-		
+
 		$this->belongsTo( 'Varieties', [
 			'foreignKey' => 'variety_id',
 			'joinType'   => 'INNER'
@@ -73,7 +73,7 @@ class TreesTable extends Table {
 			'foreignKey' => 'tree_id'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -86,7 +86,7 @@ class TreesTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->requirePresence( 'publicid', 'create' )
 			->notEmpty( 'publicid' )
@@ -105,45 +105,45 @@ class TreesTable extends Table {
 				},
 				'message' => __( 'Input not valid. The publicid must only contain numbers.' ),
 			] );
-		
+
 		$validator
 			->localizedTime( 'date_grafted', 'date' )
 			->allowEmpty( 'date_grafted' );
-		
+
 		$validator
 			->localizedTime( 'date_planted', 'date' )
 			->allowEmpty( 'date_planted' );
-		
+
 		$validator
 			->localizedTime( 'date_eliminated', 'date' )
 			->allowEmpty( 'date_eliminated' );
-		
+
 		$validator
 			->boolean( 'genuine_seedling' )
 			->notEmpty( 'genuine_seedling' );
-		
+
 		$validator
 			->boolean( 'migrated_tree' )
 			->notEmpty( 'migrated_tree' );
-		
+
 		$validator
 			->numeric( 'offset' )
 			->allowEmpty( 'offset' );
-        
+
         $validator
             ->allowEmpty( 'dont_eliminate' );
-		
+
 		$validator
 			->allowEmpty( 'note' );
-		
+
 		$validator
 			->integer( 'experiment_site_id' )
 			->requirePresence( 'experiment_site_id', 'create' )
 			->notEmpty( 'experiment_site_id' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -159,25 +159,25 @@ class TreesTable extends Table {
 		$rules->add( $rules->existsIn( [ 'grafting_id' ], 'Graftings' ) );
 		$rules->add( $rules->existsIn( [ 'row_id' ], 'Rows' ) );
 		$rules->add( $rules->existsIn( [ 'experiment_site_id' ], 'ExperimentSites' ) );
-		
+
 		$rules->addDelete( new IsNotReferredBy( [ 'MotherTrees' => 'tree_id' ] ), 'isNotReferredBy' );
 		$rules->addDelete( new IsNotReferredBy( [ 'Marks' => 'tree_id' ] ), 'isNotReferredBy' );
-		
+
 		return $rules;
 	}
-	
+
 	public function beforeMarshal( Event $event, ArrayObject $data, ArrayObject $options ) {
-		
+
 		// fill public id with leading zeros
 		if ( isset( $data['publicid'] ) ) {
 			$data['publicid'] = $this->fillPublicId( $data['publicid'] );
 		}
-		
+
 		// set experiment site
 		if ( ! isset( $data['experiment_site_id'] ) && isset( $options['experiment_site_id'] ) ) {
 			$data['experiment_site_id'] = $options['experiment_site_id'];
 		}
-		
+
 		// create new variety if crossing_batch was given instead of variety_id
 		if ( isset( $data['variety_id'] ) ) {
 			if ( preg_match( '/^[a-zA-Z0-9]{4,8}\.\d{2}[A-Z]$/', $data['variety_id'] ) ) {
@@ -185,7 +185,7 @@ class TreesTable extends Table {
 			}
 		}
 	}
-	
+
 	/**
 	 * fills up missing zeros in given publicid
 	 *
@@ -201,7 +201,7 @@ class TreesTable extends Table {
 			return '#' . sprintf( '%08d', substr( $publicid, 1 ) );
 		}
 	}
-	
+
 	/**
 	 * prefix the public id with a # if elimination date was set
 	 *
@@ -219,10 +219,10 @@ class TreesTable extends Table {
 				$data['publicid'] = '#' . $data['publicid'];
 			}
 		}
-		
+
 		return $data;
 	}
-	
+
 	/**
 	 * Return tree query of tree with given publicid
 	 *
@@ -232,13 +232,13 @@ class TreesTable extends Table {
 	 */
 	public function getByPublicId( string $publicid ) {
 		$publicid = $this->fillPublicId( $publicid );
-		
+
 		return $this->find()
 		            ->contain( [ 'Varieties', 'Rootstocks', 'Graftings', 'Rows', 'ExperimentSites' ] )
 		            ->where( [ 'publicid' => $publicid ] )
 		            ->first();
 	}
-	
+
 	/**
 	 * Return query filtered by given search term searching the convar and publicid
 	 *
@@ -255,35 +255,35 @@ class TreesTable extends Table {
 			// if publicid
 			$publicid = $this->fillPublicId( $term );
 		}
-		
+
 		$varieties   = $this->Varieties->searchConvars( $term )->toArray();
 		$variety_ids = array_keys( $varieties );
-		
+
 		$where = array();
 		if ( $publicid ) {
 			$where[] = [ 'publicid' => $publicid ];
 		}
-		
+
 		if ( ! empty( $variety_ids ) ) {
 			$where[] = [ 'variety_id IN' => $variety_ids ];
 		}
-		
+
 		// if nothing was found
 		if ( empty( $where ) ) {
 			return null;
 		}
-		
+
 		$query = $this->find()
 		              ->contain( [ 'Varieties', 'Rootstocks', 'Graftings', 'Rows', 'ExperimentSites' ] )
 		              ->where( $where[0] );
-		
+
 		if ( 2 == count( $where ) ) {
 			$query->orWhere( $where[1] );
 		}
-		
+
 		return $query;
 	}
-	
+
 	/**
 	 * return an array with the id as key and 'publicid (convar)' as value
 	 *
@@ -293,14 +293,14 @@ class TreesTable extends Table {
 	 */
 	public function getIdPublicidAndConvarList( int $id ) {
 		$tree = $this->get( $id, [ 'contain' => [ 'Varieties' ] ] );
-		
+
 		if ( $tree ) {
 			return [ $id => $tree->publicid . ' (' . $tree->convar . ')' ];
 		} else {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Return convar of tree by given id
 	 *
@@ -310,10 +310,10 @@ class TreesTable extends Table {
 	 */
 	public function getConvar( int $id ) {
 		$tree = $this->get( $id, [ 'contain' => [ 'Varieties' ] ] );
-		
+
 		return $tree->convar;
 	}
-	
+
 	/**
 	 * Return label to print in Zebra Printing Language
 	 *
@@ -327,19 +327,19 @@ class TreesTable extends Table {
 	public function getLabelZpl( int $id, string $property, bool $with_date = false, $timezone = null ) {
 		$tree = $this->get( $id, [ 'contain' => [ 'Varieties' ] ] );
 		$code = $tree->publicid;
-		
+
 		if ( 'breeder_variety_code' == $property ) {
 			$description = $tree->variety->breeder_variety_code;
 		} else {
 			$description = 1 === $tree->variety->batch_id ? $tree->variety->code : $tree->convar;
 		}
-		
+
 		$date = null;
 		if ( $with_date ) {
 			$now  = Time::now();
 			$date = $now->i18nFormat( [ \IntlDateFormatter::MEDIUM, - 1 ], $timezone );
 		}
-		
+
 		return $this->getZPL( $description, $code, $date );
 	}
 }

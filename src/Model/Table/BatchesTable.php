@@ -29,7 +29,7 @@ use App\Model\Rule\IsNotReferredBy;
  */
 class BatchesTable extends Table {
 	use SoftDeleteTrait;
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -39,14 +39,14 @@ class BatchesTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'batches' );
-		$this->displayField( 'code' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'batches' );
+		$this->setDisplayField( 'code' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'Timestamp' );
 		$this->addBehavior( 'Printable' );
-		
+
 		$this->belongsTo( 'Crossings', [
 			'foreignKey' => 'crossing_id',
 			'joinType'   => 'INNER'
@@ -58,7 +58,7 @@ class BatchesTable extends Table {
 			'foreignKey' => 'batch_id'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -71,7 +71,7 @@ class BatchesTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->requirePresence( 'code', 'create' )
 			->notEmpty( 'code' )
@@ -81,43 +81,43 @@ class BatchesTable extends Table {
 				},
 				'message' => __( 'Input not valid. The code must match the following pattern: "NumberNumberUppercaseletter". Example: 17A' ),
 			] );
-		
+
 		$validator
 			->localizedTime( 'date_sowed', 'date' )
 			->allowEmpty( 'date_sowed' );
-		
+
 		$validator
 			->integer( 'numb_seeds_sowed' )
 			->allowEmpty( 'numb_seeds_sowed' );
-		
+
 		$validator
 			->integer( 'numb_sprouts_grown' )
 			->allowEmpty( 'numb_sprouts_grown' );
-		
+
 		$validator
 			->allowEmpty( 'seed_tray' );
-		
+
 		$validator
 			->localizedTime( 'date_planted', 'date' )
 			->allowEmpty( 'date_planted' );
-		
+
 		$validator
 			->integer( 'numb_sprouts_planted' )
 			->allowEmpty( 'numb_sprouts_planted' );
-		
+
 		$validator
 			->allowEmpty( 'patch' );
-		
+
 		$validator
 			->allowEmpty( 'note' );
-		
+
 		$validator
 			->integer( 'crossing_id' )
 			->notEmpty( 'crossing_id' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -133,13 +133,13 @@ class BatchesTable extends Table {
 			__( 'A batch with this code and this crossing already exists.' )
 		) );
 		$rules->add( $rules->existsIn( [ 'crossing_id' ], 'Crossings' ) );
-		
+
 		$rules->addDelete( new IsNotReferredBy( [ 'Varieties' => 'batch_id' ] ), 'isNotReferredBy' );
 		$rules->addDelete( new IsNotReferredBy( [ 'Marks' => 'batch_id' ] ), 'isNotReferredBy' );
-		
+
 		return $rules;
 	}
-	
+
 	/**
 	 * Return query filtered by given search term searching the convar
 	 *
@@ -150,17 +150,17 @@ class BatchesTable extends Table {
 	public function filterCrossingBatches( string $term ) {
 		$list = $this->searchCrossingBatchs( $term )->toArray();
 		$ids  = array_keys( $list );
-		
+
 		// if nothing was found
 		if ( empty( $ids ) ) {
 			return null;
 		}
-		
+
 		return $this->find()
 		            ->contain( 'Crossings' )
 		            ->where( [ 'Batches.id IN' => $ids ] );
 	}
-	
+
 	/**
 	 * Return list with the id of the batch as key and crossing_code.batches_code as value
 	 * filtered by the given search term
@@ -171,18 +171,18 @@ class BatchesTable extends Table {
 	 */
 	public function searchCrossingBatchs( string $term ) {
 		$query = $this->find( 'list' )->innerJoinWith( 'Crossings' );
-		
+
 		$concat = $query->func()->concat( [
 			'Crossings.code' => 'identifier',
 			'.',
 			'Batches.code'   => 'identifier',
 		] );
-		
+
 		$query->select( [
 			'id',
 			'code' => $concat
 		] );
-		
+
 		$search = explode( '.', trim( $term ) );
 		if ( 1 < count( $search ) ) {
 			$query->where( [ 'Crossings.code LIKE' => '%' . $search[0] . '%' ] )
@@ -190,16 +190,16 @@ class BatchesTable extends Table {
 		} else {
 			$query->where( [ 'Crossings.code LIKE' => '%' . $search[0] . '%' ] );
 		}
-		
+
 		return $query;
 	}
-	
+
 	public function getCrossingBatchList( int $id ) {
 		$batch = $this->get( $id, [ 'contain' => 'Crossings' ] );
-		
+
 		return [ $id => $batch->crossing_batch ];
 	}
-	
+
 	/**
 	 * Return label to print in Zebra Printing Language
 	 *
@@ -210,8 +210,8 @@ class BatchesTable extends Table {
 	public function getLabelZpl( int $id ) {
 		$batch       = $this->get( $id, [ 'contain' => [ 'Crossings' ] ] );
 		$description = $batch->crossing_batch;
-		
+
 		return $this->getZPL( $description );
-		
+
 	}
 }

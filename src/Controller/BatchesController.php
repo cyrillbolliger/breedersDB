@@ -15,12 +15,12 @@ class BatchesController extends AppController {
 		'order' => [ 'modified' => 'desc' ],
 		'limit' => 100,
 	];
-	
+
 	public function initialize() {
 		parent::initialize();
 		$this->loadComponent( 'MarksReader' );
 	}
-	
+
 	/**
 	 * Index method
 	 *
@@ -28,7 +28,7 @@ class BatchesController extends AppController {
 	 */
 	public function index() {
 		$this->paginate['contain'] = [ 'Crossings' ];
-		
+
 		$this->paginate['sortWhitelist'] = [
 			'crossing_batch',
 			'date_sowed',
@@ -38,7 +38,7 @@ class BatchesController extends AppController {
 			'modified',
 			'id',
 		];
-		
+
 		$this->paginate['fields'] = [
 			'id',
 			'crossing_batch' => $this->Batches
@@ -55,13 +55,13 @@ class BatchesController extends AppController {
 			'code',
 			'Crossings.code',
 		];
-		
+
 		$batches = $this->paginate( $this->Batches );
-		
+
 		$this->set( compact( 'batches' ) );
 		$this->set( '_serialize', [ 'batches' ] );
 	}
-	
+
 	/**
 	 * View method
 	 *
@@ -74,13 +74,13 @@ class BatchesController extends AppController {
 		$batch = $this->Batches->get( $id, [
 			'contain' => [ 'Crossings', 'Marks', 'Varieties' ]
 		] );
-		
+
 		$marks = $this->MarksReader->get( null, null, $id );
 		$this->set( 'marks', $marks );
 		$this->set( 'batch', $batch );
 		$this->set( '_serialize', [ 'batch' ] );
 	}
-	
+
 	/**
 	 * Add method
 	 *
@@ -89,10 +89,10 @@ class BatchesController extends AppController {
 	public function add() {
 		$batch = $this->Batches->newEntity();
 		if ( $this->request->is( 'post' ) ) {
-			$batch = $this->Batches->patchEntity( $batch, $this->request->data );
+			$batch = $this->Batches->patchEntity( $batch, $this->request->getData());
 			if ( $this->Batches->save( $batch ) ) {
 				$this->Flash->success( __( 'The batch has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'print', $batch->id, 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The batch could not be saved. Please, try again.' ) );
@@ -102,7 +102,7 @@ class BatchesController extends AppController {
 		$this->set( compact( 'batch', 'crossings' ) );
 		$this->set( '_serialize', [ 'batch' ] );
 	}
-	
+
 	/**
 	 * Edit method
 	 *
@@ -116,10 +116,10 @@ class BatchesController extends AppController {
 			'contain' => []
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$batch = $this->Batches->patchEntity( $batch, $this->request->data );
+			$batch = $this->Batches->patchEntity( $batch, $this->request->getData());
 			if ( $this->Batches->save( $batch ) ) {
 				$this->Flash->success( __( 'The batch has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The batch could not be saved. Please, try again.' ) );
@@ -129,7 +129,7 @@ class BatchesController extends AppController {
 		$this->set( compact( 'batch', 'crossings' ) );
 		$this->set( '_serialize', [ 'batch' ] );
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -146,36 +146,36 @@ class BatchesController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The batch could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( [ 'action' => 'index' ] );
 	}
-	
+
 	/**
 	 * Return filtered index table
 	 */
 	public function filter() {
 		$allowed_fields = [ 'crossing_batch' ];
-		
+
 		if ( $this->request->is( 'get' )
 		     && $this->request->is( 'ajax' )
-		     && ! empty( $this->request->query['fields'] )
-		     && array_intersect( $allowed_fields, $this->request->query['fields'] )
+		     && ! empty( $this->request->getQuery('fields') )
+		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
-			$entries = $this->Batches->filterCrossingBatches( $this->request->query['term'] );
-			
-			if ( ! empty( $this->request->query['sort'] ) ) {
-				$sort                    = $this->request->query['sort'];
-				$direction               = empty( $this->request->query['direction'] ) ? 'asc' : $this->request->query['direction'];
+			$entries = $this->Batches->filterCrossingBatches( $this->request->getQuery('term') );
+
+			if ( ! empty( $this->request->getQuery('sort') ) ) {
+				$sort                    = $this->request->getQuery('sort');
+				$direction               = empty( $this->request->getQuery('direction') ) ? 'asc' : $this->request->getQuery('direction');
 				$this->paginate['order'] = [ $sort => $direction ];
 			}
-			if ( ! empty( $this->request->query['page'] ) ) {
-				$this->paginate['page'] = $this->request->query['page'];
+			if ( ! empty( $this->request->getQuery('page') ) ) {
+				$this->paginate['page'] = $this->request->getQuery('page');
 			}
-			
+
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
-		
+
 		if ( $entries ) {
 			$batches = $this->paginate( $entries );
 			$this->set( compact( 'batches' ) );
@@ -185,7 +185,7 @@ class BatchesController extends AppController {
 			$this->render( '/Element/nothing_found' );
 		}
 	}
-	
+
 	/**
 	 * Show the print dialog
 	 *
@@ -195,7 +195,7 @@ class BatchesController extends AppController {
 	 */
 	public function print( int $batch_id, string $caller, $params = null ) {
 		$zpl = $this->Batches->getLabelZpl( $batch_id );
-		
+
 		$this->set( [
 			'buttons'    => [
 				'regular' => [

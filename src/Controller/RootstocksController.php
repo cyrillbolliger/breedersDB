@@ -10,7 +10,7 @@ use App\Controller\AppController;
  * @property \App\Model\Table\RootstocksTable $Rootstocks
  */
 class RootstocksController extends AppController {
-	
+
 	/**
 	 * Index method
 	 *
@@ -18,11 +18,11 @@ class RootstocksController extends AppController {
 	 */
 	public function index() {
 		$rootstocks = $this->paginate( $this->Rootstocks );
-		
+
 		$this->set( compact( 'rootstocks' ) );
 		$this->set( '_serialize', [ 'rootstocks' ] );
 	}
-	
+
 	/**
 	 * View method
 	 *
@@ -35,11 +35,11 @@ class RootstocksController extends AppController {
 		$rootstock = $this->Rootstocks->get( $id, [
 			'contain' => [ 'Trees' ]
 		] );
-		
+
 		$this->set( 'rootstock', $rootstock );
 		$this->set( '_serialize', [ 'rootstock' ] );
 	}
-	
+
 	/**
 	 * Add method
 	 *
@@ -48,10 +48,10 @@ class RootstocksController extends AppController {
 	public function add() {
 		$rootstock = $this->Rootstocks->newEntity();
 		if ( $this->request->is( 'post' ) ) {
-			$rootstock = $this->Rootstocks->patchEntity( $rootstock, $this->request->data );
+			$rootstock = $this->Rootstocks->patchEntity( $rootstock, $this->request->getData());
 			if ( $this->Rootstocks->save( $rootstock ) ) {
 				$this->Flash->success( __( 'The rootstock has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The rootstock could not be saved. Please, try again.' ) );
@@ -60,7 +60,7 @@ class RootstocksController extends AppController {
 		$this->set( compact( 'rootstock' ) );
 		$this->set( '_serialize', [ 'rootstock' ] );
 	}
-	
+
 	/**
 	 * Edit method
 	 *
@@ -74,10 +74,10 @@ class RootstocksController extends AppController {
 			'contain' => []
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$rootstock = $this->Rootstocks->patchEntity( $rootstock, $this->request->data );
+			$rootstock = $this->Rootstocks->patchEntity( $rootstock, $this->request->getData());
 			if ( $this->Rootstocks->save( $rootstock ) ) {
 				$this->Flash->success( __( 'The rootstock has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The rootstock could not be saved. Please, try again.' ) );
@@ -86,7 +86,7 @@ class RootstocksController extends AppController {
 		$this->set( compact( 'rootstock' ) );
 		$this->set( '_serialize', [ 'rootstock' ] );
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -103,7 +103,7 @@ class RootstocksController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The rootstock could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( [ 'action' => 'index' ] );
 	}
 }

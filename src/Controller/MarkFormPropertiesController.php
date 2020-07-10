@@ -15,7 +15,7 @@ class MarkFormPropertiesController extends AppController {
 		'order' => [ 'modified' => 'desc' ],
 		'limit' => 100,
 	];
-	
+
 	/**
 	 * Index method
 	 *
@@ -23,13 +23,13 @@ class MarkFormPropertiesController extends AppController {
 	 */
 	public function index() {
 		$this->paginate['contain'] = [ 'MarkFormPropertyTypes' ];
-		
+
 		$markFormProperties = $this->paginate( $this->MarkFormProperties );
-		
+
 		$this->set( compact( 'markFormProperties' ) );
 		$this->set( '_serialize', [ 'markFormProperties' ] );
 	}
-	
+
 	/**
 	 * View method
 	 *
@@ -42,11 +42,11 @@ class MarkFormPropertiesController extends AppController {
 		$markFormProperty = $this->MarkFormProperties->get( $id, [
 			'contain' => [ 'MarkFormPropertyTypes', 'MarkFormFields', 'MarkFormFields.MarkForms' ]
 		] );
-		
+
 		$this->set( 'markFormProperty', $markFormProperty );
 		$this->set( '_serialize', [ 'markFormProperty' ] );
 	}
-	
+
 	/**
 	 * Add method
 	 *
@@ -55,10 +55,10 @@ class MarkFormPropertiesController extends AppController {
 	public function add() {
 		$markFormProperty = $this->MarkFormProperties->newEntity();
 		if ( $this->request->is( 'post' ) ) {
-			$markFormProperty = $this->MarkFormProperties->patchEntity( $markFormProperty, $this->request->data );
+			$markFormProperty = $this->MarkFormProperties->patchEntity( $markFormProperty, $this->request->getData());
 			if ( $this->MarkFormProperties->save( $markFormProperty ) ) {
 				$this->Flash->success( __( 'The mark form property has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The mark form property could not be saved. Please, try again.' ) );
@@ -69,7 +69,7 @@ class MarkFormPropertiesController extends AppController {
 		$this->set( compact( 'markFormProperty', 'markFormPropertyTypes', 'fieldTypes' ) );
 		$this->set( '_serialize', [ 'markFormProperty' ] );
 	}
-	
+
 	/**
 	 * Edit method
 	 *
@@ -83,10 +83,10 @@ class MarkFormPropertiesController extends AppController {
 			'contain' => []
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$markFormProperty = $this->MarkFormProperties->patchEntity( $markFormProperty, $this->request->data );
+			$markFormProperty = $this->MarkFormProperties->patchEntity( $markFormProperty, $this->request->getData());
 			if ( $this->MarkFormProperties->save( $markFormProperty ) ) {
 				$this->Flash->success( __( 'The mark form property has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The mark form property could not be saved. Please, try again.' ) );
@@ -97,7 +97,7 @@ class MarkFormPropertiesController extends AppController {
 		$this->set( compact( 'markFormProperty', 'markFormPropertyTypes', 'fieldTypes' ) );
 		$this->set( '_serialize', [ 'markFormProperty' ] );
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -114,10 +114,10 @@ class MarkFormPropertiesController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The mark form property could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( [ 'action' => 'index' ] );
 	}
-	
+
 	/**
 	 * Get form field (property)
 	 *
@@ -131,47 +131,47 @@ class MarkFormPropertiesController extends AppController {
 		$markFormProperty = $this->MarkFormProperties->get( $id, [
 			'contain' => [ 'MarkFormPropertyTypes', 'MarkFormFields', 'MarkValues' ]
 		] );
-		
+
 		$this->set( 'markFormProperty', $markFormProperty );
 		$this->set( '_serialize', [ 'markFormProperty' ] );
-		
+
 		switch ( $view ) {
 			case 'field_edit_form_mode':
 				$this->render( '/Element/Mark/field_edit_form_mode' );
 				break;
-			
+
 			default:
 				$this->render( '/Element/Mark/field' );
 				break;
 		}
 	}
-	
+
 	/**
 	 * Return filtered index table
 	 */
 	public function filter() {
 		$allowed_fields = [ 'name' ];
-		
+
 		if ( $this->request->is( 'get' )
 		     && $this->request->is( 'ajax' )
-		     && ! empty( $this->request->query['fields'] )
-		     && array_intersect( $allowed_fields, $this->request->query['fields'] )
+		     && ! empty( $this->request->getQuery('fields') )
+		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
-			$entries = $this->MarkFormProperties->filter( $this->request->query['term'] );
-			
-			if ( ! empty( $this->request->query['sort'] ) ) {
-				$sort                    = $this->request->query['sort'];
-				$direction               = empty( $this->request->query['direction'] ) ? 'asc' : $this->request->query['direction'];
+			$entries = $this->MarkFormProperties->filter( $this->request->getQuery('term') );
+
+			if ( ! empty( $this->request->getQuery('sort') ) ) {
+				$sort                    = $this->request->getQuery('sort');
+				$direction               = empty( $this->request->getQuery('direction') ) ? 'asc' : $this->request->getQuery('direction');
 				$this->paginate['order'] = [ $sort => $direction ];
 			}
-			if ( ! empty( $this->request->query['page'] ) ) {
-				$this->paginate['page'] = $this->request->query['page'];
+			if ( ! empty( $this->request->getQuery('page') ) ) {
+				$this->paginate['page'] = $this->request->getQuery('page');
 			}
-			
+
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
-		
+
 		if ( $entries ) {
 			$markFormProperties = $this->paginate( $entries );
 			$this->set( compact( 'markFormProperties' ) );

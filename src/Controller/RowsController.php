@@ -11,12 +11,12 @@ use Cake\Core\Exception\Exception;
  * @property \App\Model\Table\RowsTable $Rows
  */
 class RowsController extends AppController {
-	
+
 	public $paginate = [
 		'order' => [ 'modified' => 'desc' ],
 		'limit' => 100,
 	];
-	
+
 	/**
 	 * Index method
 	 *
@@ -24,11 +24,11 @@ class RowsController extends AppController {
 	 */
 	public function index() {
 		$rows = $this->paginate( $this->Rows );
-		
+
 		$this->set( compact( 'rows' ) );
 		$this->set( '_serialize', [ 'rows' ] );
 	}
-	
+
 	/**
 	 * View method
 	 *
@@ -41,11 +41,11 @@ class RowsController extends AppController {
 		$row = $this->Rows->get( $id, [
 			'contain' => [ 'Trees' ]
 		] );
-		
+
 		$this->set( 'row', $row );
 		$this->set( '_serialize', [ 'row' ] );
 	}
-	
+
 	/**
 	 * Add method
 	 *
@@ -54,10 +54,10 @@ class RowsController extends AppController {
 	public function add() {
 		$row = $this->Rows->newEntity();
 		if ( $this->request->is( 'post' ) ) {
-			$row = $this->Rows->patchEntity( $row, $this->request->data );
+			$row = $this->Rows->patchEntity( $row, $this->request->getData());
 			if ( $this->Rows->save( $row ) ) {
 				$this->Flash->success( __( 'The row has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The row could not be saved. Please, try again.' ) );
@@ -66,7 +66,7 @@ class RowsController extends AppController {
 		$this->set( compact( 'row' ) );
 		$this->set( '_serialize', [ 'row' ] );
 	}
-	
+
 	/**
 	 * Edit method
 	 *
@@ -80,10 +80,10 @@ class RowsController extends AppController {
 			'contain' => []
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$row = $this->Rows->patchEntity( $row, $this->request->data );
+			$row = $this->Rows->patchEntity( $row, $this->request->getData());
 			if ( $this->Rows->save( $row ) ) {
 				$this->Flash->success( __( 'The row has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The row could not be saved. Please, try again.' ) );
@@ -92,7 +92,7 @@ class RowsController extends AppController {
 		$this->set( compact( 'row' ) );
 		$this->set( '_serialize', [ 'row' ] );
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -109,36 +109,36 @@ class RowsController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The row could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( [ 'action' => 'index' ] );
 	}
-	
+
 	/**
 	 * Return filtered index table
 	 */
 	public function filter() {
 		$allowed_fields = [ 'code' ];
-		
+
 		if ( $this->request->is( 'get' )
 		     && $this->request->is( 'ajax' )
-		     && ! empty( $this->request->query['fields'] )
-		     && array_intersect( $allowed_fields, $this->request->query['fields'] )
+		     && ! empty( $this->request->getQuery('fields') )
+		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
-			$entries = $this->Rows->filter( $this->request->query['term'] );
-			
-			if ( ! empty( $this->request->query['sort'] ) ) {
-				$sort                    = $this->request->query['sort'];
-				$direction               = empty( $this->request->query['direction'] ) ? 'asc' : $this->request->query['direction'];
+			$entries = $this->Rows->filter( $this->request->getQuery('term') );
+
+			if ( ! empty( $this->request->getQuery('sort') ) ) {
+				$sort                    = $this->request->getQuery('sort');
+				$direction               = empty( $this->request->getQuery('direction') ) ? 'asc' : $this->request->getQuery('direction');
 				$this->paginate['order'] = [ $sort => $direction ];
 			}
-			if ( ! empty( $this->request->query['page'] ) ) {
-				$this->paginate['page'] = $this->request->query['page'];
+			if ( ! empty( $this->request->getQuery('page') ) ) {
+				$this->paginate['page'] = $this->request->getQuery('page');
 			}
-			
+
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
-		
+
 		if ( $entries->count() ) {
 			$rows = $this->paginate( $entries );
 			$this->set( compact( 'rows' ) );

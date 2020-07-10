@@ -11,7 +11,7 @@ use Cake\Core\Exception\Exception;
  * @property \App\Model\Table\MarkScannerCodesTable $MarkScannerCodes
  */
 class MarkScannerCodesController extends AppController {
-	
+
 	/**
 	 * Index method
 	 *
@@ -27,14 +27,14 @@ class MarkScannerCodesController extends AppController {
 			->find( 'list' )
 			->order( [ 'name' => 'asc' ] )
 			->toArray();
-		
+
 		$all                  = [ 0 => '(all)']; // dont translate, because of bug in cakephp
 		$mark_form_properties = $all + $properties;
-		
+
 		$this->set( compact( 'markScannerCodes', 'mark_form_properties' ) );
 		$this->set( '_serialize', [ 'markScannerCodes' ] );
 	}
-	
+
 	/**
 	 * View method
 	 *
@@ -47,11 +47,11 @@ class MarkScannerCodesController extends AppController {
 		$markScannerCode = $this->MarkScannerCodes->get( $id, [
 			'contain' => [ 'MarkFormProperties' ]
 		] );
-		
+
 		$this->set( 'markScannerCode', $markScannerCode );
 		$this->set( '_serialize', [ 'markScannerCode' ] );
 	}
-	
+
 	/**
 	 * Add method
 	 *
@@ -61,7 +61,7 @@ class MarkScannerCodesController extends AppController {
 		$markScannerCode             = $this->MarkScannerCodes->newEntity();
 		$this->request->data['code'] = $this->MarkScannerCodes->getNextFreeCode();
 		if ( $this->request->is( 'post' ) ) {
-			$markScannerCode = $this->MarkScannerCodes->patchEntity( $markScannerCode, $this->request->data );
+			$markScannerCode = $this->MarkScannerCodes->patchEntity( $markScannerCode, $this->request->getData());
 			if ( $this->MarkScannerCodes->save( $markScannerCode ) ) {
 				$property = $this->MarkScannerCodes->MarkFormProperties->get( $markScannerCode->mark_form_property_id );
 				$this->Flash->success(
@@ -72,7 +72,7 @@ class MarkScannerCodesController extends AppController {
 					),
 					[ 'escape' => false ]
 				);
-				
+
 				return $this->redirect( [ 'action' => 'print', $markScannerCode->id, 'add' ] );
 			} else {
 				$this->Flash->error( __( 'The mark scanner code could not be saved. Please, try again.' ) );
@@ -82,7 +82,7 @@ class MarkScannerCodesController extends AppController {
 		$this->set( compact( 'markScannerCode', 'markFormProperties' ) );
 		$this->set( '_serialize', [ 'markScannerCode' ] );
 	}
-	
+
 	/**
 	 * Edit method
 	 *
@@ -96,10 +96,10 @@ class MarkScannerCodesController extends AppController {
 			'contain' => [ 'MarkFormProperties' ]
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$markScannerCode = $this->MarkScannerCodes->patchEntity( $markScannerCode, $this->request->data );
+			$markScannerCode = $this->MarkScannerCodes->patchEntity( $markScannerCode, $this->request->getData());
 			if ( $this->MarkScannerCodes->save( $markScannerCode ) ) {
 				$this->Flash->success( __( 'The mark scanner code has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The mark scanner code could not be saved. Please, try again.' ) );
@@ -109,7 +109,7 @@ class MarkScannerCodesController extends AppController {
 		$this->set( compact( 'markScannerCode', 'markFormProperties' ) );
 		$this->set( '_serialize', [ 'markScannerCode' ] );
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -126,36 +126,36 @@ class MarkScannerCodesController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The mark scanner code could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( [ 'action' => 'index' ] );
 	}
-	
+
 	/**
 	 * Return filtered index table
 	 */
 	public function filter() {
 		$allowed_fields = [ 'mark_form_property_id' ];
-		
+
 		if ( $this->request->is( 'get' )
 		     && $this->request->is( 'ajax' )
-		     && ! empty( $this->request->query['fields'] )
-		     && array_intersect( $allowed_fields, $this->request->query['fields'] )
+		     && ! empty( $this->request->getQuery('fields') )
+		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
-			$entries = $this->MarkScannerCodes->filter( $this->request->query['term'] );
-			
-			if ( ! empty( $this->request->query['sort'] ) ) {
-				$sort                    = $this->request->query['sort'];
-				$direction               = empty( $this->request->query['direction'] ) ? 'asc' : $this->request->query['direction'];
+			$entries = $this->MarkScannerCodes->filter( $this->request->getQuery('term') );
+
+			if ( ! empty( $this->request->getQuery('sort') ) ) {
+				$sort                    = $this->request->getQuery('sort');
+				$direction               = empty( $this->request->getQuery('direction') ) ? 'asc' : $this->request->getQuery('direction');
 				$this->paginate['order'] = [ $sort => $direction ];
 			}
-			if ( ! empty( $this->request->query['page'] ) ) {
-				$this->paginate['page'] = $this->request->query['page'];
+			if ( ! empty( $this->request->getQuery('page') ) ) {
+				$this->paginate['page'] = $this->request->getQuery('page');
 			}
-			
+
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
-		
+
 		if ( $entries ) {
 			$markScannerCodes = $this->paginate( $entries );
 			$this->set( compact( 'markScannerCodes' ) );
@@ -165,22 +165,22 @@ class MarkScannerCodesController extends AppController {
 			$this->render( '/Element/nothing_found' );
 		}
 	}
-	
+
 	public function getMark() {
 		if ( $this->request->is( 'get' ) && $this->request->is( 'ajax' ) ) {
 			$entries = $this->MarkScannerCodes->find()
 			                                  ->select( [ 'mark_value', 'mark_form_property_id' ] )
-			                                  ->where( [ 'code' => $this->request->query['term'] ] )
+			                                  ->where( [ 'code' => $this->request->getQuery('term') ] )
 			                                  ->first()
 			                                  ->toArray();
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
-		
+
 		$this->set( [ 'data' => $entries ] );
 		$this->render( '/Element/ajaxreturn' );
 	}
-	
+
 	/**
 	 * Show the print dialog
 	 *
@@ -190,7 +190,7 @@ class MarkScannerCodesController extends AppController {
 	 */
 	public function print( int $id, string $caller, $params = null ) {
 		$zpl = $this->MarkScannerCodes->getLabelZpl( $id );
-		
+
 		$this->set( [
 			'buttons'    => [ 'regular' => [ 'label' => __( 'Regular' ), 'zpl' => $zpl ] ],
 			'focus'      => 'regular',
@@ -201,7 +201,7 @@ class MarkScannerCodesController extends AppController {
 		] );
 		$this->render( '/Element/print' );
 	}
-	
+
 	/**
 	 * Show the print dialog
 	 *
@@ -211,7 +211,7 @@ class MarkScannerCodesController extends AppController {
 	 */
 	public function printSubmit() {
 		$zpl = $this->MarkScannerCodes->getSubmitLabelZpl();
-		
+
 		$this->set( [
 			'buttons'    => [ 'regular' => [ 'label' => __( 'Regular' ), 'zpl' => $zpl ] ],
 			'focus'      => 'regular',

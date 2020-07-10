@@ -16,14 +16,14 @@ class MarkFormsController extends AppController {
 		'order' => [ 'modified' => 'desc' ],
 		'limit' => 100,
 	];
-	
+
 	public function beforeFilter( Event $event ) {
 		parent::beforeFilter( $event );
-		
+
 		// since we add fields dynamically, we have to unlock them in the security component
 		$this->unlockDynamicallyAddedFields();
 	}
-	
+
 	/**
 	 * Unlock the dynamically added fields in the security component
 	 */
@@ -36,7 +36,7 @@ class MarkFormsController extends AppController {
 			}
 		}
 	}
-	
+
 	/**
 	 * Index method
 	 *
@@ -44,11 +44,11 @@ class MarkFormsController extends AppController {
 	 */
 	public function index() {
 		$markForms = $this->paginate( $this->MarkForms );
-		
+
 		$this->set( compact( 'markForms' ) );
 		$this->set( '_serialize', [ 'markForms' ] );
 	}
-	
+
 	/**
 	 * View method
 	 *
@@ -64,11 +64,11 @@ class MarkFormsController extends AppController {
 				'MarkFormFields.MarkFormProperties'
 			],
 		] );
-		
+
 		$this->set( 'markForm', $markForm );
 		$this->set( '_serialize', [ 'markForm' ] );
 	}
-	
+
 	/**
 	 * Add method
 	 *
@@ -79,10 +79,10 @@ class MarkFormsController extends AppController {
 		if ( $this->request->is( 'post' ) ) {
 			// make form fields savable
 			$this->_prepareFormFields();
-			$markForm = $this->MarkForms->patchEntity( $markForm, $this->request->data );
+			$markForm = $this->MarkForms->patchEntity( $markForm, $this->request->getData());
 			if ( $this->MarkForms->save( $markForm ) ) {
 				$this->Flash->success( __( 'The mark form has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The mark form could not be saved. Please, try again.' ) );
@@ -92,7 +92,7 @@ class MarkFormsController extends AppController {
 		$this->set( compact( 'markForm', 'markFormProperties' ) );
 		$this->set( '_serialize', [ 'markForm', 'markFormProperties' ] );
 	}
-	
+
 	/**
 	 * Make the request data ready to be persited: put the form fields in the right form and add the priority
 	 *
@@ -102,14 +102,14 @@ class MarkFormsController extends AppController {
 		if ( ! empty( $this->request->data['mark_form_fields']['mark_form_properties'] ) ) {
 			$fields = array_keys( $this->request->data['mark_form_fields']['mark_form_properties'] );
 			unset( $this->request->data['mark_form_fields'] );
-			
+
 			$i = 0;
 			foreach ( $fields as $field ) {
 				$this->request->data['mark_form_fields'][ $i ] = [
 					'mark_form_property_id' => $field,
 					'priority'              => $i,
 				];
-				
+
 				/**
 				 * make it updateable (by setting the id)
 				 */
@@ -119,7 +119,7 @@ class MarkFormsController extends AppController {
 					                                         ->where( [ 'mark_form_id' => $id ] )
 					                                         ->andWhere( [ 'mark_form_property_id' => $field ] )
 					                                         ->first();
-					
+
 					if ( ! empty( $query->id ) ) {
 						$this->request->data['mark_form_fields'][ $i ]['id'] = $query->id;
 					}
@@ -128,7 +128,7 @@ class MarkFormsController extends AppController {
 			}
 		}
 	}
-	
+
 	/**
 	 * Edit method
 	 *
@@ -147,11 +147,11 @@ class MarkFormsController extends AppController {
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
 			// make form fields savable
 			$this->_prepareFormFields( $id );
-			$markForm = $this->MarkForms->patchEntity( $markForm, $this->request->data );
+			$markForm = $this->MarkForms->patchEntity( $markForm, $this->request->getData());
 			if ( $this->MarkForms->save( $markForm ) ) {
 				$this->_deleteDeletedFields( $markForm->id );
 				$this->Flash->success( __( 'The mark form has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The mark form could not be saved. Please, try again.' ) );
@@ -161,7 +161,7 @@ class MarkFormsController extends AppController {
 		$this->set( compact( 'markForm', 'markFormProperties' ) );
 		$this->set( '_serialize', [ 'markForm', 'markFormProperties' ] );
 	}
-	
+
 	/**
 	 * delete the fields that the user deleted
 	 */
@@ -169,18 +169,18 @@ class MarkFormsController extends AppController {
 		$fields = $this->MarkForms->MarkFormFields->find()
 		                                          ->where( [ 'mark_form_id' => $id ] )
 		                                          ->toArray();
-		
+
 		$mark_form_property_ids = [];
-		
+
 		foreach ( $fields as $field ) {
 			$mark_form_property_ids[] = $field->mark_form_property_id;
 		}
-		
+
 		foreach ( $this->request->data['mark_form_fields'] as $mark_form_field ) {
 			$key = array_search( $mark_form_field['mark_form_property_id'], $mark_form_property_ids );
 			unset( $mark_form_property_ids[ $key ] );
 		}
-		
+
 		foreach ( $mark_form_property_ids as $mark_form_property_id ) {
 			$fields = $this->MarkForms->MarkFormFields->find()
 			                                          ->where( [ 'mark_form_id' => $id ] )
@@ -189,7 +189,7 @@ class MarkFormsController extends AppController {
 			$this->MarkForms->MarkFormFields->delete( $fields );
 		}
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -206,36 +206,36 @@ class MarkFormsController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The mark form could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( [ 'action' => 'index' ] );
 	}
-	
+
 	/**
 	 * Return filtered index table
 	 */
 	public function filter() {
 		$allowed_fields = [ 'name' ];
-		
+
 		if ( $this->request->is( 'get' )
 		     && $this->request->is( 'ajax' )
-		     && ! empty( $this->request->query['fields'] )
-		     && array_intersect( $allowed_fields, $this->request->query['fields'] )
+		     && ! empty( $this->request->getQuery('fields') )
+		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
-			$entries = $this->MarkForms->filter( $this->request->query['term'] );
-			
-			if ( ! empty( $this->request->query['sort'] ) ) {
-				$sort                    = $this->request->query['sort'];
-				$direction               = empty( $this->request->query['direction'] ) ? 'asc' : $this->request->query['direction'];
+			$entries = $this->MarkForms->filter( $this->request->getQuery('term') );
+
+			if ( ! empty( $this->request->getQuery('sort') ) ) {
+				$sort                    = $this->request->getQuery('sort');
+				$direction               = empty( $this->request->getQuery('direction') ) ? 'asc' : $this->request->getQuery('direction');
 				$this->paginate['order'] = [ $sort => $direction ];
 			}
-			if ( ! empty( $this->request->query['page'] ) ) {
-				$this->paginate['page'] = $this->request->query['page'];
+			if ( ! empty( $this->request->getQuery('page') ) ) {
+				$this->paginate['page'] = $this->request->getQuery('page');
 			}
-			
+
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
-		
+
 		if ( $entries ) {
 			$markForms = $this->paginate( $entries );
 			$this->set( compact( 'markForms' ) );

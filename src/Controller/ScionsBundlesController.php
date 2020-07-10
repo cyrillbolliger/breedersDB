@@ -11,12 +11,12 @@ use Cake\Core\Exception\Exception;
  * @property \App\Model\Table\ScionsBundlesTable $ScionsBundles
  */
 class ScionsBundlesController extends AppController {
-	
+
 	public $paginate = [
 		'order' => [ 'modified' => 'desc' ],
 		'limit' => 100,
 	];
-	
+
 	/**
 	 * Index method
 	 *
@@ -27,11 +27,11 @@ class ScionsBundlesController extends AppController {
 			'Varieties'
 		];
 		$scionsBundles             = $this->paginate( $this->ScionsBundles );
-		
+
 		$this->set( compact( 'scionsBundles' ) );
 		$this->set( '_serialize', [ 'scionsBundles' ] );
 	}
-	
+
 	/**
 	 * View method
 	 *
@@ -44,11 +44,11 @@ class ScionsBundlesController extends AppController {
 		$scionsBundle = $this->ScionsBundles->get( $id, [
 			'contain' => [ 'Varieties' ]
 		] );
-		
+
 		$this->set( 'scionsBundle', $scionsBundle );
 		$this->set( '_serialize', [ 'scionsBundle' ] );
 	}
-	
+
 	/**
 	 * Add method
 	 *
@@ -57,16 +57,16 @@ class ScionsBundlesController extends AppController {
 	public function add() {
 		$scionsBundle = $this->ScionsBundles->newEntity();
 		$varieties    = array();
-		
+
 		if ( $this->request->is( 'post' ) ) {
-			$scionsBundle = $this->ScionsBundles->patchEntity( $scionsBundle, $this->request->data );
+			$scionsBundle = $this->ScionsBundles->patchEntity( $scionsBundle, $this->request->getData());
 			if ( $this->ScionsBundles->save( $scionsBundle ) ) {
 				$this->Flash->success( __( 'The scions bundle has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The scions bundle could not be saved. Please, try again.' ) );
-				
+
 				if ( $scionsBundle->variety_id ) {
 					$varieties = $this->ScionsBundles->Varieties->getConvarList( $scionsBundle->variety_id );
 				}
@@ -75,7 +75,7 @@ class ScionsBundlesController extends AppController {
 		$this->set( compact( 'scionsBundle', 'varieties' ) );
 		$this->set( '_serialize', [ 'scionsBundle' ] );
 	}
-	
+
 	/**
 	 * Edit method
 	 *
@@ -88,23 +88,23 @@ class ScionsBundlesController extends AppController {
 		$scionsBundle = $this->ScionsBundles->get( $id, [
 			'contain' => []
 		] );
-		
+
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$scionsBundle = $this->ScionsBundles->patchEntity( $scionsBundle, $this->request->data );
+			$scionsBundle = $this->ScionsBundles->patchEntity( $scionsBundle, $this->request->getData());
 			if ( $this->ScionsBundles->save( $scionsBundle ) ) {
 				$this->Flash->success( __( 'The scions bundle has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The scions bundle could not be saved. Please, try again.' ) );
 			}
 		}
 		$varieties = $this->ScionsBundles->Varieties->getConvarList( $scionsBundle->variety_id );
-		
+
 		$this->set( compact( 'scionsBundle', 'varieties' ) );
 		$this->set( '_serialize', [ 'scionsBundle' ] );
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -121,36 +121,36 @@ class ScionsBundlesController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The scions bundle could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( [ 'action' => 'index' ] );
 	}
-	
+
 	/**
 	 * Return filtered index table
 	 */
 	public function filter() {
 		$allowed_fields = [ 'code', 'convar' ];
-		
+
 		if ( $this->request->is( 'get' )
 		     && $this->request->is( 'ajax' )
-		     && ! empty( $this->request->query['fields'] )
-		     && array_intersect( $allowed_fields, $this->request->query['fields'] )
+		     && ! empty( $this->request->getQuery('fields') )
+		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
-			$entries = $this->ScionsBundles->filter( $this->request->query['term'] );
-			
-			if ( ! empty( $this->request->query['sort'] ) ) {
-				$sort                    = $this->request->query['sort'];
-				$direction               = empty( $this->request->query['direction'] ) ? 'asc' : $this->request->query['direction'];
+			$entries = $this->ScionsBundles->filter( $this->request->getQuery('term') );
+
+			if ( ! empty( $this->request->getQuery('sort') ) ) {
+				$sort                    = $this->request->getQuery('sort');
+				$direction               = empty( $this->request->getQuery('direction') ) ? 'asc' : $this->request->getQuery('direction');
 				$this->paginate['order'] = [ $sort => $direction ];
 			}
-			if ( ! empty( $this->request->query['page'] ) ) {
-				$this->paginate['page'] = $this->request->query['page'];
+			if ( ! empty( $this->request->getQuery('page') ) ) {
+				$this->paginate['page'] = $this->request->getQuery('page');
 			}
-			
+
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
-		
+
 		if ( $entries->count() ) {
 			$scionsBundles = $this->paginate( $entries );
 			$this->set( compact( 'scionsBundles' ) );

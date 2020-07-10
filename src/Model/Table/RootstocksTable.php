@@ -23,7 +23,7 @@ use App\Model\Rule\IsNotReferredBy;
  * @method \App\Model\Entity\Rootstock findOrCreate( $search, callable $callback = null, $options = [] )
  */
 class RootstocksTable extends Table {
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -33,16 +33,16 @@ class RootstocksTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'rootstocks' );
-		$this->displayField( 'name' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'rootstocks' );
+		$this->setDisplayField( 'name' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->hasMany( 'Trees', [
 			'foreignKey' => 'rootstock_id'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -55,14 +55,14 @@ class RootstocksTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->requirePresence( 'name', 'create' )
 			->notEmpty( 'name' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -76,7 +76,7 @@ class RootstocksTable extends Table {
 		$rules->add( $rules->isUnique( [ 'name' ],
 			__( 'This name has already been used. Please use a unique name.' ) ) );
 		$rules->addDelete( new IsNotReferredBy( [ 'Trees' => 'rootstock_id' ] ), 'isNotReferredBy' );
-		
+
 		return $rules;
 	}
 }

@@ -27,26 +27,26 @@ class VarietiesViewTable extends Table {
 	 * boolean fields
 	 */
 	private $boolean = [];
-	
+
 	/**
 	 * select fields
 	 */
 	private $select = [];
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getBooleanFields() {
 		return $this->boolean;
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getSelectFields() {
 		return $this->select;
 	}
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -56,12 +56,12 @@ class VarietiesViewTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'varieties_view' );
-		
-		$this->displayField( 'code' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'varieties_view' );
+
+		$this->setDisplayField( 'code' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->belongsTo( 'BatchesView', [
 			'foreignKey' => 'batch_id',
 			'joinType'   => 'INNER',
@@ -80,7 +80,7 @@ class VarietiesViewTable extends Table {
 			'strategy'   => 'select'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -93,29 +93,29 @@ class VarietiesViewTable extends Table {
 			->integer( 'id' )
 			->requirePresence( 'id', 'create' )
 			->notEmpty( 'id' );
-		
+
 		$validator
 			->requirePresence( 'convar', 'create' )
 			->notEmpty( 'convar' );
-		
+
 		$validator
 			->allowEmpty( 'official_name' );
-		
+
 		$validator
 			->allowEmpty( 'acronym' );
-		
+
 		$validator
 			->allowEmpty( 'plant_breeder' );
-		
+
 		$validator
 			->allowEmpty( 'registration' );
-		
+
 		$validator
 			->allowEmpty( 'description' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -126,7 +126,7 @@ class VarietiesViewTable extends Table {
 	 */
 	public function buildRules( RulesChecker $rules ) {
 		$rules->add( $rules->existsIn( [ 'batch_id' ], 'Batches' ) );
-		
+
 		return $rules;
 	}
 }

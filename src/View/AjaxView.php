@@ -25,7 +25,7 @@ use Cake\Network\Response;
  * which just maps to text/html by default.
  */
 class AjaxView extends AppView {
-	
+
 	/**
 	 * The name of the layout file to render the view inside of. The name
 	 * specified is the filename of the layout in /src/Template/Layout without
@@ -34,7 +34,7 @@ class AjaxView extends AppView {
 	 * @var string
 	 */
 	public $layout = 'ajax';
-	
+
 	/**
 	 * Initialization hook method.
 	 *
@@ -42,8 +42,8 @@ class AjaxView extends AppView {
 	 */
 	public function initialize() {
 		parent::initialize();
-		
-		$this->response->type( 'ajax' );
+
+		$this->response->withType( 'ajax' );
 		$this->loadHelper( 'LocalizedTime' );
 	}
 }

@@ -29,26 +29,26 @@ class MarksViewTable extends Table {
 	 * boolean fields
 	 */
 	private $boolean = [ 'exceptional_mark' ];
-	
+
 	/**
 	 * select fields
 	 */
 	private $select = [ 'name', 'field_type', 'mark_form_property_type' ];
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getBooleanFields() {
 		return $this->boolean;
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
 	public function getSelectFields() {
 		return $this->select;
 	}
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -58,13 +58,13 @@ class MarksViewTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'marks_view' );
-		$this->displayField( 'name' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'marks_view' );
+		$this->setDisplayField( 'name' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'MarkQuery' );
-		
+
 		$this->belongsTo( 'TreesView', [
 			'foreignKey' => 'tree_id',
 		] );
@@ -75,7 +75,7 @@ class MarksViewTable extends Table {
 			'foreignKey' => 'batch_id',
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -87,34 +87,34 @@ class MarksViewTable extends Table {
 		$validator
 			->date( 'date' )
 			->allowEmpty( 'date' );
-		
+
 		$validator
 			->allowEmpty( 'author' );
-		
+
 		$validator
 			->requirePresence( 'value', 'create' )
 			->notEmpty( 'value' );
-		
+
 		$validator
 			->boolean( 'exceptional_mark' )
 			->requirePresence( 'exceptional_mark', 'create' )
 			->notEmpty( 'exceptional_mark' );
-		
+
 		$validator
 			->requirePresence( 'name', 'create' )
 			->notEmpty( 'name' );
-		
+
 		$validator
 			->requirePresence( 'field_type', 'create' )
 			->notEmpty( 'field_type' );
-		
+
 		$validator
 			->requirePresence( 'mark_form_property_type', 'create' )
 			->notEmpty( 'mark_form_property_type' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -127,7 +127,7 @@ class MarksViewTable extends Table {
 		$rules->add( $rules->existsIn( [ 'tree_id' ], 'Trees' ) );
 		$rules->add( $rules->existsIn( [ 'variety_id' ], 'Varieties' ) );
 		$rules->add( $rules->existsIn( [ 'batch_id' ], 'Batches' ) );
-		
+
 		return $rules;
 	}
 }

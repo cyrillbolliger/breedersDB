@@ -24,7 +24,7 @@ use Cake\Event\Event;
  * @method \App\Model\Entity\MarkScannerCode findOrCreate( $search, callable $callback = null, $options = [] )
  */
 class MarkScannerCodesTable extends Table {
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -34,19 +34,19 @@ class MarkScannerCodesTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'mark_scanner_codes' );
-		$this->displayField( 'id' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'mark_scanner_codes' );
+		$this->setDisplayField( 'id' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->belongsTo( 'MarkFormProperties', [
 			'foreignKey' => 'mark_form_property_id',
 			'joinType'   => 'INNER'
 		] );
-		
+
 		$this->addBehavior( 'Printable' );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -58,18 +58,18 @@ class MarkScannerCodesTable extends Table {
 		$validator
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' );
-		
+
 		$validator
 			->requirePresence( 'code', 'create' )
 			->notEmpty( 'code' );
-		
+
 		$validator
 			->requirePresence( 'mark_value', 'create' )
 			->notEmpty( 'mark_value' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -86,10 +86,10 @@ class MarkScannerCodesTable extends Table {
 			[ 'mark_form_property_id', 'mark_value' ],
 			__( 'A code with this property and this value does already exist.' )
 		) );
-		
+
 		return $rules;
 	}
-	
+
 	/**
 	 * Return next free scanner code
 	 */
@@ -97,16 +97,16 @@ class MarkScannerCodesTable extends Table {
 		$query = $this->find()
 		              ->order( [ 'code' => 'DESC' ] )
 		              ->first();
-		
+
 		if ( empty( $query->code ) ) {
 			$code = 1;
 		} else {
 			$code = ( (int) preg_replace( '/\D/', '', $query->code ) ) + 1;
 		}
-		
+
 		return sprintf( 'M%05d', $code );
 	}
-	
+
 	/**
 	 * Return query filtered by given search term searching the mark form property type
 	 *
@@ -120,10 +120,10 @@ class MarkScannerCodesTable extends Table {
 		if ( $term ) {
 			$query->where( [ 'mark_form_property_id' => (int) $term ] );
 		}
-		
+
 		return $query;
 	}
-	
+
 	/**
 	 * Return label to print in Zebra Printing Language
 	 *
@@ -135,19 +135,19 @@ class MarkScannerCodesTable extends Table {
 		$entity      = $this->get( $id, [ 'contain' => [ 'MarkFormProperties' ] ] );
 		$description = $entity->mark_form_property->name . ": " . $entity->mark_value;
 		$code        = $entity->code;
-		
+
 		return $this->getZPL( $description, $code );
 	}
-	
+
 	/**
 	 * Return label to print in Zebra Printing Language
 	 */
 	public function getSubmitLabelZpl() {
 		$code        = "SUBMIT";
 		$description = "SUBMIT";
-		
+
 		return $this->getZPL( $description, $code );
 	}
-	
-	
+
+
 }

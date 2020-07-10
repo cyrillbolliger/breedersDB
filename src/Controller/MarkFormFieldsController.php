@@ -10,7 +10,7 @@ use App\Controller\AppController;
  * @property \App\Model\Table\MarkFormFieldsTable $MarkFormFields
  */
 class MarkFormFieldsController extends AppController {
-	
+
 	/**
 	 * Index method
 	 *
@@ -21,11 +21,11 @@ class MarkFormFieldsController extends AppController {
 			'contain' => [ 'MarkForms', 'MarkFormProperties' ]
 		];
 		$markFormFields = $this->paginate( $this->MarkFormFields );
-		
+
 		$this->set( compact( 'markFormFields' ) );
 		$this->set( '_serialize', [ 'markFormFields' ] );
 	}
-	
+
 	/**
 	 * View method
 	 *
@@ -38,11 +38,11 @@ class MarkFormFieldsController extends AppController {
 		$markFormField = $this->MarkFormFields->get( $id, [
 			'contain' => [ 'MarkForms', 'MarkFormProperties' ]
 		] );
-		
+
 		$this->set( 'markFormField', $markFormField );
 		$this->set( '_serialize', [ 'markFormField' ] );
 	}
-	
+
 	/**
 	 * Add method
 	 *
@@ -51,10 +51,10 @@ class MarkFormFieldsController extends AppController {
 	public function add() {
 		$markFormField = $this->MarkFormFields->newEntity();
 		if ( $this->request->is( 'post' ) ) {
-			$markFormField = $this->MarkFormFields->patchEntity( $markFormField, $this->request->data );
+			$markFormField = $this->MarkFormFields->patchEntity( $markFormField, $this->request->getData());
 			if ( $this->MarkFormFields->save( $markFormField ) ) {
 				$this->Flash->success( __( 'The mark form field has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The mark form field could not be saved. Please, try again.' ) );
@@ -65,7 +65,7 @@ class MarkFormFieldsController extends AppController {
 		$this->set( compact( 'markFormField', 'markForms', 'markFormProperties' ) );
 		$this->set( '_serialize', [ 'markFormField' ] );
 	}
-	
+
 	/**
 	 * Edit method
 	 *
@@ -79,10 +79,10 @@ class MarkFormFieldsController extends AppController {
 			'contain' => []
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$markFormField = $this->MarkFormFields->patchEntity( $markFormField, $this->request->data );
+			$markFormField = $this->MarkFormFields->patchEntity( $markFormField, $this->request->getData());
 			if ( $this->MarkFormFields->save( $markFormField ) ) {
 				$this->Flash->success( __( 'The mark form field has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The mark form field could not be saved. Please, try again.' ) );
@@ -93,7 +93,7 @@ class MarkFormFieldsController extends AppController {
 		$this->set( compact( 'markFormField', 'markForms', 'markFormProperties' ) );
 		$this->set( '_serialize', [ 'markFormField' ] );
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -110,7 +110,7 @@ class MarkFormFieldsController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The mark form field could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( [ 'action' => 'index' ] );
 	}
 }

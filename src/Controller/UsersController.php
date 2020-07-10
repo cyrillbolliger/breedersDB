@@ -10,7 +10,7 @@ use App\Controller\AppController;
  * @property \App\Model\Table\UsersTable $Users
  */
 class UsersController extends AppController {
-	
+
 	/**
 	 * Index method
 	 *
@@ -18,11 +18,11 @@ class UsersController extends AppController {
 	 */
 	public function index() {
 		$users = $this->paginate( $this->Users );
-		
+
 		$this->set( compact( 'users' ) );
 		$this->set( '_serialize', [ 'users' ] );
 	}
-	
+
 	/**
 	 * View method
 	 *
@@ -35,11 +35,11 @@ class UsersController extends AppController {
 		$user = $this->Users->get( $id, [
 			'contain' => []
 		] );
-		
+
 		$this->set( 'user', $user );
 		$this->set( '_serialize', [ 'user' ] );
 	}
-	
+
 	/**
 	 * Add method
 	 *
@@ -48,10 +48,10 @@ class UsersController extends AppController {
 	public function add() {
 		$user = $this->Users->newEntity();
 		if ( $this->request->is( 'post' ) ) {
-			$user = $this->Users->patchEntity( $user, $this->request->data );
+			$user = $this->Users->patchEntity( $user, $this->request->getData());
 			if ( $this->Users->save( $user ) ) {
 				$this->Flash->success( __( 'The user has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The user could not be saved. Please, try again.' ) );
@@ -61,7 +61,7 @@ class UsersController extends AppController {
 		$this->set( compact( 'user' ) );
 		$this->set( '_serialize', [ 'user' ] );
 	}
-	
+
 	/**
 	 * Edit method
 	 *
@@ -75,10 +75,10 @@ class UsersController extends AppController {
 			'contain' => []
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$user = $this->Users->patchEntity( $user, $this->request->data );
+			$user = $this->Users->patchEntity( $user, $this->request->getData());
 			if ( $this->Users->save( $user ) ) {
 				$this->Flash->success( __( 'The user has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The user could not be saved. Please, try again.' ) );
@@ -88,7 +88,7 @@ class UsersController extends AppController {
 		$this->set( compact( 'user' ) );
 		$this->set( '_serialize', [ 'user' ] );
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -105,10 +105,10 @@ class UsersController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The user could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( [ 'action' => 'index' ] );
 	}
-	
+
 	/**
 	 * Login method
 	 *
@@ -117,7 +117,7 @@ class UsersController extends AppController {
 	public function login() {
 		require_once ROOT . '/autoupdate/Updater.php';
 		require_once ROOT . '/autoupdate/VersionChecker.php';
-		
+
 		$updator = new \Autoupdate\Updater();
 		if ( $updator->isUpdateAvailable() ) {
 			$this->Flash->set(
@@ -130,7 +130,7 @@ class UsersController extends AppController {
 				[ 'element' => 'success' ]
 			);
 		}
-		
+
 		if ( $this->request->is( 'post' ) ) {
 			$user = $this->Auth->identify();
 			if ( $user ) {
@@ -141,16 +141,16 @@ class UsersController extends AppController {
 					'httpOnly' => true
 				] );
 				$this->Cookie->write( 'CookieAuth', [
-					'email'    => $this->request->data( 'email' ),
-					'password' => $this->request->data( 'password' )
+					'email'    => $this->request->getData() 'email' ),
+					'password' => $this->request->getData() 'password' )
 				] );
-				
+
 				return $this->redirect( $this->Auth->redirectUrl() );
 			}
 			$this->Flash->error( __( 'Your username or password is incorrect.' ) );
 		}
 	}
-	
+
 	/**
 	 * Logout method
 	 *
@@ -158,7 +158,7 @@ class UsersController extends AppController {
 	 */
 	public function logout() {
 		$this->request->session()->destroy();
-		
+
 		return $this->redirect( $this->Auth->logout() );
 	}
 }

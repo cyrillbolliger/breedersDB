@@ -10,7 +10,7 @@ use App\Controller\AppController;
  * @property \App\Model\Table\GraftingsTable $Graftings
  */
 class GraftingsController extends AppController {
-	
+
 	/**
 	 * Index method
 	 *
@@ -18,11 +18,11 @@ class GraftingsController extends AppController {
 	 */
 	public function index() {
 		$graftings = $this->paginate( $this->Graftings );
-		
+
 		$this->set( compact( 'graftings' ) );
 		$this->set( '_serialize', [ 'graftings' ] );
 	}
-	
+
 	/**
 	 * View method
 	 *
@@ -35,11 +35,11 @@ class GraftingsController extends AppController {
 		$grafting = $this->Graftings->get( $id, [
 			'contain' => [ 'Trees' ]
 		] );
-		
+
 		$this->set( 'grafting', $grafting );
 		$this->set( '_serialize', [ 'grafting' ] );
 	}
-	
+
 	/**
 	 * Add method
 	 *
@@ -48,10 +48,10 @@ class GraftingsController extends AppController {
 	public function add() {
 		$grafting = $this->Graftings->newEntity();
 		if ( $this->request->is( 'post' ) ) {
-			$grafting = $this->Graftings->patchEntity( $grafting, $this->request->data );
+			$grafting = $this->Graftings->patchEntity( $grafting, $this->request->getData());
 			if ( $this->Graftings->save( $grafting ) ) {
 				$this->Flash->success( __( 'The grafting has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The grafting could not be saved. Please, try again.' ) );
@@ -60,7 +60,7 @@ class GraftingsController extends AppController {
 		$this->set( compact( 'grafting' ) );
 		$this->set( '_serialize', [ 'grafting' ] );
 	}
-	
+
 	/**
 	 * Edit method
 	 *
@@ -74,10 +74,10 @@ class GraftingsController extends AppController {
 			'contain' => []
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-			$grafting = $this->Graftings->patchEntity( $grafting, $this->request->data );
+			$grafting = $this->Graftings->patchEntity( $grafting, $this->request->getData());
 			if ( $this->Graftings->save( $grafting ) ) {
 				$this->Flash->success( __( 'The grafting has been saved.' ) );
-				
+
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The grafting could not be saved. Please, try again.' ) );
@@ -86,7 +86,7 @@ class GraftingsController extends AppController {
 		$this->set( compact( 'grafting' ) );
 		$this->set( '_serialize', [ 'grafting' ] );
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -103,7 +103,7 @@ class GraftingsController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The grafting could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( [ 'action' => 'index' ] );
 	}
 }

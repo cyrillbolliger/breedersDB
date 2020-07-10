@@ -31,7 +31,7 @@ use Cake\Event\Event;
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class MarksTable extends Table {
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -41,13 +41,13 @@ class MarksTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'marks' );
-		$this->displayField( 'id' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'marks' );
+		$this->setDisplayField( 'id' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'Timestamp' );
-		
+
 		$this->belongsTo( 'MarkForms', [
 			'foreignKey' => 'mark_form_id',
 			'joinType'   => 'INNER'
@@ -65,7 +65,7 @@ class MarksTable extends Table {
 			'foreignKey' => 'mark_id'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -78,11 +78,11 @@ class MarksTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->localizedTime( 'date', 'date' )
 			->allowEmpty( 'date' );
-		
+
 		$validator
 			->notEmpty( 'tree_id', __( 'Please select a tree' ), function ( $context ) {
 				return empty( $context['data']['variety_id'] ) && empty( $context['data']['batch_id'] );
@@ -93,7 +93,7 @@ class MarksTable extends Table {
 				},
 				'message' => __( 'Variety and batch must not be selected' ),
 			] );
-		
+
 		$validator
 			->notEmpty( 'variety_id', __( 'Please select a variety' ), function ( $context ) {
 				return empty( $context['data']['tree_id'] ) && empty( $context['data']['batch_id'] );
@@ -104,7 +104,7 @@ class MarksTable extends Table {
 				},
 				'message' => __( 'Tree and batch must not be selected' ),
 			] );
-		
+
 		$validator
 			->notEmpty( 'batch_id', __( 'Please select a batch' ), function ( $context ) {
 				return empty( $context['data']['tree_id'] ) && empty( $context['data']['variety_id'] );
@@ -115,10 +115,10 @@ class MarksTable extends Table {
 				},
 				'message' => __( 'Tree and variety must not be selected' ),
 			] );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -133,12 +133,12 @@ class MarksTable extends Table {
 		$rules->add( $rules->existsIn( [ 'tree_id' ], 'Trees' ) );
 		$rules->add( $rules->existsIn( [ 'variety_id' ], 'Varieties' ) );
 		$rules->add( $rules->existsIn( [ 'batch_id' ], 'Batches' ) );
-		
+
 		$rules->addDelete( new IsNotReferredBy( [ 'MarkValues' => 'mark_id' ] ), 'isNotReferredBy' );
-		
+
 		return $rules;
 	}
-	
+
 	/**
 	 * Reorder data in given array (from request) to enable marshalling the
 	 * associated mark_values. Also check if it's an exceptional mark and set
@@ -150,7 +150,7 @@ class MarksTable extends Table {
 	 */
 	public function prepareToSaveAssociated( $input ) {
 		$mark_values = array();
-		
+
 		if ( isset( $input['mark_form_fields']['mark_form_properties'] ) ) {
 			foreach ( $input['mark_form_fields']['mark_form_properties'] as $mark_form_property_id => $value ) {
 				if ( '' !== $value['mark_values']['value'] ) {
@@ -163,15 +163,15 @@ class MarksTable extends Table {
 				}
 			}
 		}
-		
+
 		if ( isset( $input['mark_form_fields'] ) ) {
 			unset( $input['mark_form_fields'] );
 		}
-		
+
 		if ( isset( $input['mark_form_properties'] ) ) {
 			unset( $input['mark_form_properties'] );
 		}
-		
+
 		return [
 			'date'         => isset( $input['date'] ) ? $input['date'] : null,
 			'author'       => isset( $input['author'] ) ? $input['author'] : null,
@@ -182,7 +182,7 @@ class MarksTable extends Table {
 			'mark_values'  => $mark_values,
 		];
 	}
-	
+
 	/**
 	 * Return true if given mark_form_property_id is NOT on the mark form with
 	 * the given mark_form_id. Else return false.
@@ -198,7 +198,7 @@ class MarksTable extends Table {
 		                                                ->andWhere( [ 'mark_form_property_id' => $mark_form_property_id ] )
 		                                                ->count();
 	}
-	
+
 	/**
 	 * Return query filtered by given search term searching the mark form property type
 	 *
@@ -223,7 +223,7 @@ class MarksTable extends Table {
 				return $q->where( [ 'mark_form_property_type_id' => (int) $term ] );
 			} );
 		}
-		
+
 		return $query;
 	}
 }

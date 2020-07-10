@@ -199,7 +199,7 @@ class QueriesController extends AppController {
     public function add( int $query_group_id ) {
         $query = $this->Queries->newEntity();
         if ( $this->request->is( 'post' ) ) {
-            $query = $this->Queries->patchEntityWithQueryData( $query, $this->request->data );
+            $query = $this->Queries->patchEntityWithQueryData( $query, $this->request->getData());
             if ( $this->Queries->save( $query ) ) {
                 $this->Flash->success( __( 'The query has been saved.' ) );
 
@@ -279,7 +279,7 @@ class QueriesController extends AppController {
             'contain' => []
         ] );
         if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
-            $query = $this->Queries->patchEntityWithQueryData( $query, $this->request->data );
+            $query = $this->Queries->patchEntityWithQueryData( $query, $this->request->getData());
             if ( $this->Queries->save( $query ) ) {
                 $this->Flash->success( __( 'The query has been saved.' ) );
 

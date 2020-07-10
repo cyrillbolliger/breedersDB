@@ -24,10 +24,10 @@ class MarkValuesController extends AppController {
 		] );
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
 			$this->_prepareValues( $markValue );
-			$markValue = $this->MarkValues->patchEntity( $markValue, $this->request->data );
+			$markValue = $this->MarkValues->patchEntity( $markValue, $this->request->getData());
 			if ( $this->MarkValues->save( $markValue ) ) {
 				$this->Flash->success( __( 'The mark value has been saved.' ) );
-				
+
 				return $this->redirect( [ 'controller' => 'Marks', 'action' => 'index' ] );
 			} else {
 				$this->Flash->error( __( 'The mark value could not be saved. Please, try again.' ) );
@@ -36,23 +36,23 @@ class MarkValuesController extends AppController {
 		$this->set( compact( 'markValue' ) );
 		$this->set( '_serialize', [ 'markValue' ] );
 	}
-	
+
 	/**
 	 * Put data in the correct format
 	 */
 	protected function _prepareValues( $markValue ) {
 		if ( isset( $this->request->data['mark_form_fields']['mark_form_properties'] ) ) {
-			
+
 			$key = array_keys( $this->request->data['mark_form_fields']['mark_form_properties'] )[0];
-			
+
 			$value = $this->request->data['mark_form_fields']['mark_form_properties'][ $key ]['mark_values']['value'];
 			unset( $this->request->data['mark_form_fields'] );
-			
+
 			$this->request->data['value']                 = $value;
 			$this->request->data['mark_form_property_id'] = $markValue->mark_form_property_id;
 		}
 	}
-	
+
 	/**
 	 * Delete method
 	 *
@@ -69,7 +69,7 @@ class MarkValuesController extends AppController {
 		} else {
 			$this->Flash->error( __( 'The mark value could not be deleted. Please, try again.' ) );
 		}
-		
+
 		return $this->redirect( $this->referer() );
 	}
 }

@@ -29,7 +29,7 @@ use App\Model\Rule\IsNotReferredBy;
  */
 class VarietiesTable extends Table {
 	use SoftDeleteTrait;
-	
+
 	/**
 	 * Initialize method
 	 *
@@ -39,13 +39,13 @@ class VarietiesTable extends Table {
 	 */
 	public function initialize( array $config ) {
 		parent::initialize( $config );
-		
-		$this->table( 'varieties' );
-		$this->displayField( 'code' );
-		$this->primaryKey( 'id' );
-		
+
+		$this->setTable( 'varieties' );
+		$this->setDisplayField( 'code' );
+		$this->setPrimaryKey( 'id' );
+
 		$this->addBehavior( 'Timestamp' );
-		
+
 		$this->belongsTo( 'Batches', [
 			'foreignKey' => 'batch_id',
 			'joinType'   => 'INNER'
@@ -60,7 +60,7 @@ class VarietiesTable extends Table {
 			'foreignKey' => 'variety_id'
 		] );
 	}
-	
+
 	/**
 	 * Default validation rules.
 	 *
@@ -73,26 +73,26 @@ class VarietiesTable extends Table {
 			->integer( 'id' )
 			->allowEmpty( 'id', 'create' )
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
-		
+
 		$validator
 			->requirePresence( 'code', 'create' )
 			->notEmpty( 'code' );
-		
+
 		$validator
 			->allowEmpty( 'official_name' );
-		
+
 		$validator
 			->allowEmpty( 'plant_breeder' );
-		
+
 		$validator
 			->allowEmpty( 'registration' );
-		
+
 		$validator
 			->allowEmpty( 'description' );
-		
+
 		return $validator;
 	}
-	
+
 	/**
 	 * Returns a rules checker object that will be used for validating
 	 * application integrity.
@@ -108,16 +108,16 @@ class VarietiesTable extends Table {
 			[ 'code', 'batch_id' ],
 			__( 'A variety with this code and the same batch already exists.' )
 		) );
-		
+
 		$rules->addDelete( new IsNotReferredBy( [ 'Trees' => 'variety_id' ] ), 'isNotReferredBy' );
 		$rules->addDelete( new IsNotReferredBy( [ 'ScionsBundles' => 'variety_id' ] ), 'isNotReferredBy' );
 		$rules->addDelete( new IsNotReferredBy( [ 'Crossings' => 'mother_variety_id' ] ), 'isNotReferredBy' );
 		$rules->addDelete( new IsNotReferredBy( [ 'Crossings' => 'father_variety_id' ] ), 'isNotReferredBy' );
 		$rules->addDelete( new IsNotReferredBy( [ 'Marks' => 'variety_id' ] ), 'isNotReferredBy' );
-		
+
 		return $rules;
 	}
-	
+
 	/**
 	 * Return query filtered by given search term searching the convar and breeder_variety_code
 	 *
@@ -127,16 +127,16 @@ class VarietiesTable extends Table {
 	 */
 	public function filter( string $term ) {
 		$is_breeder_variety_code = preg_match( '/^' . COMPANY_ABBREV . '\d+$/i', $term );
-		
+
 		if ( $is_breeder_variety_code ) {
 			$query = $this->filterBreederVarietyCode( $term );
 		} else {
 			$query = $this->filterConvars( $term );
 		}
-		
+
 		return $query;
 	}
-	
+
 	/**
 	 * Return query filtered by given search term searching the breeder variety code
 	 *
@@ -147,12 +147,12 @@ class VarietiesTable extends Table {
 	public function filterBreederVarietyCode( string $term ) {
 		$tmp = str_ireplace( COMPANY_ABBREV, '', $term );
 		$id  = ltrim( $tmp, '0' );
-		
+
 		return $this->find()
 		            ->contain( 'Batches' )
 		            ->where( [ 'Varieties.id' => $id ] );
 	}
-	
+
 	/**
 	 * Return query filtered by given search term searching the convar
 	 *
@@ -163,17 +163,17 @@ class VarietiesTable extends Table {
 	public function filterConvars( string $term ) {
 		$list = $this->searchConvars( $term )->toArray();
 		$ids  = array_keys( $list );
-		
+
 		// if nothing was found
 		if ( empty( $ids ) ) {
 			return null;
 		}
-		
+
 		return $this->find()
 		            ->contain( 'Batches' )
 		            ->where( [ 'Varieties.id IN' => $ids ] );
 	}
-	
+
 	/**
 	 * Return list with the id of the variety as key and the convar as value
 	 * filtered by the given search term
@@ -187,7 +187,7 @@ class VarietiesTable extends Table {
 			'Batches',
 			'Batches.Crossings',
 		] );
-		
+
 		$concat = $query->func()->concat( [
 			'Crossings.code' => 'identifier',
 			'.',
@@ -195,12 +195,12 @@ class VarietiesTable extends Table {
 			'.',
 			'Varieties.code' => 'identifier'
 		] );
-		
+
 		$query->select( [
 			'Varieties.id',
 			'code' => $concat
 		] );
-		
+
 		$search = explode( '.', trim( $term ) );
 		if ( 3 === count( $search ) ) {
 			$query->where( [ 'Crossings.code LIKE' => '%' . $search[0] . '%' ] )
@@ -212,10 +212,10 @@ class VarietiesTable extends Table {
 		} else {
 			$query->where( [ 'Crossings.code LIKE' => '%' . $search[0] . '%' ] );
 		}
-		
+
 		return $query;
 	}
-	
+
 	/**
 	 * get id => convar list from given id
 	 *
@@ -228,16 +228,16 @@ class VarietiesTable extends Table {
 			'contain' => [ 'Batches', 'Batches.Crossings' ],
 			'fields'  => [ 'id', 'Varieties.code', 'Batches.code', 'Crossings.code' ]
 		] );
-		
+
 		$varieties = [
 			[
 				$id => $variety->batch->crossing->code . '.' . $variety->batch->code . '.' . $variety->code,
 			],
 		];
-		
+
 		return $varieties;
 	}
-	
+
 	/**
 	 * Add a new variety from the given crossing batch string
 	 *
@@ -251,12 +251,12 @@ class VarietiesTable extends Table {
 		$batch_id = key( $batch );
 		// get next free variety code
 		$code = $this->getNextFreeCode( $batch_id );
-		
+
 		// create entity
 		$variety           = $this->newEntity();
 		$variety->code     = $code;
 		$variety->batch_id = $batch_id;
-		
+
 		// persist variety
 		if ( $this->save( $variety ) ) {
 			return $variety->id;
@@ -264,7 +264,7 @@ class VarietiesTable extends Table {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Return next unused code number for a breeder variety with the given batch_id
 	 *
@@ -277,16 +277,16 @@ class VarietiesTable extends Table {
 		              ->where( [ 'batch_id' => $batch_id ] )
 		              ->order( [ 'code' => 'DESC' ] )
 		              ->first();
-		
+
 		if ( empty( $query->code ) ) {
 			$return = '001';
 		} else {
 			$return = (string) sprintf( '%03d', (int) $query->code + 1 );
 		}
-		
+
 		return $return;
 	}
-	
+
 	/**
 	 * Return convar by given id
 	 *
@@ -296,7 +296,7 @@ class VarietiesTable extends Table {
 	 */
 	public function getConvar( int $id ) {
 		$variety = $this->get( $id, [ 'contain' => [ 'Batches' ] ] );
-		
+
 		return $variety->convar;
 	}
 }
