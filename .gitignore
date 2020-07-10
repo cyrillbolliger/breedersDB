@@ -9,6 +9,7 @@
 /tests/*
 /.editorconfig
 .docker/mysql
+vendor
 
 # dont check in .mo files. cake throws an error if you do provide them!
 *.mo
