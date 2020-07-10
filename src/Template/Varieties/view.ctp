@@ -45,7 +45,7 @@
     <div class="related">
         <h4><?= __( 'Related Scions Bundles' ) ?></h4>
 		<?php if ( ! empty( $variety->scions_bundles ) ): ?>
-            <table cellpadding="0" cellspacing="0">
+            <table>
                 <tr>
                     <th scope="col" class="id"><?= __( 'Id' ) ?></th>
                     <th scope="col"><?= __( 'Code' ) ?></th>

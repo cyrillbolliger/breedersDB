@@ -1,4 +1,4 @@
-<table cellpadding="0" cellspacing="0">
+<table>
     <tr>
         <th scope="col" class="id"><?= __( 'Id' ) ?></th>
         <th scope="col"><?= __( 'Date' ) ?></th>
@@ -16,16 +16,16 @@
 				$markedOn = $this->Html->link( __( 'Tree:' ) . ' ' . h( $mark_value->mark->tree->publicid ),
 					[ 'controller' => 'Trees', 'action' => 'view', $mark_value->mark->tree_id ] );
 				break;
-			
+
 			case $mark_value->mark->variety_id:
 				$markedOn = $this->Html->link( __( 'Variety:' ) . ' ' . h( $mark_value->mark->variety->convar ),
 					[ 'controller' => 'Varieties', 'action' => 'view', $mark_value->mark->variety_id ] );
 				break;
-			
+
 			case $mark_value->mark->batch_id:
 				$markedOn = __( 'Batch' );
 				break;
-			
+
 			default:
 				$markedOn = '';
 				break;

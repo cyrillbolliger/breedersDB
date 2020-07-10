@@ -34,7 +34,7 @@
     <div class="related">
         <h4><?= __( 'Related Batches' ) ?></h4>
 		<?php if ( ! empty( $crossing->batches ) ): ?>
-            <table cellpadding="0" cellspacing="0">
+            <table>
                 <tr>
                     <th scope="col" class="id"><?= __( 'Id' ) ?></th>
                     <th scope="col"><?= __( 'Code' ) ?></th>
@@ -77,7 +77,7 @@
     <div class="related">
         <h4><?= __( 'Related Mother Trees' ) ?></h4>
 		<?php if ( ! empty( $crossing->mother_trees ) ): ?>
-            <table cellpadding="0" cellspacing="0">
+            <table>
                 <tr>
                     <th scope="col" class="id"><?= __( 'Id' ) ?></th>
                     <th scope="col"><?= __( 'Code' ) ?></th>

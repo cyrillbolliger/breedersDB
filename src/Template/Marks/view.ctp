@@ -53,7 +53,7 @@ if ( $mark->has( 'tree' ) ) {
     <div class="related">
         <h4><?= __( 'Values' ) ?></h4>
 		<?php if ( ! empty( $mark->mark_values ) ): ?>
-            <table cellpadding="0" cellspacing="0">
+            <table>
                 <tr>
                     <th scope="col" class="id"><?= __( 'Id' ) ?></th>
                     <th scope="col"><?= __( 'Property' ) ?></th>

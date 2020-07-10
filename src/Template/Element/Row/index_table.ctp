@@ -1,4 +1,4 @@
-<table cellpadding="0" cellspacing="0">
+<table>
     <thead>
     <tr>
         <th scope="col" class="id"><?= $this->Paginator->sort( 'id' ) ?></th>

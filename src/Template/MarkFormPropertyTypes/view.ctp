@@ -16,7 +16,7 @@
     <div class="related">
         <h4><?= __( 'Related Mark Properties' ) ?></h4>
 		<?php if ( ! empty( $markFormPropertyType->mark_form_properties ) ): ?>
-            <table cellpadding="0" cellspacing="0">
+            <table>
                 <tr>
                     <th scope="col" class="id"><?= __( 'Id' ) ?></th>
                     <th scope="col"><?= __( 'Name' ) ?></th>

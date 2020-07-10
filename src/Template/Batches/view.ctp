@@ -62,7 +62,7 @@
     <div class="related">
         <h4><?= __( 'Related Varieties' ) ?></h4>
 		<?php if ( ! empty( $batch->varieties ) ): ?>
-            <table cellpadding="0" cellspacing="0">
+            <table>
                 <tr>
                     <th scope="col" class="id"><?= __( 'Id' ) ?></th>
                     <th scope="col"><?= __( 'Convar' ) ?></th>

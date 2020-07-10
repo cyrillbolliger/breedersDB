@@ -1,4 +1,4 @@
-<table cellpadding="0" cellspacing="0">
+<table>
     <thead>
     <tr>
         <th scope="col" class="id"><?= $this->Paginator->sort( 'id' ) ?></th>
@@ -23,7 +23,7 @@
 		} else {
 			$object = '';
 		}
-		
+
 		$mark_data = '<ul>';
 		foreach ( $mark->mark_values as $mark_value ) {
 			$value     = substr( $mark_value->value, 0, 35 ) != $mark_value->value ? substr( $mark_value->value, 0,
