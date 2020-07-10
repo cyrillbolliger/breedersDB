@@ -85,7 +85,7 @@ class QueriesController extends AppController {
         $query = $this->Queries->get( $id );
 
         // query the data
-        $marksViewTable = TableRegistry::get( 'MarksView' );
+        $marksViewTable = TableRegistry::getTableLocator()->get( 'MarksView' );
         $data           = $marksViewTable->customFindMarks(
             $query->breeding_object_aggregation_mode,
             $query->active_regular_fields,
@@ -137,8 +137,8 @@ class QueriesController extends AppController {
     public function export( $id = null ) {
         $file = $this->_getExportFile( $id );
 
-        $this->response->type( 'xlsx' );
-        $this->response->file( $file, [ 'download' => true ] );
+        $this->response->withType( 'xlsx' );
+        $this->response->withFile( $file, [ 'download' => true ] );
 
         // used for jquery.fileDownload.js
         $this->Cookie->configKey( 'fileDownload', 'encryption', false );
@@ -171,7 +171,7 @@ class QueriesController extends AppController {
 
         // -- if its a mark query --
         // query the data
-        $marksViewTable = TableRegistry::get( 'MarksView' );
+        $marksViewTable = TableRegistry::getTableLocator()->get( 'MarksView' );
         $data           = $marksViewTable->customFindMarks(
             $query->breeding_object_aggregation_mode,
             $query->active_regular_fields,
@@ -209,7 +209,7 @@ class QueriesController extends AppController {
             }
         }
 
-        $markProperties = TableRegistry::get( 'MarkFormProperties' );
+        $markProperties = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
         $mark_selectors = $markProperties->find( 'all' )->order( [ 'name' => 'asc' ] );
 
         $views       = $this->Queries->getViewNames();
@@ -289,7 +289,7 @@ class QueriesController extends AppController {
             }
         }
 
-        $markProperties = TableRegistry::get( 'MarkFormProperties' );
+        $markProperties = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
         $mark_selectors = $markProperties->find( 'all' )->order( [ 'name' => 'asc' ] );
 
         $views       = $this->Queries->getViewNames();

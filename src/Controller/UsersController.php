@@ -141,8 +141,8 @@ class UsersController extends AppController {
 					'httpOnly' => true
 				] );
 				$this->Cookie->write( 'CookieAuth', [
-					'email'    => $this->request->getData() 'email' ),
-					'password' => $this->request->getData() 'password' )
+					'email'    => $this->request->getData( 'email' ),
+					'password' => $this->request->getData( 'password' )
 				] );
 
 				return $this->redirect( $this->Auth->redirectUrl() );
@@ -157,7 +157,7 @@ class UsersController extends AppController {
 	 * @return \Cake\Network\Response | null
 	 */
 	public function logout() {
-		$this->request->session()->destroy();
+		$this->request->getSession()->destroy();
 
 		return $this->redirect( $this->Auth->logout() );
 	}

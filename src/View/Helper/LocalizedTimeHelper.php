@@ -8,7 +8,7 @@ class LocalizedTimeHelper extends Helper {
 	public $helpers = [
 		'Time'
 	];
-	
+
 	/**
 	 * Return time, date or datetime, adapted to the users timezone
 	 *
@@ -18,8 +18,8 @@ class LocalizedTimeHelper extends Helper {
 	 * @return mixed
 	 */
 	public function getUserTime( $time, $format = null ) {
-		$time_zone = $this->_View->request->session()->read( 'time_zone' );
-		
+		$time_zone = $this->_View->request->getSession()->read( 'time_zone' );
+
 		return $this->Time->format(
 			$time,
 			$format,
@@ -27,7 +27,7 @@ class LocalizedTimeHelper extends Helper {
 			$time_zone
 		);
 	}
-	
+
 	/**
 	 * Return a regex that will match all valid dates of the following formats
 	 * - dd.mm.yyyy

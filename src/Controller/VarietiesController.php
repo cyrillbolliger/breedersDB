@@ -26,7 +26,7 @@ class VarietiesController extends AppController {
 	public function beforeFilter( Event $event ) {
 		parent::beforeFilter( $event );
 
-		$this->Security->config( 'unlockedFields', [ 'code', 'batch_id' ] );
+		$this->Security->setConfig( 'unlockedFields', [ 'code', 'batch_id' ] );
 	}
 
 	/**

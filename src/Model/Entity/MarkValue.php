@@ -21,7 +21,7 @@ use Cake\I18n\Date;
  * @property \App\Model\Entity\Mark $mark
  */
 class MarkValue extends Entity {
-	
+
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
 	 *
@@ -35,7 +35,7 @@ class MarkValue extends Entity {
 		'*'  => true,
 		'id' => false
 	];
-	
+
 	/**
 	 * Return nicely formatted date if its a date. Else just return the value as it is.
 	 * The conversion to the ymd format at saving is done in the beforeMarshalling method of the table.
@@ -46,17 +46,17 @@ class MarkValue extends Entity {
 		if ( $this->isNew() ) {
 			return $this->_properties['value'];
 		}
-		
-		$MarkFormProperties = TableRegistry::get( 'MarkFormProperties' );
-		
+
+		$MarkFormProperties = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
+
 		$type = $MarkFormProperties->get( $this->_properties['mark_form_property_id'] )->field_type;
-		
+
 		if ( 'DATE' === $type ) {
 			$date = Date::parse( $this->_properties['value'] );
-			
+
 			return $date->i18nFormat();
 		}
-		
+
 		return $this->_properties['value'];
 	}
 }

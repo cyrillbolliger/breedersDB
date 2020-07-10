@@ -20,7 +20,7 @@ class GetFilterDataBehavior extends Behavior {
      * @throws \Exception if any fields filter data validator types is unknown
      */
     public function getFilterData() {
-        $queries = TableRegistry::get( 'Queries' );
+        $queries = TableRegistry::getTableLocator()->get( 'Queries' );
 
         $tables        = array_keys( $queries->getViewNames() );
         $tables_fields = $queries->getFieldTypeMapOf( $tables );
@@ -47,7 +47,7 @@ class GetFilterDataBehavior extends Behavior {
      * @throws \Exception if the fields type is unknown
      */
     private function _getFieldFilterData( string $table, string $field, string $type ): array {
-        $queries = TableRegistry::get( 'Queries' );
+        $queries = TableRegistry::getTableLocator()->get( 'Queries' );
 
         $data['id']    = $table . '.' . $field;
         $data['label'] = $queries->translateFields( $data['id'] );
@@ -114,7 +114,7 @@ class GetFilterDataBehavior extends Behavior {
             return 'number';
         }
 
-        $table = TableRegistry::get( $tablename );
+        $table = TableRegistry::getTableLocator()->get( $tablename );
         if ( in_array( $field, $table->getBooleanFields() ) ) {
             return 'radio';
         }
@@ -236,10 +236,10 @@ class GetFilterDataBehavior extends Behavior {
      * @return array
      */
     private function _getDistinctValuesOf( string $tablename, string $field ): array {
-        $table = TableRegistry::get( $tablename );
+        $table = TableRegistry::getTableLocator()->get( $tablename );
 
         $tmp = $table->find()
-                     ->hydrate( false )
+                     ->enableHydration( false )
                      ->select( [ $field ] )
                      ->distinct()
                      ->orderAsc( $field );

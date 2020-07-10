@@ -130,8 +130,8 @@ class QueriesTable extends Table {
 	public function getFieldTypeMapOf( array $tables ) {
 		$fields = array();
 		foreach ( $tables as $table_name ) {
-			$table                 = TableRegistry::get( $table_name );
-			$fields[ $table_name ] = $table->schema()->typeMap();
+			$table                 = TableRegistry::getTableLocator()->get( $table_name );
+			$fields[ $table_name ] = $table->getSchema()->typeMap();
 		}
 
 		return $fields;
@@ -283,7 +283,7 @@ class QueriesTable extends Table {
 		$joins      = $this->_buildJoinArrays( $associations );
 		$conditions = $query->regular_conditions;
 
-		$rootTable = TableRegistry::get( $this->viewQueryRoot );
+		$rootTable = TableRegistry::getTableLocator()->get( $this->viewQueryRoot );
 		$orm_query = $rootTable
 			->find( 'all' )
 			->distinct()
@@ -361,7 +361,7 @@ class QueriesTable extends Table {
 	public function getAssociationsOf( string $table_name, $hasManyOnly = false ) {
 		$associated = array();
 
-		$tmp = TableRegistry::get( $table_name );
+		$tmp = TableRegistry::getTableLocator()->get( $table_name );
 		$has = $tmp->associations();
 
 		$tables = array();
@@ -378,7 +378,7 @@ class QueriesTable extends Table {
 		}
 
 		foreach ( $tables as $table ) {
-			$associated[] = $has->get( $table )->name();
+			$associated[] = $has->get( $table )->getName();
 		}
 
 		return $associated;
@@ -417,15 +417,15 @@ class QueriesTable extends Table {
 
 		$array = array();
 		foreach ( $associations as $els ) {
-			$rootTable = TableRegistry::get( $this->viewQueryRoot );
+			$rootTable = TableRegistry::getTableLocator()->get( $this->viewQueryRoot );
 			foreach ( explode( '.', $els ) as $tableName ) {
-				$table               = TableRegistry::get( $tableName );
-				$rootAssociation     = $rootTable->associations()->get( $table->alias() );
-				$tableAssociation    = $table->associations()->get( $rootTable->alias() );
+				$table               = TableRegistry::getTableLocator()->get( $tableName );
+				$rootAssociation     = $rootTable->associations()->get( $table->getAlias() );
+				$tableAssociation    = $table->associations()->get( $rootTable->getAlias() );
 				$array[ $tableName ] = [
-					'table'      => $table->table(),
+					'table'      => $table->getTable(),
 					'conditions' => $this->_getAssociationConditions( $rootAssociation, $tableAssociation ),
-					'type'       => $rootAssociation->joinType()
+					'type'       => $rootAssociation->getJoinType()
 				];
 				$rootTable           = $table;
 			}
@@ -457,7 +457,7 @@ class QueriesTable extends Table {
 			throw new \Exception( "Type of association not implemented" );
 		}
 
-		return $root->name() . '.' . $root->foreignKey() . ' = ' . $leaf->name() . '.' . $leaf->bindingKey();
+		return $root->getName() . '.' . $root->getForeignKey() . ' = ' . $leaf->getName() . '.' . $leaf->getBindingKey();
 	}
 
 	/**
@@ -489,7 +489,7 @@ class QueriesTable extends Table {
 	 * @throws \Exception if field key doesn't exist in translations array
 	 */
 	public function getMarkColumns( Query $markQuery ): array {
-		$markProperties = TableRegistry::get( 'MarkFormProperties' );
+		$markProperties = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
 		$columns        = [];
 		foreach ( $markQuery->active_mark_field_ids as $property_id ) {
 			$columns[ $property_id ] = $markProperties->get( $property_id );

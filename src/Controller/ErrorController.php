@@ -31,7 +31,7 @@ class ErrorController extends AppController {
 	public function initialize() {
 		$this->loadComponent( 'RequestHandler' );
 	}
-	
+
 	/**
 	 * beforeFilter callback.
 	 *
@@ -41,7 +41,7 @@ class ErrorController extends AppController {
 	 */
 	public function beforeFilter( Event $event ) {
 	}
-	
+
 	/**
 	 * beforeRender callback.
 	 *
@@ -51,10 +51,10 @@ class ErrorController extends AppController {
 	 */
 	public function beforeRender( Event $event ) {
 		parent::beforeRender( $event );
-		
-		$this->viewBuilder()->templatePath( 'Error' );
+
+		$this->viewBuilder()->setTemplatePath( 'Error' );
 	}
-	
+
 	/**
 	 * afterFilter callback.
 	 *

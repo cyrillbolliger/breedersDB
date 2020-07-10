@@ -26,7 +26,7 @@ use Cake\ORM\TableRegistry;
  * @property \App\Model\Entity\Tree[] $trees
  */
 class Variety extends Entity {
-	
+
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
 	 *
@@ -40,16 +40,16 @@ class Variety extends Entity {
 		'*'  => true,
 		'id' => false
 	];
-	
+
 	protected $_virtual = [ 'convar', 'breeder_variety_code' ];
-	
+
 	protected function _getConvar() {
-		$Crossings     = TableRegistry::get( 'Crossings' );
+		$Crossings     = TableRegistry::getTableLocator()->get( 'Crossings' );
 		$crossing_code = $Crossings->get( $this->batch->crossing_id )->code;
-		
+
 		return $crossing_code . '.' . $this->batch->code . '.' . $this->code;
 	}
-	
+
 	protected function _getBreederVarietyCode() {
 		return COMPANY_ABBREV . sprintf( '%0' . BREEDER_VARIETY_CODE_NUM_LENGTH . 'd', $this->id );
 	}

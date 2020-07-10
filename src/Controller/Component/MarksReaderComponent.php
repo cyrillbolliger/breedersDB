@@ -15,22 +15,22 @@ class MarksReaderComponent extends Component {
 	 * Hold the Marks model
 	 */
 	protected $Marks;
-	
+
 	/**
 	 * Hold the MarkValues model
 	 */
 	protected $MarkValues;
-	
+
 	/**
 	 * Hold the MarkFormProperties model
 	 */
 	protected $MarkFormProperties;
-	
+
 	/**
 	 * Hold the MarkFormPropertyTypes model
 	 */
 	protected $MarkFormPropertyTypes;
-	
+
 	/**
 	 * Is called after the controller’s beforeFilter method but before the
 	 * controller executes the current action handler.
@@ -38,12 +38,12 @@ class MarksReaderComponent extends Component {
 	 * @param \Cake\Event\Event $event
 	 */
 	public function startup( Event $event ) {
-		$this->Marks                 = TableRegistry::get( 'Marks' );
-		$this->MarkValues            = TableRegistry::get( 'MarkValues' );
-		$this->MarkFormProperties    = TableRegistry::get( 'MarkFormProperties' );
-		$this->MarkFormPropertyTypes = TableRegistry::get( 'MarkFormPropertyTypes' );
+		$this->Marks                 = TableRegistry::getTableLocator()->get( 'Marks' );
+		$this->MarkValues            = TableRegistry::getTableLocator()->get( 'MarkValues' );
+		$this->MarkFormProperties    = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
+		$this->MarkFormPropertyTypes = TableRegistry::getTableLocator()->get( 'MarkFormPropertyTypes' );
 	}
-	
+
 	/**
 	 * Return mark values of given tree and/or variety and/or batch, sorted by mark form property type
 	 *
@@ -59,18 +59,18 @@ class MarksReaderComponent extends Component {
 		if ( null === $treeId && null === $varietyId && null === $batchId ) {
 			throw new Exception( __( 'Invalid arguments.' ) );
 		}
-		
+
 		$MarkFormPropertyTypes = $this->MarkFormPropertyTypes->find( 'list' );
-		
+
 		$data = array();
-		
+
 		foreach ( $MarkFormPropertyTypes as $key => $value ) {
 			$data[ $value ] = $this->_findByType( $key, (array) $treeId, $varietyId, $batchId, $markId );
 		}
-		
+
 		return $data;
 	}
-	
+
 	/**
 	 * Return query to find marks, its values and properties filtered by given type, tree or variety or batch
 	 *
@@ -87,15 +87,15 @@ class MarksReaderComponent extends Component {
 		if ( $treeId ) {
 			$where[] = [ 'Marks.tree_id IN' => $treeId ];
 		}
-		
+
 		if ( $varietyId ) {
 			$where[] = [ 'Marks.variety_id' => $varietyId ];
 		}
-		
+
 		if ( $batchId ) {
 			$where[] = [ 'Marks.batch_id' => $batchId ];
 		}
-		
+
 		$query = $this->MarkValues->find()
 		                          ->contain( [
 			                          'Marks',
@@ -112,12 +112,12 @@ class MarksReaderComponent extends Component {
 		                          ->order( [
 			                          'Marks.date' => 'DESC',
 		                          ] );
-		
+
 		if ( $markId ) {
 			$query->andWhere( [ 'MarkValues.mark_id' => $markId ] );
 		}
-		
+
 		return $query;
 	}
-	
+
 }

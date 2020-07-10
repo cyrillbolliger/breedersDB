@@ -25,7 +25,7 @@ use Cake\Network\Exception\NotFoundException;
 class CollectionPaginatorComponent extends Component {
 	// load the pagination component
 	public $components = [ 'Paginator' ];
-	
+
 	/**
 	 * Add the pagination parameters to the request object and return paginated results.
 	 *
@@ -48,46 +48,46 @@ class CollectionPaginatorComponent extends Component {
 	): CollectionInterface {
 		// buffer the results to perform calculations without changing the collection
 		$collection->buffered();
-		
+
 		if ( property_exists( $this->_registry->getController(), 'paginate' ) ) {
 			$settings = array_merge( $this->_registry->getController()->paginate, $settings );
 		}
 
-		$alias   = $this->_registry->getController()->loadModel()->alias();
+		$alias   = $this->_registry->getController()->loadModel()->getAlias();
 		$options = $this->Paginator->mergeOptions( $alias, $settings );
 		$options = $this->Paginator->checkLimit( $options );
 
         $options         += [ 'page' => 1, 'scope' => null ];
 		$options['page'] = (int) $options['page'] < 1 ? 1 : (int) $options['page'];
 		$finder          = 'all';
-		
+
 		$sortDefault = $directionDefault = false;
 		if ( ! empty( $defaults['order'] ) && count( $defaults['order'] ) == 1 ) {
 			$sortDefault      = key( $defaults['order'] );
 			$directionDefault = current( $defaults['order'] );
 		}
-		
+
 		$sort      = array_key_exists( 'sort', $options ) ? $options['sort'] : $sortDefault;
 		$direction = array_key_exists( 'direction', $options ) ? $options['direction'] : $directionDefault;
 		$order     = [ $sort => $direction ];
-		
+
 		$sorted = $this->_sort( $collection, key( $order ), current( $order ), $sortFunction );
-		
+
 		$offset  = $options['limit'] * ( $options['page'] - 1 );
 		$results = $sorted->take( $options['limit'], $offset );
-		
+
 		$numResults = count( $results->toArray() );
 		$count      = $numResults ? count( $collection->toArray() ) : 0;
-		
+
 		$defaults = $this->Paginator->getDefaults( $alias, $settings );
 		unset( $defaults[0] );
-		
+
 		$page          = $options['page'];
 		$limit         = $options['limit'];
 		$pageCount     = (int) ceil( $count / $limit );
 		$requestedPage = $page;
 		$page          = max( min( $page, $pageCount ), 1 );
-		
+
 		$paging = [
 			'finder'           => $finder,
 			'page'             => $page,
@@ -104,17 +104,17 @@ class CollectionPaginatorComponent extends Component {
 			'directionDefault' => $directionDefault,
 			'scope'            => $options['scope'],
 		];
-		
+
 		$paging_params = [ $alias => $paging ];
 		$this->request->addParams( [ 'paging' => $paging_params ] );
-		
+
 		if ( $requestedPage > $page ) {
 			throw new NotFoundException();
 		}
-		
+
 		return $results;
 	}
-	
+
 	/**
 	 * Sort the collection
 	 *
@@ -131,15 +131,15 @@ class CollectionPaginatorComponent extends Component {
 		if ( empty( $sort ) ) {
 			return $collection;
 		}
-		
+
 		$orders = [ 'asc' => SORT_ASC, 'desc' => SORT_DESC ];
 		$type   = SORT_NATURAL;
-		
+
 		$order = empty( $order ) ? 'asc' : $order;
 		$order = $orders[ $order ];
-		
+
 		$sort = $callback( $sort );
-		
+
 		return $collection->sortBy( $sort, $order, $type );
 	}
 }

@@ -38,7 +38,7 @@ class MarksController extends AppController {
 		if ( ! empty( $this->request->data['mark_form_fields']['mark_form_properties'] ) ) {
 			$ids = array_keys( $this->request->data['mark_form_fields']['mark_form_properties'] );
 			foreach ( $ids as $id ) {
-				$this->Security->config( 'unlockedFields',
+				$this->Security->setConfig( 'unlockedFields',
 					[ 'mark_form_fields.mark_form_properties.' . $id . '.mark_values.value' ] );
 			}
 		}
@@ -118,14 +118,14 @@ class MarksController extends AppController {
 		if ( $this->request->is( 'post' ) ) {
 			$data = $this->Marks->prepareToSaveAssociated( $this->request->getData());
 			$mark = $this->Marks->patchEntity( $mark, $data, [ 'associated' => 'MarkValues' ] );
-			$mark->dirty( 'mark_values', true );
+			$mark->setDirty( 'mark_values' );
 			if ( $this->Marks->save( $mark ) ) {
 				$this->Flash->success( __( 'The mark has been saved.' ) );
 
 				return $this->redirect( $this->referer() );
 			} else {
 				$this->Flash->error( __( 'The mark could not be saved.' ) );
-				$errors = $mark->errors();
+				$errors = $mark->getErrors();
 				if ( ! empty( $errors['tree_id'] ) ) {
 					$this->Flash->error( __( 'Please select a tree by public id.' ) );
 				}
@@ -163,14 +163,14 @@ class MarksController extends AppController {
 		if ( $this->request->is( 'post' ) ) {
 			$data = $this->Marks->prepareToSaveAssociated( $this->request->getData());
 			$mark = $this->Marks->patchEntity( $mark, $data, [ 'associated' => 'MarkValues' ] );
-			$mark->dirty( 'mark_values', true );
+			$mark->setDirty( 'mark_values' );
 			if ( $this->Marks->save( $mark ) ) {
 				$this->Flash->success( __( 'The mark has been saved.' ) );
 
 				return $this->redirect( [ 'action' => 'addVarietyMark' ] );
 			} else {
 				$this->Flash->error( __( 'The mark could not be saved.' ) );
-				$errors = $mark->errors();
+				$errors = $mark->getErrors();
 				if ( ! empty( $errors['variety_id'] ) ) {
 					$this->Flash->error( __( 'Please select a variety.' ) );
 				}
@@ -212,14 +212,14 @@ class MarksController extends AppController {
 		if ( $this->request->is( 'post' ) ) {
 			$data = $this->Marks->prepareToSaveAssociated( $this->request->getData());
 			$mark = $this->Marks->patchEntity( $mark, $data, [ 'associated' => 'MarkValues' ] );
-			$mark->dirty( 'mark_values', true );
+			$mark->setDirty( 'mark_values');
 			if ( $this->Marks->save( $mark ) ) {
 				$this->Flash->success( __( 'The mark has been saved.' ) );
 
 				return $this->redirect( [ 'action' => 'addBatchMark' ] );
 			} else {
 				$this->Flash->error( __( 'The mark could not be saved.' ) );
-				$errors = $mark->errors();
+				$errors = $mark->getErrors();
 				if ( ! empty( $errors['batch_id'] ) ) {
 					$this->Flash->error( __( 'Please select a batch.' ) );
 				}

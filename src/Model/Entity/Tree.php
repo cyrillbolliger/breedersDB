@@ -36,7 +36,7 @@ use Cake\ORM\TableRegistry;
  * @property \App\Model\Entity\Mark[] $marks
  */
 class Tree extends Entity {
-	
+
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
 	 *
@@ -50,26 +50,26 @@ class Tree extends Entity {
 		'*'  => true,
 		'id' => false
 	];
-	
+
 	protected function _getConvar() {
-		$Crossings = TableRegistry::get( 'Crossings' );
-		$Batches   = TableRegistry::get( 'Batches' );
-		$Varieties = TableRegistry::get( 'Varieties' );
+		$Crossings = TableRegistry::getTableLocator()->get( 'Crossings' );
+		$Batches   = TableRegistry::getTableLocator()->get( 'Batches' );
+		$Varieties = TableRegistry::getTableLocator()->get( 'Varieties' );
 		$variety   = $Varieties->get( $this->variety_id );
 		$batch     = $Batches->get( $variety->batch_id );
 		$crossing  = $Crossings->get( $batch->crossing_id );
-		
+
 		return $crossing->code . '.' . $batch->code . '.' . $variety->code;
 	}
-	
+
 	protected function _getRowCode() {
 		if ( ! $this->row_id ) {
 			return null;
 		}
-		
-		$Rows = TableRegistry::get( 'Rows' );
+
+		$Rows = TableRegistry::getTableLocator()->get( 'Rows' );
 		$row  = $Rows->get( $this->row_id );
-		
+
 		return $row->code;
 	}
 }

@@ -31,7 +31,7 @@ class MarkFormsController extends AppController {
 		if ( ! empty( $this->request->data['mark_form_fields']['mark_form_properties'] ) ) {
 			$ids = array_keys( $this->request->data['mark_form_fields']['mark_form_properties'] );
 			foreach ( $ids as $id ) {
-				$this->Security->config( 'unlockedFields',
+				$this->Security->setConfig( 'unlockedFields',
 					[ 'mark_form_fields.mark_form_properties.' . $id . '.mark_values.value' ] );
 			}
 		}
@@ -176,7 +176,7 @@ class MarkFormsController extends AppController {
 			$mark_form_property_ids[] = $field->mark_form_property_id;
 		}
 
-		foreach ( $this->request->data['mark_form_fields'] as $mark_form_field ) {
+		foreach ( $this->request->getData('mark_form_fields') as $mark_form_field ) {
 			$key = array_search( $mark_form_field['mark_form_property_id'], $mark_form_property_ids );
 			unset( $mark_form_property_ids[ $key ] );
 		}

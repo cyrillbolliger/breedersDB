@@ -24,7 +24,7 @@ use Cake\ORM\TableRegistry;
  * @property \App\Model\Entity\Variety $variety
  */
 class ScionsBundle extends Entity {
-	
+
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
 	 *
@@ -38,14 +38,14 @@ class ScionsBundle extends Entity {
 		'*'  => true,
 		'id' => false
 	];
-	
+
 	protected function _getConvar() {
-		$Crossings = TableRegistry::get( 'Crossings' );
-		$Batches   = TableRegistry::get( 'Batches' );
+		$Crossings = TableRegistry::getTableLocator()->get( 'Crossings' );
+		$Batches   = TableRegistry::getTableLocator()->get( 'Batches' );
 		$variety   = $this->variety;
 		$batch     = $Batches->get( $variety->batch_id );
 		$crossing  = $Crossings->get( $batch->crossing_id );
-		
+
 		return $crossing->code . '.' . $batch->code . '.' . $variety->code;
 	}
 }

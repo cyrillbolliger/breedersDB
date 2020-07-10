@@ -12,22 +12,22 @@ use Cake\ORM\TableRegistry;
  */
 class IsNotReferredBy {
 	protected $associations;
-	
+
 	public function __construct( array $associations ) {
 		$this->associations = $associations;
 	}
-	
+
 	public function __invoke( EntityInterface $entity, array $options ) {
 		foreach ( $this->associations as $table_name => $field ) {
-			$table = TableRegistry::get( $table_name );
-			
+			$table = TableRegistry::getTableLocator()->get( $table_name );
+
 			$associated = $table->find()->where( [ $field => $entity->id ] )->count();
-			
+
 			if ( $associated ) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 }

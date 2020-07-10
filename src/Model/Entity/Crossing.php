@@ -22,7 +22,7 @@ use Cake\ORM\TableRegistry;
  * @property \App\Model\Entity\Batch[] $batches
  */
 class Crossing extends Entity {
-	
+
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
 	 *
@@ -36,22 +36,22 @@ class Crossing extends Entity {
 		'*'  => true,
 		'id' => false
 	];
-	
+
 	protected function _getMotherConvar() {
-		$Varieties = TableRegistry::get( 'Varieties' );
-		$Batches   = TableRegistry::get( 'Batches' );
+		$Varieties = TableRegistry::getTableLocator()->get( 'Varieties' );
+		$Batches   = TableRegistry::getTableLocator()->get( 'Batches' );
 		$variety   = $Varieties->get( $this->mother_variety_id );
 		$batch     = $Batches->get( $variety->batch_id );
-		
+
 		return $this->code . '.' . $batch->code . '.' . $variety->code;
 	}
-	
+
 	protected function _getFatherConvar() {
-		$Varieties = TableRegistry::get( 'Varieties' );
-		$Batches   = TableRegistry::get( 'Batches' );
+		$Varieties = TableRegistry::getTableLocator()->get( 'Varieties' );
+		$Batches   = TableRegistry::getTableLocator()->get( 'Batches' );
 		$variety   = $Varieties->get( $this->father_variety_id );
 		$batch     = $Batches->get( $variety->batch_id );
-		
+
 		return $this->code . '.' . $batch->code . '.' . $variety->code;
 	}
 }

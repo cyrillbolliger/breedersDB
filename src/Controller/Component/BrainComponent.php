@@ -34,12 +34,12 @@ class BrainComponent extends Component {
 		'date_impregnated',
 		'date_fruit_harvested',
 	];
-	
+
 	/**
 	 * holds the session
 	 */
 	protected $session;
-	
+
 	/**
 	 * Is called after the controller’s beforeFilter method but before the
 	 * controller executes the current action handler.
@@ -47,29 +47,29 @@ class BrainComponent extends Component {
 	 * @param \Cake\Event\Event $event
 	 */
 	public function startup( Event $event ) {
-		$controller    = $event->subject();
+		$controller    = $event->getSubject();
 		$this->request = $controller->request;
-		
+
 		$this->memorize();
 	}
-	
+
 	/**
 	 * Store the fields defined in $this->memorize to the session if they exist
 	 * in the request data. Also store empty values.
 	 */
 	public function memorize() {
-		$session    = $this->request->session();
+		$session    = $this->request->getSession()();
 		$data       = $this->request->data;
 		$controller = $this->request->params['controller'];
 		$fields     = $this->memorize;
-		
+
 		$keys = array_intersect( $fields, array_keys( $data ) );
-		
+
 		foreach ( $keys as $key ) {
 			$session->write( "Brain.$controller.$key", $data[ $key ] );
 		}
 	}
-	
+
 	/**
 	 * Prepopulate $entity with memorized values. If $entity is a string, use it
 	 * as key to get the memorized value and return it. If $fields are defined
@@ -81,33 +81,33 @@ class BrainComponent extends Component {
 	 * @return \Cake\ORM\Entity
 	 */
 	public function remember( $entity, $fields = null ) {
-		$session    = $this->request->session();
+		$session    = $this->request->getSession()();
 		$controller = $this->request->params['controller'];
-		
+
 		if ( ! isset( $session->read( 'Brain' )[ $controller ] ) ) {
 			return $entity;
 		}
-		
+
 		$memory = $session->read( 'Brain' )[ $controller ];
-		
+
 		if ( is_string( $entity ) ) {
 			return $memory[ $entity ];
 		}
-		
+
 		if ( null === $fields ) {
 			$fields = $this->memorize;
 		}
-		
+
 		$keys = array_intersect( $fields, array_keys( $memory ) );
-		
+
 		foreach ( $keys as $key ) {
 			if ( empty( $entity[ $key ] ) ) {
 				$entity[ $key ] = $memory[ $key ];
 			}
 		}
-		
+
 		return $entity;
 	}
-	
-	
+
+
 }

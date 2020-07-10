@@ -14,7 +14,7 @@
  */
 ?>
 <!DOCTYPE html>
-<html lang="<?= Cake\I18n\I18n::locale() ?>">
+<html lang="<?= Cake\I18n\I18n::getLocale() ?>">
 <head>
 	<?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +22,7 @@
 		<?= __( $this->fetch( 'title' ) ) ?>
     </title>
 	<?= $this->Html->meta( 'icon' ) ?>
-	
+
 	<?= $this->Html->css( 'base.css' ) ?>
 	<?= $this->Html->css( 'cake.css' ) ?>
 	<?= $this->Html->css( 'jquery-ui.min.css' ) ?>
@@ -31,9 +31,9 @@
 	<?= $this->Html->css( 'query-builder.default.min.css' ) ?>
 	<?= $this->Html->css( 'app.css' ) ?>
 	<?= $this->Html->css( 'print.css' ) ?>
-	
+
 	<?= $this->Html->script( 'app.js' ) ?>
-	
+
 	<?= $this->fetch( 'meta' ) ?>
 	<?= $this->fetch( 'css' ) ?>
 	<?= $this->fetch( 'script' ) ?>
@@ -71,7 +71,7 @@
     <div class="top-bar-section">
         <ul class="right meta-nav">
 			<?php
-			$location = $this->request->session()->read( 'experiment_site_name' );
+			$location = $this->request->getSession()()->read( 'experiment_site_name' );
 			if ( $location ) :
 				?>
                 <li><?= $this->Html->link( __( 'Location: {0}', $location ),

@@ -26,27 +26,27 @@ class MarkQueryBehavior extends Behavior {
 	 * - 'batches': get marks of batches only, group by batches
 	 */
 	private $mode;
-	
+
 	/**
 	 * @var array of mark properties we want to use in the query
 	 */
 	private $markProperties;
-	
+
 	/**
 	 * @var array with used fields in dot notation
 	 */
 	private $fields;
-	
+
 	/**
 	 * @var array with the filter conditions for all fields but the mark fields
 	 */
 	private $regularFieldsFilter;
-	
+
 	/**
 	 * @var array with the filter conditions for the mark fields
 	 */
 	private $markFieldFilter;
-	
+
 	/**
 	 * @var array @see self::mode
 	 */
@@ -56,7 +56,7 @@ class MarkQueryBehavior extends Behavior {
 		'convar',
 		'batches',
 	];
-	
+
 	/**
 	 * Custom finder to find data with the marks view as root table.
 	 *
@@ -94,19 +94,19 @@ class MarkQueryBehavior extends Behavior {
 		if ( ! in_array( $mode, $this->allowedModes ) ) {
 			throw new \Exception( "The mode '{$mode}' is not defined.'" );
 		}
-		
+
 		$this->mode           = $mode;
 		$this->markProperties = $markProperties;
 		$this->fields         = $display;
-		
+
 		$this->regularFieldsFilter = $regularFieldsFilter;
 		$this->markFieldFilter     = $markFieldFilter;
-		
+
 		$data = $this->_getData();
-		
+
 		return $data;
 	}
-	
+
 	/**
 	 * Return breeding objects according to $this->mode ('convar' will return varieties)
 	 * containing the marks specified in $this->properties and the fields specified
@@ -118,16 +118,16 @@ class MarkQueryBehavior extends Behavior {
 	 */
 	private function _getData(): CollectionInterface {
 		$query = $this->_getQuery();
-		
+
 		$groupedByMark         = $this->_groupByMark( $query );
 		$aggregated            = $this->_aggregate( $groupedByMark );
 		$groupedByObj          = $this->_groupByBreedingObject( $aggregated );
 		$filteredByMarkValues  = $this->_filterByMarkValues( $groupedByObj );
 		$markedBreedingObjects = $this->_loadAssociatedObjects( $filteredByMarkValues );
-		
+
 		return $markedBreedingObjects;
 	}
-	
+
 	/**
 	 * Set query according to $this->mode. Only extract fields defined in $this->display.
 	 * Set where clause as given in $this->regularFieldsFilter and select only marks
@@ -138,8 +138,8 @@ class MarkQueryBehavior extends Behavior {
 	 * @throws \Exception if the given mode is not defined.
 	 */
 	private function _getQuery(): Query {
-		$marks = TableRegistry::get( 'MarksView' );
-		
+		$marks = TableRegistry::getTableLocator()->get( 'MarksView' );
+
 		$associations = null;
 		switch ( $this->mode ) {
 			case 'trees':
@@ -168,7 +168,7 @@ class MarkQueryBehavior extends Behavior {
 			default:
 				throw new \Exception( "The mode '{$this->mode}' is not defined." );
 		}
-		
+
 		return $marks->find()
 		             ->select( $this->_getInterallyNeededFields() )
 		             ->contain( $associations )
@@ -176,7 +176,7 @@ class MarkQueryBehavior extends Behavior {
 		             ->andWhere( [ 'MarksView.property_id IN' => $this->markProperties ] )
 		             ->andWhere( $breedingObjectConditions );
 	}
-	
+
 	/**
 	 * Return array with all fields that are used internally
 	 *
@@ -190,26 +190,26 @@ class MarkQueryBehavior extends Behavior {
 			'MarksView.property_id',
 			'MarksView.field_type',
 		];
-		
+
 		switch ( $this->mode ) {
 			case 'trees':
 				$obj_fields = [
 					'MarksView.tree_id',
 				];
 				break;
-			
+
 			case 'varieties':
 				$obj_fields = [
 					'MarksView.variety_id',
 				];
 				break;
-			
+
 			case 'batches':
 				$obj_fields = [
 					'MarksView.batch_id',
 				];
 				break;
-			
+
 			case 'convar':
 				$obj_fields = [
 					'MarksView.tree_id',
@@ -217,14 +217,14 @@ class MarkQueryBehavior extends Behavior {
 					'TreesView.variety_id',
 				];
 				break;
-			
+
 			default:
 				throw new \Exception( "The mode '{$this->mode}' is not defined." );
 		}
-		
+
 		return array_merge( $markFields, $obj_fields );
 	}
-	
+
 	/**
 	 * Return collection grouped by mark and breeders object
 	 *
@@ -240,24 +240,24 @@ class MarkQueryBehavior extends Behavior {
 			switch ( $this->mode ) {
 				case 'trees':
 					return $mark->tree_id . '_' . $mark->property_id;
-				
+
 				case 'varieties':
 					return $mark->variety_id . '_' . $mark->property_id;
-				
+
 				case 'batches':
 					return $mark->batch_id . '_' . $mark->property_id;
-				
+
 				case 'convar':
 					$variety_id = null === $mark->variety_id ? $mark->trees_view->variety_id : $mark->variety_id;
-					
+
 					return $variety_id . '_' . $mark->property_id;
-				
+
 				default:
 					throw new \Exception( "The mode '{$this->mode}' is not defined." );
 			}
 		} );
 	}
-	
+
 	/**
 	 * Reduce marks into one mark element containing the aggregated values in the field value
 	 * and the single values with their reference in the field values. Also add a sort_value.
@@ -271,14 +271,14 @@ class MarkQueryBehavior extends Behavior {
 		return $groupedMarks->map( function ( $marks ) {
 			$property_id = $marks[0]['property_id'];
 			$sort_by     = $this->markFieldFilter[ $property_id ]->mode;
-			
+
 			$collection = new Collection( $marks );
 			$aggregator = new AggregatedMark( $this->mode, $sort_by );
-			
+
 			return $aggregator->aggregate( $collection );
 		} );
 	}
-	
+
 	/**
 	 * Return aggregated marks grouped by breeders object
 	 *
@@ -299,7 +299,7 @@ class MarkQueryBehavior extends Behavior {
 			} );
 		} );
 	}
-	
+
 	/**
 	 * Return collection filtered by mark values using MarkQueryBehavior::markFieldFilter
 	 *
@@ -314,22 +314,22 @@ class MarkQueryBehavior extends Behavior {
 				if ( $filter->isEmpty() ) {
 					continue;
 				}
-				
+
 				// if mark is not present
 				if ( ! isset( $item->toArray()[ $property_id ] ) ) {
 					return false;
 				}
-				
+
 				// if we don't meet the filter test
 				if ( ! $filter->test( $item->toArray()[ $property_id ] ) ) {
 					return false;
 				}
 			}
-			
+
 			return true;
 		} );
 	}
-	
+
 	/**
 	 * Return collection of filtered breeders objects with aggregated and filtered marks
 	 *
@@ -341,17 +341,17 @@ class MarkQueryBehavior extends Behavior {
 	 */
 	private function _loadAssociatedObjects( CollectionInterface $items ): CollectionInterface {
 		$table = $this->_getTable();
-		
+
 		return $items->map( function ( $item ) use ( $table ) {
 			$entity        = $table->get( $item->first()->parent_id, [
 				'select' => $this->fields
 			] );
 			$entity->marks = $item;
-			
+
 			return $entity;
 		} );
 	}
-	
+
 	/**
 	 * Return the table object that corresponds to the current mode
 	 *
@@ -362,23 +362,23 @@ class MarkQueryBehavior extends Behavior {
 			case 'trees':
 				$table = 'TreesView';
 				break;
-			
+
 			case 'convar':
 			case 'varieties':
 				$table = 'VarietiesView';
 				break;
-			
+
 			case 'batches':
 				$table = 'BatchesView';
 				break;
-			
+
 			default:
 				throw new \Exception( "The mode '{$this->mode}' is not defined." );
 		}
-		
-		return TableRegistry::get( $table );
+
+		return TableRegistry::getTableLocator()->get( $table );
 	}
-	
+
 	/**
 	 * Callback function for Collection::sortBy() used
 	 * in the CollectionPaginatorComponent to sort mark
@@ -395,18 +395,18 @@ class MarkQueryBehavior extends Behavior {
 		if ( false === strpos( $sort, 'mark-' ) ) {
 			return $sort;
 		}
-		
+
 		// if we want to sort by a mark value, return callback
 		$mark_id = str_replace( 'mark-', '', $sort );
-		
+
 		return function ( $obj ) use ( $mark_id ) {
-			
+
 			// if the mark is missing return "" to indicate that it is smaller
 			if ( ! isset( $obj->marks->toArray()[ $mark_id ] ) ) {
 				return "";
 			}
-			
-			
+
+
 			return $obj->marks->toArray()[ $mark_id ]->sort_value;
 		};
 	}

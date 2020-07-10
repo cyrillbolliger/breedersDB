@@ -112,14 +112,14 @@ class ExperimentSitesController extends AppController {
 	 */
 	public function select() {
 		// if site was selected
-		if ( $this->request->is( 'post' ) && ! empty( $this->request->data['experiment_site_id'] ) ) {
+		if ( $this->request->is( 'post' ) && ! empty( $this->request->getData('experiment_site_id') ) ) {
 
 			// get site data
-			$id             = (int) $this->request->data['experiment_site_id'];
+			$id             = (int) $this->request->getData('experiment_site_id');
 			$experimentSite = $this->ExperimentSites->get( $id );
 
 			// add the site to the session
-			$session = $this->request->session();
+			$session = $this->request->getSession()();
 			$session->write( 'experiment_site_id', (int) $id );
 			$session->write( 'experiment_site_name', $experimentSite->name );
 
