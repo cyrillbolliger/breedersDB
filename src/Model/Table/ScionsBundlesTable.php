@@ -127,14 +127,14 @@ class ScionsBundlesTable extends Table {
 			return null;
 		}
 
-		$query = $this->find()
-		              ->contain( [ 'Varieties' ] )
-		              ->where( $where[0] );
+        if ( 2 == count( $where ) ) {
+            $condition = ['OR' => [$where[0], $where[1]]];
+        } else {
+            $condition = $where[0];
+        }
 
-		if ( 2 == count( $where ) ) {
-			$query->orWhere( $where[1] );
-		}
-
-		return $query;
+        return $this->find()
+                      ->contain( [ 'Varieties' ] )
+                      ->where( $condition );
 	}
 }

@@ -164,7 +164,9 @@ class MotherTreesTable extends Table {
 
 		return $this->find()
 		            ->contain( [ 'Trees' ] )
-		            ->where( [ 'MotherTrees.code LIKE' => $term . '%' ] )
-		            ->orWhere( [ 'Trees.publicid' => $publicid ] );
+		            ->where( [ 'OR' => [
+		                'MotherTrees.code LIKE' => $term . '%',
+                        'Trees.publicid' => $publicid
+                    ] ] );
 	}
 }

@@ -273,15 +273,15 @@ class TreesTable extends Table {
 			return null;
 		}
 
-		$query = $this->find()
+        if ( 2 == count( $where ) ) {
+            $condition = ['OR' => [$where[0], $where[1]]];
+        } else {
+            $condition = $where[0];
+        }
+
+		return $this->find()
 		              ->contain( [ 'Varieties', 'Rootstocks', 'Graftings', 'Rows', 'ExperimentSites' ] )
-		              ->where( $where[0] );
-
-		if ( 2 == count( $where ) ) {
-			$query->orWhere( $where[1] );
-		}
-
-		return $query;
+		              ->where( $condition );
 	}
 
 	/**
