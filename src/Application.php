@@ -43,8 +43,19 @@ class Application extends BaseApplication {
 			// Handle plugin/theme assets like CakePHP normally does.
 			->add( new AssetMiddleware() )
 			// Apply routing
-			->add( new RoutingMiddleware() );
-		
+			->add( new RoutingMiddleware($this) );
+
 		return $middleware;
 	}
+
+	function bootstrap()
+    {
+        parent::bootstrap();
+        $this->addPlugin('Xety/Cake3CookieAuth');
+        $this->addPlugin('SoftDelete');
+
+        if (Configure::read('debug')) {
+            //$this->addPlugin('DebugKit', ['bootstrap' => true]);
+        }
+    }
 }

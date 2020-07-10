@@ -58,7 +58,7 @@ class BrainComponent extends Component {
 	 * in the request data. Also store empty values.
 	 */
 	public function memorize() {
-		$session    = $this->request->getSession()();
+		$session    = $this->request->getSession();
 		$data       = $this->request->data;
 		$controller = $this->request->params['controller'];
 		$fields     = $this->memorize;
