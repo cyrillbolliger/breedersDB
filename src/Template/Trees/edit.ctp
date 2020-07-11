@@ -15,44 +15,44 @@
 		echo $this->Form->control( 'date_grafted', [
 			'empty' => true,
 			'type'  => 'text',
-			'class' => 'datepicker ' . ( $tree->dirty( 'date_grafted' ) ? 'brain-prefilled' : '' ),
+			'class' => 'datepicker ' . ( $tree->setDirty( 'date_grafted' ) ? 'brain-prefilled' : '' ),
 		] );
 		echo $this->Form->control( 'rootstock_id', [
 			'options' => $rootstocks,
 			'empty'   => true,
-			'class'   => $tree->dirty( 'rootstock_id' ) ? 'brain-prefilled' : '',
+			'class'   => $tree->setDirty( 'rootstock_id' ) ? 'brain-prefilled' : '',
 		] );
 		echo $this->Form->control( 'grafting_id', [
 			'options' => $graftings,
 			'empty'   => true,
-			'class'   => $tree->dirty( 'grafting_id' ) ? 'brain-prefilled' : '',
+			'class'   => $tree->setDirty( 'grafting_id' ) ? 'brain-prefilled' : '',
 		] );
 		echo $this->Form->control( 'date_planted', [
 			'empty' => true,
 			'type'  => 'text',
-			'class' => 'datepicker ' . ( $tree->dirty( 'date_planted' ) ? 'brain-prefilled' : '' ),
+			'class' => 'datepicker ' . ( $tree->setDirty( 'date_planted' ) ? 'brain-prefilled' : '' ),
 		] );
 		echo $this->Form->control( 'date_eliminated', [
 			'empty' => true,
 			'type'  => 'text',
-			'class' => 'datepicker ' . ( $tree->dirty( 'date_eliminated' ) ? 'brain-prefilled' : '' ),
+			'class' => 'datepicker ' . ( $tree->setDirty( 'date_eliminated' ) ? 'brain-prefilled' : '' ),
 		] );
         echo $this->Form->control( 'date_labeled', [
             'empty' => true,
             'type'  => 'text',
-            'class' => 'datepicker ' . ( $tree->dirty( 'date_labeled' ) ? 'brain-prefilled' : '' ),
+            'class' => 'datepicker ' . ( $tree->setDirty( 'date_labeled' ) ? 'brain-prefilled' : '' ),
         ] );
 		echo $this->Form->control( 'genuine_seedling' );
 		echo $this->Form->control( 'migrated_tree' );
 		echo $this->Form->control( 'experiment_site_id', [
 			'options' => $experimentSites,
 			'empty'   => true,
-			'class'   => $tree->dirty( 'experiment_site_id' ) ? 'brain-prefilled' : '',
+			'class'   => $tree->setDirty( 'experiment_site_id' ) ? 'brain-prefilled' : '',
 		] );
 		echo $this->Form->control( 'row_id', [
 			'options' => $rows,
 			'empty'   => true,
-			'class'   => $tree->dirty( 'row_id' ) ? 'brain-prefilled' : '',
+			'class'   => $tree->setDirty( 'row_id' ) ? 'brain-prefilled' : '',
 		] );
 		echo $this->Form->control( 'offset' );
         echo $this->Form->control( 'dont_eliminate' );

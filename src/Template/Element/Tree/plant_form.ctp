@@ -11,13 +11,13 @@ echo $this->Form->control( 'publicid', [
 ] );
 echo $this->Form->control( 'date_planted', [
 	'type'     => 'text',
-	'class'    => $tree->dirty( 'date_planted' ) ? 'datepicker brain-prefilled' : 'datepicker',
+	'class'    => $tree->setDirty( 'date_planted' ) ? 'datepicker brain-prefilled' : 'datepicker',
 	'required' => 'required',
 ] );
 echo $this->Form->control( 'row_id', [
 	'options'  => $rows,
 	'required' => 'required',
-	'class'    => $tree->dirty( 'row_id' ) ? 'brain-prefilled' : '',
+	'class'    => $tree->setDirty( 'row_id' ) ? 'brain-prefilled' : '',
 ] );
 echo $this->Form->control( 'offset', [
 	'required' => 'required',

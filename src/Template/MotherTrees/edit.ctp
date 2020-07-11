@@ -20,17 +20,17 @@
 		echo $this->Form->control( 'date_pollen_harvested', [
 			'empty' => true,
 			'type'  => 'text',
-			'class' => 'datepicker ' . ( $motherTree->dirty( 'date_pollen_harvested' ) ? 'brain-prefilled' : '' ),
+			'class' => 'datepicker ' . ( $motherTree->setDirty( 'date_pollen_harvested' ) ? 'brain-prefilled' : '' ),
 		] );
 		echo $this->Form->control( 'date_impregnated', [
 			'empty' => true,
 			'type'  => 'text',
-			'class' => 'datepicker ' . ( $motherTree->dirty( 'date_impregnated' ) ? 'brain-prefilled' : '' ),
+			'class' => 'datepicker ' . ( $motherTree->setDirty( 'date_impregnated' ) ? 'brain-prefilled' : '' ),
 		] );
 		echo $this->Form->control( 'date_fruit_harvested', [
 			'empty' => true,
 			'type'  => 'text',
-			'class' => 'datepicker ' . ( $motherTree->dirty( 'date_fruit_harvested' ) ? 'brain-prefilled' : '' ),
+			'class' => 'datepicker ' . ( $motherTree->setDirty( 'date_fruit_harvested' ) ? 'brain-prefilled' : '' ),
 		] );
 		echo $this->Form->control( 'numb_portions' );
 		echo $this->Form->control( 'numb_flowers' );

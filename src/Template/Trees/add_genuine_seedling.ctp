@@ -14,18 +14,18 @@
 		echo $this->Form->control( 'publicid' );
 		echo $this->Form->control( 'genuine_seedling', [
 			'checked' => 'checked',
-			'class'   => $tree->dirty( 'genuine_seedling' ) ? 'brain-prefilled' : '',
+			'class'   => $tree->setDirty( 'genuine_seedling' ) ? 'brain-prefilled' : '',
 		] );
 		echo $this->Form->control( 'row_id', [
 			'options' => $rows,
 			'empty'   => true,
-			'class'   => $tree->dirty( 'row_id' ) ? 'brain-prefilled' : '',
+			'class'   => $tree->setDirty( 'row_id' ) ? 'brain-prefilled' : '',
 		] );
 		echo $this->Form->control( 'offset' );
         echo $this->Form->control( 'date_labeled', [
             'empty' => true,
             'type'  => 'text',
-            'class' => 'datepicker ' . ( $tree->dirty( 'date_labeled' ) ? 'brain-prefilled' : '' ),
+            'class' => 'datepicker ' . ( $tree->setDirty( 'date_labeled' ) ? 'brain-prefilled' : '' ),
         ] );
 		echo $this->Form->control( 'note' );
 		?>

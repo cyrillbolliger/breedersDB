@@ -30,16 +30,16 @@
 
 		echo $this->Form->control( 'date', [
 			'type'     => 'text',
-			'class'    => $mark->dirty( 'date' ) ? 'datepicker brain-prefilled' : 'datepicker',
+			'class'    => $mark->setDirty( 'date' ) ? 'datepicker brain-prefilled' : 'datepicker',
 			'required' => 'required',
 		] );
 		echo $this->Form->control( 'author', [
-			'class'    => $mark->dirty( 'author' ) ? 'brain-prefilled' : '',
+			'class'    => $mark->setDirty( 'author' ) ? 'brain-prefilled' : '',
 			'required' => 'required',
 		] );
 		echo $this->Form->control( 'mark_form_id', [
 			'options'  => $markForms,
-			'class'    => $mark->dirty( 'mark_form_id' ) ? 'brain-prefilled form-field-selector' : 'form-field-selector',
+			'class'    => $mark->setDirty( 'mark_form_id' ) ? 'brain-prefilled form-field-selector' : 'form-field-selector',
 			'required' => 'required',
 			'empty'    => true,
 			'disabled' => 'disabled',
