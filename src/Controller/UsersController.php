@@ -135,15 +135,6 @@ class UsersController extends AppController {
 			$user = $this->Auth->identify();
 			if ( $user ) {
 				$this->Auth->setUser( $user );
-				// set auth cookie
-				$this->Cookie->configKey( 'CookieAuth', [
-					'expires'  => '+1 day',
-					'httpOnly' => true
-				] );
-				$this->Cookie->write( 'CookieAuth', [
-					'email'    => $this->request->getData( 'email' ),
-					'password' => $this->request->getData( 'password' )
-				] );
 
 				return $this->redirect( $this->Auth->redirectUrl() );
 			}

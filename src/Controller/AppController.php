@@ -146,17 +146,6 @@ class AppController extends Controller {
 	public function beforeFilter( Event $event ) {
 		parent::beforeFilter( $event );
 
-		// Automaticaly login
-		if ( ! $this->Auth->user() && $this->Cookie->read( 'CookieAuth' ) ) {
-
-			$user = $this->Auth->identify();
-			if ( $user ) {
-				$this->Auth->setUser( $user );
-			} else {
-				$this->Cookie->delete( 'CookieAuth' );
-			}
-		}
-
 		/**
 		 *  redirect to experiment site selection if none is stored in session
 		 */
