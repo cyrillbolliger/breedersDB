@@ -16,9 +16,13 @@
   "author": "Cyrill Bolliger",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
+    "browserify": "^16.5.1",
     "gulp": "^4.0.0",
-    "gulp-browserify": "^0.5.1",
-    "gulp-uglify": "^3.0.2"
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify": "^3.0.2",
+    "gulplog": "^1.0.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
     "jQuery-QueryBuilder": "^2.5.2",

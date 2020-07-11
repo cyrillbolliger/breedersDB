@@ -1,6 +1,10 @@
 var gulp = require('gulp');
-var browserify = require('gulp-browserify');
 var uglify = require('gulp-uglify');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var sourcemaps = require('gulp-sourcemaps');
+var log = require('gulplog');
 
 
 var src = 'webroot/src';
@@ -43,16 +47,38 @@ gulp.task('cssDist', function () {
 
 // js
 gulp.task('jsDev', function () {
-    return gulp.src(src + '/js/app.js')
-        .pipe(browserify())
-        .pipe(gulp.dest(dev + '/js'));
+    // set up the browserify instance on a task basis
+    var b = browserify({
+        entries: src + '/js/app.js',
+        debug: true
+    });
+
+    return b.bundle()
+        .pipe(source('app.js'))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+        // Add transformation tasks to the pipeline here.
+        .on('error', log.error)
+        .pipe(sourcemaps.write(dev))
+        .pipe(gulp.dest(dev + '/js/'));
 });
 
 gulp.task('jsDist', function () {
-    return gulp.src(src + '/js/app.js')
-        .pipe(browserify())
+    // set up the browserify instance on a task basis
+    var b = browserify({
+        entries: src + '/js/app.js',
+        debug: true
+    });
+
+    return b.bundle()
+        .pipe(source('app.js'))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+        // Add transformation tasks to the pipeline here.
         .pipe(uglify())
-        .pipe(gulp.dest(dist + '/js'));
+        .on('error', log.error)
+        .pipe(sourcemaps.write(dist))
+        .pipe(gulp.dest(dist + '/js/'));
 });
 
 gulp.task('dev', gulp.parallel('imgsDev', 'fontsDev', 'cssDev', 'jsDev'));
