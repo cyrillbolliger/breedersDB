@@ -54,7 +54,7 @@ class Application extends BaseApplication {
         $this->addPlugin('SoftDelete');
 
         if (Configure::read('debug')) {
-            //$this->addPlugin('DebugKit', ['bootstrap' => true]);
+            $this->addPlugin('DebugKit', ['bootstrap' => true]);
         }
     }
 }
