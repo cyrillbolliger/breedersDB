@@ -1,33 +1,34 @@
 {
-  "name": "poc",
-  "version": "1.0.0",
+  "name": "breedersDB",
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/cyrillbolliger/poc"
+    "url": "https://github.com/cyrillbolliger/breedersDB"
   },
   "private": true,
-  "description": "Breeders Database",
+  "description": "Database for plant breeding. Developed for fruit trees.",
   "main": "app.js",
   "directories": {},
   "scripts": {
-      "watch": "gulp watch"
+    "watch": "gulp watch",
+    "build": "gulp dist",
+    "dev": "gulp dev"
   },
   "author": "Cyrill Bolliger",
-  "license": "proprietary",
+  "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-browserify": "^0.5.1",
-    "gulp-uglify": "^3.0.1"
+    "gulp-uglify": "^3.0.2"
   },
   "dependencies": {
     "jQuery-QueryBuilder": "^2.5.2",
-    "jquery": "^3.2.1",
+    "jquery": "^3.5.1",
     "jquery-ui": "^1.12.1",
-      "jquery-validation": "^1.19.1",
+    "jquery-validation": "^1.19.2",
     "jquery.cookie": "^1.4.1",
-    "moment": "^2.22.2",
+    "moment": "^2.27.0",
     "natives": "^1.1.6",
-      "select2": "^4.0.7"
+    "select2": "^4.0.13"
   },
   "browser": {}
 }
