@@ -137,8 +137,8 @@ class QueriesController extends AppController {
     public function export( $id = null ) {
         $file = $this->_getExportFile( $id );
 
-        $this->response->withType( 'xlsx' );
-        $this->response->withFile( $file, [ 'download' => true ] );
+        $this->response = $this->response->withType( 'xlsx' );
+        $this->response = $this->response->withFile( $file, [ 'download' => true ] );
 
         // used for jquery.fileDownload.js
         $this->Cookie->configKey( 'fileDownload', 'encryption', false );

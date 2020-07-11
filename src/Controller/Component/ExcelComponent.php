@@ -13,8 +13,8 @@ use Cake\Collection\CollectionInterface;
 use Cake\Controller\Component;
 use Cake\ORM\Query;
 use Cake\Utility\Text;
-use PHPExcel;
-use PHPExcel_Writer_Excel2007;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ExcelComponent extends Component {
 	/**
@@ -34,8 +34,8 @@ class ExcelComponent extends Component {
 	 *
 	 * @return string with the path to the file
 	 *
-	 * @throws \PHPExcel_Exception
-	 * @throws \PHPExcel_Writer_Exception
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
+	 * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
 	 */
 	public function exportFromQuery( Query $query, array $columns, string $title ): string {
 		// load data extractor
@@ -87,12 +87,12 @@ class ExcelComponent extends Component {
 	 *
 	 * @return string path to file
 	 *
-	 * @throws \PHPExcel_Exception
-	 * @throws \PHPExcel_Writer_Exception
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
+	 * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
 	 */
 	private function _export( array $data, array $columns, string $title ): string {
 		// create excel obj
-		$excel = new PHPExcel();
+		$excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 		$excel->getProperties()
 		      ->setCreator( __( 'Breeders Database' ) )
 		      ->setLastModifiedBy( __( 'Breeders Database' ) )
@@ -102,18 +102,18 @@ class ExcelComponent extends Component {
 		$excel->setActiveSheetIndex( 0 );
 
         // write header
-		$excel->getActiveSheet()->fromArray( $columns, null, 'A1' );
+		$excel->getActiveSheet()->fromArray( $columns, null, 'A1', false );
 
         // write data
 		$i = 2;
 		foreach ( $data as $row ) {
-			$excel->getActiveSheet()->fromArray( $row, null, 'A' . $i );
+			$excel->getActiveSheet()->fromArray( $row, null, 'A' . $i, false );
 			$i ++;
 		}
 
         // save file
 		$file        = $this->_prepareExportFile( $title );
-		$excelWriter = new PHPExcel_Writer_Excel2007( $excel );
+		$excelWriter = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx( $excel );
 		$excelWriter->save( $file );
 
         // delete old files to prevent a huge tmp
@@ -172,8 +172,8 @@ class ExcelComponent extends Component {
 	 *
 	 * @return string with the path to the file
 	 *
-	 * @throws \PHPExcel_Exception
-	 * @throws \PHPExcel_Writer_Exception
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
+	 * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
 	 */
 	public function exportFromMarkCollection(
 		CollectionInterface $data,
