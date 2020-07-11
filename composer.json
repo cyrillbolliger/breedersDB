@@ -1,9 +1,9 @@
 {
-    "name": "cakephp/app",
-    "description": "CakePHP skeleton app",
-    "homepage": "http://cakephp.org",
+    "name": "cyrillbolliger/breedersDB",
+    "description": "Database for plant breeding. Developed for fruit trees.",
+    "homepage": "https://github.com/cyrillbolliger/breedersDB",
     "type": "project",
-    "license": "MIT",
+    "license": "GPL-3.0-or-later",
     "require": {
         "php": ">=7.1.0",
         "ext-zip": "*",
