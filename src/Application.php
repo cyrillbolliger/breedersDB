@@ -51,7 +51,6 @@ class Application extends BaseApplication {
 	function bootstrap()
     {
         parent::bootstrap();
-        $this->addPlugin('Xety/Cake3CookieAuth');
         $this->addPlugin('SoftDelete');
 
         if (Configure::read('debug')) {

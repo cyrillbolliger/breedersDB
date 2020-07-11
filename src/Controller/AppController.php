@@ -68,7 +68,6 @@ class AppController extends Controller {
 						'password' => 'password'
 					]
 				],
-				'Xety/Cake3CookieAuth.Cookie'
 			],
 			'loginAction'          => [
 				'controller' => 'Users',
