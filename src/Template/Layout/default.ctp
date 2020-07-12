@@ -83,8 +83,8 @@
             </ul>
         </div>
     </nav>
-    <?= $this->Flash->render() ?>
 <?php endif; ?>
+<?= $this->Flash->render() ?>
 <div class="clearfix">
 	<?= $this->fetch( 'content' ) ?>
 </div>
