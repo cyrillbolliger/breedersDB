@@ -66,23 +66,25 @@
     </script>
 </head>
 <body>
-<nav class="top-bar expanded" data-topbar role="navigation">
-	<?= $this->element( 'top_nav' ); ?>
-    <div class="top-bar-section">
-        <ul class="right meta-nav">
-			<?php
-			$location = $this->request->getSession()->read( 'experiment_site_name' );
-			if ( $location ) :
-				?>
-                <li><?= $this->Html->link( __( 'Location: {0}', $location ),
-						[ 'controller' => 'ExperimentSites', 'action' => 'select' ] ) ?></li>
-			<?php endif; ?>
-            <li><?= $this->Html->link( __( 'Settings' ), [ 'controller' => 'Settings' ] ) ?></li>
-            <li><?= $this->Html->link( __( 'Logout' ), [ 'controller' => 'Users', 'action' => 'logout' ] ) ?></li>
-        </ul>
-    </div>
-</nav>
-<?= $this->Flash->render() ?>
+<?php if ($this->request->getSession()->read( 'Auth.User' )): ?>
+    <nav class="top-bar expanded" data-topbar role="navigation">
+        <?= $this->element( 'top_nav' ); ?>
+        <div class="top-bar-section">
+            <ul class="right meta-nav">
+                <?php
+                $location = $this->request->getSession()->read( 'experiment_site_name' );
+                if ( $location ) :
+                    ?>
+                    <li><?= $this->Html->link( __( 'Location: {0}', $location ),
+                            [ 'controller' => 'ExperimentSites', 'action' => 'select' ] ) ?></li>
+                <?php endif; ?>
+                <li><?= $this->Html->link( __( 'Settings' ), [ 'controller' => 'Settings' ] ) ?></li>
+                <li><?= $this->Html->link( __( 'Logout' ), [ 'controller' => 'Users', 'action' => 'logout' ] ) ?></li>
+            </ul>
+        </div>
+    </nav>
+    <?= $this->Flash->render() ?>
+<?php endif; ?>
 <div class="clearfix">
 	<?= $this->fetch( 'content' ) ?>
 </div>

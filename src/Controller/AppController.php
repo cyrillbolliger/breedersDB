@@ -182,5 +182,12 @@ class AppController extends Controller {
 		if ( empty( $session->read( 'time_zone' ) ) ) {
 			$session->write( 'time_zone', $this->Auth->user( 'time_zone' ) );
 		}
+
+        /**
+         * disable authentication error flash message
+         */
+        if (!$this->Auth->user()) {
+            $this->Auth->setConfig('authError', false);
+        }
 	}
 }
