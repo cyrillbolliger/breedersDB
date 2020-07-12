@@ -18,7 +18,7 @@
 		echo $this->Form->label( 'filter', __( 'Filter by mark type' ) );
 		echo $this->Form->select( 'filter', $mark_form_property_types, [
 			'default'     => 0,
-			'class'       => 'filter',
+			'class'       => 'filter no-select2',
 			'data-filter' => $filter,
 		] );
 		?>
