@@ -1,7 +1,7 @@
 {
-    "name": "cyrillbolliger/breedersDB",
+    "name": "cyrillbolliger/breedersdb",
     "description": "Database for plant breeding. Developed for fruit trees.",
-    "homepage": "https://github.com/cyrillbolliger/breedersDB",
+    "homepage": "https://github.com/cyrillbolliger/breedersdb",
     "type": "project",
     "license": "GPL-3.0-or-later",
     "require": {
