@@ -1,15 +1,16 @@
 /config/app.php
-/tmp/*
-/logs/*
+/tmp
+/logs
 /.idea
-/.idea/*
-/node_modules/*
+/node_modules
 /npm-debug.log
-/backup/*
-/tests/*
-/.editorconfig
+/backup
+/tests
+/webroot/dev
+/webroot/dist
 .docker/mysql
 vendor
+deploy.conf
 
 # dont check in .mo files. cake throws an error if you do provide them!
 *.mo
