@@ -56,7 +56,6 @@ class AppController extends Controller {
 		$this->loadComponent( 'Security' );
 		$this->loadComponent( 'Csrf' );
 
-		// needed for Xety/Cake3CookieAuth
 		$this->loadComponent( 'Cookie' );
 
 		$this->loadComponent( 'Auth', [
