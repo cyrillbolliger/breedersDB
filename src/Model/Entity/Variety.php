@@ -47,10 +47,20 @@ class Variety extends Entity {
 
 	protected function _getConvar() {
 	    if ( empty($convar) ) {
-            $Crossings = TableRegistry::getTableLocator()->get( 'Crossings' );
-            $Batches   = TableRegistry::getTableLocator()->get( 'Batches' );
-            $batch     = $Batches->get($this->batch_id);
-            $crossing  = $Crossings->get( $batch->crossing_id );
+	        if ( $this->batch ) {
+	            $batch = $this->batch;
+            } else {
+                $Batches = TableRegistry::getTableLocator()->get('Batches');
+                $batch = $Batches->get($this->batch_id);
+            }
+
+	        if ( $batch->crossing ){
+	            $crossing = $batch->crossing;
+            } else {
+                $Crossings = TableRegistry::getTableLocator()->get('Crossings');
+                $crossing = $batch->crossing;
+                $crossing = $Crossings->get($batch->crossing_id);
+            }
 
             $this->convar = $crossing->code . '.' . $batch->code . '.' . $this->code;
         }
