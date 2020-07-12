@@ -73,7 +73,7 @@ deploysingle() {
         fi
     fi
 
-    sync "$host" "$target" 1
+    sync "$name" "$host" "$target" 1
 
     if [[ "0" != "$composer" ]]; then
         if ssh "$host" [ ! -x "\"$composer\"" ]; then
@@ -87,16 +87,23 @@ deploysingle() {
 }
 
 sync() {
-    local host="$1"
-    local target="$2"
-    local quiet=$3
+    local name="$1"
+    local host="$2"
+    local target="$3"
+    local quiet=$4
     local dry=
+    local progress=
 
     if [[ "1" != "$quiet" ]]; then
-        dry="n"
+        dry="vn"
+    else
+        progress="--info=progress2"
     fi
 
-    rsync -vrz${dry} \
+    echo "Starting upload for ${name}."
+
+    rsync -rz${dry} \
+        ${progress} \
         --delete \
         --include='/webroot/dev' \
         --include='/webroot/dist' \
@@ -108,12 +115,16 @@ sync() {
         --exclude='/.docker' \
         --exclude='/webroot/src' \
         . "${host}:\"${target}\""
+
+    echo "Upload for ${name} completed."
 }
 
 buildassets() {
+    echo 'Start building assets'
     docker-compose up -d node
-    docker exec poc_node npm build
-    docker exec poc_node npm dev
+    docker exec poc_node npm run build
+    docker exec poc_node npm run dev
+    echo 'Assets built'
 }
 
 usage() {
