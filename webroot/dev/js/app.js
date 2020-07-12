@@ -42010,6 +42010,7 @@ function GeneralModule() {
         var $target = $('#index_table').first();
         var $sort = $target.find('th > a');
         var $paginate = $target.find('.pagination a');
+        var runningRequest;
 
         // filter the data when inputing to the filter field
         $filter.off('keyup paste change');
@@ -42021,12 +42022,17 @@ function GeneralModule() {
                 self.last_search_term = $filter.val();
             }
 
+            // cancel any running request
+            if (runningRequest && runningRequest.readyState != 4) {
+                runningRequest.abort();
+            }
+
             // wait for typing
             var wait = 250; // milliseconds
             clearTimeout(self.search_timer);
             self.search_timer = setTimeout(function () {
                 // search for the data
-                self.getFilteredData($filter.val(), $filter.data('filter'), $target, null);
+                runningRequest = self.getFilteredData($filter.val(), $filter.data('filter'), $target, null);
             }, wait);
         });
 
@@ -42082,6 +42088,8 @@ function GeneralModule() {
      * @param params Object {controller: String, action: String, fields: Array}
      * @param $target jQuery object where the results will be displayed
      * @param url String
+     *
+     * @return {XMLHttpRequest}
      */
     this.getFilteredData = function (term, params, $target, url) {
         url = null === url ? window.location : url;
@@ -42089,7 +42097,7 @@ function GeneralModule() {
         var sort = self.getUrlParameter('sort', url);
         var direction = self.getUrlParameter('direction', url);
 
-        $.ajax({
+        return $.ajax({
             url: webroot + params.controller + '/' + params.action,
             data: {
                 fields: params.fields,
