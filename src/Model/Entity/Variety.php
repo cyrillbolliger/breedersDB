@@ -43,11 +43,19 @@ class Variety extends Entity {
 
 	protected $_virtual = [ 'convar', 'breeder_variety_code' ];
 
-	protected function _getConvar() {
-		$Crossings     = TableRegistry::getTableLocator()->get( 'Crossings' );
-		$crossing_code = $Crossings->get( $this->batch->crossing_id )->code;
+	private $convar;
 
-		return $crossing_code . '.' . $this->batch->code . '.' . $this->code;
+	protected function _getConvar() {
+	    if ( empty($convar) ) {
+            $Crossings = TableRegistry::getTableLocator()->get( 'Crossings' );
+            $Batches   = TableRegistry::getTableLocator()->get( 'Batches' );
+            $batch     = $Batches->get($this->batch_id);
+            $crossing  = $Crossings->get( $batch->crossing_id );
+
+            $this->convar = $crossing->code . '.' . $batch->code . '.' . $this->code;
+        }
+
+		return $this->convar;
 	}
 
 	protected function _getBreederVarietyCode() {

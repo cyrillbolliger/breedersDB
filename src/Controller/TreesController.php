@@ -317,8 +317,17 @@ class TreesController extends AppController {
 					$this->request->getSession()->read( 'time_zone' ) );
 			}
 
-			$this->set( compact( 'zpl', 'printable', 'tree', 'varieties', 'rootstocks', 'graftings', 'rows',
-				'experimentSites' ) );
+			$this->set(
+			    compact(
+			        'zpl',
+                    'tree',
+                    'varieties',
+                    'rootstocks',
+                    'graftings',
+                    'rows',
+				    'experimentSites'
+                )
+            );
 			$this->set( '_serialize', [ 'tree' ] );
 
 			$this->render( '/Element/Tree/' . (string) $this->request->getQuery('element') );

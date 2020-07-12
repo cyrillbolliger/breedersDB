@@ -12,6 +12,15 @@
  * @since         0.10.8
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+
+/**
+ * Company abbreviation. Use uppercase letters only (no numbers)
+ */
+define('COMPANY_ABBREV','POC');
+
+/**
+ * Defines the length of the numerical par of the breeders variety code
+ */
 define('BREEDER_VARIETY_CODE_NUM_LENGTH', 6);
 
 /*
