@@ -160,6 +160,15 @@ class TreesTable extends Table {
 		$rules->add( $rules->existsIn( [ 'row_id' ], 'Rows' ) );
 		$rules->add( $rules->existsIn( [ 'experiment_site_id' ], 'ExperimentSites' ) );
 
+		$rules->add(function($entity, $options) {
+            $startsWithHash    = '#' === substr($entity->publicid, 0, 1);
+            $hasDateEliminated = !empty($entity->date_eliminated);
+            return !($startsWithHash xor $hasDateEliminated);
+        }, 'eliminated', [
+            'errorField' => 'publicid',
+            'message'    => __('The # prefix means, the tree was eliminated. It must therefore also have an elimination date.')
+        ]);
+
 		$rules->addDelete( new IsNotReferredBy( [ 'MotherTrees' => 'tree_id' ] ), 'isNotReferredBy' );
 		$rules->addDelete( new IsNotReferredBy( [ 'Marks' => 'tree_id' ] ), 'isNotReferredBy' );
 
