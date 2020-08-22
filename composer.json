@@ -5,7 +5,7 @@
     "type": "project",
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=7.4.0",
         "ext-zip": "*",
         "ext-gd": "*",
         "cakephp/cakephp": "3.9.*",
