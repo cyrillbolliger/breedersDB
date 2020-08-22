@@ -11,6 +11,7 @@
 .docker/mysql
 vendor
 deploy.conf
+import-live-data.sh
 
 # dont check in .mo files. cake throws an error if you do provide them!
 *.mo
