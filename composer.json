@@ -5,7 +5,7 @@
     "type": "project",
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=7.4.0",
         "ext-zip": "*",
         "ext-gd": "*",
         "cakephp/cakephp": "3.9.*",
@@ -16,7 +16,8 @@
         "phpoffice/phpspreadsheet": "^1.14"
     },
     "require-dev": {
-        "cakephp/debug_kit": "~3.22"
+        "cakephp/debug_kit": "~3.22",
+        "phpunit/phpunit": "^9.3"
     },
     "suggest": {
         "markstory/asset_compress": "An asset compression plugin which provides file concatenation and a flexible filter system for preprocessing and minification.",

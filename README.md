@@ -17,3 +17,8 @@ Suggested printer: Zebra P4T
 * Installation: Use the ZPL driver (not CPCL).
 * Configuration: Enable Passthrou mode: Settings > Advanced Settings > Other > Passthrou.
 Use `${` and `}$` as delimiters.
+
+#### Trouble shooting
+* Remove printer (in new **and old** windows settings).
+* Add it again using the Zebra Setup Utility.
+* Reconfigure Passthrou mode.

@@ -16,7 +16,7 @@
   "author": "Cyrill Bolliger",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "browserify": "^16.5.1",
+    "browserify": "^16.5.2",
     "gulp": "^4.0.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify": "^3.0.2",

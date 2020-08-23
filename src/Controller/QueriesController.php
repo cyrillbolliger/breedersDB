@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\Component\CollectionPaginatorComponent;
 use App\Controller\Component\ExcelComponent;
+use App\Model\Table\MarksViewTable;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -85,6 +86,7 @@ class QueriesController extends AppController {
         $query = $this->Queries->get( $id );
 
         // query the data
+        /** @var MarksViewTable $marksViewTable */
         $marksViewTable = TableRegistry::getTableLocator()->get( 'MarksView' );
         $data           = $marksViewTable->customFindMarks(
             $query->breeding_object_aggregation_mode,
