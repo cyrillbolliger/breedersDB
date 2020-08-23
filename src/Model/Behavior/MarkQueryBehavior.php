@@ -8,7 +8,9 @@
 
 namespace App\Model\Behavior;
 
+use App\Model\ConvarMarkQueryBuilder;
 use App\Model\Entity\AggregatedMark;
+use App\Model\RegularMarkQueryBuilder;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\ORM\Behavior;
@@ -138,91 +140,13 @@ class MarkQueryBehavior extends Behavior {
 	 * @throws \Exception if the given mode is not defined.
 	 */
 	private function _getQuery(): Query {
-		$marks = TableRegistry::getTableLocator()->get( 'MarksView' );
+	    if ( 'convar' === $this->mode ) {
+	        $builder = new ConvarMarkQueryBuilder();
+        } else {
+	        $builder = new RegularMarkQueryBuilder($this->mode);
+        }
 
-		$associations = null;
-		switch ( $this->mode ) {
-			case 'trees':
-				$associations             = 'TreesView';
-				$breedingObjectConditions = [ 'NOT' => [ 'MarksView.tree_id IS NULL' ] ];
-				break;
-			case 'varieties':
-				$associations             = 'VarietiesView';
-				$breedingObjectConditions = [ 'NOT' => [ 'MarksView.variety_id IS NULL' ] ];
-				break;
-			case 'batches':
-				$associations             = 'BatchesView';
-				$breedingObjectConditions = [ 'NOT' => [ 'MarksView.batch_id IS NULL' ] ];
-				break;
-			case 'convar':
-				$associations             = [ 'TreesView', 'VarietiesView' ];
-				$breedingObjectConditions = [
-					'AND' => [
-						'NOT' => [
-							[ 'MarksView.tree_id IS NULL' ],
-							[ 'MarksView.variety_id IS NULL' ]
-						]
-					]
-				];
-				break;
-			default:
-				throw new \Exception( "The mode '{$this->mode}' is not defined." );
-		}
-
-		return $marks->find()
-		             ->select( $this->_getInterallyNeededFields() )
-		             ->contain( $associations )
-		             ->where( $this->regularFieldsFilter )
-		             ->andWhere( [ 'MarksView.property_id IN' => $this->markProperties ] )
-		             ->andWhere( $breedingObjectConditions );
-	}
-
-	/**
-	 * Return array with all fields that are used internally
-	 *
-	 * @return array
-	 * @throws \Exception
-	 */
-	private function _getInterallyNeededFields(): array {
-		$markFields = [
-			'MarksView.id',
-			'MarksView.value',
-			'MarksView.property_id',
-			'MarksView.field_type',
-		];
-
-		switch ( $this->mode ) {
-			case 'trees':
-				$obj_fields = [
-					'MarksView.tree_id',
-				];
-				break;
-
-			case 'varieties':
-				$obj_fields = [
-					'MarksView.variety_id',
-				];
-				break;
-
-			case 'batches':
-				$obj_fields = [
-					'MarksView.batch_id',
-				];
-				break;
-
-			case 'convar':
-				$obj_fields = [
-					'MarksView.tree_id',
-					'MarksView.variety_id',
-					'TreesView.variety_id',
-				];
-				break;
-
-			default:
-				throw new \Exception( "The mode '{$this->mode}' is not defined." );
-		}
-
-		return array_merge( $markFields, $obj_fields );
+	    return $builder->buildQuery($this->regularFieldsFilter, $this->markProperties);
 	}
 
 	/**
@@ -248,7 +172,7 @@ class MarkQueryBehavior extends Behavior {
 					return $mark->batch_id . '_' . $mark->property_id;
 
 				case 'convar':
-					$variety_id = null === $mark->variety_id ? $mark->trees_view->variety_id : $mark->variety_id;
+					$variety_id = $mark->trees_view ? $mark->trees_view->variety_id : $mark->variety_id;
 
 					return $variety_id . '_' . $mark->property_id;
 
