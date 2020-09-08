@@ -208,7 +208,6 @@ class MarksTable extends Table {
 	 */
 	public function filter( string $term ) {
 		$query = $this->find()
-		              ->distinct( 'Marks.id' )
 		              ->contain( [
 			              'Trees',
 			              'Varieties',
