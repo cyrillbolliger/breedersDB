@@ -140,14 +140,15 @@ usage() {
 ##################### The program starts here
 
 all=0
-composer=0
+with_composer=0
 quiet=0
 skip=0
+composer_path=0
 
 while getopts 'acqs' opt; do
     case "$opt" in
     "a") all=1 ;;
-    "c") composer=1 ;;
+    "c") with_composer=1 ;;
     "q") quiet=1 ;;
     "s") skip=1 ;;
     *)
@@ -169,19 +170,19 @@ if [ -z "$sites" ]; then
     exit 1
 fi
 
-for site in ${sites[@]}; do
-    config=$(getConfigs ${site})
+for site in "${sites[@]}"; do
+    config=$(getConfigs "${site}")
     if [ "$?" -gt "0" ]; then
         exit 1
     fi
 
     config=($config)
 
-    if [[ "1" == "${composer}" ]]; then
-        composer="${config[3]}"
+    if [[ "0" != "${with_composer}" ]]; then
+        composer_path="${config[3]}"
     fi
 
-    deploysingle "${config[0]}" "${config[1]}" "${config[2]}" "${composer}" ${quiet} ${skip}
+    deploysingle "${config[0]}" "${config[1]}" "${config[2]}" "${composer_path}" ${quiet} ${skip}
 
     skip=1
 done

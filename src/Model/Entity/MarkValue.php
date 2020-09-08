@@ -44,7 +44,7 @@ class MarkValue extends Entity {
 	 */
 	protected function _getValue() {
 		if ( $this->isNew() ) {
-			return $this->_properties['value'];
+			return isset($this->_properties['value']) ? $this->_properties['value'] : null;
 		}
 
 		$MarkFormProperties = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
