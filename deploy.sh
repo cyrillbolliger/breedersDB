@@ -143,7 +143,7 @@ all=0
 with_composer=0
 quiet=0
 skip=0
-with_composer=0
+composer_path=0
 
 while getopts 'acqs' opt; do
     case "$opt" in
