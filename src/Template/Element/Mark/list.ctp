@@ -50,7 +50,8 @@
 					[ 'controller' => 'MarkValues', 'action' => 'delete', $mark_value->id ], [
 						'escapeTitle' => false,
 						'alt'         => __( 'Delete' ),
-						'confirm'     => __( 'Are you sure you want to delete "{0}" (id: {1})?',
+//						'block'       => true,
+						'confirm'     => __( 'Are you sure you want to delete "{0}" (id: {1,number,integer})?',
 							$mark_value->mark_form_property->name, $mark_value->id )
 					] ) ?>
             </td>
