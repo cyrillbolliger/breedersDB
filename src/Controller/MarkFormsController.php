@@ -171,25 +171,22 @@ class MarkFormsController extends AppController {
 	 * delete the fields that the user deleted
 	 */
 	protected function _deleteDeletedFields( $id ) {
-		$fields = $this->MarkForms->MarkFormFields->find()
-		                                          ->where( [ 'mark_form_id' => $id ] )
-		                                          ->toArray();
+        $new_mark_form_properties = $this->request->getData('mark_form_fields.mark_form_properties');
+        $new_mark_form_properties = empty($new_mark_form_properties) ? array() : $new_mark_form_properties;
+        $new_mark_form_property_ids = array_keys($new_mark_form_properties);
 
-		$mark_form_property_ids = [];
+        $old_mark_form_property_ids = $this->MarkForms->MarkFormFields
+            ->find()
+            ->where( [ 'mark_form_id' => $id ] )
+            ->extract('mark_form_property_id')
+            ->toArray();
 
-		foreach ( $fields as $field ) {
-			$mark_form_property_ids[] = $field->mark_form_property_id;
-		}
+        $removed_mark_form_properties = array_diff($old_mark_form_property_ids, $new_mark_form_property_ids);
 
-		foreach ( $this->request->getData('mark_form_fields') as $mark_form_field ) {
-			$key = array_search( $mark_form_field['mark_form_property_id'], $mark_form_property_ids );
-			unset( $mark_form_property_ids[ $key ] );
-		}
-
-		foreach ( $mark_form_property_ids as $mark_form_property_id ) {
+		foreach ( $removed_mark_form_properties as $old_mark_form_property_id ) {
 			$fields = $this->MarkForms->MarkFormFields->find()
 			                                          ->where( [ 'mark_form_id' => $id ] )
-			                                          ->andWhere( [ 'mark_form_property_id' => $mark_form_property_id ] )
+			                                          ->andWhere( [ 'mark_form_property_id' => $old_mark_form_property_id ] )
 			                                          ->first();
 			$this->MarkForms->MarkFormFields->delete( $fields );
 		}
