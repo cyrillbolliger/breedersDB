@@ -283,10 +283,11 @@ class MarksController extends AppController {
 			}
 		}
 
+
 		$marks              = $this->MarksReader->get( $mark->tree_id, $mark->variety_id, $mark->batch_id, $id );
 		$markForms          = $this->Marks->MarkForms->find( 'list' );
 		$markFormProperties = $this->Marks->MarkForms->MarkFormFields->MarkFormProperties->find( 'list' );
-		$this->set( compact( 'mark', 'markForms', 'markFormProperties', 'markFormFields', 'marks' ) );
+		$this->set( compact( 'mark', 'markForms', 'markFormProperties', 'marks' ) );
 		$this->set( '_serialize', [ 'mark' ] );
 	}
 
