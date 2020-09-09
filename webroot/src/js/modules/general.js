@@ -45,6 +45,7 @@ function GeneralModule() {
         this.selectConvar();
         this.selectTree();
         this.instantiateFilter();
+        this.instantiateEliminatedTreesFilter();
         this.instantiatePrefillMarker();
         this.instantiatePrintButtons();
         this.Varieties.selectBatchId();
@@ -94,18 +95,11 @@ function GeneralModule() {
         var $paginate = $target.find('.pagination a');
         var runningRequest;
 
-        // filter the data when inputing to the filter field
+        // filter the data when inputting to the filter field
         $filter.off('keyup paste change');
         $filter.on('keyup paste change', function () {
-            // prevent searching twice the same
-            if ($filter.val() === self.last_search_term) {
-                return;
-            } else {
-                self.last_search_term = $filter.val();
-            }
-
             // cancel any running request
-            if (runningRequest && runningRequest.readyState != 4) {
+            if (runningRequest && runningRequest.readyState !== 4) {
                 runningRequest.abort();
             }
 
@@ -183,6 +177,7 @@ function GeneralModule() {
             url: webroot + params.controller + '/' + params.action,
             data: {
                 fields: params.fields,
+                options: params.options,
                 term: term,
                 sort: sort,
                 direction: direction,
@@ -427,6 +422,19 @@ function GeneralModule() {
             if ($(this).hasClass('prevent_default')) {
                 event.preventDefault();
             }
+        });
+    };
+
+    this.instantiateEliminatedTreesFilter = function() {
+        var $switch = $('#show-eliminated-trees');
+        var $filter = $('.filter').first();
+
+        $switch.on('change', function(){
+            var data = $filter.data('filter');
+            data.options.show_eliminated = $switch.prop('checked');
+            $filter.data('filter', data);
+
+            $filter.trigger('change');
         });
     };
 }

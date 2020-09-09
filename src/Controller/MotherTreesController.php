@@ -29,7 +29,7 @@ class MotherTreesController extends AppController {
 	public function index() {
 		$this->paginate['contain'] = [ 'Crossings', 'Trees' ];
 
-		$motherTrees = $this->paginate( $this->MotherTrees );
+		$motherTrees = $this->paginate( $this->MotherTrees->find('withEliminated', ['show_eliminated' => false]) );
 
 		$this->set( compact( 'motherTrees' ) );
 		$this->set( '_serialize', [ 'motherTrees' ] );
@@ -141,7 +141,11 @@ class MotherTreesController extends AppController {
 		     && ! empty( $this->request->getQuery('fields') )
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
-			$entries = $this->MotherTrees->filterCodes( $this->request->getQuery('term') );
+            $term = $this->request->getQuery('term');
+            $entries = $this->MotherTrees->filterCodes( $term );
+
+            $show_eliminated = filter_var( $this->request->getQuery('options.show_eliminated', false), FILTER_VALIDATE_BOOL);
+            $entries = $entries->find('withEliminated', ['show_eliminated' => $show_eliminated]);
 
 			if ( ! empty( $this->request->getQuery('sort') ) ) {
 				$sort                    = $this->request->getQuery('sort');

@@ -52,6 +52,7 @@ class TreesTable extends Table {
 
 		$this->addBehavior( 'Timestamp' );
 		$this->addBehavior( 'Printable' );
+		$this->addBehavior( 'EliminatedTreesFinder' );
 
 		$this->belongsTo( 'Varieties', [
 			'foreignKey' => 'variety_id',

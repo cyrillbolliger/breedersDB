@@ -1,3 +1,6 @@
+<input type="checkbox" id="show-eliminated-trees" value="show-eliminated-trees">
+<label for="show-eliminated-trees"><?= __('Show eliminated trees') ?></label>
+
 <table>
     <thead>
     <tr>

@@ -8,7 +8,10 @@
 	'fields'     => [
 		'publicid',
 		'convar'
-	]
+	],
+    'options'   => [
+        'show_eliminated' => false
+    ]
 ] ); ?>
 
 <div class="trees index large-9 medium-8 columns content">

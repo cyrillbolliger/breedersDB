@@ -1,3 +1,6 @@
+<input type="checkbox" id="show-eliminated-trees-js-filter" value="show-eliminated-trees">
+<label for="show-eliminated-trees-js-filter"><?= __('Show eliminated trees') ?></label>
+
 <table>
     <tr>
         <th scope="col" class="id"><?= __( 'Id' ) ?></th>
@@ -11,7 +14,7 @@
         <th scope="col" class="actions"><?= __( 'Actions' ) ?></th>
     </tr>
 	<?php foreach ( $trees as $tree ): ?>
-        <tr>
+        <tr class="<?= $tree->date_eliminated ? 'tr-tree-eliminated' : '' ?>">
             <td class="id"><?= h( $tree->id ) ?></td>
             <td><?= h( $tree->publicid ) ?></td>
             <td><?= h( $tree->convar ) ?></td>
@@ -19,7 +22,7 @@
             <td><?= h( $tree->offset ) ?></td>
             <td><?= $tree->note ? $this->Html->link( __( 'Read' ),
 					[ 'controller' => 'trees', 'action' => 'view', $tree->id ] ) : '' ?></td>
-            <td><?= $tree->date_eliminated ? 'eliminated' : '' ?></td>
+            <td><?= $tree->date_eliminated ? __('eliminated' ) : '' ?></td>
             <td><?= h( $this->LocalizedTime->getUserTime( $tree->modified ) ) ?></td>
             <td class="actions">
 				<?= $this->Html->link( '<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
@@ -39,3 +42,15 @@
         </tr>
 	<?php endforeach; ?>
 </table>
+
+<script>
+    $('#show-eliminated-trees-js-filter').on('change', function() {
+        if ($(this).prop('checked')) {
+            $('.tr-tree-eliminated').show();
+        } else {
+            $('.tr-tree-eliminated').hide();
+        }
+    });
+
+    $('#show-eliminated-trees-js-filter').trigger('change');
+</script>
