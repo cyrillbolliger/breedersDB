@@ -43,6 +43,7 @@ class MotherTreesTable extends Table {
 		$this->setPrimaryKey( 'id' );
 
 		$this->addBehavior( 'Timestamp' );
+        $this->addBehavior( 'EliminatedTreesFinder' );
 
 		$this->belongsTo( 'Crossings', [
 			'foreignKey' => 'crossing_id'

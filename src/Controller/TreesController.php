@@ -67,7 +67,9 @@ class TreesController extends AppController {
 			'row_id',
 		];
 
-		$trees = $this->paginate( $this->Trees );
+		$trees = $this->paginate(
+		    $this->Trees->find( 'withEliminated', ['show_eliminated' => false] )
+        );
 
 		$this->set( compact( 'trees' ) );
 		$this->set( '_serialize', [ 'trees' ] );
@@ -406,7 +408,11 @@ class TreesController extends AppController {
 		     && ! empty( $this->request->getQuery('fields') )
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
-			$entries = $this->Trees->filter( $this->request->getQuery('term') );
+		    $term = $this->request->getQuery('term');
+			$entries = $this->Trees->filter( $term );
+
+			$show_eliminated = filter_var( $this->request->getQuery('options.show_eliminated', false), FILTER_VALIDATE_BOOL);
+			$entries = $entries->find('withEliminated', ['show_eliminated' => $show_eliminated]);
 
 			if ( ! empty( $this->request->getQuery('sort') ) ) {
 				$sort                    = $this->request->getQuery('sort');
