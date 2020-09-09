@@ -20,8 +20,10 @@ function GeneralModule() {
     /**
      * temp storages for filters etc. to set timeout before sending request
      */
-    var last_search_term;
     var search_timer;
+    var sort_by;
+    var sort_direction;
+    var page_num;
 
     /**
      * Load modules
@@ -108,7 +110,7 @@ function GeneralModule() {
             clearTimeout(self.search_timer);
             self.search_timer = setTimeout(function () {
                 // search for the data
-                runningRequest = self.getFilteredData($filter.val(), $filter.data('filter'), $target, null);
+                runningRequest = self.getFilteredData($filter.val(), $filter.data('filter'), $target);
             }, wait);
         });
 
@@ -117,22 +119,28 @@ function GeneralModule() {
         $sort.click(function (e) {
             var $link = $(this);
             var href = $link.attr('href');
-            var order = null === href.match('direction=asc') ? 'asc' : 'desc';
-            var anti_order = order === 'asc' ? 'desc' : 'asc';
-            var new_href = href.replace(/direction=\w+/, 'direction=' + order);
+            sort_by = self.getUrlParameter('sort', href);
+            sort_direction = self.getUrlParameter('direction', href);
+            var reversed = sort_direction === 'asc' ? 'desc' : 'asc';
+            var new_href = href.replace(/direction=\w+/, 'direction=' + reversed);
 
             // prevent default
             e.preventDefault();
+
+            // cancel any running request
+            if (runningRequest && runningRequest.readyState !== 4) {
+                runningRequest.abort();
+            }
 
             // set new link
             $link.attr('href', new_href);
 
             // set order classes
             $sort.removeClass('asc desc');
-            $link.addClass(anti_order);
+            $link.addClass(reversed);
 
             // get new data
-            self.getFilteredData($filter.val(), $filter.data('filter'), $target, href);
+            runningRequest = self.getFilteredData($filter.val(), $filter.data('filter'), $target);
         });
 
         // make pagination work with filters
@@ -151,8 +159,15 @@ function GeneralModule() {
                     return;
                 }
 
+                page_num = self.getUrlParameter('page', href);
+
+                // cancel any running request
+                if (runningRequest && runningRequest.readyState !== 4) {
+                    runningRequest.abort();
+                }
+
                 // get new data
-                self.getFilteredData($filter.val(), $filter.data('filter'), $target, href);
+                runningRequest = self.getFilteredData($filter.val(), $filter.data('filter'), $target);
             });
         });
     };
@@ -163,25 +178,19 @@ function GeneralModule() {
      * @param term String with the filter criteria (search term)
      * @param params Object {controller: String, action: String, fields: Array}
      * @param $target jQuery object where the results will be displayed
-     * @param url String
      *
      * @return {XMLHttpRequest}
      */
-    this.getFilteredData = function (term, params, $target, url) {
-        url = null === url ? window.location : url;
-
-        var sort = self.getUrlParameter('sort', url);
-        var direction = self.getUrlParameter('direction', url);
-
+    this.getFilteredData = function (term, params, $target) {
         return $.ajax({
             url: webroot + params.controller + '/' + params.action,
             data: {
                 fields: params.fields,
                 options: params.options,
                 term: term,
-                sort: sort,
-                direction: direction,
-                page: self.getUrlParameter('page', url)
+                sort: sort_by,
+                direction: sort_direction,
+                page: page_num
             },
             success: function (resp) {
                 var $tbody = $(resp).find('tbody');
@@ -190,7 +199,6 @@ function GeneralModule() {
                 if ($tbody.length && $paginator.length) {
                     $target.find('tbody').html($tbody.html());
                     $target.find('.paginator').html($paginator.html());
-                    self.addPaginatorSortQueryString(sort, direction, $target.find('.paginator'));
                     self.instantiateFilter();
                 } else {
                     $target.find('tbody').html(resp);
@@ -201,30 +209,6 @@ function GeneralModule() {
                 xhr.setRequestHeader('X-CSRF-Token', csrfToken);
                 $target.find('tbody').html(trans.searching);
             }
-        });
-    };
-
-    /**
-     * Decorate the links in the $paginator jquery object with the sorting field and direction
-     *
-     * @param sort
-     * @param direction
-     * @param $paginator
-     */
-    this.addPaginatorSortQueryString = function (sort, direction, $paginator) {
-        $paginator.find('a').each(function () {
-            var link = $(this).attr('href');
-            var new_link;
-
-            // disable for empty links
-            if (!link) {
-                return;
-            }
-
-            new_link = link.replace('&sort=', '');
-            new_link = new_link.replace('&direction=', '');
-            new_link = new_link + '&sort=' + sort + '&direction=' + direction;
-            $(this).attr('href', new_link);
         });
     };
 
