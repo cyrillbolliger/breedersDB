@@ -17,6 +17,11 @@ class MarkFormsController extends AppController {
 		'limit' => 100,
 	];
 
+    public function initialize() {
+        parent::initialize();
+        $this->loadComponent( 'Filter' );
+    }
+
 	public function beforeFilter( Event $event ) {
 		parent::beforeFilter( $event );
 
@@ -225,14 +230,8 @@ class MarkFormsController extends AppController {
 		) {
 			$entries = $this->MarkForms->filter( $this->request->getQuery('term') );
 
-			if ( ! empty( $this->request->getQuery('sort') ) ) {
-				$sort                    = $this->request->getQuery('sort');
-				$direction               = empty( $this->request->getQuery('direction') ) ? 'asc' : $this->request->getQuery('direction');
-				$this->paginate['order'] = [ $sort => $direction ];
-			}
-			if ( ! empty( $this->request->getQuery('page') ) ) {
-				$this->paginate['page'] = $this->request->getQuery('page');
-			}
+            $this->Filter->setSortingParams();
+            $this->Filter->setPaginationParams($entries);
 
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );

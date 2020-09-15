@@ -12,6 +12,7 @@
 vendor
 deploy.conf
 import-live-data.sh
+report_errors.sh
 
 # dont check in .mo files. cake throws an error if you do provide them!
 *.mo

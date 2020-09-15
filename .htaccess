@@ -6,6 +6,10 @@
 
 <IfModule mod_rewrite.c>
     RewriteEngine on
+
+    RewriteCond %{REQUEST_URI} !^\/\.well-known [NC]
     RewriteRule    ^$    webroot/    [L]
+
+    RewriteCond %{REQUEST_URI} !^\/\.well-known [NC]
     RewriteRule    (.*) webroot/$1    [L]
 </IfModule>

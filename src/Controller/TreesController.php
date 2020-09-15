@@ -21,6 +21,7 @@ class TreesController extends AppController {
 		parent::initialize();
 		$this->loadComponent( 'Brain' );
 		$this->loadComponent( 'MarksReader' );
+		$this->loadComponent( 'Filter' );
 	}
 
 	/**
@@ -414,14 +415,8 @@ class TreesController extends AppController {
 			$show_eliminated = filter_var( $this->request->getQuery('options.show_eliminated', false), FILTER_VALIDATE_BOOL);
 			$entries = $entries->find('withEliminated', ['show_eliminated' => $show_eliminated]);
 
-			if ( ! empty( $this->request->getQuery('sort') ) ) {
-				$sort                    = $this->request->getQuery('sort');
-				$direction               = empty( $this->request->getQuery('direction') ) ? 'asc' : $this->request->getQuery('direction');
-				$this->paginate['order'] = [ $sort => $direction ];
-			}
-			if ( ! empty( $this->request->getQuery('page') ) ) {
-				$this->paginate['page'] = $this->request->getQuery('page');
-			}
+            $this->Filter->setSortingParams();
+            $this->Filter->setPaginationParams($entries);
 
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
