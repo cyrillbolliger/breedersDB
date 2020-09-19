@@ -271,16 +271,15 @@ class VarietiesController extends AppController {
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
 			$entries = $this->Varieties->filter( $this->request->getQuery('term') );
-
-            $this->Filter->setSortingParams();
-            $this->Filter->setPaginationParams($entries);
-
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
 
-		if ( $entries ) {
+		if ( $entries && $entries->count() ) {
+            $this->Filter->setSortingParams();
+            $this->Filter->setPaginationParams($entries);
 			$varieties = $this->paginate( $entries );
+
 			$this->set( compact( 'varieties' ) );
 			$this->set( '_serialize', [ 'varieties' ] );
 			$this->render( '/Element/Variety/index_table' );

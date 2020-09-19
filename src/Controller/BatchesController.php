@@ -163,16 +163,15 @@ class BatchesController extends AppController {
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
 			$entries = $this->Batches->filterCrossingBatches( $this->request->getQuery('term') );
-
-            $this->Filter->setSortingParams();
-            $this->Filter->setPaginationParams($entries);
-
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
 
-		if ( $entries ) {
+		if ( $entries && $entries->count() ) {
+            $this->Filter->setSortingParams();
+            $this->Filter->setPaginationParams($entries);
 			$batches = $this->paginate( $entries );
+
 			$this->set( compact( 'batches' ) );
 			$this->set( '_serialize', [ 'batches' ] );
 			$this->render( '/Element/Batch/index_table' );

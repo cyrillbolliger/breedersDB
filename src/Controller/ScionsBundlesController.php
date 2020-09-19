@@ -142,16 +142,15 @@ class ScionsBundlesController extends AppController {
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
 			$entries = $this->ScionsBundles->filter( $this->request->getQuery('term') );
-
-            $this->Filter->setSortingParams();
-            $this->Filter->setPaginationParams($entries);
-
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
 
-		if ( $entries->count() ) {
+		if ( $entries && $entries->count() ) {
+            $this->Filter->setSortingParams();
+            $this->Filter->setPaginationParams($entries);
 			$scionsBundles = $this->paginate( $entries );
+
 			$this->set( compact( 'scionsBundles' ) );
 			$this->set( '_serialize', [ 'scionsBundles' ] );
 			$this->render( '/Element/ScionsBundle/index_table' );

@@ -148,16 +148,15 @@ class MarkScannerCodesController extends AppController {
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
 			$entries = $this->MarkScannerCodes->filter( $this->request->getQuery('term') );
-
-            $this->Filter->setSortingParams();
-            $this->Filter->setPaginationParams($entries);
-
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
 
-		if ( $entries ) {
+		if ( $entries && $entries->count() ) {
+            $this->Filter->setSortingParams();
+            $this->Filter->setPaginationParams($entries);
 			$markScannerCodes = $this->paginate( $entries );
+
 			$this->set( compact( 'markScannerCodes' ) );
 			$this->set( '_serialize', [ 'markScannerCodes' ] );
 			$this->render( '/Element/MarkScannerCode/index_table' );
