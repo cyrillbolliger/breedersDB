@@ -172,16 +172,15 @@ class CrossingsController extends AppController {
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
 			$entries = $this->Crossings->filterCodes( $this->request->getQuery('term') );
-
-            $this->Filter->setSortingParams();
-            $this->Filter->setPaginationParams($entries);
-
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
 
-		if ( $entries->count() ) {
+		if ( $entries && $entries->count() ) {
+            $this->Filter->setSortingParams();
+            $this->Filter->setPaginationParams($entries);
 			$crossings = $this->paginate( $entries );
+
 			$this->set( compact( 'crossings' ) );
 			$this->set( '_serialize', [ 'crossings' ] );
 			$this->render( '/Element/Crossing/index_table' );

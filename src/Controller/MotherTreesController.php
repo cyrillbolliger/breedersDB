@@ -145,18 +145,19 @@ class MotherTreesController extends AppController {
             $term = $this->request->getQuery('term');
             $entries = $this->MotherTrees->filterCodes( $term );
 
-            $show_eliminated = filter_var( $this->request->getQuery('options.show_eliminated', false), FILTER_VALIDATE_BOOL);
-            $entries = $entries->find('withEliminated', ['show_eliminated' => $show_eliminated]);
-
-            $this->Filter->setSortingParams();
-            $this->Filter->setPaginationParams($entries);
-
+            if ( $entries && $entries->count() ) {
+                $show_eliminated = filter_var( $this->request->getQuery('options.show_eliminated', false), FILTER_VALIDATE_BOOL);
+                $entries = $entries->find('withEliminated', ['show_eliminated' => $show_eliminated]);
+            }
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
 
-		if ( $entries->count() ) {
-			$motherTrees = $this->paginate( $entries );
+		if ( $entries && $entries->count() ) {
+            $this->Filter->setSortingParams();
+            $this->Filter->setPaginationParams($entries);
+            $motherTrees = $this->paginate( $entries );
+
 			$this->set( compact( 'motherTrees' ) );
 			$this->set( '_serialize', [ 'motherTrees' ] );
 			$this->render( '/Element/MotherTree/index_table' );

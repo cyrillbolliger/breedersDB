@@ -163,16 +163,15 @@ class MarkFormPropertiesController extends AppController {
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
 			$entries = $this->MarkFormProperties->filter( $this->request->getQuery('term') );
-
-            $this->Filter->setSortingParams();
-            $this->Filter->setPaginationParams($entries);
-
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
 
-		if ( $entries ) {
+		if ( $entries && $entries->count() ) {
+            $this->Filter->setSortingParams();
+            $this->Filter->setPaginationParams($entries);
 			$markFormProperties = $this->paginate( $entries );
+
 			$this->set( compact( 'markFormProperties' ) );
 			$this->set( '_serialize', [ 'markFormProperties' ] );
 			$this->render( '/Element/MarkFormProperty/index_table' );

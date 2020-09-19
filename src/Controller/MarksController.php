@@ -345,16 +345,15 @@ class MarksController extends AppController {
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
 			$entries = $this->Marks->filter( $this->request->getQuery('term') );
-
-            $this->Filter->setSortingParams();
-            $this->Filter->setPaginationParams($entries);
-
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
 
-		if ( $entries ) {
+		if ( $entries && $entries->count() ) {
+            $this->Filter->setSortingParams();
+            $this->Filter->setPaginationParams($entries);
 			$marks = $this->paginate( $entries );
+
 			$this->set( compact( 'marks' ) );
 			$this->set( '_serialize', [ 'marks' ] );
 			$this->render( '/Element/Mark/index_table' );

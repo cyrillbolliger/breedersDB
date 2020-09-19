@@ -130,16 +130,15 @@ class RowsController extends AppController {
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
 			$entries = $this->Rows->filter( $this->request->getQuery('term') );
-
-            $this->Filter->setSortingParams();
-            $this->Filter->setPaginationParams($entries);
-
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}
 
-		if ( $entries->count() ) {
+		if ( $entries && $entries->count() ) {
+            $this->Filter->setSortingParams();
+            $this->Filter->setPaginationParams($entries);
 			$rows = $this->paginate( $entries );
+
 			$this->set( compact( 'rows' ) );
 			$this->set( '_serialize', [ 'rows' ] );
 			$this->render( '/Element/Row/index_table' );
