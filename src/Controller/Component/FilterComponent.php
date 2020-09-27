@@ -25,7 +25,9 @@ class FilterComponent extends \Cake\Controller\Component
         // pagination
         $page = (int) $this->_getRequest()->getQuery('page');
         if ( ! empty( $page ) ) {
-            $totalPages = (int) ceil($query->count() / $this->getController()->paginate['limit']);
+            $limit = $this->getController()->paginate['limit']
+                  ?? $this->getController()->loadComponent('Paginator')->getConfig('limit');
+            $totalPages = (int) ceil($query->count() / $limit );
             if ( $totalPages < $page ) {
                 $page = $totalPages;
 
