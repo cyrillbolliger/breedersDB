@@ -9,7 +9,9 @@ Stores your plants data and facilitates evaluation. Enables data based plant bre
 1. Execute `bash install.sh` and have a ☕️ while it installs.
 1. Visit [localhost:8000/](http://localhost:8000/)
 
-todo: database setup
+### Database
+1. Runing migrations: `docker-compose run app bin/cake migrations migrate  --no-lock` (do not use lock file as we can't use the diff function anyhow (Phinx does not support views)).
+1. Run the seeder: TODO: implement seeder.
 
 ### Printer Setup
 Suggested printer: Zebra P4T
