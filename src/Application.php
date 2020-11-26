@@ -50,6 +50,8 @@ class Application extends BaseApplication {
 
 	function bootstrap()
     {
+        $this->addPlugin('Migrations');
+
         parent::bootstrap();
         $this->addPlugin('SoftDelete');
 

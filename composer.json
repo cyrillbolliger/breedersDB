@@ -14,7 +14,8 @@
         "fredckl/cakephp3-soft-delete": "~2.0",
         "cakephp/chronos": "@stable",
         "phpoffice/phpspreadsheet": "^1.14",
-      "ext-json": "*"
+        "ext-json": "*",
+        "cakephp/migrations": "@stable"
     },
     "require-dev": {
         "cakephp/debug_kit": "~3.22",
