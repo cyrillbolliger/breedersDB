@@ -114,6 +114,18 @@ class CrossingsTable extends Table {
 		return $rules;
 	}
 
+    /**
+     * Custom Finder Method that hides the official variety "crossing" (SORTE)
+     *
+     * @param Query $query
+     * @param array $options
+     *
+     * @return Query
+     */
+    public function findWithoutOfficialVarieties( Query $query, array $options ) {
+        return $query->where(['Crossings.id !=' => 1]);
+	}
+
 	/**
 	 * Return query filtered by given search term searching the code
 	 *

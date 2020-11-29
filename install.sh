@@ -12,5 +12,8 @@ docker-compose build app
 docker-compose run app composer install
 docker-compose run node npm install
 
+# initialize database
+docker-compose run app bin/bake migrations migrate --no-lock
+
 # start up containers
 docker-compose up -d

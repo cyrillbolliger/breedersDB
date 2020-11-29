@@ -28,7 +28,7 @@ class CrossingsController extends AppController {
 	 */
 	public function index() {
 		$this->paginate['contain'] = [ 'MotherTrees' ];
-		$crossings                 = $this->paginate( $this->Crossings );
+		$crossings                 = $this->paginate( $this->Crossings->find( 'withoutOfficialVarieties'));
 
 		$this->set( compact( 'crossings' ) );
 		$this->set( '_serialize', [ 'crossings' ] );
@@ -171,7 +171,8 @@ class CrossingsController extends AppController {
 		     && ! empty( $this->request->getQuery('fields') )
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
-			$entries = $this->Crossings->filterCodes( $this->request->getQuery('term') );
+			$entries = $this->Crossings->filterCodes( $this->request->getQuery('term') )
+                                       ->find('withoutOfficialVarieties');
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}

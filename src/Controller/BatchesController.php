@@ -57,7 +57,7 @@ class BatchesController extends AppController {
 			'Crossings.code',
 		];
 
-		$batches = $this->paginate( $this->Batches );
+		$batches = $this->paginate( $this->Batches->find('withoutOfficialVarieties') );
 
 		$this->set( compact( 'batches' ) );
 		$this->set( '_serialize', [ 'batches' ] );
@@ -162,7 +162,8 @@ class BatchesController extends AppController {
 		     && ! empty( $this->request->getQuery('fields') )
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
-			$entries = $this->Batches->filterCrossingBatches( $this->request->getQuery('term') );
+			$entries = $this->Batches->filterCrossingBatches( $this->request->getQuery('term') )
+                                     ->find('withoutOfficialVarieties');
 		} else {
 			throw new Exception( __( 'Direct access not allowed.' ) );
 		}

@@ -50,11 +50,35 @@ class Application extends BaseApplication {
 
 	function bootstrap()
     {
+        if (PHP_SAPI === 'cli') {
+            $this->bootstrapCli();
+        }
+
         parent::bootstrap();
         $this->addPlugin('SoftDelete');
 
         if (Configure::read('debug')) {
             $this->addPlugin('DebugKit', ['bootstrap' => true]);
         }
+    }
+
+    /**
+     * Bootstrapping for CLI application.
+     *
+     * That is when running commands.
+     *
+     * @return void
+     */
+    protected function bootstrapCli(): void
+    {
+        try {
+            $this->addPlugin('Bake');
+        } catch (MissingPluginException $e) {
+            // Do not halt if the plugin is missing
+        }
+
+        $this->addPlugin('Migrations');
+
+        // Load more plugins here
     }
 }

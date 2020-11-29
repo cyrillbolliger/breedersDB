@@ -140,6 +140,18 @@ class BatchesTable extends Table {
 		return $rules;
 	}
 
+    /**
+     * Custom Finder Method that hides the official variety "batch" (SORTE.000)
+     *
+     * @param Query $query
+     * @param array $options
+     *
+     * @return Query
+     */
+    public function findWithoutOfficialVarieties( Query $query, array $options ) {
+        return $query->where(['Batches.id !=' => 1]);
+    }
+
 	/**
 	 * Return query filtered by given search term searching the convar
 	 *

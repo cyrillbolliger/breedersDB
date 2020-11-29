@@ -14,11 +14,14 @@
         "fredckl/cakephp3-soft-delete": "~2.0",
         "cakephp/chronos": "@stable",
         "phpoffice/phpspreadsheet": "^1.14",
-      "ext-json": "*"
+        "ext-json": "*"
     },
     "require-dev": {
         "cakephp/debug_kit": "~3.22",
-        "phpunit/phpunit": "^9.3"
+        "phpunit/phpunit": "^9.3",
+        "cakephp/bake": "~1.1",
+        "cakephp/migrations": "@stable",
+        "fakerphp/faker": "^1.12"
     },
     "suggest": {
         "markstory/asset_compress": "An asset compression plugin which provides file concatenation and a flexible filter system for preprocessing and minification.",
@@ -39,7 +42,6 @@
     "scripts": {
         "post-install-cmd": "App\\Console\\Installer::postInstall",
         "post-create-project-cmd": "App\\Console\\Installer::postInstall",
-        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
         "check": [
             "@test",
             "@cs-check"
