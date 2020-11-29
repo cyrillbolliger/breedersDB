@@ -17,7 +17,7 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    'debug' => filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN),
+    'debug' => filter_var(env('DEBUG', false), FILTER_VALIDATE_BOOLEAN),
 
     /**
      * Configure basic information about the application.
@@ -264,7 +264,7 @@ return [
              */
             'port' => env('DB_PORT', 3306 ),
             'username' => env('DB_USERNAME'),
-            'password' => env( 'DB_PORT' ),
+            'password' => env( 'DB_PASSWORD' ),
             'database' => env( 'DB_DATABASE' ),
             /*
              * You do not need to set this flag to use full utf-8 encoding (internal default since CakePHP 3.6).
@@ -395,5 +395,6 @@ return [
      */
     'Session' => [
         'defaults' => 'php',
+        'timeout'  => 60,
     ],
 ];
