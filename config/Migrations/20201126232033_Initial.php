@@ -1225,7 +1225,7 @@ class Initial extends AbstractMigration {
         // experiment sites
         $data = [
             'id'   => '1',
-            'name' => 'Default Site',
+            'name' => 'Andwil',
         ];
 
         $table = $this->table( 'experiment_sites' );

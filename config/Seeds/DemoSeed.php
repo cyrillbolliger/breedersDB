@@ -42,6 +42,9 @@ class DemoSeed extends AbstractSeed
         $this->call('MarkFormsSeed');
         $this->call('MarksSeed');
         $this->call('MarkValuesSeed');
+        $this->call('MarkFormFieldsSeed');
+        $this->call('QueriesSeed');
+        $this->call('QueryGroupsSeed');
 
         $this->execute('SET FOREIGN_KEY_CHECKS=1;');
     }

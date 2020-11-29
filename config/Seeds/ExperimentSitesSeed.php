@@ -18,13 +18,14 @@ class ExperimentSitesSeed extends AbstractSeed
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
-        $data = [];
-        for ($i = 0; $i < 2; $i++) {
-            $data[] = [
-                'name' => $faker->city,
-            ];
-        }
+        $data = [
+            [
+                'name' => 'Birmensdorf',
+            ],
+            [
+                'name' => 'Curtilles',
+            ],
+        ];
 
         $table = $this->table('experiment_sites');
         $table->insert($data)->save();
