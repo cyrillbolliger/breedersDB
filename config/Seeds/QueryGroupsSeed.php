@@ -28,10 +28,10 @@ class QueryGroupsSeed extends AbstractSeed
             ],
             [
                 'id' => '2',
-                'code' => 'Bäume',
+                'code' => 'Pflanzen',
                 'deleted' => NULL,
                 'created' => '2020-11-29 22:57:15',
-                'modified' => '2020-11-29 23:00:58',
+                'modified' => '2020-11-29 23:13:57',
             ],
         ];
 
