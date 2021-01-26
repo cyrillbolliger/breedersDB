@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2020-09-09 13:25+0200\n"
-"PO-Revision-Date: 2020-09-09 13:37+0200\n"
+"POT-Creation-Date: 2021-01-26 22:54+0100\n"
+"PO-Revision-Date: 2021-01-26 22:57+0100\n"
 "Last-Translator: Cyrill Bolliger <bolliger@gmx.ch>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: Controller/AppController.php:87
 msgctxt "time format"
@@ -32,64 +32,64 @@ msgctxt "datetime format"
 msgid "dd.MM.yyyy HH:mm"
 msgstr "dd.MM.yyyy HH:mm"
 
-#: Controller/BatchesController.php:94 Controller/BatchesController.php:121
+#: Controller/BatchesController.php:95 Controller/BatchesController.php:122
 msgid "The batch has been saved."
 msgstr "Das Los wurde gespeichert."
 
-#: Controller/BatchesController.php:98 Controller/BatchesController.php:125
+#: Controller/BatchesController.php:99 Controller/BatchesController.php:126
 msgid "The batch could not be saved. Please, try again."
 msgstr "Das Los konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/BatchesController.php:145
+#: Controller/BatchesController.php:146
 msgid "The batch has been deleted."
 msgstr "Das Los wurde gelöscht."
 
-#: Controller/BatchesController.php:147
+#: Controller/BatchesController.php:148
 msgid "The batch could not be deleted. Please, try again."
 msgstr "Das Los konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/BatchesController.php:176 Controller/CrossingsController.php:181
-#: Controller/MarkFormPropertiesController.php:172
-#: Controller/MarkFormsController.php:238
-#: Controller/MarkScannerCodesController.php:157
-#: Controller/MarkScannerCodesController.php:178
-#: Controller/MarksController.php:358 Controller/MarksViewController.php:25
-#: Controller/MotherTreesController.php:160 Controller/RowsController.php:139
-#: Controller/ScionsBundlesController.php:151
-#: Controller/TreesController.php:301 Controller/TreesController.php:427
-#: Controller/TreesController.php:452 Controller/VarietiesController.php:216
-#: Controller/VarietiesController.php:235
-#: Controller/VarietiesController.php:254
-#: Controller/VarietiesController.php:284
+#: Controller/BatchesController.php:168 Controller/CrossingsController.php:177
+#: Controller/MarkFormPropertiesController.php:167
+#: Controller/MarkFormsController.php:233
+#: Controller/MarkScannerCodesController.php:152
+#: Controller/MarkScannerCodesController.php:176
+#: Controller/MarksController.php:349 Controller/MarksViewController.php:25
+#: Controller/MotherTreesController.php:153 Controller/RowsController.php:134
+#: Controller/ScionsBundlesController.php:146
+#: Controller/TreesController.php:302 Controller/TreesController.php:420
+#: Controller/TreesController.php:448 Controller/VarietiesController.php:217
+#: Controller/VarietiesController.php:236
+#: Controller/VarietiesController.php:255
+#: Controller/VarietiesController.php:275
 msgid "Direct access not allowed."
 msgstr "Direkter Zugriff nicht erlaubt."
 
-#: Controller/BatchesController.php:202
-#: Controller/MarkScannerCodesController.php:196
-#: Controller/MarkScannerCodesController.php:217
-#: Controller/TreesController.php:481
+#: Controller/BatchesController.php:197
+#: Controller/MarkScannerCodesController.php:194
+#: Controller/MarkScannerCodesController.php:215
+#: Controller/TreesController.php:477
 msgid "Regular"
 msgstr "Normal"
 
-#: Controller/CrossingsController.php:74 Controller/CrossingsController.php:116
+#: Controller/CrossingsController.php:79 Controller/CrossingsController.php:121
 msgid "The crossing has been saved."
 msgstr "Die Kreuzung wurde gespeichert."
 
-#: Controller/CrossingsController.php:78
+#: Controller/CrossingsController.php:83
 msgid "The crossing could not be saved. Please try again."
 msgstr ""
 "Die Kreuzung konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/CrossingsController.php:120
+#: Controller/CrossingsController.php:125
 msgid "The crossing could not be saved. Please, try again."
 msgstr ""
 "Die Kreuzung konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/CrossingsController.php:150
+#: Controller/CrossingsController.php:155
 msgid "The crossing has been deleted."
 msgstr "Die Kreuzung wurde gelöscht."
 
-#: Controller/CrossingsController.php:152
+#: Controller/CrossingsController.php:157
 msgid "The crossing could not be deleted. Please, try again."
 msgstr "Die Kreuzung konnte nicht gelöscht werden. Bitte versuche es erneut."
 
@@ -152,23 +152,23 @@ msgstr ""
 "Das Feld des Bewertungsformulars konnte nicht gespeichert werden. Bitte "
 "versuche es erneut."
 
-#: Controller/MarkFormPropertiesController.php:60
-#: Controller/MarkFormPropertiesController.php:88
+#: Controller/MarkFormPropertiesController.php:65
+#: Controller/MarkFormPropertiesController.php:93
 msgid "The mark form property has been saved."
 msgstr "Die Eigenschaft des Bewertungsformulars wurde gespeichert."
 
-#: Controller/MarkFormPropertiesController.php:64
-#: Controller/MarkFormPropertiesController.php:92
+#: Controller/MarkFormPropertiesController.php:69
+#: Controller/MarkFormPropertiesController.php:97
 msgid "The mark form property could not be saved. Please, try again."
 msgstr ""
 "Die Eigenschaft des Bewertungsformulars konnte nicht gespeichert werden. "
 "Bitte versuche es erneut."
 
-#: Controller/MarkFormPropertiesController.php:113
+#: Controller/MarkFormPropertiesController.php:118
 msgid "The mark form property has been deleted."
 msgstr "Die Eigenschaft des Bewertungsformulars wurde gelöscht."
 
-#: Controller/MarkFormPropertiesController.php:115
+#: Controller/MarkFormPropertiesController.php:120
 msgid "The mark form property could not be deleted. Please, try again."
 msgstr ""
 "Die Eigenschaft des Bewertungsformulars konnte nicht gelöscht werden. Bitte "
@@ -196,46 +196,46 @@ msgstr ""
 "Der Eigenschaftstyp des Bewertungsformulars konnte nicht gelöscht werden. "
 "Bitte versuche es erneut."
 
-#: Controller/MarkFormsController.php:84 Controller/MarkFormsController.php:158
+#: Controller/MarkFormsController.php:89 Controller/MarkFormsController.php:163
 msgid "The mark form has been saved."
 msgstr "Das Bewertungsformular wurde gespeichert."
 
-#: Controller/MarkFormsController.php:88 Controller/MarkFormsController.php:162
+#: Controller/MarkFormsController.php:93 Controller/MarkFormsController.php:167
 msgid "The mark form could not be saved. Please, try again."
 msgstr ""
 "Das Bewertungsformular konnte nicht gespeichert werden. Bitte versuche es "
 "erneut."
 
-#: Controller/MarkFormsController.php:207
+#: Controller/MarkFormsController.php:212
 msgid "The mark form has been deleted."
 msgstr "Das Bewertungsformular wurde gelöscht."
 
-#: Controller/MarkFormsController.php:209
+#: Controller/MarkFormsController.php:214
 msgid "The mark form could not be deleted. Please, try again."
 msgstr ""
 "Das Bewertungsformular konnte nicht gelöscht werden. Bitte versuche es "
 "erneut."
 
-#: Controller/MarkScannerCodesController.php:69
+#: Controller/MarkScannerCodesController.php:74
 msgid "{0}: {1} has been saved."
 msgstr "{0}: {1} wurde gespeichert."
 
-#: Controller/MarkScannerCodesController.php:79
-#: Controller/MarkScannerCodesController.php:106
+#: Controller/MarkScannerCodesController.php:84
+#: Controller/MarkScannerCodesController.php:111
 msgid "The mark scanner code could not be saved. Please, try again."
 msgstr ""
 "Der Bewertungsscannercode konnte nicht gespeichert werden. Bitte versuche es "
 "erneut."
 
-#: Controller/MarkScannerCodesController.php:102
+#: Controller/MarkScannerCodesController.php:107
 msgid "The mark scanner code has been saved."
 msgstr "Der Bewertungsscannercode wurde gespeichert."
 
-#: Controller/MarkScannerCodesController.php:126
+#: Controller/MarkScannerCodesController.php:131
 msgid "The mark scanner code has been deleted."
 msgstr "Der Bewertungsscannercode wurde gelöscht."
 
-#: Controller/MarkScannerCodesController.php:128
+#: Controller/MarkScannerCodesController.php:133
 msgid "The mark scanner code could not be deleted. Please, try again."
 msgstr ""
 "Der Bewertungsscannercode konnte nicht gelöscht werden. Bitte versuche es "
@@ -261,22 +261,22 @@ msgstr ""
 "Der Wert der Bewertung konnte nicht gelöscht werden. Bitte versuche es "
 "erneut."
 
-#: Controller/MarksController.php:123 Controller/MarksController.php:168
-#: Controller/MarksController.php:217 Controller/MarksController.php:278
+#: Controller/MarksController.php:124 Controller/MarksController.php:169
+#: Controller/MarksController.php:218 Controller/MarksController.php:279
 msgid "The mark has been saved."
 msgstr "Die Bewertung wurde gespeichert."
 
-#: Controller/MarksController.php:127 Controller/MarksController.php:172
-#: Controller/MarksController.php:221 Controller/MarksController.php:282
+#: Controller/MarksController.php:128 Controller/MarksController.php:173
+#: Controller/MarksController.php:222 Controller/MarksController.php:283
 msgid "The mark could not be saved."
 msgstr "Die Bewertung konnte nicht gespeichert werden."
 
-#: Controller/MarksController.php:130
+#: Controller/MarksController.php:131
 msgid "Please select a tree by public id."
 msgstr "Bitte wähle einen Baum über seine Publicid."
 
-#: Controller/MarksController.php:133 Controller/MarksController.php:178
-#: Controller/MarksController.php:227
+#: Controller/MarksController.php:134 Controller/MarksController.php:179
+#: Controller/MarksController.php:228
 msgid ""
 "One of the mark values violates the validation rules. Please check data "
 "types."
@@ -284,38 +284,38 @@ msgstr ""
 "Einer der Werte der Bewertung verstößt gegen die Regeln der "
 "Gültigkeitsprüfung. Bitte überprüfe die Datentypen."
 
-#: Controller/MarksController.php:175
+#: Controller/MarksController.php:176
 msgid "Please select a variety."
 msgstr "Bitte wähle eine Sorte aus."
 
-#: Controller/MarksController.php:224
+#: Controller/MarksController.php:225
 msgid "Please select a batch."
 msgstr "Bitte wähle ein Los aus."
 
-#: Controller/MarksController.php:306
+#: Controller/MarksController.php:307
 msgid "The mark has been deleted."
 msgstr "Die Bewertung wurde gelöscht."
 
-#: Controller/MarksController.php:308
+#: Controller/MarksController.php:309
 msgid "The mark could not be deleted. Please, try again."
 msgstr "Die Bewertung konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/MotherTreesController.php:65
-#: Controller/MotherTreesController.php:99
+#: Controller/MotherTreesController.php:66
+#: Controller/MotherTreesController.php:100
 msgid "The mother tree has been saved."
 msgstr "Der Mutterbaum wurde gespeichert."
 
-#: Controller/MotherTreesController.php:69
-#: Controller/MotherTreesController.php:103
+#: Controller/MotherTreesController.php:70
+#: Controller/MotherTreesController.php:104
 msgid "The mother tree could not be saved. Please, try again."
 msgstr ""
 "Der Mutterbaum konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/MotherTreesController.php:125
+#: Controller/MotherTreesController.php:126
 msgid "The mother tree has been deleted."
 msgstr "Der Mutterbaum wurde gelöscht."
 
-#: Controller/MotherTreesController.php:127
+#: Controller/MotherTreesController.php:128
 msgid "The mother tree could not be deleted. Please, try again."
 msgstr "Der Mutterbaum konnte nicht gelöscht werden. Bitte versuche es erneut."
 
@@ -374,63 +374,63 @@ msgstr "Die Unterlage wurde gelöscht."
 msgid "The rootstock could not be deleted. Please, try again."
 msgstr "Die Unterlage konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/RowsController.php:59 Controller/RowsController.php:85
+#: Controller/RowsController.php:64 Controller/RowsController.php:90
 msgid "The row has been saved."
 msgstr "Die Zeile wurde gespeichert."
 
-#: Controller/RowsController.php:63 Controller/RowsController.php:89
+#: Controller/RowsController.php:68 Controller/RowsController.php:94
 msgid "The row could not be saved. Please, try again."
 msgstr "Die Zeile konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/RowsController.php:108
+#: Controller/RowsController.php:113
 msgid "The row has been deleted."
 msgstr "Die Zeile wurde gelöscht."
 
-#: Controller/RowsController.php:110
+#: Controller/RowsController.php:115
 msgid "The row could not be deleted. Please, try again."
 msgstr "Die Zeile konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/ScionsBundlesController.php:64
-#: Controller/ScionsBundlesController.php:95
+#: Controller/ScionsBundlesController.php:69
+#: Controller/ScionsBundlesController.php:100
 msgid "The scions bundle has been saved."
 msgstr "Das Reiserbündel wude gespeichert."
 
-#: Controller/ScionsBundlesController.php:68
-#: Controller/ScionsBundlesController.php:99
+#: Controller/ScionsBundlesController.php:73
+#: Controller/ScionsBundlesController.php:104
 msgid "The scions bundle could not be saved. Please, try again."
 msgstr ""
 "Das Reiserbündel konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/ScionsBundlesController.php:120
+#: Controller/ScionsBundlesController.php:125
 msgid "The scions bundle has been deleted."
 msgstr "Das Reiserbündel wurde gelöscht."
 
-#: Controller/ScionsBundlesController.php:122
+#: Controller/ScionsBundlesController.php:127
 msgid "The scions bundle could not be deleted. Please, try again."
 msgstr ""
 "Das Reiserbündel konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/TreesController.php:111 Controller/TreesController.php:147
-#: Controller/TreesController.php:183 Controller/TreesController.php:223
-#: Controller/TreesController.php:258
+#: Controller/TreesController.php:112 Controller/TreesController.php:148
+#: Controller/TreesController.php:184 Controller/TreesController.php:224
+#: Controller/TreesController.php:259
 msgid "The tree has been saved."
 msgstr "Der Baum wurde gespeichert."
 
-#: Controller/TreesController.php:115 Controller/TreesController.php:151
-#: Controller/TreesController.php:187 Controller/TreesController.php:227
-#: Controller/TreesController.php:260
+#: Controller/TreesController.php:116 Controller/TreesController.php:152
+#: Controller/TreesController.php:188 Controller/TreesController.php:228
+#: Controller/TreesController.php:261
 msgid "The tree could not be saved. Please, try again."
 msgstr "Der Baum konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/TreesController.php:354
+#: Controller/TreesController.php:355
 msgid "The tree has been deleted."
 msgstr "Der Baum wurde gelöscht."
 
-#: Controller/TreesController.php:356
+#: Controller/TreesController.php:357
 msgid "The tree could not be deleted. Please, try again."
 msgstr "Der Baum konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/TreesController.php:485
+#: Controller/TreesController.php:481
 msgid "Anonymous"
 msgstr "Anonymisiert"
 
@@ -455,23 +455,23 @@ msgstr "Der Benutzer konnte nicht gelöscht werden. Bitte versuche es erneut."
 msgid "Your username or password is incorrect."
 msgstr "Dein Benutzername oder Passwort ist nicht korrekt."
 
-#: Controller/VarietiesController.php:109
-#: Controller/VarietiesController.php:135
-#: Controller/VarietiesController.php:162
+#: Controller/VarietiesController.php:110
+#: Controller/VarietiesController.php:136
+#: Controller/VarietiesController.php:163
 msgid "The variety has been saved."
 msgstr "Die Sorte wurde gespeichert."
 
-#: Controller/VarietiesController.php:113
-#: Controller/VarietiesController.php:139
-#: Controller/VarietiesController.php:166
+#: Controller/VarietiesController.php:114
+#: Controller/VarietiesController.php:140
+#: Controller/VarietiesController.php:167
 msgid "The variety could not be saved. Please, try again."
 msgstr "Die Sorte konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/VarietiesController.php:196
+#: Controller/VarietiesController.php:197
 msgid "The variety has been deleted."
 msgstr "Die Sorte wurde gelöscht."
 
-#: Controller/VarietiesController.php:198
+#: Controller/VarietiesController.php:199
 msgid "The variety could not be deleted. Please, try again."
 msgstr "Die Sorte konnte nicht gelöscht werden. Bitte versuche es erneut."
 
@@ -1042,7 +1042,7 @@ msgstr "Bäume"
 #: Model/Entity/Query.php:194 Model/Table/QueriesTable.php:197
 #: Template/Element/top_nav.ctp:4 Template/Element/Variety/nav.ctp:2
 #: Template/MarkFormProperties/add.ctp:48
-#: Template/MarkFormProperties/edit.ctp:51 Template/Varieties/index.ctp:15
+#: Template/MarkFormProperties/edit.ctp:51 Template/Varieties/index.ctp:16
 msgid "Varieties"
 msgstr "Sorten"
 
@@ -2714,9 +2714,9 @@ msgstr "Offizielle Sorte hinzufügen"
 msgid "Edit Variety"
 msgstr "Sorte bearbeiten"
 
-#: Template/Varieties/index.ctp:18
-msgid "Filter by convar or breeder variety code..."
-msgstr "Nach Convar oder Züchter-Sorten-Code filtern..."
+#: Template/Varieties/index.ctp:19
+msgid "Filter by ID, convar or breeder variety code..."
+msgstr "Nach ID, Convar oder Züchter-Sorten-Code filtern..."
 
 #: Template/Varieties/view.ctp:46
 msgid "Related Scions Bundles"
