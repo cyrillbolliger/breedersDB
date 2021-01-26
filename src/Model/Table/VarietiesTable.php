@@ -127,10 +127,13 @@ class VarietiesTable extends Table {
 	 */
 	public function filter( string $term ) {
 		$is_breeder_variety_code = preg_match( '/^' . COMPANY_ABBREV . '\d+$/i', $term );
+		$is_id = is_numeric($term);
 
 		if ( $is_breeder_variety_code ) {
 			$query = $this->filterBreederVarietyCode( $term );
-		} else {
+		} else if ( $is_id ) {
+		    $query = $this->find()->where( ['id' => (int) $term ] );
+        } else {
 			$query = $this->filterConvars( $term );
 		}
 

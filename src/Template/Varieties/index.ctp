@@ -7,7 +7,8 @@
 	'action'     => 'filter',
 	'fields'     => [
 		'convar',
-		'breeder_variety_code'
+		'breeder_variety_code',
+        'id'
 	]
 ] ); ?>
 
@@ -15,7 +16,7 @@
     <h3><?= __( 'Varieties' ) ?></h3>
     <div>
         <input type="text" class="filter noprint" data-filter='<?= $filter ?>'
-               placeholder="<?= __( 'Filter by convar or breeder variety code...' ) ?>">
+               placeholder="<?= __( 'Filter by ID, convar or breeder variety code...' ) ?>">
     </div>
     <div id="index_table">
 		<?= $this->element( 'Variety/index_table' ); ?>
