@@ -10,7 +10,7 @@
 		echo $this->Form->control( 'password' );
 		echo $this->Form->control( 'level' );
 		echo $this->Form->control( 'time_zone', [
-			'options' => $time_zones,
+			'options' => $timezones,
 		] );
 		?>
     </fieldset>
