@@ -22,6 +22,7 @@ use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use Cake\Http\Middleware\CsrfProtectionMiddleware;
 
 /**
  * Application setup class.
@@ -45,7 +46,9 @@ class Application extends BaseApplication {
 			// Handle plugin/theme assets like CakePHP normally does.
 			->add( new AssetMiddleware() )
 			// Apply routing
-			->add( new RoutingMiddleware($this) );
+			->add( new RoutingMiddleware($this) )
+		    // Add cookie based CSRF protection
+            ->add( new CsrfProtectionMiddleware() );
 
 		return $middleware;
 	}

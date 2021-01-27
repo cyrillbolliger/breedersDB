@@ -54,9 +54,6 @@ class AppController extends Controller {
 		 * see http://book.cakephp.org/3.0/en/controllers/components/security.html
 		 */
 		$this->loadComponent( 'Security' );
-		$this->loadComponent( 'Csrf' );
-
-		$this->loadComponent( 'Cookie' );
 
 		$this->loadComponent( 'Auth', [
 			'authorize'            => 'Controller',
