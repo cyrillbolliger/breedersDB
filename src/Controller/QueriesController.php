@@ -20,7 +20,7 @@ class QueriesController extends AppController {
         'maxLimit' => 500,
     ];
 
-    public function initialize() {
+    public function initialize(): void {
         parent::initialize();
 
         $this->loadComponent( 'Excel' );

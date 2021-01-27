@@ -18,13 +18,13 @@ class VarietiesController extends AppController {
 		'limit' => 100,
 	];
 
-	public function initialize() {
+	public function initialize(): void {
 		parent::initialize();
 		$this->loadComponent( 'MarksReader' );
         $this->loadComponent( 'Filter' );
 	}
 
-	public function beforeFilter( Event $event ) {
+	public function beforeFilter( \Cake\Event\EventInterface $event ) {
 		parent::beforeFilter( $event );
 
 		$this->Security->setConfig( 'unlockedFields', [ 'code', 'batch_id' ] );

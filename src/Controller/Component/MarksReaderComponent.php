@@ -37,7 +37,7 @@ class MarksReaderComponent extends Component {
 	 *
 	 * @param \Cake\Event\Event $event
 	 */
-	public function startup( Event $event ) {
+	public function startup( \Cake\Event\EventInterface $event ) {
 		$this->Marks                 = TableRegistry::getTableLocator()->get( 'Marks' );
 		$this->MarkValues            = TableRegistry::getTableLocator()->get( 'MarkValues' );
 		$this->MarkFormProperties    = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );

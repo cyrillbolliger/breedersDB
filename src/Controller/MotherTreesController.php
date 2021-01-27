@@ -16,7 +16,7 @@ class MotherTreesController extends AppController {
 		'limit' => 100,
 	];
 
-	public function initialize() {
+	public function initialize(): void {
 		parent::initialize();
 		$this->loadComponent( 'Brain' );
         $this->loadComponent( 'Filter' );

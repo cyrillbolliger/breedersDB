@@ -46,7 +46,7 @@ class MarkFormPropertyTypesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::exists('MarkFormPropertyTypes') ? [] : ['className' => 'App\Model\Table\MarkFormPropertyTypesTable'];
@@ -58,7 +58,7 @@ class MarkFormPropertyTypesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->MarkFormPropertyTypes);
 

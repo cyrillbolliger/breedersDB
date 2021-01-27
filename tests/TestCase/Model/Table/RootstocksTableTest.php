@@ -41,7 +41,7 @@ class RootstocksTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::exists('Rootstocks') ? [] : ['className' => 'App\Model\Table\RootstocksTable'];
@@ -53,7 +53,7 @@ class RootstocksTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Rootstocks);
 

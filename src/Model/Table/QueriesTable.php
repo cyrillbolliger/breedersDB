@@ -40,7 +40,7 @@ class QueriesTable extends Table {
 	 *
 	 * @return void
 	 */
-	public function initialize( array $config ) {
+	public function initialize( array $config ): void {
 		parent::initialize( $config );
 
 		$this->setTable( 'queries' );
@@ -64,7 +64,7 @@ class QueriesTable extends Table {
 	 *
 	 * @return \Cake\Validation\Validator
 	 */
-	public function validationDefault( Validator $validator ) {
+	public function validationDefault( Validator $validator ): \Cake\Validation\Validator {
 		$validator
 			->integer( 'id' )
 			->allowEmptyString( 'id', __('This field is required'), 'create' )
@@ -89,7 +89,7 @@ class QueriesTable extends Table {
 	 *
 	 * @return \Cake\ORM\RulesChecker
 	 */
-	public function buildRules( RulesChecker $rules ) {
+	public function buildRules( RulesChecker $rules ): \Cake\ORM\RulesChecker {
 		$rules->add( $rules->isUnique( [ 'id' ] ) );
 		$rules->add( $rules->isUnique( [ 'code' ] ) );
 		$rules->add( $rules->existsIn( [ 'query_group_id' ], 'QueryGroups' ) );

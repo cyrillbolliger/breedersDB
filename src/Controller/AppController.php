@@ -17,7 +17,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
-use Cake\Database\Type;
+use Cake\Database\TypeFactory;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\Date;
 use Cake\I18n\FrozenTime;
@@ -43,7 +43,7 @@ class AppController extends Controller {
 	 *
 	 * @return void
 	 */
-	public function initialize() {
+	public function initialize(): void {
 		parent::initialize();
 
 		$this->loadComponent( 'RequestHandler' );
@@ -84,9 +84,9 @@ class AppController extends Controller {
 		] );
 
 		// Set format to accept localized date, time and datetime input
-		Type::build( 'time' )->useLocaleParser()->setLocaleFormat( __x( 'time format', 'HH:mm' ) );
-		Type::build( 'date' )->useLocaleParser()->setLocaleFormat( __x( 'date format', 'dd.MM.yyyy' ) );
-		Type::build( 'datetime' )->useLocaleParser()->setLocaleFormat( __x( 'datetime format', 'dd.MM.yyyy HH:mm' ) );
+		\Cake\Database\TypeFactory::build( 'time' )->useLocaleParser()->setLocaleFormat( __x( 'time format', 'HH:mm' ) );
+		\Cake\Database\TypeFactory::build( 'date' )->useLocaleParser()->setLocaleFormat( __x( 'date format', 'dd.MM.yyyy' ) );
+		\Cake\Database\TypeFactory::build( 'datetime' )->useLocaleParser()->setLocaleFormat( __x( 'datetime format', 'dd.MM.yyyy HH:mm' ) );
 
 		FrozenTime::setToStringFormat( __x( 'datetime format', 'dd.MM.yyyy HH:mm' ) );
 		FrozenDate::setToStringFormat( __x( 'date format', 'dd.MM.yyyy' ) );
@@ -119,7 +119,7 @@ class AppController extends Controller {
 	 *
 	 * @return \Cake\Network\Response|null|void
 	 */
-	public function beforeRender( Event $event ) {
+	public function beforeRender( \Cake\Event\EventInterface $event ) {
 		if ( ! array_key_exists( '_serialize', $this->viewVars ) &&
 		     in_array( $this->response->getType(), [ 'application/json', 'application/xml' ] )
 		) {
@@ -142,7 +142,7 @@ class AppController extends Controller {
 		Configure::write( 'App.imgBaseUrl', $branch . Configure::read( 'App.imgBaseUrl' ) );
 	}
 
-	public function beforeFilter( Event $event ) {
+	public function beforeFilter( \Cake\Event\EventInterface $event ) {
 		parent::beforeFilter( $event );
 
 		/**

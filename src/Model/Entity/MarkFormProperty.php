@@ -72,7 +72,7 @@ class MarkFormProperty extends Entity {
 	 * @return bool
 	 */
 	protected function _getIsNumerical(): bool {
-		return in_array( $this->_properties['field_type'], [ 'INTEGER', 'FLOAT' ] );
+		return in_array( $this->_fields['field_type'], [ 'INTEGER', 'FLOAT' ] );
 	}
 
     /**
@@ -81,7 +81,7 @@ class MarkFormProperty extends Entity {
      * @return bool
      */
     protected function _getIsText(): bool {
-        return in_array( $this->_properties['field_type'], [ 'VARCHAR', 'DATE' ] );
+        return in_array( $this->_fields['field_type'], [ 'VARCHAR', 'DATE' ] );
     }
 	
 	/**
@@ -92,7 +92,7 @@ class MarkFormProperty extends Entity {
 	 * @throws \Exception if the MarkFormProperty::field_type is not defined.
 	 */
 	protected function _getInputType(): string {
-		switch ( $this->_properties['field_type'] ) {
+		switch ( $this->_fields['field_type'] ) {
 			case 'INTEGER':
 				return 'number';
 			
@@ -109,7 +109,7 @@ class MarkFormProperty extends Entity {
 				return 'date';
 			
 			default:
-				throw new \Exception( "The field type '{$this->_properties['field_type']}' is not defined." );
+				throw new \Exception( "The field type '{$this->_fields['field_type']}' is not defined." );
 		}
 	}
 	
@@ -122,7 +122,7 @@ class MarkFormProperty extends Entity {
 	 * @throws \Exception if the MarkFormProperty::field_type is not defined.
 	 */
 	protected function _getOperators(): array {
-		switch ( $this->_properties['field_type'] ) {
+		switch ( $this->_fields['field_type'] ) {
 			case 'INTEGER': // fall through
 			case 'FLOAT':
 				return [
@@ -158,7 +158,7 @@ class MarkFormProperty extends Entity {
 				];
 			
 			default:
-				throw new \Exception( "The field type '{$this->_properties['field_type']}' is not defined." );
+				throw new \Exception( "The field type '{$this->_fields['field_type']}' is not defined." );
 		}
 	}
 	
@@ -168,7 +168,7 @@ class MarkFormProperty extends Entity {
 	 * @return array|null
 	 */
 	protected function _getValues() {
-		if ( 'BOOLEAN' === $this->_properties['field_type'] ) {
+		if ( 'BOOLEAN' === $this->_fields['field_type'] ) {
 			return [ 1 => __( 'True' ), 0 => __( 'False' ) ];
 		}
 		

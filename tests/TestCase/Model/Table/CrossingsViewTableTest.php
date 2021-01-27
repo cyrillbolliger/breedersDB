@@ -32,7 +32,7 @@ class CrossingsViewTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::exists('CrossingsView') ? [] : ['className' => 'App\Model\Table\CrossingsViewTable'];
@@ -44,7 +44,7 @@ class CrossingsViewTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->CrossingsView);
 

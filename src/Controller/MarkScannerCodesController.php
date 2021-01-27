@@ -12,7 +12,7 @@ use Cake\Core\Exception\Exception;
  */
 class MarkScannerCodesController extends AppController {
 
-    public function initialize() {
+    public function initialize(): void {
         parent::initialize();
         $this->loadComponent( 'Filter' );
     }

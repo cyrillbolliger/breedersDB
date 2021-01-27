@@ -41,7 +41,7 @@ class TreesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::exists('Trees') ? [] : ['className' => 'App\Model\Table\TreesTable'];
@@ -53,7 +53,7 @@ class TreesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Trees);
 

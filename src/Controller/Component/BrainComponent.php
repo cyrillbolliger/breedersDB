@@ -51,7 +51,7 @@ class BrainComponent extends Component {
 	 *
 	 * @param \Cake\Event\Event $event
 	 */
-	public function startup( Event $event ) {
+	public function startup( \Cake\Event\EventInterface $event ) {
 		$controller              = $event->getSubject();
 		$this->controllerRequest = $controller->request;
 

@@ -32,14 +32,14 @@ class MarksView extends Entity {
 	 * @return string
 	 */
 	protected function _getValue() {
-		$type = $this->_properties['field_type'];
+		$type = $this->_fields['field_type'];
 		
 		if ( 'DATE' === $type ) {
-			$date = Date::parse( $this->_properties['value'] );
+			$date = Date::parse( $this->_fields['value'] );
 			
 			return $date->i18nFormat();
 		}
 		
-		return $this->_properties['value'];
+		return $this->_fields['value'];
 	}
 }

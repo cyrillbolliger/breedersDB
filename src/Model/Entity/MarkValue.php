@@ -44,19 +44,19 @@ class MarkValue extends Entity {
 	 */
 	protected function _getValue() {
 		if ( $this->isNew() ) {
-			return isset($this->_properties['value']) ? $this->_properties['value'] : null;
+			return isset($this->_fields['value']) ? $this->_fields['value'] : null;
 		}
 
 		$MarkFormProperties = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
 
-		$type = $MarkFormProperties->get( $this->_properties['mark_form_property_id'] )->field_type;
+		$type = $MarkFormProperties->get( $this->_fields['mark_form_property_id'] )->field_type;
 
 		if ( 'DATE' === $type ) {
-			$date = Date::parse( $this->_properties['value'] );
+			$date = Date::parse( $this->_fields['value'] );
 
 			return $date->i18nFormat();
 		}
 
-		return $this->_properties['value'];
+		return $this->_fields['value'];
 	}
 }

@@ -54,7 +54,7 @@ class BatchesViewTable extends Table {
 	 *
 	 * @return void
 	 */
-	public function initialize( array $config ) {
+	public function initialize( array $config ): void {
 		parent::initialize( $config );
 
 		$this->setTable( 'batches_view' );
@@ -83,7 +83,7 @@ class BatchesViewTable extends Table {
 	 *
 	 * @return \Cake\Validation\Validator
 	 */
-	public function validationDefault( Validator $validator ) {
+	public function validationDefault( Validator $validator ): \Cake\Validation\Validator {
 		$validator
 			->integer( 'id' )
 			->requirePresence( 'id', 'create' )
@@ -133,7 +133,7 @@ class BatchesViewTable extends Table {
 	 *
 	 * @return \Cake\ORM\RulesChecker
 	 */
-	public function buildRules( RulesChecker $rules ) {
+	public function buildRules( RulesChecker $rules ): \Cake\ORM\RulesChecker {
 		$rules->add( $rules->existsIn( [ 'crossing_id' ], 'Crossings' ) );
 
 		return $rules;

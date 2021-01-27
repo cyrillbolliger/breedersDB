@@ -35,7 +35,7 @@ class Application extends BaseApplication {
 	 *
 	 * @return \Cake\Http\MiddlewareQueue The updated middleware.
 	 */
-	public function middleware( $middleware ) {
+	public function middleware( $middleware ): \Cake\Http\MiddlewareQueue {
 		$middleware
 			// Catch any exceptions in the lower layers,
 			// and make an error page/response
@@ -48,7 +48,7 @@ class Application extends BaseApplication {
 		return $middleware;
 	}
 
-	function bootstrap()
+	function bootstrap(): void
     {
         if (PHP_SAPI === 'cli') {
             $this->bootstrapCli();
