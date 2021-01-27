@@ -159,9 +159,9 @@ class MarkScannerCodesController extends AppController {
 
 			$this->set( compact( 'markScannerCodes' ) );
 			$this->set( '_serialize', [ 'markScannerCodes' ] );
-			$this->render( '/Element/MarkScannerCode/index_table' );
+			$this->render( '/element/MarkScannerCode/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 
@@ -177,7 +177,7 @@ class MarkScannerCodesController extends AppController {
 		}
 
 		$this->set( [ 'data' => $entries ] );
-		$this->render( '/Element/ajaxreturn' );
+		$this->render( '/element/ajaxreturn' );
 	}
 
 	/**
@@ -198,7 +198,7 @@ class MarkScannerCodesController extends AppController {
 			'params'     => $params,
 			'nav'        => 'Mark/nav'
 		] );
-		$this->render( '/Element/print' );
+		$this->render( '/element/print' );
 	}
 
 	/**
@@ -219,6 +219,6 @@ class MarkScannerCodesController extends AppController {
 			'params'     => null,
 			'nav'        => 'Mark/nav'
 		] );
-		$this->render( '/Element/print' );
+		$this->render( '/element/print' );
 	}
 }

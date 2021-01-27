@@ -330,7 +330,7 @@ class MarksController extends AppController {
 		$this->set( 'markFormFields', $markFormFields );
 		$this->set( '_serialize', [ 'markFormFields' ] );
 
-		$this->render( '/Element/Mark/fields' );
+		$this->render( '/element/Mark/fields' );
 	}
 
 	/**
@@ -356,9 +356,9 @@ class MarksController extends AppController {
 
 			$this->set( compact( 'marks' ) );
 			$this->set( '_serialize', [ 'marks' ] );
-			$this->render( '/Element/Mark/index_table' );
+			$this->render( '/element/Mark/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

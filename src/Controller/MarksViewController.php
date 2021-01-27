@@ -24,14 +24,14 @@ class MarksViewController extends AppController {
 		if ( ! $this->request->is( 'get' ) || ! $this->request->is( 'ajax' ) ) {
 			throw new BadRequestException( __( 'Direct access not allowed.' ) );
 		}
-		
+
 		$marksView = $this->MarksView->get( $id, [
 			'contain' => [ 'TreesView', 'VarietiesView', 'BatchesView' ]
 		] );
-		
+
 		$this->set( 'marksView', $marksView );
 		$this->set( '_serialize', [ 'marksView' ] );
-		
-		$this->render( '/Element/MarkView/tooltip' );
+
+		$this->render( '/element/MarkView/tooltip' );
 	}
 }

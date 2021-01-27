@@ -184,9 +184,9 @@ class CrossingsController extends AppController {
 
 			$this->set( compact( 'crossings' ) );
 			$this->set( '_serialize', [ 'crossings' ] );
-			$this->render( '/Element/Crossing/index_table' );
+			$this->render( '/element/Crossing/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

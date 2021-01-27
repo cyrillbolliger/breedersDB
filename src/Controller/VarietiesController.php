@@ -218,7 +218,7 @@ class VarietiesController extends AppController {
 		}
 
 		$this->set( [ 'data' => $return ] );
-		$this->render( '/Element/ajaxreturn' );
+		$this->render( '/element/ajaxreturn' );
 	}
 
 	/**
@@ -237,7 +237,7 @@ class VarietiesController extends AppController {
 		}
 
 		$this->set( [ 'data' => $return ] );
-		$this->render( '/Element/ajaxreturn' );
+		$this->render( '/element/ajaxreturn' );
 	}
 
 	/**
@@ -256,7 +256,7 @@ class VarietiesController extends AppController {
 		}
 
 		$this->set( [ 'data' => $return ] );
-		$this->render( '/Element/ajaxreturn' );
+		$this->render( '/element/ajaxreturn' );
 	}
 
 	/**
@@ -282,9 +282,9 @@ class VarietiesController extends AppController {
 
 			$this->set( compact( 'varieties' ) );
 			$this->set( '_serialize', [ 'varieties' ] );
-			$this->render( '/Element/Variety/index_table' );
+			$this->render( '/element/Variety/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

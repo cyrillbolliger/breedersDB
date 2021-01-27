@@ -142,11 +142,11 @@ class MarkFormPropertiesController extends AppController {
 
 		switch ( $view ) {
 			case 'field_edit_form_mode':
-				$this->render( '/Element/Mark/field_edit_form_mode' );
+				$this->render( '/element/Mark/field_edit_form_mode' );
 				break;
 
 			default:
-				$this->render( '/Element/Mark/field' );
+				$this->render( '/element/Mark/field' );
 				break;
 		}
 	}
@@ -174,9 +174,9 @@ class MarkFormPropertiesController extends AppController {
 
 			$this->set( compact( 'markFormProperties' ) );
 			$this->set( '_serialize', [ 'markFormProperties' ] );
-			$this->render( '/Element/MarkFormProperty/index_table' );
+			$this->render( '/element/MarkFormProperty/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

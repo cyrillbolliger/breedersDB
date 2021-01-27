@@ -240,9 +240,9 @@ class MarkFormsController extends AppController {
 
 			$this->set( compact( 'markForms' ) );
 			$this->set( '_serialize', [ 'markForms' ] );
-			$this->render( '/Element/MarkForm/index_table' );
+			$this->render( '/element/MarkForm/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

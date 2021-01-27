@@ -141,9 +141,9 @@ class RowsController extends AppController {
 
 			$this->set( compact( 'rows' ) );
 			$this->set( '_serialize', [ 'rows' ] );
-			$this->render( '/Element/Row/index_table' );
+			$this->render( '/element/Row/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

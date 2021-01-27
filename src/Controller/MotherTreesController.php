@@ -160,9 +160,9 @@ class MotherTreesController extends AppController {
 
 			$this->set( compact( 'motherTrees' ) );
 			$this->set( '_serialize', [ 'motherTrees' ] );
-			$this->render( '/Element/MotherTree/index_table' );
+			$this->render( '/element/MotherTree/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

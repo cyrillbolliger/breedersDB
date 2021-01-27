@@ -333,10 +333,10 @@ class TreesController extends AppController {
             );
 			$this->set( '_serialize', [ 'tree' ] );
 
-			$this->render( '/Element/Tree/' . (string) $this->request->getQuery('element') );
+			$this->render( '/element/Tree/' . (string) $this->request->getQuery('element') );
 		} else {
 			$this->response->withStatus( 204 );
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 
@@ -427,9 +427,9 @@ class TreesController extends AppController {
 
 			$this->set( compact( 'trees' ) );
 			$this->set( '_serialize', [ 'trees' ] );
-			$this->render( '/Element/Tree/index_table' );
+			$this->render( '/element/Tree/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 
@@ -457,7 +457,7 @@ class TreesController extends AppController {
 		}
 
 		$this->set( [ 'data' => $return ] );
-		$this->render( '/Element/ajaxreturn' );
+		$this->render( '/element/ajaxreturn' );
 	}
 
 	/**
@@ -488,6 +488,6 @@ class TreesController extends AppController {
 			'params'     => $params,
 			'nav'        => 'Tree/nav'
 		] );
-		$this->render( '/Element/print' );
+		$this->render( '/element/print' );
 	}
 }
