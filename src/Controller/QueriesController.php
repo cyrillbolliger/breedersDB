@@ -199,7 +199,7 @@ class QueriesController extends AppController {
      * @throws \Exception if any filter data fields validator type is unknown.
      */
     public function add( int $query_group_id ) {
-        $query = $this->Queries->newEntity();
+        $query = $this->Queries->newEmptyEntity();
         if ( $this->request->is( 'post' ) ) {
             $query = $this->Queries->patchEntityWithQueryData( $query, $this->request->getData());
             if ( $this->Queries->save( $query ) ) {

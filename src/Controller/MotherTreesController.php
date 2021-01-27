@@ -59,7 +59,7 @@ class MotherTreesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$motherTree = $this->MotherTrees->newEntity();
+		$motherTree = $this->MotherTrees->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$motherTree = $this->MotherTrees->patchEntity( $motherTree, $this->request->getData());
 			if ( $this->MotherTrees->save( $motherTree ) ) {

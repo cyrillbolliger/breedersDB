@@ -46,7 +46,7 @@ class RootstocksController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$rootstock = $this->Rootstocks->newEntity();
+		$rootstock = $this->Rootstocks->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$rootstock = $this->Rootstocks->patchEntity( $rootstock, $this->request->getData());
 			if ( $this->Rootstocks->save( $rootstock ) ) {

@@ -88,7 +88,7 @@ class BatchesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$batch = $this->Batches->newEntity();
+		$batch = $this->Batches->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$batch = $this->Batches->patchEntity( $batch, $this->request->getData());
 			if ( $this->Batches->save( $batch ) ) {

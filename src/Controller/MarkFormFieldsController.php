@@ -49,7 +49,7 @@ class MarkFormFieldsController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$markFormField = $this->MarkFormFields->newEntity();
+		$markFormField = $this->MarkFormFields->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$markFormField = $this->MarkFormFields->patchEntity( $markFormField, $this->request->getData());
 			if ( $this->MarkFormFields->save( $markFormField ) ) {

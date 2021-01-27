@@ -68,7 +68,7 @@ class CrossingsController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$crossing         = $this->Crossings->newEntity();
+		$crossing         = $this->Crossings->newEmptyEntity();
 		$mother_varieties = array();
 		$father_varieties = array();
 		$trees            = array();

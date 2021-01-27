@@ -115,7 +115,7 @@ class MarksController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addTreeMark() {
-		$mark = $this->Marks->newEntity();
+		$mark = $this->Marks->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$data = $this->Marks->prepareToSaveAssociated( $this->request->getData());
 			$mark = $this->Marks->patchEntity( $mark, $data, [ 'associated' => 'MarkValues' ] );
@@ -159,7 +159,7 @@ class MarksController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addVarietyMark() {
-		$mark      = $this->Marks->newEntity();
+		$mark      = $this->Marks->newEmptyEntity();
 		$varieties = array();
 		if ( $this->request->is( 'post' ) ) {
 			$data = $this->Marks->prepareToSaveAssociated( $this->request->getData());
@@ -208,7 +208,7 @@ class MarksController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addBatchMark() {
-		$mark    = $this->Marks->newEntity();
+		$mark    = $this->Marks->newEmptyEntity();
 		$batches = array();
 		if ( $this->request->is( 'post' ) ) {
 			$data = $this->Marks->prepareToSaveAssociated( $this->request->getData());

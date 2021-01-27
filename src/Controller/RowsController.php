@@ -57,7 +57,7 @@ class RowsController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$row = $this->Rows->newEntity();
+		$row = $this->Rows->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$row = $this->Rows->patchEntity( $row, $this->request->getData());
 			if ( $this->Rows->save( $row ) ) {

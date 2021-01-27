@@ -102,7 +102,7 @@ class VarietiesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addBreederVariety() {
-		$variety = $this->Varieties->newEntity();
+		$variety = $this->Varieties->newEmptyEntity();
 		$batches = array();
 		if ( $this->request->is( 'post' ) ) {
 			$variety = $this->Varieties->patchEntity( $variety, $this->request->getData());
@@ -129,7 +129,7 @@ class VarietiesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addOfficialVariety() {
-		$variety = $this->Varieties->newEntity();
+		$variety = $this->Varieties->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$variety = $this->Varieties->patchEntity( $variety, $this->request->getData());
 			if ( $this->Varieties->save( $variety ) ) {

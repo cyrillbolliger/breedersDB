@@ -63,7 +63,7 @@ class MarkScannerCodesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$markScannerCode = $this->MarkScannerCodes->newEntity();
+		$markScannerCode = $this->MarkScannerCodes->newEmptyEntity();
 		$data            = $this->request->getData();
 		$data['code']    = $this->MarkScannerCodes->getNextFreeCode();
 		if ( $this->request->is( 'post' ) ) {

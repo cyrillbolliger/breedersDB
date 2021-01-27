@@ -80,7 +80,7 @@ class MarkFormsController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$markForm = $this->MarkForms->newEntity();
+		$markForm = $this->MarkForms->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			// make form fields savable
 			$data = $this->_prepareFormFields();

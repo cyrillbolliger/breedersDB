@@ -46,7 +46,7 @@ class MarkFormPropertyTypesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$markFormPropertyType = $this->MarkFormPropertyTypes->newEntity();
+		$markFormPropertyType = $this->MarkFormPropertyTypes->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$markFormPropertyType = $this->MarkFormPropertyTypes->patchEntity( $markFormPropertyType,
 				$this->request->getData());

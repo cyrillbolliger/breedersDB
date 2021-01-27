@@ -100,7 +100,7 @@ class TreesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$tree      = $this->Trees->newEntity();
+		$tree      = $this->Trees->newEmptyEntity();
 		$varieties = array();
 
 		if ( $this->request->is( 'post' ) ) {
@@ -136,7 +136,7 @@ class TreesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addGenuineSeedling() {
-		$tree      = $this->Trees->newEntity();
+		$tree      = $this->Trees->newEmptyEntity();
 		$varieties = array();
 
 		if ( $this->request->is( 'post' ) ) {
@@ -172,7 +172,7 @@ class TreesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addGraftTree() {
-		$tree      = $this->Trees->newEntity();
+		$tree      = $this->Trees->newEmptyEntity();
 		$varieties = array();
 
 		if ( $this->request->is( 'post' ) ) {

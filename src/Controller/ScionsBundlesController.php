@@ -60,7 +60,7 @@ class ScionsBundlesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$scionsBundle = $this->ScionsBundles->newEntity();
+		$scionsBundle = $this->ScionsBundles->newEmptyEntity();
 		$varieties    = array();
 
 		if ( $this->request->is( 'post' ) ) {

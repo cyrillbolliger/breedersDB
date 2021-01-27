@@ -256,7 +256,7 @@ class VarietiesTable extends Table {
 		$code = $this->getNextFreeCode( $batch_id );
 
 		// create entity
-		$variety           = $this->newEntity();
+		$variety           = $this->newEmptyEntity();
 		$variety->code     = $code;
 		$variety->batch_id = $batch_id;
 
