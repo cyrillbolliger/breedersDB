@@ -24,7 +24,7 @@ use Cake\View\View;
  * @link http://book.cakephp.org/3.0/en/views.html#the-app-view
  */
 class AppView extends View {
-	
+
 	/**
 	 * Initialization hook method.
 	 *
@@ -34,7 +34,7 @@ class AppView extends View {
 	 *
 	 * @return void
 	 */
-	public function initialize() {
+	public function initialize(): void {
 		$this->loadHelper( 'LocalizedTime' );
 	}
 }

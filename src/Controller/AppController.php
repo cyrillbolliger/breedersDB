@@ -120,11 +120,12 @@ class AppController extends Controller {
 	 * @return \Cake\Network\Response|null|void
 	 */
 	public function beforeRender( \Cake\Event\EventInterface $event ) {
-		if ( ! array_key_exists( '_serialize', $this->viewVars ) &&
-		     in_array( $this->response->getType(), [ 'application/json', 'application/xml' ] )
-		) {
-			$this->set( '_serialize', true );
-		}
+	    // todo: test and possibly fix json responses
+//		if ( ! array_key_exists( '_serialize', $this->viewVars ) &&
+//		     in_array( $this->response->getType(), [ 'application/json', 'application/xml' ] )
+//		) {
+//			$this->set( '_serialize', true );
+//		}
 
 		// This is done here instead of the bootstrap to not affect the debug kit
 		$this->setResourcesUrl();

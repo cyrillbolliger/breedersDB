@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -39,7 +41,7 @@ class Application extends BaseApplication {
 		$middleware
 			// Catch any exceptions in the lower layers,
 			// and make an error page/response
-			->add( new ErrorHandlerMiddleware( Configure::read( 'Error.exceptionRenderer' ) ) )
+			->add( new ErrorHandlerMiddleware( Configure::read( 'Error' ) ) )
 			// Handle plugin/theme assets like CakePHP normally does.
 			->add( new AssetMiddleware() )
 			// Apply routing

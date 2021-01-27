@@ -46,8 +46,8 @@
 
     <script>
         var csrfToken = '<?= $this->request->getParam('_csrfToken') ?>';
-        var webroot = '<?= $this->Url->build( '/', true ); ?>';
-        var urlbase = '<?= $this->Url->build( '/', false ); ?>';
+        var webroot = '<?= $this->Url->build( '/', ['fullBase' => true] ); ?>';
+        var urlbase = '<?= $this->Url->build( '/', ['fullBase' => false] ); ?>';
         var trans = {
             dateformat: '<?= __x( 'Date format', 'dd.mm.yy' ) ?>',
             searching: '<?= __( 'Searching...' ) ?>',
