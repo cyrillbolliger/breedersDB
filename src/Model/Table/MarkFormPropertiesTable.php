@@ -4,7 +4,7 @@ namespace App\Model\Table;
 
 use App\Model\Rule\IsNotReferredBy;
 use ArrayObject;
-use Cake\Database\Schema\TableSchema;
+use Cake\Database\Schema\TableSchemaInterface;
 use Cake\Event\Event;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -277,7 +277,7 @@ class MarkFormPropertiesTable extends Table {
 		return $this->namesBySlug[ $slug ];
 	}
 
-	protected function _initializeSchema( TableSchema $schema ) {
+	protected function _initializeSchema( TableSchemaInterface $schema ): TableSchemaInterface {
 		$schema->setColumnType( 'validation_rule', 'json' );
 
 		return $schema;
