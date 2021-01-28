@@ -1,4 +1,4 @@
-<?= $this->Form->create( $tree, [ 'url' => [ 'action' => 'update' ] ] ) ?>
+<?= $this->Form->create( $tree, [ 'url' => [ 'action' => 'update', $tree->id ] ] ) ?>
 
 <?php if ( $tree->dont_eliminate ): ?>
     <div class="inline-warning margin-bottom-25"><?= __( "For this tree the don't eliminate flag was set!" ) ?></div>

@@ -1,4 +1,4 @@
-<?= $this->Form->create( $tree, [ 'url' => [ 'action' => 'update' ] ] ) ?>
+<?= $this->Form->create( $tree, [ 'url' => [ 'action' => 'update', $tree->id ] ] ) ?>
 <?php
 echo $this->Form->control( 'variety_id', [
 	'options'  => $varieties,
