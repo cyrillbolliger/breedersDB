@@ -15,7 +15,7 @@
 		] );
 		?>
         <div id="mark_value_wrapper"><?php
-			echo $this->Form->unlockField( 'mark_value' );
+			$this->Form->unlockField( 'mark_value' );
 			echo $this->Form->control( 'mark_value', [
 				'label'    => __( 'Value' ),
 				'class'    => 'replace_me',
