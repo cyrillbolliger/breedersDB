@@ -183,12 +183,12 @@ class MarkScannerCodesController extends AppController {
 	/**
 	 * Show the print dialog
 	 *
-	 * @param int $id
+	 * @param int|string $id
 	 * @param string $caller action to redirect after printing
 	 * @param mixed $params for action
 	 */
-	public function print( int $id, string $caller, $params = null ) {
-		$zpl = $this->MarkScannerCodes->getLabelZpl( $id );
+	public function print( $id, string $caller, $params = null ) {
+		$zpl = $this->MarkScannerCodes->getLabelZpl( (int) $id );
 
 		$this->set( [
 			'buttons'    => [ 'regular' => [ 'label' => __( 'Regular' ), 'zpl' => $zpl ] ],
