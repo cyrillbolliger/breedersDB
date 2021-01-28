@@ -463,11 +463,13 @@ class TreesController extends AppController {
 	/**
 	 * Show the print dialog
 	 *
-	 * @param int $tree_id
+	 * @param int|string $tree_id
 	 * @param string $caller action to redirect after printing
 	 * @param mixed $params for action
 	 */
-	public function print( int $tree_id, string $caller, $params = null ) {
+	public function print( $tree_id, string $caller, $params = null ) {
+	    $tree_id = (int) $tree_id;
+
 		$convar_zpl               = $this->Trees->getLabelZpl( $tree_id, 'convar' );
 		$breeder_variety_code_zpl = $this->Trees->getLabelZpl( $tree_id, 'breeder_variety_code' );
 
