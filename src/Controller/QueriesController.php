@@ -77,13 +77,13 @@ class QueriesController extends AppController {
     /**
      * View mark query method
      *
-     * @param int $id
+     * @param int|string $id
      *
      * @throws \Exception
      */
-    public function viewMarkQuery( int $id ) {
+    public function viewMarkQuery( $id ) {
         // get query
-        $query = $this->Queries->get( $id );
+        $query = $this->Queries->get( (int) $id );
 
         // query the data
         /** @var MarksViewTable $marksViewTable */
