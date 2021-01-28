@@ -29,20 +29,12 @@ class MarksController extends AppController {
 		parent::beforeFilter( $event );
 
 		// since we add fields dynamically, we have to unlock them in the security component
-		$this->unlockDynamicallyAddedFields();
-	}
-
-	/**
-	 * Unlock the dynamically added fields in the security component
-	 */
-	public function unlockDynamicallyAddedFields() {
-		if ( ! empty( $this->request->getData('mark_form_fields.mark_form_properties' ) ) ) {
-			$ids = array_keys( $this->request->getData('mark_form_fields.mark_form_properties' ) );
-			foreach ( $ids as $id ) {
-				$this->Security->setConfig( 'unlockedFields',
-					[ 'mark_form_fields.mark_form_properties.' . $id . '.mark_values.value' ] );
-			}
-		}
+		$this->Security->setConfig('unlockedActions', [
+		    'addTreeMarkByScanner',
+            'addTreeMark',
+            'addVarietyMark',
+            'addBatchMark'
+        ]);
 	}
 
 	/**
