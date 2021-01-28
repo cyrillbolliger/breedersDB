@@ -4,7 +4,6 @@
 		foreach ( $markFormFields as $markFormField ) {
 			echo $this->element( 'Mark/field',
 				[ 'markFormProperty' => $markFormField->mark_form_property, 'required' => false ] );
-			$this->Form->unlockField( 'mark_form_fields.mark_form_properties.' . $markFormField->mark_form_property->id . '.mark_values.value' );
 		}
 	}
 	?>
