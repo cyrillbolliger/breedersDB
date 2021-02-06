@@ -194,13 +194,15 @@ class QueriesController extends AppController {
     /**
      * Add query method
      *
-     * @param int $query_group_id Query group the query will be added to
+     * @param int|string $query_group_id Query group the query will be added to
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      *
      * @throws \Exception if any filter data fields validator type is unknown.
      */
-    public function add( int $query_group_id ) {
+    public function add( $query_group_id ) {
+        $query_group_id = (int) $query_group_id;
+
         $query = $this->Queries->newEmptyEntity();
         if ( $this->request->is( 'post' ) ) {
             $query = $this->Queries->patchEntityWithQueryData( $query, $this->request->getData());
