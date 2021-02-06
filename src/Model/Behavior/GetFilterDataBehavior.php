@@ -77,6 +77,7 @@ class GetFilterDataBehavior extends Behavior {
             /* cakeisch db types below */
             'string'       => 'string',
             'text'         => 'string',
+            'char'         => 'string',
             'integer'      => 'integer',
             'smallinteger' => 'integer',
             'tinyinteger'  => 'integer',
@@ -88,6 +89,7 @@ class GetFilterDataBehavior extends Behavior {
             'datetime'     => 'datetime',
             'timestamp'    => 'integer',
             'time'         => 'time',
+            'uuid'         => 'string',
             /* Mark Property data types below */
             'INTEGER'      => 'integer',
             'VARCHAR'      => 'string',
