@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Controller\Component\CollectionPaginatorComponent;
 use App\Controller\Component\ExcelComponent;
 use App\Model\Table\MarksViewTable;
+use Cake\Http\Cookie\Cookie;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -143,8 +144,9 @@ class QueriesController extends AppController {
         $this->response = $this->response->withFile( $file, [ 'download' => true ] );
 
         // used for jquery.fileDownload.js
-        $this->Cookie->configKey( 'fileDownload', 'encryption', false );
-        $this->Cookie->write( 'fileDownload', 'true' );
+        $this->getResponse()->withCookie(
+            new Cookie('fileDownload', 'true', null, null, null, false)
+        );
 
         // prevent rendering
         $this->autoRender = false;
