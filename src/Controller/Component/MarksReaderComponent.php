@@ -4,7 +4,6 @@ namespace App\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Core\Exception\Exception;
-use Cake\ORM\TableRegistry;
 use Cake\Event\Event;
 
 /**
@@ -38,10 +37,12 @@ class MarksReaderComponent extends Component {
 	 * @param \Cake\Event\Event $event
 	 */
 	public function startup( \Cake\Event\EventInterface $event ) {
-		$this->Marks                 = TableRegistry::getTableLocator()->get( 'Marks' );
-		$this->MarkValues            = TableRegistry::getTableLocator()->get( 'MarkValues' );
-		$this->MarkFormProperties    = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
-		$this->MarkFormPropertyTypes = TableRegistry::getTableLocator()->get( 'MarkFormPropertyTypes' );
+        $tableLocator = \Cake\Datasource\FactoryLocator::get('Table');
+
+		$this->Marks                 = $tableLocator->get( 'Marks' );
+		$this->MarkValues            = $tableLocator->get( 'MarkValues' );
+		$this->MarkFormProperties    = $tableLocator->get( 'MarkFormProperties' );
+		$this->MarkFormPropertyTypes = $tableLocator->get( 'MarkFormPropertyTypes' );
 	}
 
 	/**

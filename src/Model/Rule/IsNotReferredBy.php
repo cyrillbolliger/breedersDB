@@ -3,7 +3,6 @@
 namespace App\Model\Rule;
 
 use Cake\Datasource\EntityInterface;
-use Cake\ORM\TableRegistry;
 
 /**
  * Return false if there is associated data to this record
@@ -19,7 +18,7 @@ class IsNotReferredBy {
 
 	public function __invoke( EntityInterface $entity, array $options ) {
 		foreach ( $this->associations as $table_name => $field ) {
-			$table = TableRegistry::getTableLocator()->get( $table_name );
+			$table = \Cake\Datasource\FactoryLocator::get('Table')->get( $table_name );
 
 			$associated = $table->find()->where( [ $field => $entity->id ] )->count();
 

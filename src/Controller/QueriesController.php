@@ -6,7 +6,6 @@ use App\Controller\Component\CollectionPaginatorComponent;
 use App\Controller\Component\ExcelComponent;
 use App\Model\Table\MarksViewTable;
 use Cake\Http\Cookie\Cookie;
-use Cake\ORM\TableRegistry;
 
 /**
  * Queries Controller
@@ -88,7 +87,7 @@ class QueriesController extends AppController {
 
         // query the data
         /** @var MarksViewTable $marksViewTable */
-        $marksViewTable = TableRegistry::getTableLocator()->get( 'MarksView' );
+        $marksViewTable = $this->getTableLocator()->get( 'MarksView' );
         $data           = $marksViewTable->customFindMarks(
             $query->breeding_object_aggregation_mode,
             $query->active_regular_fields,
@@ -175,7 +174,7 @@ class QueriesController extends AppController {
 
         // -- if its a mark query --
         // query the data
-        $marksViewTable = TableRegistry::getTableLocator()->get( 'MarksView' );
+        $marksViewTable = $this->getTableLocator()->get( 'MarksView' );
         $data           = $marksViewTable->customFindMarks(
             $query->breeding_object_aggregation_mode,
             $query->active_regular_fields,
@@ -215,7 +214,7 @@ class QueriesController extends AppController {
             }
         }
 
-        $markProperties = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
+        $markProperties = $this->getTableLocator()->get( 'MarkFormProperties' );
         $mark_selectors = $markProperties->find( 'all' )->order( [ 'name' => 'asc' ] );
 
         $views       = $this->Queries->getViewNames();
@@ -295,7 +294,7 @@ class QueriesController extends AppController {
             }
         }
 
-        $markProperties = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
+        $markProperties = $this->getTableLocator()->get( 'MarkFormProperties' );
         $mark_selectors = $markProperties->find( 'all' )->order( [ 'name' => 'asc' ] );
 
         $views       = $this->Queries->getViewNames();

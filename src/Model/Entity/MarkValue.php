@@ -3,7 +3,6 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
-use Cake\ORM\TableRegistry;
 use Cake\I18n\Date;
 
 /**
@@ -47,7 +46,7 @@ class MarkValue extends Entity {
 			return isset($this->_fields['value']) ? $this->_fields['value'] : null;
 		}
 
-		$MarkFormProperties = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
+		$MarkFormProperties = \Cake\Datasource\FactoryLocator::get('Table')->get( 'MarkFormProperties' );
 
 		$type = $MarkFormProperties->get( $this->_fields['mark_form_property_id'] )->field_type;
 

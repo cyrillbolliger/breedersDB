@@ -5,7 +5,6 @@ namespace App\Model;
 
 
 use Cake\ORM\Query;
-use Cake\ORM\TableRegistry;
 
 /**
  * Constructs the query for marks aggregated by trees, varieties and batches.
@@ -43,7 +42,7 @@ class RegularMarkQueryBuilder implements MarkQueryBuilderInterface
      */
     public function buildQuery( array $regularFieldsFilter, array $markProperties ): Query
     {
-        $marks = TableRegistry::getTableLocator()->get( 'MarksView' );
+        $marks = \Cake\Datasource\FactoryLocator::get('Table')->get( 'MarksView' );
 
         switch ( $this->mode ) {
             case 'trees':

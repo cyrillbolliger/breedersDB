@@ -3,7 +3,6 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
-use Cake\ORM\TableRegistry;
 
 /**
  * Crossing Entity
@@ -38,8 +37,10 @@ class Crossing extends Entity {
 	];
 
 	protected function _getMotherConvar() {
-		$Varieties = TableRegistry::getTableLocator()->get( 'Varieties' );
-		$Batches   = TableRegistry::getTableLocator()->get( 'Batches' );
+	    $tableLocator = \Cake\Datasource\FactoryLocator::get('Table');
+
+		$Varieties = $tableLocator->get( 'Varieties' );
+		$Batches   = $tableLocator->get( 'Batches' );
 		$variety   = $Varieties->get( $this->mother_variety_id );
 		$batch     = $Batches->get( $variety->batch_id );
 
@@ -47,8 +48,10 @@ class Crossing extends Entity {
 	}
 
 	protected function _getFatherConvar() {
-		$Varieties = TableRegistry::getTableLocator()->get( 'Varieties' );
-		$Batches   = TableRegistry::getTableLocator()->get( 'Batches' );
+        $tableLocator = \Cake\Datasource\FactoryLocator::get('Table');
+
+        $Varieties = $tableLocator->get( 'Varieties' );
+		$Batches   = $tableLocator->get( 'Batches' );
 		$variety   = $Varieties->get( $this->father_variety_id );
 		$batch     = $Batches->get( $variety->batch_id );
 

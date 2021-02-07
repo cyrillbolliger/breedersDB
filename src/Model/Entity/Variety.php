@@ -3,7 +3,6 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
-use Cake\ORM\TableRegistry;
 
 /**
  * Variety Entity
@@ -50,15 +49,14 @@ class Variety extends Entity {
 	        if ( $this->batch ) {
 	            $batch = $this->batch;
             } else {
-                $Batches = TableRegistry::getTableLocator()->get('Batches');
+                $Batches = \Cake\Datasource\FactoryLocator::get('Table')->get('Batches');
                 $batch = $Batches->get($this->batch_id);
             }
 
 	        if ( $batch->crossing ){
 	            $crossing = $batch->crossing;
             } else {
-                $Crossings = TableRegistry::getTableLocator()->get('Crossings');
-                $crossing = $batch->crossing;
+                $Crossings = \Cake\Datasource\FactoryLocator::get('Table')->get('Crossings');
                 $crossing = $Crossings->get($batch->crossing_id);
             }
 
