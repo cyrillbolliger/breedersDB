@@ -422,7 +422,7 @@ class QueriesTable extends Table {
 				$rootAssociation     = $rootTable->associations()->get( $table->getAlias() );
 				$tableAssociation    = $table->associations()->get( $rootTable->getAlias() );
 				$array[ $tableName ] = [
-					'table'      => $table->getTable(),
+					'table'      => $table->table(),
 					'conditions' => $this->_getAssociationConditions( $rootAssociation, $tableAssociation ),
 					'type'       => $rootAssociation->getJoinType()
 				];
