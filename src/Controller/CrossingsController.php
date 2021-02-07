@@ -174,7 +174,7 @@ class CrossingsController extends AppController {
 			$entries = $this->Crossings->filterCodes( $this->request->getQuery('term') )
                                        ->find('withoutOfficialVarieties');
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {

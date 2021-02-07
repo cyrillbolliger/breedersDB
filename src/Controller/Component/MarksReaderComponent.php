@@ -58,7 +58,7 @@ class MarksReaderComponent extends Component {
 	 */
 	public function get( $treeId = null, int $varietyId = null, int $batchId = null, int $markId = null ) {
 		if ( null === $treeId && null === $varietyId && null === $batchId ) {
-			throw new Exception( __( 'Invalid arguments.' ) );
+			throw new \Exception( __( 'Invalid arguments.' ) );
 		}
 
 		$MarkFormPropertyTypes = $this->MarkFormPropertyTypes->find( 'list' );

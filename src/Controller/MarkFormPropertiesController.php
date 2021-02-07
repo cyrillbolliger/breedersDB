@@ -164,7 +164,7 @@ class MarkFormPropertiesController extends AppController {
 		) {
 			$entries = $this->MarkFormProperties->filter( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {

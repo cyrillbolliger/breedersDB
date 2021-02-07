@@ -338,7 +338,7 @@ class MarksController extends AppController {
 		) {
 			$entries = $this->Marks->filter( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {

@@ -149,7 +149,7 @@ class MarkScannerCodesController extends AppController {
 		) {
 			$entries = $this->MarkScannerCodes->filter( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
@@ -173,7 +173,7 @@ class MarkScannerCodesController extends AppController {
 			                                  ->first()
 			                                  ->toArray();
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		$this->set( [ 'data' => $entries ] );

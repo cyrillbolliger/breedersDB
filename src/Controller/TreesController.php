@@ -299,7 +299,7 @@ class TreesController extends AppController {
 		) {
 			$entries = $this->Trees->getByPublicId( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries ) {
@@ -417,7 +417,7 @@ class TreesController extends AppController {
                 $entries = $entries->find('withEliminated', ['show_eliminated' => $show_eliminated]);
             }
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
@@ -445,7 +445,7 @@ class TreesController extends AppController {
 		) {
 			$entries = $this->Trees->filter( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		$return = array();

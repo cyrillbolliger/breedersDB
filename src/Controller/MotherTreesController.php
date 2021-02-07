@@ -150,7 +150,7 @@ class MotherTreesController extends AppController {
                 $entries = $entries->find('withEliminated', ['show_eliminated' => $show_eliminated]);
             }
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
