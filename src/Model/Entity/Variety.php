@@ -42,7 +42,7 @@ class Variety extends Entity {
 
 	protected $_virtual = [ 'convar', 'breeder_variety_code' ];
 
-	private $convar;
+	private $_convar;
 
 	protected function _getConvar() {
 	    if ( empty($convar) ) {
@@ -60,10 +60,10 @@ class Variety extends Entity {
                 $crossing = $Crossings->get($batch->crossing_id);
             }
 
-            $this->convar = $crossing->code . '.' . $batch->code . '.' . $this->code;
+            $this->_convar = $crossing->code . '.' . $batch->code . '.' . $this->code;
         }
 
-		return $this->convar;
+		return $this->_convar;
 	}
 
 	protected function _getBreederVarietyCode() {
