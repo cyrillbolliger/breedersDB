@@ -214,7 +214,7 @@ class VarietiesController extends AppController {
 		) {
 			$return = $this->Varieties->Batches->searchCrossingBatchs( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		$this->set( [ 'data' => $return ] );
@@ -233,7 +233,7 @@ class VarietiesController extends AppController {
 		) {
 			$return = $this->Varieties->searchConvars( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		$this->set( [ 'data' => $return ] );
@@ -252,7 +252,7 @@ class VarietiesController extends AppController {
 		) {
 			$return = $this->Varieties->getNextFreeCode( (int) $this->request->getQuery('batch_id') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		$this->set( [ 'data' => $return ] );
@@ -303,7 +303,7 @@ class VarietiesController extends AppController {
 		) {
 			$entries = $this->Varieties->filter( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
