@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Controller\Component\FilterComponent;
+use App\Controller\Component\MarksReaderComponent;
 use Cake\Core\Exception\Exception;
 
 /**
  * Batches Controller
  *
  * @property \App\Model\Table\BatchesTable $Batches
+ * @property MarksReaderComponent $MarksReader
+ * @property FilterComponent $Filter
  */
 class BatchesController extends AppController {
 	public $paginate = [

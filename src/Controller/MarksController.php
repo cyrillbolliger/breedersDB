@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Controller\Component\BrainComponent;
+use App\Controller\Component\FilterComponent;
+use App\Controller\Component\MarksReaderComponent;
 use Cake\Core\Exception\Exception;
 use Cake\Event\Event;
 
@@ -10,6 +13,9 @@ use Cake\Event\Event;
  * Marks Controller
  *
  * @property \App\Model\Table\MarksTable $Marks
+ * @property MarksReaderComponent $MarksReader
+ * @property BrainComponent $Brain
+ * @property FilterComponent $Filter
  */
 class MarksController extends AppController {
 
