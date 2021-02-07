@@ -265,6 +265,37 @@ class VarietiesController extends AppController {
 	public function filter() {
 		$allowed_fields = [ 'convar', 'breeder_variety_code' ];
 
+        $this->paginate['contain'] = [
+            'Batches',
+            'Batches.Crossings',
+        ];
+
+        $this->paginate['sortWhitelist'] = [
+            'convar',
+            'official_name',
+            'created',
+            'modified',
+            'id',
+        ];
+
+        $this->paginate['fields'] = [
+            'id',
+            'convar' => $this->Varieties
+                ->find()
+                ->func()
+                ->concat( [
+                    'Crossings.code' => 'literal',
+                    'Batches.code'   => 'literal',
+                    'Varieties.code' => 'literal',
+                ] ),
+            'official_name',
+            'created',
+            'modified',
+            'Batches.crossing_id',
+            'Batches.code',
+            'code'
+        ];
+
 		if ( $this->request->is( 'get' )
 		     && $this->request->is( 'ajax' )
 		     && ! empty( $this->request->getQuery('fields') )
