@@ -59,12 +59,13 @@ class RegularMarkQueryBuilder implements MarkQueryBuilderInterface
                 break;
         }
 
+        /** @noinspection PhpUndefinedVariableInspection */
         return $marks->find()
-            ->select( $this->_getInterallyNeededFields() )
-            ->contain( $associations )
-            ->where( $regularFieldsFilter )
-            ->andWhere( [ 'MarksView.property_id IN' => $markProperties ] )
-            ->andWhere( $breedingObjectConditions );
+                     ->select( $this->_getInterallyNeededFields() )
+                     ->contain( $associations )
+                     ->where( $regularFieldsFilter )
+                     ->andWhere( [ 'MarksView.property_id IN' => $markProperties ] )
+                     ->andWhere( $breedingObjectConditions );
     }
 
     /**
@@ -100,6 +101,7 @@ class RegularMarkQueryBuilder implements MarkQueryBuilderInterface
                 break;
         }
 
+        /** @noinspection PhpUndefinedVariableInspection */
         return array_merge( $markFields, $obj_fields );
     }
 }

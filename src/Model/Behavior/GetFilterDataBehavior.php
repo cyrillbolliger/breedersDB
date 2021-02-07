@@ -25,6 +25,7 @@ class GetFilterDataBehavior extends Behavior {
         $tables_fields = $queries->getFieldTypeMapOf( $tables );
 
         // add normal filter data
+        $fields = [];
         foreach ( $tables_fields as $table => $table_fields ) {
             foreach ( $table_fields as $field => $type ) {
                 $fields[ $table ][] = $this->_getFieldFilterData( $table, $field, $type );
