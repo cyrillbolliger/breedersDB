@@ -9,7 +9,6 @@
 namespace App\Model\Behavior;
 
 use Cake\ORM\Behavior;
-use Cake\ORM\TableRegistry;
 
 class GetFilterDataBehavior extends Behavior {
     /**
@@ -20,12 +19,13 @@ class GetFilterDataBehavior extends Behavior {
      * @throws \Exception if any fields filter data validator types is unknown
      */
     public function getFilterData() {
-        $queries = TableRegistry::getTableLocator()->get( 'Queries' );
+        $queries = \Cake\Datasource\FactoryLocator::get('Table')->get( 'Queries' );
 
         $tables        = array_keys( $queries->getViewNames() );
         $tables_fields = $queries->getFieldTypeMapOf( $tables );
 
         // add normal filter data
+        $fields = [];
         foreach ( $tables_fields as $table => $table_fields ) {
             foreach ( $table_fields as $field => $type ) {
                 $fields[ $table ][] = $this->_getFieldFilterData( $table, $field, $type );
@@ -47,7 +47,7 @@ class GetFilterDataBehavior extends Behavior {
      * @throws \Exception if the fields type is unknown
      */
     private function _getFieldFilterData( string $table, string $field, string $type ): array {
-        $queries = TableRegistry::getTableLocator()->get( 'Queries' );
+        $queries = \Cake\Datasource\FactoryLocator::get('Table')->get( 'Queries' );
 
         $data['id']    = $table . '.' . $field;
         $data['label'] = $queries->translateFields( $data['id'] );
@@ -77,6 +77,7 @@ class GetFilterDataBehavior extends Behavior {
             /* cakeisch db types below */
             'string'       => 'string',
             'text'         => 'string',
+            'char'         => 'string',
             'integer'      => 'integer',
             'smallinteger' => 'integer',
             'tinyinteger'  => 'integer',
@@ -88,6 +89,7 @@ class GetFilterDataBehavior extends Behavior {
             'datetime'     => 'datetime',
             'timestamp'    => 'integer',
             'time'         => 'time',
+            'uuid'         => 'string',
             /* Mark Property data types below */
             'INTEGER'      => 'integer',
             'VARCHAR'      => 'string',
@@ -114,7 +116,7 @@ class GetFilterDataBehavior extends Behavior {
             return 'number';
         }
 
-        $table = TableRegistry::getTableLocator()->get( $tablename );
+        $table = \Cake\Datasource\FactoryLocator::get('Table')->get( $tablename );
         if ( in_array( $field, $table->getBooleanFields() ) ) {
             return 'radio';
         }
@@ -236,7 +238,7 @@ class GetFilterDataBehavior extends Behavior {
      * @return array
      */
     private function _getDistinctValuesOf( string $tablename, string $field ): array {
-        $table = TableRegistry::getTableLocator()->get( $tablename );
+        $table = \Cake\Datasource\FactoryLocator::get('Table')->get( $tablename );
 
         $tmp = $table->find()
                      ->enableHydration( false )

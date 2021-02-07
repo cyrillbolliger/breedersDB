@@ -18,13 +18,13 @@ class VarietiesController extends AppController {
 		'limit' => 100,
 	];
 
-	public function initialize() {
+	public function initialize(): void {
 		parent::initialize();
 		$this->loadComponent( 'MarksReader' );
         $this->loadComponent( 'Filter' );
 	}
 
-	public function beforeFilter( Event $event ) {
+	public function beforeFilter( \Cake\Event\EventInterface $event ) {
 		parent::beforeFilter( $event );
 
 		$this->Security->setConfig( 'unlockedFields', [ 'code', 'batch_id' ] );
@@ -41,7 +41,7 @@ class VarietiesController extends AppController {
 			'Batches.Crossings',
 		];
 
-		$this->paginate['sortWhitelist'] = [
+		$this->paginate['sortableFields'] = [
 			'convar',
 			'official_name',
 			'created',
@@ -102,7 +102,7 @@ class VarietiesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addBreederVariety() {
-		$variety = $this->Varieties->newEntity();
+		$variety = $this->Varieties->newEmptyEntity();
 		$batches = array();
 		if ( $this->request->is( 'post' ) ) {
 			$variety = $this->Varieties->patchEntity( $variety, $this->request->getData());
@@ -129,7 +129,7 @@ class VarietiesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addOfficialVariety() {
-		$variety = $this->Varieties->newEntity();
+		$variety = $this->Varieties->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$variety = $this->Varieties->patchEntity( $variety, $this->request->getData());
 			if ( $this->Varieties->save( $variety ) ) {
@@ -214,11 +214,11 @@ class VarietiesController extends AppController {
 		) {
 			$return = $this->Varieties->Batches->searchCrossingBatchs( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		$this->set( [ 'data' => $return ] );
-		$this->render( '/Element/ajaxreturn' );
+		$this->render( '/element/ajaxreturn' );
 	}
 
 	/**
@@ -233,11 +233,11 @@ class VarietiesController extends AppController {
 		) {
 			$return = $this->Varieties->searchConvars( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		$this->set( [ 'data' => $return ] );
-		$this->render( '/Element/ajaxreturn' );
+		$this->render( '/element/ajaxreturn' );
 	}
 
 	/**
@@ -252,11 +252,11 @@ class VarietiesController extends AppController {
 		) {
 			$return = $this->Varieties->getNextFreeCode( (int) $this->request->getQuery('batch_id') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		$this->set( [ 'data' => $return ] );
-		$this->render( '/Element/ajaxreturn' );
+		$this->render( '/element/ajaxreturn' );
 	}
 
 	/**
@@ -265,6 +265,37 @@ class VarietiesController extends AppController {
 	public function filter() {
 		$allowed_fields = [ 'convar', 'breeder_variety_code' ];
 
+        $this->paginate['contain'] = [
+            'Batches',
+            'Batches.Crossings',
+        ];
+
+        $this->paginate['sortableFields'] = [
+            'convar',
+            'official_name',
+            'created',
+            'modified',
+            'id',
+        ];
+
+        $this->paginate['fields'] = [
+            'id',
+            'convar' => $this->Varieties
+                ->find()
+                ->func()
+                ->concat( [
+                    'Crossings.code' => 'literal',
+                    'Batches.code'   => 'literal',
+                    'Varieties.code' => 'literal',
+                ] ),
+            'official_name',
+            'created',
+            'modified',
+            'Batches.crossing_id',
+            'Batches.code',
+            'code'
+        ];
+
 		if ( $this->request->is( 'get' )
 		     && $this->request->is( 'ajax' )
 		     && ! empty( $this->request->getQuery('fields') )
@@ -272,7 +303,7 @@ class VarietiesController extends AppController {
 		) {
 			$entries = $this->Varieties->filter( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
@@ -282,9 +313,9 @@ class VarietiesController extends AppController {
 
 			$this->set( compact( 'varieties' ) );
 			$this->set( '_serialize', [ 'varieties' ] );
-			$this->render( '/Element/Variety/index_table' );
+			$this->render( '/element/Variety/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

@@ -46,7 +46,7 @@ class GraftingsController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$grafting = $this->Graftings->newEntity();
+		$grafting = $this->Graftings->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$grafting = $this->Graftings->patchEntity( $grafting, $this->request->getData());
 			if ( $this->Graftings->save( $grafting ) ) {

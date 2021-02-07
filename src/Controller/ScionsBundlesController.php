@@ -17,7 +17,7 @@ class ScionsBundlesController extends AppController {
 		'limit' => 100,
 	];
 
-    public function initialize() {
+    public function initialize(): void {
         parent::initialize();
         $this->loadComponent( 'Filter' );
     }
@@ -60,7 +60,7 @@ class ScionsBundlesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$scionsBundle = $this->ScionsBundles->newEntity();
+		$scionsBundle = $this->ScionsBundles->newEmptyEntity();
 		$varieties    = array();
 
 		if ( $this->request->is( 'post' ) ) {
@@ -143,7 +143,7 @@ class ScionsBundlesController extends AppController {
 		) {
 			$entries = $this->ScionsBundles->filter( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
@@ -153,9 +153,9 @@ class ScionsBundlesController extends AppController {
 
 			$this->set( compact( 'scionsBundles' ) );
 			$this->set( '_serialize', [ 'scionsBundles' ] );
-			$this->render( '/Element/ScionsBundle/index_table' );
+			$this->render( '/element/ScionsBundle/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

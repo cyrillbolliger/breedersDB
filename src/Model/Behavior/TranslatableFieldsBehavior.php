@@ -103,11 +103,11 @@ class TranslatableFieldsBehavior extends Behavior {
             'VarietiesView.description'                => __( 'Varieties -> Description' ),
             'VarietiesView.batch_id'                   => __( 'Varieties -> Batch Id' ),
         ];
-        
+
         if ( ! key_exists( $key, $translations ) ) {
-            throw new Exception( "Translation of field {$key} not found." );
+            throw new \Exception( "Translation of field {$key} not found." );
         }
-        
+
         return $translations[ $key ];
     }
 }

@@ -103,11 +103,11 @@ class Query extends Entity {
 	 * @return \stdClass
 	 */
 	protected function _getQuery(): \stdClass {
-		if ( ! isset( $this->_properties['my_query'] ) ) {
+		if ( ! isset( $this->_fields['my_query'] ) ) {
 			return (object) [];
 		}
 
-		$my_query = $this->_properties['my_query'];
+		$my_query = $this->_fields['my_query'];
 		if ( empty( $q ) || $this->isDirty( 'my_query' ) ) {
 			$this->q = json_decode( $my_query );
 		}

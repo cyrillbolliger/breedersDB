@@ -12,7 +12,7 @@ use Cake\Core\Exception\Exception;
  */
 class MarkScannerCodesController extends AppController {
 
-    public function initialize() {
+    public function initialize(): void {
         parent::initialize();
         $this->loadComponent( 'Filter' );
     }
@@ -63,7 +63,7 @@ class MarkScannerCodesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$markScannerCode = $this->MarkScannerCodes->newEntity();
+		$markScannerCode = $this->MarkScannerCodes->newEmptyEntity();
 		$data            = $this->request->getData();
 		$data['code']    = $this->MarkScannerCodes->getNextFreeCode();
 		if ( $this->request->is( 'post' ) ) {
@@ -149,7 +149,7 @@ class MarkScannerCodesController extends AppController {
 		) {
 			$entries = $this->MarkScannerCodes->filter( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
@@ -159,9 +159,9 @@ class MarkScannerCodesController extends AppController {
 
 			$this->set( compact( 'markScannerCodes' ) );
 			$this->set( '_serialize', [ 'markScannerCodes' ] );
-			$this->render( '/Element/MarkScannerCode/index_table' );
+			$this->render( '/element/MarkScannerCode/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 
@@ -173,22 +173,22 @@ class MarkScannerCodesController extends AppController {
 			                                  ->first()
 			                                  ->toArray();
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		$this->set( [ 'data' => $entries ] );
-		$this->render( '/Element/ajaxreturn' );
+		$this->render( '/element/ajaxreturn' );
 	}
 
 	/**
 	 * Show the print dialog
 	 *
-	 * @param int $id
+	 * @param int|string $id
 	 * @param string $caller action to redirect after printing
 	 * @param mixed $params for action
 	 */
-	public function print( int $id, string $caller, $params = null ) {
-		$zpl = $this->MarkScannerCodes->getLabelZpl( $id );
+	public function print( $id, string $caller, $params = null ) {
+		$zpl = $this->MarkScannerCodes->getLabelZpl( (int) $id );
 
 		$this->set( [
 			'buttons'    => [ 'regular' => [ 'label' => __( 'Regular' ), 'zpl' => $zpl ] ],
@@ -198,7 +198,7 @@ class MarkScannerCodesController extends AppController {
 			'params'     => $params,
 			'nav'        => 'Mark/nav'
 		] );
-		$this->render( '/Element/print' );
+		$this->render( '/element/print' );
 	}
 
 	/**
@@ -219,6 +219,6 @@ class MarkScannerCodesController extends AppController {
 			'params'     => null,
 			'nav'        => 'Mark/nav'
 		] );
-		$this->render( '/Element/print' );
+		$this->render( '/element/print' );
 	}
 }

@@ -16,7 +16,7 @@ class MarkFormPropertiesController extends AppController {
 		'limit' => 100,
 	];
 
-    public function initialize() {
+    public function initialize(): void {
         parent::initialize();
         $this->loadComponent( 'Filter' );
     }
@@ -58,7 +58,7 @@ class MarkFormPropertiesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$markFormProperty = $this->MarkFormProperties->newEntity();
+		$markFormProperty = $this->MarkFormProperties->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$markFormProperty = $this->MarkFormProperties->patchEntity( $markFormProperty, $this->request->getData());
 			if ( $this->MarkFormProperties->save( $markFormProperty ) ) {
@@ -142,11 +142,11 @@ class MarkFormPropertiesController extends AppController {
 
 		switch ( $view ) {
 			case 'field_edit_form_mode':
-				$this->render( '/Element/Mark/field_edit_form_mode' );
+				$this->render( '/element/Mark/field_edit_form_mode' );
 				break;
 
 			default:
-				$this->render( '/Element/Mark/field' );
+				$this->render( '/element/Mark/field' );
 				break;
 		}
 	}
@@ -164,7 +164,7 @@ class MarkFormPropertiesController extends AppController {
 		) {
 			$entries = $this->MarkFormProperties->filter( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
@@ -174,9 +174,9 @@ class MarkFormPropertiesController extends AppController {
 
 			$this->set( compact( 'markFormProperties' ) );
 			$this->set( '_serialize', [ 'markFormProperties' ] );
-			$this->render( '/Element/MarkFormProperty/index_table' );
+			$this->render( '/element/MarkFormProperty/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

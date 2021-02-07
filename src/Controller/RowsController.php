@@ -17,7 +17,7 @@ class RowsController extends AppController {
 		'limit' => 100,
 	];
 
-    public function initialize() {
+    public function initialize(): void {
         parent::initialize();
         $this->loadComponent( 'Filter' );
     }
@@ -57,7 +57,7 @@ class RowsController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$row = $this->Rows->newEntity();
+		$row = $this->Rows->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$row = $this->Rows->patchEntity( $row, $this->request->getData());
 			if ( $this->Rows->save( $row ) ) {
@@ -131,7 +131,7 @@ class RowsController extends AppController {
 		) {
 			$entries = $this->Rows->filter( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
@@ -141,9 +141,9 @@ class RowsController extends AppController {
 
 			$this->set( compact( 'rows' ) );
 			$this->set( '_serialize', [ 'rows' ] );
-			$this->render( '/Element/Row/index_table' );
+			$this->render( '/element/Row/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

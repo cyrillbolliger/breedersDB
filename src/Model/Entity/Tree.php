@@ -3,7 +3,6 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
-use Cake\ORM\TableRegistry;
 
 /**
  * Tree Entity
@@ -52,9 +51,11 @@ class Tree extends Entity {
 	];
 
 	protected function _getConvar() {
-		$Crossings = TableRegistry::getTableLocator()->get( 'Crossings' );
-		$Batches   = TableRegistry::getTableLocator()->get( 'Batches' );
-		$Varieties = TableRegistry::getTableLocator()->get( 'Varieties' );
+        $tableLocator = \Cake\Datasource\FactoryLocator::get('Table');
+
+		$Crossings = $tableLocator->get( 'Crossings' );
+		$Batches   = $tableLocator->get( 'Batches' );
+		$Varieties = $tableLocator->get( 'Varieties' );
 		$variety   = $Varieties->get( $this->variety_id );
 		$batch     = $Batches->get( $variety->batch_id );
 		$crossing  = $Crossings->get( $batch->crossing_id );
@@ -67,7 +68,7 @@ class Tree extends Entity {
 			return null;
 		}
 
-		$Rows = TableRegistry::getTableLocator()->get( 'Rows' );
+		$Rows = \Cake\Datasource\FactoryLocator::get('Table')->get( 'Rows' );
 		$row  = $Rows->get( $this->row_id );
 
 		return $row->code;

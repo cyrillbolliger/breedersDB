@@ -47,7 +47,7 @@ class MarkScannerCodesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::exists('MarkScannerCodes') ? [] : ['className' => 'App\Model\Table\MarkScannerCodesTable'];
@@ -59,7 +59,7 @@ class MarkScannerCodesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->MarkScannerCodes);
 

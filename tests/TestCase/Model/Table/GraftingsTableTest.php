@@ -41,7 +41,7 @@ class GraftingsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::exists('Graftings') ? [] : ['className' => 'App\Model\Table\GraftingsTable'];
@@ -53,7 +53,7 @@ class GraftingsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Graftings);
 

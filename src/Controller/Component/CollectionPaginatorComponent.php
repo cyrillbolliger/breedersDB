@@ -110,9 +110,9 @@ class CollectionPaginatorComponent extends Component {
 
 		$paging_params = [ $alias => $paging ];
 
-		$requestReference = &$this->_registry->getController()->request;
-		$request = $requestReference->withParam( 'paging', $paging_params );
-		$this->_registry->getController()->request = $request;
+		$controller = $this->_registry->getController();
+		$request = $controller->getRequest()->withAttribute( 'paging', $paging_params );
+        $controller->setRequest($request);
 
 		if ( $requestedPage > $page ) {
 			throw new NotFoundException();

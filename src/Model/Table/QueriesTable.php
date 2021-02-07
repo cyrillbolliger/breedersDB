@@ -9,7 +9,6 @@ use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\HasMany;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use SoftDelete\Model\Table\SoftDeleteTrait;
 
@@ -40,7 +39,7 @@ class QueriesTable extends Table {
 	 *
 	 * @return void
 	 */
-	public function initialize( array $config ) {
+	public function initialize( array $config ): void {
 		parent::initialize( $config );
 
 		$this->setTable( 'queries' );
@@ -64,7 +63,7 @@ class QueriesTable extends Table {
 	 *
 	 * @return \Cake\Validation\Validator
 	 */
-	public function validationDefault( Validator $validator ) {
+	public function validationDefault( Validator $validator ): \Cake\Validation\Validator {
 		$validator
 			->integer( 'id' )
 			->allowEmptyString( 'id', __('This field is required'), 'create' )
@@ -89,7 +88,7 @@ class QueriesTable extends Table {
 	 *
 	 * @return \Cake\ORM\RulesChecker
 	 */
-	public function buildRules( RulesChecker $rules ) {
+	public function buildRules( RulesChecker $rules ): \Cake\ORM\RulesChecker {
 		$rules->add( $rules->isUnique( [ 'id' ] ) );
 		$rules->add( $rules->isUnique( [ 'code' ] ) );
 		$rules->add( $rules->existsIn( [ 'query_group_id' ], 'QueryGroups' ) );
@@ -130,7 +129,7 @@ class QueriesTable extends Table {
 	public function getFieldTypeMapOf( array $tables ) {
 		$fields = array();
 		foreach ( $tables as $table_name ) {
-			$table                 = TableRegistry::getTableLocator()->get( $table_name );
+			$table                 = \Cake\Datasource\FactoryLocator::get('Table')->get( $table_name );
 			$fields[ $table_name ] = $table->getSchema()->typeMap();
 		}
 
@@ -283,7 +282,7 @@ class QueriesTable extends Table {
 		$joins      = $this->_buildJoinArrays( $associations );
 		$conditions = $query->regular_conditions;
 
-		$rootTable = TableRegistry::getTableLocator()->get( $this->viewQueryRoot );
+		$rootTable = \Cake\Datasource\FactoryLocator::get('Table')->get( $this->viewQueryRoot );
 		$orm_query = $rootTable
 			->find( 'all' )
 			->distinct()
@@ -361,7 +360,7 @@ class QueriesTable extends Table {
 	public function getAssociationsOf( string $table_name, $hasManyOnly = false ) {
 		$associated = array();
 
-		$tmp = TableRegistry::getTableLocator()->get( $table_name );
+		$tmp = \Cake\Datasource\FactoryLocator::get('Table')->get( $table_name );
 		$has = $tmp->associations();
 
 		$tables = array();
@@ -417,13 +416,13 @@ class QueriesTable extends Table {
 
 		$array = array();
 		foreach ( $associations as $els ) {
-			$rootTable = TableRegistry::getTableLocator()->get( $this->viewQueryRoot );
+			$rootTable = \Cake\Datasource\FactoryLocator::get('Table')->get( $this->viewQueryRoot );
 			foreach ( explode( '.', $els ) as $tableName ) {
-				$table               = TableRegistry::getTableLocator()->get( $tableName );
+				$table               = \Cake\Datasource\FactoryLocator::get('Table')->get( $tableName );
 				$rootAssociation     = $rootTable->associations()->get( $table->getAlias() );
 				$tableAssociation    = $table->associations()->get( $rootTable->getAlias() );
 				$array[ $tableName ] = [
-					'table'      => $table->getTable(),
+					'table'      => $table->table(),
 					'conditions' => $this->_getAssociationConditions( $rootAssociation, $tableAssociation ),
 					'type'       => $rootAssociation->getJoinType()
 				];
@@ -489,7 +488,7 @@ class QueriesTable extends Table {
 	 * @throws \Exception if field key doesn't exist in translations array
 	 */
 	public function getMarkColumns( Query $markQuery ): array {
-		$markProperties = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
+		$markProperties = \Cake\Datasource\FactoryLocator::get('Table')->get( 'MarkFormProperties' );
 		$columns        = [];
 		foreach ( $markQuery->active_mark_field_ids as $property_id ) {
 			$columns[ $property_id ] = $markProperties->get( $property_id );

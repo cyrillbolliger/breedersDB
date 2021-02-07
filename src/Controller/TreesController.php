@@ -17,7 +17,7 @@ class TreesController extends AppController {
 		'limit' => 100,
 	];
 
-	public function initialize() {
+	public function initialize(): void {
 		parent::initialize();
 		$this->loadComponent( 'Brain' );
 		$this->loadComponent( 'MarksReader' );
@@ -37,7 +37,7 @@ class TreesController extends AppController {
 			'Varieties.Batches.Crossings',
 		];
 
-		$this->paginate['sortWhitelist'] = [
+		$this->paginate['sortableFields'] = [
 			'convar',
 			'publicid',
 			'row',
@@ -100,7 +100,7 @@ class TreesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$tree      = $this->Trees->newEntity();
+		$tree      = $this->Trees->newEmptyEntity();
 		$varieties = array();
 
 		if ( $this->request->is( 'post' ) ) {
@@ -136,7 +136,7 @@ class TreesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addGenuineSeedling() {
-		$tree      = $this->Trees->newEntity();
+		$tree      = $this->Trees->newEmptyEntity();
 		$varieties = array();
 
 		if ( $this->request->is( 'post' ) ) {
@@ -172,7 +172,7 @@ class TreesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addGraftTree() {
-		$tree      = $this->Trees->newEntity();
+		$tree      = $this->Trees->newEmptyEntity();
 		$varieties = array();
 
 		if ( $this->request->is( 'post' ) ) {
@@ -299,7 +299,7 @@ class TreesController extends AppController {
 		) {
 			$entries = $this->Trees->getByPublicId( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries ) {
@@ -333,10 +333,10 @@ class TreesController extends AppController {
             );
 			$this->set( '_serialize', [ 'tree' ] );
 
-			$this->render( '/Element/Tree/' . (string) $this->request->getQuery('element') );
+			$this->render( '/element/Tree/' . (string) $this->request->getQuery('element') );
 		} else {
 			$this->response->withStatus( 204 );
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 
@@ -373,7 +373,7 @@ class TreesController extends AppController {
 			'Varieties.Batches.Crossings',
 		];
 
-		$this->paginate['sortWhitelist'] = [
+		$this->paginate['sortableFields'] = [
 			'convar',
 			'publicid',
 			'row',
@@ -417,7 +417,7 @@ class TreesController extends AppController {
                 $entries = $entries->find('withEliminated', ['show_eliminated' => $show_eliminated]);
             }
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
@@ -427,9 +427,9 @@ class TreesController extends AppController {
 
 			$this->set( compact( 'trees' ) );
 			$this->set( '_serialize', [ 'trees' ] );
-			$this->render( '/Element/Tree/index_table' );
+			$this->render( '/element/Tree/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 
@@ -445,7 +445,7 @@ class TreesController extends AppController {
 		) {
 			$entries = $this->Trees->filter( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		$return = array();
@@ -457,17 +457,19 @@ class TreesController extends AppController {
 		}
 
 		$this->set( [ 'data' => $return ] );
-		$this->render( '/Element/ajaxreturn' );
+		$this->render( '/element/ajaxreturn' );
 	}
 
 	/**
 	 * Show the print dialog
 	 *
-	 * @param int $tree_id
+	 * @param int|string $tree_id
 	 * @param string $caller action to redirect after printing
 	 * @param mixed $params for action
 	 */
-	public function print( int $tree_id, string $caller, $params = null ) {
+	public function print( $tree_id, string $caller, $params = null ) {
+	    $tree_id = (int) $tree_id;
+
 		$convar_zpl               = $this->Trees->getLabelZpl( $tree_id, 'convar' );
 		$breeder_variety_code_zpl = $this->Trees->getLabelZpl( $tree_id, 'breeder_variety_code' );
 
@@ -488,6 +490,6 @@ class TreesController extends AppController {
 			'params'     => $params,
 			'nav'        => 'Tree/nav'
 		] );
-		$this->render( '/Element/print' );
+		$this->render( '/element/print' );
 	}
 }

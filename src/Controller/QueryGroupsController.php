@@ -17,7 +17,7 @@ class QueryGroupsController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$queryGroup = $this->QueryGroups->newEntity();
+		$queryGroup = $this->QueryGroups->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$queryGroup = $this->QueryGroups->patchEntity( $queryGroup, $this->request->getData());
 			if ( $this->QueryGroups->save( $queryGroup ) ) {

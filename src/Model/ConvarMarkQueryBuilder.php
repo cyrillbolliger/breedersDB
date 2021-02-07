@@ -4,13 +4,12 @@
 namespace App\Model;
 
 use Cake\ORM\Query;
-use Cake\ORM\TableRegistry;
 
 class ConvarMarkQueryBuilder implements MarkQueryBuilderInterface
 {
     public function buildQuery(array $regularFieldsFilter, array $markProperties): Query
     {
-        $marks = TableRegistry::getTableLocator()->get('MarksView');
+        $marks = \Cake\Datasource\FactoryLocator::get('Table')->get('MarksView');
 
         $treeMarks = $marks->find()
             ->select($this->_getInterallyNeededFields('TreesView'))

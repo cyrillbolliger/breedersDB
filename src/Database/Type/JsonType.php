@@ -3,10 +3,10 @@
 namespace App\Database\Type;
 
 use Cake\Database\Driver;
-use Cake\Database\Type;
+use Cake\Database\TypeFactory;
 use PDO;
 
-class JsonType extends Type {
+class JsonType extends \Cake\Database\TypeFactory {
 	
 	public function toPHP( $value, Driver $driver ) {
 		if ( $value === null ) {

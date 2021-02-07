@@ -51,6 +51,7 @@ use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 use Cake\Mailer\Email;
 use Cake\Mailer\TransportFactory;
+use Cake\Routing\Router;
 use Cake\Utility\Inflector;
 use Cake\Utility\Security;
 
@@ -140,11 +141,10 @@ if ($isCli) {
 
 /*
  * Set the full base URL.
- * This URL is used as the base of all absolute links.
- *
- * If you define fullBaseUrl in your config file you can remove this.
+ * This URL is used as the base of all absolute link
  */
-if (!Configure::read('App.fullBaseUrl')) {
+$fullBaseUrl = Configure::read('App.fullBaseUrl');
+if (!$fullBaseUrl) {
     $s = null;
     if (env('HTTPS')) {
         $s = 's';
@@ -152,10 +152,14 @@ if (!Configure::read('App.fullBaseUrl')) {
 
     $httpHost = env('HTTP_HOST');
     if (isset($httpHost)) {
-        Configure::write('App.fullBaseUrl', 'http' . $s . '://' . $httpHost);
+        $fullBaseUrl = 'http' . $s . '://' . $httpHost;
     }
     unset($httpHost, $s);
 }
+if ($fullBaseUrl) {
+    Router::fullBaseUrl($fullBaseUrl);
+}
+unset($fullBaseUrl);
 
 Cache::setConfig(Configure::consume('Cache'));
 ConnectionManager::setConfig(Configure::consume('Datasources'));

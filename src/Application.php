@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -20,6 +22,7 @@ use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use Cake\Http\Middleware\CsrfProtectionMiddleware;
 
 /**
  * Application setup class.
@@ -35,20 +38,22 @@ class Application extends BaseApplication {
 	 *
 	 * @return \Cake\Http\MiddlewareQueue The updated middleware.
 	 */
-	public function middleware( $middleware ) {
+	public function middleware( $middleware ): \Cake\Http\MiddlewareQueue {
 		$middleware
 			// Catch any exceptions in the lower layers,
 			// and make an error page/response
-			->add( new ErrorHandlerMiddleware( Configure::read( 'Error.exceptionRenderer' ) ) )
+			->add( new ErrorHandlerMiddleware( Configure::read( 'Error' ) ) )
 			// Handle plugin/theme assets like CakePHP normally does.
 			->add( new AssetMiddleware() )
 			// Apply routing
-			->add( new RoutingMiddleware($this) );
+			->add( new RoutingMiddleware($this) )
+		    // Add cookie based CSRF protection
+            ->add( new CsrfProtectionMiddleware() );
 
 		return $middleware;
 	}
 
-	function bootstrap()
+	function bootstrap(): void
     {
         if (PHP_SAPI === 'cli') {
             $this->bootstrapCli();

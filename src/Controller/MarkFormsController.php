@@ -17,12 +17,12 @@ class MarkFormsController extends AppController {
 		'limit' => 100,
 	];
 
-    public function initialize() {
+    public function initialize(): void {
         parent::initialize();
         $this->loadComponent( 'Filter' );
     }
 
-	public function beforeFilter( Event $event ) {
+	public function beforeFilter( \Cake\Event\EventInterface $event ) {
 		parent::beforeFilter( $event );
 
 		// since we add fields dynamically, we have to unlock them in the security component
@@ -80,7 +80,7 @@ class MarkFormsController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$markForm = $this->MarkForms->newEntity();
+		$markForm = $this->MarkForms->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			// make form fields savable
 			$data = $this->_prepareFormFields();
@@ -230,7 +230,7 @@ class MarkFormsController extends AppController {
 		) {
 			$entries = $this->MarkForms->filter( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
@@ -240,9 +240,9 @@ class MarkFormsController extends AppController {
 
 			$this->set( compact( 'markForms' ) );
 			$this->set( '_serialize', [ 'markForms' ] );
-			$this->render( '/Element/MarkForm/index_table' );
+			$this->render( '/element/MarkForm/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

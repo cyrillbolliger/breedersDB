@@ -44,7 +44,7 @@ class MarkFormsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::exists('MarkForms') ? [] : ['className' => 'App\Model\Table\MarkFormsTable'];
@@ -56,7 +56,7 @@ class MarkFormsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->MarkForms);
 

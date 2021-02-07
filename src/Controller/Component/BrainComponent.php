@@ -3,7 +3,7 @@
 namespace App\Controller\Component;
 
 use Cake\Controller\Component;
-use Cake\Event\Event;
+use Cake\Controller\Controller;
 
 /**
  * Stores request data to session and lets you prefill new forms with this data.
@@ -51,9 +51,10 @@ class BrainComponent extends Component {
 	 *
 	 * @param \Cake\Event\Event $event
 	 */
-	public function startup( Event $event ) {
+	public function startup( \Cake\Event\EventInterface $event ) {
+	    /** @var Controller $controller */
 		$controller              = $event->getSubject();
-		$this->controllerRequest = $controller->request;
+		$this->controllerRequest = $controller->getRequest();
 
 		$this->memorize();
 	}

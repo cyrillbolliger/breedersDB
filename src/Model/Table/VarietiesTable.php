@@ -37,7 +37,7 @@ class VarietiesTable extends Table {
 	 *
 	 * @return void
 	 */
-	public function initialize( array $config ) {
+	public function initialize( array $config ): void {
 		parent::initialize( $config );
 
 		$this->setTable( 'varieties' );
@@ -68,7 +68,7 @@ class VarietiesTable extends Table {
 	 *
 	 * @return \Cake\Validation\Validator
 	 */
-	public function validationDefault( Validator $validator ) {
+	public function validationDefault( Validator $validator ): \Cake\Validation\Validator {
 		$validator
 			->integer( 'id' )
 			->allowEmptyString( 'id', __('This field is required'), 'create' )
@@ -101,7 +101,7 @@ class VarietiesTable extends Table {
 	 *
 	 * @return \Cake\ORM\RulesChecker
 	 */
-	public function buildRules( RulesChecker $rules ) {
+	public function buildRules( RulesChecker $rules ): \Cake\ORM\RulesChecker {
 		$rules->add( $rules->isUnique( [ 'id' ] ) );
 		$rules->add( $rules->existsIn( [ 'batch_id' ], 'Batches' ) );
 		$rules->add( $rules->isUnique(
@@ -127,10 +127,13 @@ class VarietiesTable extends Table {
 	 */
 	public function filter( string $term ) {
 		$is_breeder_variety_code = preg_match( '/^' . COMPANY_ABBREV . '\d+$/i', $term );
+		$is_id = is_numeric($term);
 
 		if ( $is_breeder_variety_code ) {
 			$query = $this->filterBreederVarietyCode( $term );
-		} else {
+		} else if ( $is_id ) {
+		    $query = $this->find()->where( ['id' => (int) $term ] );
+        } else {
 			$query = $this->filterConvars( $term );
 		}
 
@@ -253,7 +256,7 @@ class VarietiesTable extends Table {
 		$code = $this->getNextFreeCode( $batch_id );
 
 		// create entity
-		$variety           = $this->newEntity();
+		$variety           = $this->newEmptyEntity();
 		$variety->code     = $code;
 		$variety->batch_id = $batch_id;
 

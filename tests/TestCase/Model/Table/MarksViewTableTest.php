@@ -49,7 +49,7 @@ class MarksViewTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::exists('MarksView') ? [] : ['className' => 'App\Model\Table\MarksViewTable'];
@@ -61,7 +61,7 @@ class MarksViewTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->MarksView);
 

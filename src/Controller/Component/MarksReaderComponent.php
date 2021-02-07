@@ -4,7 +4,6 @@ namespace App\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Core\Exception\Exception;
-use Cake\ORM\TableRegistry;
 use Cake\Event\Event;
 
 /**
@@ -37,11 +36,13 @@ class MarksReaderComponent extends Component {
 	 *
 	 * @param \Cake\Event\Event $event
 	 */
-	public function startup( Event $event ) {
-		$this->Marks                 = TableRegistry::getTableLocator()->get( 'Marks' );
-		$this->MarkValues            = TableRegistry::getTableLocator()->get( 'MarkValues' );
-		$this->MarkFormProperties    = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
-		$this->MarkFormPropertyTypes = TableRegistry::getTableLocator()->get( 'MarkFormPropertyTypes' );
+	public function startup( \Cake\Event\EventInterface $event ) {
+        $tableLocator = \Cake\Datasource\FactoryLocator::get('Table');
+
+		$this->Marks                 = $tableLocator->get( 'Marks' );
+		$this->MarkValues            = $tableLocator->get( 'MarkValues' );
+		$this->MarkFormProperties    = $tableLocator->get( 'MarkFormProperties' );
+		$this->MarkFormPropertyTypes = $tableLocator->get( 'MarkFormPropertyTypes' );
 	}
 
 	/**
@@ -57,7 +58,7 @@ class MarksReaderComponent extends Component {
 	 */
 	public function get( $treeId = null, int $varietyId = null, int $batchId = null, int $markId = null ) {
 		if ( null === $treeId && null === $varietyId && null === $batchId ) {
-			throw new Exception( __( 'Invalid arguments.' ) );
+			throw new \Exception( __( 'Invalid arguments.' ) );
 		}
 
 		$MarkFormPropertyTypes = $this->MarkFormPropertyTypes->find( 'list' );

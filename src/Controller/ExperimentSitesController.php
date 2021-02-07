@@ -46,7 +46,7 @@ class ExperimentSitesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$experimentSite = $this->ExperimentSites->newEntity();
+		$experimentSite = $this->ExperimentSites->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$experimentSite = $this->ExperimentSites->patchEntity( $experimentSite, $this->request->getData());
 			if ( $this->ExperimentSites->save( $experimentSite ) ) {

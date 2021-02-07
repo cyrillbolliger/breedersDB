@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Controller\Component\FilterComponent;
+use App\Controller\Component\MarksReaderComponent;
 use Cake\Core\Exception\Exception;
 
 /**
  * Batches Controller
  *
  * @property \App\Model\Table\BatchesTable $Batches
+ * @property MarksReaderComponent $MarksReader
+ * @property FilterComponent $Filter
  */
 class BatchesController extends AppController {
 	public $paginate = [
@@ -16,7 +20,7 @@ class BatchesController extends AppController {
 		'limit' => 100,
 	];
 
-	public function initialize() {
+	public function initialize(): void {
 		parent::initialize();
 		$this->loadComponent( 'MarksReader' );
         $this->loadComponent( 'Filter' );
@@ -30,7 +34,7 @@ class BatchesController extends AppController {
 	public function index() {
 		$this->paginate['contain'] = [ 'Crossings' ];
 
-		$this->paginate['sortWhitelist'] = [
+		$this->paginate['sortableFields'] = [
 			'crossing_batch',
 			'date_sowed',
 			'seed_tray',
@@ -88,7 +92,7 @@ class BatchesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$batch = $this->Batches->newEntity();
+		$batch = $this->Batches->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$batch = $this->Batches->patchEntity( $batch, $this->request->getData());
 			if ( $this->Batches->save( $batch ) ) {
@@ -157,6 +161,33 @@ class BatchesController extends AppController {
 	public function filter() {
 		$allowed_fields = [ 'crossing_batch' ];
 
+        $this->paginate['sortableFields'] = [
+            'crossing_batch',
+            'date_sowed',
+            'seed_tray',
+            'date_planted',
+            'patch',
+            'modified',
+            'id',
+        ];
+
+        $this->paginate['fields'] = [
+            'id',
+            'crossing_batch' => $this->Batches
+                ->find()
+                ->func()
+                ->concat( [
+                    'Crossings.code' => 'literal',
+                    'Batches.code'   => 'literal',
+                ] ),
+            'date_sowed',
+            'seed_tray',
+            'date_planted',
+            'patch',
+            'code',
+            'Crossings.code',
+        ];
+
 		if ( $this->request->is( 'get' )
 		     && $this->request->is( 'ajax' )
 		     && ! empty( $this->request->getQuery('fields') )
@@ -165,7 +196,7 @@ class BatchesController extends AppController {
 			$entries = $this->Batches->filterCrossingBatches( $this->request->getQuery('term') )
                                      ->find('withoutOfficialVarieties');
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
@@ -175,9 +206,9 @@ class BatchesController extends AppController {
 
 			$this->set( compact( 'batches' ) );
 			$this->set( '_serialize', [ 'batches' ] );
-			$this->render( '/Element/Batch/index_table' );
+			$this->render( '/element/Batch/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 
@@ -204,6 +235,6 @@ class BatchesController extends AppController {
 			'params'     => $params,
 			'nav'        => 'Batch/nav'
 		] );
-		$this->render( '/Element/print' );
+		$this->render( '/element/print' );
 	}
 }

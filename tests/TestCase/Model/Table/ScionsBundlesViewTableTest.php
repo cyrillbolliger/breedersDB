@@ -49,7 +49,7 @@ class ScionsBundlesViewTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::exists('ScionsBundlesView') ? [] : ['className' => 'App\Model\Table\ScionsBundlesViewTable'];
@@ -61,7 +61,7 @@ class ScionsBundlesViewTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->ScionsBundlesView);
 

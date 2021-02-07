@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Controller\Component\BrainComponent;
+use App\Controller\Component\FilterComponent;
+use App\Controller\Component\MarksReaderComponent;
 use Cake\Core\Exception\Exception;
 use Cake\Event\Event;
 
@@ -10,6 +13,9 @@ use Cake\Event\Event;
  * Marks Controller
  *
  * @property \App\Model\Table\MarksTable $Marks
+ * @property MarksReaderComponent $MarksReader
+ * @property BrainComponent $Brain
+ * @property FilterComponent $Filter
  */
 class MarksController extends AppController {
 
@@ -18,31 +24,23 @@ class MarksController extends AppController {
 		'limit' => 100,
 	];
 
-	public function initialize() {
+	public function initialize(): void {
 		parent::initialize();
 		$this->loadComponent( 'Brain' );
 		$this->loadComponent( 'MarksReader' );
         $this->loadComponent( 'Filter' );
 	}
 
-	public function beforeFilter( Event $event ) {
+	public function beforeFilter( \Cake\Event\EventInterface $event ) {
 		parent::beforeFilter( $event );
 
 		// since we add fields dynamically, we have to unlock them in the security component
-		$this->unlockDynamicallyAddedFields();
-	}
-
-	/**
-	 * Unlock the dynamically added fields in the security component
-	 */
-	public function unlockDynamicallyAddedFields() {
-		if ( ! empty( $this->request->getData('mark_form_fields.mark_form_properties' ) ) ) {
-			$ids = array_keys( $this->request->getData('mark_form_fields.mark_form_properties' ) );
-			foreach ( $ids as $id ) {
-				$this->Security->setConfig( 'unlockedFields',
-					[ 'mark_form_fields.mark_form_properties.' . $id . '.mark_values.value' ] );
-			}
-		}
+		$this->Security->setConfig('unlockedActions', [
+		    'addTreeMarkByScanner',
+            'addTreeMark',
+            'addVarietyMark',
+            'addBatchMark'
+        ]);
 	}
 
 	/**
@@ -115,7 +113,7 @@ class MarksController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addTreeMark() {
-		$mark = $this->Marks->newEntity();
+		$mark = $this->Marks->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$data = $this->Marks->prepareToSaveAssociated( $this->request->getData());
 			$mark = $this->Marks->patchEntity( $mark, $data, [ 'associated' => 'MarkValues' ] );
@@ -159,7 +157,7 @@ class MarksController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addVarietyMark() {
-		$mark      = $this->Marks->newEntity();
+		$mark      = $this->Marks->newEmptyEntity();
 		$varieties = array();
 		if ( $this->request->is( 'post' ) ) {
 			$data = $this->Marks->prepareToSaveAssociated( $this->request->getData());
@@ -208,7 +206,7 @@ class MarksController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function addBatchMark() {
-		$mark    = $this->Marks->newEntity();
+		$mark    = $this->Marks->newEmptyEntity();
 		$batches = array();
 		if ( $this->request->is( 'post' ) ) {
 			$data = $this->Marks->prepareToSaveAssociated( $this->request->getData());
@@ -330,7 +328,7 @@ class MarksController extends AppController {
 		$this->set( 'markFormFields', $markFormFields );
 		$this->set( '_serialize', [ 'markFormFields' ] );
 
-		$this->render( '/Element/Mark/fields' );
+		$this->render( '/element/Mark/fields' );
 	}
 
 	/**
@@ -346,7 +344,7 @@ class MarksController extends AppController {
 		) {
 			$entries = $this->Marks->filter( $this->request->getQuery('term') );
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
@@ -356,9 +354,9 @@ class MarksController extends AppController {
 
 			$this->set( compact( 'marks' ) );
 			$this->set( '_serialize', [ 'marks' ] );
-			$this->render( '/Element/Mark/index_table' );
+			$this->render( '/element/Mark/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

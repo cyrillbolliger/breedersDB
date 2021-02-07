@@ -16,7 +16,7 @@ class MotherTreesController extends AppController {
 		'limit' => 100,
 	];
 
-	public function initialize() {
+	public function initialize(): void {
 		parent::initialize();
 		$this->loadComponent( 'Brain' );
         $this->loadComponent( 'Filter' );
@@ -59,7 +59,7 @@ class MotherTreesController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$motherTree = $this->MotherTrees->newEntity();
+		$motherTree = $this->MotherTrees->newEmptyEntity();
 		if ( $this->request->is( 'post' ) ) {
 			$motherTree = $this->MotherTrees->patchEntity( $motherTree, $this->request->getData());
 			if ( $this->MotherTrees->save( $motherTree ) ) {
@@ -150,7 +150,7 @@ class MotherTreesController extends AppController {
                 $entries = $entries->find('withEliminated', ['show_eliminated' => $show_eliminated]);
             }
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
@@ -160,9 +160,9 @@ class MotherTreesController extends AppController {
 
 			$this->set( compact( 'motherTrees' ) );
 			$this->set( '_serialize', [ 'motherTrees' ] );
-			$this->render( '/Element/MotherTree/index_table' );
+			$this->render( '/element/MotherTree/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

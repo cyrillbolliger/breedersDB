@@ -3,7 +3,6 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
-use Cake\ORM\TableRegistry;
 
 /**
  * MotherTree Entity
@@ -29,7 +28,7 @@ use Cake\ORM\TableRegistry;
  * @property \App\Model\Entity\Crossing[] $crossings
  */
 class MotherTree extends Entity {
-	
+
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
 	 *

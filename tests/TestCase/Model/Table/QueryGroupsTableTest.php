@@ -32,7 +32,7 @@ class QueryGroupsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $config = TableRegistry::exists('QueryGroups') ? [] : ['className' => 'App\Model\Table\QueryGroupsTable'];
@@ -44,7 +44,7 @@ class QueryGroupsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->QueryGroups);
 

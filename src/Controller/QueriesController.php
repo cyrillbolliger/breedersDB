@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Controller\Component\CollectionPaginatorComponent;
 use App\Controller\Component\ExcelComponent;
 use App\Model\Table\MarksViewTable;
-use Cake\ORM\TableRegistry;
+use Cake\Http\Cookie\Cookie;
 
 /**
  * Queries Controller
@@ -20,7 +20,7 @@ class QueriesController extends AppController {
         'maxLimit' => 500,
     ];
 
-    public function initialize() {
+    public function initialize(): void {
         parent::initialize();
 
         $this->loadComponent( 'Excel' );
@@ -77,17 +77,17 @@ class QueriesController extends AppController {
     /**
      * View mark query method
      *
-     * @param int $id
+     * @param int|string $id
      *
      * @throws \Exception
      */
-    public function viewMarkQuery( int $id ) {
+    public function viewMarkQuery( $id ) {
         // get query
-        $query = $this->Queries->get( $id );
+        $query = $this->Queries->get( (int) $id );
 
         // query the data
         /** @var MarksViewTable $marksViewTable */
-        $marksViewTable = TableRegistry::getTableLocator()->get( 'MarksView' );
+        $marksViewTable = $this->getTableLocator()->get( 'MarksView' );
         $data           = $marksViewTable->customFindMarks(
             $query->breeding_object_aggregation_mode,
             $query->active_regular_fields,
@@ -143,8 +143,9 @@ class QueriesController extends AppController {
         $this->response = $this->response->withFile( $file, [ 'download' => true ] );
 
         // used for jquery.fileDownload.js
-        $this->Cookie->configKey( 'fileDownload', 'encryption', false );
-        $this->Cookie->write( 'fileDownload', 'true' );
+        $this->getResponse()->withCookie(
+            new Cookie('fileDownload', 'true', null, null, null, false)
+        );
 
         // prevent rendering
         $this->autoRender = false;
@@ -173,7 +174,7 @@ class QueriesController extends AppController {
 
         // -- if its a mark query --
         // query the data
-        $marksViewTable = TableRegistry::getTableLocator()->get( 'MarksView' );
+        $marksViewTable = $this->getTableLocator()->get( 'MarksView' );
         $data           = $marksViewTable->customFindMarks(
             $query->breeding_object_aggregation_mode,
             $query->active_regular_fields,
@@ -192,14 +193,16 @@ class QueriesController extends AppController {
     /**
      * Add query method
      *
-     * @param int $query_group_id Query group the query will be added to
+     * @param int|string $query_group_id Query group the query will be added to
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      *
      * @throws \Exception if any filter data fields validator type is unknown.
      */
-    public function add( int $query_group_id ) {
-        $query = $this->Queries->newEntity();
+    public function add( $query_group_id ) {
+        $query_group_id = (int) $query_group_id;
+
+        $query = $this->Queries->newEmptyEntity();
         if ( $this->request->is( 'post' ) ) {
             $query = $this->Queries->patchEntityWithQueryData( $query, $this->request->getData());
             if ( $this->Queries->save( $query ) ) {
@@ -211,7 +214,7 @@ class QueriesController extends AppController {
             }
         }
 
-        $markProperties = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
+        $markProperties = $this->getTableLocator()->get( 'MarkFormProperties' );
         $mark_selectors = $markProperties->find( 'all' )->order( [ 'name' => 'asc' ] );
 
         $views       = $this->Queries->getViewNames();
@@ -291,7 +294,7 @@ class QueriesController extends AppController {
             }
         }
 
-        $markProperties = TableRegistry::getTableLocator()->get( 'MarkFormProperties' );
+        $markProperties = $this->getTableLocator()->get( 'MarkFormProperties' );
         $mark_selectors = $markProperties->find( 'all' )->order( [ 'name' => 'asc' ] );
 
         $views       = $this->Queries->getViewNames();

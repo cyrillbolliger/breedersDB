@@ -16,7 +16,7 @@ class CrossingsController extends AppController {
 		'limit' => 100,
 	];
 
-    public function initialize() {
+    public function initialize(): void {
         parent::initialize();
         $this->loadComponent( 'Filter' );
     }
@@ -68,7 +68,7 @@ class CrossingsController extends AppController {
 	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
 	 */
 	public function add() {
-		$crossing         = $this->Crossings->newEntity();
+		$crossing         = $this->Crossings->newEmptyEntity();
 		$mother_varieties = array();
 		$father_varieties = array();
 		$trees            = array();
@@ -174,7 +174,7 @@ class CrossingsController extends AppController {
 			$entries = $this->Crossings->filterCodes( $this->request->getQuery('term') )
                                        ->find('withoutOfficialVarieties');
 		} else {
-			throw new Exception( __( 'Direct access not allowed.' ) );
+			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
 
 		if ( $entries && $entries->count() ) {
@@ -184,9 +184,9 @@ class CrossingsController extends AppController {
 
 			$this->set( compact( 'crossings' ) );
 			$this->set( '_serialize', [ 'crossings' ] );
-			$this->render( '/Element/Crossing/index_table' );
+			$this->render( '/element/Crossing/index_table' );
 		} else {
-			$this->render( '/Element/nothing_found' );
+			$this->render( '/element/nothing_found' );
 		}
 	}
 }

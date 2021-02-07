@@ -16,7 +16,6 @@ use Cake\Collection\CollectionInterface;
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 
 class MarkQueryBehavior extends Behavior {
 	/**
@@ -281,7 +280,7 @@ class MarkQueryBehavior extends Behavior {
 	 *
 	 * @throws \Exception if the given mode is not defined.
 	 */
-	private function _getTable(): Table {
+	private function _getTable(): \Cake\Datasource\RepositoryInterface {
 		switch ( $this->mode ) {
 			case 'trees':
 				$table = 'TreesView';
@@ -300,7 +299,7 @@ class MarkQueryBehavior extends Behavior {
 				throw new \Exception( "The mode '{$this->mode}' is not defined." );
 		}
 
-		return TableRegistry::getTableLocator()->get( $table );
+		return \Cake\Datasource\FactoryLocator::get('Table')->get( $table );
 	}
 
 	/**
