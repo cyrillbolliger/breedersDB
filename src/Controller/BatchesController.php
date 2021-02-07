@@ -30,7 +30,7 @@ class BatchesController extends AppController {
 	public function index() {
 		$this->paginate['contain'] = [ 'Crossings' ];
 
-		$this->paginate['sortWhitelist'] = [
+		$this->paginate['sortableFields'] = [
 			'crossing_batch',
 			'date_sowed',
 			'seed_tray',
@@ -157,7 +157,7 @@ class BatchesController extends AppController {
 	public function filter() {
 		$allowed_fields = [ 'crossing_batch' ];
 
-        $this->paginate['sortWhitelist'] = [
+        $this->paginate['sortableFields'] = [
             'crossing_batch',
             'date_sowed',
             'seed_tray',

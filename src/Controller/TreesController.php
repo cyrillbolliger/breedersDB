@@ -37,7 +37,7 @@ class TreesController extends AppController {
 			'Varieties.Batches.Crossings',
 		];
 
-		$this->paginate['sortWhitelist'] = [
+		$this->paginate['sortableFields'] = [
 			'convar',
 			'publicid',
 			'row',
@@ -373,7 +373,7 @@ class TreesController extends AppController {
 			'Varieties.Batches.Crossings',
 		];
 
-		$this->paginate['sortWhitelist'] = [
+		$this->paginate['sortableFields'] = [
 			'convar',
 			'publicid',
 			'row',

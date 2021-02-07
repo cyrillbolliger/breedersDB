@@ -41,7 +41,7 @@ class VarietiesController extends AppController {
 			'Batches.Crossings',
 		];
 
-		$this->paginate['sortWhitelist'] = [
+		$this->paginate['sortableFields'] = [
 			'convar',
 			'official_name',
 			'created',
@@ -270,7 +270,7 @@ class VarietiesController extends AppController {
             'Batches.Crossings',
         ];
 
-        $this->paginate['sortWhitelist'] = [
+        $this->paginate['sortableFields'] = [
             'convar',
             'official_name',
             'created',
