@@ -394,7 +394,10 @@ return [
      * To use database sessions, load the SQL file located at config/schema/sessions.sql
      */
     'Session' => [
-        'defaults' => 'php',
-        'timeout'  => 60,
+        'defaults' => 'cake',
+        'timeout'  => 24*60, // minutes; server session timeout
+        'ini' => [
+            'session.cookie_lifetime' => 24*3600 // seconds; client session cookie lifetime
+        ],
     ],
 ];
