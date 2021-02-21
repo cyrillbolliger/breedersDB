@@ -3,7 +3,7 @@
 </nav>
 <div class="marks form large-9 medium-8 columns content">
     <?= $this->Form->create($mark, ['name' => 'edit_mark_form']) ?>
-    <legend><?= __('Edit Mark') ?></legend>
+    <h3><?= __('Edit Mark') ?></h3>
     <?php
     if ($mark->tree) {
         echo $this->element('Tree/get_tree', ['tree' => $mark->tree]);
