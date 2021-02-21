@@ -1,4 +1,5 @@
 /config/app.php
+/config/Migrations/schema-dump-default.lock
 /tmp
 /logs
 /.idea
