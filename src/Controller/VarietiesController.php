@@ -51,14 +51,7 @@ class VarietiesController extends AppController {
 
 		$this->paginate['fields'] = [
 			'id',
-			'convar' => $this->Varieties
-				->find()
-				->func()
-				->concat( [
-					'Crossings.code' => 'literal',
-					'Batches.code'   => 'literal',
-					'Varieties.code' => 'literal',
-				] ),
+			'convar',
 			'official_name',
 			'created',
 			'modified',
@@ -265,11 +258,6 @@ class VarietiesController extends AppController {
 	public function filter() {
 		$allowed_fields = [ 'convar', 'breeder_variety_code' ];
 
-        $this->paginate['contain'] = [
-            'Batches',
-            'Batches.Crossings',
-        ];
-
         $this->paginate['sortableFields'] = [
             'convar',
             'official_name',
@@ -280,14 +268,7 @@ class VarietiesController extends AppController {
 
         $this->paginate['fields'] = [
             'id',
-            'convar' => $this->Varieties
-                ->find()
-                ->func()
-                ->concat( [
-                    'Crossings.code' => 'literal',
-                    'Batches.code'   => 'literal',
-                    'Varieties.code' => 'literal',
-                ] ),
+            'convar',
             'official_name',
             'created',
             'modified',

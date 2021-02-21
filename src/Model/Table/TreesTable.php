@@ -256,6 +256,7 @@ class TreesTable extends Table {
 	 * @return \Cake\ORM\Query
 	 */
 	public function filter( string $term ) {
+	    // TODO: Review this method and use directly the tree table to filter for convar
 		// if not a public id
 		if ( preg_match( '/\.|[a-zA-z]|.{9,}/', $term ) ) {
 			// set publicid to false
@@ -301,7 +302,7 @@ class TreesTable extends Table {
 	 * @return array|null
 	 */
 	public function getIdPublicidAndConvarList( int $id ) {
-		$tree = $this->get( $id, [ 'contain' => [ 'Varieties' ] ] );
+		$tree = $this->get( $id );
 
 		if ( $tree ) {
 			return [ $id => $tree->publicid . ' (' . $tree->convar . ')' ];
@@ -318,7 +319,7 @@ class TreesTable extends Table {
 	 * @return string
 	 */
 	public function getConvar( int $id ) {
-		$tree = $this->get( $id, [ 'contain' => [ 'Varieties' ] ] );
+		$tree = $this->get( $id );
 
 		return $tree->convar;
 	}

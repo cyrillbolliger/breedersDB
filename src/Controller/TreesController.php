@@ -31,10 +31,7 @@ class TreesController extends AppController {
 	 */
 	public function index() {
 		$this->paginate['contain'] = [
-			'Varieties',
 			'Rows',
-			'Varieties.Batches',
-			'Varieties.Batches.Crossings',
 		];
 
 		$this->paginate['sortableFields'] = [
@@ -51,14 +48,7 @@ class TreesController extends AppController {
 		$this->paginate['fields'] = [
 			'id',
 			'publicid',
-			'convar' => $this->Trees
-				->find()
-				->func()
-				->concat( [
-					'Crossings.code' => 'literal',
-					'Batches.code'   => 'literal',
-					'Varieties.code' => 'literal',
-				] ),
+			'convar',
 			'row'    => 'Rows.code',
 			'offset',
 			'note',
@@ -367,10 +357,7 @@ class TreesController extends AppController {
 		$allowed_fields = [ 'publicid', 'convar' ];
 
 		$this->paginate['contain'] = [
-			'Varieties',
 			'Rows',
-			'Varieties.Batches',
-			'Varieties.Batches.Crossings',
 		];
 
 		$this->paginate['sortableFields'] = [
@@ -387,14 +374,7 @@ class TreesController extends AppController {
 		$this->paginate['fields'] = [
 			'id',
 			'publicid',
-			'convar' => $this->Trees
-				->find()
-				->func()
-				->concat( [
-					'Crossings.code' => 'literal',
-					'Batches.code'   => 'literal',
-					'Varieties.code' => 'literal',
-				] ),
+			'convar',
 			'row'    => 'Rows.code',
 			'offset',
 			'note',

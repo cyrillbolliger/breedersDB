@@ -39,14 +39,6 @@ class ScionsBundle extends Entity {
 	];
 
 	protected function _getConvar() {
-	    $tableLocator = \Cake\Datasource\FactoryLocator::get('Table');
-
-		$Crossings = $tableLocator->get( 'Crossings' );
-		$Batches   = $tableLocator->get( 'Batches' );
-		$variety   = $this->variety;
-		$batch     = $Batches->get( $variety->batch_id );
-		$crossing  = $Crossings->get( $batch->crossing_id );
-
-		return $crossing->code . '.' . $batch->code . '.' . $variety->code;
+		return $this->variety->convar;
 	}
 }

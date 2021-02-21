@@ -47,10 +47,12 @@ class CrossingsTable extends Table {
 		$this->addBehavior( 'Timestamp' );
 
 		$this->belongsTo( 'Varieties', [
-			'foreignKey' => 'mother_variety_id'
+			'foreignKey' => 'mother_variety_id',
+            'propertyName' => 'mother_variety'
 		] );
 		$this->belongsTo( 'Varieties', [
-			'foreignKey' => 'father_variety_id'
+			'foreignKey' => 'father_variety_id',
+            'propertyName' => 'father_variety'
 		] );
 		$this->hasMany( 'Batches', [
 			'foreignKey' => 'crossing_id'

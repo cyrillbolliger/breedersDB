@@ -186,6 +186,7 @@ class VarietiesTable extends Table {
 	 * @return \Cake\ORM\Query
 	 */
 	public function searchConvars( string $term ) {
+        // TODO: Review this method and use directly the variety table to filter for convar
 		$query = $this->find( 'list' )->contain( [
 			'Batches',
 			'Batches.Crossings',
@@ -227,18 +228,13 @@ class VarietiesTable extends Table {
 	 * @return array
 	 */
 	public function getConvarList( int $id ) {
-		$variety = $this->get( $id, [
-			'contain' => [ 'Batches', 'Batches.Crossings' ],
-			'fields'  => [ 'id', 'Varieties.code', 'Batches.code', 'Crossings.code' ]
-		] );
+		$variety = $this->get( $id );
 
-		$varieties = [
-			[
-				$id => $variety->batch->crossing->code . '.' . $variety->batch->code . '.' . $variety->code,
-			],
-		];
-
-		return $varieties;
+        return [
+            [
+                $id => $variety->convar,
+            ],
+        ];
 	}
 
 	/**
@@ -298,7 +294,7 @@ class VarietiesTable extends Table {
 	 * @return string
 	 */
 	public function getConvar( int $id ) {
-		$variety = $this->get( $id, [ 'contain' => [ 'Batches' ] ] );
+		$variety = $this->get( $id );
 
 		return $variety->convar;
 	}

@@ -71,7 +71,7 @@
 				<?php foreach ( $batch->varieties as $varieties ): ?>
                     <tr>
                         <td class="id"><?= h( $varieties->id ) ?></td>
-                        <td><?= h( $batch->crossing_batch . '.' . $varieties->code ) ?></td>
+                        <td><?= h( $varieties->convar ) ?></td>
                         <td class="actions">
 							<?= $this->Html->link( '<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
 								[ 'controller' => 'Varieties', 'action' => 'view', $varieties->id ],
@@ -84,7 +84,7 @@
 									'escapeTitle' => false,
 									'alt'         => __( 'Delete' ),
 									'confirm'     => __( 'Are you sure you want to delete "{0}" (id: {1})?',
-										$batch->crossing_batch . '.' . $varieties->code, $varieties->id )
+										$varieties->convar, $varieties->id )
 								] ) ?>
                         </td>
                     </tr>

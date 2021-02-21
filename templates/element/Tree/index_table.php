@@ -20,7 +20,7 @@
         <tr>
             <td class="id"><?= $this->Number->format( $tree->id ) ?></td>
             <td><?= h( $tree->publicid ) ?></td>
-            <td><?= $tree->has( 'Convar' ) ? $this->Html->link( $tree->convar,
+            <td><?= $tree->has( 'convar' ) ? $this->Html->link( $tree->convar,
 					[ 'controller' => 'Varieties', 'action' => 'view', $tree->variety_id ] ) : '' ?></td>
             <td><?= $tree->has( 'row' ) ? $this->Html->link( $tree->row,
 					[ 'controller' => 'Rows', 'action' => 'view', $tree->row_id ] ) : '' ?></td>

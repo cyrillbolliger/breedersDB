@@ -16,7 +16,8 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  *
- * @property \App\Model\Entity\Variety $variety
+ * @property \App\Model\Entity\Variety $mother_variety
+ * @property \App\Model\Entity\Variety $father_variety
  * @property \App\Model\Entity\MotherTree[] $mother_trees
  * @property \App\Model\Entity\Batch[] $batches
  */
@@ -37,24 +38,10 @@ class Crossing extends Entity {
 	];
 
 	protected function _getMotherConvar() {
-	    $tableLocator = \Cake\Datasource\FactoryLocator::get('Table');
-
-		$Varieties = $tableLocator->get( 'Varieties' );
-		$Batches   = $tableLocator->get( 'Batches' );
-		$variety   = $Varieties->get( $this->mother_variety_id );
-		$batch     = $Batches->get( $variety->batch_id );
-
-		return $this->code . '.' . $batch->code . '.' . $variety->code;
+		return $this->mother_variety->convar;
 	}
 
 	protected function _getFatherConvar() {
-        $tableLocator = \Cake\Datasource\FactoryLocator::get('Table');
-
-        $Varieties = $tableLocator->get( 'Varieties' );
-		$Batches   = $tableLocator->get( 'Batches' );
-		$variety   = $Varieties->get( $this->father_variety_id );
-		$batch     = $Batches->get( $variety->batch_id );
-
-		return $this->code . '.' . $batch->code . '.' . $variety->code;
+		return $this->father_variety->convar;
 	}
 }
