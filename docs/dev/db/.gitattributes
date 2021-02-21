@@ -1,0 +1,3 @@
+# don't mess with lineendings on mysql workbench files
+*.mwb		binary
+*.mwb.bak	binary
