@@ -32,8 +32,6 @@ class BatchesController extends AppController {
 	 * @return \Cake\Network\Response|null
 	 */
 	public function index() {
-		$this->paginate['contain'] = [ 'Crossings' ];
-
 		$this->paginate['sortableFields'] = [
 			'crossing_batch',
 			'date_sowed',
@@ -51,8 +49,6 @@ class BatchesController extends AppController {
 			'seed_tray',
 			'date_planted',
 			'patch',
-			'code',
-			'Crossings.code',
 		];
 
 		$batches = $this->paginate( $this->Batches->find('withoutOfficialVarieties') );
@@ -172,8 +168,6 @@ class BatchesController extends AppController {
             'seed_tray',
             'date_planted',
             'patch',
-            'code',
-            'Crossings.code',
         ];
 
 		if ( $this->request->is( 'get' )

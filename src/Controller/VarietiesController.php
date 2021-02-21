@@ -36,11 +36,6 @@ class VarietiesController extends AppController {
 	 * @return \Cake\Network\Response|null
 	 */
 	public function index() {
-		$this->paginate['contain'] = [
-			'Batches',
-			'Batches.Crossings',
-		];
-
 		$this->paginate['sortableFields'] = [
 			'convar',
 			'official_name',
@@ -55,9 +50,6 @@ class VarietiesController extends AppController {
 			'official_name',
 			'created',
 			'modified',
-			'Batches.crossing_id',
-			'Batches.code',
-			'code'
 		];
 
 		$varieties = $this->paginate( $this->Varieties );
@@ -272,9 +264,6 @@ class VarietiesController extends AppController {
             'official_name',
             'created',
             'modified',
-            'Batches.crossing_id',
-            'Batches.code',
-            'code'
         ];
 
 		if ( $this->request->is( 'get' )
