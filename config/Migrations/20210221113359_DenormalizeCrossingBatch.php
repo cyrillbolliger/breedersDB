@@ -44,5 +44,11 @@ class DenormalizeCrossingBatch extends AbstractMigration
             ->update('batches')
             ->set('crossing_batch', '')
             ->execute();
+
+        // update view query for improved performance
+        $this->execute( 'DROP VIEW IF EXISTS `batches_view`' );
+        if ($this->isMigratingUp()) {
+            $this->execute( "CREATE VIEW `batches_view` AS select `batches`.`id` AS `id`,`batches`.`crossing_batch` AS `crossing_batch`,`batches`.`date_sowed` AS `date_sowed`,`batches`.`numb_seeds_sowed` AS `numb_seeds_sowed`,`batches`.`numb_sprouts_grown` AS `numb_sprouts_grown`,`batches`.`seed_tray` AS `seed_tray`,`batches`.`date_planted` AS `date_planted`,`batches`.`numb_sprouts_planted` AS `numb_sprouts_planted`,`batches`.`patch` AS `patch`,`batches`.`note` AS `note`,`batches`.`crossing_id` AS `crossing_id` from `batches` where isnull(`batches`.`deleted`)" );
+        }
     }
 }

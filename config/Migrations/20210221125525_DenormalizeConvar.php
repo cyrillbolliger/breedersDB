@@ -42,5 +42,11 @@ class DenormalizeConvar extends AbstractMigration {
             ->update('varieties')
             ->set('convar', '')
             ->execute();
+
+        // update view query for improved performance
+        $this->execute( 'DROP VIEW IF EXISTS `varieties_view`' );
+        if ($this->isMigratingUp()) {
+            $this->execute( "CREATE VIEW `varieties_view` AS select `varieties`.`id` AS `id`,`varieties`.`convar` AS `convar`,`varieties`.`official_name` AS `official_name`,`varieties`.`acronym` AS `acronym`,`varieties`.`plant_breeder` AS `plant_breeder`,`varieties`.`registration` AS `registration`,`varieties`.`description` AS `description`,`varieties`.`batch_id` AS `batch_id` from `varieties` where isnull(`varieties`.`deleted`)" );
+        }
     }
 }
