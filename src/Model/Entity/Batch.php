@@ -22,13 +22,14 @@ use Cake\ORM\Entity;
  * @property int $crossing_id
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
+ * @property string $crossing_batch
  *
  * @property \App\Model\Entity\Crossing $crossing
  * @property \App\Model\Entity\Mark[] $marks
  * @property \App\Model\Entity\Variety[] $varieties
  */
 class Batch extends Entity {
-	
+
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
 	 *
@@ -42,13 +43,4 @@ class Batch extends Entity {
 		'*'  => true,
 		'id' => false
 	];
-	
-	/**
-	 * Get virtual property
-	 *
-	 * @return string
-	 */
-	protected function _getCrossingBatch() {
-		return $this->crossing->code . '.' . $this->code;
-	}
 }

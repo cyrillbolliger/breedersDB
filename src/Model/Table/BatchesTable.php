@@ -207,7 +207,7 @@ class BatchesTable extends Table {
 	}
 
 	public function getCrossingBatchList( int $id ) {
-		$batch = $this->get( $id, [ 'contain' => 'Crossings' ] );
+		$batch = $this->get( $id );
 
 		return [ $id => $batch->crossing_batch ];
 	}
@@ -220,7 +220,7 @@ class BatchesTable extends Table {
 	 * @return string
 	 */
 	public function getLabelZpl( int $id ) {
-		$batch       = $this->get( $id, [ 'contain' => [ 'Crossings' ] ] );
+		$batch       = $this->get( $id );
 		$description = $batch->crossing_batch;
 
 		return $this->getZPL( $description );

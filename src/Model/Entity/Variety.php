@@ -19,6 +19,7 @@ use Cake\ORM\Entity;
  * @property int $batch_id
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
+ * @property string $convar
  *
  * @property \App\Model\Entity\Batch $batch
  * @property \App\Model\Entity\ScionsBundle[] $scions_bundles
@@ -40,31 +41,7 @@ class Variety extends Entity {
 		'id' => false
 	];
 
-	protected $_virtual = [ 'convar', 'breeder_variety_code' ];
-
-	private $_convar;
-
-	protected function _getConvar() {
-	    if ( empty($convar) ) {
-	        if ( $this->batch ) {
-	            $batch = $this->batch;
-            } else {
-                $Batches = \Cake\Datasource\FactoryLocator::get('Table')->get('Batches');
-                $batch = $Batches->get($this->batch_id);
-            }
-
-	        if ( $batch->crossing ){
-	            $crossing = $batch->crossing;
-            } else {
-                $Crossings = \Cake\Datasource\FactoryLocator::get('Table')->get('Crossings');
-                $crossing = $Crossings->get($batch->crossing_id);
-            }
-
-            $this->_convar = $crossing->code . '.' . $batch->code . '.' . $this->code;
-        }
-
-		return $this->_convar;
-	}
+	protected $_virtual = [ 'breeder_variety_code' ];
 
 	protected function _getBreederVarietyCode() {
 		return COMPANY_ABBREV . sprintf( '%0' . BREEDER_VARIETY_CODE_NUM_LENGTH . 'd', $this->id );

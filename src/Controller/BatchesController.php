@@ -46,13 +46,7 @@ class BatchesController extends AppController {
 
 		$this->paginate['fields'] = [
 			'id',
-			'crossing_batch' => $this->Batches
-				->find()
-				->func()
-				->concat( [
-					'Crossings.code' => 'literal',
-					'Batches.code'   => 'literal',
-				] ),
+			'crossing_batch',
 			'date_sowed',
 			'seed_tray',
 			'date_planted',
@@ -173,13 +167,7 @@ class BatchesController extends AppController {
 
         $this->paginate['fields'] = [
             'id',
-            'crossing_batch' => $this->Batches
-                ->find()
-                ->func()
-                ->concat( [
-                    'Crossings.code' => 'literal',
-                    'Batches.code'   => 'literal',
-                ] ),
+            'crossing_batch',
             'date_sowed',
             'seed_tray',
             'date_planted',
