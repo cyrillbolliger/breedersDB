@@ -169,7 +169,6 @@ class BatchesTable extends Table {
 		}
 
 		return $this->find()
-		            ->contain( 'Crossings' )
 		            ->where( [ 'Batches.id IN' => $ids ] );
 	}
 
@@ -182,26 +181,18 @@ class BatchesTable extends Table {
 	 * @return \Cake\ORM\Query
 	 */
 	public function searchCrossingBatchs( string $term ) {
-		$query = $this->find( 'list' )->innerJoinWith( 'Crossings' );
+        $query = $this->find( 'list' )
+            ->select(['id', 'code' => 'crossing_batch']);
 
-		$concat = $query->func()->concat( [
-			'Crossings.code' => 'identifier',
-			'.',
-			'Batches.code'   => 'identifier',
-		] );
+        $search = explode( '.', trim( $term ) );
 
-		$query->select( [
-			'id',
-			'code' => $concat
-		] );
+        if ( ! empty( $search[0] ) ) {
+            $query->where( [ 'crossing_batch LIKE' => '%' . $search[0] . '%.%' ] );
+        }
 
-		$search = explode( '.', trim( $term ) );
-		if ( 1 < count( $search ) ) {
-			$query->where( [ 'Crossings.code LIKE' => '%' . $search[0] . '%' ] )
-			      ->andWhere( [ 'Batches.code LIKE' => '%' . $search[1] . '%' ] );
-		} else {
-			$query->where( [ 'Crossings.code LIKE' => '%' . $search[0] . '%' ] );
-		}
+        if ( 1 < count( $search ) && ! empty( $search[1] ) ) {
+            $query->andWhere( [ 'crossing_batch LIKE' => '%.%' . $search[1] . '%' ] );
+        }
 
 		return $query;
 	}
