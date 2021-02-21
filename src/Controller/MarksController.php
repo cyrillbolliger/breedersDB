@@ -52,9 +52,7 @@ class MarksController extends AppController {
 		$this->paginate['contain'] = [
 			'Trees',
 			'Varieties',
-			'Varieties.Batches',
 			'Batches',
-			'Batches.Crossings' => [ 'joinType' => 'LEFT' ],
 			'MarkValues',
 			'MarkValues.MarkFormProperties'
 		];
@@ -86,9 +84,7 @@ class MarksController extends AppController {
 				'MarkForms',
 				'Trees',
 				'Varieties',
-				'Varieties.Batches',
 				'Batches',
-				'Batches.Crossings' => [ 'joinType' => 'LEFT' ],
 				'MarkValues',
 				'MarkValues.MarkFormProperties'
 			]
