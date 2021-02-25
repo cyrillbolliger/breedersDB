@@ -132,7 +132,7 @@ class VarietiesTable extends Table {
 		if ( $is_breeder_variety_code ) {
 			$query = $this->filterBreederVarietyCode( $term );
 		} else if ( $is_id ) {
-		    $query = $this->find()->where( ['id' => (int) $term ] );
+		    $query = $this->find()->where( ['Varieties.id' => (int) $term ] );
         } else {
 			$query = $this->filterConvars( $term );
 		}
