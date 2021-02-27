@@ -303,7 +303,7 @@ return [
             'port' => env('DB_PORT', 3306 ),
             'username' => env('DB_USERNAME' ),
             'password' => env( 'DB_PASSWORD' ),
-            'database' => env( 'DB_DATABASE' ),
+            'database' => env( 'DB_DATABASE' ) . '_test',
             //'encoding' => 'utf8mb4',
             'timezone' => 'UTC',
             'cacheMetadata' => true,
