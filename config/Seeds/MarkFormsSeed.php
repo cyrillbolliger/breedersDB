@@ -1,4 +1,6 @@
 <?php
+
+use App\Generator\MarkFormsGenerator;
 use Migrations\AbstractSeed;
 
 /**
@@ -18,27 +20,8 @@ class MarkFormsSeed extends AbstractSeed
      */
     public function run()
     {
-        $date = date('Y-m-d H:i:s');
-        $data = [
-            [
-                'name' => 'Bonitur Mai',
-                'description' => 'Die folgenden Werte werden jedes Jahr im Mai erfasst.',
-                'created' => $date,
-                'modified' => $date,
-            ],
-            [
-                'name' => 'Bonitur August',
-                'description' => 'Die folgenden Werte werden jedes Jahr im August erfasst.',
-                'created' => $date,
-                'modified' => $date,
-            ],
-            [
-                'name' => 'Fruchtwerte',
-                'description' => 'Erfassung nach der Ernte',
-                'created' => $date,
-                'modified' => $date,
-            ],
-        ];
+        $generator = new MarkFormsGenerator();
+        $data = $generator->generate();
 
         $table = $this->table('mark_forms');
         $table->insert($data)->save();

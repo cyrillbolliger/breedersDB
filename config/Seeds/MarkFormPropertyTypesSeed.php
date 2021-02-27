@@ -1,4 +1,6 @@
 <?php
+
+use App\Generator\MarkFormPropertyTypesGenerator;
 use Migrations\AbstractSeed;
 
 /**
@@ -18,20 +20,8 @@ class MarkFormPropertyTypesSeed extends AbstractSeed
      */
     public function run()
     {
-        $data = [
-            [
-                'name' => 'Bonitur',
-            ],
-            [
-                'name' => 'Behandlung',
-            ],
-            [
-                'name' => 'Hinweis',
-            ],
-            [
-                'name' => 'Muster',
-            ],
-        ];
+        $generator = new MarkFormPropertyTypesGenerator();
+        $data = $generator->generate();
 
         $table = $this->table('mark_form_property_types');
         $table->insert($data)->save();

@@ -1,4 +1,6 @@
 <?php
+
+use App\Generator\VarietiesGenerator;
 use Migrations\AbstractSeed;
 
 /**
@@ -18,40 +20,8 @@ class VarietiesSeed extends AbstractSeed
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
-        $data = [];
-        // official varieties
-        for ($i = 0; $i < 10; $i++) {
-            $word = $faker->unique()->word();
-            $data[] = [
-                'code' => strtolower($word),
-                'official_name' => ucfirst($word),
-                'acronym' => ucfirst(substr($word, 0, 3)),
-                'plant_breeder' => $faker->name,
-                'registration' => NULL,
-                'description' => $faker->sentence(),
-                'batch_id' => '1',
-                'deleted' => NULL,
-                'created' => date('Y-m-d H:i:s'),
-                'modified' => date('Y-m-d H:i:s')
-            ];
-        }
-
-        // breeder varieties
-        for ($i = 10; $i < 1000; $i++) {
-            $data[] = [
-                'code' => sprintf('%03d', $faker->numberBetween(1, 99)),
-                'official_name' => '',
-                'acronym' => '',
-                'plant_breeder' => '',
-                'registration' => NULL,
-                'description' => $faker->sentence(),
-                'batch_id' => $faker->numberBetween(2,99),
-                'deleted' => NULL,
-                'created' => date('Y-m-d H:i:s'),
-                'modified' => date('Y-m-d H:i:s')
-            ];
-        }
+        $generator = new VarietiesGenerator();
+        $data = $generator->generate(1000);
 
         $table = $this->table('varieties');
         $table->insert($data)->save();

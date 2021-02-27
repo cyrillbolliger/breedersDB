@@ -1,4 +1,6 @@
 <?php
+
+use App\Generator\CrossingsGenerator;
 use Migrations\AbstractSeed;
 
 /**
@@ -18,19 +20,8 @@ class CrossingsSeed extends AbstractSeed
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
-        $data = [];
-        for ($i = 0; $i < 100; $i++) {
-            $data[] = [
-                'code' => $faker->unique()->regexify('[A-Z]{1,2}[A-Za-z0-9]{3}[A-Z]{1}[A-Za-z0-9]{1,2}'),
-//                'mother_variety_id' => $faker->numberBetween(2, 99),
-//                'father_variety_id' => $faker->numberBetween(2, 99),
-                'target' => $faker->sentence(),
-                'deleted' => NULL,
-                'created' => date('Y-m-d H:i:s'),
-                'modified' => date('Y-m-d H:i:s')
-            ];
-        }
+        $generator = new CrossingsGenerator();
+        $data = $generator->generate(100);
 
         $table = $this->table('crossings');
         $table->insert($data)->save();
