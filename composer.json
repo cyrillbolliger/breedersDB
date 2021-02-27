@@ -18,7 +18,7 @@
         "salines/cakephp4-soft-delete": "~1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0",
+        "phpunit/phpunit": "^8.5",
         "fakerphp/faker": "^1.12",
         "cakephp/bake": "^2.0",
         "cakephp/debug_kit": "~4.0"
