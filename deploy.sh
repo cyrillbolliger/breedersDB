@@ -109,6 +109,7 @@ sync() {
         --include='/webroot/dist' \
         --filter=':- .gitignore' \
         --exclude='.git' \
+        --exclude='/tests' \
         --exclude='/.htaccess' \
         --exclude='/deploy.*' \
         --exclude='/install.sh' \

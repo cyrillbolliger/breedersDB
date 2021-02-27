@@ -1,24 +1,27 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * MarkFormPropertyTypesFixture
- *
  */
 class MarkFormPropertyTypesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
      * @var array
      */
-    // @codingStandardsIgnoreStart
+    // phpcs:disable
     public $fields = [
-        'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'name' => ['type' => 'string', 'length' => 45, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
+        'name' => ['type' => 'string', 'length' => 45, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '', 'precision' => null],
+        '_indexes' => [
+            'name_idx' => ['type' => 'index', 'columns' => ['name'], 'length' => []],
+        ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'id_UNIQUE' => ['type' => 'unique', 'columns' => ['id'], 'length' => []],
@@ -28,17 +31,20 @@ class MarkFormPropertyTypesFixture extends TestFixture
             'collation' => 'utf8mb4_general_ci'
         ],
     ];
-    // @codingStandardsIgnoreEnd
-
+    // phpcs:enable
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'id' => 1,
-            'name' => 'Lorem ipsum dolor sit amet'
-        ],
-    ];
+    public function init(): void
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'name' => 'Lorem ipsum dolor sit amet',
+            ],
+        ];
+        parent::init();
+    }
 }

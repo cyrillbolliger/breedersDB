@@ -6,7 +6,6 @@
 /node_modules
 /npm-debug.log
 /backup
-/tests
 /webroot/dev
 /webroot/dist
 .docker/mysql
@@ -14,6 +13,7 @@ vendor
 deploy.conf
 import-live-data.sh
 report_errors.sh
+.phpunit.result.cache
 
 # dont check in .mo files. cake throws an error if you do provide them!
 *.mo
