@@ -6,6 +6,7 @@ namespace App\Generator;
  * Batches generator.
  */
 class BatchesGenerator {
+    private const UNIQUE_MAX_TRIES = 10000;
 
     public function generate( int $count ) {
         $crossingsTable = \Cake\ORM\TableRegistry::getTableLocator()->get( 'Crossings' );
@@ -13,6 +14,7 @@ class BatchesGenerator {
 
         $faker = \Faker\Factory::create();
         $data  = [];
+        $unique_tries = 0;
         for ( $i = 0; $i < $count; $i ++ ) {
             $crossing = $faker->randomElement( $crossings );
 
@@ -21,6 +23,20 @@ class BatchesGenerator {
                 'B',
                 'C'
             ] ) );
+
+            // ensure this crossing_batch doesn't already exist
+            $crossing_batch = $crossing->code . '.' . $code;
+            if ( in_array( $crossing_batch, array_column( $data, 'crossing_batch' ), true ) ){
+                $i--;
+                $unique_tries++;
+
+                if ($unique_tries > self::UNIQUE_MAX_TRIES){
+                    throw new \Exception('Cannot create a crossing batch that does not yet exist.');
+                }
+                continue;
+            }
+
+            $unique_tries = 0;
 
             $data[] = [
                 'code'                 => $code,

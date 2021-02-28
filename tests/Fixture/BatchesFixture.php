@@ -11,6 +11,10 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class BatchesFixture extends TestFixture
 {
+    use DependsOnFixtureTrait;
+
+    protected array $dependsOnFixture = ['Crossings'];
+
     /**
      * Init method
      *

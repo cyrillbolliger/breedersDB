@@ -11,6 +11,11 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class ScionsBundlesFixture extends TestFixture
 {
+    use DependsOnFixtureTrait;
+
+    protected array $dependsOnFixture = ['Varieties'];
+
+
     /**
      * Init method
      *

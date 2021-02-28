@@ -6,6 +6,7 @@ namespace App\Generator;
  * Varieties generator.
  */
 class VarietiesGenerator {
+    private const UNIQUE_MAX_TRIES = 10000;
 
     public function generate( int $count ) {
         $faker = \Faker\Factory::create();
@@ -31,11 +32,27 @@ class VarietiesGenerator {
         // breeder varieties
         $batchesTable = \Cake\ORM\TableRegistry::getTableLocator()->get( 'Batches' );
         $batches      = $batchesTable->find()->toArray();
+        $unique_tries = 0;
 
         for ( $i = 0; $i < ceil( $count * 0.9 ); $i ++ ) {
             $batch = $faker->randomElement( $batches );
-            $code = sprintf( '%03d', $faker->numberBetween( 1, 99 ) );
-            $data[]  = [
+            $code  = sprintf( '%03d', $faker->numberBetween( 1, 99 ) );
+
+            // ensure this convar doesn't already exist
+            $convar = $batch->crossing_batch . '.' . $code;
+            if ( in_array( $convar, array_column( $data, 'convar' ), true ) ) {
+                $i --;
+                $unique_tries ++;
+
+                if ( $unique_tries > self::UNIQUE_MAX_TRIES ) {
+                    throw new \Exception( 'Cannot create a crossing batch that does not yet exist.' );
+                }
+                continue;
+            }
+
+            $unique_tries = 0;
+
+            $data[] = [
                 'code'          => $code,
                 'official_name' => '',
                 'acronym'       => '',
@@ -46,7 +63,7 @@ class VarietiesGenerator {
                 'deleted'       => null,
                 'created'       => date( 'Y-m-d H:i:s' ),
                 'modified'      => date( 'Y-m-d H:i:s' ),
-                'convar'        => $batch->crossing_batch.'.'.$code,
+                'convar'        => $batch->crossing_batch . '.' . $code,
             ];
         }
 

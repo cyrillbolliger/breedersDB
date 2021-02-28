@@ -21,7 +21,8 @@
         "phpunit/phpunit": "^8.5",
         "fakerphp/faker": "^1.12",
         "cakephp/bake": "^2.0",
-        "cakephp/debug_kit": "~4.0"
+        "cakephp/debug_kit": "~4.0",
+        "psy/psysh": "^0.10.6"
     },
     "suggest": {
         "markstory/asset_compress": "An asset compression plugin which provides file concatenation and a flexible filter system for preprocessing and minification.",

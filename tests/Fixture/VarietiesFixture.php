@@ -11,6 +11,10 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class VarietiesFixture extends TestFixture
 {
+    use DependsOnFixtureTrait;
+
+    protected array $dependsOnFixture = ['Batches'];
+
     /**
      * Init method
      *

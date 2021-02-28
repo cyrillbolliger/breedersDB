@@ -11,6 +11,10 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class TreesFixture extends TestFixture
 {
+    use DependsOnFixtureTrait;
+
+    protected array $dependsOnFixture = ['Varieties', 'Rootstocks', 'Graftings', 'Rows', 'ExperimentSites'];
+
     /**
      * Init method
      *
