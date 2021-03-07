@@ -27,7 +27,7 @@ class VarietiesController extends AppController {
 	public function beforeFilter( \Cake\Event\EventInterface $event ) {
 		parent::beforeFilter( $event );
 
-		$this->Security->setConfig( 'unlockedFields', [ 'code', 'batch_id' ] );
+		$this->FormProtection->setConfig( 'unlockedFields', [ 'code', 'batch_id' ] );
 	}
 
 	/**
