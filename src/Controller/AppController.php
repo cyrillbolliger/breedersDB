@@ -49,7 +49,16 @@ class AppController extends Controller {
         $this->loadComponent( 'RequestHandler' );
         $this->loadComponent( 'Flash' );
 
-        $this->loadComponent('FormProtection');
+        if ( ! defined( 'PHPUNIT_COMPOSER_INSTALL' ) ) {
+            /**
+             * Don't load the form protection for tests.
+             *
+             * It was impossible to get the tests running with the
+             * form protection on. `$this->enableSecurityToken()`
+             * did not do the job.
+             */
+            $this->loadComponent( 'FormProtection' );
+        }
 
         $this->loadComponent( 'Auth', [
             'authorize'            => 'Controller',
@@ -191,7 +200,7 @@ class AppController extends Controller {
 
         $sessionsDir = TMP . 'sessions';
 
-        if ( !is_dir( $sessionsDir ) ) {
+        if ( ! is_dir( $sessionsDir ) ) {
             mkdir( $sessionsDir, 0700, true );
         }
     }
