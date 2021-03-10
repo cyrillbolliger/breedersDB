@@ -200,11 +200,12 @@ class BatchesController extends AppController {
 	/**
 	 * Show the print dialog
 	 *
-	 * @param int $batch_id
+	 * @param string|int $batch_id
 	 * @param string $caller action to redirect after printing
 	 * @param mixed $params for action
 	 */
-	public function print( int $batch_id, string $caller, $params = null ) {
+	public function print( $batch_id, string $caller, $params = null ) {
+	    $batch_id = (int) $batch_id;
 		$zpl = $this->Batches->getLabelZpl( $batch_id );
 
 		$this->set( [
