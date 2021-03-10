@@ -3,10 +3,12 @@ declare( strict_types=1 );
 
 namespace App\Test\TestCase\Controller;
 
+use App\Model\Entity\Batch;
+use App\Model\Table\BatchesTable;
 use App\Test\Fixture\AuthenticateTrait;
 use App\Test\Fixture\DependsOnFixtureTrait;
 use App\Test\Fixture\ExperimentSiteTrait;
-use Cake\Datasource\EntityInterface;
+use Cake\ORM\Query;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -22,10 +24,12 @@ class BatchesControllerTest extends TestCase {
     use ExperimentSiteTrait;
 
     protected array $dependsOnFixture = [ 'Batches', 'Varieties' ];
+    protected BatchesTable $Batches;
 
     protected function setUp(): void {
         $this->authenticate();
         $this->setSite();
+        /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
         $this->Batches = $this->getTable( 'Batches' );
         parent::setUp();
     }
@@ -50,8 +54,12 @@ class BatchesControllerTest extends TestCase {
             ->orderDesc( 'Batches.modified' )
             ->limit( 100 );
 
-        $this->assertResponseContains( $query->first()->crossing_batch );
-        $this->assertResponseContains( $query->last()->crossing_batch );
+        /** @var Batch $first */
+        $first = $query->firstOrFail();
+        $last = $query->last();
+
+        $this->assertResponseContains( $first->crossing_batch );
+        $this->assertResponseContains( $last->crossing_batch );
     }
 
     /**
@@ -71,7 +79,7 @@ class BatchesControllerTest extends TestCase {
 
         // todo: test varieties
         // todo: test marks
-        $this->markTestIncomplete( 'Not implemented yet.' );
+        self::markTestIncomplete( 'Not implemented yet.' );
     }
 
     /**
@@ -207,7 +215,7 @@ class BatchesControllerTest extends TestCase {
         $this->assertResponseContains( $batch->crossing_batch );
     }
 
-    private function addBatch(): EntityInterface {
+    private function addBatch(): Batch {
         $data  = $this->getNonExistingBatchData();
         $batch = $this->Batches->newEntity( $data );
 
@@ -216,7 +224,7 @@ class BatchesControllerTest extends TestCase {
         return $this->Batches->get( $saved->id );
     }
 
-    private function getNonExistingBatchData() {
+    private function getNonExistingBatchData(): array {
         $crossing = $this->getTable( 'Crossings' )
                          ->find()
                          ->firstOrFail();
@@ -242,30 +250,31 @@ class BatchesControllerTest extends TestCase {
         return $data;
     }
 
-    private function assertBatchExists( array $expected ) {
+    private function assertBatchExists( array $expected ): void {
         $query = $this->getBatchQueryFromArray( $expected );
 
         self::assertEquals( 1, $query->count() );
 
-        $dbdata = $query->first();
+        /** @var Batch $dbData */
+        $dbData = $query->first();
         self::assertEquals( 1, $query->count() );
-        self::assertEquals( $dbdata->date_sowed, $expected['date_sowed'] );
-        self::assertEquals( $dbdata->numb_seeds_sowed, $expected['numb_seeds_sowed'] );
-        self::assertEquals( $dbdata->numb_sprouts_grown, $expected['numb_sprouts_grown'] );
-        self::assertEquals( $dbdata->seed_tray, $expected['seed_tray'] );
-        self::assertEquals( $dbdata->date_planted, $expected['date_planted'] );
-        self::assertEquals( $dbdata->numb_sprouts_planted, $expected['numb_sprouts_planted'] );
-        self::assertEquals( $dbdata->patch, $expected['patch'] );
-        self::assertEquals( $dbdata->note, $expected['note'] );
+        self::assertEquals( $dbData->date_sowed, $expected['date_sowed'] );
+        self::assertEquals( $dbData->numb_seeds_sowed, $expected['numb_seeds_sowed'] );
+        self::assertEquals( $dbData->numb_sprouts_grown, $expected['numb_sprouts_grown'] );
+        self::assertEquals( $dbData->seed_tray, $expected['seed_tray'] );
+        self::assertEquals( $dbData->date_planted, $expected['date_planted'] );
+        self::assertEquals( $dbData->numb_sprouts_planted, $expected['numb_sprouts_planted'] );
+        self::assertEquals( $dbData->patch, $expected['patch'] );
+        self::assertEquals( $dbData->note, $expected['note'] );
     }
 
-    private function getBatchQueryFromArray( array $data ) {
+    private function getBatchQueryFromArray( array $data ): Query {
         return $this->Batches->find()
                              ->where( [ 'crossing_id' => $data['crossing_id'] ] )
                              ->andWhere( [ 'code' => $data['code'] ] );
     }
 
-    private function setAjaxHeader() {
+    private function setAjaxHeader(): void {
         $this->configRequest([
             'headers' => ['X-Requested-With' => 'XMLHttpRequest']
         ]);
