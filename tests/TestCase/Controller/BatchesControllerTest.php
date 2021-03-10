@@ -44,7 +44,7 @@ class BatchesControllerTest extends TestCase {
         $this->assertResponseSuccess();
         $this->assertResponseCode( 200 );
 
-        $query   = $this->Batches
+        $query = $this->Batches
             ->find()
             ->where( [ 'Batches.id !=' => 1 ] )
             ->orderDesc( 'Batches.modified' )
@@ -80,7 +80,7 @@ class BatchesControllerTest extends TestCase {
      * @return void
      */
     public function testAdd(): void {
-        $data    = $this->getNonExistingBatchData();
+        $data = $this->getNonExistingBatchData();
 
         $this->enableCsrfToken();
 
@@ -98,7 +98,7 @@ class BatchesControllerTest extends TestCase {
      * @return void
      */
     public function testEdit(): void {
-        $batch   = $this->addBatch();
+        $batch = $this->addBatch();
 
         $changed = [
             'crossing_id'          => $batch->crossing_id,
@@ -145,8 +145,53 @@ class BatchesControllerTest extends TestCase {
      *
      * @return void
      */
-    public function testFilter(): void {
-        $this->markTestIncomplete( 'Not implemented yet.' );
+    public function testFilter_crossingBatch(): void {
+        $batch = $this->addBatch();
+
+        $this->setAjaxHeader();
+        $this->get( '/batches/filter?fields%5B%5D=crossing_batch&term=' . $batch->crossing_batch );
+        $this->assertResponseSuccess();
+        $this->assertResponseContains( $batch->crossing_batch );
+    }
+
+    /**
+     * Test filter method
+     *
+     * @return void
+     */
+    public function testFilter_crossing(): void {
+        $batch = $this->addBatch();
+
+        $this->setAjaxHeader();
+        $this->get( '/batches/filter?fields%5B%5D=crossing_batch&term=' . explode( '.', $batch->crossing_batch )[0] );
+        $this->assertResponseSuccess();
+        $this->assertResponseContains( $batch->crossing_batch );
+    }
+
+    /**
+     * Test filter method
+     *
+     * @return void
+     */
+    public function testFilter_batch(): void {
+        $batch = $this->addBatch();
+
+        $this->setAjaxHeader();
+        $this->get( '/batches/filter?fields%5B%5D=crossing_batch&term=.' . explode( '.', $batch->crossing_batch )[1] );
+        $this->assertResponseSuccess();
+        $this->assertResponseContains( $batch->crossing_batch );
+    }
+
+    /**
+     * Test filter method
+     *
+     * @return void
+     */
+    public function testFilter_nothing(): void {
+        $this->setAjaxHeader();
+        $this->get( '/batches/filter?fields%5B%5D=crossing_batch&term=thisStringDoesNeverMatch' );
+        $this->assertResponseSuccess();
+        $this->assertResponseContains( 'nothing_found' );
     }
 
     /**
@@ -155,12 +200,16 @@ class BatchesControllerTest extends TestCase {
      * @return void
      */
     public function testPrint(): void {
-        $this->markTestIncomplete( 'Not implemented yet.' );
+        $batch = $this->addBatch();
+        $this->get("/batches/print/{$batch->id}/view/{$batch->id}");
+        $this->assertResponseSuccess();
+        $this->assertResponseContains( 'print_button_regular' );
+        $this->assertResponseContains( $batch->crossing_batch );
     }
 
     private function addBatch(): EntityInterface {
-        $data    = $this->getNonExistingBatchData();
-        $batch   = $this->Batches->newEntity( $data );
+        $data  = $this->getNonExistingBatchData();
+        $batch = $this->Batches->newEntity( $data );
 
         $saved = $this->Batches->save( $batch );
 
@@ -185,9 +234,9 @@ class BatchesControllerTest extends TestCase {
             'note'                 => 'This is very important',
         ];
 
-        $query   = $this->Batches->find()
-                           ->where( [ 'crossing_id' => $data['crossing_id'] ] )
-                           ->andWhere( [ 'code' => $data['code'] ] );
+        $query = $this->Batches->find()
+                               ->where( [ 'crossing_id' => $data['crossing_id'] ] )
+                               ->andWhere( [ 'code' => $data['code'] ] );
         $this->Batches->deleteMany( $query );
 
         return $data;
@@ -212,7 +261,13 @@ class BatchesControllerTest extends TestCase {
 
     private function getBatchQueryFromArray( array $data ) {
         return $this->Batches->find()
-                       ->where( [ 'crossing_id' => $data['crossing_id'] ] )
-                       ->andWhere( [ 'code' => $data['code'] ] );
+                             ->where( [ 'crossing_id' => $data['crossing_id'] ] )
+                             ->andWhere( [ 'code' => $data['code'] ] );
+    }
+
+    private function setAjaxHeader() {
+        $this->configRequest([
+            'headers' => ['X-Requested-With' => 'XMLHttpRequest']
+        ]);
     }
 }
