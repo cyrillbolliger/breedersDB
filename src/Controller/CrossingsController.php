@@ -47,11 +47,14 @@ class CrossingsController extends AppController {
 			'contain' => [ 'MotherTrees', 'Batches', 'MotherTrees.Trees' ]
 		] );
 
+		$mother_variety = null;
 		if ( $crossing->mother_variety_id ) {
 			$mother_variety = $this->Crossings->Varieties->get( $crossing->mother_variety_id, [
 				'contain' => [ 'Batches' ]
 			] );
 		}
+
+		$father_variety = null;
 		if ( $crossing->father_variety_id ) {
 			$father_variety = $this->Crossings->Varieties->get( $crossing->father_variety_id, [
 				'contain' => [ 'Batches' ]
