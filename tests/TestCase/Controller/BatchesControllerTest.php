@@ -58,7 +58,7 @@ class BatchesControllerTest extends TestCase {
 
         /** @var Batch $first */
         $first = $query->firstOrFail();
-        $last = $query->last();
+        $last  = $query->last();
 
         $this->assertResponseContains( $first->crossing_batch );
         $this->assertResponseContains( $last->crossing_batch );
@@ -99,7 +99,7 @@ class BatchesControllerTest extends TestCase {
         $this->assertResponseSuccess();
         $this->assertBatchExists( $data );
 
-        $this->Batches->deleteMany( $this->getBatchQueryFromArray( $data ) );
+        $this->Batches->deleteManyOrFail( $this->getBatchQueryFromArray( $data ) );
     }
 
     /**
@@ -130,7 +130,7 @@ class BatchesControllerTest extends TestCase {
         $this->assertResponseSuccess();
         $this->assertBatchExists( $changed );
 
-        $this->Batches->deleteMany( $this->getBatchQueryFromArray( $changed ) );
+        $this->Batches->deleteManyOrFail( $this->getBatchQueryFromArray( $changed ) );
     }
 
     /**
@@ -211,7 +211,7 @@ class BatchesControllerTest extends TestCase {
      */
     public function testPrint(): void {
         $batch = $this->addBatch();
-        $this->get("/batches/print/{$batch->id}/view/{$batch->id}");
+        $this->get( "/batches/print/{$batch->id}/view/{$batch->id}" );
         $this->assertResponseSuccess();
         $this->assertResponseContains( 'print_button_regular' );
         $this->assertResponseContains( $batch->crossing_batch );
@@ -221,7 +221,7 @@ class BatchesControllerTest extends TestCase {
         $data  = $this->getNonExistingBatchData();
         $batch = $this->Batches->newEntity( $data );
 
-        $saved = $this->Batches->save( $batch );
+        $saved = $this->Batches->saveOrFail( $batch );
 
         return $this->Batches->get( $saved->id );
     }
@@ -244,10 +244,8 @@ class BatchesControllerTest extends TestCase {
             'note'                 => 'This is very important',
         ];
 
-        $query = $this->Batches->find()
-                               ->where( [ 'crossing_id' => $data['crossing_id'] ] )
-                               ->andWhere( [ 'code' => $data['code'] ] );
-        $this->Batches->deleteMany( $query );
+        $query = $this->getBatchQueryFromArray( $data );
+        $this->Batches->deleteManyOrFail( $query );
 
         return $data;
     }
@@ -259,7 +257,6 @@ class BatchesControllerTest extends TestCase {
 
         /** @var Batch $dbData */
         $dbData = $query->first();
-        self::assertEquals( 1, $query->count() );
         self::assertEquals( $dbData->date_sowed, $expected['date_sowed'] );
         self::assertEquals( $dbData->numb_seeds_sowed, $expected['numb_seeds_sowed'] );
         self::assertEquals( $dbData->numb_sprouts_grown, $expected['numb_sprouts_grown'] );
