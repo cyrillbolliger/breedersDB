@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\Fixture;
+namespace App\Test\Util;
 
 
 use Cake\Datasource\ConnectionManager;

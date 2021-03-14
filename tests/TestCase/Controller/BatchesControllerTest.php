@@ -5,9 +5,10 @@ namespace App\Test\TestCase\Controller;
 
 use App\Model\Entity\Batch;
 use App\Model\Table\BatchesTable;
-use App\Test\Fixture\AuthenticateTrait;
-use App\Test\Fixture\DependsOnFixtureTrait;
-use App\Test\Fixture\ExperimentSiteTrait;
+use App\Test\Util\AjaxTrait;
+use App\Test\Util\AuthenticateTrait;
+use App\Test\Util\DependsOnFixtureTrait;
+use App\Test\Util\ExperimentSiteTrait;
 use Cake\ORM\Query;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -22,6 +23,7 @@ class BatchesControllerTest extends TestCase {
     use DependsOnFixtureTrait;
     use AuthenticateTrait;
     use ExperimentSiteTrait;
+    use AjaxTrait;
 
     protected array $dependsOnFixture = [ 'Batches', 'Varieties' ];
     protected BatchesTable $Batches;
@@ -272,11 +274,5 @@ class BatchesControllerTest extends TestCase {
         return $this->Batches->find()
                              ->where( [ 'crossing_id' => $data['crossing_id'] ] )
                              ->andWhere( [ 'code' => $data['code'] ] );
-    }
-
-    private function setAjaxHeader(): void {
-        $this->configRequest([
-            'headers' => ['X-Requested-With' => 'XMLHttpRequest']
-        ]);
     }
 }
