@@ -36,7 +36,7 @@ class VarietiesControllerTest extends TestCase {
         $this->Varieties = $this->getTable( 'Varieties' );
         parent::setUp();
 
-        $this->setUnlockedFields(['code', 'batch_id']);
+        $this->setUnlockedFields( [ 'code', 'batch_id' ] );
     }
 
     /**
@@ -215,9 +215,9 @@ class VarietiesControllerTest extends TestCase {
         $variety = $this->addVariety();
 
         $greatestCodeVariety = $this->Varieties->find()
-                                  ->where( [ 'batch_id' => $variety->batch_id ] )
-                                  ->order( [ 'code' => 'DESC' ] )
-                                  ->first();
+                                               ->where( [ 'batch_id' => $variety->batch_id ] )
+                                               ->order( [ 'code' => 'DESC' ] )
+                                               ->first();
 
         $expectedCode = (string) sprintf( '%03d', (int) $greatestCodeVariety->code + 1 );
 
