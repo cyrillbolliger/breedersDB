@@ -93,6 +93,7 @@ class BatchesControllerTest extends TestCase {
         $data = $this->getNonExistingBatchData();
 
         $this->enableCsrfToken();
+        $this->enableSecurityToken();
 
         $this->post( 'batches/add', $data );
 
@@ -124,6 +125,7 @@ class BatchesControllerTest extends TestCase {
         ];
 
         $this->enableCsrfToken();
+        $this->enableSecurityToken();
 
         $this->post( "batches/edit/{$batch->id}", $changed );
 
@@ -142,6 +144,7 @@ class BatchesControllerTest extends TestCase {
         $batch = $this->addBatch();
 
         $this->enableCsrfToken();
+        $this->enableSecurityToken();
 
         $this->delete( "batches/delete/{$batch->id}" );
         $this->assertResponseSuccess();

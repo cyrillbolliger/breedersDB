@@ -92,6 +92,7 @@ class MotherTreesControllerTest extends TestCase {
         $data = $this->getNonExistingMotherTreeData();
 
         $this->enableCsrfToken();
+        $this->enableSecurityToken();
 
         $this->post( 'mother-trees/add', $data );
 
@@ -125,6 +126,7 @@ class MotherTreesControllerTest extends TestCase {
         ];
 
         $this->enableCsrfToken();
+        $this->enableSecurityToken();
 
         $this->post( "mother-trees/edit/{$motherTree->id}", $data );
 
@@ -143,6 +145,7 @@ class MotherTreesControllerTest extends TestCase {
         $motherTree = $this->addMotherTree();
 
         $this->enableCsrfToken();
+        $this->enableSecurityToken();
 
         $this->delete( "mother-trees/delete/{$motherTree->id}" );
         $this->assertResponseSuccess();

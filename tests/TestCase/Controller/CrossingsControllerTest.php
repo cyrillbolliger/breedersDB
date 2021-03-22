@@ -120,6 +120,7 @@ class CrossingsControllerTest extends TestCase {
         $data = $this->getNonExistingCrossingData();
 
         $this->enableCsrfToken();
+        $this->enableSecurityToken();
 
         $this->post( 'crossings/add', $data );
 
@@ -145,6 +146,7 @@ class CrossingsControllerTest extends TestCase {
         ];
 
         $this->enableCsrfToken();
+        $this->enableSecurityToken();
 
         $this->post( "crossings/edit/{$crossing->id}", $changed );
 
@@ -163,6 +165,7 @@ class CrossingsControllerTest extends TestCase {
         $crossing = $this->addCrossing();
 
         $this->enableCsrfToken();
+        $this->enableSecurityToken();
 
         $this->delete( "crossings/delete/{$crossing->id}" );
         $this->assertResponseSuccess();

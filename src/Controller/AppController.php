@@ -48,17 +48,7 @@ class AppController extends Controller {
 
         $this->loadComponent( 'RequestHandler' );
         $this->loadComponent( 'Flash' );
-
-        if ( ! defined( 'PHPUNIT_COMPOSER_INSTALL' ) ) {
-            /**
-             * Don't load the form protection for tests.
-             *
-             * It was impossible to get the tests running with the
-             * form protection on. `$this->enableSecurityToken()`
-             * did not do the job.
-             */
-            $this->loadComponent( 'FormProtection' );
-        }
+        $this->loadComponent( 'FormProtection' );
 
         $this->loadComponent( 'Auth', [
             'authorize'            => 'Controller',
