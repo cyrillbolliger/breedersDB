@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $code
  * @property string $official_name
+ * @property string $acronym
  * @property string $variety
  * @property string $plant_breeder
  * @property string $registration
