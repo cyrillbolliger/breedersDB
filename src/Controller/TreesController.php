@@ -232,6 +232,32 @@ class TreesController extends AppController {
 	}
 
 	/**
+	 * Update method
+     *
+     * Used for plant(), eliminate(), eliminateByScanner()
+	 *
+	 * @param string|null $id Tree id.
+	 *
+	 * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
+	 * @throws \Cake\Network\Exception\NotFoundException When record not found.
+	 */
+	public function update( $id = null ) {
+		$tree = $this->Trees->get( $id );
+
+		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
+			$data = $this->Trees->prefixPublicidOnElimination( $id, $this->request->getData());
+			$tree                = $this->Trees->patchEntity( $tree, $data);
+			if ( $this->Trees->save( $tree ) ) {
+				$this->Flash->success( __( 'The tree has been saved.' ) );
+			} else {
+				$this->Flash->error( __( 'The tree could not be saved. Please, try again.' ) );
+			}
+		}
+
+		return $this->redirect( $this->referer() );
+	}
+
+	/**
 	 * Plant method
 	 */
 	public function plant() {
