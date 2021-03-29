@@ -3,7 +3,6 @@ declare( strict_types=1 );
 
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\CrossingsController;
 use App\Model\Entity\Batch;
 use App\Model\Entity\Crossing;
 use App\Model\Entity\MotherTree;
