@@ -12,6 +12,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $date_grafted
  * @property \Cake\I18n\Time $date_planted
  * @property \Cake\I18n\Time $date_eliminated
+ * @property \Cake\I18n\Time $date_labeled
  * @property bool $genuine_seedling
  * @property bool $migrated_tree
  * @property float $offset
