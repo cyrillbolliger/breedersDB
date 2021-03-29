@@ -103,7 +103,7 @@ class TreesTable extends Table {
 				'rule'    => function ( $value, $context ) {
 					return (bool) preg_match( '/^#?\d{8}$/', $value );
 				},
-				'message' => __( 'Input not valid. The publicid must only contain numbers.' ),
+				'message' => __( 'Input not valid. The publicid must only contain numbers within 1 and 9999999.' ),
 			] );
 
 		$validator
