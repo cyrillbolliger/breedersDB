@@ -416,33 +416,6 @@ class TreesController extends AppController {
 	}
 
 	/**
-	 * Return list with code (convar) as value and id as key.
-	 * Must be called as ajax get request.
-	 */
-	public function searchTrees() {
-
-		if ( $this->request->is( 'get' )
-		     && $this->request->is( 'ajax' )
-		     && ! empty( $this->request->getQuery('term') )
-		) {
-			$entries = $this->Trees->filter( $this->request->getQuery('term') );
-		} else {
-			throw new \Exception( __( 'Direct access not allowed.' ) );
-		}
-
-		$return = array();
-		if ( $entries ) {
-			foreach ( $entries as $entry ) {
-				$tree                 = $this->Trees->getIdPublicidAndConvarList( $entry->id );
-				$return[ $entry->id ] = $tree[ $entry->id ];
-			}
-		}
-
-		$this->set( [ 'data' => $return ] );
-		$this->render( '/element/ajaxreturn' );
-	}
-
-	/**
 	 * Show the print dialog
 	 *
 	 * @param int|string $tree_id

@@ -45,7 +45,6 @@ function GeneralModule() {
         this.instantiateDatepicker();
         this.instantiateSelect2();
         this.selectConvar();
-        this.selectTree();
         this.instantiateFilter();
         this.instantiateEliminatedTreesFilter();
         this.instantiatePrefillMarker();
@@ -281,54 +280,6 @@ function GeneralModule() {
             if (text.match(/[a-zA-Z0-9]{4,8}\.\d{2}[A-Z]$/)) {
                 var crossing_batch = text.match(/[a-zA-Z0-9]{4,8}\.\d{2}[A-Z]$/)[0];
                 event.params.args.data.text = trans.uc_new + ' ' + crossing_batch;
-            }
-        });
-    };
-
-    /*
-     * load and configure the tree select field.
-     */
-    this.selectTree = function () {
-        var $select = $('.select2tree');
-
-        // get convar
-        $select.select2({
-            ajax: {
-                url: webroot + 'trees/searchTrees',
-                delay: 250,
-                dataType: 'json',
-                processResults: function (resp) {
-                    var results;
-
-                    // map the results
-                    results = $.map(resp.data, function (value, index) {
-                        return {
-                            text: value,
-                            id: index
-                        };
-                    });
-
-                    return {
-                        results: results
-                    };
-                },
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('X-CSRF-Token', csrfToken);
-                },
-                cache: true
-            },
-            minimumInputLength: 1,
-            sorter: function (data) {
-                return data.sort(function (a, b) {
-                    a = a.text.toLowerCase();
-                    b = b.text.toLowerCase();
-                    if (a > b) {
-                        return 1;
-                    } else if (a < b) {
-                        return -1;
-                    }
-                    return 0;
-                });
             }
         });
     };
