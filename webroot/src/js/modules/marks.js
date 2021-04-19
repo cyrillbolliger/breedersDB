@@ -146,12 +146,12 @@ function MarksModule(General) {
     };
 
     /**
-     * Apply validation rules
+     * Initialize the property loader for the scanner code generation form
      */
-    this.applyValidationRules = function () {
+    this.initScannerCodeGenerationPropertyLoader = function () {
         $('.select_property').change(function () {
             $.ajax({
-                url: webroot + 'mark-form-properties/get/' + $(this).val() + '/default',
+                url: webroot + 'mark-form-properties/get/' + $(this).val() + '/field_scanner_code_mode',
                 success: function (resp) {
                     var $container = $('#mark_value_wrapper'),
                         $el = $('.replace_me'),
@@ -256,7 +256,7 @@ function MarksModule(General) {
                 term: val
             },
             success: function (resp) {
-                self.setMark($.parseJSON(resp));
+                self.setMark($.parseJSON(resp).data);
                 $searching.hide();
                 $('.scanner_mark_field').first().focus();
             },
@@ -287,7 +287,11 @@ function MarksModule(General) {
             if ('radio' === $el.attr('type')) {
                 $el.attr('checked', 'checked');
             } else {
-                $el.val(data.mark_value);
+                if ('now' === data.mark_value && $el.attr('data-date')) {
+                    $el.val(this.currentDate());
+                } else {
+                    $el.val(data.mark_value);
+                }
             }
             self.General.beep('success');
         } else {
@@ -295,6 +299,11 @@ function MarksModule(General) {
                 alert(String(trans.matching_elements).format($el.length));
             });
         }
+    };
+
+    this.currentDate = function () {
+        var today = new Date();
+        return ('0' + today.getDate()).slice(-2) + '.' + ('0' + (today.getMonth() + 1)).slice(-2) + '.' + today.getFullYear();
     };
 
     /**

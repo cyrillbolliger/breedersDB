@@ -56,7 +56,7 @@ function GeneralModule() {
         this.Marks.initValidationRulesCreator();
         this.Marks.addMarkFormFieldInit();
         this.Marks.loadFormFields();
-        this.Marks.applyValidationRules();
+        this.Marks.initScannerCodeGenerationPropertyLoader();
         this.Marks.byScanner();
         this.Marks.unlockScannerField();
         this.QueriesViewSelector.init();
@@ -72,6 +72,8 @@ function GeneralModule() {
         $('.datepicker').datepicker({
             dateFormat: trans.dateformat
         });
+        $('.datepicker.allow-text')
+            .datepicker('option', 'constrainInput', false);
     };
 
     /*
