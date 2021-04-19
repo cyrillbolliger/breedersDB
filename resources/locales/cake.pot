@@ -4,8 +4,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2020-01-31 19:38+0000\n"
+"Project-Id-Version: CakePHP 4.2.4\n"
+"POT-Creation-Date: 2021-04-19 20:19+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,16 +14,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Template/Error/error400.ctp:37
-#: Template/Error/error500.ctp:42
+#: Error/error400.php:37
+#: Error/error500.php:42
 msgid "Error"
 msgstr ""
 
-#: Template/Error/error400.ctp:38
+#: Error/error400.php:38
 msgid "The requested address {0} was not found on this server."
 msgstr ""
 
-#: Template/Error/error500.ctp:40
+#: Error/error500.php:40
 msgid "An Internal Error Has Occurred"
 msgstr ""
 
