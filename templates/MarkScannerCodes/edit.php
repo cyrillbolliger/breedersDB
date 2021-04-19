@@ -12,6 +12,7 @@
 			'required'         => 'required',
 			'name'             => 'mark_value',
 			'markValue'        => $markScannerCode->mark_value,
+            'context'          => 'scanner_code'
 		] );
 		echo $this->Form->control( 'mark_form_property_id', [
 			'options' => $markFormProperties,

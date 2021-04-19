@@ -145,6 +145,10 @@ class MarkFormPropertiesController extends AppController {
 				$this->render( '/element/Mark/field_edit_form_mode' );
 				break;
 
+            case 'field_scanner_code_mode':
+                $this->render( '/element/Mark/field_scanner_code_mode' );
+                break;
+
 			default:
 				$this->render( '/element/Mark/field' );
 				break;
