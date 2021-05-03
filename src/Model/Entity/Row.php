@@ -11,16 +11,15 @@ use Cake\ORM\Entity;
  * @property string $code
  * @property string $note
  * @property \Cake\I18n\Time $date_created
- * @property string $date_eliminated
- * @property bool $deleted
- * @property bool $locked
+ * @property \Cake\I18n\Time $date_eliminated
+ * @property \Cake\I18n\Time $deleted
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  *
  * @property \App\Model\Entity\Tree[] $trees
  */
 class Row extends Entity {
-	
+
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
 	 *
