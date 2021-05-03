@@ -77,6 +77,7 @@ class UsersController extends AppController {
 		if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
 			$user = $this->Users->patchEntity( $user, $this->request->getData());
 			if ( $this->Users->save( $user ) ) {
+                $this->request->getSession()->write( 'time_zone', $user->time_zone );
 				$this->Flash->success( __( 'The user has been saved.' ) );
 
 				return $this->redirect( [ 'action' => 'index' ] );
