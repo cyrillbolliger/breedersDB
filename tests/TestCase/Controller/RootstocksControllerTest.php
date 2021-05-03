@@ -3,13 +3,8 @@ declare( strict_types=1 );
 
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\RootstocksController;
 use App\Model\Entity\Rootstock;
-use App\Model\Entity\ScionsBundle;
-use App\Model\Entity\Variety;
 use App\Model\Table\RootstocksTable;
-use App\Model\Table\ScionsBundlesTable;
-use App\Test\Util\AjaxTrait;
 use App\Test\Util\AuthenticateTrait;
 use App\Test\Util\DependsOnFixtureTrait;
 use App\Test\Util\ExperimentSiteTrait;
