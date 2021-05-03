@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\Fixture;
 
 use App\Generator\BatchesGenerator;
+use App\Test\Util\DependsOnFixtureTrait;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
