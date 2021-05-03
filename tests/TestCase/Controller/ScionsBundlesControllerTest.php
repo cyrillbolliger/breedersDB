@@ -3,9 +3,7 @@ declare( strict_types=1 );
 
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\ScionsBundlesController;
 use App\Model\Entity\ScionsBundle;
-use App\Model\Entity\Tree;
 use App\Model\Entity\Variety;
 use App\Model\Table\ScionsBundlesTable;
 use App\Test\Util\AjaxTrait;
@@ -13,7 +11,6 @@ use App\Test\Util\AuthenticateTrait;
 use App\Test\Util\DependsOnFixtureTrait;
 use App\Test\Util\ExperimentSiteTrait;
 use Cake\ORM\Query;
-use Cake\ORM\Table;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
