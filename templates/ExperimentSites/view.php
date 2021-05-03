@@ -13,10 +13,4 @@
             <td><?= h( $experimentSite->name ) ?></td>
         </tr>
     </table>
-    <div class="related">
-        <h4><?= __( 'Related Trees' ) ?></h4>
-		<?php if ( ! empty( $experimentSite->trees ) ): ?>
-			<?= $this->element( 'Tree/related_table', [ 'trees' => $experimentSite->trees ] ); ?>
-		<?php endif; ?>
-    </div>
 </div>
