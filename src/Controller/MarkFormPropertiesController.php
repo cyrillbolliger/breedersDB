@@ -134,7 +134,7 @@ class MarkFormPropertiesController extends AppController {
 	 */
 	public function get( $id = null, $view = null ) {
 		$markFormProperty = $this->MarkFormProperties->get( $id, [
-			'contain' => [ 'MarkFormPropertyTypes', 'MarkFormFields', 'MarkValues' ]
+			'contain' => [ 'MarkFormPropertyTypes', 'MarkFormFields' ]
 		] );
 
 		$this->set( 'markFormProperty', $markFormProperty );
