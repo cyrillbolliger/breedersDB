@@ -32,9 +32,7 @@ class RootstocksController extends AppController {
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
 	public function view( $id = null ) {
-		$rootstock = $this->Rootstocks->get( $id, [
-			'contain' => [ 'Trees' ]
-		] );
+		$rootstock = $this->Rootstocks->get( $id );
 
 		$this->set( 'rootstock', $rootstock );
 		$this->set( '_serialize', [ 'rootstock' ] );
