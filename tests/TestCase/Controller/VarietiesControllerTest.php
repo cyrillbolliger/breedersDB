@@ -55,10 +55,11 @@ class VarietiesControllerTest extends TestCase {
         $query = $this->Varieties
             ->find()
             ->orderDesc( 'Varieties.modified' )
-            ->limit( 100 );
+            ->limit( 100 )
+            ->all();
 
         /** @var Variety $first */
-        $first = $query->firstOrFail();
+        $first = $query->first();
         $last  = $query->last();
 
         $this->assertResponseContains( $first->convar );

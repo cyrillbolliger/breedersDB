@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace App\Test\TestCase\Controller;
 
@@ -17,8 +17,7 @@ use Cake\TestSuite\TestCase;
  *
  * @uses \App\Controller\MarkFormPropertyTypesController
  */
-class MarkFormPropertyTypesControllerTest extends TestCase
-{
+class MarkFormPropertyTypesControllerTest extends TestCase {
     use IntegrationTestTrait;
     use DependsOnFixtureTrait;
     use AuthenticateTrait;
@@ -30,7 +29,7 @@ class MarkFormPropertyTypesControllerTest extends TestCase
         'MarkFormProperties'
     ];
 
-    protected array $dependsOnFixture = ['MarkFormPropertyTypes'] + self::CONTAINS;
+    protected array $dependsOnFixture = [ 'MarkFormPropertyTypes' ] + self::CONTAINS;
     protected MarkFormPropertyTypesTable $Table;
 
     protected function setUp(): void {
@@ -57,10 +56,11 @@ class MarkFormPropertyTypesControllerTest extends TestCase
         $query = $this->Table
             ->find()
             ->orderDesc( self::TABLE . '.id' )
-            ->limit( 100 );
+            ->limit( 100 )
+            ->all();
 
         /** @var MarkFormPropertyType $first */
-        $first = $query->firstOrFail();
+        $first = $query->first();
         $last  = $query->last();
 
         $this->assertResponseContains( $first->name );

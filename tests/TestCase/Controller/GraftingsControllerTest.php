@@ -55,10 +55,11 @@ class GraftingsControllerTest extends TestCase {
         $query = $this->Table
             ->find()
             ->orderDesc( self::TABLE . '.id' )
-            ->limit( 100 );
+            ->limit( 100 )
+            ->all();
 
         /** @var Grafting $first */
-        $first = $query->firstOrFail();
+        $first = $query->first();
         $last  = $query->last();
 
         $this->assertResponseContains( $first->name );

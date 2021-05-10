@@ -67,10 +67,11 @@ class TreesControllerTest extends TestCase {
         $query = $this->Table
             ->find()
             ->orderDesc( self::TABLE . '.modified' )
-            ->limit( 100 );
+            ->limit( 100 )
+            ->all();
 
         /** @var Tree $first */
-        $first = $query->firstOrFail();
+        $first = $query->first();
         $last  = $query->last();
 
         $this->assertResponseContains( $first->publicid );
@@ -182,7 +183,7 @@ class TreesControllerTest extends TestCase {
         ];
 
         $testEntity = $this->getEntityQueryFromArray( $data )
-                           ->find('all', ['withDeleted'])
+                           ->find( 'all', [ 'withDeleted' ] )
                            ->first();
         if ( $testEntity ) {
             $this->Table->hardDelete( $testEntity );
@@ -208,9 +209,9 @@ class TreesControllerTest extends TestCase {
         $entity = $this->addEntity();
 
         $data = [
-            'date_planted'       => '11.11.2020',
-            'offset'             => 123.4,
-            'note'               => 'we love planting trees',
+            'date_planted' => '11.11.2020',
+            'offset'       => 123.4,
+            'note'         => 'we love planting trees',
         ];
 
         $this->enableCsrfToken();
@@ -243,16 +244,16 @@ class TreesControllerTest extends TestCase {
         $entity = $this->addEntity();
 
         $data = [
-            'date_eliminated'    => '11.11.2020',
-            'note'               => 'dead',
+            'date_eliminated' => '11.11.2020',
+            'note'            => 'dead',
         ];
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        $data['publicid'] = '#'.$entity->publicid;
-        $query = $this->getEntityQueryFromArray( $data );
-        $this->Table->deleteManyOrFail($query);
+        $data['publicid'] = '#' . $entity->publicid;
+        $query            = $this->getEntityQueryFromArray( $data );
+        $this->Table->deleteManyOrFail( $query );
 
         $this->post( self::ENDPOINT . '/update/' . $entity->id, $data );
 
@@ -362,7 +363,7 @@ class TreesControllerTest extends TestCase {
     public function testPrint(): void {
         $entity = $this->addEntity();
 
-        $this->get(self::ENDPOINT. "/print/{$entity->id}/view/{$entity->id}");
+        $this->get( self::ENDPOINT . "/print/{$entity->id}/view/{$entity->id}" );
         $this->assertResponseSuccess();
         $this->assertResponseContains( 'data-zpl' );
         $this->assertResponseContains( $entity->publicid );

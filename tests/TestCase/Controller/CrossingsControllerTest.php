@@ -56,10 +56,11 @@ class CrossingsControllerTest extends TestCase {
         $query = $this->Crossings
             ->find()
             ->orderDesc( 'Crossings.modified' )
-            ->limit( 100 );
+            ->limit( 100 )
+            ->all();
 
         /** @var Crossing $first */
-        $first = $query->firstOrFail();
+        $first = $query->first();
         $last  = $query->last();
 
         $this->assertResponseContains( $first->code );

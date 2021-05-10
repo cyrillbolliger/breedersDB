@@ -55,10 +55,11 @@ class ExperimentSitesControllerTest extends TestCase {
         $query = $this->Table
             ->find()
             ->orderDesc( self::TABLE . '.id' )
-            ->limit( 100 );
+            ->limit( 100 )
+            ->all();
 
         /** @var ExperimentSite $first */
-        $first = $query->firstOrFail();
+        $first = $query->first();
         $last  = $query->last();
 
         $this->assertResponseContains( $first->name );
@@ -209,7 +210,7 @@ class ExperimentSitesControllerTest extends TestCase {
     public function testSelect_post(): void {
         $entity = $this->addEntity();
 
-        $this->session(['redirect_after_action' => '/crossings']);
+        $this->session( [ 'redirect_after_action' => '/crossings' ] );
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();
@@ -218,9 +219,9 @@ class ExperimentSitesControllerTest extends TestCase {
             'experiment_site_id' => $entity->id,
         ] );
 
-        $this->assertSession($entity->id, 'experiment_site_id');
-        $this->assertSession($entity->name, 'experiment_site_name');
+        $this->assertSession( $entity->id, 'experiment_site_id' );
+        $this->assertSession( $entity->name, 'experiment_site_name' );
 
-        $this->assertRedirect(['controller' => 'Crossings', 'action' => 'index']);
+        $this->assertRedirect( [ 'controller' => 'Crossings', 'action' => 'index' ] );
     }
 }

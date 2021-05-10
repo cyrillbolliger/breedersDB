@@ -60,10 +60,11 @@ class MarkFormPropertiesControllerTest extends TestCase {
         $query = $this->Table
             ->find()
             ->orderDesc( self::TABLE . '.modified' )
-            ->limit( 100 );
+            ->limit( 100 )
+            ->all();
 
         /** @var MarkFormProperty $first */
-        $first = $query->firstOrFail();
+        $first = $query->first();
         $last  = $query->last();
 
         $this->assertResponseContains( $first->name );

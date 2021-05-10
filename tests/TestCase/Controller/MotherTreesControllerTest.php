@@ -55,10 +55,11 @@ class MotherTreesControllerTest extends TestCase {
         $query = $this->MotherTrees
             ->find()
             ->orderDesc( 'MotherTrees.modified' )
-            ->limit( 100 );
+            ->limit( 100 )
+            ->all();
 
         /** @var MotherTree $first */
-        $first = $query->firstOrFail();
+        $first = $query->first();
         $last  = $query->last();
 
         $this->assertResponseContains( $first->code );
@@ -247,9 +248,9 @@ class MotherTreesControllerTest extends TestCase {
         $dbData = $query->first();
         self::assertEquals( $dbData->code, $expected['code'] );
         self::assertEquals( $dbData->planed, $expected['planed'] );
-        self::assertEquals( $dbData->date_pollen_harvested->format('d.m.Y'), $expected['date_pollen_harvested'] );
-        self::assertEquals( $dbData->date_impregnated->format('d.m.Y'), $expected['date_impregnated'] );
-        self::assertEquals( $dbData->date_fruit_harvested->format('d.m.Y'), $expected['date_fruit_harvested'] );
+        self::assertEquals( $dbData->date_pollen_harvested->format( 'd.m.Y' ), $expected['date_pollen_harvested'] );
+        self::assertEquals( $dbData->date_impregnated->format( 'd.m.Y' ), $expected['date_impregnated'] );
+        self::assertEquals( $dbData->date_fruit_harvested->format( 'd.m.Y' ), $expected['date_fruit_harvested'] );
         self::assertEquals( $dbData->numb_portions, $expected['numb_portions'] );
         self::assertEquals( $dbData->numb_flowers, $expected['numb_flowers'] );
         self::assertEquals( $dbData->numb_fruits, $expected['numb_fruits'] );

@@ -54,10 +54,11 @@ class BatchesControllerTest extends TestCase {
             ->find()
             ->where( [ 'Batches.id !=' => 1 ] )
             ->orderDesc( 'Batches.modified' )
-            ->limit( 100 );
+            ->limit( 100 )
+            ->all();
 
         /** @var Batch $first */
-        $first = $query->firstOrFail();
+        $first = $query->first();
         $last  = $query->last();
 
         $this->assertResponseContains( $first->crossing_batch );

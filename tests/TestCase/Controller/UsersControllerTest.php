@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace App\Test\TestCase\Controller;
 
@@ -17,8 +17,7 @@ use Cake\TestSuite\TestCase;
  *
  * @uses \App\Controller\UsersController
  */
-class UsersControllerTest extends TestCase
-{
+class UsersControllerTest extends TestCase {
     use IntegrationTestTrait;
     use DependsOnFixtureTrait;
     use AuthenticateTrait;
@@ -56,10 +55,11 @@ class UsersControllerTest extends TestCase
         $query = $this->Table
             ->find()
             ->orderDesc( self::TABLE . '.modified' )
-            ->limit( 100 );
+            ->limit( 100 )
+            ->all();
 
         /** @var User $first */
-        $first = $query->firstOrFail();
+        $first = $query->first();
         $last  = $query->last();
 
         $this->assertResponseContains( $first->email );
@@ -111,9 +111,9 @@ class UsersControllerTest extends TestCase
         $entity = $this->addEntity();
 
         $data = [
-            'email' => 'changed@gmail.com',
-            'password' => 'new_pass',
-            'level' => 1,
+            'email'     => 'changed@gmail.com',
+            'password'  => 'new_pass',
+            'level'     => 1,
             'time_zone' => 'America/Los_Angeles'
         ];
 
@@ -166,9 +166,9 @@ class UsersControllerTest extends TestCase
 
     private function getNonExistingEntityData(): array {
         $data = [
-            'email' => 'new@gmail.com',
-            'password' => 'supersecret',
-            'level' => 0,
+            'email'     => 'new@gmail.com',
+            'password'  => 'supersecret',
+            'level'     => 0,
             'time_zone' => 'Asia/Shanghai'
         ];
 
@@ -193,7 +193,7 @@ class UsersControllerTest extends TestCase
         /** @var User $dbData */
         $dbData = $query->first();
         self::assertEquals( $dbData->email, $expected['email'] );
-        self::assertStringStartsWith( '$2y$10$', $dbData->password);
+        self::assertStringStartsWith( '$2y$10$', $dbData->password );
         self::assertEquals( $dbData->level, $expected['level'] );
         self::assertEquals( $dbData->time_zone, $expected['time_zone'] );
     }
@@ -201,21 +201,21 @@ class UsersControllerTest extends TestCase
     public function testTimeZone(): void {
         $entity = $this->addEntity();
 
-        $this->session([
+        $this->session( [
             'Auth' => [
                 'User' => $entity,
             ]
-        ]);
+        ] );
 
         $this->get( self::ENDPOINT . "/view/{$entity->id}" );
 
         $this->assertResponseSuccess();
         $this->assertResponseCode( 200 );
 
-        $userTz = $entity->time_zone;
-        $createdUtc = $entity->created;
+        $userTz        = $entity->time_zone;
+        $createdUtc    = $entity->created;
         $createdUserTz = $createdUtc
-            ->i18nFormat('dd.MM.YYYY HH:mm', $userTz);
+            ->i18nFormat( 'dd.MM.YYYY HH:mm', $userTz );
 
         $this->assertResponseContains( $createdUserTz );
     }
