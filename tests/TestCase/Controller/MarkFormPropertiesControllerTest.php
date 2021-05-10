@@ -265,9 +265,20 @@ class MarkFormPropertiesControllerTest extends TestCase {
 
         $query = $this->getEntityQueryFromArray( $data );
 
-        $this->Table->deleteManyOrFail( $query );
+        $this->deleteWithAssociatedData( $query );
 
         return $data;
+    }
+
+    private function deleteWithAssociatedData( Query $query ): void {
+        $fieldsTable = $this->getTable( 'MarkFormFields' );
+
+        /** @var MarkFormProperty $property */
+        foreach ( $query as $property ) {
+            $fieldsTable->deleteManyOrFail( $property->mark_form_fields );
+        }
+
+        $this->Table->deleteManyOrFail( $query );
     }
 
     private function getEntityQueryFromArray( array $data ): Query {
