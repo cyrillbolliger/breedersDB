@@ -90,6 +90,12 @@ class MarkFormsController extends AppController {
 
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
+			    // eager load the selected mark form properties
+			    foreach ($markForm->mark_form_fields as &$field) {
+			        $field->mark_form_property = $this->MarkForms->MarkFormFields->MarkFormProperties->get($field->mark_form_property_id);
+                }
+			    unset($field);
+
 				$this->Flash->error( __( 'The mark form could not be saved. Please, try again.' ) );
 			}
 		}
