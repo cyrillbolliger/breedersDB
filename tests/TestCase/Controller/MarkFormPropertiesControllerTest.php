@@ -31,6 +31,7 @@ class MarkFormPropertiesControllerTest extends TestCase {
     private const CONTAINS = [
         'MarkFormPropertyTypes',
         'MarkFormFields',
+        'MarkValues',
     ];
 
     protected array $dependsOnFixture = [ 'MarkFormProperties' ] + self::CONTAINS;
@@ -272,10 +273,12 @@ class MarkFormPropertiesControllerTest extends TestCase {
 
     private function deleteWithAssociatedData( Query $query ): void {
         $fieldsTable = $this->getTable( 'MarkFormFields' );
+        $valuesTable = $this->getTable( 'MarkValues' );
 
         /** @var MarkFormProperty $property */
         foreach ( $query as $property ) {
             $fieldsTable->deleteManyOrFail( $property->mark_form_fields );
+            $valuesTable->deleteManyOrFail( $property->mark_values );
         }
 
         $this->Table->deleteManyOrFail( $query );

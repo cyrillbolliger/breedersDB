@@ -38,6 +38,7 @@ class TreesControllerTest extends TestCase {
         'ExperimentSites',
         'Rootstocks',
         'Graftings',
+        'Marks',
     ];
 
     protected array $dependsOnFixture = self::CONTAINS;
@@ -251,9 +252,8 @@ class TreesControllerTest extends TestCase {
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        $data['publicid'] = '#' . $entity->publicid;
-        $query            = $this->getEntityQueryFromArray( $data );
-        $this->Table->deleteManyOrFail( $query );
+        $query = $this->getEntityQueryFromArray( [ 'publicid' => '#' . $entity->publicid ] );
+        $this->deleteWithAssociated( $query );
 
         $this->post( self::ENDPOINT . '/update/' . $entity->id, $data );
 
@@ -263,7 +263,7 @@ class TreesControllerTest extends TestCase {
 
         /** @var Tree $dbData */
         $dbData = $query->first();
-        self::assertEquals( $dbData->publicid, $data['publicid'] );
+        self::assertEquals( $dbData->publicid, '#' . $entity->publicid );
         self::assertEquals( $dbData->date_eliminated->format( 'd.m.Y' ), $data['date_eliminated'] );
         self::assertEquals( $dbData->note, $data['note'] );
     }
@@ -460,4 +460,18 @@ class TreesControllerTest extends TestCase {
         self::assertEquals( $dbData->row_id, $expected['row_id'] );
         self::assertEquals( $dbData->experiment_site_id, $expected['experiment_site_id'] );
     }
+
+    private function deleteWithAssociated( Query $query ): void {
+        $marksTable      = $this->getTable( 'Marks' );
+        $markValuesTable = $this->getTable( 'MarkValues' );
+        foreach ( $query->all() as $tree ) {
+            foreach ( $tree->marks as $mark ) {
+                $mark = $marksTable->get( $mark->id, [ 'contain' => [ 'MarkValues' ] ] );
+                $markValuesTable->deleteManyOrFail( $mark->mark_values );
+                $marksTable->deleteOrFail( $mark );
+            }
+        }
+        $this->Table->deleteManyOrFail( $query );
+    }
+
 }
