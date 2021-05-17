@@ -73,7 +73,7 @@ class MarkValuesGenerator {
     }
 
     private function date() {
-        return $this->generateData( $this->faker->dateTimeThisYear->format( 'Y-m-d' ) );
+        return $this->generateData( $this->faker->dateTimeThisYear->format( 'd.m.Y' ) );
     }
 
     private function generateData( $value ) {
