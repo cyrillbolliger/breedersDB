@@ -85,7 +85,9 @@ class MarksControllerTest extends TestCase {
         $this->assertResponseContains( $first->mark_values[0]->mark_form_property->name .': '.$first->mark_values[0]->value );
 
         $this->assertResponseContains( Number::format( $last->id ) );
-        $this->assertResponseContains( $last->mark_values[0]->mark_form_property->name .': '.$last->mark_values[0]->value );
+        if ($last->mark_values){
+            $this->assertResponseContains( $last->mark_values[0]->mark_form_property->name .': '.$last->mark_values[0]->value );
+        }
     }
 
     /**
