@@ -9,9 +9,14 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $code
+ * @property \Cake\I18n\Time $deleted
+ * @property \Cake\I18n\Time $created
+ * @property \Cake\I18n\Time $modified
+ *
+ * @property \App\Model\Entity\Query[] $queries
  */
 class QueryGroup extends Entity {
-	
+
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
 	 *
