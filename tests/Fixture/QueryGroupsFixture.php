@@ -19,7 +19,7 @@ class QueryGroupsFixture extends TestFixture
     public function init(): void
     {
         $generator = new QueryGroupsGenerator();
-        $this->records = $generator->generate();
+        $this->records = $generator->generate(2);
         parent::init();
     }
 }

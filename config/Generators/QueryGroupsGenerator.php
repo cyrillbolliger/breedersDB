@@ -7,24 +7,20 @@ namespace App\Generator;
 class QueryGroupsGenerator
 {
 
-    public function generate()
+    public function generate(int $count)
     {
-        $data = [
-            [
-                'id' => '1',
-                'code' => 'Bonituren',
+        $faker = \Faker\Factory::create();
+
+        $data = [];
+        for ($i = 0; $i < $count; $i++) {
+            $date = $faker->dateTimeBetween('-5 years', 'now');
+            $data[] = [
+                'code' => $faker->word,
                 'deleted' => NULL,
-                'created' => '2020-11-29 22:44:02',
-                'modified' => '2020-11-29 22:44:02',
-            ],
-            [
-                'id' => '2',
-                'code' => 'Pflanzen',
-                'deleted' => NULL,
-                'created' => '2020-11-29 22:57:15',
-                'modified' => '2020-11-29 23:13:57',
-            ],
-        ];
+                'created' => $date->format('Y-m-d H:i:s'),
+                'modified' => $date->format('Y-m-d H:i:s'),
+            ];
+        }
 
         return $data;
     }
