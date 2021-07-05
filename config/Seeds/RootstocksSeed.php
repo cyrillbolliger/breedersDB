@@ -1,4 +1,6 @@
 <?php
+
+use App\Generator\RootstocksGenerator;
 use Migrations\AbstractSeed;
 
 /**
@@ -18,16 +20,8 @@ class RootstocksSeed extends AbstractSeed
      */
     public function run()
     {
-        $data = [
-            [
-                'id' => '1',
-                'name' => 'M9',
-            ],
-            [
-                'id' => '2',
-                'name' => 'M27',
-            ],
-        ];
+        $generator = new RootstocksGenerator();
+        $data = $generator->generate();
 
         $table = $this->table('rootstocks');
         $table->insert($data)->save();

@@ -103,7 +103,7 @@ class TreesTable extends Table {
 				'rule'    => function ( $value, $context ) {
 					return (bool) preg_match( '/^#?\d{8}$/', $value );
 				},
-				'message' => __( 'Input not valid. The publicid must only contain numbers.' ),
+				'message' => __( 'Input not valid. The publicid must only contain numbers within 1 and 9999999.' ),
 			] );
 
 		$validator
@@ -289,7 +289,7 @@ class TreesTable extends Table {
         }
 
 		return $this->find()
-		              ->contain( [ 'Varieties', 'Rootstocks', 'Graftings', 'Rows', 'ExperimentSites' ] )
+		              ->contain( [ 'Rootstocks', 'Graftings', 'Rows', 'ExperimentSites' ] )
 		              ->where( $condition );
 	}
 
@@ -301,7 +301,7 @@ class TreesTable extends Table {
 	 * @return array|null
 	 */
 	public function getIdPublicidAndConvarList( int $id ) {
-		$tree = $this->get( $id, [ 'contain' => [ 'Varieties' ] ] );
+		$tree = $this->get( $id );
 
 		if ( $tree ) {
 			return [ $id => $tree->publicid . ' (' . $tree->convar . ')' ];
@@ -318,7 +318,7 @@ class TreesTable extends Table {
 	 * @return string
 	 */
 	public function getConvar( int $id ) {
-		$tree = $this->get( $id, [ 'contain' => [ 'Varieties' ] ] );
+		$tree = $this->get( $id );
 
 		return $tree->convar;
 	}

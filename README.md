@@ -10,7 +10,8 @@ Stores your plants data and facilitates evaluation. Enables data based plant bre
 1. Visit [localhost:8000/](http://localhost:8000/)
 
 ### Database
-1. Runing migrations: `docker-compose run app bin/cake migrations migrate  --no-lock` (do not use lock file as we can't use the diff function anyhow (Phinx does not support views)).
+1. Running migrations: `docker-compose run app bin/cake migrations migrate  --no-lock` (do not use lock file as we can't use the diff function anyhow (Phinx does not support views)).
+1. Running migrations on the test database: `docker-compose run app bin/cake migrations migrate  --no-lock --connection=test`
 1. Run the seeder: `docker-compose run app bin/cake migrations seed --seed DemoSeed`
 
 ### Printer Setup

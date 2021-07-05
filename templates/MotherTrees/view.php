@@ -10,7 +10,7 @@
             <td><?= $this->Number->format( $motherTree->id ) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __( 'Mother Tree' ) ?></th>
+            <th scope="row"><?= __( 'Tree' ) ?></th>
             <td><?= $motherTree->has( 'tree' ) ? $this->Html->link( h( $motherTree->tree->publicid ),
 					[ 'controller' => 'Trees', 'action' => 'view', $motherTree->tree->id ] ) : '' ?></td>
         </tr>

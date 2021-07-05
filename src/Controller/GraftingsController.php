@@ -32,9 +32,7 @@ class GraftingsController extends AppController {
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
 	public function view( $id = null ) {
-		$grafting = $this->Graftings->get( $id, [
-			'contain' => [ 'Trees' ]
-		] );
+		$grafting = $this->Graftings->get( $id );
 
 		$this->set( 'grafting', $grafting );
 		$this->set( '_serialize', [ 'grafting' ] );

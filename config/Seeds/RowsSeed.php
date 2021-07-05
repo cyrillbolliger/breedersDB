@@ -1,4 +1,6 @@
 <?php
+
+use App\Generator\RowsGenerator;
 use Migrations\AbstractSeed;
 
 /**
@@ -18,18 +20,8 @@ class RowsSeed extends AbstractSeed
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
-        $data = [];
-        for ($i = 0; $i < 15; $i++) {
-            $data[] = [
-                'code' => sprintf('%s%03d', $faker->randomElement(['A','B','C']), $faker->unique()->numberBetween(1,100)),
-                'note' => $faker->sentence(),
-                'date_created' => $faker->dateTimeThisYear('-1 month')->format('Y-m-d'),
-                'deleted' => NULL,
-                'created' => date('Y-m-d H:i:s'),
-                'modified' => date('Y-m-d H:i:s')
-            ];
-        }
+        $generator = new RowsGenerator();
+        $data = $generator->generate(15);
 
         $table = $this->table('rows');
         $table->insert($data)->save();

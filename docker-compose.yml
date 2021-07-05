@@ -24,7 +24,8 @@ services:
   mysql:
     image: mysql:5.7
     volumes:
-      - .docker/mysql/data:/var/lib/mysql
+      - db:/var/lib/mysql
+      - .docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: poc
       MYSQL_DATABASE: poc
@@ -32,18 +33,15 @@ services:
       MYSQL_PASSWORD: poc
     container_name: poc_mysql
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-    ports:
-      - 3306:3306
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
       - '8010:80'
     environment:
-      MYSQL_ROOT_PASSWORD: poc
       PMA_HOST: mysql
       PMA_PORT: 3306
-      PMA_USER: poc
+      PMA_USER: root
       PMA_PASSWORD: poc
     container_name: poc_phpmyadmin
 
@@ -56,3 +54,6 @@ services:
       - '8030:8081'
     command: npm run watch
     container_name: poc_node
+
+volumes:
+  db:

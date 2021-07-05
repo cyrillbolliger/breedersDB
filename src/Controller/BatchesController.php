@@ -32,8 +32,6 @@ class BatchesController extends AppController {
 	 * @return \Cake\Network\Response|null
 	 */
 	public function index() {
-		$this->paginate['contain'] = [ 'Crossings' ];
-
 		$this->paginate['sortableFields'] = [
 			'crossing_batch',
 			'date_sowed',
@@ -46,19 +44,11 @@ class BatchesController extends AppController {
 
 		$this->paginate['fields'] = [
 			'id',
-			'crossing_batch' => $this->Batches
-				->find()
-				->func()
-				->concat( [
-					'Crossings.code' => 'literal',
-					'Batches.code'   => 'literal',
-				] ),
+			'crossing_batch',
 			'date_sowed',
 			'seed_tray',
 			'date_planted',
 			'patch',
-			'code',
-			'Crossings.code',
 		];
 
 		$batches = $this->paginate( $this->Batches->find('withoutOfficialVarieties') );
@@ -173,19 +163,11 @@ class BatchesController extends AppController {
 
         $this->paginate['fields'] = [
             'id',
-            'crossing_batch' => $this->Batches
-                ->find()
-                ->func()
-                ->concat( [
-                    'Crossings.code' => 'literal',
-                    'Batches.code'   => 'literal',
-                ] ),
+            'crossing_batch',
             'date_sowed',
             'seed_tray',
             'date_planted',
             'patch',
-            'code',
-            'Crossings.code',
         ];
 
 		if ( $this->request->is( 'get' )
@@ -193,8 +175,11 @@ class BatchesController extends AppController {
 		     && ! empty( $this->request->getQuery('fields') )
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
-			$entries = $this->Batches->filterCrossingBatches( $this->request->getQuery('term') )
-                                     ->find('withoutOfficialVarieties');
+			$entries = $this->Batches->filterCrossingBatches( $this->request->getQuery('term') );
+			if ($entries) {
+			    $entries = $entries->find('withoutOfficialVarieties');
+            }
+
 		} else {
 			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
@@ -215,11 +200,12 @@ class BatchesController extends AppController {
 	/**
 	 * Show the print dialog
 	 *
-	 * @param int $batch_id
+	 * @param string|int $batch_id
 	 * @param string $caller action to redirect after printing
 	 * @param mixed $params for action
 	 */
-	public function print( int $batch_id, string $caller, $params = null ) {
+	public function print( $batch_id, string $caller, $params = null ) {
+	    $batch_id = (int) $batch_id;
 		$zpl = $this->Batches->getLabelZpl( $batch_id );
 
 		$this->set( [

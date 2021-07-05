@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -12,16 +14,6 @@
  * @since         0.10.8
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-
-/**
- * Company abbreviation. Use uppercase letters only (no numbers)
- */
-define('COMPANY_ABBREV','POC');
-
-/**
- * Defines the length of the numerical par of the breeders variety code
- */
-define('BREEDER_VARIETY_CODE_NUM_LENGTH', 6);
 
 /*
  * Configure paths required to find CakePHP + general filepath constants
@@ -39,20 +31,24 @@ require __DIR__ . '/paths.php';
  */
 require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
+/*
+ * Application specific constants
+ */
+require __DIR__ . DS . 'constants.php';
+
 use Cake\Cache\Cache;
-use Cake\Error\ConsoleErrorHandler;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
-use Cake\Core\Plugin;
-use Cake\Database\Type;
+use Cake\Database\TypeFactory;
+use Cake\Database\Type\StringType;
 use Cake\Datasource\ConnectionManager;
+use Cake\Error\ConsoleErrorHandler;
 use Cake\Error\ErrorHandler;
 use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\Routing\Router;
-use Cake\Utility\Inflector;
 use Cake\Utility\Security;
 
 /**
@@ -88,11 +84,12 @@ try {
 }
 
 /*
- * Load an environment local configuration file.
- * You can use a file like app_local.php to provide local overrides to your
- * shared configuration.
+ * Load an environment local configuration file to provide overrides to your configuration.
+ * Notice: For security reasons app_local.php **should not** be included in your git repo.
  */
-//Configure::load('app_local', 'default');
+if (file_exists(CONFIG . 'app_local.php')) {
+    Configure::load('app_local', 'default');
+}
 
 /*
  * When debug = true the metadata cache should only last
@@ -169,13 +166,6 @@ Log::setConfig(Configure::consume('Log'));
 Security::setSalt(Configure::consume('Security.salt'));
 
 /*
- * The default crypto extension in 3.0 is OpenSSL.
- * If you are migrating from 2.x uncomment this code to
- * use a more compatible Mcrypt based implementation
- */
-//Security::engine(new \Cake\Utility\Crypto\Mcrypt());
-
-/*
  * Setup detectors for mobile and tablet.
  */
 ServerRequest::addDetector('mobile', function ($request) {
@@ -190,21 +180,34 @@ ServerRequest::addDetector('tablet', function ($request) {
 });
 
 /*
- * Enable immutable time objects in the ORM.
+ * You can set whether the ORM uses immutable or mutable Time types.
+ * The default changed in 4.0 to immutable types. You can uncomment
+ * below to switch back to mutable types.
  *
  * You can enable default locale format parsing by adding calls
  * to `useLocaleParser()`. This enables the automatic conversion of
  * locale specific date formats. For details see
- * @link https://book.cakephp.org/3.0/en/core-libraries/internationalization-and-localization.html#parsing-localized-datetime-data
+ * @link https://book.cakephp.org/4/en/core-libraries/internationalization-and-localization.html#parsing-localized-datetime-data
  */
-Type::build('time')
-    ->useImmutable();
-Type::build('date')
-    ->useImmutable();
-Type::build('datetime')
-    ->useImmutable();
-Type::build('timestamp')
-    ->useImmutable();
+// \Cake\Database\TypeFactory::build('time')
+//    ->useMutable();
+// \Cake\Database\TypeFactory::build('date')
+//    ->useMutable();
+// \Cake\Database\TypeFactory::build('datetime')
+//    ->useMutable();
+// \Cake\Database\TypeFactory::build('timestamp')
+//    ->useMutable();
+// \Cake\Database\TypeFactory::build('datetimefractional')
+//    ->useMutable();
+// \Cake\Database\TypeFactory::build('timestampfractional')
+//    ->useMutable();
+// \Cake\Database\TypeFactory::build('datetimetimezone')
+//    ->useMutable();
+// \Cake\Database\TypeFactory::build('timestamptimezone')
+//    ->useMutable();
+
+// There is no time-specific type in Cake
+//TypeFactory::map('time', StringType::class);
 
 /*
  * Custom Inflector rules, can be set to correctly pluralize or singularize
@@ -214,4 +217,3 @@ Type::build('timestamp')
 //Inflector::rules('plural', ['/^(inflect)or$/i' => '\1ables']);
 //Inflector::rules('irregular', ['red' => 'redlings']);
 //Inflector::rules('uninflected', ['dontinflectme']);
-//Inflector::rules('transliteration', ['/å/' => 'aa']);

@@ -48,12 +48,7 @@ class AppController extends Controller {
 
         $this->loadComponent( 'RequestHandler' );
         $this->loadComponent( 'Flash' );
-
-        /*
-         * Enable the following components for recommended CakePHP security settings.
-         * see http://book.cakephp.org/3.0/en/controllers/components/security.html
-         */
-        $this->loadComponent( 'Security' );
+        $this->loadComponent( 'FormProtection' );
 
         $this->loadComponent( 'Auth', [
             'authorize'            => 'Controller',
@@ -195,7 +190,7 @@ class AppController extends Controller {
 
         $sessionsDir = TMP . 'sessions';
 
-        if ( !is_dir( $sessionsDir ) ) {
+        if ( ! is_dir( $sessionsDir ) ) {
             mkdir( $sessionsDir, 0700, true );
         }
     }

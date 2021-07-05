@@ -25,18 +25,18 @@ class MarkFormsController extends AppController {
 	public function beforeFilter( \Cake\Event\EventInterface $event ) {
 		parent::beforeFilter( $event );
 
-		// since we add fields dynamically, we have to unlock them in the security component
+		// since we add fields dynamically, we have to unlock them in the form protection component
 		$this->unlockDynamicallyAddedFields();
 	}
 
 	/**
-	 * Unlock the dynamically added fields in the security component
+	 * Unlock the dynamically added fields in the form protection component
 	 */
 	public function unlockDynamicallyAddedFields() {
 		if ( ! empty( $this->request->getData('mark_form_fields.mark_form_properties') ) ) {
 			$ids = array_keys( $this->request->getData('mark_form_fields.mark_form_properties' ) );
 			foreach ( $ids as $id ) {
-				$this->Security->setConfig( 'unlockedFields',
+				$this->FormProtection->setConfig( 'unlockedFields',
 					[ 'mark_form_fields.mark_form_properties.' . $id . '.mark_values.value' ] );
 			}
 		}
@@ -90,6 +90,12 @@ class MarkFormsController extends AppController {
 
 				return $this->redirect( [ 'action' => 'index' ] );
 			} else {
+			    // eager load the selected mark form properties
+			    foreach ($markForm->mark_form_fields as &$field) {
+			        $field->mark_form_property = $this->MarkForms->MarkFormFields->MarkFormProperties->get($field->mark_form_property_id);
+                }
+			    unset($field);
+
 				$this->Flash->error( __( 'The mark form could not be saved. Please, try again.' ) );
 			}
 		}

@@ -6,9 +6,9 @@
 	<?= $this->Form->create( $motherTree ) ?>
     <fieldset>
         <legend><?= __( 'Edit Mother Tree' ) ?></legend>
-		<?= $this->element( 'Tree/get_tree', [ 'tree' => $motherTree->tree ] ); ?>
 		<?php
 		$this->Form->unlockField( 'tree_id' );
+		echo $this->element( 'Tree/get_tree', [ 'tree' => $motherTree->tree ] );
 		echo $this->Form->control( 'crossing_id', [
 			'options'  => $crossings,
 			'required' => 'required',

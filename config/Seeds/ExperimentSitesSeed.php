@@ -1,4 +1,6 @@
 <?php
+
+use App\Generator\ExperimentSitesGenerator;
 use Migrations\AbstractSeed;
 
 /**
@@ -18,14 +20,8 @@ class ExperimentSitesSeed extends AbstractSeed
      */
     public function run()
     {
-        $data = [
-            [
-                'name' => 'Birmensdorf',
-            ],
-            [
-                'name' => 'Curtilles',
-            ],
-        ];
+        $generator = new ExperimentSitesGenerator();
+        $data = $generator->generate(3);
 
         $table = $this->table('experiment_sites');
         $table->insert($data)->save();

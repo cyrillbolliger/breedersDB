@@ -12,6 +12,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $date_grafted
  * @property \Cake\I18n\Time $date_planted
  * @property \Cake\I18n\Time $date_eliminated
+ * @property \Cake\I18n\Time $date_labeled
  * @property bool $genuine_seedling
  * @property bool $migrated_tree
  * @property float $offset
@@ -26,6 +27,7 @@ use Cake\ORM\Entity;
  * @property int $experiment_site_id
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
+ * @property string $convar
  *
  * @property \App\Model\Entity\Variety $variety
  * @property \App\Model\Entity\Rootstock $rootstock
@@ -49,19 +51,6 @@ class Tree extends Entity {
 		'*'  => true,
 		'id' => false
 	];
-
-	protected function _getConvar() {
-        $tableLocator = \Cake\Datasource\FactoryLocator::get('Table');
-
-		$Crossings = $tableLocator->get( 'Crossings' );
-		$Batches   = $tableLocator->get( 'Batches' );
-		$Varieties = $tableLocator->get( 'Varieties' );
-		$variety   = $Varieties->get( $this->variety_id );
-		$batch     = $Batches->get( $variety->batch_id );
-		$crossing  = $Crossings->get( $batch->crossing_id );
-
-		return $crossing->code . '.' . $batch->code . '.' . $variety->code;
-	}
 
 	protected function _getRowCode() {
 		if ( ! $this->row_id ) {

@@ -152,7 +152,6 @@ class VarietiesTable extends Table {
 		$id  = ltrim( $tmp, '0' );
 
 		return $this->find()
-		            ->contain( 'Batches' )
 		            ->where( [ 'Varieties.id' => $id ] );
 	}
 
@@ -173,7 +172,6 @@ class VarietiesTable extends Table {
 		}
 
 		return $this->find()
-		            ->contain( 'Batches' )
 		            ->where( [ 'Varieties.id IN' => $ids ] );
 	}
 
@@ -186,35 +184,22 @@ class VarietiesTable extends Table {
 	 * @return \Cake\ORM\Query
 	 */
 	public function searchConvars( string $term ) {
-		$query = $this->find( 'list' )->contain( [
-			'Batches',
-			'Batches.Crossings',
-		] );
-
-		$concat = $query->func()->concat( [
-			'Crossings.code' => 'identifier',
-			'.',
-			'Batches.code'   => 'identifier',
-			'.',
-			'Varieties.code' => 'identifier'
-		] );
-
-		$query->select( [
-			'Varieties.id',
-			'code' => $concat
-		] );
+		$query = $this->find( 'list' )
+                      ->select( [ 'id', 'code' => 'convar' ] );
 
 		$search = explode( '.', trim( $term ) );
-		if ( 3 === count( $search ) ) {
-			$query->where( [ 'Crossings.code LIKE' => '%' . $search[0] . '%' ] )
-			      ->andWhere( [ 'Batches.code LIKE' => '%' . $search[1] . '%' ] )
-			      ->andWhere( [ 'Varieties.code LIKE' => '%' . $search[2] . '%' ] );
-		} elseif ( 2 === count( $search ) ) {
-			$query->where( [ 'Crossings.code LIKE' => '%' . $search[0] . '%' ] )
-			      ->andWhere( [ 'Batches.code LIKE' => '%' . $search[1] . '%' ] );
-		} else {
-			$query->where( [ 'Crossings.code LIKE' => '%' . $search[0] . '%' ] );
-		}
+
+        if ( ! empty( $search[0] ) ) {
+            $query->where( [ 'convar LIKE' => '%' . $search[0] . '%.%.%' ] );
+        }
+
+        if ( 2 <= count( $search ) && ! empty( $search[1] ) ) {
+            $query->andWhere( [ 'convar LIKE' => '%.%'.$search[1].'%.%' ] );
+        }
+
+        if ( 3 <= count( $search ) && ! empty( $search[2] ) ) {
+            $query->andWhere( [ 'convar LIKE' => '%.%.%'.$search[2].'%' ] );
+        }
 
 		return $query;
 	}
@@ -227,18 +212,13 @@ class VarietiesTable extends Table {
 	 * @return array
 	 */
 	public function getConvarList( int $id ) {
-		$variety = $this->get( $id, [
-			'contain' => [ 'Batches', 'Batches.Crossings' ],
-			'fields'  => [ 'id', 'Varieties.code', 'Batches.code', 'Crossings.code' ]
-		] );
+		$variety = $this->get( $id );
 
-		$varieties = [
-			[
-				$id => $variety->batch->crossing->code . '.' . $variety->batch->code . '.' . $variety->code,
-			],
-		];
-
-		return $varieties;
+        return [
+            [
+                $id => $variety->convar,
+            ],
+        ];
 	}
 
 	/**
@@ -298,7 +278,7 @@ class VarietiesTable extends Table {
 	 * @return string
 	 */
 	public function getConvar( int $id ) {
-		$variety = $this->get( $id, [ 'contain' => [ 'Batches' ] ] );
+		$variety = $this->get( $id );
 
 		return $variety->convar;
 	}

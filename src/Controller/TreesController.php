@@ -31,10 +31,7 @@ class TreesController extends AppController {
 	 */
 	public function index() {
 		$this->paginate['contain'] = [
-			'Varieties',
 			'Rows',
-			'Varieties.Batches',
-			'Varieties.Batches.Crossings',
 		];
 
 		$this->paginate['sortableFields'] = [
@@ -51,14 +48,7 @@ class TreesController extends AppController {
 		$this->paginate['fields'] = [
 			'id',
 			'publicid',
-			'convar' => $this->Trees
-				->find()
-				->func()
-				->concat( [
-					'Crossings.code' => 'literal',
-					'Batches.code'   => 'literal',
-					'Varieties.code' => 'literal',
-				] ),
+			'convar',
 			'row'    => 'Rows.code',
 			'offset',
 			'note',
@@ -243,6 +233,8 @@ class TreesController extends AppController {
 
 	/**
 	 * Update method
+     *
+     * Used for plant(), eliminate(), eliminateByScanner()
 	 *
 	 * @param string|null $id Tree id.
 	 *
@@ -367,10 +359,7 @@ class TreesController extends AppController {
 		$allowed_fields = [ 'publicid', 'convar' ];
 
 		$this->paginate['contain'] = [
-			'Varieties',
 			'Rows',
-			'Varieties.Batches',
-			'Varieties.Batches.Crossings',
 		];
 
 		$this->paginate['sortableFields'] = [
@@ -387,14 +376,7 @@ class TreesController extends AppController {
 		$this->paginate['fields'] = [
 			'id',
 			'publicid',
-			'convar' => $this->Trees
-				->find()
-				->func()
-				->concat( [
-					'Crossings.code' => 'literal',
-					'Batches.code'   => 'literal',
-					'Varieties.code' => 'literal',
-				] ),
+			'convar',
 			'row'    => 'Rows.code',
 			'offset',
 			'note',
@@ -431,33 +413,6 @@ class TreesController extends AppController {
 		} else {
 			$this->render( '/element/nothing_found' );
 		}
-	}
-
-	/**
-	 * Return list with code (convar) as value and id as key.
-	 * Must be called as ajax get request.
-	 */
-	public function searchTrees() {
-
-		if ( $this->request->is( 'get' )
-		     && $this->request->is( 'ajax' )
-		     && ! empty( $this->request->getQuery('term') )
-		) {
-			$entries = $this->Trees->filter( $this->request->getQuery('term') );
-		} else {
-			throw new \Exception( __( 'Direct access not allowed.' ) );
-		}
-
-		$return = array();
-		if ( $entries ) {
-			foreach ( $entries as $entry ) {
-				$tree                 = $this->Trees->getIdPublicidAndConvarList( $entry->id );
-				$return[ $entry->id ] = $tree[ $entry->id ];
-			}
-		}
-
-		$this->set( [ 'data' => $return ] );
-		$this->render( '/element/ajaxreturn' );
 	}
 
 	/**

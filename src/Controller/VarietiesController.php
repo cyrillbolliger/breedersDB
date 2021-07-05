@@ -27,7 +27,7 @@ class VarietiesController extends AppController {
 	public function beforeFilter( \Cake\Event\EventInterface $event ) {
 		parent::beforeFilter( $event );
 
-		$this->Security->setConfig( 'unlockedFields', [ 'code', 'batch_id' ] );
+		$this->FormProtection->setConfig( 'unlockedFields', [ 'code', 'batch_id' ] );
 	}
 
 	/**
@@ -36,11 +36,6 @@ class VarietiesController extends AppController {
 	 * @return \Cake\Network\Response|null
 	 */
 	public function index() {
-		$this->paginate['contain'] = [
-			'Batches',
-			'Batches.Crossings',
-		];
-
 		$this->paginate['sortableFields'] = [
 			'convar',
 			'official_name',
@@ -51,20 +46,10 @@ class VarietiesController extends AppController {
 
 		$this->paginate['fields'] = [
 			'id',
-			'convar' => $this->Varieties
-				->find()
-				->func()
-				->concat( [
-					'Crossings.code' => 'literal',
-					'Batches.code'   => 'literal',
-					'Varieties.code' => 'literal',
-				] ),
+			'convar',
 			'official_name',
 			'created',
 			'modified',
-			'Batches.crossing_id',
-			'Batches.code',
-			'code'
 		];
 
 		$varieties = $this->paginate( $this->Varieties );
@@ -265,11 +250,6 @@ class VarietiesController extends AppController {
 	public function filter() {
 		$allowed_fields = [ 'convar', 'breeder_variety_code' ];
 
-        $this->paginate['contain'] = [
-            'Batches',
-            'Batches.Crossings',
-        ];
-
         $this->paginate['sortableFields'] = [
             'convar',
             'official_name',
@@ -280,20 +260,10 @@ class VarietiesController extends AppController {
 
         $this->paginate['fields'] = [
             'id',
-            'convar' => $this->Varieties
-                ->find()
-                ->func()
-                ->concat( [
-                    'Crossings.code' => 'literal',
-                    'Batches.code'   => 'literal',
-                    'Varieties.code' => 'literal',
-                ] ),
+            'convar',
             'official_name',
             'created',
             'modified',
-            'Batches.crossing_id',
-            'Batches.code',
-            'code'
         ];
 
 		if ( $this->request->is( 'get' )

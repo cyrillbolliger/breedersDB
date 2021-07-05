@@ -34,8 +34,8 @@ class MarksController extends AppController {
 	public function beforeFilter( \Cake\Event\EventInterface $event ) {
 		parent::beforeFilter( $event );
 
-		// since we add fields dynamically, we have to unlock them in the security component
-		$this->Security->setConfig('unlockedActions', [
+		// since we add fields dynamically, we have to unlock them in the form protection component
+		$this->FormProtection->setConfig('unlockedActions', [
 		    'addTreeMarkByScanner',
             'addTreeMark',
             'addVarietyMark',
@@ -52,9 +52,7 @@ class MarksController extends AppController {
 		$this->paginate['contain'] = [
 			'Trees',
 			'Varieties',
-			'Varieties.Batches',
 			'Batches',
-			'Batches.Crossings' => [ 'joinType' => 'LEFT' ],
 			'MarkValues',
 			'MarkValues.MarkFormProperties'
 		];
@@ -86,9 +84,7 @@ class MarksController extends AppController {
 				'MarkForms',
 				'Trees',
 				'Varieties',
-				'Varieties.Batches',
 				'Batches',
-				'Batches.Crossings' => [ 'joinType' => 'LEFT' ],
 				'MarkValues',
 				'MarkValues.MarkFormProperties'
 			]

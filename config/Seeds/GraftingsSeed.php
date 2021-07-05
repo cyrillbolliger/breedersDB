@@ -1,4 +1,6 @@
 <?php
+
+use App\Generator\GraftingsGenerator;
 use Migrations\AbstractSeed;
 
 /**
@@ -18,20 +20,8 @@ class GraftingsSeed extends AbstractSeed
      */
     public function run()
     {
-        $data = [
-            [
-                'id' => '1',
-                'name' => 'WHV',
-            ],
-            [
-                'id' => '2',
-                'name' => 'Okulation',
-            ],
-            [
-                'id' => '3',
-                'name' => 'Pfropfung',
-            ],
-        ];
+        $generator = new GraftingsGenerator();
+        $data = $generator->generate(5);
 
         $table = $this->table('graftings');
         $table->insert($data)->save();

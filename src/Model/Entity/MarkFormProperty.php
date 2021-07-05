@@ -18,13 +18,16 @@ use Cake\ORM\Entity;
  * @property int $mark_form_property_type_id
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
+ * @property boolean tree_property
+ * @property boolean variety_property
+ * @property boolean batch_property
  *
  * @property \App\Model\Entity\MarkFormPropertyType $mark_form_property_type
  * @property \App\Model\Entity\MarkFormField[] $mark_form_fields
  * @property \App\Model\Entity\MarkValue[] $mark_values
  */
 class MarkFormProperty extends Entity {
-	
+
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
 	 *
@@ -38,7 +41,7 @@ class MarkFormProperty extends Entity {
 		'*'  => true,
 		'id' => false
 	];
-	
+
 	/**
 	 * Return an array with all possible aggregation types for the MarkFormProperty::field_type.
 	 * The keys are holding the internal function name, the values the translated names for the form.
@@ -58,14 +61,14 @@ class MarkFormProperty extends Entity {
 				'std'    => __( 'Standard deviation' ),
 			];
 		}
-		
+
 		return [
 			'all' => __x( 'every', 'Every' ),
 			'any' => __x( 'at least one', 'Any' ),
 		];
-		
+
 	}
-	
+
 	/**
 	 * Return true if entity has field_type INTEGER or FLOAT
 	 *
@@ -83,7 +86,7 @@ class MarkFormProperty extends Entity {
     protected function _getIsText(): bool {
         return in_array( $this->_fields['field_type'], [ 'VARCHAR', 'DATE' ] );
     }
-	
+
 	/**
 	 * Return a string with the input type
 	 *
@@ -95,24 +98,24 @@ class MarkFormProperty extends Entity {
 		switch ( $this->_fields['field_type'] ) {
 			case 'INTEGER':
 				return 'number';
-			
+
 			case 'FLOAT':
 				return 'number';
-			
+
 			case 'VARCHAR':
 				return 'text';
-			
+
 			case 'BOOLEAN':
 				return 'radio';
-			
+
 			case 'DATE':
 				return 'date';
-			
+
 			default:
 				throw new \Exception( "The field type '{$this->_fields['field_type']}' is not defined." );
 		}
 	}
-	
+
 	/**
 	 * Return an array with all possible compare operators for the MarkFormProperty::field_type.
 	 * The keys are holding the internal function name, the values the translated names for the form.
@@ -135,7 +138,7 @@ class MarkFormProperty extends Entity {
 					'is_null'          => __( 'is null' ),
 					'is_not_null'      => __( 'is not null' ),
 				];
-			
+
 			case 'VARCHAR': // fall through
 			case 'DATE':
 				return [
@@ -150,18 +153,18 @@ class MarkFormProperty extends Entity {
 					'is_empty'          => __( 'is empty' ),
 					'is_not_empty'      => __( 'is not empty' ),
 				];
-			
+
 			case 'BOOLEAN':
 				return [
 					'equal'     => __( 'equal' ),
 					'not_equal' => __( 'not equal' ),
 				];
-			
+
 			default:
 				throw new \Exception( "The field type '{$this->_fields['field_type']}' is not defined." );
 		}
 	}
-	
+
 	/**
 	 * Return array with possible values for boolean fields. Return null for all other fields.
 	 *
@@ -171,7 +174,7 @@ class MarkFormProperty extends Entity {
 		if ( 'BOOLEAN' === $this->_fields['field_type'] ) {
 			return [ 1 => __( 'True' ), 0 => __( 'False' ) ];
 		}
-		
+
 		return null;
 	}
 }

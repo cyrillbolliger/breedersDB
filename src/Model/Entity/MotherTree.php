@@ -25,7 +25,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $modified
  *
  * @property \App\Model\Entity\Tree $tree
- * @property \App\Model\Entity\Crossing[] $crossings
+ * @property \App\Model\Entity\Crossing $crossing
  */
 class MotherTree extends Entity {
 
