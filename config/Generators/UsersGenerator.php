@@ -18,8 +18,6 @@ class UsersGenerator {
                 'password'  => $hasher->hash( random_bytes( 64 ) ),
                 'level'     => '0',
                 'time_zone' => 'Europe/Brussels',
-                'created'   => date( 'Y-m-d H:i:s' ),
-                'modified'  => date( 'Y-m-d H:i:s' ),
             ];
         }
 

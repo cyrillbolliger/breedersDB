@@ -77,15 +77,11 @@ class MarkValuesGenerator {
     }
 
     private function generateData( $value ) {
-        $date = $this->faker->dateTimeThisYear->format( 'Y-m-d H:i:s' );
-
         return [
             'value'                 => $value,
             'exceptional_mark'      => (int) floor( $this->faker->randomFloat( 1, 0, 1.1 ) ),
             'mark_form_property_id' => $this->property->id,
-            'mark_id'               => $this->mark->id,
-            'created'               => $date,
-            'modified'              => $date,
+            'mark_id'               => $this->mark->id
         ];
     }
 }
