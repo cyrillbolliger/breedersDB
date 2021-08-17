@@ -46,12 +46,10 @@ services:
     container_name: poc_phpmyadmin
 
   node:
-    image: node:8
+    image: node:14
     working_dir: /home/node/app
     volumes:
       - ./:/home/node/app
-    ports:
-      - '8030:8081'
     command: npm run watch
     container_name: poc_node
 
