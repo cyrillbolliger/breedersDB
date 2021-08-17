@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\Fixture;
 
 use App\Generator\MarksGenerator;
+use App\Test\Util\DependsOnFixtureTrait;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -11,6 +12,10 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class MarksFixture extends TestFixture
 {
+    use DependsOnFixtureTrait;
+
+    protected array $dependsOnFixture = ['MarkForms'];
+
     /**
      * Init method
      *
