@@ -223,6 +223,10 @@ class BatchesControllerTest extends TestCase {
 
     private function addBatch(): Batch {
         $data  = $this->getNonExistingBatchData();
+
+        $data['date_sowed'] = date_create_from_format('d.m.Y', $data['date_sowed'])->format('Y-m-d');
+        $data['date_planted'] = date_create_from_format('d.m.Y', $data['date_planted'])->format('Y-m-d');
+
         $batch = $this->Batches->newEntity( $data );
 
         $saved = $this->Batches->saveOrFail( $batch );

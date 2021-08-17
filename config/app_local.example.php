@@ -5,6 +5,9 @@
  * Note: It is not recommended to commit files with credentials such as app_local.php
  * into source code version control.
  */
+
+use Cake\Http\Exception\MissingControllerException;
+
 return [
     /*
      * Debug Level:
@@ -97,4 +100,12 @@ return [
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
     ],
+
+    /*
+     * Do not log missing controller exceptions as they appear on every call to
+     * a non existing route by any visitor
+     */
+    'Error' => [
+        'skipLog' => [MissingControllerException::class],
+    ]
 ];
