@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:8.0-apache
 
 # update the repository sources list
 # and install basic dependencies
