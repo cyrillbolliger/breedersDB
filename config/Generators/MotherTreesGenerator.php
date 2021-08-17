@@ -2,6 +2,7 @@
 
 namespace App\Generator;
 
+use App\Model\Entity\Tree;
 use DateInterval;
 use DateTime;
 
@@ -11,10 +12,10 @@ use DateTime;
 class MotherTreesGenerator {
 
     public function generate( int $count ) {
-        $crossingsTable = \Cake\ORM\TableRegistry::getTableLocator()->get( 'Crossings' );
-        $crossings      = $crossingsTable->find()->toArray();
         $treesTable     = \Cake\ORM\TableRegistry::getTableLocator()->get( 'Trees' );
-        $trees          = $treesTable->find()->toArray();
+        $trees          = $treesTable->find()
+                                     ->contain(['Varieties', 'Varieties.Batches'])
+                                     ->toArray();
 
         $faker   = \Faker\Factory::create();
         $start   = new DateTime( '-1 year' );
@@ -22,6 +23,9 @@ class MotherTreesGenerator {
         $data    = [];
         for ( $i = 0; $i < $count; $i ++ ) {
             $crossing = $faker->unique()->regexify( '[A-Z]{1,2}[A-Za-z0-9]{3}[A-Z]{1}[A-Za-z0-9]{1,2}' );
+            /** @var Tree $tree */
+            $tree = $faker->randomElement($trees);
+
             $data[]   = [
                 'code'                  => sprintf( '%04d_%s', $faker->unique()->numberBetween( 1, 1999 ), $crossing ),
                 'planed'                => '0',
@@ -33,8 +37,8 @@ class MotherTreesGenerator {
                 'numb_fruits'           => (int) ( $flowers * 0.7 ),
                 'numb_seeds'            => $flowers * 5,
                 'note'                  => $faker->sentence(),
-                'tree_id'               => $faker->randomElement( $trees )->id,
-                'crossing_id'           => $faker->randomElement( $crossings )->id,
+                'tree_id'               => $tree->id,
+                'crossing_id'           => $tree->variety->batch->crossing_id,
                 'deleted'               => null,
                 'created'               => date( 'Y-m-d H:i:s' ),
                 'modified'              => date( 'Y-m-d H:i:s' )
