@@ -2,9 +2,9 @@
 // so you can safely delete all default props below
 
 export default {
-  failed: 'Action failed',
-  success: 'Action was successful',
+  failed: 'Aktion fehlgeschlagen',
+  success: 'Aktion erfolgreich',
   test: {
-    title: 'this is a test page'
+    title: 'dies ist eine testseite'
   }
 };

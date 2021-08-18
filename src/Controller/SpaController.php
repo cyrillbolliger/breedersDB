@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\I18n\I18n;
+
 /**
  * Spa Controller
  */
@@ -15,7 +17,8 @@ class SpaController extends AppController
      */
     public function index()
     {
-        $this->set('data', []);
+        $locale = str_replace('_', '-', I18n::getLocale());
+        $this->set('data', ['locale' => $locale]);
         $this->render('/element/ajaxreturn', AppController::LAYOUT_V2);
     }
 }

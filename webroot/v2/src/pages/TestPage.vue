@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <!-- content -->
-    <h1>test page</h1>
+    <h1>{{ $t('test.title')}}</h1>
   </q-page>
 </template>
 
