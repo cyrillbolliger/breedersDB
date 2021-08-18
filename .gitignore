@@ -3,7 +3,7 @@
 /tmp
 /logs
 /.idea
-/node_modules
+node_modules
 /npm-debug.log
 /backup
 /webroot/dev

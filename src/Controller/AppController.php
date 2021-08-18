@@ -34,6 +34,9 @@ use Cake\Core\Configure;
  */
 class AppController extends Controller {
 
+    protected const LAYOUT_V1 = 'default-v1';
+    protected const LAYOUT_V2 = 'default-v2';
+
     /**
      * Initialization hook method.
      *
@@ -111,21 +114,28 @@ class AppController extends Controller {
      *
      * @return \Cake\Network\Response|null|void
      */
-    public function beforeRender( \Cake\Event\EventInterface $event ) {
+    public function beforeRender(\Cake\Event\EventInterface $event) {
+        // if no layout is specified, use the v1 layout
+        if ( ! $this->viewBuilder()->getLayout() && ! $this->viewBuilder()->getTemplate()) {
+            $this->viewBuilder()->setLayout(self::LAYOUT_V1);
+        }
+
         // This is done here instead of the bootstrap to not affect the debug kit
         $this->setResourcesUrl();
     }
 
-    private function setResourcesUrl() {
-        $branch = 'dist/';
-
-        if ( Configure::read( 'debug' ) ) {
-            $branch = 'dev/';
+    private function setResourcesUrl(): void
+    {
+        switch ($this->viewBuilder()->getLayout()) {
+            case self::LAYOUT_V1:
+                $this->setResourcesUrlV1();
+                break;
+            case self::LAYOUT_V2:
+                $this->setResourcesUrlV2();
+                break;
+            default:
+                // do not load any resources
         }
-
-        Configure::write( 'App.cssBaseUrl', $branch . Configure::read( 'App.cssBaseUrl' ) );
-        Configure::write( 'App.jsBaseUrl', $branch . Configure::read( 'App.jsBaseUrl' ) );
-        Configure::write( 'App.imgBaseUrl', $branch . Configure::read( 'App.imgBaseUrl' ) );
     }
 
     public function beforeFilter( \Cake\Event\EventInterface $event ) {
@@ -193,5 +203,42 @@ class AppController extends Controller {
         if ( ! is_dir( $sessionsDir ) ) {
             mkdir( $sessionsDir, 0700, true );
         }
+    }
+
+    private function setResourcesUrlV1(): void
+    {
+        $branch = Configure::read('debug') ? 'dev' : 'dist';
+
+        Configure::write('App.cssBaseUrl', "v1/$branch/".Configure::read('App.cssBaseUrl'));
+        Configure::write('App.jsBaseUrl', "v1/$branch/".Configure::read('App.jsBaseUrl'));
+        Configure::write('App.imgBaseUrl', "v1/$branch/".Configure::read('App.imgBaseUrl'));
+    }
+
+    private function setResourcesUrlV2(): void
+    {
+        $dev = (bool) Configure::read('debug');
+
+        if ($dev) {
+            $css = ['http://localhost:8080/vendor.css', 'http://localhost:8080/app.css'];
+            $js = ['http://localhost:8080/vendor.js', 'http://localhost:8080/app.js'];
+        } else {
+            $css = $this->getV2ResourceRelUrls('css');
+            $js  = $this->getV2ResourceRelUrls('js');
+        }
+
+        $this->set('css', $css);
+        $this->set('js', $js);
+    }
+
+    /**
+     * @return array|string|string[]|null
+     */
+    private function getV2ResourceRelUrls(string $type): string|array|null
+    {
+        $glob  = "{app,vendor}.*.$type";
+        $path  = WWW_ROOT."v2/dist/spa/$type/$glob";
+        $files = glob($path, GLOB_BRACE | GLOB_ERR);
+
+        return preg_replace('/^.*?\/webroot(?=\/)/', '', $files);
     }
 }
