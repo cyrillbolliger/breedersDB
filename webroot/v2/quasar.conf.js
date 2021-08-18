@@ -87,7 +87,10 @@ module.exports = configure(function (ctx) {
     devServer: {
       https: false,
       port: 8080,
-      open: 'firefox'
+      open: 'firefox',
+      headers: {
+        'Access-Control-Allow-Origin': 'http://localhost:8000'
+      }
     },
 
     // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
