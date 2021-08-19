@@ -5,8 +5,18 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
-      { path: 'test', component: () => import('pages/TestPage.vue') }
+      {
+        path: '',
+        component: () => import('pages/Index.vue'),
+      },
+      {
+        path: 'marks/select-form',
+        component: () => import('pages/marks/SelectForm.vue')
+      },
+      {
+        path: 'test',
+        component: () => import('pages/TestPage.vue')
+      }
     ],
   },
 

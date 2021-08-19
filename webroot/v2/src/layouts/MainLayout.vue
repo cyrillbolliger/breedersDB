@@ -1,26 +1,63 @@
 <template>
+  <q-ajax-bar
+    ref="bar"
+    position="top"
+    color="accent"
+    size="0.25rem"
+  />
+
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header
+      elevated
+      id="header"
+    >
+
       <q-toolbar>
+        <q-btn
+          v-if="back"
+          color="white"
+          flat
+          icon="arrow_back"
+          round
+        />
+
+        <q-toolbar-title>
+          {{ title }}
+        </q-toolbar-title>
+
         <q-btn
           flat
           dense
           round
           icon="menu"
           aria-label="Menu"
-          @click="toggleLeftDrawer"
+          @click="toggleRightDrawer"
         />
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
+
+      <q-toolbar v-if="breadcrumbs.length">
+        <q-breadcrumbs active-color="white">
+          <q-breadcrumbs-el
+            v-for="(breadcrumb, index) in breadcrumbs"
+            :key="index"
+            :label="breadcrumb.label"
+            :icon="breadcrumb.icon"
+            :disable="breadcrumb.disable"
+            :to="breadcrumb.to"
+          />
+        </q-breadcrumbs>
+      </q-toolbar>
+
     </q-header>
 
+    <q-page-container class="q-mt-sm">
+      <router-view/>
+    </q-page-container>
+
     <q-drawer
-      v-model="leftDrawerOpen"
+      v-model="rightDrawerOpen"
+      side="right"
       show-if-above
       bordered
       class="bg-grey-1"
@@ -40,10 +77,6 @@
         />
       </q-list>
     </q-drawer>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
   </q-layout>
 </template>
 
@@ -95,7 +128,9 @@ const linksList = [
   }
 ];
 
-import { defineComponent, ref } from 'vue'
+import {computed, defineComponent, ref} from 'vue'
+import {useStore} from 'src/store';
+import {LayoutBreadcrumbsInterface} from 'src/store/module-layout/state';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -105,13 +140,21 @@ export default defineComponent({
   },
 
   setup () {
-    const leftDrawerOpen = ref(false)
+    const $store = useStore();
+    const rightDrawerOpen = ref(false)
 
     return {
+      /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+      /* eslint-disable @typescript-eslint/no-unsafe-return */
+      title: computed<string>(() => $store.getters['layout/title']),
+      back: computed<string|null>(() => $store.getters['layout/back']),
+      breadcrumbs: computed<LayoutBreadcrumbsInterface[]>(() => $store.getters['layout/breadcrumbs']),
+      /* eslint-enable @typescript-eslint/no-unsafe-member-access */
+      /* eslint-enable @typescript-eslint/no-unsafe-return */
       essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
+      rightDrawerOpen,
+      toggleRightDrawer() {
+        rightDrawerOpen.value = !rightDrawerOpen.value
       }
     }
   }
