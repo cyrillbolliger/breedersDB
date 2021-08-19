@@ -86,3 +86,8 @@ Router::scope('/', function (RouteBuilder $routes) {
  * });
  * ```
  */
+Router::scope('/api/1', ['prefix' => 'REST1'], function(RouteBuilder $routes) {
+    $routes->setExtensions(['json']);
+
+    $routes->fallbacks(DashedRoute::class);
+});
