@@ -140,6 +140,8 @@ class MarkFormPropertiesController extends AppController {
 		$this->set( 'markFormProperty', $markFormProperty );
 		$this->set( '_serialize', [ 'markFormProperty' ] );
 
+		$this->viewBuilder()->setLayout('raw');
+
 		switch ( $view ) {
 			case 'field_edit_form_mode':
 				$this->render( '/element/Mark/field_edit_form_mode' );

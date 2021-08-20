@@ -221,6 +221,7 @@ class BatchesController extends AppController {
 			'params'     => $params,
 			'nav'        => 'Batch/nav'
 		] );
+        $this->viewBuilder()->setLayout('raw');
 		$this->render( '/element/print' );
 	}
 }

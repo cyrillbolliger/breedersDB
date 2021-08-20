@@ -198,6 +198,8 @@ class MarkScannerCodesController extends AppController {
 			'params'     => $params,
 			'nav'        => 'Mark/nav'
 		] );
+
+        $this->viewBuilder()->setLayout('raw');
 		$this->render( '/element/print' );
 	}
 
@@ -219,6 +221,8 @@ class MarkScannerCodesController extends AppController {
 			'params'     => null,
 			'nav'        => 'Mark/nav'
 		] );
+
+        $this->viewBuilder()->setLayout('raw');
 		$this->render( '/element/print' );
 	}
 }

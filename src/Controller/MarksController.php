@@ -324,6 +324,7 @@ class MarksController extends AppController {
 		$this->set( 'markFormFields', $markFormFields );
 		$this->set( '_serialize', [ 'markFormFields' ] );
 
+		$this->viewBuilder()->setLayout('raw');
 		$this->render( '/element/Mark/fields' );
 	}
 
