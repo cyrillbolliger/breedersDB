@@ -14,6 +14,10 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/marks/SelectForm.vue')
       },
       {
+        path: 'marks/set-meta',
+        component: () => import('pages/marks/SetMeta.vue')
+      },
+      {
         path: 'test',
         component: () => import('pages/TestPage.vue')
       }

@@ -1,6 +1,6 @@
 import { GetterTree } from 'vuex';
 import { StateInterface } from '../index';
-import {LayoutBreadcrumbsInterface, LayoutStateInterface} from './state';
+import {LayoutBreadcrumbsInterface, LayoutStateInterface, LayoutTabsInterface} from './state';
 
 const getters: GetterTree<LayoutStateInterface, StateInterface> = {
   title(state): string {
@@ -11,9 +11,13 @@ const getters: GetterTree<LayoutStateInterface, StateInterface> = {
     return state.back;
   },
 
-  breadcrumbs(state): Array<LayoutBreadcrumbsInterface>{
+  breadcrumbs(state): LayoutBreadcrumbsInterface[]{
     return state.breadcrumbs;
   },
+
+  tabs(state): LayoutTabsInterface[] {
+    return state.tabs
+  }
 };
 
 export default getters;

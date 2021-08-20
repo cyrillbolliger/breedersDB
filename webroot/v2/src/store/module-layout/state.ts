@@ -2,18 +2,23 @@ import {LooseDictionary} from 'quasar/dist/types/ts-helpers';
 
 export interface LayoutBreadcrumbsInterface {
   to? : string | LooseDictionary
-  // exact? : boolean
-  // replace? : boolean
-  // activeClass? : string
-  // exactActiveClass? : string
   disable? : boolean
   label? : string
+  icon? : string
+}
+
+export interface LayoutTabsInterface {
+  to? : string | LooseDictionary
+  disable? : boolean
+  label? : string
+  icon? : string
 }
 
 export interface LayoutStateInterface {
   title: string;
   back: string | null,
-  breadcrumbs: Array<LayoutBreadcrumbsInterface>,
+  breadcrumbs: LayoutBreadcrumbsInterface[],
+  tabs: LayoutTabsInterface[],
 }
 
 function state(): LayoutStateInterface {
@@ -21,6 +26,7 @@ function state(): LayoutStateInterface {
     title: '',
     back: null,
     breadcrumbs: [],
+    tabs: [],
   };
 }
 

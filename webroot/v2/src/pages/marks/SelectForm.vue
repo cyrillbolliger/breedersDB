@@ -1,6 +1,8 @@
 <template>
   <q-page padding>
 
+    <h5 class="q-mb-sm q-mt-sm">{{t('marks.selectForm.title')}}</h5>
+
     <q-input
       v-model="search"
       debounce="100"
@@ -74,22 +76,26 @@ import {MarkForm} from 'components/models';
 import Loader from 'components/Util/Loader.vue';
 import {AxiosError} from 'axios';
 import {useQuasar} from 'quasar'
+import {useRouter} from 'vue-router'
+import useLayout from 'src/composeables/layout'
+import useMarkTabNav from 'src/composeables/marks/tab-nav';
 
 export default defineComponent({
   name: 'MarksSelectForm',
   components: {Loader},
 
   setup() {
-
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
-    const $store = useStore()
+    const store = useStore()
     const $q = useQuasar()
+    const router = useRouter()
+    const { setToolbarTitle, setToolbarTabs } = useLayout()
 
     const markForms = ref<MarkForm[]>([])
     const loading = ref(false)
     const search = ref('')
 
-    const selectedForm = computed<MarkForm | null>(() => $store.getters['mark/selectedForm']) // eslint-disable-line
+    const selectedForm = computed<MarkForm | null>(() => store.getters['mark/selectedForm']) // eslint-disable-line
     const filteredForms = computed<MarkForm[]>(() => {
       if (!search.value) {
         return markForms.value
@@ -136,17 +142,13 @@ export default defineComponent({
     }
 
     function selectForm(form: MarkForm) {
-      void $store.dispatch('mark/selectForm', form)
-      // todo routing
+      void store.dispatch('mark/selectForm', form)
+      void router.push('/marks/set-meta');
     }
 
 
-    const breadcrumbs = [
-      {label: t('marks.title')},
-      {label: t('marks.selectForm.title')}
-    ];
-    void $store.dispatch('layout/breadcrumbs', breadcrumbs)
-    void $store.dispatch('layout/title', t('marks.selectForm.title'))
+    setToolbarTabs(useMarkTabNav())
+    setToolbarTitle(t('marks.title'))
 
     loadForms()
 

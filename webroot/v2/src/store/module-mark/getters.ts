@@ -1,11 +1,19 @@
 import { GetterTree } from 'vuex';
 import { StateInterface } from '../index';
 import { MarkStateInterface } from './state';
-import {MarkForm} from 'components/models';
 
 const getters: GetterTree<MarkStateInterface, StateInterface> = {
-  selectedForm (state): MarkForm|null {
+  selectedForm (state) {
     return state.selectedForm
+  },
+  author (state) {
+    return state.author
+  },
+  date (state) {
+    return state.date
+  },
+  tree (state) {
+    return state.tree
   }
 };
 

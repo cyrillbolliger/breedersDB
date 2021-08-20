@@ -7,10 +7,28 @@ export default {
 
     selectForm: {
       title: 'Select Form',
+      tab: 'Form',
       selected: 'selected',
       listMetaFiltered: 'Filtered list. Showing {showing} out of {total} items.',
       listMetaUnfiltered: '{total} items',
       nothingFound: 'Nothing found'
+    },
+
+    setMeta: {
+      title: 'Set Meta Data',
+      tab: 'Meta',
+      author: 'Author',
+      authorHint: 'The name of the person how does the rating.',
+      date: 'Date',
+      dateHint: 'The date of the rating.'
+    },
+
+    setTree: {
+      tab: 'Tree',
+    },
+
+    mark: {
+      tab: 'Mark',
     },
   },
 
@@ -21,7 +39,12 @@ export default {
     loading: 'Loading...',
     retry: 'Retry',
     failedToLoadData: 'Failed to load data.',
-    refreshList: 'Refresh list'
+    refreshList: 'Refresh list',
+    next: 'Next',
+
+    form: {
+      required: 'Field is required'
+    },
   },
 
 

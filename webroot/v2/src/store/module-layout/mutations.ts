@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex';
-import {LayoutBreadcrumbsInterface, LayoutStateInterface} from './state';
+import {LayoutBreadcrumbsInterface, LayoutStateInterface, LayoutTabsInterface} from './state';
 
 const mutation: MutationTree<LayoutStateInterface> = {
   title (state: LayoutStateInterface, title: string) {
@@ -10,9 +10,13 @@ const mutation: MutationTree<LayoutStateInterface> = {
     state.back = back;
   },
 
-  breadcrumbs (state: LayoutStateInterface, breadcrumbs: Array<LayoutBreadcrumbsInterface>) {
+  breadcrumbs (state: LayoutStateInterface, breadcrumbs: LayoutBreadcrumbsInterface[]) {
     state.breadcrumbs = breadcrumbs;
   },
+
+  tabs (state: LayoutStateInterface, tabs: LayoutTabsInterface[]) {
+    state.tabs = tabs;
+  }
 };
 
 export default mutation;

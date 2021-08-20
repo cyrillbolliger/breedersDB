@@ -49,9 +49,22 @@
         </q-breadcrumbs>
       </q-toolbar>
 
+      <q-toolbar v-if="tabs.length">
+        <q-tabs>
+          <q-route-tab
+            v-for="(tab, index) in tabs"
+            :key="index"
+            :label="tab.label"
+            :icon="tab.icon"
+            :disable="tab.disable"
+            :to="tab.to"
+          />
+        </q-tabs>
+      </q-toolbar>
+
     </q-header>
 
-    <q-page-container class="q-mt-sm">
+    <q-page-container>
       <router-view/>
     </q-page-container>
 
@@ -131,6 +144,7 @@ const linksList = [
 import {computed, defineComponent, ref} from 'vue'
 import {useStore} from 'src/store';
 import {LayoutBreadcrumbsInterface} from 'src/store/module-layout/state';
+import {LayoutTabsInterface} from 'src/store/module-layout/state';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -149,6 +163,7 @@ export default defineComponent({
       title: computed<string>(() => $store.getters['layout/title']),
       back: computed<string|null>(() => $store.getters['layout/back']),
       breadcrumbs: computed<LayoutBreadcrumbsInterface[]>(() => $store.getters['layout/breadcrumbs']),
+      tabs: computed<LayoutTabsInterface[]>(() => $store.getters['layout/tabs']),
       /* eslint-enable @typescript-eslint/no-unsafe-member-access */
       /* eslint-enable @typescript-eslint/no-unsafe-return */
       essentialLinks: linksList,
