@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
 
-    <h5 class="q-mb-sm q-mt-sm">{{t('marks.selectForm.title')}}</h5>
+    <h5 class="q-mb-sm q-mt-sm">{{ t('marks.selectForm.title') }}</h5>
 
     <q-input
       v-model="search"
@@ -32,7 +32,8 @@
             <q-item-section>
               <q-item-label
                 class="text-italic text-grey text-center"
-              >{{ t('marks.selectForm.nothingFound') }}</q-item-label>
+              >{{ t('marks.selectForm.nothingFound') }}
+              </q-item-label>
             </q-item-section>
           </q-item>
 
@@ -71,14 +72,12 @@
 import {computed, defineComponent, ref} from 'vue'
 import {useI18n} from 'vue-i18n';
 import {useStore} from 'src/store';
-import {api} from 'boot/axios';
 import {MarkForm} from 'components/models';
 import Loader from 'components/Util/Loader.vue';
-import {AxiosError} from 'axios';
-import {useQuasar} from 'quasar'
 import {useRouter} from 'vue-router'
-import useLayout from 'src/composeables/layout'
-import useMarkTabNav from 'src/composeables/marks/tab-nav';
+import useLayout from 'src/composables/layout'
+import useMarkTabNav from 'src/composables/marks/tab-nav';
+import useApi from 'src/composables/api'
 
 export default defineComponent({
   name: 'MarksSelectForm',
@@ -87,12 +86,11 @@ export default defineComponent({
   setup() {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
     const store = useStore()
-    const $q = useQuasar()
+    const {working, get} = useApi()
     const router = useRouter()
-    const { setToolbarTitle, setToolbarTabs } = useLayout()
+    const {setToolbarTitle, setToolbarTabs} = useLayout()
 
     const markForms = ref<MarkForm[]>([])
-    const loading = ref(false)
     const search = ref('')
 
     const selectedForm = computed<MarkForm | null>(() => store.getters['mark/selectedForm']) // eslint-disable-line
@@ -116,29 +114,10 @@ export default defineComponent({
       }
     })
 
-    function loadForms(done?: () => void) {
-      loading.value = true
-      markForms.value = []
-      api.get('markForms/index')
-        .then(data => markForms.value = data.data.data) // eslint-disable-line
-        .catch(error => handleLoadingError(error))
-        .finally(() => {
-          if (done) {
-            done()
-          }
-          loading.value = false
-        })
-    }
-
-    function handleLoadingError(error: Error | AxiosError) {
-      console.log(error.message)
-      $q.notify({
-        message: t('general.failedToLoadData'),
-        color: 'negative',
-        actions: [
-          { label: t('general.retry'), color: 'white', handler: () => loadForms() },
-        ]
-      })
+    function loadForms(done: () => void) {
+      get('markForms/index')
+        .then(data => markForms.value = data)
+        .finally(done)
     }
 
     function selectForm(form: MarkForm) {
@@ -158,7 +137,7 @@ export default defineComponent({
       selectedForm,
       selectForm,
       loadForms,
-      loading,
+      loading: working,
       search,
       listMeta,
     }

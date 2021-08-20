@@ -23,7 +23,8 @@ export default {
       dateHint: 'The date of the rating.'
     },
 
-    setTree: {
+    selectTree: {
+      title: 'Select Tree',
       tab: 'Tree',
     },
 
@@ -32,6 +33,10 @@ export default {
     },
   },
 
+
+  trees: {
+    publicid: 'Publicid'
+  },
 
 
   general: {

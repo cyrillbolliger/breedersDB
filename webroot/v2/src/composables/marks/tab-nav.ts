@@ -10,21 +10,21 @@ export default function useMarkTabNav() {
 
   const disableSetTreeTab = computed<boolean>(() => {
     /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
-    return ! store.getters['mark/selectedForm']
-      || ! store.getters['mark/author']
-      || ! store.getters['mark/date']
+    return !store.getters['mark/selectedForm']
+      || !store.getters['mark/author']
+      || !store.getters['mark/date']
     /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
   });
 
-  const disableMarkTab = computed<boolean>( () => {
+  const disableMarkTab = computed<boolean>(() => {
     return disableSetTreeTab.value
-      || ! store.getters['mark/tree'] // eslint-disable-line
+      || !store.getters['mark/tree'] // eslint-disable-line
   });
 
   const tabs: LayoutTabsInterface[] = [
     {label: t('marks.selectForm.tab'), to: '/marks/select-form'},
     {label: t('marks.setMeta.tab'), to: '/marks/set-meta'},
-    {label: t('marks.setTree.tab'), to: '/marks/set-tree', disable: disableSetTreeTab.value},
+    {label: t('marks.selectTree.tab'), to: '/marks/select-tree', disable: disableSetTreeTab.value},
     {label: t('marks.mark.tab'), to: '/marks/mark', disable: disableMarkTab.value},
   ];
 

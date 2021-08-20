@@ -1,11 +1,10 @@
-import {MarkForm} from 'components/models';
+import {MarkForm, Tree} from 'components/models';
 
 export interface MarkStateInterface {
-  selectedForm: MarkForm|null
+  selectedForm: MarkForm | null
   author: string
   date: string
-  // tree: Tree
-  tree: any
+  tree: Tree | null
 }
 
 function state(): MarkStateInterface {

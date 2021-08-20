@@ -23,7 +23,6 @@
         :label="t('marks.setMeta.date')"
         :hint="t('marks.setMeta.dateHint')"
         ref="dateField"
-        fill-mask=""
       />
 
       <q-btn
@@ -42,8 +41,8 @@ import {computed, defineComponent, ref} from 'vue'
 import {useRouter} from 'vue-router'
 import {useI18n} from 'vue-i18n';
 import {useStore} from 'src/store';
-import useMarkTabNav from 'src/composeables/marks/tab-nav';
-import useLayout from 'src/composeables/layout';
+import useMarkTabNav from 'src/composables/marks/tab-nav';
+import useLayout from 'src/composables/layout';
 
 export default defineComponent({
   name: 'SetMeta',
@@ -81,7 +80,7 @@ export default defineComponent({
 
     function goToNext() {
       if (isValid()) {
-        router.push('/')
+        router.push('/marks/select-tree')
       }
     }
 
