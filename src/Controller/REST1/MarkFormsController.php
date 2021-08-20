@@ -13,6 +13,15 @@ use App\Controller\AppController;
  */
 class MarkFormsController extends AppController
 {
+    public function beforeRender(\Cake\Event\EventInterface $event)
+    {
+        $this->viewBuilder()
+             ->setClassName('Json')
+             ->setOption('serialize', ['data']);
+
+        parent::beforeRender($event);
+    }
+
     /**
      * Index method
      *
@@ -24,10 +33,7 @@ class MarkFormsController extends AppController
             ->find()
             ->orderAsc('name')
             ->all();
-        $this->set(compact('data'));
-        $this->viewBuilder()
-             ->setClassName('Json')
-             ->setOption('serialize', ['data']);
+        $this->set('data', $data);
     }
 
     /**
