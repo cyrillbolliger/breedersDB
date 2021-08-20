@@ -114,9 +114,9 @@ export default defineComponent({
       }
     })
 
-    function loadForms(done: () => void) {
+    function loadForms(done: () => void = () => null) {
       get('markForms/index')
-        .then(data => markForms.value = data)
+        .then(data => markForms.value = data) // eslint-disable-line
         .finally(done)
     }
 

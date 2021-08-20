@@ -51,7 +51,7 @@ export default defineComponent({
       params.append('term', publicid.value)
       const url = 'trees/get-tree?' + params.toString()
 
-      get(url)
+      void get(url)
         .then((tree: Tree) => {
           if (tree) {
             emit('selected', tree)

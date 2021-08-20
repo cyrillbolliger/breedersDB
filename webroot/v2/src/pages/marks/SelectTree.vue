@@ -17,6 +17,7 @@ import useMarkTabNav from 'src/composables/marks/tab-nav';
 import {useI18n} from 'vue-i18n';
 import TreeSelector from 'components/Tree/TreeSelector.vue';
 import {useStore} from 'src/store';
+import {Tree} from 'components/models';
 
 export default defineComponent({
   name: 'SelectTree',
@@ -32,8 +33,8 @@ export default defineComponent({
     setToolbarTitle(t('marks.title'))
 
 
-    function setTree(tree) {
-      store.dispatch('mark/tree', tree)
+    function setTree(tree: Tree) {
+      void store.dispatch('mark/tree', tree)
     }
 
     return {

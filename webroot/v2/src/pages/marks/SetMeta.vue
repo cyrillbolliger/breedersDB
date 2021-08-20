@@ -58,8 +58,8 @@ export default defineComponent({
     setToolbarTitle(t('marks.title'))
 
 
-    const authorField = ref(null)
-    const dateField = ref(null)
+    const authorField = ref()
+    const dateField = ref()
 
 
     const author = computed<string>({
@@ -73,14 +73,14 @@ export default defineComponent({
 
 
     function isValid() {
-      const author = authorField.value?.validate()
-      const date = dateField.value?.validate()
-      return author && date
+      const author = authorField.value?.validate() // eslint-disable-line
+      const date = dateField.value?.validate() // eslint-disable-line
+      return !! (author && date)
     }
 
     function goToNext() {
       if (isValid()) {
-        router.push('/marks/select-tree')
+        void router.push('/marks/select-tree')
       }
     }
 
