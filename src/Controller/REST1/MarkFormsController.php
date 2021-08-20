@@ -46,12 +46,18 @@ class MarkFormsController extends AppController
      */
     public function view($id = null)
     {
-        // todo
+        $data = $this->MarkForms->get($id, [
+            'contain' => [
+                'MarkFormProperties' => [
+                    'sort' => ['MarkFormFields.priority' => 'ASC']
+                ]
+            ],
+        ])->toArray();
 
-        $markForm = $this->MarkForms->get($id, [
-            'contain' => ['MarkFormProperties', 'Marks'],
-        ]);
+        foreach($data['mark_form_properties'] as $key => $value){
+            unset( $data['mark_form_properties'][$key]['_joinData']);
+        }
 
-        $this->set(compact('markForm'));
+        $this->set('data', $data);
     }
 }

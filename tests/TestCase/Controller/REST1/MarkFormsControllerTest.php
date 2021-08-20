@@ -77,7 +77,31 @@ class MarkFormsControllerTest extends TestCase
      */
     public function testView(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $entity = $this->addEntity();
+
+        $this->get( self::ENDPOINT . "/view/{$entity->id}"  );
+
+        $this->assertResponseSuccess();
+        $this->assertResponseCode( 200 );
+        $this->assertContentType('application/json');
+
+        $query = $this->Table
+            ->get($entity->id, [
+                'contain' => [
+                    'MarkFormProperties' => [
+                        'sort' => ['MarkFormFields.priority' => 'ASC'],
+                    ],
+                ],
+            ]);
+
+        $data = $query->toArray();
+        foreach($data['mark_form_properties'] as $idx => $markFormProperty){
+            unset( $data['mark_form_properties'][$idx]['_joinData']);
+        }
+
+        $expected = ['data' => $data];
+        $json = json_encode($expected, JSON_PRETTY_PRINT|JSON_THROW_ON_ERROR);
+        self::assertEquals($json, (string)$this->_response->getBody());
     }
 
     /**
