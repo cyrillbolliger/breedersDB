@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller\REST1;
 
 use App\Controller\REST1\MarkFormsController;
 use App\Model\Entity\MarkForm;
+use App\Model\Entity\MarkFormProperty;
 use App\Model\Table\MarkFormsTable;
 use App\Test\TestCase\Controller\Shared\MarkFormsControllerTestTrait;
 use App\Test\Util\AjaxTrait;
@@ -96,7 +97,10 @@ class MarkFormsControllerTest extends TestCase
 
         $data = $query->toArray();
         foreach($data['mark_form_properties'] as $idx => $markFormProperty){
-            unset( $data['mark_form_properties'][$idx]['_joinData']);
+            unset(
+                $data['mark_form_properties'][$idx]['_joinData'],
+                $data['mark_form_properties'][$idx]['validation_rule']
+            );
         }
 
         $expected = ['data' => $data];

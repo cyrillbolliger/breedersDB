@@ -55,7 +55,10 @@ class MarkFormsController extends AppController
         ])->toArray();
 
         foreach($data['mark_form_properties'] as $key => $value){
-            unset( $data['mark_form_properties'][$key]['_joinData']);
+            unset(
+                $data['mark_form_properties'][$key]['_joinData'],
+                $data['mark_form_properties'][$key]['validation_rule']
+            );
         }
 
         $this->set('data', $data);

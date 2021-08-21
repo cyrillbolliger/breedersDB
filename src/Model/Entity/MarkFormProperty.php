@@ -21,6 +21,7 @@ use Cake\ORM\Entity;
  * @property boolean tree_property
  * @property boolean variety_property
  * @property boolean batch_property
+ * @property-read object $number_constraints
  *
  * @property \App\Model\Entity\MarkFormPropertyType $mark_form_property_type
  * @property \App\Model\Entity\MarkFormField[] $mark_form_fields
@@ -41,6 +42,8 @@ class MarkFormProperty extends Entity {
 		'*'  => true,
 		'id' => false
 	];
+
+    protected $_virtual = ['number_constraints'];
 
 	/**
 	 * Return an array with all possible aggregation types for the MarkFormProperty::field_type.
@@ -177,4 +180,26 @@ class MarkFormProperty extends Entity {
 
 		return null;
 	}
+
+	protected function _getNumberConstraints() {
+	    if (! $this->_getIsNumerical()) {
+	        return null;
+        }
+
+	    if ('INTEGER' === $this->_fields['field_type']) {
+            $min = (int)$this->validation_rule['min'];
+            $max = (int)$this->validation_rule['max'];
+            $step = (int)$this->validation_rule['step'];
+        } else {
+            $min = (float)$this->validation_rule['min'];
+            $max = (float)$this->validation_rule['max'];
+            $step = (float)$this->validation_rule['step'];
+        }
+
+	    return (object) [
+	        'min' => $min,
+            'max' => $max,
+            'step' => $step
+        ];
+    }
 }
