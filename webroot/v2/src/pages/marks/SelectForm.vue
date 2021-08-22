@@ -3,6 +3,7 @@
 
     <h5 class="q-mb-sm q-mt-sm">{{ t('marks.selectForm.title') }}</h5>
 
+    <!--suppress RequiredAttributes -->
     <q-input
       v-model="search"
       debounce="100"
@@ -115,14 +116,15 @@ export default defineComponent({
     })
 
     function loadForms(done: () => void = () => null) {
-      get('markForms/index')
+      void get('markForms/index')
         .then(data => markForms.value = data) // eslint-disable-line
         .finally(done)
     }
 
     function selectForm(form: MarkForm) {
-      void store.dispatch('mark/selectForm', form)
-      void router.push('/marks/set-meta');
+      void get(`markForms/view/${form.id}`)
+        .then(data => store.dispatch('mark/selectForm', data))
+        .then(() => void router.push('/marks/set-meta'))
     }
 
 

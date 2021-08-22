@@ -25,7 +25,7 @@ export default function useMarkTabNav() {
     {label: t('marks.selectForm.tab'), to: '/marks/select-form'},
     {label: t('marks.setMeta.tab'), to: '/marks/set-meta'},
     {label: t('marks.selectTree.tab'), to: '/marks/select-tree', disable: disableSetTreeTab.value},
-    {label: t('marks.mark.tab'), to: '/marks/mark', disable: disableMarkTab.value},
+    {label: t('marks.markTree.tab'), to: '/marks/mark-tree', disable: disableMarkTab.value},
   ];
 
   return tabs

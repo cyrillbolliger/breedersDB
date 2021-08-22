@@ -4,6 +4,7 @@
     <h5 class="q-mb-lg q-mt-sm">{{ t('marks.setMeta.title') }}</h5>
 
     <div class="q-gutter-md">
+      <!--suppress RequiredAttributes -->
       <q-input
         outlined
         v-model="author"
@@ -15,6 +16,7 @@
         ref="authorField"
       />
 
+      <!--suppress RequiredAttributes -->
       <q-input
         outlined
         v-model="date"
@@ -43,6 +45,7 @@ import {useI18n} from 'vue-i18n';
 import {useStore} from 'src/store';
 import useMarkTabNav from 'src/composables/marks/tab-nav';
 import useLayout from 'src/composables/layout';
+import {QInput} from 'quasar';
 
 export default defineComponent({
   name: 'SetMeta',
@@ -58,8 +61,8 @@ export default defineComponent({
     setToolbarTitle(t('marks.title'))
 
 
-    const authorField = ref()
-    const dateField = ref()
+    const authorField = ref<typeof QInput>()
+    const dateField = ref<typeof QInput>()
 
 
     const author = computed<string>({
@@ -73,9 +76,9 @@ export default defineComponent({
 
 
     function isValid() {
-      const author = authorField.value?.validate() // eslint-disable-line
-      const date = dateField.value?.validate() // eslint-disable-line
-      return !! (author && date)
+      const author = authorField.value?.validate() as null|boolean // eslint-disable-line @typescript-eslint/no-unsafe-call
+      const date = dateField.value?.validate() as null|boolean // eslint-disable-line @typescript-eslint/no-unsafe-call
+      return !!(author && date)
     }
 
     function goToNext() {

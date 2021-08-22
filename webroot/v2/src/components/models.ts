@@ -1,7 +1,35 @@
+export enum MarkFormFieldTypes {
+  Integer = 'INTEGER',
+  Float = 'FLOAT',
+  Boolean = 'BOOLEAN',
+  Date = 'DATE',
+  String = 'VARCHAR',
+}
+
+export type MarkFormFieldNumberConstraints = null | {min: number, max: number, step: number}
+
+export interface MarkFromProperties {
+  id: number
+  name: string
+  number_constraints: MarkFormFieldNumberConstraints
+  field_type: MarkFormFieldTypes
+  note: string | null
+  mark_form_property_type_id: number
+  // created: date|null
+  // modified: date|null
+  tree_property: boolean
+  variety_property: boolean
+  batch_property: boolean
+  // mark_form_property_type?: MarkFormPropertyType
+}
+
 export interface MarkForm {
   id: number
   name: string
-  description: string
+  description: string | null
+  // created: date|null
+  // modified: date|null
+  mark_form_properties?: MarkFromProperties[] | null
 }
 
 export interface Tree {

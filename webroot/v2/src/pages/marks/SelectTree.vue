@@ -18,6 +18,7 @@ import {useI18n} from 'vue-i18n';
 import TreeSelector from 'components/Tree/TreeSelector.vue';
 import {useStore} from 'src/store';
 import {Tree} from 'components/models';
+import {useRouter} from 'vue-router'
 
 export default defineComponent({
   name: 'SelectTree',
@@ -25,6 +26,7 @@ export default defineComponent({
   setup() {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
     const store = useStore()
+    const router = useRouter()
 
     const publicid = ref(null)
 
@@ -35,6 +37,7 @@ export default defineComponent({
 
     function setTree(tree: Tree) {
       void store.dispatch('mark/tree', tree)
+      void router.push('/marks/mark-tree')
     }
 
     return {

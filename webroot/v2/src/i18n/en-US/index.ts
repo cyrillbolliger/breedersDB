@@ -28,8 +28,13 @@ export default {
       tab: 'Tree',
     },
 
-    mark: {
+    markTree: {
+      title: 'Mark Tree',
       tab: 'Mark',
+      missingDataError: 'Missing data.',
+      setMeta: 'Add meta data',
+      selectTree: 'Select tree',
+      selectForm: 'Select form',
     },
   },
 
@@ -46,9 +51,11 @@ export default {
     failedToLoadData: 'Failed to load data.',
     refreshList: 'Refresh list',
     next: 'Next',
+    dismiss: 'Dismiss',
 
     form: {
-      required: 'Field is required'
+      required: 'Field is required',
+      max255chars: 'Max. 255 characters allowed',
     },
   },
 
