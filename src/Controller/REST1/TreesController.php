@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller\REST1;
 
-use App\Controller\AppController;
+use App\Controller\REST1Controller;
+use Cake\Http\Response;
 
 /**
  * Trees Controller
@@ -11,19 +12,12 @@ use App\Controller\AppController;
  * @property \App\Model\Table\TreesTable $Trees
  * @method \App\Model\Entity\Tree[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class TreesController extends AppController
+class TreesController extends REST1Controller
 {
-    public function beforeRender(\Cake\Event\EventInterface $event)
-    {
-        $this->viewBuilder()
-             ->setClassName('Json')
-             ->setOption('serialize', ['data']);
-
-        parent::beforeRender($event);
-    }
-
     /**
      * Return tree
+     *
+     * @return Response|void
      */
     public function getTree() {
         $allowed_fields = [ 'publicid' ];

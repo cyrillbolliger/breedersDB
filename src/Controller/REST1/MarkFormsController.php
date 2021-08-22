@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\REST1;
 
-use App\Controller\AppController;
+use App\Controller\REST1Controller;
 
 /**
  * MarkForms Controller
@@ -11,17 +11,8 @@ use App\Controller\AppController;
  * @property \App\Model\Table\MarkFormsTable $MarkForms
  * @method \App\Model\Entity\MarkForm[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class MarkFormsController extends AppController
+class MarkFormsController extends REST1Controller
 {
-    public function beforeRender(\Cake\Event\EventInterface $event)
-    {
-        $this->viewBuilder()
-             ->setClassName('Json')
-             ->setOption('serialize', ['data']);
-
-        parent::beforeRender($event);
-    }
-
     /**
      * Index method
      *

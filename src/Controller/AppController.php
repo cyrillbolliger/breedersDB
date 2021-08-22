@@ -92,13 +92,14 @@ class AppController extends Controller {
     /**
      * Set default access roules
      *
-     * @param type $user
+     * @param  array  $user
      *
      * @return boolean
      */
-    public function isAuthorized( $user ) {
-        // grant access to everything for users with level 0
-        if ( isset( $user['level'] ) && 0 === $user['level'] ) {
+    public function isAuthorized( array $user ): bool
+    {
+        // grant access to everything to any connected user
+        if ( !empty( $user ) ) {
             return true;
         }
 
