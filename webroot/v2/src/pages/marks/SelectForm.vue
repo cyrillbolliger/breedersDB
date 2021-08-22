@@ -73,7 +73,7 @@
 import {computed, defineComponent, ref} from 'vue'
 import {useI18n} from 'vue-i18n';
 import {useStore} from 'src/store';
-import {MarkForm} from 'components/models';
+import {MarkForm} from 'src/models/form';
 import Loader from 'components/Util/Loader.vue';
 import {useRouter} from 'vue-router'
 import useLayout from 'src/composables/layout'
@@ -116,9 +116,14 @@ export default defineComponent({
     })
 
     function loadForms(done: () => void = () => null) {
-      void get('markForms/index')
-        .then(data => markForms.value = data) // eslint-disable-line
-        .finally(done)
+      void get<MarkForm[]>('markForms/index', done)
+        .then(data => {
+          if (data) {
+            markForms.value = data
+          } else {
+            markForms.value = []
+          }
+        })
     }
 
     function selectForm(form: MarkForm) {

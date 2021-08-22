@@ -1,4 +1,5 @@
-import {MarkForm, Tree} from 'components/models';
+import {MarkForm} from 'src/models/form';
+import {Tree} from 'src/models/tree';
 
 export interface MarkStateInterface {
   selectedForm: MarkForm | null

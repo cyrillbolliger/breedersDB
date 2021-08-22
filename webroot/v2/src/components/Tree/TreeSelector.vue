@@ -8,6 +8,7 @@
       Placeholder for quagga scanner
     </div>
 
+    <!--suppress RequiredAttributes -->
     <q-input
       outlined
       v-model="publicid"
@@ -31,7 +32,7 @@
 import {defineComponent, ref} from 'vue'
 import {useI18n} from 'vue-i18n';
 import Loader from 'components/Util/Loader.vue';
-import {Tree} from 'components/models';
+import {Tree} from 'src/models/tree';
 import useApi from 'src/composables/api'
 
 export default defineComponent({
@@ -51,8 +52,8 @@ export default defineComponent({
       params.append('term', publicid.value)
       const url = 'trees/get-tree?' + params.toString()
 
-      void get(url)
-        .then((tree: Tree) => {
+      void get<Tree>(url)
+        .then(tree => {
           if (tree) {
             emit('selected', tree)
           }

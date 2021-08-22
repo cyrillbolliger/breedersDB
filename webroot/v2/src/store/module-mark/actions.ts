@@ -1,7 +1,8 @@
 import {ActionTree} from 'vuex';
 import {StateInterface} from '../index';
 import {MarkStateInterface} from './state';
-import {MarkForm, Tree} from 'components/models';
+import {MarkForm} from 'src/models/form';
+import {Tree} from 'src/models/tree';
 
 const actions: ActionTree<MarkStateInterface, StateInterface> = {
   selectForm({commit}, form: MarkForm) {

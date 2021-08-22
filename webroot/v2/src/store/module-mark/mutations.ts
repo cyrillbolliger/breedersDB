@@ -1,6 +1,7 @@
 import {MutationTree} from 'vuex';
 import {MarkStateInterface} from './state';
-import {MarkForm, Tree} from 'components/models';
+import {MarkForm} from 'src/models/form';
+import {Tree} from 'src/models/tree';
 
 const mutation: MutationTree<MarkStateInterface> = {
   selectForm(state: MarkStateInterface, form: MarkForm) {

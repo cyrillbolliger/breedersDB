@@ -17,7 +17,7 @@ import useMarkTabNav from 'src/composables/marks/tab-nav';
 import {useI18n} from 'vue-i18n';
 import TreeSelector from 'components/Tree/TreeSelector.vue';
 import {useStore} from 'src/store';
-import {Tree} from 'components/models';
+import {Tree} from 'src/models/tree';
 import {useRouter} from 'vue-router'
 
 export default defineComponent({

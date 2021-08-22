@@ -95,8 +95,8 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, ref} from 'vue'
-import {MarkFormFieldNumberConstraints, MarkFormFieldTypes} from 'components/models';
+import {computed, defineComponent, PropType, ref, watch} from 'vue'
+import {MarkFormFieldNumberConstraint, MarkFormFieldType} from 'src/models/form';
 import MarkInputItem from 'components/Mark/InputItem.vue'
 import {useI18n} from 'vue-i18n';
 
@@ -122,10 +122,10 @@ export default defineComponent({
       required: true,
     },
     numberConstraints: {
-      type: Object as PropType<MarkFormFieldNumberConstraints>,
+      type: Object as PropType<MarkFormFieldNumberConstraint>,
     },
     fieldType: {
-      type: String as PropType<MarkFormFieldTypes>,
+      type: String as PropType<MarkFormFieldType>,
       required: true
     },
     note: {
@@ -133,10 +133,16 @@ export default defineComponent({
     }
   },
 
-  setup(props) {
+  setup(props, {emit}) {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 
     const value = ref<string | boolean | number>();
+
+    watch(
+      () => value.value,
+      (val) => emit('input', val)
+    )
+
 
     const steps = computed<number>(() => {
       if (!props.numberConstraints) {
@@ -166,13 +172,13 @@ export default defineComponent({
 
     const fType = computed<FieldTypes>(() => {
       switch (props.fieldType) {
-        case MarkFormFieldTypes.Boolean:
+        case MarkFormFieldType.Boolean:
           return FieldTypes.Boolean
-        case MarkFormFieldTypes.Date:
+        case MarkFormFieldType.Date:
           return FieldTypes.Date
-        case MarkFormFieldTypes.Float:
+        case MarkFormFieldType.Float:
           return FieldTypes.Float
-        case MarkFormFieldTypes.Integer:
+        case MarkFormFieldType.Integer:
           if (ratableSteps(steps.value)) {
             return FieldTypes.Rating
           } else {

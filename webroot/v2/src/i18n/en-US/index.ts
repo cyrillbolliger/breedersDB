@@ -49,6 +49,7 @@ export default {
     loading: 'Loading...',
     retry: 'Retry',
     failedToLoadData: 'Failed to load data.',
+    failedToSaveData: 'Failed to save data.',
     refreshList: 'Refresh list',
     next: 'Next',
     dismiss: 'Dismiss',
@@ -56,6 +57,7 @@ export default {
     form: {
       required: 'Field is required',
       max255chars: 'Max. 255 characters allowed',
+      save: 'Save'
     },
   },
 
