@@ -42,6 +42,7 @@
       fab
       icon="save"
       @click="save"
+      :loading="saving"
       color="primary"
     />
     </q-page-sticky>
@@ -133,13 +134,13 @@ export default defineComponent({
         mark_values : getMarkValues(),
       }
 
-      api.post<Mark, number>('marks/add', mark)
+      void api.post<Mark, number>('marks/add', mark)
       .then(() => {
         $q.notify({
           message: t('marks.markTree.saved'),
           color: 'success',
         });
-        router.push('/marks/select-tree')
+        void router.push('/marks/select-tree')
       })
     }
 
@@ -181,7 +182,8 @@ export default defineComponent({
       savable,
       save,
       markValues,
-      setMarkValue
+      setMarkValue,
+      saving: api.working,
     }
   }
 })

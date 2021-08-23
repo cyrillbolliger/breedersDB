@@ -95,8 +95,8 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, ref, watch} from 'vue'
-import {MarkFormFieldNumberConstraint, MarkFormFieldType, MarkValueValue} from 'src/models/form';
+import {computed, defineComponent, PropType} from 'vue'
+import {MarkFormFieldNumberConstraint, MarkFormFieldType} from 'src/models/form';
 import MarkInputItem from 'components/Mark/InputItem.vue'
 import {useI18n} from 'vue-i18n';
 

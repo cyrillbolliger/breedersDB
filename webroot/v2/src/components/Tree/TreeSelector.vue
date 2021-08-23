@@ -20,7 +20,7 @@
     <q-btn
       color="primary"
       :label="t('general.next')"
-      v-if="publicid"
+      :disabled="!publicid"
       @click="loadTree"
     />
 

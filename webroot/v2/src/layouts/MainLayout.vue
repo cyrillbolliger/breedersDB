@@ -80,7 +80,7 @@
           header
           class="text-grey-8"
         >
-          Essential Links
+          {{ t('general.navigation') }}
         </q-item-label>
 
         <EssentialLink
@@ -96,55 +96,11 @@
 <script lang="ts">
 import EssentialLink from 'components/EssentialLink.vue'
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
-
 import {computed, defineComponent, ref} from 'vue'
 import {useStore} from 'src/store';
 import {LayoutBreadcrumbsInterface} from 'src/store/module-layout/state';
 import {LayoutTabsInterface} from 'src/store/module-layout/state';
+import {useI18n} from 'vue-i18n';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -154,23 +110,36 @@ export default defineComponent({
   },
 
   setup () {
-    const $store = useStore();
+    const store = useStore()
+    const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
     const rightDrawerOpen = ref(false)
+
+    const linksList = [
+      {
+        title: t('navigation.markTrees.title'),
+        caption: t('navigation.markTrees.caption'),
+        icon: 'star',
+        link: '/marks/select-form'
+      },
+    ];
+
+
 
     return {
       /* eslint-disable @typescript-eslint/no-unsafe-member-access */
       /* eslint-disable @typescript-eslint/no-unsafe-return */
-      title: computed<string>(() => $store.getters['layout/title']),
-      back: computed<string|null>(() => $store.getters['layout/back']),
-      breadcrumbs: computed<LayoutBreadcrumbsInterface[]>(() => $store.getters['layout/breadcrumbs']),
-      tabs: computed<LayoutTabsInterface[]>(() => $store.getters['layout/tabs']),
+      title: computed<string>(() => store.getters['layout/title']),
+      back: computed<string|null>(() => store.getters['layout/back']),
+      breadcrumbs: computed<LayoutBreadcrumbsInterface[]>(() => store.getters['layout/breadcrumbs']),
+      tabs: computed<LayoutTabsInterface[]>(() => store.getters['layout/tabs']),
       /* eslint-enable @typescript-eslint/no-unsafe-member-access */
       /* eslint-enable @typescript-eslint/no-unsafe-return */
       essentialLinks: linksList,
       rightDrawerOpen,
       toggleRightDrawer() {
         rightDrawerOpen.value = !rightDrawerOpen.value
-      }
+      },
+      t
     }
   }
 })

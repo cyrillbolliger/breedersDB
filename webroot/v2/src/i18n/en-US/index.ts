@@ -54,6 +54,7 @@ export default {
     refreshList: 'Refresh list',
     next: 'Next',
     dismiss: 'Dismiss',
+    navigation: 'Navigation',
 
     form: {
       required: 'Field is required',
@@ -72,10 +73,10 @@ export default {
   },
 
 
-  // todo: delete this demo content
-  failed: 'Action failed',
-  success: 'Action was successful',
-  test: {
-    title: 'this is a test page'
+  navigation: {
+    markTrees: {
+      title: 'Mark Trees',
+      caption: 'Scan trees and rate them.'
+    }
   }
 };
