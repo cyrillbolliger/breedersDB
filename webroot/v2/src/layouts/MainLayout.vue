@@ -76,15 +76,27 @@
       class="bg-grey-1"
     >
       <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          {{ t('general.navigation') }}
-        </q-item-label>
+        <q-item>
+          <q-item-section>
+            <q-item-label class="text-grey-8">
+              {{ t('general.navigation') }}
+            </q-item-label>
+          </q-item-section>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
+          <q-item-section side top>
+            <q-item-label>
+              <q-btn
+                icon="close"
+                flat
+                round
+                @click="rightDrawerOpen = false"
+              />
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <NavLink
+          v-for="link in navLinks"
           :key="link.title"
           v-bind="link"
         />
@@ -94,7 +106,7 @@
 </template>
 
 <script lang="ts">
-import EssentialLink from 'components/EssentialLink.vue'
+import NavLink from 'components/Util/NavLink.vue'
 
 import {computed, defineComponent, ref} from 'vue'
 import {useStore} from 'src/store';
@@ -106,7 +118,7 @@ export default defineComponent({
   name: 'MainLayout',
 
   components: {
-    EssentialLink
+    NavLink
   },
 
   setup () {
@@ -114,7 +126,7 @@ export default defineComponent({
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
     const rightDrawerOpen = ref(false)
 
-    const linksList = [
+    const navLinks = [
       {
         title: t('navigation.markTrees.title'),
         caption: t('navigation.markTrees.caption'),
@@ -134,7 +146,7 @@ export default defineComponent({
       tabs: computed<LayoutTabsInterface[]>(() => store.getters['layout/tabs']),
       /* eslint-enable @typescript-eslint/no-unsafe-member-access */
       /* eslint-enable @typescript-eslint/no-unsafe-return */
-      essentialLinks: linksList,
+      navLinks,
       rightDrawerOpen,
       toggleRightDrawer() {
         rightDrawerOpen.value = !rightDrawerOpen.value
