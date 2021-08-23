@@ -65,7 +65,7 @@ class MarkValuesTable extends Table {
 		// convert date data into the yyyy-mm-dd format
 		$type = $this->MarkFormProperties->get( $data['mark_form_property_id'] )->field_type;
 
-		if ( 'DATE' === $type ) {
+		if ( 'DATE' === $type && preg_match('/^\d{1,2}\.\d{1,2}\.\d{4}$/', $data['value']) ) {
 			$tmp           = preg_split( '/[.-\/]/', $data['value'] );
 			$data['value'] = $tmp[2] . '-' . $tmp[1] . '-' . $tmp[0];
 		}

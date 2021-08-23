@@ -20,13 +20,13 @@ class MarksController extends REST1Controller
      */
     public function add()
     {
-        $mark = $this->Marks->newEmptyEntity();
         if (! $this->request->is('post')) {
             return $this->response
                 ->withStatus(405 )
                 ->withAddedHeader('Allow', 'POST');
         }
 
+        $mark = $this->Marks->newEmptyEntity();
         $mark = $this->Marks->patchEntity(
             $mark,
             $this->request->getData('data'),
@@ -34,8 +34,13 @@ class MarksController extends REST1Controller
         );
 
         if (! $this->Marks->save($mark)) {
-            $this->set('errors', $mark->getErrors());
             return $this->response
+                ->withStringBody(
+                    json_encode(
+                        ['errors' => $mark->getErrors()],
+                        JSON_THROW_ON_ERROR
+                    )
+                )
                 ->withStatus(422);
         }
 

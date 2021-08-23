@@ -35,6 +35,7 @@ export default {
       setMeta: 'Add meta data',
       selectTree: 'Select tree',
       selectForm: 'Select form',
+      saved: 'Marks saved.',
     },
   },
 
@@ -57,7 +58,7 @@ export default {
     form: {
       required: 'Field is required',
       max255chars: 'Max. 255 characters allowed',
-      save: 'Save'
+      save: 'Save',
     },
   },
 

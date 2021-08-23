@@ -9,6 +9,7 @@ export enum MarkFormFieldType {
 }
 
 export type MarkFormFieldNumberConstraint = null | {min: number, max: number, step: number}
+export type MarkValueValue = string|boolean|number|Date
 
 export interface MarkFromProperty {
   id: number
@@ -36,12 +37,12 @@ export interface MarkForm {
 
 export interface MarkValue {
   id?: number
-  value: string|boolean|number // |date
+  value: MarkValueValue
   exceptional_mark: boolean
   mark_form_property_id: number
-  mark_id: number
-  created: Date|null
-  modified: Date|null
+  mark_id?: number
+  created?: Date|null
+  modified?: Date|null
   mark_form?: MarkForm
   mark_form_property?: MarkFromProperty
 }

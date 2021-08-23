@@ -17,7 +17,8 @@
  * @link          https://cakephp.org CakePHP(tm) Project
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-use Cake\Http\Middleware\CsrfProtectionMiddleware;
+
+use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
@@ -87,6 +88,9 @@ Router::scope('/', function (RouteBuilder $routes) {
  * ```
  */
 Router::scope('/api/1', ['prefix' => 'REST1'], function(RouteBuilder $routes) {
+    $routes->registerMiddleware('bodyParser', new BodyParserMiddleware());
+    $routes->applyMiddleware('bodyParser');
+
     $routes->setExtensions(['json']);
 
     $routes->fallbacks(DashedRoute::class);

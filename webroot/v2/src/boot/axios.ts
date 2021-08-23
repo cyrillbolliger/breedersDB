@@ -7,6 +7,8 @@ declare module '@vue/runtime-core' {
   }
 }
 
+declare const csrfToken: string
+
 declare const cake: {
   data: {
     apiUrl: string
@@ -21,6 +23,7 @@ declare const cake: {
 // for each client)
 const api = axios.create({
   baseURL: cake.data.apiUrl,
+  headers: {'X-CSRF-Token': csrfToken}
 });
 
 export default boot(({ app }) => {

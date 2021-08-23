@@ -4,9 +4,9 @@
     :title="name"
     :note="note"
   >
-    <!--suppress RequiredAttributes -->
     <q-rating
-      v-model="value"
+      :modelValue="ratingValue"
+      @update:modelValue="$emit('update:modelValue', $event)"
       :size="'min(calc((100vw - 64px - '+((steps+1)*2)+'px) / '+(steps+1)+'), 3em)'"
       :max="steps + 1"
       color="primary"
@@ -96,7 +96,7 @@
 
 <script lang="ts">
 import {computed, defineComponent, PropType, ref, watch} from 'vue'
-import {MarkFormFieldNumberConstraint, MarkFormFieldType} from 'src/models/form';
+import {MarkFormFieldNumberConstraint, MarkFormFieldType, MarkValueValue} from 'src/models/form';
 import MarkInputItem from 'components/Mark/InputItem.vue'
 import {useI18n} from 'vue-i18n';
 
@@ -130,19 +130,27 @@ export default defineComponent({
     },
     note: {
       type: String,
+    },
+    modelValue: {
+      type: [Number, String, Boolean, Date],
     }
   },
 
   setup(props, {emit}) {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 
-    const value = ref<string | boolean | number>();
+    const value = computed({
+      get: () => props.modelValue,
+      set: (val) => emit('update:modelValue', val)
+    })
 
-    watch(
-      () => value.value,
-      (val) => emit('input', val)
-    )
+    const ratingValue = computed<number>(() => {
+      if (typeof props.modelValue === 'number') {
+        return props.modelValue
+      }
 
+      return 0
+    })
 
     const steps = computed<number>(() => {
       if (!props.numberConstraints) {
@@ -189,15 +197,12 @@ export default defineComponent({
       }
     })
 
-    if (fType.value === FieldTypes.Rating && typeof value.value === 'undefined') {
-      value.value = 0;
-    }
-
     return {
       fType,
       FieldTypes,
       steps,
       value,
+      ratingValue,
       t
     }
   }

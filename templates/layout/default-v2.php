@@ -35,7 +35,6 @@
 	<?= $this->fetch( 'script' ) ?>
 
     <script>
-        let csrfToken = '<?= $this->request->getParam('_csrfToken') ?>';
         const webroot = '<?= $this->Url->build( '/', ['fullBase' => true] ) ?>';
         const urlbase = '<?= $this->Url->build( '/', ['fullBase' => false] ) ?>';
         const trans = {
@@ -45,7 +44,9 @@
 </head>
 <body>
 <script>// noinspection JSAnnotator
-    const cake = <?= $this->fetch( 'content' ) ?></script>
+    const csrfToken = '<?= $this->request->getAttribute('csrfToken') ?>';
+    const cake = <?= $this->fetch( 'content' ) ?>;
+</script>
 <div id="q-app"></div>
 </body>
 </html>

@@ -34,7 +34,7 @@ export default function useApi() {
   function post<T, R>(url: string, data: T, cb: () => void = () => null): Promise<void | R> {
     working.value = true
 
-    return axios.post<void | ApiResponse<R>>(url, data)
+    return axios.post<void | ApiResponse<R>>(url, {data})
       .then(resp => {
         if (resp.data) {
           cb()
