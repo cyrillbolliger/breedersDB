@@ -21,6 +21,7 @@
     :note="note"
   >
     <!--suppress RequiredAttributes -->
+    <!-- todo: validation rules -->
     <q-input
       outlined
       v-model="value"
@@ -29,6 +30,7 @@
       :min="numberConstraints.min"
       :max="numberConstraints.max"
       :step="numberConstraints.step"
+      :rules="[val => validNumber(val, numberConstraints)]"
     />
   </mark-input-item>
 
@@ -38,6 +40,7 @@
     :note="note"
   >
     <!--suppress RequiredAttributes -->
+    <!-- todo: validation rules -->
     <q-input
       outlined
       v-model="value"
@@ -46,6 +49,7 @@
       :min="numberConstraints.min"
       :max="numberConstraints.max"
       :step="numberConstraints.step"
+      :rules="[val => validNumber(val, numberConstraints)]"
     />
   </mark-input-item>
 
@@ -197,13 +201,29 @@ export default defineComponent({
       }
     })
 
+    function validNumber(value: number, constraints: MarkFormFieldNumberConstraint) {
+      // valid if no value or no constraints
+      if (! value || ! constraints) {
+        return true
+      }
+
+      // invalid if outside of range
+      if (value < constraints.min || value > constraints.max) {
+        return false
+      }
+
+      // check if step is respected
+      return (((value - constraints.min) / constraints.step) % 1.0) === 0
+    }
+
     return {
       fType,
       FieldTypes,
       steps,
       value,
       ratingValue,
-      t
+      t,
+      validNumber
     }
   }
 })
