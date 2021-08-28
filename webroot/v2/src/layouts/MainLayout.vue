@@ -49,8 +49,13 @@
         </q-breadcrumbs>
       </q-toolbar>
 
-      <q-toolbar v-if="tabs.length">
-        <q-tabs>
+      <q-toolbar
+        v-if="tabs.length"
+      >
+        <q-tabs
+          outside-arrows
+          style="max-width: calc(100vw - 24px)"
+        >
           <q-route-tab
             v-for="(tab, index) in tabs"
             :key="index"
