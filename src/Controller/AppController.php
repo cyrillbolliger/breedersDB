@@ -218,9 +218,10 @@ class AppController extends Controller {
     private function setResourcesUrlV2(): void
     {
         $dev = (bool) Configure::read('debug');
+        $localhost = $_SERVER['SERVER_NAME'] === 'localhost';
 
-        if ($dev) {
-            $css = ['http://localhost:8080/vendor.css', 'http://localhost:8080/app.css'];
+        if ($dev && $localhost) {
+            $css = []; //['http://localhost:8080/vendor.css', 'http://localhost:8080/app.css'];
             $js = ['http://localhost:8080/vendor.js', 'http://localhost:8080/app.js'];
         } else {
             $css = $this->getV2ResourceRelUrls('css');

@@ -2,13 +2,12 @@
 /config/Migrations/schema-dump-default.lock
 /tmp
 /logs
-/.idea
 node_modules
 /npm-debug.log
 /backup
-/webroot/dev
-/webroot/dist
-.docker/mysql
+/webroot/v1/dev
+/webroot/v1/dist
+/webroot/v2/dist
 vendor
 deploy.conf
 import-live-data.sh
