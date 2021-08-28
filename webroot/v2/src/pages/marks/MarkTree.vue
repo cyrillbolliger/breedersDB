@@ -36,20 +36,19 @@
     <q-page-sticky
       position="bottom-right"
       :offset="[18, 18]"
-      v-if="savable"
     >
     <q-btn
       fab
       icon="save"
       @click="save"
       :loading="saving"
+      :disabled="!savable"
       color="primary"
     />
     </q-page-sticky>
 
     <div
       style="height: 75px"
-      v-if="savable"
     ></div>
 
   </q-page>
