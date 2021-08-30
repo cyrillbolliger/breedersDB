@@ -1,73 +1,82 @@
-# LANGUAGE translation of CakePHP Application
-# Copyright YEAR NAME <EMAIL@ADDRESS>
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-04-19 20:19+0000\n"
-"PO-Revision-Date: 2021-04-19 22:23+0200\n"
-"Last-Translator: Cyrill Bolliger <bolliger@gmx.ch>\n"
-"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
-"Language: de\n"
+"Project-Id-Version: breedersdb\n"
+"POT-Creation-Date: 2021-08-30 22:17+0000\n"
+"PO-Revision-Date: 2021-08-30 22:20\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Crowdin-Project: breedersdb\n"
+"X-Crowdin-Project-ID: 474100\n"
+"X-Crowdin-Language: de-CH\n"
+"X-Crowdin-File: default.pot\n"
+"X-Crowdin-File-ID: 25\n"
+"Language: de_CH\n"
 
-#: Controller/AppController.php:84
+#: Controller/AppController.php:82
 msgctxt "time format"
 msgid "HH:mm"
 msgstr "HH:mm"
 
-#: Controller/AppController.php:85 Controller/AppController.php:89
-#: Controller/AppController.php:91
+#: Controller/AppController.php:83
+#: Controller/AppController.php:87
+#: Controller/AppController.php:89
 msgctxt "date format"
 msgid "dd.MM.yyyy"
 msgstr "dd.MM.yyyy"
 
-#: Controller/AppController.php:86 Controller/AppController.php:88
-#: Controller/AppController.php:90
+#: Controller/AppController.php:84
+#: Controller/AppController.php:86
+#: Controller/AppController.php:88
 msgctxt "datetime format"
 msgid "dd.MM.yyyy HH:mm"
 msgstr "dd.MM.yyyy HH:mm"
 
-#: Controller/BatchesController.php:99 Controller/BatchesController.php:126
+#: Controller/BatchesController.php:89
+#: Controller/BatchesController.php:116
 msgid "The batch has been saved."
 msgstr "Das Los wurde gespeichert."
 
-#: Controller/BatchesController.php:103 Controller/BatchesController.php:130
+#: Controller/BatchesController.php:93
+#: Controller/BatchesController.php:120
 msgid "The batch could not be saved. Please, try again."
 msgstr "Das Los konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/BatchesController.php:150
+#: Controller/BatchesController.php:140
 msgid "The batch has been deleted."
 msgstr "Das Los wurde gelöscht."
 
-#: Controller/BatchesController.php:152
+#: Controller/BatchesController.php:142
 msgid "The batch could not be deleted. Please, try again."
 msgstr "Das Los konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/BatchesController.php:199 Controller/CrossingsController.php:177
-#: Controller/MarkFormPropertiesController.php:171
-#: Controller/MarkFormsController.php:233
+#: Controller/BatchesController.php:184
+#: Controller/CrossingsController.php:180
+#: Controller/MarkFormPropertiesController.php:173
+#: Controller/MarkFormsController.php:239
 #: Controller/MarkScannerCodesController.php:152
 #: Controller/MarkScannerCodesController.php:176
-#: Controller/MarksController.php:347 Controller/MarksViewController.php:25
-#: Controller/MotherTreesController.php:153 Controller/RowsController.php:134
+#: Controller/MarksController.php:343
+#: Controller/MarksViewController.php:25
+#: Controller/MotherTreesController.php:153
+#: Controller/RowsController.php:134
 #: Controller/ScionsBundlesController.php:146
-#: Controller/TreesController.php:302 Controller/TreesController.php:420
-#: Controller/TreesController.php:448 Controller/VarietiesController.php:217
-#: Controller/VarietiesController.php:236
-#: Controller/VarietiesController.php:255
-#: Controller/VarietiesController.php:306
+#: Controller/TreesController.php:294
+#: Controller/TreesController.php:402
+#: Controller/VarietiesController.php:202
+#: Controller/VarietiesController.php:221
+#: Controller/VarietiesController.php:240
+#: Controller/VarietiesController.php:276
 msgid "Direct access not allowed."
 msgstr "Direkter Zugriff nicht erlaubt."
 
-#: Controller/BatchesController.php:228
+#: Controller/BatchesController.php:214
 #: Controller/MarkScannerCodesController.php:194
-#: Controller/MarkScannerCodesController.php:215
-#: Controller/TreesController.php:479
+#: Controller/MarkScannerCodesController.php:216
+#: Controller/TreesController.php:434
 msgid "Regular"
 msgstr "Normal"
 
@@ -100,12 +109,14 @@ msgstr "Wert"
 msgid "values"
 msgstr "Werte"
 
-#: Controller/Component/ExcelComponent.php:191 element/Query/mark_value.php:29
+#: Controller/Component/ExcelComponent.php:191
+#: element/Query/mark_value.php:29
 msgctxt "short: minimum"
 msgid "min"
 msgstr "Min"
 
-#: Controller/Component/ExcelComponent.php:192 element/Query/mark_value.php:35
+#: Controller/Component/ExcelComponent.php:192
+#: element/Query/mark_value.php:35
 msgctxt "short: maximum"
 msgid "max"
 msgstr "Max"
@@ -114,86 +125,62 @@ msgstr "Max"
 msgid "Invalid arguments."
 msgstr "Ungültige Argumente."
 
-#: Controller/CrossingsController.php:79 Controller/CrossingsController.php:121
+#: Controller/CrossingsController.php:82
+#: Controller/CrossingsController.php:124
 msgid "The crossing has been saved."
 msgstr "Die Kreuzung wurde gespeichert."
 
-#: Controller/CrossingsController.php:83
+#: Controller/CrossingsController.php:86
 msgid "The crossing could not be saved. Please try again."
-msgstr ""
-"Die Kreuzung konnte nicht gespeichert werden. Bitte versuche es erneut."
+msgstr "Die Kreuzung konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/CrossingsController.php:125
+#: Controller/CrossingsController.php:128
 msgid "The crossing could not be saved. Please, try again."
-msgstr ""
-"Die Kreuzung konnte nicht gespeichert werden. Bitte versuche es erneut."
+msgstr "Die Kreuzung konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/CrossingsController.php:155
+#: Controller/CrossingsController.php:158
 msgid "The crossing has been deleted."
 msgstr "Die Kreuzung wurde gelöscht."
 
-#: Controller/CrossingsController.php:157
+#: Controller/CrossingsController.php:160
 msgid "The crossing could not be deleted. Please, try again."
 msgstr "Die Kreuzung konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/ExperimentSitesController.php:53
-#: Controller/ExperimentSitesController.php:79
+#: Controller/ExperimentSitesController.php:51
+#: Controller/ExperimentSitesController.php:77
 msgid "The experiment site has been saved."
 msgstr "Der Versuchsort wurde gespeichert."
 
-#: Controller/ExperimentSitesController.php:57
-#: Controller/ExperimentSitesController.php:83
+#: Controller/ExperimentSitesController.php:55
+#: Controller/ExperimentSitesController.php:81
 msgid "The experiment site could not be saved. Please, try again."
-msgstr ""
-"Der Versuchsort konnte nicht gespeichert werden. Bitte versuche es erneut."
+msgstr "Der Versuchsort konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/ExperimentSitesController.php:102
+#: Controller/ExperimentSitesController.php:100
 msgid "The experiment site has been deleted."
 msgstr "Der Versuchsort wurde gelöscht."
 
-#: Controller/ExperimentSitesController.php:104
+#: Controller/ExperimentSitesController.php:102
 msgid "The experiment site could not be deleted. Please, try again."
-msgstr ""
-"Der Versuchsort konnte nicht gelöscht werden. Bitte versuche es erneut."
+msgstr "Der Versuchsort konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/GraftingsController.php:53 Controller/GraftingsController.php:79
+#: Controller/GraftingsController.php:51
+#: Controller/GraftingsController.php:77
 msgid "The grafting has been saved."
 msgstr "Die Veredelung wurde gespeichert."
 
-#: Controller/GraftingsController.php:57 Controller/GraftingsController.php:83
+#: Controller/GraftingsController.php:55
+#: Controller/GraftingsController.php:81
 msgid "The grafting could not be saved. Please, try again."
-msgstr ""
-"Die Veredelung konnte nicht gespeichert werden. Bitte versuche es erneut."
+msgstr "Die Veredelung konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/GraftingsController.php:102
+#: Controller/GraftingsController.php:100
 msgid "The grafting has been deleted."
 msgstr "Die Veredelung wurde gelöscht."
 
-#: Controller/GraftingsController.php:104
+#: Controller/GraftingsController.php:102
 msgid "The grafting could not be deleted. Please, try again."
 msgstr "Die Veredelung konnte nicht gelöscht werden. Bitte versuche es erneut."
-
-#: Controller/MarkFormFieldsController.php:56
-#: Controller/MarkFormFieldsController.php:84
-msgid "The mark form field has been saved."
-msgstr "Das Feld des Bewertungsformulars wurde gespeichert."
-
-#: Controller/MarkFormFieldsController.php:60
-#: Controller/MarkFormFieldsController.php:88
-msgid "The mark form field could not be saved. Please, try again."
-msgstr ""
-"Das Feld des Bewertungsformulars konnte nicht gespeichert werden. Bitte "
-"versuche es erneut."
-
-#: Controller/MarkFormFieldsController.php:109
-msgid "The mark form field has been deleted."
-msgstr "Das Feld des Bewertungsformulars wurde gelöscht."
-
-#: Controller/MarkFormFieldsController.php:111
-msgid "The mark form field could not be deleted. Please, try again."
-msgstr ""
-"Das Feld des Bewertungsformulars konnte nicht gespeichert werden. Bitte "
-"versuche es erneut."
 
 #: Controller/MarkFormPropertiesController.php:65
 #: Controller/MarkFormPropertiesController.php:93
@@ -203,9 +190,7 @@ msgstr "Die Eigenschaft des Bewertungsformulars wurde gespeichert."
 #: Controller/MarkFormPropertiesController.php:69
 #: Controller/MarkFormPropertiesController.php:97
 msgid "The mark form property could not be saved. Please, try again."
-msgstr ""
-"Die Eigenschaft des Bewertungsformulars konnte nicht gespeichert werden. "
-"Bitte versuche es erneut."
+msgstr "Die Eigenschaft des Bewertungsformulars konnte nicht gespeichert werden. Bitte versuche es erneut."
 
 #: Controller/MarkFormPropertiesController.php:118
 msgid "The mark form property has been deleted."
@@ -213,9 +198,7 @@ msgstr "Die Eigenschaft des Bewertungsformulars wurde gelöscht."
 
 #: Controller/MarkFormPropertiesController.php:120
 msgid "The mark form property could not be deleted. Please, try again."
-msgstr ""
-"Die Eigenschaft des Bewertungsformulars konnte nicht gelöscht werden. Bitte "
-"versuche es erneut."
+msgstr "Die Eigenschaft des Bewertungsformulars konnte nicht gelöscht werden. Bitte versuche es erneut."
 
 #: Controller/MarkFormPropertyTypesController.php:54
 #: Controller/MarkFormPropertyTypesController.php:81
@@ -225,9 +208,7 @@ msgstr "Der Eigenschaftstyp des Bewertungsformulars wurde gespeichert."
 #: Controller/MarkFormPropertyTypesController.php:58
 #: Controller/MarkFormPropertyTypesController.php:85
 msgid "The mark form property type could not be saved. Please, try again."
-msgstr ""
-"Der Eigenschaftstyp des Bewertungsformulars konnte nicht gespeichert werden. "
-"Bitte versuche es erneut."
+msgstr "Der Eigenschaftstyp des Bewertungsformulars konnte nicht gespeichert werden. Bitte versuche es erneut."
 
 #: Controller/MarkFormPropertyTypesController.php:104
 msgid "The mark form property type has been deleted."
@@ -235,29 +216,25 @@ msgstr "Der Eigenschaftstyp des Bewertungsformulars wurde gelöscht."
 
 #: Controller/MarkFormPropertyTypesController.php:106
 msgid "The mark form property type could not be deleted. Please, try again."
-msgstr ""
-"Der Eigenschaftstyp des Bewertungsformulars konnte nicht gelöscht werden. "
-"Bitte versuche es erneut."
+msgstr "Der Eigenschaftstyp des Bewertungsformulars konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/MarkFormsController.php:89 Controller/MarkFormsController.php:163
+#: Controller/MarkFormsController.php:89
+#: Controller/MarkFormsController.php:169
 msgid "The mark form has been saved."
 msgstr "Das Bewertungsformular wurde gespeichert."
 
-#: Controller/MarkFormsController.php:93 Controller/MarkFormsController.php:167
+#: Controller/MarkFormsController.php:99
+#: Controller/MarkFormsController.php:173
 msgid "The mark form could not be saved. Please, try again."
-msgstr ""
-"Das Bewertungsformular konnte nicht gespeichert werden. Bitte versuche es "
-"erneut."
+msgstr "Das Bewertungsformular konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/MarkFormsController.php:212
+#: Controller/MarkFormsController.php:218
 msgid "The mark form has been deleted."
 msgstr "Das Bewertungsformular wurde gelöscht."
 
-#: Controller/MarkFormsController.php:214
+#: Controller/MarkFormsController.php:220
 msgid "The mark form could not be deleted. Please, try again."
-msgstr ""
-"Das Bewertungsformular konnte nicht gelöscht werden. Bitte versuche es "
-"erneut."
+msgstr "Das Bewertungsformular konnte nicht gelöscht werden. Bitte versuche es erneut."
 
 #: Controller/MarkScannerCodesController.php:74
 msgid "{0}: {1} has been saved."
@@ -266,9 +243,7 @@ msgstr "{0}: {1} wurde gespeichert."
 #: Controller/MarkScannerCodesController.php:84
 #: Controller/MarkScannerCodesController.php:111
 msgid "The mark scanner code could not be saved. Please, try again."
-msgstr ""
-"Der Bewertungsscannercode konnte nicht gespeichert werden. Bitte versuche es "
-"erneut."
+msgstr "Der Bewertungsscannercode konnte nicht gespeichert werden. Bitte versuche es erneut."
 
 #: Controller/MarkScannerCodesController.php:107
 msgid "The mark scanner code has been saved."
@@ -280,9 +255,7 @@ msgstr "Der Bewertungsscannercode wurde gelöscht."
 
 #: Controller/MarkScannerCodesController.php:133
 msgid "The mark scanner code could not be deleted. Please, try again."
-msgstr ""
-"Der Bewertungsscannercode konnte nicht gelöscht werden. Bitte versuche es "
-"erneut."
+msgstr "Der Bewertungsscannercode konnte nicht gelöscht werden. Bitte versuche es erneut."
 
 #: Controller/MarkValuesController.php:29
 msgid "The mark value has been saved."
@@ -290,9 +263,7 @@ msgstr "Der Wert der Bewertung wurde gespeichert."
 
 #: Controller/MarkValuesController.php:33
 msgid "The mark value could not be saved. Please, try again."
-msgstr ""
-"Der Wert der Bewertung konnte nicht gespeichert werden. Bitte versuche es "
-"erneut."
+msgstr "Der Wert der Bewertung konnte nicht gespeichert werden. Bitte versuche es erneut."
 
 #: Controller/MarkValuesController.php:73
 msgid "The mark value has been deleted."
@@ -300,46 +271,45 @@ msgstr "Der Wert der Bewertung wurde gelöscht."
 
 #: Controller/MarkValuesController.php:75
 msgid "The mark value could not be deleted. Please, try again."
-msgstr ""
-"Der Wert der Bewertung konnte nicht gelöscht werden. Bitte versuche es "
-"erneut."
+msgstr "Der Wert der Bewertung konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/MarksController.php:122 Controller/MarksController.php:167
-#: Controller/MarksController.php:216 Controller/MarksController.php:277
+#: Controller/MarksController.php:118
+#: Controller/MarksController.php:163
+#: Controller/MarksController.php:212
+#: Controller/MarksController.php:273
 msgid "The mark has been saved."
 msgstr "Die Bewertung wurde gespeichert."
 
-#: Controller/MarksController.php:126 Controller/MarksController.php:171
-#: Controller/MarksController.php:220 Controller/MarksController.php:281
+#: Controller/MarksController.php:122
+#: Controller/MarksController.php:167
+#: Controller/MarksController.php:216
+#: Controller/MarksController.php:277
 msgid "The mark could not be saved."
 msgstr "Die Bewertung konnte nicht gespeichert werden."
 
-#: Controller/MarksController.php:129
+#: Controller/MarksController.php:125
 msgid "Please select a tree by public id."
 msgstr "Bitte wähle einen Baum über seine Publicid."
 
-#: Controller/MarksController.php:132 Controller/MarksController.php:177
-#: Controller/MarksController.php:226
-msgid ""
-"One of the mark values violates the validation rules. Please check data "
-"types."
-msgstr ""
-"Einer der Werte der Bewertung verstößt gegen die Regeln der "
-"Gültigkeitsprüfung. Bitte überprüfe die Datentypen."
+#: Controller/MarksController.php:128
+#: Controller/MarksController.php:173
+#: Controller/MarksController.php:222
+msgid "One of the mark values violates the validation rules. Please check data types."
+msgstr "Einer der Werte der Bewertung verstößt gegen die Regeln der Gültigkeitsprüfung. Bitte überprüfe die Datentypen."
 
-#: Controller/MarksController.php:174
+#: Controller/MarksController.php:170
 msgid "Please select a variety."
 msgstr "Bitte wähle eine Sorte aus."
 
-#: Controller/MarksController.php:223
+#: Controller/MarksController.php:219
 msgid "Please select a batch."
 msgstr "Bitte wähle ein Los aus."
 
-#: Controller/MarksController.php:305
+#: Controller/MarksController.php:301
 msgid "The mark has been deleted."
 msgstr "Die Bewertung wurde gelöscht."
 
-#: Controller/MarksController.php:307
+#: Controller/MarksController.php:303
 msgid "The mark could not be deleted. Please, try again."
 msgstr "Die Bewertung konnte nicht gelöscht werden. Bitte versuche es erneut."
 
@@ -351,8 +321,7 @@ msgstr "Der Mutterbaum wurde gespeichert."
 #: Controller/MotherTreesController.php:70
 #: Controller/MotherTreesController.php:104
 msgid "The mother tree could not be saved. Please, try again."
-msgstr ""
-"Der Mutterbaum konnte nicht gespeichert werden. Bitte versuche es erneut."
+msgstr "Der Mutterbaum konnte nicht gespeichert werden. Bitte versuche es erneut."
 
 #: Controller/MotherTreesController.php:126
 msgid "The mother tree has been deleted."
@@ -362,11 +331,13 @@ msgstr "Der Mutterbaum wurde gelöscht."
 msgid "The mother tree could not be deleted. Please, try again."
 msgstr "Der Mutterbaum konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/QueriesController.php:209 Controller/QueriesController.php:289
+#: Controller/QueriesController.php:209
+#: Controller/QueriesController.php:289
 msgid "The query has been saved."
 msgstr "Die Abfrage wurde gespeichert."
 
-#: Controller/QueriesController.php:213 Controller/QueriesController.php:293
+#: Controller/QueriesController.php:213
+#: Controller/QueriesController.php:293
 msgid "The query could not be saved. Please, try again."
 msgstr "Die Abfrage konnte nicht gespeichert werden. Bitte versuche es erneut."
 
@@ -386,8 +357,7 @@ msgstr "Die Abfragengruppe wurde gespeichert."
 #: Controller/QueryGroupsController.php:28
 #: Controller/QueryGroupsController.php:55
 msgid "The query group could not be saved. Please, try again."
-msgstr ""
-"Die Abfragengruppe konnte nicht gespeichert werden. Bitte versuche es erneut."
+msgstr "Die Abfragengruppe konnte nicht gespeichert werden. Bitte versuche es erneut."
 
 #: Controller/QueryGroupsController.php:75
 msgid "The query group has been deleted."
@@ -395,33 +365,33 @@ msgstr "Die Abfragengruppe wurde gelöscht."
 
 #: Controller/QueryGroupsController.php:77
 msgid "The query group could not be deleted. Please, try again."
-msgstr ""
-"Die Abfragengruppe konnte nicht gelöscht werden. Bitte versuche es erneut."
+msgstr "Die Abfragengruppe konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/RootstocksController.php:53
-#: Controller/RootstocksController.php:79
+#: Controller/RootstocksController.php:51
+#: Controller/RootstocksController.php:77
 msgid "The rootstock has been saved."
 msgstr "Die Unterlage wurde gespeichert."
 
-#: Controller/RootstocksController.php:57
-#: Controller/RootstocksController.php:83
+#: Controller/RootstocksController.php:55
+#: Controller/RootstocksController.php:81
 msgid "The rootstock could not be saved. Please, try again."
-msgstr ""
-"Die Unterlage konnte nicht gespeichert werden. Bitte versuche es erneut."
+msgstr "Die Unterlage konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/RootstocksController.php:102
+#: Controller/RootstocksController.php:100
 msgid "The rootstock has been deleted."
 msgstr "Die Unterlage wurde gelöscht."
 
-#: Controller/RootstocksController.php:104
+#: Controller/RootstocksController.php:102
 msgid "The rootstock could not be deleted. Please, try again."
 msgstr "Die Unterlage konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/RowsController.php:64 Controller/RowsController.php:90
+#: Controller/RowsController.php:64
+#: Controller/RowsController.php:90
 msgid "The row has been saved."
 msgstr "Die Zeile wurde gespeichert."
 
-#: Controller/RowsController.php:68 Controller/RowsController.php:94
+#: Controller/RowsController.php:68
+#: Controller/RowsController.php:94
 msgid "The row could not be saved. Please, try again."
 msgstr "Die Zeile konnte nicht gespeichert werden. Bitte versuche es erneut."
 
@@ -441,8 +411,7 @@ msgstr "Das Reiserbündel wude gespeichert."
 #: Controller/ScionsBundlesController.php:73
 #: Controller/ScionsBundlesController.php:104
 msgid "The scions bundle could not be saved. Please, try again."
-msgstr ""
-"Das Reiserbündel konnte nicht gespeichert werden. Bitte versuche es erneut."
+msgstr "Das Reiserbündel konnte nicht gespeichert werden. Bitte versuche es erneut."
 
 #: Controller/ScionsBundlesController.php:125
 msgid "The scions bundle has been deleted."
@@ -450,71 +419,75 @@ msgstr "Das Reiserbündel wurde gelöscht."
 
 #: Controller/ScionsBundlesController.php:127
 msgid "The scions bundle could not be deleted. Please, try again."
-msgstr ""
-"Das Reiserbündel konnte nicht gelöscht werden. Bitte versuche es erneut."
+msgstr "Das Reiserbündel konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/TreesController.php:112 Controller/TreesController.php:148
-#: Controller/TreesController.php:184 Controller/TreesController.php:224
-#: Controller/TreesController.php:259
+#: Controller/TreesController.php:102
+#: Controller/TreesController.php:138
+#: Controller/TreesController.php:174
+#: Controller/TreesController.php:214
+#: Controller/TreesController.php:251
 msgid "The tree has been saved."
 msgstr "Der Baum wurde gespeichert."
 
-#: Controller/TreesController.php:116 Controller/TreesController.php:152
-#: Controller/TreesController.php:188 Controller/TreesController.php:228
-#: Controller/TreesController.php:261
+#: Controller/TreesController.php:106
+#: Controller/TreesController.php:142
+#: Controller/TreesController.php:178
+#: Controller/TreesController.php:218
+#: Controller/TreesController.php:253
 msgid "The tree could not be saved. Please, try again."
 msgstr "Der Baum konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/TreesController.php:355
+#: Controller/TreesController.php:347
 msgid "The tree has been deleted."
 msgstr "Der Baum wurde gelöscht."
 
-#: Controller/TreesController.php:357
+#: Controller/TreesController.php:349
 msgid "The tree could not be deleted. Please, try again."
 msgstr "Der Baum konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/TreesController.php:483
+#: Controller/TreesController.php:438
 msgid "Anonymous"
 msgstr "Anonymisiert"
 
-#: Controller/UsersController.php:53 Controller/UsersController.php:80
+#: Controller/UsersController.php:53
+#: Controller/UsersController.php:84
 msgid "The user has been saved."
 msgstr "Der Benutzer wurde gespeichert."
 
-#: Controller/UsersController.php:57 Controller/UsersController.php:84
+#: Controller/UsersController.php:57
+#: Controller/UsersController.php:88
 msgid "The user could not be saved. Please, try again."
-msgstr ""
-"Der Benutzer konnte nicht gespeichert werden. Bitte versuche es erneut."
+msgstr "Der Benutzer konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/UsersController.php:104
+#: Controller/UsersController.php:108
 msgid "The user has been deleted."
 msgstr "Der Benutzer wurde gelöscht."
 
-#: Controller/UsersController.php:106
+#: Controller/UsersController.php:110
 msgid "The user could not be deleted. Please, try again."
 msgstr "Der Benutzer konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: Controller/UsersController.php:125
+#: Controller/UsersController.php:129
 msgid "Your username or password is incorrect."
 msgstr "Dein Benutzername oder Passwort ist nicht korrekt."
 
-#: Controller/VarietiesController.php:110
-#: Controller/VarietiesController.php:136
-#: Controller/VarietiesController.php:163
+#: Controller/VarietiesController.php:95
+#: Controller/VarietiesController.php:121
+#: Controller/VarietiesController.php:148
 msgid "The variety has been saved."
 msgstr "Die Sorte wurde gespeichert."
 
-#: Controller/VarietiesController.php:114
-#: Controller/VarietiesController.php:140
-#: Controller/VarietiesController.php:167
+#: Controller/VarietiesController.php:99
+#: Controller/VarietiesController.php:125
+#: Controller/VarietiesController.php:152
 msgid "The variety could not be saved. Please, try again."
 msgstr "Die Sorte konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: Controller/VarietiesController.php:197
+#: Controller/VarietiesController.php:182
 msgid "The variety has been deleted."
 msgstr "Die Sorte wurde gelöscht."
 
-#: Controller/VarietiesController.php:199
+#: Controller/VarietiesController.php:184
 msgid "The variety could not be deleted. Please, try again."
 msgstr "Die Sorte konnte nicht gelöscht werden. Bitte versuche es erneut."
 
@@ -554,15 +527,24 @@ msgstr "Bitte gib ein Datum und eine Uhrzeit ein"
 msgid "Please enter a time"
 msgstr "Bitte gib eine Uhrzeit ein"
 
-#: Model/Behavior/GetFilterDataBehavior.php:226 Marks/view.php:70
-#: MotherTrees/view.php:24 ScionsBundles/view.php:30 Trees/view.php:37
-#: Trees/view.php:67 Trees/view.php:71 element/MarkView/tooltip.php:21
+#: Model/Behavior/GetFilterDataBehavior.php:226
+#: Marks/view.php:70
+#: MotherTrees/view.php:24
+#: ScionsBundles/view.php:30
+#: Trees/view.php:37
+#: Trees/view.php:67
+#: Trees/view.php:71
+#: element/MarkView/tooltip.php:21
 msgid "Yes"
 msgstr "Ja"
 
-#: Model/Behavior/GetFilterDataBehavior.php:226 MotherTrees/view.php:24
-#: ScionsBundles/view.php:30 Trees/view.php:37 Trees/view.php:67
-#: Trees/view.php:71 element/MarkView/tooltip.php:21
+#: Model/Behavior/GetFilterDataBehavior.php:226
+#: MotherTrees/view.php:24
+#: ScionsBundles/view.php:30
+#: Trees/view.php:37
+#: Trees/view.php:67
+#: Trees/view.php:71
+#: element/MarkView/tooltip.php:21
 msgid "No"
 msgstr "Nein"
 
@@ -584,9 +566,7 @@ msgstr "DD.MM.YYYY HH:mm:ss"
 #: Model/Behavior/GetFilterDataBehavior.php:195
 msgctxt "moment.js datetime format"
 msgid "The given date and time must match the format DD.MM.YYYY HH:mm:ss"
-msgstr ""
-"Das eingegebene Datum und die Uhrzeit müssen dem Format DD.MM.YYYY HH:mm:ss "
-"entsprechen"
+msgstr "Das eingegebene Datum und die Uhrzeit müssen dem Format DD.MM.YYYY HH:mm:ss entsprechen"
 
 #: Model/Behavior/GetFilterDataBehavior.php:204
 msgctxt "moment.js time format"
@@ -918,199 +898,214 @@ msgstr "Sorten -> Beschreibung"
 msgid "Varieties -> Batch Id"
 msgstr "Sorten -> Los Id"
 
-#: Model/Entity/MarkFormProperty.php:53
+#: Model/Entity/MarkFormProperty.php:59
 msgid "Count"
 msgstr "Anzahl"
 
-#: Model/Entity/MarkFormProperty.php:54
+#: Model/Entity/MarkFormProperty.php:60
 msgid "Average"
 msgstr "Durchschnitt"
 
-#: Model/Entity/MarkFormProperty.php:55
+#: Model/Entity/MarkFormProperty.php:61
 msgid "Min"
 msgstr "Min"
 
-#: Model/Entity/MarkFormProperty.php:56
+#: Model/Entity/MarkFormProperty.php:62
 msgid "Max"
 msgstr "Max"
 
-#: Model/Entity/MarkFormProperty.php:57
+#: Model/Entity/MarkFormProperty.php:63
 msgid "Median"
 msgstr "Median"
 
-#: Model/Entity/MarkFormProperty.php:58
+#: Model/Entity/MarkFormProperty.php:64
 msgid "Standard deviation"
 msgstr "Standardabweichung"
 
-#: Model/Entity/MarkFormProperty.php:129 Model/Entity/MarkFormProperty.php:142
-#: Model/Entity/MarkFormProperty.php:156
+#: Model/Entity/MarkFormProperty.php:135
+#: Model/Entity/MarkFormProperty.php:148
+#: Model/Entity/MarkFormProperty.php:162
 msgid "equal"
 msgstr "gleich"
 
-#: Model/Entity/MarkFormProperty.php:130 Model/Entity/MarkFormProperty.php:143
-#: Model/Entity/MarkFormProperty.php:157
+#: Model/Entity/MarkFormProperty.php:136
+#: Model/Entity/MarkFormProperty.php:149
+#: Model/Entity/MarkFormProperty.php:163
 msgid "not equal"
 msgstr "nicht gleich"
 
-#: Model/Entity/MarkFormProperty.php:131
+#: Model/Entity/MarkFormProperty.php:137
 msgid "less"
 msgstr "kleiner"
 
-#: Model/Entity/MarkFormProperty.php:132
+#: Model/Entity/MarkFormProperty.php:138
 msgid "less or equal"
 msgstr "kleiner oder gleich"
 
-#: Model/Entity/MarkFormProperty.php:133
+#: Model/Entity/MarkFormProperty.php:139
 msgid "greater"
 msgstr "grösser"
 
-#: Model/Entity/MarkFormProperty.php:134
+#: Model/Entity/MarkFormProperty.php:140
 msgid "greater or equal"
 msgstr "grösser oder gleich"
 
-#: Model/Entity/MarkFormProperty.php:135
+#: Model/Entity/MarkFormProperty.php:141
 msgid "is null"
 msgstr "ist leer"
 
-#: Model/Entity/MarkFormProperty.php:136
+#: Model/Entity/MarkFormProperty.php:142
 msgid "is not null"
 msgstr "ist nicht leer"
 
-#: Model/Entity/MarkFormProperty.php:144
+#: Model/Entity/MarkFormProperty.php:150
 msgid "begins with"
 msgstr "beginnt mit"
 
-#: Model/Entity/MarkFormProperty.php:145
+#: Model/Entity/MarkFormProperty.php:151
 msgid "doesn't begin with"
 msgstr "beginnt nicht mit"
 
-#: Model/Entity/MarkFormProperty.php:146
+#: Model/Entity/MarkFormProperty.php:152
 msgid "contains"
 msgstr "enthält"
 
-#: Model/Entity/MarkFormProperty.php:147
+#: Model/Entity/MarkFormProperty.php:153
 msgid "doesn't contain"
 msgstr "enthält nicht"
 
-#: Model/Entity/MarkFormProperty.php:148
+#: Model/Entity/MarkFormProperty.php:154
 msgid "end with"
 msgstr "endet mit"
 
-#: Model/Entity/MarkFormProperty.php:149
+#: Model/Entity/MarkFormProperty.php:155
 msgid "doesn't end with"
 msgstr "endet nicht mit"
 
-#: Model/Entity/MarkFormProperty.php:150
+#: Model/Entity/MarkFormProperty.php:156
 msgid "is empty"
 msgstr "ist leer"
 
-#: Model/Entity/MarkFormProperty.php:151
+#: Model/Entity/MarkFormProperty.php:157
 msgid "is not empty"
 msgstr "ist nicht leer"
 
-#: Model/Entity/MarkFormProperty.php:172 element/Mark/field.php:32
+#: Model/Entity/MarkFormProperty.php:178
+#: element/Mark/field.php:32
 #: element/Mark/list.php:41
 msgid "True"
 msgstr "Wahr"
 
-#: Model/Entity/MarkFormProperty.php:172 element/Mark/field.php:33
+#: Model/Entity/MarkFormProperty.php:178
+#: element/Mark/field.php:33
 msgid "False"
 msgstr "Falsch"
 
-#: Model/Entity/MarkFormProperty.php:63
+#: Model/Entity/MarkFormProperty.php:69
 msgctxt "every"
 msgid "Every"
 msgstr "Jedes"
 
-#: Model/Entity/MarkFormProperty.php:64
+#: Model/Entity/MarkFormProperty.php:70
 msgctxt "at least one"
 msgid "Any"
 msgstr "Ein"
 
-#: Model/Entity/Query.php:193 Model/Table/QueriesTable.php:195
-#: MarkFormProperties/add.php:47 MarkFormProperties/edit.php:50
-#: Trees/index.php:18 element/Tree/nav.php:2 element/top_nav.php:5
+#: Model/Entity/Query.php:193
+#: Model/Table/QueriesTable.php:195
+#: MarkFormProperties/add.php:47
+#: MarkFormProperties/edit.php:50
+#: Trees/index.php:18
+#: element/Tree/nav.php:2
+#: element/top_nav.php:5
 msgid "Trees"
 msgstr "Bäume"
 
-#: Model/Entity/Query.php:194 Model/Table/QueriesTable.php:196
-#: MarkFormProperties/add.php:48 MarkFormProperties/edit.php:51
-#: Varieties/index.php:16 element/Variety/nav.php:2 element/top_nav.php:4
+#: Model/Entity/Query.php:194
+#: Model/Table/QueriesTable.php:196
+#: MarkFormProperties/add.php:48
+#: MarkFormProperties/edit.php:51
+#: Varieties/index.php:16
+#: element/Variety/nav.php:2
+#: element/top_nav.php:4
 msgid "Varieties"
 msgstr "Sorten"
 
-#: Model/Entity/Query.php:195 Model/Table/QueriesTable.php:190
-#: Batches/index.php:14 MarkFormProperties/add.php:49
-#: MarkFormProperties/edit.php:52 element/Batch/nav.php:2 element/top_nav.php:3
+#: Model/Entity/Query.php:195
+#: Model/Table/QueriesTable.php:190
+#: Batches/index.php:14
+#: MarkFormProperties/add.php:49
+#: MarkFormProperties/edit.php:52
+#: element/Batch/nav.php:2
+#: element/top_nav.php:3
 msgid "Batches"
 msgstr "Lose"
 
-#: Model/Entity/Query.php:196 Batches/view.php:68
-#: element/MarkView/tooltip.php:79 element/MarkView/tooltip.php:123
+#: Model/Entity/Query.php:196
+#: Batches/view.php:68
+#: element/MarkView/tooltip.php:79
+#: element/MarkView/tooltip.php:123
 #: element/Tree/related_table.php:8
 msgid "Convar"
 msgstr "Convar"
 
-#: Model/Table/BatchesTable.php:72 Model/Table/CrossingsTable.php:73
-#: Model/Table/ExperimentSitesTable.php:56 Model/Table/GraftingsTable.php:56
+#: Model/Table/BatchesTable.php:72
+#: Model/Table/CrossingsTable.php:75
+#: Model/Table/ExperimentSitesTable.php:56
+#: Model/Table/GraftingsTable.php:56
 #: Model/Table/MarkFormFieldsTable.php:64
 #: Model/Table/MarkFormPropertiesTable.php:76
 #: Model/Table/MarkFormPropertyTypesTable.php:56
-#: Model/Table/MarkFormsTable.php:67 Model/Table/MarkScannerCodesTable.php:60
-#: Model/Table/MarkValuesTable.php:84 Model/Table/MarksTable.php:79
-#: Model/Table/MotherTreesTable.php:66 Model/Table/QueriesTable.php:69
-#: Model/Table/QueryGroupsTable.php:62 Model/Table/RootstocksTable.php:56
-#: Model/Table/RowsTable.php:61 Model/Table/ScionsBundlesTable.php:61
-#: Model/Table/TreesTable.php:87 Model/Table/UsersTable.php:52
+#: Model/Table/MarkFormsTable.php:67
+#: Model/Table/MarkScannerCodesTable.php:60
+#: Model/Table/MarkValuesTable.php:84
+#: Model/Table/MarksTable.php:79
+#: Model/Table/MotherTreesTable.php:66
+#: Model/Table/QueriesTable.php:69
+#: Model/Table/QueryGroupsTable.php:62
+#: Model/Table/RootstocksTable.php:56
+#: Model/Table/RowsTable.php:61
+#: Model/Table/ScionsBundlesTable.php:61
+#: Model/Table/TreesTable.php:87
+#: Model/Table/UsersTable.php:52
 #: Model/Table/VarietiesTable.php:74
 msgid "This field is required"
 msgstr "Dieses Feld ist erforderlich"
 
 #: Model/Table/BatchesTable.php:82
-msgid ""
-"Input not valid. The code must match the following pattern: "
-"\"NumberNumberUppercaseletter\". Example: 17A"
-msgstr ""
-"Eingabe nicht gültig. Der Code muss dem folgenden Muster entsprechen: "
-"\"NummerNummerGrossbuchstabe\". Beispiel: 17A"
+msgid "Input not valid. The code must match the following pattern: \"NumberNumberUppercaseletter\". Example: 17A"
+msgstr "Eingabe nicht gültig. Der Code muss dem folgenden Muster entsprechen: \"NummerNummerGrossbuchstabe\". Beispiel: 17A"
 
 #: Model/Table/BatchesTable.php:133
 msgid "A batch with this code and this crossing already exists."
 msgstr "Ein Los mit diesem Code und dieser Kreuzung ist bereits vorhanden."
 
-#: Model/Table/CrossingsTable.php:83
-msgid ""
-"Input not valid. The code must only contain alphanumerical characters "
-"(without umlauts). Length between four and eight characters."
-msgstr ""
-"Eingabe nicht gültig. Der Code darf nur alphanumerische Zeichen (ohne "
-"Umlaute) enthalten. Länge zwischen vier und acht Zeichen."
+#: Model/Table/CrossingsTable.php:85
+msgid "Input not valid. The code must only contain alphanumerical characters (without umlauts). Length between four and eight characters."
+msgstr "Eingabe nicht gültig. Der Code darf nur alphanumerische Zeichen (ohne Umlaute) enthalten. Länge zwischen vier und acht Zeichen."
 
-#: Model/Table/CrossingsTable.php:103 Model/Table/MotherTreesTable.php:148
-#: Model/Table/RowsTable.php:93 Model/Table/ScionsBundlesTable.php:101
+#: Model/Table/CrossingsTable.php:105
+#: Model/Table/MotherTreesTable.php:148
+#: Model/Table/RowsTable.php:93
+#: Model/Table/ScionsBundlesTable.php:101
 msgid "This code has already been used. Please use a unique code."
-msgstr ""
-"Dieser Code wurde bereits verwendet. Bitte wähle einen unverwechselbaren "
-"Code."
+msgstr "Dieser Code wurde bereits verwendet. Bitte wähle einen unverwechselbaren Code."
 
-#: Model/Table/CrossingsTable.php:108
-msgid ""
-"A crossing with the same mother variety and the same father variety already "
-"exists."
-msgstr ""
-"Eine Kreuzung mit der gleichen Muttersorte und der gleichen Vatersorte ist "
-"bereits vorhanden."
+#: Model/Table/CrossingsTable.php:110
+msgid "A crossing with the same mother variety and the same father variety already exists."
+msgstr "Eine Kreuzung mit der gleichen Muttersorte und der gleichen Vatersorte ist bereits vorhanden."
 
-#: Model/Table/ExperimentSitesTable.php:77 Model/Table/GraftingsTable.php:77
+#: Model/Table/ExperimentSitesTable.php:77
+#: Model/Table/GraftingsTable.php:77
 #: Model/Table/MarkFormPropertiesTable.php:186
 #: Model/Table/MarkFormPropertyTypesTable.php:77
-#: Model/Table/MarkFormsTable.php:93 Model/Table/RootstocksTable.php:77
+#: Model/Table/MarkFormsTable.php:93
+#: Model/Table/RootstocksTable.php:77
 msgid "This name has already been used. Please use a unique name."
-msgstr ""
-"Dieser Name wurde bereits verwendet. Bitte wähle einen unverwechselbaren "
-"Namen."
+msgstr "Dieser Name wurde bereits verwendet. Bitte wähle einen unverwechselbaren Namen."
 
-#: Model/Table/MarkFormPropertiesTable.php:84 Model/Table/MarkFormsTable.php:76
+#: Model/Table/MarkFormPropertiesTable.php:84
+#: Model/Table/MarkFormsTable.php:76
 msgid "This name has already been used."
 msgstr "Dieser Name wurde bereits verwendet."
 
@@ -1120,17 +1115,11 @@ msgstr "Der Minimalwert erforderlich und muss kleiner sein als der Maximalwert"
 
 #: Model/Table/MarkFormPropertiesTable.php:116
 msgid "The max value is required and must be greater than the max value"
-msgstr ""
-"Der Maximalwert ist erforderlich und muss grösser sein als der Minimalwert"
+msgstr "Der Maximalwert ist erforderlich und muss grösser sein als der Minimalwert"
 
 #: Model/Table/MarkFormPropertiesTable.php:128
-msgid ""
-"The step value is required and must be greater than zero and smaller or "
-"equal to the difference between the max and the min value."
-msgstr ""
-"Die Schrittgrösse ist erforderlich und muss grösser als null sein und "
-"kleiner oder gleich der Differenz zwischen dem Maximalwert und dem "
-"Minimalwert."
+msgid "The step value is required and must be greater than zero and smaller or equal to the difference between the max and the min value."
+msgstr "Die Schrittgrösse ist erforderlich und muss grösser als null sein und kleiner oder gleich der Differenz zwischen dem Maximalwert und dem Minimalwert."
 
 #: Model/Table/MarkFormPropertiesTable.php:140
 #: Model/Table/MarkFormPropertiesTable.php:152
@@ -1154,8 +1143,10 @@ msgstr "Text (< 255 Zeichen)"
 msgid "Boolean"
 msgstr "Boole'scher Wert"
 
-#: Model/Table/MarkFormPropertiesTable.php:232 Marks/view.php:28
-#: element/Mark/list.php:4 element/MarkView/tooltip.php:12
+#: Model/Table/MarkFormPropertiesTable.php:232
+#: Marks/view.php:28
+#: element/Mark/list.php:4
+#: element/MarkView/tooltip.php:12
 msgid "Date"
 msgstr "Datum"
 
@@ -1168,12 +1159,8 @@ msgid "A code with this property and this value does already exist."
 msgstr "Ein Code mit dieser Eigenschaft und diesem Wert ist bereits vorhanden."
 
 #: Model/Table/MarkValuesTable.php:94
-msgid ""
-"The validation rules of this data type has been violated. Please check data "
-"type again."
-msgstr ""
-"Die Gültigkeitsregeln dieses Datentyps wurden verletzt. Bitte überprüfe den "
-"Datentypen."
+msgid "The validation rules of this data type has been violated. Please check data type again."
+msgstr "Die Gültigkeitsregeln dieses Datentyps wurden verletzt. Bitte überprüfe den Datentypen."
 
 #: Model/Table/MarksTable.php:87
 msgid "Please select a tree"
@@ -1200,29 +1187,34 @@ msgid "Tree and variety must not be selected"
 msgstr "Baum und Sorte dürfen nicht ausgewählt sein"
 
 #: Model/Table/MotherTreesTable.php:95
-msgid ""
-"The variety of the mother tree must match the mother variety of the crossing."
-msgstr ""
-"Die Sorte des Mutterbaums muss mit der Muttersorte der Kreuzung "
-"übereinstimmen."
+msgid "The variety of the mother tree must match the mother variety of the crossing."
+msgstr "Die Sorte des Mutterbaums muss mit der Muttersorte der Kreuzung übereinstimmen."
 
-#: Model/Table/QueriesTable.php:191 Crossings/index.php:14
-#: element/Crossing/nav.php:2 element/top_nav.php:2
+#: Model/Table/QueriesTable.php:191
+#: Crossings/index.php:14
+#: element/Crossing/nav.php:2
+#: element/top_nav.php:2
 msgid "Crossings"
 msgstr "Kreuzungen"
 
-#: Model/Table/QueriesTable.php:192 Marks/index.php:14
-#: element/Mark/index_table.php:6 element/Mark/nav.php:2 element/top_nav.php:9
+#: Model/Table/QueriesTable.php:192
+#: Marks/index.php:14
+#: element/Mark/index_table.php:6
+#: element/Mark/nav.php:2
+#: element/top_nav.php:9
 msgid "Marks"
 msgstr "Bewertungen"
 
-#: Model/Table/QueriesTable.php:193 MotherTrees/index.php:18
+#: Model/Table/QueriesTable.php:193
+#: MotherTrees/index.php:18
 #: element/Crossing/nav.php:5
 msgid "Mother Trees"
 msgstr "Mutterbäume"
 
-#: Model/Table/QueriesTable.php:194 ScionsBundles/index.php:15
-#: element/ScionsBundle/nav.php:2 element/top_nav.php:6
+#: Model/Table/QueriesTable.php:194
+#: ScionsBundles/index.php:15
+#: element/ScionsBundle/nav.php:2
+#: element/top_nav.php:6
 msgid "Scions Bundles"
 msgstr "Reiserbündel"
 
@@ -1231,16 +1223,12 @@ msgid "This number has already been used."
 msgstr "Diese Nummer wurde bereits verwendet."
 
 #: Model/Table/TreesTable.php:106
-msgid "Input not valid. The publicid must only contain numbers."
-msgstr "Eingabe nicht gültig. Die Publicid darf nur Zahlen enthalten."
+msgid "Input not valid. The publicid must only contain numbers within 1 and 9999999."
+msgstr "Eingabe nicht gültig. Die Publicid darf nur Zahlen zwischen 1 und 9999999 enthalten."
 
 #: Model/Table/TreesTable.php:169
-msgid ""
-"The # prefix means, the tree was eliminated. It must therefore also have an "
-"elimination date."
-msgstr ""
-"Das Präfix # bedeutet, dass der Baum eliminiert wurde. Er muss daher auch "
-"ein Löschdatum haben."
+msgid "The # prefix means, the tree was eliminated. It must therefore also have an elimination date."
+msgstr "Das Präfix # bedeutet, dass der Baum eliminiert wurde. Er muss daher auch ein Löschdatum haben."
 
 #: Model/Table/VarietiesTable.php:109
 msgid "A variety with this code and the same batch already exists."
@@ -1250,22 +1238,48 @@ msgstr "Eine Sorte mit diesem und dem gleichen Los ist bereits vorhanden."
 msgid "Add Batch"
 msgstr "Los hinzufügen"
 
-#: Batches/add.php:33 Batches/edit.php:33 Crossings/add.php:25
-#: Crossings/edit.php:23 ExperimentSites/add.php:12 ExperimentSites/edit.php:12
-#: Graftings/add.php:12 Graftings/edit.php:12 MarkFormProperties/add.php:53
-#: MarkFormProperties/edit.php:56 MarkFormPropertyTypes/add.php:12
-#: MarkFormPropertyTypes/edit.php:12 MarkForms/add.php:35 MarkForms/edit.php:36
-#: MarkScannerCodes/add.php:31 MarkScannerCodes/edit.php:23
-#: MarkValues/edit.php:17 Marks/edit.php:59 MotherTrees/add.php:55
-#: MotherTrees/edit.php:42 Queries/add.php:19 Queries/add_mark_query.php:19
-#: Queries/edit.php:19 QueryGroups/add.php:12 QueryGroups/edit.php:12
-#: Rootstocks/add.php:12 Rootstocks/edit.php:12 Rows/add.php:20
-#: Rows/edit.php:25 ScionsBundles/add.php:32 ScionsBundles/edit.php:32
-#: Trees/add.php:58 Trees/add_genuine_seedling.php:33
-#: Trees/add_graft_tree.php:44 Trees/edit.php:62 Users/add.php:17
-#: Users/edit.php:17 Varieties/add_breeder_variety.php:23
-#: Varieties/add_official_variety.php:30 Varieties/edit.php:24
-#: element/Mark/basic_mark_form.php:36 element/Tree/eliminate_form.php:24
+#: Batches/add.php:33
+#: Batches/edit.php:33
+#: Crossings/add.php:25
+#: Crossings/edit.php:23
+#: ExperimentSites/add.php:12
+#: ExperimentSites/edit.php:12
+#: Graftings/add.php:12
+#: Graftings/edit.php:12
+#: MarkFormProperties/add.php:53
+#: MarkFormProperties/edit.php:56
+#: MarkFormPropertyTypes/add.php:12
+#: MarkFormPropertyTypes/edit.php:12
+#: MarkForms/add.php:35
+#: MarkForms/edit.php:36
+#: MarkScannerCodes/add.php:31
+#: MarkScannerCodes/edit.php:23
+#: MarkValues/edit.php:17
+#: Marks/edit.php:59
+#: MotherTrees/add.php:55
+#: MotherTrees/edit.php:42
+#: Queries/add.php:19
+#: Queries/add_mark_query.php:19
+#: Queries/edit.php:19
+#: QueryGroups/add.php:12
+#: QueryGroups/edit.php:12
+#: Rootstocks/add.php:12
+#: Rootstocks/edit.php:12
+#: Rows/add.php:20
+#: Rows/edit.php:25
+#: ScionsBundles/add.php:32
+#: ScionsBundles/edit.php:32
+#: Trees/add.php:58
+#: Trees/add_genuine_seedling.php:33
+#: Trees/add_graft_tree.php:44
+#: Trees/edit.php:62
+#: Users/add.php:17
+#: Users/edit.php:17
+#: Varieties/add_breeder_variety.php:23
+#: Varieties/add_official_variety.php:30
+#: Varieties/edit.php:24
+#: element/Mark/basic_mark_form.php:36
+#: element/Tree/eliminate_form.php:24
 #: element/Tree/plant_form.php:27
 msgid "Submit"
 msgstr "Absenden"
@@ -1278,80 +1292,135 @@ msgstr "Los editieren"
 msgid "Filter by Crossing.Batch..."
 msgstr "Filtern nach Kreuzung.Sorte..."
 
-#: Batches/view.php:6 MarkScannerCodes/view.php:6 Trees/view.php:6
+#: Batches/view.php:6
+#: MarkScannerCodes/view.php:6
+#: Trees/view.php:6
 msgid "Print label"
 msgstr "Etikette drucken"
 
-#: Batches/view.php:10 Marks/view.php:13 element/Mark/index_table.php:21
+#: Batches/view.php:10
+#: Marks/view.php:13
+#: element/Mark/index_table.php:21
 msgid "Batch:"
 msgstr "Los:"
 
-#: Batches/view.php:13 Batches/view.php:67 Crossings/view.php:8
-#: Crossings/view.php:39 Crossings/view.php:82 ExperimentSites/view.php:8
-#: Graftings/view.php:8 MarkFormProperties/view.php:8
-#: MarkFormProperties/view.php:60 MarkFormPropertyTypes/view.php:8
-#: MarkFormPropertyTypes/view.php:21 MarkForms/view.php:8 MarkForms/view.php:29
-#: MarkScannerCodes/view.php:13 Marks/view.php:24 Marks/view.php:58
-#: MotherTrees/view.php:9 Rootstocks/view.php:8 Rows/view.php:8
-#: ScionsBundles/view.php:8 Trees/view.php:13 Varieties/view.php:9
-#: Varieties/view.php:50 element/Mark/list.php:3
+#: Batches/view.php:13
+#: Batches/view.php:67
+#: Crossings/view.php:8
+#: Crossings/view.php:39
+#: Crossings/view.php:82
+#: ExperimentSites/view.php:8
+#: Graftings/view.php:8
+#: MarkFormProperties/view.php:8
+#: MarkFormProperties/view.php:60
+#: MarkFormPropertyTypes/view.php:8
+#: MarkFormPropertyTypes/view.php:21
+#: MarkForms/view.php:8
+#: MarkForms/view.php:29
+#: MarkScannerCodes/view.php:13
+#: Marks/view.php:24
+#: Marks/view.php:58
+#: MotherTrees/view.php:9
+#: Rootstocks/view.php:8
+#: Rows/view.php:8
+#: ScionsBundles/view.php:8
+#: Trees/view.php:13
+#: Varieties/view.php:9
+#: Varieties/view.php:58
+#: element/Mark/list.php:3
 #: element/Tree/related_table.php:6
 msgid "Id"
 msgstr "Id"
 
-#: Batches/view.php:17 MotherTrees/view.php:18 element/MarkView/tooltip.php:33
+#: Batches/view.php:17
+#: MotherTrees/view.php:18
+#: element/MarkView/tooltip.php:33
 msgid "Crossing"
 msgstr "Kreuzung"
 
-#: Batches/view.php:22 Crossings/view.php:41 element/MarkView/tooltip.php:37
+#: Batches/view.php:22
+#: Crossings/view.php:41
+#: element/MarkView/tooltip.php:37
 msgid "Date Sowed"
 msgstr "Datum Aussaat"
 
-#: Batches/view.php:26 Crossings/view.php:42 element/MarkView/tooltip.php:41
+#: Batches/view.php:26
+#: Crossings/view.php:42
+#: element/MarkView/tooltip.php:41
 msgid "Numb Seeds Sowed"
 msgstr "Anzahl ausgesäte Samen"
 
-#: Batches/view.php:30 element/MarkView/tooltip.php:45
+#: Batches/view.php:30
+#: element/MarkView/tooltip.php:45
 msgid "Numb Sprouts Grown"
 msgstr "Anzahl gewachsener Sprossen"
 
-#: Batches/view.php:34 Crossings/view.php:43 element/MarkView/tooltip.php:49
+#: Batches/view.php:34
+#: Crossings/view.php:43
+#: element/MarkView/tooltip.php:49
 msgid "Seed Tray"
 msgstr "Saatschale"
 
-#: Batches/view.php:38 Crossings/view.php:44 Trees/view.php:58
+#: Batches/view.php:38
+#: Crossings/view.php:44
+#: Trees/view.php:58
 #: element/MarkView/tooltip.php:53
 msgid "Date Planted"
 msgstr "Pflanzdatum"
 
-#: Batches/view.php:42 element/MarkView/tooltip.php:57
+#: Batches/view.php:42
+#: element/MarkView/tooltip.php:57
 msgid "Numb Sprouts Planted"
 msgstr "Anzahl ausgepflanzter Sprossen"
 
-#: Batches/view.php:46 Crossings/view.php:45 element/MarkView/tooltip.php:61
+#: Batches/view.php:46
+#: Crossings/view.php:45
+#: element/MarkView/tooltip.php:61
 msgid "Patch"
 msgstr "Beet"
 
-#: Batches/view.php:50 Crossings/view.php:22 MarkFormProperties/view.php:43
-#: MarkForms/view.php:12 Marks/view.php:45 MotherTrees/view.php:55
-#: Rows/view.php:20 ScionsBundles/view.php:33 Trees/view.php:74
-#: Users/view.php:20 Varieties/view.php:33
+#: Batches/view.php:50
+#: Crossings/view.php:22
+#: MarkFormProperties/view.php:43
+#: MarkForms/view.php:12
+#: Marks/view.php:45
+#: MotherTrees/view.php:55
+#: Rows/view.php:20
+#: ScionsBundles/view.php:33
+#: Trees/view.php:74
+#: Users/view.php:20
+#: Varieties/view.php:41
 msgid "Created"
 msgstr "Erstellt"
 
-#: Batches/view.php:54 Crossings/view.php:26 MarkFormProperties/view.php:47
-#: MarkFormProperties/view.php:62 MarkFormPropertyTypes/view.php:23
-#: MarkForms/view.php:16 MarkForms/view.php:32 Marks/view.php:49
-#: Marks/view.php:62 MotherTrees/view.php:59 Rows/view.php:24
-#: ScionsBundles/view.php:37 Trees/view.php:78 Users/view.php:24
-#: Varieties/view.php:37 Varieties/view.php:55
+#: Batches/view.php:54
+#: Crossings/view.php:26
+#: MarkFormProperties/view.php:47
+#: MarkFormProperties/view.php:62
+#: MarkFormPropertyTypes/view.php:23
+#: MarkForms/view.php:16
+#: MarkForms/view.php:32
+#: Marks/view.php:49
+#: Marks/view.php:62
+#: MotherTrees/view.php:59
+#: Rows/view.php:24
+#: ScionsBundles/view.php:37
+#: Trees/view.php:78
+#: Users/view.php:24
+#: Varieties/view.php:45
+#: Varieties/view.php:63
 #: element/Tree/related_table.php:13
 msgid "Modified"
 msgstr "Geändert"
 
-#: Batches/view.php:59 MarkFormProperties/view.php:52 MotherTrees/view.php:64
-#: Rows/view.php:29 ScionsBundles/view.php:42 Trees/view.php:83
-#: element/MarkView/tooltip.php:66 element/MarkView/tooltip.php:148
+#: Batches/view.php:59
+#: MarkFormProperties/view.php:52
+#: MotherTrees/view.php:64
+#: Rows/view.php:29
+#: ScionsBundles/view.php:42
+#: Trees/view.php:83
+#: element/MarkView/tooltip.php:66
+#: element/MarkView/tooltip.php:148
 #: element/Tree/related_table.php:11
 msgid "Note"
 msgstr "Bemerkung"
@@ -1360,79 +1429,141 @@ msgstr "Bemerkung"
 msgid "Related Varieties"
 msgstr "Verwandte Sorten"
 
-#: Batches/view.php:69 Crossings/view.php:46 Crossings/view.php:89
-#: ExperimentSites/index.php:11 Graftings/index.php:11
-#: MarkFormProperties/view.php:63 MarkFormPropertyTypes/index.php:11
-#: MarkFormPropertyTypes/view.php:24 Marks/view.php:63 Rootstocks/index.php:11
-#: Users/index.php:14 Varieties/view.php:56 element/Batch/index_table.php:11
-#: element/Crossing/index_table.php:8 element/Mark/index_table.php:8
-#: element/Mark/list.php:10 element/MarkForm/index_table.php:8
+#: Batches/view.php:69
+#: Crossings/view.php:46
+#: Crossings/view.php:89
+#: ExperimentSites/index.php:11
+#: Graftings/index.php:11
+#: MarkFormProperties/view.php:63
+#: MarkFormPropertyTypes/index.php:11
+#: MarkFormPropertyTypes/view.php:24
+#: Marks/view.php:63
+#: Rootstocks/index.php:11
+#: Users/index.php:14
+#: Varieties/view.php:64
+#: element/Batch/index_table.php:11
+#: element/Crossing/index_table.php:8
+#: element/Mark/index_table.php:8
+#: element/Mark/list.php:10
+#: element/MarkForm/index_table.php:8
 #: element/MarkFormProperty/index_table.php:10
 #: element/MarkScannerCode/index_table.php:8
-#: element/MotherTree/index_table.php:16 element/Row/index_table.php:10
-#: element/ScionsBundle/index_table.php:11 element/Tree/get_tree.php:10
-#: element/Tree/index_table.php:15 element/Tree/related_table.php:14
+#: element/MotherTree/index_table.php:16
+#: element/Row/index_table.php:10
+#: element/ScionsBundle/index_table.php:11
+#: element/Tree/get_tree.php:10
+#: element/Tree/index_table.php:15
+#: element/Tree/related_table.php:14
 #: element/Variety/index_table.php:10
 msgid "Actions"
 msgstr "Aktionen"
 
-#: Batches/view.php:78 Crossings/view.php:60 Crossings/view.php:103
-#: ExperimentSites/index.php:22 Graftings/index.php:21
-#: MarkFormProperties/view.php:73 MarkFormPropertyTypes/index.php:22
-#: MarkFormPropertyTypes/view.php:34 Rootstocks/index.php:21 Users/index.php:27
-#: Varieties/view.php:69 element/Batch/index_table.php:26
-#: element/Crossing/index_table.php:32 element/Mark/index_table.php:42
-#: element/Mark/list.php:45 element/MarkForm/index_table.php:21
+#: Batches/view.php:78
+#: Crossings/view.php:60
+#: Crossings/view.php:103
+#: ExperimentSites/index.php:22
+#: Graftings/index.php:21
+#: MarkFormProperties/view.php:73
+#: MarkFormPropertyTypes/index.php:22
+#: MarkFormPropertyTypes/view.php:34
+#: Rootstocks/index.php:21
+#: Users/index.php:27
+#: Varieties/view.php:77
+#: element/Batch/index_table.php:26
+#: element/Crossing/index_table.php:32
+#: element/Mark/index_table.php:42
+#: element/Mark/list.php:45
+#: element/MarkForm/index_table.php:21
 #: element/MarkFormProperty/index_table.php:26
 #: element/MarkScannerCode/index_table.php:25
-#: element/MotherTree/index_table.php:33 element/Row/index_table.php:24
-#: element/ScionsBundle/index_table.php:27 element/Tree/index_table.php:33
-#: element/Tree/related_table.php:30 element/Variety/index_table.php:24
+#: element/MotherTree/index_table.php:33
+#: element/Row/index_table.php:24
+#: element/ScionsBundle/index_table.php:27
+#: element/Tree/index_table.php:33
+#: element/Tree/related_table.php:30
+#: element/Variety/index_table.php:24
 msgid "View"
 msgstr "Anzeigen"
 
-#: Batches/view.php:81 Crossings/view.php:63 Crossings/view.php:106
-#: ExperimentSites/index.php:25 Graftings/index.php:23
-#: MarkFormProperties/view.php:76 MarkFormPropertyTypes/index.php:25
-#: MarkFormPropertyTypes/view.php:37 Marks/view.php:81 Rootstocks/index.php:23
-#: Users/index.php:29 Varieties/view.php:72 element/Batch/index_table.php:28
-#: element/Crossing/index_table.php:34 element/Mark/index_table.php:44
-#: element/Mark/list.php:48 element/MarkForm/index_table.php:23
+#: Batches/view.php:81
+#: Crossings/view.php:63
+#: Crossings/view.php:106
+#: ExperimentSites/index.php:25
+#: Graftings/index.php:23
+#: MarkFormProperties/view.php:76
+#: MarkFormPropertyTypes/index.php:25
+#: MarkFormPropertyTypes/view.php:37
+#: Marks/view.php:81
+#: Rootstocks/index.php:23
+#: Users/index.php:29
+#: Varieties/view.php:80
+#: element/Batch/index_table.php:28
+#: element/Crossing/index_table.php:34
+#: element/Mark/index_table.php:44
+#: element/Mark/list.php:48
+#: element/MarkForm/index_table.php:23
 #: element/MarkFormProperty/index_table.php:29
 #: element/MarkScannerCode/index_table.php:27
-#: element/MotherTree/index_table.php:35 element/Query/nav.php:7
-#: element/Query/nav.php:24 element/Row/index_table.php:26
-#: element/ScionsBundle/index_table.php:29 element/Tree/index_table.php:35
-#: element/Tree/related_table.php:33 element/Variety/index_table.php:26
+#: element/MotherTree/index_table.php:35
+#: element/Query/nav.php:7
+#: element/Query/nav.php:24
+#: element/Row/index_table.php:26
+#: element/ScionsBundle/index_table.php:29
+#: element/Tree/index_table.php:35
+#: element/Tree/related_table.php:33
+#: element/Variety/index_table.php:26
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: Batches/view.php:85 Crossings/view.php:67 Crossings/view.php:110
-#: ExperimentSites/index.php:29 Graftings/index.php:27
-#: MarkFormPropertyTypes/index.php:29 MarkFormPropertyTypes/view.php:42
-#: Marks/view.php:85 Rootstocks/index.php:27 Users/index.php:33
-#: Varieties/view.php:76 element/Batch/index_table.php:32
-#: element/Crossing/index_table.php:38 element/Mark/index_table.php:48
-#: element/Mark/list.php:52 element/MarkForm/index_table.php:27
+#: Batches/view.php:85
+#: Crossings/view.php:67
+#: Crossings/view.php:110
+#: ExperimentSites/index.php:29
+#: Graftings/index.php:27
+#: MarkFormPropertyTypes/index.php:29
+#: MarkFormPropertyTypes/view.php:42
+#: Marks/view.php:85
+#: Rootstocks/index.php:27
+#: Users/index.php:33
+#: Varieties/view.php:84
+#: element/Batch/index_table.php:32
+#: element/Crossing/index_table.php:38
+#: element/Mark/index_table.php:48
+#: element/Mark/list.php:52
+#: element/MarkForm/index_table.php:27
 #: element/MarkFormProperty/index_table.php:33
 #: element/MarkScannerCode/index_table.php:31
-#: element/MotherTree/index_table.php:39 element/Query/nav.php:12
-#: element/Query/nav.php:28 element/Row/index_table.php:30
-#: element/ScionsBundle/index_table.php:33 element/Tree/index_table.php:39
-#: element/Tree/related_table.php:37 element/Variety/index_table.php:30
+#: element/MotherTree/index_table.php:39
+#: element/Query/nav.php:12
+#: element/Query/nav.php:28
+#: element/Row/index_table.php:30
+#: element/ScionsBundle/index_table.php:33
+#: element/Tree/index_table.php:39
+#: element/Tree/related_table.php:37
+#: element/Variety/index_table.php:30
 msgid "Delete"
 msgstr "Löschen"
 
-#: Batches/view.php:86 Crossings/view.php:68 Crossings/view.php:111
-#: ExperimentSites/index.php:30 Graftings/index.php:28
-#: MarkFormPropertyTypes/index.php:30 MarkFormPropertyTypes/view.php:43
-#: Marks/view.php:86 Rootstocks/index.php:28 Varieties/view.php:77
-#: element/Batch/index_table.php:33 element/Crossing/index_table.php:39
+#: Batches/view.php:86
+#: Crossings/view.php:68
+#: Crossings/view.php:111
+#: ExperimentSites/index.php:30
+#: Graftings/index.php:28
+#: MarkFormPropertyTypes/index.php:30
+#: MarkFormPropertyTypes/view.php:43
+#: Marks/view.php:86
+#: Rootstocks/index.php:28
+#: Varieties/view.php:85
+#: element/Batch/index_table.php:33
+#: element/Crossing/index_table.php:39
 #: element/MarkForm/index_table.php:28
 #: element/MarkFormProperty/index_table.php:34
-#: element/MotherTree/index_table.php:40 element/Row/index_table.php:31
-#: element/ScionsBundle/index_table.php:34 element/Tree/index_table.php:40
-#: element/Tree/related_table.php:38 element/Variety/index_table.php:31
+#: element/MotherTree/index_table.php:40
+#: element/Row/index_table.php:31
+#: element/ScionsBundle/index_table.php:34
+#: element/Tree/index_table.php:40
+#: element/Tree/related_table.php:38
+#: element/Variety/index_table.php:31
 msgid "Are you sure you want to delete \"{0}\" (id: {1})?"
 msgstr "\"{0}\" wirklich löschen (id: {0})?"
 
@@ -1476,8 +1607,10 @@ msgstr "Ziel"
 msgid "Related Batches"
 msgstr "Verwandte Lose"
 
-#: Crossings/view.php:40 Crossings/view.php:83 MarkScannerCodes/view.php:30
-#: Varieties/view.php:51
+#: Crossings/view.php:40
+#: Crossings/view.php:83
+#: MarkScannerCodes/view.php:30
+#: Varieties/view.php:59
 msgid "Code"
 msgstr "Code"
 
@@ -1485,29 +1618,36 @@ msgstr "Code"
 msgid "Related Mother Trees"
 msgstr "Verwandte Mutterbäume"
 
-#: Crossings/view.php:84 element/MarkView/tooltip.php:117
-#: element/MotherTree/index_table.php:9 element/Tree/get_tree.php:4
+#: Crossings/view.php:84
+#: element/MarkView/tooltip.php:117
+#: element/MotherTree/index_table.php:9
+#: element/Tree/get_tree.php:4
 #: element/Tree/related_table.php:7
 msgid "Publicid"
 msgstr "Publicid"
 
-#: Crossings/view.php:85 MotherTrees/view.php:23
+#: Crossings/view.php:85
+#: MotherTrees/view.php:23
 msgid "Planed"
 msgstr "Geplant"
 
-#: Crossings/view.php:86 MotherTrees/view.php:27
+#: Crossings/view.php:86
+#: MotherTrees/view.php:27
 msgid "Numb Portions"
 msgstr "Anz. Portionen"
 
-#: Crossings/view.php:87 MotherTrees/view.php:31
+#: Crossings/view.php:87
+#: MotherTrees/view.php:31
 msgid "Numb Flowers"
 msgstr "Anz. Blüten"
 
-#: Crossings/view.php:88 MotherTrees/view.php:39
+#: Crossings/view.php:88
+#: MotherTrees/view.php:39
 msgid "Numb Seeds"
 msgstr "Anz. Samen"
 
-#: Crossings/view.php:95 element/MotherTree/index_table.php:24
+#: Crossings/view.php:95
+#: element/MotherTree/index_table.php:24
 msgid "Mother tree not set."
 msgstr "Kein Mutterbaum gesetzt."
 
@@ -1519,83 +1659,115 @@ msgstr "Versuchsort hinzufügen"
 msgid "Edit Experiment Site"
 msgstr "Versuchsort bearbeiten"
 
-#: ExperimentSites/index.php:5 element/Setting/nav.php:8
+#: ExperimentSites/index.php:5
+#: element/Setting/nav.php:8
 msgid "Experiment Sites"
 msgstr "Versuchsorte"
 
-#: ExperimentSites/index.php:40 Graftings/index.php:38
-#: MarkFormPropertyTypes/index.php:40 Rootstocks/index.php:38
-#: Users/index.php:43 element/Batch/index_table.php:43
-#: element/Crossing/index_table.php:49 element/Mark/index_table.php:58
+#: ExperimentSites/index.php:40
+#: Graftings/index.php:38
+#: MarkFormPropertyTypes/index.php:40
+#: Rootstocks/index.php:38
+#: Users/index.php:43
+#: element/Batch/index_table.php:43
+#: element/Crossing/index_table.php:49
+#: element/Mark/index_table.php:58
 #: element/MarkForm/index_table.php:38
 #: element/MarkFormProperty/index_table.php:45
 #: element/MarkScannerCode/index_table.php:42
 #: element/MotherTree/index_table.php:50
-#: element/Query/mark_results_table.php:79 element/Query/results_table.php:23
-#: element/Row/index_table.php:40 element/ScionsBundle/index_table.php:44
-#: element/Tree/index_table.php:50 element/Variety/index_table.php:41
+#: element/Query/mark_results_table.php:79
+#: element/Query/results_table.php:23
+#: element/Row/index_table.php:40
+#: element/ScionsBundle/index_table.php:44
+#: element/Tree/index_table.php:50
+#: element/Variety/index_table.php:41
 msgid "first"
 msgstr "erste"
 
-#: ExperimentSites/index.php:41 Graftings/index.php:39
-#: MarkFormPropertyTypes/index.php:41 Rootstocks/index.php:39
-#: Users/index.php:44 element/Batch/index_table.php:44
-#: element/Crossing/index_table.php:50 element/Mark/index_table.php:59
+#: ExperimentSites/index.php:41
+#: Graftings/index.php:39
+#: MarkFormPropertyTypes/index.php:41
+#: Rootstocks/index.php:39
+#: Users/index.php:44
+#: element/Batch/index_table.php:44
+#: element/Crossing/index_table.php:50
+#: element/Mark/index_table.php:59
 #: element/MarkForm/index_table.php:39
 #: element/MarkFormProperty/index_table.php:46
 #: element/MarkScannerCode/index_table.php:43
 #: element/MotherTree/index_table.php:51
-#: element/Query/mark_results_table.php:80 element/Query/results_table.php:24
-#: element/Row/index_table.php:41 element/ScionsBundle/index_table.php:45
-#: element/Tree/index_table.php:51 element/Variety/index_table.php:42
+#: element/Query/mark_results_table.php:80
+#: element/Query/results_table.php:24
+#: element/Row/index_table.php:41
+#: element/ScionsBundle/index_table.php:45
+#: element/Tree/index_table.php:51
+#: element/Variety/index_table.php:42
 msgid "previous"
 msgstr "zurück"
 
-#: ExperimentSites/index.php:43 Graftings/index.php:41
-#: MarkFormPropertyTypes/index.php:43 Rootstocks/index.php:41
-#: Users/index.php:46 element/Batch/index_table.php:46
-#: element/Crossing/index_table.php:52 element/Mark/index_table.php:61
+#: ExperimentSites/index.php:43
+#: Graftings/index.php:41
+#: MarkFormPropertyTypes/index.php:43
+#: Rootstocks/index.php:41
+#: Users/index.php:46
+#: element/Batch/index_table.php:46
+#: element/Crossing/index_table.php:52
+#: element/Mark/index_table.php:61
 #: element/MarkForm/index_table.php:41
 #: element/MarkFormProperty/index_table.php:48
 #: element/MarkScannerCode/index_table.php:45
 #: element/MotherTree/index_table.php:53
-#: element/Query/mark_results_table.php:82 element/Query/results_table.php:26
-#: element/Row/index_table.php:43 element/ScionsBundle/index_table.php:47
-#: element/Tree/index_table.php:53 element/Variety/index_table.php:44
+#: element/Query/mark_results_table.php:82
+#: element/Query/results_table.php:26
+#: element/Row/index_table.php:43
+#: element/ScionsBundle/index_table.php:47
+#: element/Tree/index_table.php:53
+#: element/Variety/index_table.php:44
 msgid "next"
 msgstr "weiter"
 
-#: ExperimentSites/index.php:44 Graftings/index.php:42
-#: MarkFormPropertyTypes/index.php:44 Rootstocks/index.php:42
-#: Users/index.php:47 element/Batch/index_table.php:47
-#: element/Crossing/index_table.php:53 element/Mark/index_table.php:62
+#: ExperimentSites/index.php:44
+#: Graftings/index.php:42
+#: MarkFormPropertyTypes/index.php:44
+#: Rootstocks/index.php:42
+#: Users/index.php:47
+#: element/Batch/index_table.php:47
+#: element/Crossing/index_table.php:53
+#: element/Mark/index_table.php:62
 #: element/MarkForm/index_table.php:42
 #: element/MarkFormProperty/index_table.php:49
 #: element/MarkScannerCode/index_table.php:46
 #: element/MotherTree/index_table.php:54
-#: element/Query/mark_results_table.php:83 element/Query/results_table.php:27
-#: element/Row/index_table.php:44 element/ScionsBundle/index_table.php:48
-#: element/Tree/index_table.php:54 element/Variety/index_table.php:45
+#: element/Query/mark_results_table.php:83
+#: element/Query/results_table.php:27
+#: element/Row/index_table.php:44
+#: element/ScionsBundle/index_table.php:48
+#: element/Tree/index_table.php:54
+#: element/Variety/index_table.php:45
 msgid "last"
 msgstr "letzte"
 
-#: ExperimentSites/index.php:46 Graftings/index.php:44
-#: MarkFormPropertyTypes/index.php:46 Rootstocks/index.php:44
-#: Users/index.php:49 element/Batch/index_table.php:49
-#: element/Crossing/index_table.php:55 element/Mark/index_table.php:64
+#: ExperimentSites/index.php:46
+#: Graftings/index.php:44
+#: MarkFormPropertyTypes/index.php:46
+#: Rootstocks/index.php:44
+#: Users/index.php:49
+#: element/Batch/index_table.php:49
+#: element/Crossing/index_table.php:55
+#: element/Mark/index_table.php:64
 #: element/MarkForm/index_table.php:44
 #: element/MarkFormProperty/index_table.php:51
 #: element/MarkScannerCode/index_table.php:48
 #: element/MotherTree/index_table.php:56
-#: element/Query/mark_results_table.php:85 element/Query/results_table.php:29
-#: element/Row/index_table.php:46 element/ScionsBundle/index_table.php:50
-#: element/Tree/index_table.php:56 element/Variety/index_table.php:47
-msgid ""
-"Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} "
-"total"
-msgstr ""
-"Seite {{page}} von {{pages}}, zeige {{current}} Datensätze von {{count}} "
-"insgesamt"
+#: element/Query/mark_results_table.php:85
+#: element/Query/results_table.php:29
+#: element/Row/index_table.php:46
+#: element/ScionsBundle/index_table.php:50
+#: element/Tree/index_table.php:56
+#: element/Variety/index_table.php:47
+msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
+msgstr "Seite {{page}} von {{pages}}, zeige {{current}} Datensätze von {{count}} insgesamt"
 
 #: ExperimentSites/select.php:2
 msgid "Select Experiment Site"
@@ -1609,17 +1781,16 @@ msgstr "OK"
 msgid "Experiment Site:"
 msgstr "Versuchsort:"
 
-#: ExperimentSites/view.php:12 Graftings/view.php:12
-#: MarkFormPropertyTypes/view.php:12 MarkFormPropertyTypes/view.php:22
-#: Rootstocks/view.php:12 Rows/add.php:10 Rows/edit.php:10
+#: ExperimentSites/view.php:12
+#: Graftings/view.php:12
+#: MarkFormPropertyTypes/view.php:12
+#: MarkFormPropertyTypes/view.php:22
+#: Rootstocks/view.php:12
+#: Rows/add.php:10
+#: Rows/edit.php:10
 #: element/Row/index_table.php:5
 msgid "Name"
 msgstr "Name"
-
-#: ExperimentSites/view.php:17 Graftings/view.php:17 Rootstocks/view.php:17
-#: Rows/view.php:33 Varieties/view.php:87
-msgid "Related Trees"
-msgstr "Verwandte Bäume"
 
 #: Graftings/add.php:7
 msgid "Add Grafting"
@@ -1629,7 +1800,8 @@ msgstr "Neue Veredelung"
 msgid "Edit Grafting"
 msgstr "Veredelung bearbeiten"
 
-#: Graftings/index.php:5 element/Setting/nav.php:5
+#: Graftings/index.php:5
+#: element/Setting/nav.php:5
 msgid "Graftings"
 msgstr "Veredelungen"
 
@@ -1641,27 +1813,34 @@ msgstr "Veredelung:"
 msgid "Add Property"
 msgstr "Eigenschaft hinzufügen"
 
-#: MarkFormProperties/add.php:12 MarkFormProperties/edit.php:12
-#: MarkFormProperties/view.php:12 element/MarkFormProperty/index_table.php:7
+#: MarkFormProperties/add.php:12
+#: MarkFormProperties/edit.php:12
+#: MarkFormProperties/view.php:12
+#: element/MarkFormProperty/index_table.php:7
 msgid "Property Type"
 msgstr "Eigenschaftstyp"
 
-#: MarkFormProperties/add.php:17 MarkFormProperties/edit.php:17
-#: MarkFormProperties/view.php:21 element/MarkFormProperty/index_table.php:6
+#: MarkFormProperties/add.php:17
+#: MarkFormProperties/edit.php:17
+#: MarkFormProperties/view.php:21
+#: element/MarkFormProperty/index_table.php:6
 msgid "Data Type"
 msgstr "Datentyp"
 
-#: MarkFormProperties/add.php:24 MarkFormProperties/edit.php:25
+#: MarkFormProperties/add.php:24
+#: MarkFormProperties/edit.php:25
 #: MarkFormProperties/view.php:26
 msgid "Minimum Value"
 msgstr "Minimalwert"
 
-#: MarkFormProperties/add.php:32 MarkFormProperties/edit.php:34
+#: MarkFormProperties/add.php:32
+#: MarkFormProperties/edit.php:34
 #: MarkFormProperties/view.php:32
 msgid "Maximum Value"
 msgstr "Maximalwert"
 
-#: MarkFormProperties/add.php:45 MarkFormProperties/edit.php:48
+#: MarkFormProperties/add.php:45
+#: MarkFormProperties/edit.php:48
 msgid "This property serves to mark:"
 msgstr "Diese Eigenschaft dient dem Bewerten von:"
 
@@ -1673,7 +1852,9 @@ msgstr "Eigenschaft des Bewertungsformulars hinzufügen"
 msgid "Mark Form Properties"
 msgstr "Eigenschaften des Bewertungsformulars"
 
-#: MarkFormProperties/index.php:17 MarkForms/index.php:17 Rows/index.php:17
+#: MarkFormProperties/index.php:17
+#: MarkForms/index.php:17
+#: Rows/index.php:17
 msgid "Filter by name..."
 msgstr "Nach Name filtern..."
 
@@ -1689,7 +1870,8 @@ msgstr "Schritt"
 msgid "Related Mark Forms"
 msgstr "Verwandte Bewertungsformulare"
 
-#: MarkFormProperties/view.php:61 Marks/view.php:36
+#: MarkFormProperties/view.php:61
+#: Marks/view.php:36
 msgid "Mark Form"
 msgstr "Bewertungsformular"
 
@@ -1701,7 +1883,8 @@ msgstr "Eigenschaftstyp für Bewertungen hinzufüen"
 msgid "Edit Mark Property Type"
 msgstr "Eigenschaftstyp für Bewertungen bearbeiten"
 
-#: MarkFormPropertyTypes/index.php:5 element/Setting/nav.php:13
+#: MarkFormPropertyTypes/index.php:5
+#: element/Setting/nav.php:13
 msgid "Mark Property Types"
 msgstr "Eigenschaftstypen für Bewertungen"
 
@@ -1717,12 +1900,14 @@ msgstr "Verwandte Eigenschaften für Bewertungen"
 msgid "Add Mark Form"
 msgstr "Bewertungsformular hinzufügen"
 
-#: MarkForms/add.php:11 MarkForms/edit.php:11
+#: MarkForms/add.php:11
+#: MarkForms/edit.php:11
 #: element/Mark/basic_mark_form.php:20
 msgid "Fields"
 msgstr "Felder"
 
-#: MarkForms/add.php:27 MarkForms/edit.php:28
+#: MarkForms/add.php:27
+#: MarkForms/edit.php:28
 #: element/Mark/basic_mark_form.php:29
 msgid "Add mark field to form"
 msgstr "Bewertungsfeld zum Formular hinzufügen"
@@ -1739,7 +1924,9 @@ msgstr "Bewertungsformulare"
 msgid "Mark Form:"
 msgstr "Bewertungsformular:"
 
-#: MarkForms/view.php:21 Varieties/view.php:42 element/MarkView/tooltip.php:104
+#: MarkForms/view.php:21
+#: Varieties/view.php:50
+#: element/MarkView/tooltip.php:104
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -1747,7 +1934,8 @@ msgstr "Beschreibung"
 msgid "Form Fields"
 msgstr "Felder des Bewertungsformulars"
 
-#: MarkForms/view.php:30 element/Query/builder.php:60
+#: MarkForms/view.php:30
+#: element/Query/builder.php:60
 msgid "Mark Property"
 msgstr "Eigenschaft für Bewertungen"
 
@@ -1759,15 +1947,23 @@ msgstr "Priorität"
 msgid "Add Scanner Code"
 msgstr "Scanner-Code hinzufügen"
 
-#: MarkScannerCodes/add.php:12 MarkScannerCodes/edit.php:19
-#: MarkScannerCodes/view.php:17 Marks/view.php:59 element/Mark/list.php:5
-#: element/MarkScannerCode/index_table.php:6 element/MarkView/tooltip.php:4
+#: MarkScannerCodes/add.php:12
+#: MarkScannerCodes/edit.php:19
+#: MarkScannerCodes/view.php:17
+#: Marks/view.php:59
+#: element/Mark/list.php:5
+#: element/MarkScannerCode/index_table.php:6
+#: element/MarkView/tooltip.php:4
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: MarkScannerCodes/add.php:20 MarkScannerCodes/view.php:26 Marks/view.php:60
-#: element/Mark/list.php:6 element/MarkScannerCode/index_table.php:7
-#: element/MarkView/tooltip.php:8 element/Query/mark_results_table.php:54
+#: MarkScannerCodes/add.php:20
+#: MarkScannerCodes/view.php:26
+#: Marks/view.php:60
+#: element/Mark/list.php:6
+#: element/MarkScannerCode/index_table.php:7
+#: element/MarkView/tooltip.php:8
+#: element/Query/mark_results_table.php:54
 msgid "Value"
 msgstr "Wert"
 
@@ -1775,7 +1971,8 @@ msgstr "Wert"
 msgid "Edit Scanner Code"
 msgstr "Bewertungsscannercode bearbeiten"
 
-#: MarkScannerCodes/index.php:14 element/Mark/nav.php:17
+#: MarkScannerCodes/index.php:14
+#: element/Mark/nav.php:19
 msgid "Scanner Codes"
 msgstr "Scanner-Codes"
 
@@ -1791,22 +1988,30 @@ msgstr "Scanner-Code:"
 msgid "Edit Mark Value"
 msgstr "Wert der Bewertung bearbeiten"
 
-#: Marks/add_batch_mark.php:8 element/Mark/nav.php:7
+#: Marks/add_batch_mark.php:8
+#: element/Mark/nav.php:9
 msgid "Mark Batch"
 msgstr "Los bewerten"
 
-#: Marks/add_batch_mark.php:14 Marks/edit.php:18
-#: Varieties/add_breeder_variety.php:14 Varieties/add_official_variety.php:19
-#: Varieties/edit.php:14 element/Batch/index_table.php:5
+#: Marks/add_batch_mark.php:14
+#: Marks/edit.php:18
+#: Varieties/add_breeder_variety.php:14
+#: Varieties/add_official_variety.php:19
+#: Varieties/edit.php:14
+#: element/Batch/index_table.php:5
 msgid "Crossing.Batch"
 msgstr "Kreuzung.Sorte"
 
-#: Marks/add_tree_mark.php:17 element/Mark/nav.php:3
+#: Marks/add_tree_mark.php:17
+#: element/Mark/nav.php:3
 msgid "Mark Tree"
 msgstr "Baum bewerten"
 
-#: Marks/add_tree_mark.php:21 MotherTrees/add.php:20 Trees/eliminate.php:18
-#: Trees/eliminate_by_scanner.php:18 Trees/plant.php:18
+#: Marks/add_tree_mark.php:21
+#: MotherTrees/add.php:20
+#: Trees/eliminate.php:18
+#: Trees/eliminate_by_scanner.php:18
+#: Trees/plant.php:18
 msgid "Enter publicid..."
 msgstr "Publicid eingeben..."
 
@@ -1816,14 +2021,14 @@ msgstr "Baum bewerten mit Scanner"
 
 #: Marks/add_tree_mark_by_scanner.php:16
 msgid "Fill out form then scan tree and marks in here"
-msgstr ""
-"Zuerst Formular ausfüllen, danach Baum und Werte in dieses Feld scannen"
+msgstr "Zuerst Formular ausfüllen, danach Baum und Werte in dieses Feld scannen"
 
 #: Marks/add_tree_mark_by_scanner.php:18
 msgid "Please wait..."
 msgstr "Bitte warten..."
 
-#: Marks/add_variety_mark.php:8 element/Mark/nav.php:6
+#: Marks/add_variety_mark.php:8
+#: element/Mark/nav.php:8
 msgid "Mark Variety"
 msgstr "Sorte bewerten"
 
@@ -1835,12 +2040,16 @@ msgstr "Bewertung bearbeiten"
 msgid "Filter by mark type"
 msgstr "Nach Bewertungstyp filtern"
 
-#: Marks/view.php:7 Trees/view.php:10 element/Mark/index_table.php:15
+#: Marks/view.php:7
+#: Trees/view.php:10
+#: element/Mark/index_table.php:15
 #: element/Mark/list.php:16
 msgid "Tree:"
 msgstr "Baum:"
 
-#: Marks/view.php:10 Varieties/view.php:6 element/Mark/index_table.php:18
+#: Marks/view.php:10
+#: Varieties/view.php:6
+#: element/Mark/index_table.php:18
 #: element/Mark/list.php:21
 msgid "Variety:"
 msgstr "Sorte:"
@@ -1849,19 +2058,24 @@ msgstr "Sorte:"
 msgid "Mark:"
 msgstr "Bewertung:"
 
-#: Marks/view.php:32 element/Mark/list.php:7 element/MarkView/tooltip.php:16
+#: Marks/view.php:32
+#: element/Mark/list.php:7
+#: element/MarkView/tooltip.php:16
 msgid "Author"
 msgstr "Autor"
 
-#: Marks/view.php:41 element/Mark/index_table.php:5
+#: Marks/view.php:41
+#: element/Mark/index_table.php:5
 msgid "Object"
 msgstr "Objekt"
 
-#: Marks/view.php:54 element/Query/mark_results_table.php:57
+#: Marks/view.php:54
+#: element/Query/mark_results_table.php:57
 msgid "Values"
 msgstr "Werte"
 
-#: Marks/view.php:61 element/MarkView/tooltip.php:20
+#: Marks/view.php:61
+#: element/MarkView/tooltip.php:20
 msgid "Exceptional Mark"
 msgstr "Ausserplanmässige Bewertung"
 
@@ -1869,8 +2083,11 @@ msgstr "Ausserplanmässige Bewertung"
 msgid "Add Mother Tree"
 msgstr "Mutterbaum hinzufügen"
 
-#: MotherTrees/add.php:30 MotherTrees/edit.php:17 ScionsBundles/add.php:15
-#: ScionsBundles/edit.php:15 element/MotherTree/index_table.php:8
+#: MotherTrees/add.php:30
+#: MotherTrees/edit.php:17
+#: ScionsBundles/add.php:15
+#: ScionsBundles/edit.php:15
+#: element/MotherTree/index_table.php:8
 #: element/ScionsBundle/index_table.php:6
 msgid "Identification"
 msgstr "Kennzeichnung"
@@ -1888,8 +2105,9 @@ msgid "Mother Tree:"
 msgstr "Mutterbaum:"
 
 #: MotherTrees/view.php:13
-msgid "Mother Tree"
-msgstr "Mutterbaum"
+#: element/MarkView/tooltip.php:114
+msgid "Tree"
+msgstr "Baum"
 
 #: MotherTrees/view.php:35
 msgid "Numb Fruits"
@@ -1907,7 +2125,8 @@ msgstr "Datum Befruchtung"
 msgid "Date Fruit Harvested"
 msgstr "Datum Fruchternte"
 
-#: Queries/add.php:7 Queries/add_mark_query.php:7
+#: Queries/add.php:7
+#: Queries/add_mark_query.php:7
 msgid "Add Query"
 msgstr "Abfrage hinzufügen"
 
@@ -1915,15 +2134,18 @@ msgstr "Abfrage hinzufügen"
 msgid "Edit Query"
 msgstr "Abfrage bearbeiten"
 
-#: Queries/index.php:5 element/top_nav.php:10
+#: Queries/index.php:5
+#: element/top_nav.php:10
 msgid "Queries"
 msgstr "Abfragen"
 
-#: Queries/view.php:7 Queries/view_mark_query.php:7
+#: Queries/view.php:7
+#: Queries/view_mark_query.php:7
 msgid "Export to excel"
 msgstr "Export als Excel"
 
-#: Queries/view.php:11 Queries/view_mark_query.php:11
+#: Queries/view.php:11
+#: Queries/view_mark_query.php:11
 msgid "Query:"
 msgstr "Abfrage:"
 
@@ -1943,7 +2165,8 @@ msgstr "Unterlage hinzufügen"
 msgid "Edit Rootstock"
 msgstr "Unterlage bearbeiten"
 
-#: Rootstocks/index.php:5 element/Setting/nav.php:2
+#: Rootstocks/index.php:5
+#: element/Setting/nav.php:2
 msgid "Rootstocks"
 msgstr "Unterlagen"
 
@@ -1959,7 +2182,9 @@ msgstr "Zeile hinzufügen"
 msgid "Edit Row"
 msgstr "Zeile bearbeiten"
 
-#: Rows/index.php:14 element/Row/nav.php:2 element/top_nav.php:8
+#: Rows/index.php:14
+#: element/Row/nav.php:2
+#: element/top_nav.php:8
 msgid "Rows"
 msgstr "Zeilen"
 
@@ -1971,19 +2196,28 @@ msgstr "Zeile:"
 msgid "Date Created"
 msgstr "Erstellt am"
 
-#: Rows/view.php:16 Trees/view.php:62
+#: Rows/view.php:16
+#: Trees/view.php:62
 msgid "Date Eliminated"
 msgstr "Eliminierungsdatum"
+
+#: Rows/view.php:33
+#: Varieties/view.php:95
+msgid "Related Trees"
+msgstr "Verwandte Bäume"
 
 #: ScionsBundles/add.php:7
 msgid "Add Scions Bundle"
 msgstr "Reiserbündel hinzufügen"
 
-#: ScionsBundles/add.php:24 ScionsBundles/edit.php:24
+#: ScionsBundles/add.php:24
+#: ScionsBundles/edit.php:24
 msgid "List of publicids of the descent trees, separeted by a comma"
 msgstr "Liste der Publicids der abstammenden Bäume, separiert durch ein Komma"
 
-#: ScionsBundles/add.php:27 ScionsBundles/edit.php:27 ScionsBundles/view.php:29
+#: ScionsBundles/add.php:27
+#: ScionsBundles/edit.php:27
+#: ScionsBundles/view.php:29
 msgid "Reserved for external partners"
 msgstr "Reserviert für externe Partner"
 
@@ -2003,28 +2237,31 @@ msgstr "Reiserbündel:"
 msgid "Descents Publicid List"
 msgstr "Auflistung der Publicids der Herkunft"
 
-#: ScionsBundles/view.php:16 Trees/view.php:17 element/MarkView/tooltip.php:76
+#: ScionsBundles/view.php:16
+#: Trees/view.php:17
+#: element/MarkView/tooltip.php:76
 #: element/Tree/get_tree.php:5
 msgid "Variety"
 msgstr "Sorte"
 
-#: ScionsBundles/view.php:21 Varieties/view.php:52
+#: ScionsBundles/view.php:21
+#: Varieties/view.php:60
 msgid "Numb Scions"
 msgstr "Anz. Reiser"
 
-#: ScionsBundles/view.php:25 Varieties/view.php:53
+#: ScionsBundles/view.php:25
+#: Varieties/view.php:61
 msgid "Date Scions Harvest"
 msgstr "Datum Reiserernte"
 
-#: Settings/index.php:6 layout/default.php:87
+#: Settings/index.php:6
+#: layout/default-v1.php:87
 msgid "Settings"
 msgstr "Einstellungen"
 
 #: Settings/index.php:7
 msgid "See and edit settings in the menu on the left hand side."
-msgstr ""
-"Einstellungen können über die Navigation links angesehen und bearbeitet "
-"werden."
+msgstr "Einstellungen können über die Navigation links angesehen und bearbeitet werden."
 
 #: Trees/add.php:7
 msgid "Add Tree"
@@ -2042,11 +2279,13 @@ msgstr "Reiserbaum hinzufügen"
 msgid "Edit Tree"
 msgstr "Baum bearbeiten"
 
-#: Trees/eliminate.php:15 element/Tree/nav.php:8
+#: Trees/eliminate.php:15
+#: element/Tree/nav.php:8
 msgid "Eliminate Tree"
 msgstr "Baum eliminieren"
 
-#: Trees/eliminate_by_scanner.php:15 element/Tree/nav.php:9
+#: Trees/eliminate_by_scanner.php:15
+#: element/Tree/nav.php:9
 msgid "Eliminate Tree (by scanner)"
 msgstr "Baum eliminieren (mit Scanner)"
 
@@ -2054,21 +2293,27 @@ msgstr "Baum eliminieren (mit Scanner)"
 msgid "Filter by publicid or convar..."
 msgstr "Nach Publicid oder Convar filtern..."
 
-#: Trees/plant.php:15 element/Tree/nav.php:7
+#: Trees/plant.php:15
+#: element/Tree/nav.php:7
 msgid "Plant Tree"
 msgstr "Baum auspflanzen"
 
-#: Trees/view.php:22 element/Tree/get_tree.php:6
+#: Trees/view.php:22
+#: element/Tree/get_tree.php:6
 msgid "Experiment Site"
 msgstr "Versuchsort"
 
-#: Trees/view.php:27 element/MarkView/tooltip.php:139
-#: element/Tree/get_tree.php:7 element/Tree/related_table.php:9
+#: Trees/view.php:27
+#: element/MarkView/tooltip.php:139
+#: element/Tree/get_tree.php:7
+#: element/Tree/related_table.php:9
 msgid "Row"
 msgstr "Zeile"
 
-#: Trees/view.php:32 element/MarkView/tooltip.php:143
-#: element/Tree/get_tree.php:8 element/Tree/related_table.php:10
+#: Trees/view.php:32
+#: element/MarkView/tooltip.php:143
+#: element/Tree/get_tree.php:8
+#: element/Tree/related_table.php:10
 msgid "Offset"
 msgstr "Offset"
 
@@ -2108,7 +2353,8 @@ msgstr "Benutzer hinzufügen"
 msgid "Edit User"
 msgstr "Benutzer bearbeiten"
 
-#: Users/index.php:5 element/Setting/nav.php:18
+#: Users/index.php:5
+#: element/Setting/nav.php:18
 msgid "Users"
 msgstr "Benutzer"
 
@@ -2116,7 +2362,8 @@ msgstr "Benutzer"
 msgid "Are you sure you want to delete this user: {0}?"
 msgstr "Benutzer {0} wirklich löschen?"
 
-#: Users/login.php:3 Users/login.php:7
+#: Users/login.php:3
+#: Users/login.php:7
 msgid "Login"
 msgstr "Login"
 
@@ -2148,31 +2395,42 @@ msgstr "Sorte bearbeiten"
 msgid "Filter by ID, convar or breeder variety code..."
 msgstr "Nach ID, Convar oder Züchter-Sorten-Code filtern..."
 
-#: Varieties/view.php:13 element/MarkView/tooltip.php:83
+#: Varieties/view.php:13
+#: element/Mark/list.php:26
+#: element/MarkView/tooltip.php:30
+msgid "Batch"
+msgstr "Los"
+
+#: Varieties/view.php:21
+#: element/MarkView/tooltip.php:83
 msgid "Official Name"
 msgstr "Offizieller Name"
 
-#: Varieties/view.php:17 element/MarkView/tooltip.php:87
+#: Varieties/view.php:25
+#: element/MarkView/tooltip.php:87
 msgid "Acronym"
 msgstr "Kürzel"
 
-#: Varieties/view.php:21 element/MarkView/tooltip.php:91
+#: Varieties/view.php:29
+#: element/MarkView/tooltip.php:91
 msgid "Breeder Variety Code"
 msgstr "Züchter-Sorten-Code"
 
-#: Varieties/view.php:25 element/MarkView/tooltip.php:95
+#: Varieties/view.php:33
+#: element/MarkView/tooltip.php:95
 msgid "Plant Breeder"
 msgstr "Züchter"
 
-#: Varieties/view.php:29 element/MarkView/tooltip.php:99
+#: Varieties/view.php:37
+#: element/MarkView/tooltip.php:99
 msgid "Registration"
 msgstr "Registrierung"
 
-#: Varieties/view.php:46
+#: Varieties/view.php:54
 msgid "Related Scions Bundles"
 msgstr "Verwandte Reiserbündel"
 
-#: Varieties/view.php:54
+#: Varieties/view.php:62
 msgid "External Use"
 msgstr "Externer gebrauch"
 
@@ -2209,37 +2467,27 @@ msgid "or ''{now}'' (literally)"
 msgstr "oder ''{now}'' (wörtlich)"
 
 #: element/Mark/field.php:20
-msgid ""
-"The date must be valid and match one of the following formats: 'dd.mm.yyyy' "
-"or 'dd-mm-yyyy' or 'dd/mm/yyyy'"
-msgstr ""
-"Das Datum muss gültig sein und einem der folgenden Formaten entsprechen: 'dd."
-"mm.jjjj' oder 'dd-mm-jjjj' oder 'dd/mm/jjjj'"
+msgid "The date must be valid and match one of the following formats: 'dd.mm.yyyy' or 'dd-mm-yyyy' or 'dd/mm/yyyy'"
+msgstr "Das Datum muss gültig sein und einem der folgenden Formaten entsprechen: 'dd.mm.jjjj' oder 'dd-mm-jjjj' oder 'dd/mm/jjjj'"
 
 #: element/Mark/field.php:24
-msgid ""
-"Enter \"{now}\" (literally) to get a scanner code that produces always the "
-"current date."
-msgstr ""
-"Gib \"{now}\" (wörtlich) ein, um einen Scannercode zu erhalten, der immer "
-"das aktuelle Datum erzeugt."
+msgid "Enter \"{now}\" (literally) to get a scanner code that produces always the current date."
+msgstr "Gib \"{now}\" (wörtlich) ein, um einen Scannercode zu erhalten, der immer das aktuelle Datum erzeugt."
 
 #: element/Mark/index_table.php:49
 msgid "Are you sure you want to delete the Mark with the id {0}?"
 msgstr "Bewertung mit der id {0} wirklich löschen?"
 
-#: element/Mark/list.php:8 element/MarkView/tooltip.php:29
-#: element/MarkView/tooltip.php:75 element/MarkView/tooltip.php:113
+#: element/Mark/list.php:8
+#: element/MarkView/tooltip.php:29
+#: element/MarkView/tooltip.php:75
+#: element/MarkView/tooltip.php:113
 msgid "Marked object"
 msgstr "Bewertetes Objekt"
 
 #: element/Mark/list.php:9
 msgid "Exceptional"
 msgstr "Ausserplanmässig"
-
-#: element/Mark/list.php:26 element/MarkView/tooltip.php:30
-msgid "Batch"
-msgstr "Los"
 
 #: element/Mark/list.php:54
 msgid "Are you sure you want to delete \"{0}\" (id: {1,number,integer})?"
@@ -2249,49 +2497,55 @@ msgstr "\"{0}\" wirklich löschen (id: {1,number,integer})?"
 msgid "Mark Tree (Scanner)"
 msgstr "Baum bewerten (Scanner)"
 
-#: element/Mark/nav.php:8
+#: element/Mark/nav.php:6
+msgid "Mark Tree (Mobile)"
+msgstr "Baum bewerten (Handy)"
+
+#: element/Mark/nav.php:10
 msgid "List Marks"
 msgstr "Bewertungen auflisten"
 
-#: element/Mark/nav.php:9
+#: element/Mark/nav.php:11
 msgid "Forms"
 msgstr "Formulare"
 
-#: element/Mark/nav.php:10
+#: element/Mark/nav.php:12
 msgid "New Form"
 msgstr "Neues Formular"
 
-#: element/Mark/nav.php:11
+#: element/Mark/nav.php:13
 msgid "List Forms"
 msgstr "Formulare auflisten"
 
-#: element/Mark/nav.php:12
+#: element/Mark/nav.php:14
 msgid "Properties"
 msgstr "Eigenschaften"
 
-#: element/Mark/nav.php:13
+#: element/Mark/nav.php:15
 msgid "New Property"
 msgstr "Neue Eigenschaft"
 
-#: element/Mark/nav.php:15
+#: element/Mark/nav.php:17
 msgid "List Properties"
 msgstr "Eigenschaften auflisten"
 
-#: element/Mark/nav.php:18
+#: element/Mark/nav.php:20
 msgid "New Scanner Code"
 msgstr "Neuer Scanner-Code"
 
-#: element/Mark/nav.php:20
+#: element/Mark/nav.php:22
 msgid "List Scanner Codes"
 msgstr "Scanner-Codes auflisten"
 
-#: element/Mark/nav.php:22
+#: element/Mark/nav.php:24
 msgid "Print Submit Form Label"
 msgstr "«Formular absenden» Etikette drucken"
 
 #: element/MarkForm/index_table.php:16
-#: element/MarkFormProperty/index_table.php:20 element/Row/index_table.php:18
-#: element/Tree/index_table.php:28 element/Tree/related_table.php:23
+#: element/MarkFormProperty/index_table.php:20
+#: element/Row/index_table.php:18
+#: element/Tree/index_table.php:28
+#: element/Tree/related_table.php:23
 msgid "Read"
 msgstr "Lesen"
 
@@ -2307,10 +2561,6 @@ msgstr "Details der Bewertung"
 msgid "Details about the marked object"
 msgstr "Details zum bewerteten Objekt"
 
-#: element/MarkView/tooltip.php:114
-msgid "Tree"
-msgstr "Baum"
-
 #: element/MarkView/tooltip.php:127
 msgid "Date planted"
 msgstr "Pflanzdatum"
@@ -2323,7 +2573,8 @@ msgstr "Eliminierungsdatum"
 msgid "Experiment site"
 msgstr "Versuchsort"
 
-#: element/MotherTree/index_table.php:2 element/Tree/index_table.php:2
+#: element/MotherTree/index_table.php:2
+#: element/Tree/index_table.php:2
 #: element/Tree/related_table.php:2
 msgid "Show eliminated trees"
 msgstr "Eliminierte Bäume anzeigen"
@@ -2460,11 +2711,13 @@ msgstr "Bei diesem Baum wurde das \"Nicht eliminieren\"-Häkchen gesetzt!"
 msgid "Print"
 msgstr "Drucken"
 
-#: element/Tree/index_table.php:13 element/Tree/related_table.php:12
+#: element/Tree/index_table.php:13
+#: element/Tree/related_table.php:12
 msgid "Eliminated"
 msgstr "Eliminiert"
 
-#: element/Tree/index_table.php:29 element/Tree/related_table.php:25
+#: element/Tree/index_table.php:29
+#: element/Tree/related_table.php:25
 msgid "eliminated"
 msgstr "eliminiert"
 
@@ -2508,100 +2761,87 @@ msgstr "Ettikette drucken?"
 msgid "Don't print"
 msgstr "Nicht drucken"
 
-#: layout/default.php:53
+#: layout/default-v1.php:53
 msgid "Searching..."
 msgstr "Suche..."
 
-#: layout/default.php:54
+#: layout/default-v1.php:54
 msgid "Loading..."
 msgstr "Suche..."
 
-#: layout/default.php:56
+#: layout/default-v1.php:56
 msgid "Nothing found. Create new covar of:"
 msgstr "Nichts gefunden. Erzeuge neues Convar aus:"
 
-#: layout/default.php:58
+#: layout/default-v1.php:58
 msgid "NEW"
 msgstr "NEU"
 
-#: layout/default.php:59
+#: layout/default-v1.php:59
 msgid "Automatically prefilled"
 msgstr "Automatisch eingefüllt"
 
-#: layout/default.php:62
+#: layout/default-v1.php:62
 msgid "{0} matching elements for this mark were found."
 msgstr "{0} passende Elemente für für diese Bewertung gefunden."
 
-#: layout/default.php:63
+#: layout/default-v1.php:63
 msgid "No tree could be found"
 msgstr "Kein Baum gefunden"
 
-#: layout/default.php:66
-msgid ""
-"Please wait, while your report is generated. This may take up to few minutes."
+#: layout/default-v1.php:66
+msgid "Please wait, while your report is generated. This may take up to few minutes."
 msgstr "Der Bericht wird generiert. Dies kann einige Minuten dauern."
 
-#: layout/default.php:67
+#: layout/default-v1.php:67
 msgid "Sorry, your report couldn't be generated. Please try again."
 msgstr "Der Bericht konnte nicht generiert werden. Bitte versuche es erneut."
 
-#: layout/default.php:68
-msgid ""
-"There were invalid rules in the query builder we could not restore. Please "
-"rebuild the ruleset."
-msgstr ""
-"Es gab ungültige Regeln im Abfrage-Generator, die nicht wiederhergestellt "
-"werden konnten. Erstellen den Regelsatz neu."
+#: layout/default-v1.php:68
+msgid "There were invalid rules in the query builder we could not restore. Please rebuild the ruleset."
+msgstr "Es gab ungültige Regeln im Abfrage-Generator, die nicht wiederhergestellt werden konnten. Erstellen den Regelsatz neu."
 
-#: layout/default.php:69
+#: layout/default-v1.php:69
 msgid "If marks are your main table, you must select some marks to display."
-msgstr ""
-"Wenn Bewertungen als Haupttabelle ausgewählt ist, musst du auch Bewertungen "
-"auswählen, die angezeigt werden sollen."
+msgstr "Wenn Bewertungen als Haupttabelle ausgewählt ist, musst du auch Bewertungen auswählen, die angezeigt werden sollen."
 
-#: layout/default.php:70
-msgid ""
-"There are multiple forms on this page. Submitting by scanner does not work!"
-msgstr ""
-"Es gibt mehrere Formulare auf dieser Seite. Es kann darum nicht mit dem "
-"Scanner abgeschickt werden!"
+#: layout/default-v1.php:70
+msgid "There are multiple forms on this page. Submitting by scanner does not work!"
+msgstr "Es gibt mehrere Formulare auf dieser Seite. Es kann darum nicht mit dem Scanner abgeschickt werden!"
 
-#: layout/default.php:84
+#: layout/default-v1.php:84
 msgid "Location: {0}"
 msgstr "Standort: {0}"
 
-#: layout/default.php:88
+#: layout/default-v1.php:88
 msgid "Logout"
 msgstr "Abmelden"
 
-#: layout/default.php:52
+#: layout/default-v1.php:52
+#: layout/default-v2.php:41
 msgctxt "Date format"
 msgid "dd.mm.yy"
 msgstr "dd.mm.yy"
 
-#: layout/default.php:55
+#: layout/default-v1.php:55
 msgctxt "{0} is replaced by an entity name."
 msgid "There was an error loading {0}"
 msgstr "{0} konnte nicht geladen werden"
 
-#: layout/default.php:57
+#: layout/default-v1.php:57
 msgctxt "The entitiy"
 msgid "mark"
 msgstr "Bewertung"
 
-#: layout/default.php:60
+#: layout/default-v1.php:60
 msgctxt "after the : the name of the element to delete is inserted"
 msgid "Are you sure you want to delete:"
 msgstr "Folgendes Element wirklich löschen:"
 
-#: layout/default.php:64
+#: layout/default-v1.php:64
 msgctxt "Query builder. {0} is replaced by the table name."
-msgid ""
-"{0} will be deselected, since they aren't connected to the other selected "
-"entities."
-msgstr ""
-"{0} wird abgewählt, weil es nicht mit den anderen ausgewählten Tabellen "
-"verbunden ist."
+msgid "{0} will be deselected, since they aren't connected to the other selected entities."
+msgstr "{0} wird abgewählt, weil es nicht mit den anderen ausgewählten Tabellen verbunden ist."
 
 #: layout/error.php:35
 msgid "Error"
@@ -2611,17 +2851,3 @@ msgstr "Fehler"
 msgid "Back"
 msgstr "Zurück"
 
-#~ msgid "An update is available. Click here to update now."
-#~ msgstr "Ein Update ist verfügbar. Klicke hier, um jetzt zu aktualisieren."
-
-#~ msgid "Your application is up to date."
-#~ msgstr "Das System ist auf dem neuesten Stand."
-
-#~ msgid "min"
-#~ msgstr "Min"
-
-#~ msgid "max"
-#~ msgstr "Max"
-
-#~ msgid "Mother Tree -> Target"
-#~ msgstr "Mutterbaum -> Kreuzungsziel"
