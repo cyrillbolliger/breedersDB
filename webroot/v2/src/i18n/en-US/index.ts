@@ -15,7 +15,7 @@ export default {
       title: 'Set Meta Data',
       tab: 'Meta',
       author: 'Author',
-      authorHint: 'The name of the person how does the rating.',
+      authorHint: 'The name of the person who does the rating.',
       date: 'Date',
       dateHint: 'The date of the rating.'
     },
