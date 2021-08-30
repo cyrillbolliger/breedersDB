@@ -32,6 +32,6 @@ class MarksViewController extends AppController {
 		$this->set( 'marksView', $marksView );
 		$this->set( '_serialize', [ 'marksView' ] );
 
-		$this->render( '/element/MarkView/tooltip' );
+		$this->render( '/element/MarkView/tooltip', 'raw' );
 	}
 }
