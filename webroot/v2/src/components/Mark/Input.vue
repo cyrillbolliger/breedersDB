@@ -21,7 +21,6 @@
     :note="note"
   >
     <!--suppress RequiredAttributes -->
-    <!-- todo: validation rules -->
     <q-input
       outlined
       v-model="value"
@@ -40,7 +39,6 @@
     :note="note"
   >
     <!--suppress RequiredAttributes -->
-    <!-- todo: validation rules -->
     <q-input
       outlined
       v-model="value"
