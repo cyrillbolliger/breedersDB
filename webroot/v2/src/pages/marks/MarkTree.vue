@@ -6,7 +6,7 @@
     <div class="row q-gutter-x-sm q-mb-sm">
       <small><q-icon name="list"/>&nbsp;{{ form?.name }}</small>
       <small><q-icon name="person"/>&nbsp;{{ author }}</small>
-      <small><q-icon name="today"/>&nbsp;{{ date }}</small>
+      <small><q-icon name="today"/>&nbsp;{{ date.toLocaleDateString() }}</small>
     </div>
 
     <q-card class="bg-grey-4 q-mb-md">
@@ -86,8 +86,10 @@ export default defineComponent({
     /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
     const tree = computed<Tree|null>(() => store.getters['mark/tree'])
     const author = computed<string>(() => store.getters['mark/author'])
-    const date = computed<Date>(() => store.getters['mark/date'])
     const form = computed<MarkForm|null>(() => store.getters['mark/selectedForm'])
+    const date = computed<Date>(() => {
+      return new Date(store.getters['mark/date'])
+    })
     /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 
     const savable = computed<boolean>(() => {
