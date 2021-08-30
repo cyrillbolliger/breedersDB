@@ -1,5 +1,5 @@
 files:
-  - source: /resources/locales/*.pot
+  - source: /resources/locales/default.pot
     translation: /resources/locales/%two_letters_code%/%file_name%.po
   - source: /webroot/v2/src/i18n/en-US/*.ts
     translation: /webroot/v2/src/i18n/%locale%/%original_file_name%
