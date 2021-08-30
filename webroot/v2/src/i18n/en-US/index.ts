@@ -66,6 +66,10 @@ export default {
       errorBanner: {
         dismiss: 'dismiss'
       },
+      treeCard: {
+        change: 'Change',
+        selected: 'Selected Tree'
+      }
     },
   },
 

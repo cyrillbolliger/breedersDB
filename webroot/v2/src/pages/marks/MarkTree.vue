@@ -9,13 +9,10 @@
       <small><q-icon name="today"/>&nbsp;{{ date.toLocaleDateString() }}</small>
     </div>
 
-    <q-card class="bg-grey-4 q-mb-md">
-      <q-card-section class="q-pt-xs">
-        <div class="text-overline text-weight-regular">Selected Tree</div>
-        <div class="text-h6">{{ tree?.convar }}</div>
-          <div class="text-caption"><q-icon name="tag"/>&nbsp;{{ tree?.publicid }}</div>
-      </q-card-section>
-    </q-card>
+    <tree-card
+      :tree="tree"
+      @click="$router.push('/marks/select-tree')"
+    />
 
     <q-list
       v-for="(property, idx) in form?.mark_form_properties"
@@ -66,10 +63,11 @@ import {useRouter} from 'vue-router'
 import {useQuasar} from 'quasar';
 import MarkInput from 'components/Mark/Input.vue'
 import useApi from 'src/composables/api';
+import TreeCard from 'components/Util/TreeCard.vue';
 
 export default defineComponent({
   name: 'MarkTree',
-  components: {MarkInput},
+  components: {TreeCard, MarkInput},
   setup() {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
     const store = useStore()
