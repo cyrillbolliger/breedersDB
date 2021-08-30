@@ -127,7 +127,7 @@ export default defineComponent({
     }
 
     function selectForm(form: MarkForm) {
-      void get(`markForms/view/${form.id}`)
+      void get<MarkForm>(`markForms/view/${form.id}`)
         .then(data => store.dispatch('mark/selectForm', data))
         .then(() => void router.push('/marks/set-meta'))
     }
