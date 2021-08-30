@@ -2,10 +2,12 @@
   <div class="q-gutter-md">
 
     <div
-      class="q-mb-md"
-      style="background-color: #ccc; height: 200px; padding: 1em"
+      class="q-mb-md row justify-center bg-grey-5"
+      :class="{loading}"
     >
-      Placeholder for quagga scanner
+      <BarcodeScanner
+        @on-detected="onScanned"
+      />
     </div>
 
     <!--suppress RequiredAttributes -->
@@ -34,11 +36,13 @@ import {useI18n} from 'vue-i18n';
 import Loader from 'components/Util/Loader.vue';
 import {Tree} from 'src/models/tree';
 import useApi from 'src/composables/api'
+import BarcodeScanner from 'components/Util/BarcodeScanner.vue';
+import {Notify} from 'quasar';
 
 export default defineComponent({
   name: 'TreeSelector',
   emits: ['selected'],
-  components: {Loader},
+  components: {BarcodeScanner, Loader},
 
   setup(_, {emit}) {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
@@ -56,8 +60,19 @@ export default defineComponent({
         .then(tree => {
           if (tree) {
             emit('selected', tree)
+          } else {
+            Notify.create({
+              message: t('general.failedToLoadData'),
+              color: 'negative',
+              closeBtn: true
+            })
           }
         })
+    }
+
+    function onScanned(code: string) {
+      publicid.value = code
+      loadTree()
     }
 
     return {
@@ -65,7 +80,15 @@ export default defineComponent({
       publicid,
       loadTree,
       loading: working,
+      onScanned,
     }
   }
 })
 </script>
+
+<style scoped lang="scss">
+  .loading {
+    filter: grayscale(1) opacity(0.2) blur(4px);
+    transition: all 200ms;
+  }
+</style>
