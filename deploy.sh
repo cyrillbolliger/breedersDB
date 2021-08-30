@@ -6,6 +6,8 @@
 siteconffile='deploy.conf'
 
 ##########################################
+set -euo pipefail
+
 echoerr() {
     printf "%s\n" "$*" >&2
 }
