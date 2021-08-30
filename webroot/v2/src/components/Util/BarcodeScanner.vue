@@ -72,10 +72,11 @@ const median = function(numbers: number[]) {
 
 // see https://github.com/serratus/quaggaJS/issues/237#issuecomment-742878333
 const isValid = function(result: QuaggaJSResultObject_CodeResult) {
-  // @ts-ignore: Type '(number | undefined)[]' is not assignable to type 'number[]'
   const errors: number[] = result.decodedCodes
-    .filter(code => code.error !== undefined)
-    .map(code => code.error);
+    .filter(
+      (code): code is {error: number, code: number, start: number, end: number} =>
+        code.error !== undefined
+    ).map(code => code.error);
 
   const error = median(errors);
 
