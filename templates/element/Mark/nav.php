@@ -3,6 +3,8 @@
     <li><?= $this->Html->link( __( 'Mark Tree' ), [ 'controller' => 'Marks', 'action' => 'addTreeMark' ] ) ?></li>
     <li><?= $this->Html->link( __( 'Mark Tree (Scanner)' ),
 			[ 'controller' => 'Marks', 'action' => 'addTreeMarkByScanner' ] ) ?></li>
+    <li><?= $this->Html->link( __( 'Mark Tree (Mobile)' ),
+            [ 'controller' => 'Spa', 'action' => 'index', '#' => '/marks/select-form' ] ) ?></li>
     <li><?= $this->Html->link( __( 'Mark Variety' ), [ 'controller' => 'Marks', 'action' => 'addVarietyMark' ] ) ?></li>
     <li><?= $this->Html->link( __( 'Mark Batch' ), [ 'controller' => 'Marks', 'action' => 'addBatchMark' ] ) ?></li>
     <li><?= $this->Html->link( __( 'List Marks' ), [ 'controller' => 'Marks', 'action' => 'index' ] ) ?></li>

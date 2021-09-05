@@ -17,7 +17,8 @@
  * @link          https://cakephp.org CakePHP(tm) Project
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-use Cake\Http\Middleware\CsrfProtectionMiddleware;
+
+use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
@@ -46,12 +47,8 @@ use Cake\Routing\Route\DashedRoute;
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
-    /**
-     * Here, we are connecting '/' (base path) to a controller called 'Pages',
-     * its action called 'display', and we pass a param to select the view file
-     * to use (in this case, src/Template/Pages/home.ctp)...
-     */
     $routes->connect('/', ['controller' => 'Trees', 'action' => 'index']);
+    $routes->connect('/spa/', ['controller' => 'Spa', 'action' => 'index']);
 
     /**
      * Connect catchall routes for all controllers.
@@ -86,3 +83,11 @@ Router::scope('/', function (RouteBuilder $routes) {
  * });
  * ```
  */
+Router::scope('/api/1', ['prefix' => 'REST1'], function(RouteBuilder $routes) {
+    $routes->registerMiddleware('bodyParser', new BodyParserMiddleware());
+    $routes->applyMiddleware('bodyParser');
+
+    $routes->setExtensions(['json']);
+
+    $routes->fallbacks(DashedRoute::class);
+});

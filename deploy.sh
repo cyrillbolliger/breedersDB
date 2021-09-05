@@ -6,6 +6,8 @@
 siteconffile='deploy.conf'
 
 ##########################################
+set -euo pipefail
+
 echoerr() {
     printf "%s\n" "$*" >&2
 }
@@ -105,8 +107,9 @@ sync() {
     rsync -rz${dry} \
         ${progress} \
         --delete \
-        --include='/webroot/dev' \
-        --include='/webroot/dist' \
+        --include='/webroot/v1/dev' \
+        --include='/webroot/v1/dist' \
+        --include='/webroot/v2/dist' \
         --filter=':- .gitignore' \
         --exclude='.git' \
         --exclude='/tests' \
@@ -114,7 +117,9 @@ sync() {
         --exclude='/deploy.*' \
         --exclude='/install.sh' \
         --exclude='/.docker' \
-        --exclude='/webroot/src' \
+        --exclude='/.idea' \
+        --exclude='/webroot/v1/src' \
+        --exclude='/webroot/v2/src' \
         . "${host}:\"${target}\""
 
     echo "Upload for ${name} completed."
@@ -122,9 +127,9 @@ sync() {
 
 buildassets() {
     echo 'Start building assets'
-    docker-compose up -d node
-    docker exec poc_node npm run build
-    docker exec poc_node npm run dev
+    docker-compose run nodev1 npm run build
+    docker-compose run nodev1 npm run dev
+    docker-compose run nodev2 quasar build
     echo 'Assets built'
 }
 

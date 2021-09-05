@@ -191,9 +191,9 @@ class BatchesController extends AppController {
 
 			$this->set( compact( 'batches' ) );
 			$this->set( '_serialize', [ 'batches' ] );
-			$this->render( '/element/Batch/index_table' );
+			$this->render( '/element/Batch/index_table', 'raw' );
 		} else {
-			$this->render( '/element/nothing_found' );
+			$this->render( '/element/nothing_found', 'raw' );
 		}
 	}
 
@@ -221,6 +221,6 @@ class BatchesController extends AppController {
 			'params'     => $params,
 			'nav'        => 'Batch/nav'
 		] );
-		$this->render( '/element/print' );
+		$this->render( '/element/print', self::LAYOUT_V1 );
 	}
 }

@@ -153,9 +153,9 @@ class ScionsBundlesController extends AppController {
 
 			$this->set( compact( 'scionsBundles' ) );
 			$this->set( '_serialize', [ 'scionsBundles' ] );
-			$this->render( '/element/ScionsBundle/index_table' );
+			$this->render( '/element/ScionsBundle/index_table', 'raw' );
 		} else {
-			$this->render( '/element/nothing_found' );
+			$this->render( '/element/nothing_found', 'raw' );
 		}
 	}
 }

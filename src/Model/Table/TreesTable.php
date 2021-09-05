@@ -237,8 +237,8 @@ class TreesTable extends Table {
 	 *
 	 * @param string $publicid
 	 *
-	 * @return \Cake\ORM\Query
-	 */
+	 * @return \Cake\Datasource\EntityInterface|array|null
+     */
 	public function getByPublicId( string $publicid ) {
 		$publicid = $this->fillPublicId( $publicid );
 

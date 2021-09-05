@@ -325,10 +325,10 @@ class TreesController extends AppController {
             );
 			$this->set( '_serialize', [ 'tree' ] );
 
-			$this->render( '/element/Tree/' . (string) $this->request->getQuery('element') );
+			$this->render( '/element/Tree/' . (string) $this->request->getQuery('element'), 'raw');
 		} else {
 			$this->response->withStatus( 204 );
-			$this->render( '/element/nothing_found' );
+			$this->render( '/element/nothing_found', 'raw' );
 		}
 	}
 
@@ -409,9 +409,9 @@ class TreesController extends AppController {
 
 			$this->set( compact( 'trees' ) );
 			$this->set( '_serialize', [ 'trees' ] );
-			$this->render( '/element/Tree/index_table' );
+			$this->render( '/element/Tree/index_table', 'raw' );
 		} else {
-			$this->render( '/element/nothing_found' );
+			$this->render( '/element/nothing_found', 'raw' );
 		}
 	}
 
@@ -445,6 +445,6 @@ class TreesController extends AppController {
 			'params'     => $params,
 			'nav'        => 'Tree/nav'
 		] );
-		$this->render( '/element/print' );
+		$this->render( '/element/print', self::LAYOUT_V1 );
 	}
 }

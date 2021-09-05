@@ -4,7 +4,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: .docker/Dockerfile
+      dockerfile: .docker/App.Dockerfile
     ports:
       - '8000:80'
     volumes:
@@ -33,6 +33,8 @@ services:
       MYSQL_PASSWORD: poc
     container_name: poc_mysql
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    ports:
+      - "3306:3306"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -45,15 +47,26 @@ services:
       PMA_PASSWORD: poc
     container_name: poc_phpmyadmin
 
-  node:
-    image: node:8
-    working_dir: /home/node/app
+  nodev1:
+    image: node:14
+    working_dir: /home/node/app/webroot/v1
+    user: node
     volumes:
       - ./:/home/node/app
-    ports:
-      - '8030:8081'
     command: npm run watch
-    container_name: poc_node
+    container_name: poc_node_v1
+
+  nodev2:
+    build:
+      context: .
+      dockerfile: .docker/Node.Dockerfile
+    working_dir: /home/node/app/webroot/v2
+    volumes:
+      - ./:/home/node/app
+    command: quasar dev
+    ports:
+      - "8080:8080"
+    container_name: poc_node_v2
 
 volumes:
   db:
