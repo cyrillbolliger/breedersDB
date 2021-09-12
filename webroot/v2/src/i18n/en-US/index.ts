@@ -69,6 +69,10 @@ export default {
       treeCard: {
         change: 'Change',
         selected: 'Selected Tree'
+      },
+      codeScanner: {
+        permissionRequest: 'Unable to access video stream. Please confirm permission request.',
+        loadingMessage: '⌛ Loading video...',
       }
     },
   },

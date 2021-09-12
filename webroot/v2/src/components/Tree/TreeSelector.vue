@@ -5,7 +5,7 @@
       class="q-mb-md row justify-center bg-grey-5"
       :class="{loading}"
     >
-      <BarcodeScanner
+      <CodeScanner
         @on-detected="onScanned"
       />
     </div>
@@ -36,13 +36,13 @@ import {useI18n} from 'vue-i18n';
 import Loader from 'components/Util/Loader.vue';
 import {Tree} from 'src/models/tree';
 import useApi from 'src/composables/api'
-import BarcodeScanner from 'components/Util/BarcodeScanner.vue';
+import CodeScanner from 'components/Util/CodeScanner.vue';
 import {Notify} from 'quasar';
 
 export default defineComponent({
   name: 'TreeSelector',
   emits: ['selected'],
-  components: {BarcodeScanner, Loader},
+  components: {CodeScanner, Loader},
 
   setup(_, {emit}) {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
