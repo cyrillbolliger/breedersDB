@@ -355,7 +355,17 @@ class TreesTable extends Table {
                     $tree->variety->batch->code . '.' . $tree->variety->code
                 ];
             }
-		}
+        }
+
+        // wrap lines longer 9 chars
+        $adjusted_desc = [];
+        foreach ($description as $line) {
+            while (!empty($line)) {
+                $part = substr($line, 0, 9);
+                $line = substr($line, 9);
+                $adjusted_desc[] = $part . (empty($line) ? '' : '-');
+            }
+        }
 
 		$date = null;
 		if ( $with_date ) {
