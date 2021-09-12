@@ -6,7 +6,7 @@ namespace App\Domain\PrintDriver;
 
 class Line {
     private string $text;
-    private string $large;
+    private bool $large;
 
     /**
      * Line constructor.
@@ -29,7 +29,7 @@ class Line {
     /**
      * @return bool
      */
-    public function is_large() {
+    public function is_large(): bool {
         return $this->large;
     }
 

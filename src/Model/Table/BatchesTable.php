@@ -214,7 +214,7 @@ class BatchesTable extends Table {
 		$batch       = $this->get( $id );
 		$description = $batch->crossing_batch;
 
-		return $this->getZPL( $description );
+		return $this->getZPL( [$description] );
 
 	}
 }

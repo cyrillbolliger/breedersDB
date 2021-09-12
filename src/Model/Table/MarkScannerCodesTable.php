@@ -136,7 +136,7 @@ class MarkScannerCodesTable extends Table {
 		$description = $entity->mark_form_property->name . ": " . $entity->mark_value;
 		$code        = $entity->code;
 
-		return $this->getZPL( $description, $code );
+		return $this->getZPL( [$description], $code );
 	}
 
 	/**
@@ -146,7 +146,7 @@ class MarkScannerCodesTable extends Table {
 		$code        = "SUBMIT";
 		$description = "SUBMIT";
 
-		return $this->getZPL( $description, $code );
+		return $this->getZPL( [$description], $code );
 	}
 
 

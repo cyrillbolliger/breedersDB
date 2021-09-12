@@ -329,18 +329,32 @@ class TreesTable extends Table {
 	 * @param int $id tree id
 	 * @param string $property
 	 * @param bool $with_date
-	 * @param string $timezone
+	 * @param string|null $timezone
 	 *
 	 * @return string
 	 */
-	public function getLabelZpl( int $id, string $property, bool $with_date = false, $timezone = null ) {
-		$tree = $this->get( $id, [ 'contain' => [ 'Varieties' ] ] );
+	public function getLabelZpl( int $id, string $property, bool $with_date = false, ?string $timezone = null ) {
+		$tree = $this->get(
+            $id,
+            [ 'contain' => [
+                'Varieties',
+                'Varieties.Batches',
+                'Varieties.Batches.Crossings'
+            ] ]
+        );
 		$code = $tree->publicid;
 
-		if ( 'breeder_variety_code' == $property ) {
-			$description = $tree->variety->breeder_variety_code;
+		if ( 'breeder_variety_code' === $property ) {
+			$description = [ $tree->variety->breeder_variety_code ];
 		} else {
-			$description = 1 === $tree->variety->batch_id ? $tree->variety->code : $tree->convar;
+            if (1 === $tree->variety->batch_id) {
+                $description = [$tree->variety->code];
+            } else {
+                $description = [
+                    $tree->variety->batch->crossing->code.'.',
+                    $tree->variety->batch->code . '.' . $tree->variety->code
+                ];
+            }
 		}
 
 		$date = null;
