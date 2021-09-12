@@ -1,15 +1,6 @@
 <template>
   <div class="q-gutter-md">
 
-    <div
-      class="q-mb-md row justify-center bg-grey-5"
-      :class="{loading}"
-    >
-      <CodeScanner
-        @on-detected="onScanned"
-      />
-    </div>
-
     <!--suppress RequiredAttributes -->
     <q-input
       outlined
@@ -18,6 +9,15 @@
       @keyup.enter="loadTree"
       type="text"
     />
+
+    <div
+      class="q-mb-md row justify-center bg-grey-5"
+      :class="{loading}"
+    >
+      <CodeScanner
+        @on-detected="onScanned"
+      />
+    </div>
 
     <q-btn
       color="primary"
