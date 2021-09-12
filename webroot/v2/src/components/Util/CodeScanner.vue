@@ -5,12 +5,12 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, onMounted} from 'vue';
+import {defineComponent, ref, onMounted, onBeforeUnmount} from 'vue';
 import jsQR from 'jsqr';
-import {useI18n} from "vue-i18n";
-import {Point} from "jsqr/dist/locator";
+import {useI18n} from 'vue-i18n';
+import {Point} from 'jsqr/dist/locator';
 
-const frameColor = "#FF3B58";
+const frameColor = '#FF3B58';
 
 export default defineComponent({
   name: 'CodeReader',
@@ -18,19 +18,28 @@ export default defineComponent({
   props: {},
   setup(_, {emit}) {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
-    const video = document.createElement("video");
+    const video = document.createElement('video');
     const videoAccess = ref(false);
     const loading = ref(true);
+    let videoStream: MediaStream;
 
     const canvasElement = ref<HTMLCanvasElement | null>(null);
     let canvas: CanvasRenderingContext2D;
 
     onMounted(() => {
-      let context = canvasElement.value?.getContext("2d");
+      let context = canvasElement.value?.getContext('2d');
       if (context) {
         canvas = context;
       }
       initVideo();
+    });
+
+    onBeforeUnmount(() => {
+      if (videoStream) {
+        videoStream.getTracks().forEach(function (track) {
+          track.stop();
+        });
+      }
     });
 
     function drawLine(begin: Point, end: Point, color: string) {
@@ -44,13 +53,15 @@ export default defineComponent({
 
     function initVideo() {
       // Use facingMode: environment to attempt to get the front camera on phones
-      void navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}}).then(function (stream) {
-        video.srcObject = stream;
-        video.setAttribute('playsinline', ''); // required to tell iOS safari we don't want fullscreen
-        void video.play();
-        videoAccess.value = true
-        requestAnimationFrame(tick);
-      });
+      void navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}})
+        .then(function (stream) {
+          videoStream = stream;
+          video.srcObject = stream;
+          video.setAttribute('playsinline', ''); // required to tell iOS safari we don't want fullscreen
+          void video.play();
+          videoAccess.value = true
+          requestAnimationFrame(tick);
+        });
     }
 
     function tick() {
@@ -74,7 +85,7 @@ export default defineComponent({
           imageData.width,
           imageData.height,
           {
-            inversionAttempts: "dontInvert",
+            inversionAttempts: 'dontInvert',
           });
 
         if (code) {
