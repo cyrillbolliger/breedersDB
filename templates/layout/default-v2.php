@@ -33,17 +33,10 @@
 	<?= $this->fetch( 'meta' ) ?>
 	<?= $this->fetch( 'css' ) ?>
 	<?= $this->fetch( 'script' ) ?>
-
-    <script>
-        const webroot = '<?= $this->Url->build( '/', ['fullBase' => true] ) ?>';
-        const urlbase = '<?= $this->Url->build( '/', ['fullBase' => false] ) ?>';
-        const trans = {
-            dateformat: '<?= __x( 'Date format', 'dd.mm.yy' ) ?>',
-        };
-    </script>
 </head>
 <body>
 <script>// noinspection JSAnnotator
+    const webroot = '<?= $this->Url->build( '/', ['fullBase' => true] ) ?>';
     const csrfToken = '<?= $this->request->getAttribute('csrfToken') ?>';
     const cake = <?= $this->fetch( 'content' ) ?>;
 </script>
