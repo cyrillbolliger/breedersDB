@@ -94,6 +94,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/var-dumper" />
       <excludeFolder url="file://$MODULE_DIR$/webroot/v1/dist" />
       <excludeFolder url="file://$MODULE_DIR$/webroot/v1/dev" />
+      <excludeFolder url="file://$MODULE_DIR$/upgrade" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
