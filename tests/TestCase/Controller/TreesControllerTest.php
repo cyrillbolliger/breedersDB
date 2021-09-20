@@ -187,8 +187,8 @@ class TreesControllerTest extends TestCase {
 
         $testEntities = $this->getEntityQueryFromArray( $data )
                            ->find( 'all', [ 'withDeleted' ] );
-        foreach($testEntities as $entity) {
-            $this->Table->hardDelete( $entity );
+        foreach($testEntities as $testEntity) {
+            $this->Table->hardDelete( $testEntity );
         }
 
         $this->enableCsrfToken();

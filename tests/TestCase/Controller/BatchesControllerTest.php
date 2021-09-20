@@ -127,8 +127,8 @@ class BatchesControllerTest extends TestCase {
 
         $testEntities = $this->getBatchQueryFromArray($changed)
             ->find('all', ['withDeleted']);
-        foreach ($testEntities as $entity) {
-            $this->Batches->hardDelete($entity);
+        foreach ($testEntities as $testEntity) {
+            $this->Batches->hardDelete($testEntity);
         }
 
         $this->enableCsrfToken();

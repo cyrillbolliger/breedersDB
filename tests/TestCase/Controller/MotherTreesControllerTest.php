@@ -128,8 +128,8 @@ class MotherTreesControllerTest extends TestCase {
 
         $testEntities = $this->getMotherTreeQueryFromArray($data)
             ->find('all', ['withDeleted']);
-        foreach ($testEntities as $entity) {
-            $this->MotherTrees->hardDelete($entity);
+        foreach ($testEntities as $testEntity) {
+            $this->MotherTrees->hardDelete($testEntity);
         }
 
         $this->enableCsrfToken();
