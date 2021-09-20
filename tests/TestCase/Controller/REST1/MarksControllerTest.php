@@ -134,7 +134,7 @@ class MarksControllerTest extends TestCase
         }
 
         $data = [
-            'date'         => '2021-09-22',
+            'date'         => '2021-09-19T00:00:00.000Z',
             'author'       => 'Hugo',
             'mark_form_id' => $form->id,
             'tree_id'      => $tree->id,
@@ -161,7 +161,7 @@ class MarksControllerTest extends TestCase
 
         $this->assertJson(json_encode(['data' => $expectedResponse], JSON_THROW_ON_ERROR));
 
-        self::assertEquals($data['date'], $mark->date->toDateString());
+        self::assertEquals('2021-09-19', $mark->date->toDateString());
         self::assertEquals($data['author'], $mark->author);
         self::assertEquals($data['mark_form_id'], $mark->mark_form_id);
         self::assertCount(count($data['mark_values']), $mark->mark_values);
