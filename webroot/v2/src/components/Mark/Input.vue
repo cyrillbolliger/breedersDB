@@ -6,7 +6,7 @@
   >
     <q-rating
       :modelValue="ratingValue"
-      @update:modelValue="$emit('update:modelValue', $event)"
+      @update:modelValue="ratingChanged"
       :size="'min(calc((100vw - 64px - '+((steps+1)*2)+'px) / '+(steps+1)+'), 3em)'"
       :max="steps + 1"
       color="primary"
@@ -62,6 +62,7 @@
       checked-icon="check"
       :label="name"
       unchecked-icon="clear"
+      toggle-indeterminate
     />
   </mark-input-item>
 
@@ -143,7 +144,13 @@ export default defineComponent({
 
     const value = computed({
       get: () => props.modelValue,
-      set: (val) => emit('update:modelValue', val)
+      set: (val) => {
+        if (null === val || '' === val) {
+          emit('reset:modelValue')
+        } else {
+          emit('update:modelValue', val)
+        }
+      }
     })
 
     const ratingValue = computed<number>(() => {
@@ -178,6 +185,14 @@ export default defineComponent({
       }
 
       return steps >= 1 && steps <= 10
+    }
+
+    function ratingChanged(val: number) {
+      if (0 === val) {
+        emit('reset:modelValue')
+      } else {
+        emit('update:modelValue', val)
+      }
     }
 
     const fType = computed<FieldTypes>(() => {
@@ -221,7 +236,8 @@ export default defineComponent({
       value,
       ratingValue,
       t,
-      validNumber
+      validNumber,
+      ratingChanged
     }
   }
 })

@@ -26,6 +26,7 @@
         :note="property.note"
         :model-value="markValues.get(property.id)?.value"
         @update:modelValue="setMarkValue(property.id, $event)"
+        @reset:modelValue="resetMarkValue(property.id)"
       />
       <q-separator spaced inset />
     </q-list>
@@ -112,6 +113,10 @@ export default defineComponent({
       });
     }
 
+    function resetMarkValue(mark_form_property_id: number) {
+      markValues.value.delete(mark_form_property_id)
+    }
+
     function save() {
       if (! tree.value) {
         notifyStateError(t('marks.markTree.selectTree'), '/marks/select-tree')
@@ -182,6 +187,7 @@ export default defineComponent({
       save,
       markValues,
       setMarkValue,
+      resetMarkValue,
       saving: api.working,
     }
   }
