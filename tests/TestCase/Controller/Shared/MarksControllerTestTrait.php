@@ -126,9 +126,9 @@ trait MarksControllerTestTrait
 
         /** @var Mark $dbData */
         $dbData = $query->first();
-        self::assertEquals( $dbData->date, $expected['date'] );
-        self::assertEquals( $dbData->author, $expected['author'] );
-        self::assertEquals( $dbData->mark_form_id, $expected['mark_form_id'] );
+        self::assertEquals( $expected['date'], $dbData->date );
+        self::assertEquals( $expected['author'], $dbData->author );
+        self::assertEquals( $expected['mark_form_id'], $dbData->mark_form_id );
 
         foreach ( [ 'tree_id', 'variety_id', 'batch_id' ] as $type ) {
             if ( array_key_exists( $type, $expected ) ) {
