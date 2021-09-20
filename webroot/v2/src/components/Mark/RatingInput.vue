@@ -24,7 +24,7 @@ export default defineComponent({
     }
   },
 
-  setup(props, {emit}: any) {
+  setup(props, {emit}) {
     const ratingValue = computed<number>(() => {
       if (typeof props.modelValue === 'number') {
         return props.modelValue
