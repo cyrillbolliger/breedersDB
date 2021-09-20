@@ -78,15 +78,12 @@ class AppController extends Controller {
             'unauthorizedRedirect' => $this->referer() // If unauthorized, return them to page they were just on
         ] );
 
-        // Set format to accept localized date, time and datetime input
-        \Cake\Database\TypeFactory::build( 'time' )->useLocaleParser()->setLocaleFormat( __x( 'time format', 'HH:mm' ) );
-        \Cake\Database\TypeFactory::build( 'date' )->useLocaleParser()->setLocaleFormat( __x( 'date format', 'dd.MM.yyyy' ) );
-        \Cake\Database\TypeFactory::build( 'datetime' )->useLocaleParser()->setLocaleFormat( __x( 'datetime format', 'dd.MM.yyyy HH:mm' ) );
-
         FrozenTime::setToStringFormat( __x( 'datetime format', 'dd.MM.yyyy HH:mm' ) );
         FrozenDate::setToStringFormat( __x( 'date format', 'dd.MM.yyyy' ) );
         Time::setToStringFormat( __x( 'datetime format', 'dd.MM.yyyy HH:mm' ) );
         Date::setToStringFormat( __x( 'date format', 'dd.MM.yyyy' ) );
+
+        Configure::write('localizedDate', true);
     }
 
     /**

@@ -33,11 +33,6 @@ class MarksController extends REST1Controller
             [ 'associated' => 'MarkValues' ]
         );
 
-        $mark->date = \DateTime::createFromFormat(
-            'Y-m-d\TH:i:s.v\Z',
-            $this->request->getData('data.date')
-        )->format('Y-m-d');
-
         if (! $this->Marks->save($mark)) {
             return $this->response
                 ->withStringBody(

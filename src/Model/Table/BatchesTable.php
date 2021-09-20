@@ -2,6 +2,9 @@
 
 namespace App\Model\Table;
 
+use App\Utility\DateTimeHandler;
+use ArrayObject;
+use Cake\Event\EventInterface;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -83,7 +86,7 @@ class BatchesTable extends Table {
 			] );
 
 		$validator
-			->localizedTime( 'date_sowed', 'date' )
+			->date( 'date_sowed', ['ymd'] )
 			->allowEmptyDate( 'date_sowed' );
 
 		$validator
@@ -98,7 +101,7 @@ class BatchesTable extends Table {
 			->allowEmptyString( 'seed_tray' );
 
 		$validator
-			->localizedTime( 'date_planted', 'date' )
+			->date( 'date_planted', ['ymd'] )
 			->allowEmptyString( 'date_planted' );
 
 		$validator
@@ -139,6 +142,16 @@ class BatchesTable extends Table {
 
 		return $rules;
 	}
+
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
+    {
+        if ($data['date_sowed']) {
+            $data['date_sowed'] = DateTimeHandler::parseDateToYmdString($data['date_sowed']);
+        }
+        if ($data['date_planted']) {
+            $data['date_planted'] = DateTimeHandler::parseDateToYmdString($data['date_planted']);
+        }
+    }
 
     /**
      * Custom Finder Method that hides the official variety "batch" (SORTE.000)

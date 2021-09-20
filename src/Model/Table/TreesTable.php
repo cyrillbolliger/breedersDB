@@ -2,6 +2,7 @@
 
 namespace App\Model\Table;
 
+use App\Utility\DateTimeHandler;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -110,16 +111,20 @@ class TreesTable extends Table
             ]);
 
         $validator
-            ->localizedTime('date_grafted', 'date')
+            ->date('date_grafted',['ymd'])
             ->allowEmptyDate('date_grafted');
 
         $validator
-            ->localizedTime('date_planted', 'date')
+            ->date('date_planted', ['ymd'])
             ->allowEmptyDate('date_planted');
 
         $validator
-            ->localizedTime('date_eliminated', 'date')
+            ->date('date_eliminated', ['ymd'])
             ->allowEmptyDate('date_eliminated');
+
+        $validator
+            ->date('date_labeled', ['ymd'])
+            ->allowEmptyDate('date_labeled');
 
         $validator
             ->boolean('genuine_seedling')
@@ -197,6 +202,13 @@ class TreesTable extends Table
         if (isset($data['variety_id'])) {
             if (preg_match('/^[a-zA-Z0-9]{4,8}\.\d{2}[A-Z]$/', $data['variety_id'])) {
                 $data['variety_id'] = $this->Varieties->addNewFromCrossingBatch($data['variety_id']);
+            }
+        }
+
+        // convert dates
+        foreach (['date_grafted', 'date_planted', 'date_eliminated', 'date_labeled'] as $field) {
+            if ($data[$field]) {
+                $data[$field] = DateTimeHandler::parseDateToYmdString($data[$field]);
             }
         }
     }

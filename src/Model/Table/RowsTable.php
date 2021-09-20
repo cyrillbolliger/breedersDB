@@ -2,6 +2,9 @@
 
 namespace App\Model\Table;
 
+use App\Utility\DateTimeHandler;
+use ArrayObject;
+use Cake\Event\EventInterface;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -66,11 +69,11 @@ class RowsTable extends Table {
 			->notEmptyString( 'code' );
 
 		$validator
-			->localizedTime( 'date_created', 'date' )
+			->date( 'date_created', ['ymd'] )
 			->allowEmptyDate( 'date_created' );
 
 		$validator
-			->localizedTime( 'date_eliminated', 'date' )
+			->date( 'date_eliminated', ['ymd'] )
 			->allowEmptyDate( 'date_eliminated' );
 
 		$validator
@@ -96,6 +99,16 @@ class RowsTable extends Table {
 
 		return $rules;
 	}
+
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
+    {
+        if ($data['date_created']) {
+            $data['date_created'] = DateTimeHandler::parseDateToYmdString($data['date_created']);
+        }
+        if ($data['date_eliminated']) {
+            $data['date_eliminated'] = DateTimeHandler::parseDateToYmdString($data['date_eliminated']);
+        }
+    }
 
 	/**
 	 * Return query filtered by given search term searching the code

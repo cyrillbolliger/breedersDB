@@ -2,6 +2,9 @@
 
 namespace App\Model\Table;
 
+use App\Utility\DateTimeHandler;
+use ArrayObject;
+use Cake\Event\EventInterface;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -70,7 +73,7 @@ class ScionsBundlesTable extends Table {
 			->allowEmptyString( 'numb_scions' );
 
 		$validator
-			->localizedTime( 'date_scions_harvest', 'date' )
+			->date( 'date_scions_harvest', ['ymd'] )
 			->allowEmptyDate( 'date_scions_harvest' );
 
 		$validator
@@ -103,6 +106,13 @@ class ScionsBundlesTable extends Table {
 
 		return $rules;
 	}
+
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
+    {
+        if ($data['date_scions_harvest']) {
+            $data['date_scions_harvest'] = DateTimeHandler::parseDateToYmdString($data['date_scions_harvest']);
+        }
+    }
 
 	/**
 	 * Return query filtered by given search term searching the convar and code
