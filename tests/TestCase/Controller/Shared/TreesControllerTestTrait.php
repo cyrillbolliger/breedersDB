@@ -51,10 +51,10 @@ trait TreesControllerTestTrait
 
         $data = [
             'publicid'           => '12345678',
-            'date_grafted'       => '01.01.2021',
-            'date_planted'       => '01.01.2021',
+            'date_grafted'       => '10.01.2021',
+            'date_planted'       => '11.01.2021',
             'date_eliminated'    => null,
-            'date_labeled'       => '01.01.2021',
+            'date_labeled'       => '12.01.2021',
             'genuine_seedling'   => true,
             'migrated_tree'      => false,
             'offset'             => 12.3,
