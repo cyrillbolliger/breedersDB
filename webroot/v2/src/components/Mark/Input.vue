@@ -4,14 +4,9 @@
     :title="name"
     :note="note"
   >
-    <q-rating
-      :modelValue="ratingValue"
-      @update:modelValue="ratingChanged"
-      :size="'min(calc((100vw - 64px - '+((steps+1)*2)+'px) / '+(steps+1)+'), 3em)'"
-      :max="steps + 1"
-      color="primary"
-      icon="star_border"
-      icon-selected="star"
+    <rating-input
+      v-model="value"
+      :steps="steps"
     />
   </mark-input-item>
 
@@ -102,6 +97,7 @@ import {computed, defineComponent, PropType} from 'vue'
 import {MarkFormFieldNumberConstraint, MarkFormFieldType} from 'src/models/form';
 import MarkInputItem from 'components/Mark/InputItem.vue'
 import {useI18n} from 'vue-i18n';
+import RatingInput from 'components/Mark/RatingInput.vue';
 
 enum FieldTypes {
   Rating,
@@ -114,7 +110,7 @@ enum FieldTypes {
 
 export default defineComponent({
   name: 'MarkInput',
-  components: {MarkInputItem},
+  components: {RatingInput, MarkInputItem},
   props: {
     id: {
       type: Number,
@@ -153,30 +149,22 @@ export default defineComponent({
       }
     })
 
-    const ratingValue = computed<number>(() => {
-      if (typeof props.modelValue === 'number') {
-        return props.modelValue
-      }
-
-      return 0
-    })
-
     const steps = computed<number>(() => {
-      if (!props.numberConstraints) {
+      if ( ! props.numberConstraints) {
         return 0;
       }
 
       const constraints = props.numberConstraints;
 
-      return (constraints.max - constraints.min) / constraints.step
+      return ((constraints.max - constraints.min) / constraints.step) + 1
     });
 
     function ratableSteps(steps: number) {
-      if (!props.numberConstraints) {
+      if ( ! props.numberConstraints) {
         return false
       }
 
-      if (!Number.isInteger(steps)) {
+      if ( ! Number.isInteger(steps)) {
         return false
       }
 
@@ -184,15 +172,11 @@ export default defineComponent({
         return false
       }
 
-      return steps >= 1 && steps <= 10
-    }
-
-    function ratingChanged(val: number) {
-      if (0 === val) {
-        emit('reset:modelValue')
-      } else {
-        emit('update:modelValue', val)
+      if (props.numberConstraints.step !== 1) {
+        return false
       }
+
+      return steps >= 1 && steps <= 10
     }
 
     const fType = computed<FieldTypes>(() => {
@@ -216,7 +200,7 @@ export default defineComponent({
 
     function validNumber(value: number, constraints: MarkFormFieldNumberConstraint) {
       // valid if no value or no constraints
-      if (! value || ! constraints) {
+      if ( ! value || ! constraints) {
         return true
       }
 
@@ -234,10 +218,8 @@ export default defineComponent({
       FieldTypes,
       steps,
       value,
-      ratingValue,
       t,
       validNumber,
-      ratingChanged
     }
   }
 })
