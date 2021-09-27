@@ -78,6 +78,10 @@ class MarkFormProperty extends Entity {
 	 * @return bool
 	 */
 	protected function _getIsNumerical(): bool {
+        if (! isset($this->_fields['field_type'])) {
+            return false;
+        }
+
 		return in_array( $this->_fields['field_type'], [ 'INTEGER', 'FLOAT' ] );
 	}
 
