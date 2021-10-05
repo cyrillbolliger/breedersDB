@@ -34,7 +34,14 @@ export default function useApi() {
   function post<T, R>(url: string, data: T, cb: () => void = () => null): Promise<void | R> {
     working.value = true
 
-    return axios.post<void | ApiResponse<R>>(url, {data})
+    let payload: T | { data: T }
+    if (data instanceof FormData) {
+      payload = data
+    } else {
+      payload = {data}
+    }
+
+    return axios.post<void | ApiResponse<R>>(url, payload)
       .then(resp => {
         if (resp.data) {
           cb()

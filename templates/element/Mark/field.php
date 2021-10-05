@@ -44,6 +44,15 @@ switch ( $markFormProperty->field_type ) {
 		] );
 		break;
 
+    case 'PHOTO':
+        echo $this->Form->control($name, [
+            'type' => 'file',
+            'label' => $markFormProperty->name,
+            'required' => $required,
+            'accept' => 'image/*'
+        ]);
+        break;
+
 	default:
 		echo $this->Form->control( $name, [
 			'type'     => 'number',

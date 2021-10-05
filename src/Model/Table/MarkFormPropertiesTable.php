@@ -230,6 +230,7 @@ class MarkFormPropertiesTable extends Table {
 			'VARCHAR' => __( 'Text ( < 255 characters)' ),
 			'BOOLEAN' => __( 'Boolean' ),
 			'DATE'    => __( 'Date' ),
+            'PHOTO'   => __( 'Photo' ),
 		];
 	}
 
