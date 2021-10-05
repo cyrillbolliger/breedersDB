@@ -6,10 +6,11 @@ export enum MarkFormFieldType {
   Boolean = 'BOOLEAN',
   Date = 'DATE',
   String = 'VARCHAR',
+  Photo = 'PHOTO',
 }
 
 export type MarkFormFieldNumberConstraint = null | {min: number, max: number, step: number}
-export type MarkValueValue = string|boolean|number|Date
+export type MarkValueValue = string|boolean|number|Date|File
 
 export interface MarkFromProperty {
   id: number

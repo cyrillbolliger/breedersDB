@@ -8,6 +8,7 @@ node_modules
 /webroot/v1/dev
 /webroot/v1/dist
 /webroot/v2/dist
+/storage
 vendor
 deploy.conf
 import-live-data.sh

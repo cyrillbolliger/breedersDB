@@ -90,6 +90,35 @@
       hide-bottom-space
     />
   </mark-input-item>
+
+  <mark-input-item
+    v-if="fType === FieldTypes.Photo"
+    :title="name"
+    :note="note"
+  >
+    <!--suppress RequiredAttributes -->
+    <q-file
+      outlined
+      v-model="value"
+      :label="name"
+      :multiple="false"
+      accept="image/*"
+      capture="environment"
+      clearable
+      v-if="progress === 0"
+    >
+      <template v-slot:before>
+        <q-icon name="photo_camera" />
+      </template>
+    </q-file>
+
+    <q-linear-progress
+      rounded
+      size="20px"
+      :value="progress"
+      v-else
+    />
+  </mark-input-item>
 </template>
 
 <script lang="ts">
@@ -105,12 +134,17 @@ enum FieldTypes {
   Integer,
   Boolean,
   Date,
-  String
+  String,
+  Photo
 }
 
 export default defineComponent({
   name: 'MarkInput',
   components: {RatingInput, MarkInputItem},
+  emits: [
+    'reset:modelValue',
+    'update:modelValue'
+  ],
   props: {
     id: {
       type: Number,
@@ -131,8 +165,14 @@ export default defineComponent({
       type: String,
     },
     modelValue: {
-      type: [Number, String, Boolean, Date],
-    }
+      // do not type this, as it may be a simple number,
+      // there are complaints on runtime that this is not an object
+      // type: Object as PropType<MarkValueValue>,
+    },
+    progress: {
+      type: Number,
+      default: 0,
+    },
   },
 
   setup(props, {emit}) {
@@ -193,6 +233,8 @@ export default defineComponent({
           } else {
             return FieldTypes.Integer
           }
+        case MarkFormFieldType.Photo:
+          return FieldTypes.Photo
         default:
           return FieldTypes.String
       }

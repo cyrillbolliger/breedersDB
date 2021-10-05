@@ -2,6 +2,9 @@
 
 namespace App\Model\Table;
 
+use App\Domain\Upload\ChunkUploadStrategy;
+use App\Domain\Upload\UploadStrategy;
+use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -27,6 +30,8 @@ use ArrayObject;
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class MarkValuesTable extends Table {
+
+    public const ALLOWED_PHOTO_EXT = ['jpg', 'jpeg', 'png'];
 
 	/**
 	 * Initialize method
@@ -62,13 +67,21 @@ class MarkValuesTable extends Table {
 	 * @param ArrayObject $options
 	 */
 	public function beforeMarshal( Event $event, ArrayObject &$data, ArrayObject $options ) {
-		// convert date data into the yyyy-mm-dd format
 		$type = $this->MarkFormProperties->get( $data['mark_form_property_id'] )->field_type;
 
+        // convert date data into the yyyy-mm-dd format
 		if ( 'DATE' === $type && preg_match('/^\d{1,2}\.\d{1,2}\.\d{4}$/', $data['value']) ) {
 			$tmp           = preg_split( '/[.-\/]/', $data['value'] );
 			$data['value'] = $tmp[2] . '-' . $tmp[1] . '-' . $tmp[0];
 		}
+
+        // store uploaded photo
+        if ( 'PHOTO' === $type ) {
+            $tmpFileName = $data['value'];
+            $handler = new ChunkUploadStrategy(self::ALLOWED_PHOTO_EXT, $tmpFileName);
+            $finalFileName = $handler->storeFinal(Configure::read('App.paths.photos'));
+            $data['value'] = $finalFileName;
+        }
 	}
 
 	/**
@@ -118,30 +131,29 @@ class MarkValuesTable extends Table {
 					return Validation::isInteger( $value )
 					       && (int) $value >= (int) $mark_form_property->validation_rule['min']
 					       && (int) $value <= (int) $mark_form_property->validation_rule['max'];
-					break;
 
 				case 'FLOAT':
 					return Validation::decimal( $value )
 					       && (float) $value >= (float) $mark_form_property->validation_rule['min']
 					       && (float) $value <= (float) $mark_form_property->validation_rule['max'];
-					break;
 
 				case 'VARCHAR':
 					return Validation::notBlank( $value )
 					       && Validation::maxLength( $value, 255 );
-					break;
 
 				case 'BOOLEAN':
 					return Validation::boolean( $value );
-					break;
 
 				case 'DATE':
 					return Validation::date( $value, 'ymd' );
-					break;
+
+                case 'PHOTO':
+                    $baseDir = Configure::read('App.paths.photos');
+                    $subDir = UploadStrategy::getSubdir($value);
+                    return file_exists($baseDir.DS.$subDir.DS.$value);
 
 				default:
 					return false;
-					break;
 			}
 		} else {
 			return false;
