@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller\REST1;
 
+use App\Domain\Upload\UploadStrategy;
 use App\Test\Util\AjaxTrait;
 use App\Test\Util\AuthenticateTrait;
 use App\Test\Util\DependsOnFixtureTrait;
@@ -11,6 +12,7 @@ use App\Test\Util\ExperimentSiteTrait;
 use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Security;
 
 /**
  * App\Controller\REST1\PhotosController Test Case
@@ -43,7 +45,20 @@ class PhotosControllerTest extends TestCase
      */
     public function testView(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $faker = \Faker\Factory::create();
+        $pathTmpFile = $faker->image();
+
+        $ext = pathinfo($pathTmpFile, PATHINFO_EXTENSION);
+        $finalFilename = substr(hash(Security::$hashType, Security::randomBytes(16), false), 0, 32) . '.' . $ext;
+        $finalFileDir = Configure::read('App.paths.photos') . DS . UploadStrategy::getSubdir($finalFilename);
+        $pathFinalFile = $finalFileDir . DS . $finalFilename;
+
+        UploadStrategy::createDir($finalFileDir);
+        rename($pathTmpFile, $pathFinalFile);
+
+        $this->get(self::ENDPOINT . '/view/' . $finalFilename);
+        $this->assertResponseOk();
+        $this->assertFileResponse($pathFinalFile);
     }
 
     public function testAdd(): void

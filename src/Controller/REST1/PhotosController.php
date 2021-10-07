@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller\REST1;
@@ -8,6 +9,7 @@ use App\Domain\Upload\ChunkUploadStrategy;
 use App\Domain\Upload\UploadException;
 use App\Domain\Upload\UploadStrategy;
 use App\Model\Table\MarkValuesTable;
+use Cake\Core\Configure;
 
 /**
  * Photos Controller
@@ -42,7 +44,7 @@ class PhotosController extends REST1Controller
             $this->getRequest()->getSession()->id()
         );
 
-        try{
+        try {
             $uploadHandler = new ChunkUploadStrategy(MarkValuesTable::ALLOWED_PHOTO_EXT, $tmpFileName);
             $uploadHandler->storeTmp($file, $offset);
         } catch (UploadException $e) {
@@ -50,5 +52,16 @@ class PhotosController extends REST1Controller
         }
 
         $this->set('data', ['filename' => $tmpFileName]);
+    }
+
+    public function view(string $filename): \Cake\Http\Response
+    {
+        $path = Configure::read('App.paths.photos') . DS . UploadStrategy::getSubdir($filename) . DS . $filename;
+        if (!file_exists($path)) {
+            return $this->response
+                ->withStatus(404);
+        }
+
+        return $this->response->withFile($path);
     }
 }

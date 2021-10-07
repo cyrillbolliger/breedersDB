@@ -62,7 +62,7 @@ abstract class UploadStrategy
         $this->allowedFileSize = (int)ceil($allowedFileSizeMB * 1024 * 1024);
         $this->tmpDir = Configure::read('App.paths.uploadTmp');
 
-        $this->createDir($this->tmpDir);
+        self::createDir($this->tmpDir);
         $this->removeOldTmpFiles();
     }
 
@@ -110,7 +110,7 @@ abstract class UploadStrategy
         $subDir = self::getSubdir($finalFilename);
         $destDir = rtrim($destDir, '/') . DS . $subDir . DS;
 
-        $this->createDir($destDir);
+        self::createDir($destDir);
 
         $destPath = $destDir . $finalFilename . '.' . $extension;
         $tmpPath = $this->getTmpPath();
@@ -198,7 +198,7 @@ abstract class UploadStrategy
         return "$tmpFileBase.$extension";
     }
 
-    private function createDir(string $path, bool $recursive = true): void
+    public static function createDir(string $path, bool $recursive = true): void
     {
         if (is_dir($path)) {
             return;
@@ -217,7 +217,7 @@ abstract class UploadStrategy
         $subPath = '';
         foreach ($parts as $part) {
             $subPath .= DS . $part;
-            $this->createDir($subPath, false);
+            self::createDir($subPath, false);
         }
     }
 }
