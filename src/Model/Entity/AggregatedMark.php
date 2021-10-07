@@ -12,42 +12,42 @@ use Cake\Collection\Collection;
 use Cake\Collection\Iterator\ReplaceIterator;
 
 class AggregatedMark {
-	
+
 	/**
 	 * @var int the mark from property id we represent
 	 */
 	public $property_id;
-	
+
 	/**
 	 * @var array with the not aggregated values. The keys hold the mark.id the values the mark.value.
 	 */
 	public $values;
-	
+
 	/**
 	 * @var mixed the aggregated value.
 	 */
 	public $value;
-	
+
 	/**
 	 * @var mixed the values used for sorting
 	 */
 	public $sort_value;
-	
+
 	/**
 	 * @var int the id of the parent breeders object
 	 */
 	public $parent_id;
-	
+
 	/**
 	 * @var string the breeders object aggregation mode. @see \App\Model\Behavior\MarkQueryBehavior::mode
 	 */
 	private $mode;
-	
+
 	/**
 	 * @var string defining what we want to be in self::sort_value
 	 */
 	private $sort_by;
-	
+
 	/**
 	 * AggregatedMark constructor.
 	 *
@@ -58,7 +58,7 @@ class AggregatedMark {
 		$this->mode    = $mode;
 		$this->sort_by = $sort_by;
 	}
-	
+
 	/**
 	 * Calculate the aggregated marks of the given mark collection.
 	 * Strings and dates get concatenated (separated by '; '),
@@ -80,19 +80,19 @@ class AggregatedMark {
 	public function aggregate( Collection $marks ): AggregatedMark {
 		// preserve single values including reference id
 		$this->values = $this->_extractValuesWithReference( $marks );
-		
+
 		// get array of values
 		$values = $marks->extract( 'value' )->toArray();
-		
+
 		// get mark prototype
 		$prototype = $marks->first();
-		
+
 		// set property id
 		$this->property_id = $prototype->property_id;
-		
+
 		// set parent id
 		$this->_setParent( $prototype );
-		
+
 		// aggregate according to the field type
 		$type = $prototype->field_type;
 		switch ( $type ) {
@@ -101,26 +101,27 @@ class AggregatedMark {
 				$this->value      = (object) $this->_calculateStats( $values, $type );
 				$this->sort_value = &$this->value->{$this->sort_by};
 				break;
-			
+
 			case 'DATE':
+            case 'PHOTO':
 			case 'VARCHAR':
 				$this->value      = implode( '; ', $values );
 				$this->sort_value = &$this->value;
 				break;
-			
+
 			case 'BOOLEAN':
 				$sum              = array_sum( $values );
 				$this->value      = (bool) $sum;
 				$this->sort_value = $sum / count( $values );
 				break;
-			
+
 			default:
 				throw new \Exception( "The field type '{$type}' is not an defined." );
 		}
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Return array with key value pairs, where the key holds the mark.id and the value the mark.value
 	 *
@@ -133,7 +134,7 @@ class AggregatedMark {
 			return [ $mark->id => $mark->value ];
 		} );
 	}
-	
+
 	/**
 	 * Set self::parent_id from given mark
 	 *
@@ -145,29 +146,29 @@ class AggregatedMark {
 		switch ( $this->mode ) {
 			case 'trees':
 				$this->parent_id = $mark->tree_id;
-				
+
 				return;
-			
+
 			case 'varieties':
 				$this->parent_id = $mark->variety_id;
-				
+
 				return;
-			
+
 			case 'batches':
 				$this->parent_id = $mark->batch_id;
-				
+
 				return;
-			
+
 			case 'convar':
 				$this->parent_id = null !== $mark->variety_id ? $mark->variety_id : $mark->trees_view->variety_id;
-				
+
 				return;
-			
+
 			default:
 				throw new \Exception( "The mode '{$this->mode}' is not defined." );
 		}
 	}
-	
+
 	/**
 	 * Return array with count, avg, min, max, median and std (standard deviation) from given values
 	 *
@@ -183,14 +184,14 @@ class AggregatedMark {
 				settype( $value, $cast );
 			}
 		}
-		
+
 		// calculate reused stats
 		$count = count( $values );
 		$avg   = (float) array_sum( $values ) / $count;
-		
+
 		// sort values now and only once (for min, max and median)
 		sort( $values );
-		
+
 		// calculate stats
 		$stats['count']  = $count;
 		$stats['avg']    = $avg;
@@ -198,10 +199,10 @@ class AggregatedMark {
 		$stats['max']    = $values[ $count - 1 ];
 		$stats['median'] = $this->_median( $values, $count );
 		$stats['std']    = $this->_stdDev( $values, $avg, $count );
-		
+
 		return $stats;
 	}
-	
+
 	/**
 	 * Calculate median
 	 *
@@ -214,16 +215,16 @@ class AggregatedMark {
 		if ( $count <= 1 ) {
 			return $sortedArray[0];
 		}
-		
+
 		$middle = (int) ( $count / 2 );
-		
+
 		if ( $count % 2 ) {
 			return $sortedArray[ $middle ];
 		}
-		
+
 		return (float) ( ( $sortedArray[ $middle - 1 ] + $sortedArray[ $middle ] ) / 2 );
 	}
-	
+
 	/**
 	 * Calculate standard deviation
 	 *
@@ -237,12 +238,12 @@ class AggregatedMark {
 		if ( $count <= 1 ) {
 			return 0;
 		}
-		
+
 		$tmp = array_map( function ( $v ) use ( $avg ) {
 			return pow( ( $v - $avg ), 2 );
 		}, $values );
 		$var = array_sum( $tmp ) / $count;
-		
+
 		return sqrt( $var );
 	}
 }
