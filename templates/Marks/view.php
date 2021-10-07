@@ -64,15 +64,21 @@ if ( $mark->has( 'tree' ) ) {
                 </tr>
 				<?php foreach ( $mark->mark_values as $markValues ): ?>
 					<?php
-					$value       = substr( $markValues->value, 0,
-						35 ) != $markValues->value ? substr( $markValues->value,
-							0, 25 ) . '...' : $markValues->value;
+                    if ('PHOTO' === $markValues->mark_form_property->field_type) {
+                        $imgUrl = $this->Url->build(['prefix' => 'REST1', 'controller' => 'Photos', 'action' => 'view', $markValues->value]);
+                        $value = '<a href="'. $imgUrl .'" target="_blank"><i class="fa fa-picture-o" aria-hidden="true"></i></a>';
+                    } else {
+                        $value     = substr( $markValues->value, 0, 35 ) != $markValues->value
+                            ? substr( $markValues->value, 0,25 ) . '...'
+                            : $markValues->value;
+                        $value = h($value);
+                    }
 					$exceptional = $markValues->exceptional_mark ? __( 'Yes' ) : '';
 					?>
                     <tr>
                         <td class="id"><?= h( $markValues->id ) ?></td>
                         <td><?= h( $markValues->mark_form_property->name ) ?></td>
-                        <td><?= h( $value ) ?></td>
+                        <td><?= $value ?></td>
                         <td><?= $exceptional ?></td>
                         <td><?= h( $this->LocalizedTime->getUserTime( $markValues->modified ) ) ?></td>
                         <td class="actions">
