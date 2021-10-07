@@ -128,7 +128,7 @@ export default defineComponent({
 
     function upload(file: File, mark_form_property_id: number) {
       return fileUploader.upload(
-        'marks/addPhotoFile',
+        'photos/add',
         file,
         progress => uploadProgress.value.set(
           mark_form_property_id,

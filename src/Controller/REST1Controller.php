@@ -64,6 +64,8 @@ class REST1Controller extends Controller {
             ],
             'unauthorizedRedirect' => false
         ] );
+
+        $this->loadComponent('JsonResponse');
     }
 
     /**

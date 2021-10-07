@@ -180,7 +180,7 @@ class MarksControllerTest extends TestCase
         }
     }
 
-    public function testAddPhotoFile__and__Add(): void
+    public function testAddPhotoFileThenAddMark(): void
     {
         /**
          * upload image
@@ -210,7 +210,7 @@ class MarksControllerTest extends TestCase
         ];
 
         $this->enableCsrfToken();
-        $this->post(self::ENDPOINT . '/add-photo-file', $postData);
+        $this->post('/api/1/photos/add', $postData);
 
         // clear this again, so it doesn't interfere with the next request below
         $this->_request['files'] = null;
@@ -301,79 +301,6 @@ class MarksControllerTest extends TestCase
             . DS . $finalFilename;
 
         $this->assertFileEquals($imgPath, $pathFinalFile);
-    }
-
-    public function testAddPhotoFile__multiChunk(): void
-    {
-        $faker = \Faker\Factory::create();
-        $imgPath = $faker->image();
-        $imgStream = fopen($imgPath, 'rb');
-
-        $imgSize = filesize($imgPath);
-        $chunk1Size = (int)ceil($imgSize / 2);
-        $chunk2Size = $imgSize - $chunk1Size;
-
-        $chunk1 = tmpfile();
-        $chunk2 = tmpfile();
-
-        stream_copy_to_stream($imgStream, $chunk1, $chunk1Size);
-        stream_copy_to_stream($imgStream, $chunk2);
-
-        $image1 = new \Laminas\Diactoros\UploadedFile(
-            $chunk1,
-            $chunk1Size,
-            \UPLOAD_ERR_OK,
-            'blob',
-            'image/jpeg'
-        );
-        $image2 = new \Laminas\Diactoros\UploadedFile(
-            $chunk2,
-            $chunk2Size,
-            \UPLOAD_ERR_OK,
-            'blob',
-            'image/jpeg'
-        );
-
-        // first chunk
-        $this->configRequest(
-            [
-                'files' => [
-                    'data' => $image1,
-                ],
-            ]
-        );
-        $postData = [
-            'filename' => 'test.jpg',
-            'offset' => 0
-        ];
-        $this->enableCsrfToken();
-        $this->post(self::ENDPOINT . '/add-photo-file', $postData);
-        $this->assertResponseOk();
-
-        // second chunk
-        $this->configRequest(
-            [
-                'files' => [
-                    'data' => $image2,
-                ],
-            ]
-        );
-        $postData = [
-            'filename' => 'test.jpg',
-            'offset' => $chunk1Size
-        ];
-        $this->enableCsrfToken();
-        $this->post(self::ENDPOINT . '/add-photo-file', $postData);
-        $this->assertResponseOk();
-
-        /** @noinspection PhpUnhandledExceptionInspection */
-        $resp = json_decode((string)$this->_response->getBody(), true, 512, JSON_THROW_ON_ERROR);
-
-        self::assertArrayHasKey('data', $resp);
-        self::assertArrayHasKey('filename', $resp['data']);
-
-        $uploadedFile = Configure::read('App.paths.uploadTmp') . DS . $resp['data']['filename'];
-        $this->assertFileEquals($imgPath, $uploadedFile);
     }
 
     /**
