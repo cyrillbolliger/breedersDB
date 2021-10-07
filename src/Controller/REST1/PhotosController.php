@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\REST1;
 
+use App\Controller\Component\JsonResponseComponent;
 use App\Controller\REST1Controller;
 use App\Domain\Upload\ChunkUploadStrategy;
 use App\Domain\Upload\UploadException;
 use App\Domain\Upload\UploadStrategy;
 use App\Model\Table\MarkValuesTable;
 use Cake\Core\Configure;
+use Cake\Log\Log;
 
 /**
  * Photos Controller
  *
- * @method \Cake\Http\Response respondWithErrorJson(array $errors, int $statusCode)
+ * @property JsonResponseComponent $JsonResponse
  */
 class PhotosController extends REST1Controller
 {
@@ -29,13 +31,13 @@ class PhotosController extends REST1Controller
         $origFileName = $this->getRequest()->getData('filename');
 
         if (empty($origFileName)) {
-            return $this->respondWithErrorJson(['photo upload' => 'missing filename'], 422);
+            return $this->JsonResponse->respondWithErrorJson(['photo upload' => 'missing filename'], 422);
         }
 
         $file = $this->getRequest()->getUploadedFile('data');
 
         if ($file === null) {
-            return $this->respondWithErrorJson(['photo upload' => 'missing file'], 422);
+            return $this->JsonResponse->respondWithErrorJson(['photo upload' => 'missing file'], 422);
         }
 
         $offset = (int)$this->getRequest()->getData('offset');
@@ -48,7 +50,7 @@ class PhotosController extends REST1Controller
             $uploadHandler = new ChunkUploadStrategy(MarkValuesTable::ALLOWED_PHOTO_EXT, $tmpFileName);
             $uploadHandler->storeTmp($file, $offset);
         } catch (UploadException $e) {
-            return $this->respondWithErrorJson(['photo upload' => $e->getMessage()], $e->getCode());
+            return $this->JsonResponse->respondWithErrorJson(['photo upload' => $e->getMessage()], $e->getCode());
         }
 
         $this->set('data', ['filename' => $tmpFileName]);

@@ -20,7 +20,8 @@ class JsonResponseComponent extends Component
 
     public function respondWithErrorJson(array $errors, int $statusCode): Response
     {
-        return $this->response
+        return $this->getController()
+            ->getResponse()
             ->withStringBody(
                 json_encode(
                     ['errors' => $errors],

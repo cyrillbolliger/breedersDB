@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\REST1;
 
+use App\Controller\Component\JsonResponseComponent;
 use App\Controller\REST1Controller;
 
 /**
@@ -10,7 +11,7 @@ use App\Controller\REST1Controller;
  *
  * @property \App\Model\Table\MarksTable $Marks
  * @method \App\Model\Entity\Mark[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
- * @method \Cake\Http\Response respondWithErrorJson(array $errors, int $statusCode)
+ * @property JsonResponseComponent $JsonResponse
  */
 class MarksController extends REST1Controller
 {
@@ -35,7 +36,7 @@ class MarksController extends REST1Controller
         );
 
         if (!$this->Marks->save($mark)) {
-            return $this->respondWithErrorJson($mark->getErrors(), 422);
+            return $this->JsonResponse->respondWithErrorJson($mark->getErrors(), 422);
         }
 
         $this->set('data', ['id' => $mark->id]);
