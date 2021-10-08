@@ -2,9 +2,12 @@
 
 namespace App\Model\Table;
 
+use App\Domain\ImageEditor\ImageEditor;
+use App\Domain\ImageEditor\ImageEditorException;
 use App\Domain\Upload\ChunkUploadStrategy;
 use App\Domain\Upload\UploadStrategy;
 use Cake\Core\Configure;
+use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -78,11 +81,37 @@ class MarkValuesTable extends Table {
         // store uploaded photo
         if ( 'PHOTO' === $type ) {
             $tmpFileName = $data['value'];
-            $handler = new ChunkUploadStrategy(self::ALLOWED_PHOTO_EXT, $tmpFileName);
-            $finalFileName = $handler->storeFinal(Configure::read('App.paths.photos'));
+            $finalFileName = $this->storeFinalImage($tmpFileName);
             $data['value'] = $finalFileName;
         }
 	}
+
+    private function storeFinalImage(string $tmpFileName): string|false
+    {
+        $uploadHandler = new ChunkUploadStrategy(self::ALLOWED_PHOTO_EXT, $tmpFileName);
+        $tmpFilePath = $uploadHandler->getTmpPath();
+
+        if (! ImageEditor::isImage($tmpFilePath)) {
+            return false;
+        }
+
+        $finalFileName = $uploadHandler->storeFinal(Configure::read('App.paths.photos'));
+        $finalFilePath = realpath(
+            Configure::read('App.paths.photos')
+            . DS . UploadStrategy::getSubdir($finalFileName)
+            . DS . $finalFileName
+        );
+
+        try {
+            $editor = new ImageEditor($finalFilePath);
+            $editor->normalizeRotation();
+        } catch (ImageEditorException $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
+
+        return $finalFileName;
+    }
 
 	/**
 	 * Default validation rules.

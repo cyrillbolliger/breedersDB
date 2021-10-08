@@ -6,6 +6,8 @@ namespace App\Controller\REST1;
 
 use App\Controller\Component\JsonResponseComponent;
 use App\Controller\REST1Controller;
+use App\Domain\ImageEditor\ImageEditor;
+use App\Domain\ImageEditor\ImageEditorException;
 use App\Domain\Upload\ChunkUploadStrategy;
 use App\Domain\Upload\UploadException;
 use App\Domain\Upload\UploadStrategy;
@@ -70,56 +72,21 @@ class PhotosController extends REST1Controller
             . DS . $filename
         );
 
-        // ensure the file exists and it is an image
-        $dims = getimagesize($path);
-        if (!$dims) {
+        if (!ImageEditor::isImage($path)) {
             return $this->response
                 ->withStatus(404);
         }
 
-        [$imgWidth, $imgHeight] = $dims;
+        $width = (int)$this->getRequest()->getQuery('w', 0);
+        $height = (int)$this->getRequest()->getQuery('h', 0);
 
-        $wantedWidth = (int)$this->getRequest()->getQuery('w', 0);
-        $wantedHeight = (int)$this->getRequest()->getQuery('h', 0);
-
-        // original image size wanted
-        if (0 === $wantedWidth && 0 === $wantedHeight) {
-            return $this->response->withFile($path);
+        try {
+            $imageEditor = new ImageEditor($path);
+            $thumbPath = $imageEditor->getThumbnail($width, $height);
+        } catch (ImageEditorException $e) {
+            return $this->JsonResponse->respondWithErrorJson(['thumbnail' => $e->getMessage()], 500);
         }
 
-        if ($wantedWidth === 0) {
-            $ratio = $wantedHeight/$imgHeight;
-        } elseif ($wantedHeight === 0) {
-            $ratio = $wantedWidth/$imgWidth;
-        } else {
-            $ratio = min($wantedWidth/$imgWidth, $wantedHeight/$imgHeight);
-        }
-
-        // wanted size is larger than actual image
-        if ($ratio > 1) {
-            return $this->response->withFile($path);
-        }
-
-        $reDimWidth = (int)round($imgWidth*$ratio);
-        $reDimHeight = (int)round($imgHeight*$ratio);
-
-        $ext = pathinfo($path, PATHINFO_EXTENSION);
-        $reDimPath = preg_replace("/\.${ext}$/", "-${reDimWidth}x${reDimHeight}.$ext", $path);
-
-        // generate image with this dims, if it does not exist
-        if (!file_exists($reDimPath)) {
-            try {
-                $imagick = new \Imagick($path);
-                $imagick->setbackgroundcolor('transparent');
-                $imagick->thumbnailImage($reDimWidth, $reDimHeight, true, true);
-                $imagick->writeImage($reDimPath);
-                $imagick->destroy();
-            } catch (\ImagickException $e) {
-                Log::error($e->getMessage());
-                return $this->JsonResponse->respondWithErrorJson(['thumbnail' => 'resizing failed'], 500);
-            }
-        }
-
-        return $this->response->withFile($reDimPath);
+        return $this->response->withFile($thumbPath);
     }
 }

@@ -172,7 +172,7 @@ abstract class UploadStrategy
         return substr($salted, 0, 32);
     }
 
-    protected function getTmpPath(): string
+    public function getTmpPath(): string
     {
         return $this->tmpDir . $this->filename;
     }
