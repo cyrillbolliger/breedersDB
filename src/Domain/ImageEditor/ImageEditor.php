@@ -83,7 +83,7 @@ class ImageEditor
         try {
             $im = new Imagick($this->pathOriginalImage);
 
-            match ($im->getImageOrientation()) {
+            $success = match ($im->getImageOrientation()) {
                 Imagick::ORIENTATION_TOPLEFT => true,
                 Imagick::ORIENTATION_BOTTOMRIGHT => $im->rotateimage("transparent", 180),
                 Imagick::ORIENTATION_RIGHTTOP => $im->rotateImage("transparent", 90),
@@ -92,13 +92,18 @@ class ImageEditor
                 Imagick::ORIENTATION_RIGHTBOTTOM => $im->transverseImage(),
                 Imagick::ORIENTATION_LEFTTOP => $im->transposeImage(),
                 Imagick::ORIENTATION_BOTTOMLEFT => $im->flipImage(),
-                default => throw new ImageEditorException('Unknown image orientation.')
+                default => null
             };
 
-            $im->setImageOrientation(Imagick::ORIENTATION_TOPLEFT);
+            if ($success) {
+                $im->setImageOrientation(Imagick::ORIENTATION_TOPLEFT);
+                $im->writeImage($this->pathOriginalImage);
+            } elseif (false === $success) {
+                throw new ImageEditorException('Failed to normalize image rotation.');
+            }
 
-            $im->writeImage($this->pathOriginalImage);
             $im->destroy();
+            
         } catch (ImagickException $e) {
             Log::error($e->__toString());
             throw new ImageEditorException('Failed to normalize image rotation. See log for details.');
