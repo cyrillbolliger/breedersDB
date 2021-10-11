@@ -41,7 +41,7 @@ export default function useApi() {
       payload = {data}
     }
 
-    return axios.post<void | ApiResponse<R>>(url, payload)
+    return axios.post<T | { data: T }, ApiResponse<{data: R}>>(url, payload)
       .then(resp => {
         if (resp.data) {
           cb()
