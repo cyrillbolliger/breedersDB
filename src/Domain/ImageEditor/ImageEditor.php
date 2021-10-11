@@ -68,8 +68,8 @@ class ImageEditor
             $imagick->writeImage($thumbPath);
             $imagick->destroy();
         } catch (ImagickException $e) {
-            Log::error($e->getMessage());
-            throw new ImageEditorException('Failed to generate thumbnail.');
+            Log::error($e->__toString());
+            throw new ImageEditorException('Failed to generate thumbnail. See log for details.');
         }
     }
 
@@ -106,8 +106,8 @@ class ImageEditor
             $im->writeImage($this->pathOriginalImage);
             $im->destroy();
         } catch (ImagickException $e) {
-            Log::error($e->getMessage());
-            throw new ImageEditorException('Failed to normalize image rotation.');
+            Log::error($e->__toString());
+            throw new ImageEditorException('Failed to normalize image rotation. See log for details.');
         }
     }
 }

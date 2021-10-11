@@ -106,7 +106,7 @@ class MarkValuesTable extends Table {
             $editor = new ImageEditor($finalFilePath);
             $editor->normalizeRotation();
         } catch (ImageEditorException $e) {
-            Log::error($e->getMessage());
+            Log::error($e->__toString());
             return false;
         }
 
