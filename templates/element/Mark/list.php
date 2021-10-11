@@ -51,9 +51,11 @@
 				<?= $this->Html->link( '<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
 					[ 'controller' => 'Marks', 'action' => 'view', $mark_value->mark->id ],
 					[ 'escapeTitle' => false, 'alt' => __( 'View' ) ] ) ?>
-				<?= $this->Html->link( '<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',
-					[ 'controller' => 'MarkValues', 'action' => 'edit', $mark_value->id ],
-					[ 'escapeTitle' => false, 'alt' => __( 'Edit' ) ] ) ?>
+                <?php if (! 'PHOTO' === $mark_value->mark_form_property->field_type): ?>
+                    <?= $this->Html->link( '<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',
+                                           [ 'controller' => 'MarkValues', 'action' => 'edit', $mark_value->id ],
+                                           [ 'escapeTitle' => false, 'alt' => __( 'Edit' ) ] ) ?>
+                <?php endif; ?>
 				<?= $this->Form->postLink( '<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>',
 					[ 'controller' => 'MarkValues', 'action' => 'delete', $mark_value->id ], [
 						'escapeTitle' => false,

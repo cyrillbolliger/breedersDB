@@ -82,9 +82,11 @@ if ( $mark->has( 'tree' ) ) {
                         <td><?= $exceptional ?></td>
                         <td><?= h( $this->LocalizedTime->getUserTime( $markValues->modified ) ) ?></td>
                         <td class="actions">
-							<?= $this->Html->link( '<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',
-								[ 'controller' => 'MarkValues', 'action' => 'edit', $markValues->id ],
-								[ 'escapeTitle' => false, 'alt' => __( 'Edit' ) ] ) ?>
+                            <?php if (! 'PHOTO' === $markValues->mark_form_property->field_type): ?>
+                                <?= $this->Html->link( '<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',
+                                    [ 'controller' => 'MarkValues', 'action' => 'edit', $markValues->id ],
+                                    [ 'escapeTitle' => false, 'alt' => __( 'Edit' ) ] ) ?>
+                            <?php endif; ?>
 							<?= $this->Form->postLink( '<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>',
 								[ 'controller' => 'MarkValues', 'action' => 'delete', $markValues->id ], [
 									'escapeTitle' => false,
