@@ -6,7 +6,10 @@ use App\Domain\ImageEditor\ImageEditor;
 use App\Domain\ImageEditor\ImageEditorException;
 use App\Domain\Upload\ChunkUploadStrategy;
 use App\Domain\Upload\UploadStrategy;
+use App\Model\Entity\MarkFormProperty;
+use App\Model\Entity\MarkValue;
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -111,6 +114,32 @@ class MarkValuesTable extends Table {
         }
 
         return $finalFileName;
+    }
+
+    public function afterDelete(EventInterface $event, MarkValue $entity, ArrayObject $options): void
+    {
+        /** @var MarkFormProperty $property */
+        $property = $this->MarkFormProperties->get($entity->mark_form_property_id);
+        if ('PHOTO' === $property->field_type) {
+            $this->removeFiles($entity);
+        }
+    }
+
+    private function removeFiles(MarkValue $entity): void
+    {
+        $filename = pathinfo($entity->value, PATHINFO_FILENAME);
+        $dir = Configure::read('App.paths.photos')
+            . DS . UploadStrategy::getSubdir($filename);
+
+        $files = glob($dir.DS.$filename.'*');
+        foreach($files as $file) {
+            unlink($file);
+        }
+
+        $isDirEmpty = !(new \FilesystemIterator($dir))->valid();
+        if ($isDirEmpty) {
+            rmdir($dir);
+        }
     }
 
 	/**
