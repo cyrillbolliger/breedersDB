@@ -31,11 +31,19 @@
 				break;
 		}
 		?>
+        <?php
+        if ('PHOTO' === $mark_value->mark_form_property->field_type) {
+            $imgUrl = $this->Url->build(['prefix' => 'REST1', 'controller' => 'Photos', 'action' => 'view', $mark_value->value]);
+            $value = '<a href="'. $imgUrl .'" target="_blank"><i class="fa fa-picture-o" aria-hidden="true"></i></a>';
+        } else {
+            $value = h( $mark_value->value );
+        }
+        ?>
         <tr>
             <td class="id"><?= h( $mark_value->id ) ?></td>
             <td><?= h( $mark_value->mark->date ) ?></td>
             <td><?= h( $mark_value->mark_form_property->name ) ?></td>
-            <td><?= h( $mark_value->value ) ?></td>
+            <td><?= $value ?></td>
             <td><?= h( $mark_value->mark->author ) ?></td>
             <td><?= $markedOn ?></td>
             <td><?= h( $mark_value->exceptional_mark ? __( 'True' ) : '' ) ?></td>
@@ -43,9 +51,11 @@
 				<?= $this->Html->link( '<i class="fa fa-eye view-icon" aria-hidden="true"></i>',
 					[ 'controller' => 'Marks', 'action' => 'view', $mark_value->mark->id ],
 					[ 'escapeTitle' => false, 'alt' => __( 'View' ) ] ) ?>
-				<?= $this->Html->link( '<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',
-					[ 'controller' => 'MarkValues', 'action' => 'edit', $mark_value->id ],
-					[ 'escapeTitle' => false, 'alt' => __( 'Edit' ) ] ) ?>
+                <?php if (! 'PHOTO' === $mark_value->mark_form_property->field_type): ?>
+                    <?= $this->Html->link( '<i class="fa fa-pencil edit-icon" aria-hidden="true"></i>',
+                                           [ 'controller' => 'MarkValues', 'action' => 'edit', $mark_value->id ],
+                                           [ 'escapeTitle' => false, 'alt' => __( 'Edit' ) ] ) ?>
+                <?php endif; ?>
 				<?= $this->Form->postLink( '<i class="fa fa-trash-o delete-icon" aria-hidden="true"></i>',
 					[ 'controller' => 'MarkValues', 'action' => 'delete', $mark_value->id ], [
 						'escapeTitle' => false,

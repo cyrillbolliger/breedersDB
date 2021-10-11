@@ -46,6 +46,9 @@ function MarksModule(General) {
             case 'DATE':
                 this.removeControl($all);
                 break;
+            case 'PHOTO':
+                this.removeControl($all);
+                break;
             default:
                 this.addControl($all);
         }

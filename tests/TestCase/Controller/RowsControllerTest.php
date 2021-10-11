@@ -115,8 +115,8 @@ class RowsControllerTest extends TestCase {
         $data = [
             'code'            => 'changed',
             'note'            => 'another random string',
-            'date_created'    => '01.01.2020',
-            'date_eliminated' => '11.11.2020',
+            'date_created'    => '01.02.2020',
+            'date_eliminated' => '12.11.2020',
         ];
 
         $testEntity = $this->getEntityQueryFromArray( $data )
@@ -196,8 +196,8 @@ class RowsControllerTest extends TestCase {
         $data = [
             'code'            => 'myrow',
             'note'            => 'what a wonderfull row',
-            'date_created'    => '01.01.1970',
-            'date_eliminated' => '01.01.2020',
+            'date_created'    => '01.02.1970',
+            'date_eliminated' => '02.01.2020',
         ];
 
         $query = $this->getEntityQueryFromArray( $data );

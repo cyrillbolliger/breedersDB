@@ -169,10 +169,10 @@ class TreesControllerTest extends TestCase {
 
         $data = [
             'publicid'           => '09999999',
-            'date_grafted'       => '01.01.2020',
-            'date_planted'       => '01.01.2020',
+            'date_grafted'       => '01.02.2020',
+            'date_planted'       => '01.03.2020',
             'date_eliminated'    => null,
-            'date_labeled'       => '01.01.2020',
+            'date_labeled'       => '01.04.2020',
             'genuine_seedling'   => false,
             'migrated_tree'      => true,
             'offset'             => 11.1,
@@ -185,10 +185,9 @@ class TreesControllerTest extends TestCase {
             'experiment_site_id' => $entity->experiment_site_id,
         ];
 
-        $testEntity = $this->getEntityQueryFromArray( $data )
-                           ->find( 'all', [ 'withDeleted' ] )
-                           ->first();
-        if ( $testEntity ) {
+        $testEntities = $this->getEntityQueryFromArray( $data )
+                           ->find( 'all', [ 'withDeleted' ] );
+        foreach($testEntities as $testEntity) {
             $this->Table->hardDelete( $testEntity );
         }
 
@@ -212,7 +211,7 @@ class TreesControllerTest extends TestCase {
         $entity = $this->addEntity();
 
         $data = [
-            'date_planted' => '11.11.2020',
+            'date_planted' => '11.12.2020',
             'offset'       => 123.4,
             'note'         => 'we love planting trees',
         ];
@@ -247,7 +246,7 @@ class TreesControllerTest extends TestCase {
         $entity = $this->addEntity();
 
         $data = [
-            'date_eliminated' => '11.11.2020',
+            'date_eliminated' => '11.10.2020',
             'note'            => 'dead',
         ];
 

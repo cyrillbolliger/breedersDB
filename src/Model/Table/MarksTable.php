@@ -2,6 +2,8 @@
 
 namespace App\Model\Table;
 
+use App\Utility\DateTimeHandler;
+use Cake\Event\EventInterface;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -80,7 +82,7 @@ class MarksTable extends Table {
 			->add( 'id', 'unique', [ 'rule' => 'validateUnique', 'provider' => 'table' ] );
 
 		$validator
-			->localizedTime( 'date', 'date' )
+			->date( 'date', ['ymd'] )
 			->allowEmptyDate( 'date' );
 
 		$validator
@@ -138,6 +140,13 @@ class MarksTable extends Table {
 
 		return $rules;
 	}
+
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
+    {
+        if ($data['date']) {
+            $data['date'] = DateTimeHandler::parseDateToYmdString($data['date']);
+        }
+    }
 
 	/**
 	 * Reorder data in given array (from request) to enable marshalling the

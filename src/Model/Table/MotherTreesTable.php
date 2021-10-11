@@ -2,6 +2,9 @@
 
 namespace App\Model\Table;
 
+use App\Utility\DateTimeHandler;
+use ArrayObject;
+use Cake\Event\EventInterface;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -101,15 +104,15 @@ class MotherTreesTable extends Table {
 			->notEmptyString( 'planed' );
 
 		$validator
-			->localizedTime( 'date_pollen_harvested', 'date' )
+			->date( 'date_pollen_harvested', ['ymd'] )
 			->allowEmptyDate( 'date_pollen_harvested' );
 
 		$validator
-			->localizedTime( 'date_impregnated', 'date' )
+			->date( 'date_impregnated', ['ymd'] )
 			->allowEmptyDate( 'date_impregnated' );
 
 		$validator
-			->localizedTime( 'date_fruit_harvested', 'date' )
+			->date( 'date_fruit_harvested', ['ymd'] )
 			->allowEmptyDate( 'date_fruit_harvested' );
 
 		$validator
@@ -151,6 +154,15 @@ class MotherTreesTable extends Table {
 
 		return $rules;
 	}
+
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
+    {
+        foreach (['date_pollen_harvested', 'date_impregnated', 'date_fruit_harvested'] as $field) {
+            if ($data[$field]) {
+                $data[$field] = DateTimeHandler::parseDateToYmdString($data[$field]);
+            }
+        }
+    }
 
 	/**
 	 * Return query filtered by given search term searching the code

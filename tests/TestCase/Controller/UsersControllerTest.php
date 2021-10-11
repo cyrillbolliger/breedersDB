@@ -203,7 +203,7 @@ class UsersControllerTest extends TestCase {
 
         $this->session( [
             'Auth' => [
-                'User' => $entity,
+                'User' => $entity->toArray(),
             ]
         ] );
 

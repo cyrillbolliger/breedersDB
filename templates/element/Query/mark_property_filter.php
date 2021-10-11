@@ -18,10 +18,10 @@ switch ( $field->inputType ) {
 			'max'     => isset( $field->validation_rule['max'] ) ? $field->validation_rule['max'] : null,
 			'step'    => isset( $field->validation_rule['step'] ) ? $field->validation_rule['step'] : null,
 			'class'   => 'mark-property-filter-value',
-			'default' => $data ? $data->value : false,
+			'default' => $data ? $data->value : '',
 		] );
 		break;
-	
+
 	case 'radio':
 		echo '<span class="mark-property-filter-value">';
 		echo $this->Form->radio( 'MarkProperties[' . $field->id . '][value]',
@@ -29,18 +29,21 @@ switch ( $field->inputType ) {
 		);
 		echo '</span>';
 		break;
-	
+
 	case 'text':
 		echo $this->Form->text( 'MarkProperties[' . $field->id . '][value]',
-			[ 'default' => $data ? $data->value : false, ] );
+			[
+                'default' => $data ? $data->value : '',
+                'class'   => 'mark-property-filter-value',
+            ] );
 		break;
-	
-	
+
+
 	case 'date':
 		echo $this->Form->text( 'MarkProperties[' . $field->id . '][value]', [
 			'class'   => 'datepicker mark-property-filter-value',
 			'pattern' => '/^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/',
-			'default' => $data ? $data->value : false,
+			'default' => $data ? $data->value : '',
 		] );
 }
 echo '</div>';

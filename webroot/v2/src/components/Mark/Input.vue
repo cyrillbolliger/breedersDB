@@ -4,14 +4,9 @@
     :title="name"
     :note="note"
   >
-    <q-rating
-      :modelValue="ratingValue"
-      @update:modelValue="$emit('update:modelValue', $event)"
-      :size="'min(calc((100vw - 64px - '+((steps+1)*2)+'px) / '+(steps+1)+'), 3em)'"
-      :max="steps + 1"
-      color="primary"
-      icon="star_border"
-      icon-selected="star"
+    <rating-input
+      v-model="value"
+      :steps="steps"
     />
   </mark-input-item>
 
@@ -62,6 +57,7 @@
       checked-icon="check"
       :label="name"
       unchecked-icon="clear"
+      toggle-indeterminate
     />
   </mark-input-item>
 
@@ -94,6 +90,35 @@
       hide-bottom-space
     />
   </mark-input-item>
+
+  <mark-input-item
+    v-if="fType === FieldTypes.Photo"
+    :title="name"
+    :note="note"
+  >
+    <!--suppress RequiredAttributes -->
+    <q-file
+      outlined
+      v-model="value"
+      :label="name"
+      :multiple="false"
+      accept="image/*"
+      capture="environment"
+      clearable
+      v-if="progress === 0"
+    >
+      <template v-slot:before>
+        <q-icon name="photo_camera" />
+      </template>
+    </q-file>
+
+    <q-linear-progress
+      rounded
+      size="20px"
+      :value="progress"
+      v-else
+    />
+  </mark-input-item>
 </template>
 
 <script lang="ts">
@@ -101,6 +126,7 @@ import {computed, defineComponent, PropType} from 'vue'
 import {MarkFormFieldNumberConstraint, MarkFormFieldType} from 'src/models/form';
 import MarkInputItem from 'components/Mark/InputItem.vue'
 import {useI18n} from 'vue-i18n';
+import RatingInput from 'components/Mark/RatingInput.vue';
 
 enum FieldTypes {
   Rating,
@@ -108,12 +134,17 @@ enum FieldTypes {
   Integer,
   Boolean,
   Date,
-  String
+  String,
+  Photo
 }
 
 export default defineComponent({
   name: 'MarkInput',
-  components: {MarkInputItem},
+  components: {RatingInput, MarkInputItem},
+  emits: [
+    'reset:modelValue',
+    'update:modelValue'
+  ],
   props: {
     id: {
       type: Number,
@@ -134,8 +165,14 @@ export default defineComponent({
       type: String,
     },
     modelValue: {
-      type: [Number, String, Boolean, Date],
-    }
+      // do not type this, as it may be a simple number,
+      // there are complaints on runtime that this is not an object
+      // type: Object as PropType<MarkValueValue>,
+    },
+    progress: {
+      type: Number,
+      default: 0,
+    },
   },
 
   setup(props, {emit}) {
@@ -143,37 +180,39 @@ export default defineComponent({
 
     const value = computed({
       get: () => props.modelValue,
-      set: (val) => emit('update:modelValue', val)
-    })
-
-    const ratingValue = computed<number>(() => {
-      if (typeof props.modelValue === 'number') {
-        return props.modelValue
+      set: (val) => {
+        if (null === val || '' === val) {
+          emit('reset:modelValue')
+        } else {
+          emit('update:modelValue', val)
+        }
       }
-
-      return 0
     })
 
     const steps = computed<number>(() => {
-      if (!props.numberConstraints) {
+      if ( ! props.numberConstraints) {
         return 0;
       }
 
       const constraints = props.numberConstraints;
 
-      return (constraints.max - constraints.min) / constraints.step
+      return ((constraints.max - constraints.min) / constraints.step) + 1
     });
 
     function ratableSteps(steps: number) {
-      if (!props.numberConstraints) {
+      if ( ! props.numberConstraints) {
         return false
       }
 
-      if (!Number.isInteger(steps)) {
+      if ( ! Number.isInteger(steps)) {
         return false
       }
 
       if (props.numberConstraints.min !== 1) {
+        return false
+      }
+
+      if (props.numberConstraints.step !== 1) {
         return false
       }
 
@@ -194,6 +233,8 @@ export default defineComponent({
           } else {
             return FieldTypes.Integer
           }
+        case MarkFormFieldType.Photo:
+          return FieldTypes.Photo
         default:
           return FieldTypes.String
       }
@@ -201,7 +242,7 @@ export default defineComponent({
 
     function validNumber(value: number, constraints: MarkFormFieldNumberConstraint) {
       // valid if no value or no constraints
-      if (! value || ! constraints) {
+      if ( ! value || ! constraints) {
         return true
       }
 
@@ -219,9 +260,8 @@ export default defineComponent({
       FieldTypes,
       steps,
       value,
-      ratingValue,
       t,
-      validNumber
+      validNumber,
     }
   }
 })

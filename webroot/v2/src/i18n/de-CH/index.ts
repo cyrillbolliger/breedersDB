@@ -58,6 +58,10 @@ export default {
       treeCard: {
         change: 'Ändern',
         selected: 'Ausgewählter Baum'
+      },
+      codeScanner: {
+        permissionRequest: 'Zugriff auf den Video-Stream nicht möglich. Bitte die Berechtigungsanfrage bestätigen.',
+        loadingMessage: '⌛ Video wird geladen...'
       }
     }
   },
@@ -65,6 +69,10 @@ export default {
     markTrees: {
       title: 'Baum bewerten',
       caption: 'Scanne Bäume und bewerte sie.'
+    },
+    trees: {
+      title: 'Bäume',
+      caption: 'Liste aller Bäume.'
     }
   }
 };

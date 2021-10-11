@@ -8,4 +8,4 @@ const COMPANY_ABBREV = 'POC';
 /**
 * Defines the length of the numerical par of the breeders variety code
 */
-const BREEDER_VARIETY_CODE_NUM_LENGTH = 6;
+const BREEDER_VARIETY_CODE_NUM_LENGTH = 5;

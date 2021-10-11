@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\REST1;
 
+use App\Controller\Component\JsonResponseComponent;
 use App\Controller\REST1Controller;
 
 /**
@@ -10,6 +11,7 @@ use App\Controller\REST1Controller;
  *
  * @property \App\Model\Table\MarksTable $Marks
  * @method \App\Model\Entity\Mark[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property JsonResponseComponent $JsonResponse
  */
 class MarksController extends REST1Controller
 {
@@ -20,9 +22,9 @@ class MarksController extends REST1Controller
      */
     public function add()
     {
-        if (! $this->request->is('post')) {
+        if (!$this->request->is('post')) {
             return $this->response
-                ->withStatus(405 )
+                ->withStatus(405)
                 ->withAddedHeader('Allow', 'POST');
         }
 
@@ -30,23 +32,11 @@ class MarksController extends REST1Controller
         $mark = $this->Marks->patchEntity(
             $mark,
             $this->request->getData('data'),
-            [ 'associated' => 'MarkValues' ]
+            ['associated' => 'MarkValues']
         );
 
-        $mark->date = \DateTime::createFromFormat(
-            'Y-m-d\TH:i:s.v\Z',
-            $this->request->getData('data.date')
-        )->format('Y-m-d');
-
-        if (! $this->Marks->save($mark)) {
-            return $this->response
-                ->withStringBody(
-                    json_encode(
-                        ['errors' => $mark->getErrors()],
-                        JSON_THROW_ON_ERROR
-                    )
-                )
-                ->withStatus(422);
+        if (!$this->Marks->save($mark)) {
+            return $this->JsonResponse->respondWithErrorJson($mark->getErrors(), 422);
         }
 
         $this->set('data', ['id' => $mark->id]);

@@ -38,7 +38,6 @@ class DemoSeed extends AbstractSeed
         $this->call('MotherTreesSeed');
         $this->call('MarkFormPropertyTypesSeed');
         $this->call('MarkFormPropertiesSeed');
-        $this->call('MarkScannerCodesSeed');
         $this->call('MarkFormsSeed');
         $this->call('MarksSeed');
         $this->call('MarkValuesSeed');

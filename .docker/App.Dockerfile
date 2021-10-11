@@ -13,7 +13,8 @@ RUN apt-get update -y \
     libzip-dev \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
-    libpng-dev
+    libpng-dev \
+    libmagickwand-dev
 
 # install & enable mysql driver
 RUN docker-php-ext-install pdo_mysql
@@ -34,6 +35,10 @@ RUN docker-php-ext-enable zip
 # install gd
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install -j$(nproc) gd
+
+# install image magick
+RUN pecl install -o -f imagick\
+    &&  docker-php-ext-enable imagick
 
 # change uid and gid of apache to docker user uid/gid
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data

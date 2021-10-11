@@ -4,9 +4,12 @@
     <h5 class="q-mb-xs q-mt-sm">{{ t('marks.markTree.title') }}</h5>
 
     <div class="row q-gutter-x-sm q-mb-sm">
-      <small><q-icon name="list"/>&nbsp;{{ form?.name }}</small>
-      <small><q-icon name="person"/>&nbsp;{{ author }}</small>
-      <small><q-icon name="today"/>&nbsp;{{ date.toLocaleDateString() }}</small>
+      <small>
+        <q-icon name="list"/>&nbsp;{{ form?.name }}</small>
+      <small>
+        <q-icon name="person"/>&nbsp;{{ author }}</small>
+      <small>
+        <q-icon name="today"/>&nbsp;{{ date.toLocaleDateString() }}</small>
     </div>
 
     <tree-card
@@ -26,22 +29,24 @@
         :note="property.note"
         :model-value="markValues.get(property.id)?.value"
         @update:modelValue="setMarkValue(property.id, $event)"
+        @reset:modelValue="resetMarkValue(property.id)"
+        :progress="uploadProgress.get(property.id)"
       />
-      <q-separator spaced inset />
+      <q-separator spaced inset/>
     </q-list>
 
     <q-page-sticky
       position="bottom-right"
       :offset="[18, 18]"
     >
-    <q-btn
-      fab
-      icon="save"
-      @click="save"
-      :loading="saving"
-      :disabled="!savable"
-      color="primary"
-    />
+      <q-btn
+        fab
+        icon="save"
+        @click="save"
+        :loading="working"
+        :disabled="!savable"
+        color="primary"
+      />
     </q-page-sticky>
 
     <div
@@ -64,6 +69,7 @@ import {useQuasar} from 'quasar';
 import MarkInput from 'components/Mark/Input.vue'
 import useApi from 'src/composables/api';
 import TreeCard from 'components/Util/TreeCard.vue';
+import useUploader from 'src/composables/uploader';
 
 export default defineComponent({
   name: 'MarkTree',
@@ -74,24 +80,28 @@ export default defineComponent({
     const router = useRouter()
     const $q = useQuasar()
     const api = useApi();
+    const fileUploader = useUploader();
 
     const {setToolbarTabs, setToolbarTitle} = useLayout()
     setToolbarTabs(useMarkTabNav())
     setToolbarTitle(t('marks.title'))
 
     const markValues = ref(new Map<number, MarkValue>());
+    const uploadProgress = ref(new Map<number, number>());
+    const uploading = ref(false);
+    const working = computed(() => api.working.value || uploading.value);
 
     /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
-    const tree = computed<Tree|null>(() => store.getters['mark/tree'])
+    const tree = computed<Tree | null>(() => store.getters['mark/tree'])
     const author = computed<string>(() => store.getters['mark/author'])
-    const form = computed<MarkForm|null>(() => store.getters['mark/selectedForm'])
+    const form = computed<MarkForm | null>(() => store.getters['mark/selectedForm'])
     const date = computed<Date>(() => {
       return new Date(store.getters['mark/date'])
     })
     /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 
     const savable = computed<boolean>(() => {
-      if (! form.value || ! author.value || ! date.value || ! tree.value) {
+      if ( ! form.value || ! author.value || ! date.value || ! tree.value) {
         return false
       }
 
@@ -100,7 +110,7 @@ export default defineComponent({
 
     function getMarkValues() {
       const values: MarkValue[] = []
-      markValues.value.forEach(val => values.push(val) )
+      markValues.value.forEach(val => values.push(val))
       return values
     }
 
@@ -112,51 +122,84 @@ export default defineComponent({
       });
     }
 
+    function resetMarkValue(mark_form_property_id: number) {
+      markValues.value.delete(mark_form_property_id)
+    }
+
+    function upload(file: File, mark_form_property_id: number) {
+      return fileUploader.upload(
+        'photos/add',
+        file,
+        progress => uploadProgress.value.set(
+          mark_form_property_id,
+          progress
+        )
+      )
+    }
+
     function save() {
-      if (! tree.value) {
-        notifyStateError(t('marks.markTree.selectTree'), '/marks/select-tree')
-        return;
-      }
+      const values = getMarkValues();
+      const uploads: Promise<string | void>[] = [];
 
-      if (! form.value) {
-        notifyStateError(t('marks.markTree.selectForm'), '/marks/select-form')
-        return;
-      }
-
-      const mark: Mark = {
-        date : date.value,
-        author : author.value,
-        mark_form_id : form.value.id,
-        tree_id : tree.value.id,
-        variety_id: null,
-        batch_id: null,
-        mark_values : getMarkValues(),
-      }
-
-      void api.post<Mark, number>('marks/add', mark)
-      .then(() => {
-        $q.notify({
-          message: t('marks.markTree.saved'),
-          color: 'success',
-        });
-        void router.push('/marks/select-tree')
+      values.forEach(val => {
+        if (val.value instanceof File) {
+          uploading.value = true
+          uploadProgress.value.set(val.mark_form_property_id, 0.01)
+          uploads.push(
+            upload(val.value, val.mark_form_property_id)
+              .then(resp => val.value = resp ? resp.filename : '')
+          );
+        }
       })
+
+      void Promise.all(uploads).then(() => {
+        uploading.value = false;
+
+        if ( ! tree.value) {
+          notifyStateError(t('marks.markTree.selectTree'), '/marks/select-tree')
+          return;
+        }
+
+        if ( ! form.value) {
+          notifyStateError(t('marks.markTree.selectForm'), '/marks/select-form')
+          return;
+        }
+
+        const mark: Mark = {
+          date: date.value,
+          author: author.value,
+          mark_form_id: form.value.id,
+          tree_id: tree.value.id,
+          variety_id: null,
+          batch_id: null,
+          mark_values: values,
+        }
+
+        void api.post<Mark, number>('marks/add', mark)
+          .then(() => {
+            $q.notify({
+              message: t('marks.markTree.saved'),
+              color: 'success',
+            });
+            void router.push('/marks/select-tree')
+          })
+      });
     }
 
 
-    if (! form.value) {
+    if ( ! form.value) {
       notifyStateError(t('marks.markTree.selectForm'), '/marks/select-form')
     }
 
-    if (! author.value || ! date.value) {
+    if ( ! author.value || ! date.value) {
       notifyStateError(t('marks.markTree.setMeta'), '/marks/set-meta')
     }
 
-    if (! tree.value) {
+    if ( ! tree.value) {
       notifyStateError(t('marks.markTree.selectTree'), '/marks/select-tree')
     }
 
-    function notifyStateError( button: string, route: string) {
+    function notifyStateError(button: string, route: string) {
       $q.notify({
         message: t('marks.markTree.missingDataError'),
         multiLine: true,
@@ -182,7 +225,9 @@ export default defineComponent({
       save,
       markValues,
       setMarkValue,
-      saving: api.working,
+      resetMarkValue,
+      working,
+      uploadProgress
     }
   }
 })

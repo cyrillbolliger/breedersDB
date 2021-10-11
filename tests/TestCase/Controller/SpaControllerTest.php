@@ -17,15 +17,6 @@ class SpaControllerTest extends TestCase
     use IntegrationTestTrait;
 
     /**
-     * Fixtures
-     *
-     * @var array
-     */
-    protected $fixtures = [
-        'app.Spa',
-    ];
-
-    /**
      * Test index method
      *
      * @return void

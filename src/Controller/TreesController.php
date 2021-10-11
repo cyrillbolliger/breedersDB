@@ -234,7 +234,7 @@ class TreesController extends AppController {
 	/**
 	 * Update method
      *
-     * Used for plant(), eliminate(), eliminateByScanner()
+     * Used for plant(), eliminate()
 	 *
 	 * @param string|null $id Tree id.
 	 *

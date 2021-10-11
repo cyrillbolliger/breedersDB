@@ -1,12 +1,20 @@
 <h3><?= __( 'Mark details' ) ?></h3>
 <table class="vertical-table">
+    <?php if ('PHOTO' === $marksView->field_type): ?>
+    <tr>
+        <td colspan="2">
+            <img src="<?= $this->Url->build(['prefix' => 'REST1', 'controller' => 'Photos', 'action' => 'view', $marksView->value, '?' => ['w' => 500]]) ?>" alt="<?= h( $marksView->value ); ?>">
+        </td>
+    </tr>
+    <?php else: ?>
+        <tr>
+            <th scope="row"><?= __( 'Value' ) ?></th>
+            <td><?= h( $marksView->value ); ?></td>
+        </tr>
+    <?php endif ?>
     <tr>
         <th scope="row"><?= __( 'Property' ) ?></th>
         <td><?= h( $marksView->name ); ?></td>
-    </tr>
-    <tr>
-        <th scope="row"><?= __( 'Value' ) ?></th>
-        <td><?= h( $marksView->value ); ?></td>
     </tr>
     <tr>
         <th scope="row"><?= __( 'Date' ) ?></th>

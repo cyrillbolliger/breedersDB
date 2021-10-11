@@ -69,6 +69,10 @@ export default {
       treeCard: {
         change: 'Change',
         selected: 'Selected Tree'
+      },
+      codeScanner: {
+        permissionRequest: 'Unable to access video stream. Please confirm permission request.',
+        loadingMessage: '⌛ Loading video...',
       }
     },
   },
@@ -78,6 +82,10 @@ export default {
     markTrees: {
       title: 'Mark Trees',
       caption: 'Scan trees and rate them.'
+    },
+    trees: {
+      title: 'Trees',
+      caption: 'List of all trees.'
     }
   }
 };

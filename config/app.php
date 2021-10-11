@@ -65,7 +65,11 @@ return [
             'plugins' => [ROOT . DS . 'plugins' . DS],
             'templates' => [ROOT . DS . 'templates' . DS],
             'locales' => [RESOURCES . 'locales' . DS],
+            'uploadTmp' => TMP . 'upload' . DS,
+            'photos' => ROOT . DS . 'storage' . DS . 'photos',
         ],
+        'maxUploadFileSize' => 16, // MB
+        'uploadTmpFileTTL' => 3600, // seconds
     ],
 
     /*
@@ -417,9 +421,9 @@ return [
      */
     'Session' => [
         'defaults' => 'cake',
-        'timeout'  => 24*60, // minutes; server session timeout
+        'timeout' => 24 * 60, // minutes; server session timeout
         'ini' => [
-            'session.cookie_lifetime' => 24*3600 // seconds; client session cookie lifetime
+            'session.cookie_lifetime' => 24 * 3600 // seconds; client session cookie lifetime
         ],
     ],
 ];

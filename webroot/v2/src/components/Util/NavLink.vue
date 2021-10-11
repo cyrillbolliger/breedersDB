@@ -2,7 +2,8 @@
   <q-item
     clickable
     tag="a"
-    :to="link"
+    :to="routerLink"
+    :href="externalLink"
   >
     <q-item-section
       v-if="icon"
@@ -21,7 +22,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import {computed, defineComponent} from 'vue'
+
+const absUrl = function(url: string) {
+  return /^https?:\/\//.test(url);
+}
 
 export default defineComponent({
   name: 'NavLink',
@@ -44,6 +49,20 @@ export default defineComponent({
     icon: {
       type: String,
       default: ''
+    }
+  },
+
+  setup(props) {
+    const routerLink = computed(() => {
+      return absUrl(props.link) ? null : props.link
+    })
+    const externalLink = computed(() => {
+      return absUrl(props.link) ? props.link : null
+    })
+
+    return {
+      routerLink,
+      externalLink
     }
   }
 })

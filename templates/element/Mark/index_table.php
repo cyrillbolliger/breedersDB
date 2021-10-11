@@ -26,10 +26,17 @@
 
 		$mark_data = '<ul>';
 		foreach ( $mark->mark_values as $mark_value ) {
-			$value     = substr( $mark_value->value, 0, 35 ) != $mark_value->value ? substr( $mark_value->value, 0,
-					25 ) . '...' : $mark_value->value;
-			$mark_data .= '<li>' . $mark_value->mark_form_property->name . ': ' . $value . '</li>';
-		}
+            if ('PHOTO' === $mark_value->mark_form_property->field_type) {
+                $imgUrl = $this->Url->build(['prefix' => 'REST1', 'controller' => 'Photos', 'action' => 'view', $mark_value->value]);
+                $value = '<a href="'. $imgUrl .'" target="_blank"><i class="fa fa-picture-o" aria-hidden="true"></i></a>';
+            } else {
+                $value     = substr( $mark_value->value, 0, 35 ) != $mark_value->value
+                    ? substr( $mark_value->value, 0,25 ) . '...'
+                    : $mark_value->value;
+                $value = h($value);
+            }
+            $mark_data .= '<li>' . $mark_value->mark_form_property->name . ': ' . $value . '</li>';
+        }
 		$mark_data .= '</ul>';
 		?>
         <tr>

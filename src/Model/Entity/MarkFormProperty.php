@@ -78,6 +78,10 @@ class MarkFormProperty extends Entity {
 	 * @return bool
 	 */
 	protected function _getIsNumerical(): bool {
+        if (! isset($this->_fields['field_type'])) {
+            return false;
+        }
+
 		return in_array( $this->_fields['field_type'], [ 'INTEGER', 'FLOAT' ] );
 	}
 
@@ -98,25 +102,15 @@ class MarkFormProperty extends Entity {
 	 * @throws \Exception if the MarkFormProperty::field_type is not defined.
 	 */
 	protected function _getInputType(): string {
-		switch ( $this->_fields['field_type'] ) {
-			case 'INTEGER':
-				return 'number';
-
-			case 'FLOAT':
-				return 'number';
-
-			case 'VARCHAR':
-				return 'text';
-
-			case 'BOOLEAN':
-				return 'radio';
-
-			case 'DATE':
-				return 'date';
-
-			default:
-				throw new \Exception( "The field type '{$this->_fields['field_type']}' is not defined." );
-		}
+        return match ($this->_fields['field_type']) {
+            'FLOAT',
+            'INTEGER' => 'number',
+            'PHOTO',
+            'VARCHAR' => 'text',
+            'BOOLEAN' => 'radio',
+            'DATE' => 'date',
+            default => throw new \Exception("The field type '{$this->_fields['field_type']}' is not defined."),
+        };
 	}
 
 	/**
@@ -162,6 +156,12 @@ class MarkFormProperty extends Entity {
 					'equal'     => __( 'equal' ),
 					'not_equal' => __( 'not equal' ),
 				];
+
+            case 'PHOTO':
+                return [
+                    'is_not_empty'      => __( 'has photo' ),
+                    'is_empty'          => __( "doesn't have photo" ),
+                ];
 
 			default:
 				throw new \Exception( "The field type '{$this->_fields['field_type']}' is not defined." );

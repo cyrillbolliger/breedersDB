@@ -126,6 +126,12 @@ class MotherTreesControllerTest extends TestCase {
             'crossing_id'           => $motherTree->crossing_id
         ];
 
+        $testEntities = $this->getMotherTreeQueryFromArray($data)
+            ->find('all', ['withDeleted']);
+        foreach ($testEntities as $testEntity) {
+            $this->MotherTrees->hardDelete($testEntity);
+        }
+
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
