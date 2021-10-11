@@ -96,7 +96,7 @@ export default defineComponent({
     const author = computed<string>(() => store.getters['mark/author'])
     const form = computed<MarkForm | null>(() => store.getters['mark/selectedForm'])
     const date = computed<Date>(() => {
-      return new Date(store.getters['mark/date'])
+      return new Date(store.getters['mark/date'] as Date|string)
     })
     /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 
