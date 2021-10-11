@@ -13,12 +13,4 @@
 			[ 'controller' => 'MarkFormProperties', 'action' => 'add' ] ) ?></li>
     <li><?= $this->Html->link( __( 'List Properties' ),
 			[ 'controller' => 'MarkFormProperties', 'action' => 'index' ] ) ?></li>
-    <li class="heading"><?= __( 'Scanner Codes' ) ?></li>
-    <li><?= $this->Html->link( __( 'New Scanner Code' ),
-			[ 'controller' => 'MarkScannerCodes', 'action' => 'add' ] ) ?></li>
-    <li><?= $this->Html->link( __( 'List Scanner Codes' ),
-			[ 'controller' => 'MarkScannerCodes', 'action' => 'index' ] ) ?></li>
-    <li><?= $this->Html->link( __( 'Print Submit Form Label' ),
-			[ 'controller' => 'MarkScannerCodes', 'action' => 'printSubmit' ] ) ?>
-    </li>
 </ul>

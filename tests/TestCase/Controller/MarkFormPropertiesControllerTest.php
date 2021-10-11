@@ -330,24 +330,6 @@ class MarkFormPropertiesControllerTest extends TestCase {
      *
      * @return void
      */
-    public function testGet_scannerCode(): void {
-        $entity = $this->addEntity();
-
-        $this->get( self::ENDPOINT . "/get/{$entity->id}/field_scanner_code_mode" );
-
-        $this->assertResponseSuccess();
-        $this->assertResponseCode( 200 );
-
-        $this->assertResponseContains( $entity->name );
-        $this->assertResponseContains( 'name="mark_form_fields[mark_form_properties][' . $entity->id . '][mark_values][value]"' );
-        $this->assertResponseNotContains( 'sortable_element deletable_element' );
-    }
-
-    /**
-     * Test get method
-     *
-     * @return void
-     */
     public function testGet_default(): void {
         $entity = $this->addEntity();
 
