@@ -118,25 +118,6 @@ class MarksControllerTest extends TestCase {
     }
 
     /**
-     * Test addTreeMark method
-     *
-     * @return void
-     */
-    public function testAddTreeMark(): void {
-        $data = $this->getNonExistingEntityData();
-        $data = $this->appendMarkValues( $data );
-
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->setUnlockedFields( [ 'tree_id' ] );
-
-        $this->post( self::ENDPOINT . '/add-tree-mark', $data );
-
-        $this->assertResponseSuccess();
-        $this->assertEntityExists( $data );
-    }
-
-    /**
      * Test addVarietyMark method
      *
      * @return void

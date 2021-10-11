@@ -36,8 +36,6 @@ class MarksController extends AppController {
 
 		// since we add fields dynamically, we have to unlock them in the form protection component
 		$this->FormProtection->setConfig('unlockedActions', [
-		    'addTreeMarkByScanner',
-            'addTreeMark',
             'addVarietyMark',
             'addBatchMark'
         ]);
@@ -91,59 +89,6 @@ class MarksController extends AppController {
 		] );
 
 		$this->set( 'mark', $mark );
-		$this->set( '_serialize', [ 'mark' ] );
-	}
-
-	/**
-	 * Add method
-	 *
-	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
-	 */
-	public function addTreeMarkByScanner() {
-		$this->addTreeMark();
-	}
-
-	/**
-	 * Add method
-	 *
-	 * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
-	 */
-	public function addTreeMark() {
-		$mark = $this->Marks->newEmptyEntity();
-		if ( $this->request->is( 'post' ) ) {
-			$data = $this->Marks->prepareToSaveAssociated( $this->request->getData());
-			$mark = $this->Marks->patchEntity( $mark, $data, [ 'associated' => 'MarkValues' ] );
-			$mark->setDirty( 'mark_values' );
-			if ( $this->Marks->save( $mark ) ) {
-				$this->Flash->success( __( 'The mark has been saved.' ) );
-
-				return $this->redirect( $this->referer() );
-			} else {
-				$this->Flash->error( __( 'The mark could not be saved.' ) );
-				$errors = $mark->getErrors();
-				if ( ! empty( $errors['tree_id'] ) ) {
-					$this->Flash->error( __( 'Please select a tree by public id.' ) );
-				}
-				if ( ! empty( $errors['mark_values'] ) ) {
-					$this->Flash->error( __( 'One of the mark values violates the validation rules. Please check data types.' ) );
-				}
-			}
-		}
-
-		$mark = $this->Brain->remember( $mark );
-
-		if ( ! empty( $mark->mark_form_id ) ) {
-			$markFormFields = $this->Marks->MarkForms->MarkFormFields->find()
-			                                                         ->contain( [ 'MarkFormProperties' ] )
-			                                                         ->where( [ 'mark_form_id' => $mark->mark_form_id ] )
-			                                                         ->order( [ 'priority' => 'asc' ] );
-		} else {
-			$markFormFields = null;
-		}
-
-		$markForms          = $this->Marks->MarkForms->find( 'list' );
-		$markFormProperties = $this->Marks->MarkForms->MarkFormFields->MarkFormProperties->find( 'list' );
-		$this->set( compact( 'mark', 'markForms', 'markFormProperties', 'markFormFields' ) );
 		$this->set( '_serialize', [ 'mark' ] );
 	}
 
