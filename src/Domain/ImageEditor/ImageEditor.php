@@ -83,23 +83,17 @@ class ImageEditor
         try {
             $im = new Imagick($this->pathOriginalImage);
 
-            switch ($im->getImageOrientation()) {
-                case Imagick::ORIENTATION_BOTTOMRIGHT:
-                    $im->rotateimage("transparent", 180);
-                    break;
-
-                case Imagick::ORIENTATION_RIGHTTOP:
-                    $im->rotateImage("transparent", 90);
-                    break;
-
-                case Imagick::ORIENTATION_LEFTBOTTOM:
-                    $im->rotateImage("transparent", -90);
-                    break;
-
-                default:
-                    $im->destroy();
-                    return;
-            }
+            match ($im->getImageOrientation()) {
+                Imagick::ORIENTATION_TOPLEFT => true,
+                Imagick::ORIENTATION_BOTTOMRIGHT => $im->rotateimage("transparent", 180),
+                Imagick::ORIENTATION_RIGHTTOP => $im->rotateImage("transparent", 90),
+                Imagick::ORIENTATION_LEFTBOTTOM => $im->rotateImage("transparent", -90),
+                Imagick::ORIENTATION_TOPRIGHT => $im->flopImage(),
+                Imagick::ORIENTATION_RIGHTBOTTOM => $im->transverseImage(),
+                Imagick::ORIENTATION_LEFTTOP => $im->transposeImage(),
+                Imagick::ORIENTATION_BOTTOMLEFT => $im->flipImage(),
+                default => throw new ImageEditorException('Unknown image orientation.')
+            };
 
             $im->setImageOrientation(Imagick::ORIENTATION_TOPLEFT);
 
