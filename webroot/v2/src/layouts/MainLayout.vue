@@ -119,6 +119,8 @@ import {LayoutBreadcrumbsInterface} from 'src/store/module-layout/state';
 import {LayoutTabsInterface} from 'src/store/module-layout/state';
 import {useI18n} from 'vue-i18n';
 
+declare const webroot: string;
+
 export default defineComponent({
   name: 'MainLayout',
 
@@ -138,6 +140,12 @@ export default defineComponent({
         icon: 'star',
         link: '/marks/select-form'
       },
+      {
+        title: t('navigation.trees.title'),
+        caption: t('navigation.trees.caption'),
+        icon: 'park',
+        link: webroot + 'trees'
+      }
     ];
 
 

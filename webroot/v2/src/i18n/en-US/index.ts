@@ -82,6 +82,10 @@ export default {
     markTrees: {
       title: 'Mark Trees',
       caption: 'Scan trees and rate them.'
+    },
+    trees: {
+      title: 'Trees',
+      caption: 'List of all trees.'
     }
   }
 };
