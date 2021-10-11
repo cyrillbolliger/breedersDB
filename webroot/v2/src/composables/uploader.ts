@@ -36,7 +36,7 @@ class FileUploader {
     return this.uploadChunk(slice);
   }
 
-  uploadChunk(slice: Blob): Promise<void|UploadResp> {
+  private uploadChunk(slice: Blob): Promise<void|UploadResp> {
     const payload = new FormData();
     payload.set('data', slice);
     payload.set('offset', this.start.toString());
@@ -58,18 +58,18 @@ class FileUploader {
       });
   }
 
-  determineSliceStop() {
+  private determineSliceStop() {
     const fullSlice = this.start + uploadSliceSize;
     const fileSize = this.file.size;
 
     return fullSlice > fileSize ? fileSize : fullSlice;
   }
 
-  hasNextChunk() {
+  private hasNextChunk() {
     return this.start < this.file.size;
   }
 
-  notify(complete = false) {
+  private notify(complete = false) {
     const progress = complete ? 1 : this.start / this.file.size;
 
     this.callback(progress);
