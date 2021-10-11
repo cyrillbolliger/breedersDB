@@ -32,7 +32,10 @@ switch ( $field->inputType ) {
 
 	case 'text':
 		echo $this->Form->text( 'MarkProperties[' . $field->id . '][value]',
-			[ 'default' => $data ? $data->value : '' ] );
+			[
+                'default' => $data ? $data->value : '',
+                'class'   => 'mark-property-filter-value',
+            ] );
 		break;
 
 
