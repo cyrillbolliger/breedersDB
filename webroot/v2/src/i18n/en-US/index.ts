@@ -29,6 +29,9 @@ export default {
       selectTree: 'Select tree',
       selectForm: 'Select form',
       saved: 'Marks saved.',
+      addProperty: 'Add property',
+      selectProperty: 'Select Property',
+      propertyAlreadyExists: 'Property {property} can not be added a second time.',
     },
   },
 
