@@ -1,6 +1,8 @@
 <template>
-  <div v-if="!videoAccess">{{ t('components.util.codeScanner.permissionRequest') }}</div>
-  <div v-if="videoAccess && loading">{{ t('components.util.codeScanner.loadingMessage') }}</div>
+  <div class="q-pa-md" v-if="!videoAccess || loading">
+    <div v-if="!videoAccess">{{ t('components.util.codeScanner.permissionRequest') }}</div>
+    <div v-if="videoAccess && loading">{{ t('components.util.codeScanner.loadingMessage') }}</div>
+  </div>
   <canvas id="canvas" ref="canvasElement" :hidden="loading"/>
 </template>
 
@@ -69,7 +71,7 @@ export default defineComponent({
         loading.value = false;
         let el: HTMLCanvasElement;
 
-        if (!canvasElement.value) {
+        if ( ! canvasElement.value) {
           requestAnimationFrame(tick);
           return;
         } else {
