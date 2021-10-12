@@ -9,7 +9,7 @@
       :filter-function="filterFunction"
       @refresh="loadForms"
       max-list-height="calc(100vh - 260px)"
-      item-height="35"
+      :item-height="35"
     >
       <template #default="slotProps">
         <q-item
