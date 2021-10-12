@@ -52,6 +52,7 @@ export default {
     next: 'Next',
     dismiss: 'Dismiss',
     navigation: 'Navigation',
+    cancel: 'Cancel',
 
     form: {
       required: 'Field is required',
@@ -67,8 +68,14 @@ export default {
         dismiss: 'dismiss'
       },
       treeCard: {
-        change: 'Change',
-        selected: 'Selected Tree'
+        scanBtnLabel: 'Scan',
+        tree: 'Tree',
+        printBtnLabel: 'Print',
+        printTitle: 'Print tree label',
+        printDesc: 'Select regular to print a label with the publicid and the convar or anonymous to hide the convar.',
+        printRegular: 'Regular',
+        printAnonymous: 'Anonymous',
+        windowError: 'Failed to open window for printing. Are you blocking popups?',
       },
       codeScanner: {
         permissionRequest: 'Unable to access video stream. Please confirm permission request.',

@@ -14,7 +14,7 @@
 
     <tree-card
       :tree="tree"
-      @click="$router.push('/marks/select-tree')"
+      @change="$router.push('/marks/select-tree')"
     />
 
     <q-list

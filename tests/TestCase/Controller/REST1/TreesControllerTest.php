@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller\REST1;
@@ -40,11 +41,12 @@ class TreesControllerTest extends TestCase
     protected array $dependsOnFixture = self::CONTAINS;
     protected TreesTable $Table;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         $this->authenticate();
         $this->setSite();
         /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
-        $this->Table = $this->getTable( self::TABLE );
+        $this->Table = $this->getTable(self::TABLE);
         parent::setUp();
     }
 
@@ -53,7 +55,8 @@ class TreesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testIndex(): void {
+    public function testIndex(): void
+    {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
@@ -79,10 +82,10 @@ class TreesControllerTest extends TestCase
         $entity = $this->addEntity();
 
         $this->setAjaxHeader();
-        $this->get( self::ENDPOINT . "/getTree?fields%5B%5D=publicid&term={$entity->publicid}" );
+        $this->get(self::ENDPOINT . "/getTree?fields%5B%5D=publicid&term={$entity->publicid}");
 
         $this->assertResponseSuccess();
-        $this->assertResponseCode( 200 );
+        $this->assertResponseCode(200);
         $this->assertContentType('application/json');
 
         $tree = $this->Table
@@ -91,9 +94,20 @@ class TreesControllerTest extends TestCase
             ->where(['publicid' => $entity->publicid])
             ->firstOrFail();
 
+        $tree->set(
+            [
+                'print' => [
+                    'regular' => $this->Table->getLabelZpl($tree->id, 'convar'),
+                    'anonymous' => $this->Table->getLabelZpl($tree->id, 'breeder_variety_code')
+                ]
+            ]
+        );
+
         $expected = ['data' => $tree];
-        $json = json_encode($expected, JSON_PRETTY_PRINT|JSON_THROW_ON_ERROR);
+        $json = json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
         self::assertEquals($json, (string)$this->_response->getBody());
+
+        $this->assertResponseRegExp("/\\\${\^XA.*\^FD{$entity->publicid}.*\^XZ}\\\$/");
     }
 
     /**

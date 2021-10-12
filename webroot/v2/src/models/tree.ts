@@ -1,10 +1,10 @@
 export interface Tree {
   id: number
   publicid: string
-  date_grafted: Date|null
-  date_planted: Date|null
-  date_eliminated: Date|null
-  date_labeled: Date|null
+  date_grafted: string|null
+  date_planted: string|null
+  date_eliminated: string|null
+  date_labeled: string|null
   genuine_seedling: boolean
   migrated_tree: boolean
   offset: number | null
@@ -19,6 +19,10 @@ export interface Tree {
   created: Date|null
   modified: Date|null
   convar: string
+  print?: {
+    regular: string,
+    anonymous: string
+  }
   // experiment_site?: ExperimentSite
   // row?: Row|null
   // grafting?: Grafting|null
