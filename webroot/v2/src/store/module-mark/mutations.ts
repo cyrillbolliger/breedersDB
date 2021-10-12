@@ -10,7 +10,7 @@ const mutation: MutationTree<MarkStateInterface> = {
   author(state: MarkStateInterface, author: string) {
     state.author = author
   },
-  date(state: MarkStateInterface, date: Date) {
+  date(state: MarkStateInterface, date: string) {
     state.date = date
   },
   tree(state: MarkStateInterface, tree: Tree) {

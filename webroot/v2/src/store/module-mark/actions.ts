@@ -13,7 +13,7 @@ const actions: ActionTree<MarkStateInterface, StateInterface> = {
     commit('author', author);
   },
 
-  date({commit}, date: Date) {
+  date({commit}, date: string) {
     commit('date', date)
   },
 
