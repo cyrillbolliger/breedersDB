@@ -1,6 +1,6 @@
 import {ActionTree} from 'vuex';
 import {StateInterface} from '../index';
-import {MarkStateInterface} from './state';
+import {MarkStateInterface, localStorageAuthor} from './state';
 import {MarkForm} from 'src/models/form';
 import {Tree} from 'src/models/tree';
 
@@ -11,9 +11,10 @@ const actions: ActionTree<MarkStateInterface, StateInterface> = {
 
   author({commit}, author: string) {
     commit('author', author);
+    window.localStorage.setItem(localStorageAuthor, author);
   },
 
-  date({commit}, date: Date) {
+  date({commit}, date: string) {
     commit('date', date)
   },
 

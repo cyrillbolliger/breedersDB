@@ -5,10 +5,6 @@ export default {
     selectForm: {
       title: 'Select Form',
       tab: 'Form',
-      selected: 'selected',
-      listMetaFiltered: 'Filtered list. Showing {showing} out of {total} items.',
-      listMetaUnfiltered: '{total} items',
-      nothingFound: 'Nothing found'
     },
 
     setMeta: {
@@ -33,6 +29,9 @@ export default {
       selectTree: 'Select tree',
       selectForm: 'Select form',
       saved: 'Marks saved.',
+      addProperty: 'Add property',
+      selectProperty: 'Select Property',
+      propertyAlreadyExists: 'Property {property} can not be added a second time.',
     },
   },
 
@@ -52,6 +51,7 @@ export default {
     next: 'Next',
     dismiss: 'Dismiss',
     navigation: 'Navigation',
+    selected: 'selected',
 
     form: {
       required: 'Field is required',
@@ -67,12 +67,24 @@ export default {
         dismiss: 'dismiss'
       },
       treeCard: {
-        change: 'Change',
-        selected: 'Selected Tree'
+        scanBtnLabel: 'Scan',
+        tree: 'Tree',
+        printBtnLabel: 'Print',
+        printTitle: 'Print tree label',
+        printDesc: 'Select regular to print a label with the publicid and the convar or anonymous to hide the convar.',
+        printRegular: 'Regular',
+        printAnonymous: 'Anonymous',
+        windowError: 'Failed to open window for printing. Are you blocking popups?',
+        noTree: 'Please Scan Tree'
       },
       codeScanner: {
         permissionRequest: 'Unable to access video stream. Please confirm permission request.',
         loadingMessage: '⌛ Loading video...',
+      },
+      list: {
+        listMetaFiltered: 'Filtered list. Showing {showing} out of {total} items.',
+        listMetaUnfiltered: '{total} items',
+        nothingFound: 'Nothing found'
       }
     },
   },

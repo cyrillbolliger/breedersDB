@@ -3,69 +3,32 @@
 
     <h5 class="q-mb-sm q-mt-sm">{{ t('marks.selectForm.title') }}</h5>
 
-    <!--suppress RequiredAttributes -->
-    <q-input
-      v-model="search"
-      debounce="100"
-      filled
-      clearable
-      dense
-      type="search"
-      :placeholder="t('general.search')"
+    <List
+      :items="markForms"
+      :loading="loading"
+      :filter-function="filterFunction"
+      @refresh="loadForms"
+      max-list-height="calc(100vh - 260px)"
+      :item-height="35"
     >
-      <template v-slot:append>
-        <q-icon name="search"/>
-      </template>
-    </q-input>
-
-    <q-pull-to-refresh @refresh="loadForms">
-      <template
-        v-if="!loading"
-      >
-        <q-list
-          bordered
-          separator
+      <template #default="slotProps">
+        <q-item
+          clickable
+          v-ripple
+          :active="slotProps.item.id === selectedForm?.id"
+          @click.stop="selectForm(slotProps.item)"
         >
+          <q-item-section>
+            <q-item-label>{{ slotProps.item.name }}</q-item-label>
+            <q-item-label caption>{{ slotProps.item.description }}</q-item-label>
+          </q-item-section>
 
-          <q-item
-            v-if="filteredForms.length === 0"
-          >
-            <q-item-section>
-              <q-item-label
-                class="text-italic text-grey text-center"
-              >{{ t('marks.selectForm.nothingFound') }}
-              </q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item
-            clickable
-            v-ripple
-            v-for="item in filteredForms"
-            :key="item.id"
-            :active="item.id === selectedForm?.id"
-            @click.stop="selectForm(item)"
-          >
-            <q-item-section>
-              <q-item-label>{{ item.name }}</q-item-label>
-              <q-item-label caption>{{ item.description }}</q-item-label>
-            </q-item-section>
-
-            <q-item-section side top v-if="item.id === selectedForm?.id">
-              <q-item-label caption>{{ t('marks.selectForm.selected') }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-        <p
-          class="text-caption text-grey"
-        >{{ listMeta }}</p>
+          <q-item-section side top v-if="slotProps.item.id === selectedForm?.id">
+            <q-item-label caption>{{ t('general.selected') }}</q-item-label>
+          </q-item-section>
+        </q-item>
       </template>
-
-      <Loader
-        v-else
-      />
-
-    </q-pull-to-refresh>
+    </List>
   </q-page>
 </template>
 
@@ -74,15 +37,15 @@ import {computed, defineComponent, ref} from 'vue'
 import {useI18n} from 'vue-i18n';
 import {useStore} from 'src/store';
 import {MarkForm} from 'src/models/form';
-import Loader from 'components/Util/Loader.vue';
 import {useRouter} from 'vue-router'
 import useLayout from 'src/composables/layout'
 import useMarkTabNav from 'src/composables/marks/tab-nav';
 import useApi from 'src/composables/api'
+import List from 'components/Util/List.vue';
 
 export default defineComponent({
   name: 'MarksSelectForm',
-  components: {Loader},
+  components: {List},
 
   setup() {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
@@ -92,28 +55,8 @@ export default defineComponent({
     const {setToolbarTitle, setToolbarTabs} = useLayout()
 
     const markForms = ref<MarkForm[]>([])
-    const search = ref('')
 
     const selectedForm = computed<MarkForm | null>(() => store.getters['mark/selectedForm']) // eslint-disable-line
-    const filteredForms = computed<MarkForm[]>(() => {
-      if (!search.value) {
-        return markForms.value
-      }
-
-      const s = search.value.toLowerCase()
-
-      return markForms.value.filter(item => item.name.toLowerCase().indexOf(s) > -1)
-    });
-    const listMeta = computed<string>(() => {
-      const total = markForms.value.length
-      const showing = filteredForms.value.length
-
-      if (total > showing) {
-        return t('marks.selectForm.listMetaFiltered', {total, showing})
-      } else {
-        return t('marks.selectForm.listMetaUnfiltered', {total})
-      }
-    })
 
     function loadForms(done: () => void = () => null) {
       void get<MarkForm[]>('markForms/index', done)
@@ -132,6 +75,13 @@ export default defineComponent({
         .then(() => void router.push('/marks/set-meta'))
     }
 
+    function filterFunction(term: string, item: MarkForm) {
+      if ( ! term) {
+        return true
+      }
+
+      return item.name.toLowerCase().indexOf(term.toLowerCase()) > -1
+    }
 
     setToolbarTabs(useMarkTabNav())
     setToolbarTitle(t('marks.title'))
@@ -140,13 +90,12 @@ export default defineComponent({
 
     return {
       t,
-      filteredForms,
       selectedForm,
-      selectForm,
       loadForms,
       loading: working,
-      search,
-      listMeta,
+      markForms,
+      selectForm,
+      filterFunction
     }
   }
 })

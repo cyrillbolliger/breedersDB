@@ -3,11 +3,7 @@ export default {
     title: 'Bewertungen',
     selectForm: {
       title: 'Formular auswählen',
-      tab: 'Formular',
-      selected: 'ausgewählt',
-      listMetaFiltered: 'Gefilterte Liste. Zeige {showing} von {total} Elementen.',
-      listMetaUnfiltered: '{total} Elemente',
-      nothingFound: 'Nichts gefunden'
+      tab: 'Formular'
     },
     setMeta: {
       title: 'Meta-Daten festlegen',
@@ -28,7 +24,10 @@ export default {
       setMeta: 'Meta-Daten hinzufügen',
       selectTree: 'Baum auswählen',
       selectForm: 'Formular auswählen',
-      saved: 'Bewertungen gespeichert.'
+      saved: 'Bewertungen gespeichert.',
+      addProperty: 'Eigenschaft hinzufügen',
+      selectProperty: 'Eigenschaft auswählen',
+      propertyAlreadyExists: 'Eigenschaft {property} kann kein zweites Mal hinzugefügt werden.'
     }
   },
   trees: {
@@ -44,6 +43,7 @@ export default {
     next: 'Nächste',
     dismiss: 'Verwerfen',
     navigation: 'Navigation',
+    selected: 'ausgewählt',
     form: {
       required: 'Feld ist erforderlich',
       max255chars: 'Max. 255 Zeichen erlaubt',
@@ -56,12 +56,24 @@ export default {
         dismiss: 'verwerfen'
       },
       treeCard: {
-        change: 'Ändern',
-        selected: 'Ausgewählter Baum'
+        scanBtnLabel: 'Scannen',
+        tree: 'Baum',
+        printBtnLabel: 'Drucken',
+        printTitle: 'Etikette drucken',
+        printDesc: 'Wähle normal um ein Etikett mit Publicid und Convar zu drucken oder anonym um das Convar wegzulassen.',
+        printRegular: 'Normal',
+        printAnonymous: 'Anonymisiert',
+        windowError: 'Öffnen des Druckfensters fehlgeschlagen. Werden Popups blockiert?',
+        noTree: 'Bitte Baum scannen'
       },
       codeScanner: {
         permissionRequest: 'Zugriff auf den Video-Stream nicht möglich. Bitte die Berechtigungsanfrage bestätigen.',
         loadingMessage: '⌛ Video wird geladen...'
+      },
+      list: {
+        listMetaFiltered: 'Gefilterte Liste. Zeige {showing} von {total} Elementen.',
+        listMetaUnfiltered: '{total} Elemente',
+        nothingFound: 'Nichts gefunden'
       }
     }
   },

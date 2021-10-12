@@ -27,7 +27,7 @@ export default function useApi() {
       .catch(error => {
         working.value = false
         cb()
-        return handleError<T>(error, t('general.failedToLoadData'), () => get<T>(url, cb))
+        return handleError<T>(error as AxiosError<T>, t('general.failedToLoadData'), () => get<T>(url, cb))
       })
   }
 
@@ -41,7 +41,7 @@ export default function useApi() {
       payload = {data}
     }
 
-    return axios.post<void | ApiResponse<R>>(url, payload)
+    return axios.post<T | { data: T }, ApiResponse<{data: R}>>(url, payload)
       .then(resp => {
         if (resp.data) {
           cb()
@@ -51,12 +51,12 @@ export default function useApi() {
       .catch(error => {
         working.value = false
         cb()
-        return handleError<R>(error, t('general.failedToSaveData'), () => post<T, R>(url, data, cb))
+        return handleError<R>(error as AxiosError<R>, t('general.failedToSaveData'), () => post<T, R>(url, data, cb))
       })
   }
 
 
-  function handleError<T>(error: Error | AxiosError, message: string, cb: () => Promise<void | T>) {
+  function handleError<T>(error: AxiosError<T>, message: string, cb: () => Promise<void | T>) {
     console.log(error.message)
 
     return new Promise<void>(resolve => {

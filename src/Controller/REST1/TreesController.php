@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller\REST1;
@@ -19,22 +20,32 @@ class TreesController extends REST1Controller
      *
      * @return Response|void
      */
-    public function getTree() {
-        $allowed_fields = [ 'publicid' ];
+    public function getTree()
+    {
+        $allowed_fields = ['publicid'];
 
-        if ( empty( $this->request->getQuery('fields') )
-             || ! array_intersect( $allowed_fields, $this->request->getQuery('fields') )
+        if (empty($this->request->getQuery('fields'))
+            || !array_intersect($allowed_fields, $this->request->getQuery('fields'))
         ) {
             return $this->response->withStatus(422, 'Invalid query parameter.');
         }
 
         $publicid = $this->request->getQuery('term');
-        $tree = $this->Trees->getByPublicId( $publicid );
+        $tree = $this->Trees->getByPublicId($publicid);
 
-        if (! $tree) {
+        if (!$tree) {
             return $this->response->withStatus(404, "No tree found with publicid: $publicid");
         }
 
-        $this->set( 'data', $tree );
+        $tree->set(
+            [
+                'print' => [
+                    'regular' => $this->Trees->getLabelZpl($tree->id, 'convar'),
+                    'anonymous' => $this->Trees->getLabelZpl($tree->id, 'breeder_variety_code')
+                ]
+            ]
+        );
+
+        $this->set('data', $tree);
     }
 }
