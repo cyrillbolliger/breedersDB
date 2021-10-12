@@ -33,7 +33,7 @@
     </q-card-section>
   </q-card>
 
-  <q-dialog v-model="printDialog" persistent>
+  <q-dialog v-model="printDialog">
     <q-card>
       <q-card-section class="row items-center">
         <q-avatar icon="print" color="primary" text-color="white" class="q-mr-md"/>
