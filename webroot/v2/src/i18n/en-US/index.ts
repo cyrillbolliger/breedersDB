@@ -76,6 +76,7 @@ export default {
         printRegular: 'Regular',
         printAnonymous: 'Anonymous',
         windowError: 'Failed to open window for printing. Are you blocking popups?',
+        noTree: 'Please Scan Tree'
       },
       codeScanner: {
         permissionRequest: 'Unable to access video stream. Please confirm permission request.',

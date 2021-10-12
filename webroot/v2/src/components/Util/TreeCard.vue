@@ -2,14 +2,15 @@
   <q-card class="q-mb-md bg-grey-12" flat bordered>
     <q-card-section horizontal class="q-p-xs">
       <q-card-section class="col">
-        <div class="text-h6">{{ tree?.convar }}</div>
-        <div class="text-caption">
-          {{ t('components.util.treeCard.tree') }}: {{ tree?.publicid }}
+        <div class="text-h6">{{ tree?.convar ?? t('components.util.treeCard.noTree') }}</div>
+        <div class="text-caption" v-if="tree">
+          {{ t('components.util.treeCard.tree') }}: {{ tree.publicid }}
         </div>
       </q-card-section>
       <q-card-actions vertical class="justify-around col-auto">
         <q-btn
           size="sm"
+          class="q-mt-xs"
           flat
           color="primary"
           icon="qr_code_scanner"
@@ -20,6 +21,7 @@
         <q-btn
           v-if="printable"
           size="sm"
+          class="q-mt-xs"
           flat
           color="primary"
           icon="print"
