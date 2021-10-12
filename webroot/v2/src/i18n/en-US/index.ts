@@ -5,10 +5,6 @@ export default {
     selectForm: {
       title: 'Select Form',
       tab: 'Form',
-      selected: 'selected',
-      listMetaFiltered: 'Filtered list. Showing {showing} out of {total} items.',
-      listMetaUnfiltered: '{total} items',
-      nothingFound: 'Nothing found'
     },
 
     setMeta: {
@@ -52,7 +48,6 @@ export default {
     next: 'Next',
     dismiss: 'Dismiss',
     navigation: 'Navigation',
-    cancel: 'Cancel',
 
     form: {
       required: 'Field is required',
@@ -81,6 +76,12 @@ export default {
       codeScanner: {
         permissionRequest: 'Unable to access video stream. Please confirm permission request.',
         loadingMessage: '⌛ Loading video...',
+      },
+      searchableList: {
+        selected: 'selected',
+        listMetaFiltered: 'Filtered list. Showing {showing} out of {total} items.',
+        listMetaUnfiltered: '{total} items',
+        nothingFound: 'Nothing found'
       }
     },
   },
