@@ -19,38 +19,32 @@
       v-if="!loading"
     >
       <q-list
+        v-if="filteredItems.length === 0"
         bordered
         separator
       >
-
-        <q-item
-          v-if="items.length === 0"
-        >
+        <q-item>
           <q-item-section>
             <q-item-label
               class="text-italic text-grey text-center"
-            >{{ t('components.util.searchableList.nothingFound') }}
+            >{{ t('components.util.list.nothingFound') }}
             </q-item-label>
           </q-item-section>
         </q-item>
-
-        <q-item
-          clickable
-          v-ripple
-          v-for="item in filteredItems"
-          :key="idGetter(item)"
-          :active="selectedItem && idGetter(item) === idGetter(selectedItem)"
-          @click.stop="$emit('select', item)"
-        >
-          <q-item-section>
-            <slot :item="item"/>
-          </q-item-section>
-
-          <q-item-section side top v-if="selectedItem && idGetter(item) === idGetter(selectedItem)">
-            <q-item-label caption>{{ t('components.util.searchableList.selected') }}</q-item-label>
-          </q-item-section>
-        </q-item>
       </q-list>
+
+      <q-virtual-scroll
+        v-else
+        :items="filteredItems"
+        separator
+        bordered
+        :style="`max-height: ${maxListHeight}`"
+        :virtual-scroll-item-size="itemHeight"
+      >
+        <template v-slot="{ item, index }">
+          <slot :item="item" :key="index"/>
+        </template>
+      </q-virtual-scroll>
       <p
         class="text-caption text-grey"
       >{{ listMeta }}</p>
@@ -70,7 +64,7 @@ import {computed, defineComponent, PropType, ref} from 'vue';
 export default defineComponent({
   name: 'List',
   components: {Loader},
-  emits: ['refresh', 'select'],
+  emits: ['refresh'],
   props: {
     items: {
       type: Array,
@@ -80,17 +74,17 @@ export default defineComponent({
       type: Boolean,
       required: true
     },
-    selectedItem: {
-      type: Object as PropType<unknown>,
-      default: null
-    },
     filterFunction: {
       type: Function as PropType<(term: string, item: unknown) => boolean>,
     },
-    idGetter: {
-      type: Function as PropType<(item: unknown) => string|number>,
-      required: true
+    maxListHeight: {
+      type: String,
+      default: '250px'
     },
+    itemHeight: {
+      type: Number,
+      default: 24
+    }
   },
 
   setup(props) {
@@ -111,9 +105,9 @@ export default defineComponent({
       const showing = filteredItems.value.length
 
       if (total > showing) {
-        return t('components.util.searchableList.listMetaFiltered', {total, showing})
+        return t('components.util.list.listMetaFiltered', {total, showing})
       } else {
-        return t('components.util.searchableList.listMetaUnfiltered', {total})
+        return t('components.util.list.listMetaUnfiltered', {total})
       }
     })
 

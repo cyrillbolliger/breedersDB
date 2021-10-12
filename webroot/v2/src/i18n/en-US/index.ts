@@ -48,6 +48,7 @@ export default {
     next: 'Next',
     dismiss: 'Dismiss',
     navigation: 'Navigation',
+    selected: 'selected',
 
     form: {
       required: 'Field is required',
@@ -77,8 +78,7 @@ export default {
         permissionRequest: 'Unable to access video stream. Please confirm permission request.',
         loadingMessage: '⌛ Loading video...',
       },
-      searchableList: {
-        selected: 'selected',
+      list: {
         listMetaFiltered: 'Filtered list. Showing {showing} out of {total} items.',
         listMetaUnfiltered: '{total} items',
         nothingFound: 'Nothing found'

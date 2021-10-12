@@ -6,15 +6,27 @@
     <List
       :items="markForms"
       :loading="loading"
-      :selected-item="selectedForm"
       :filter-function="filterFunction"
-      :id-getter="item => item.id"
       @refresh="loadForms"
-      @select="selectForm($event)"
+      max-list-height="calc(100vh - 260px)"
+      item-height="35"
     >
       <template #default="slotProps">
-        <q-item-label>{{ slotProps.item.name }}</q-item-label>
-        <q-item-label caption>{{ slotProps.item.description }}</q-item-label>
+        <q-item
+          clickable
+          v-ripple
+          :active="slotProps.item.id === selectedForm?.id"
+          @click.stop="selectForm(slotProps.item)"
+        >
+          <q-item-section>
+            <q-item-label>{{ slotProps.item.name }}</q-item-label>
+            <q-item-label caption>{{ slotProps.item.description }}</q-item-label>
+          </q-item-section>
+
+          <q-item-section side top v-if="slotProps.item.id === selectedForm?.id">
+            <q-item-label caption>{{ t('general.selected') }}</q-item-label>
+          </q-item-section>
+        </q-item>
       </template>
     </List>
   </q-page>
@@ -64,7 +76,7 @@ export default defineComponent({
     }
 
     function filterFunction(term: string, item: MarkForm) {
-      if (!term) {
+      if ( ! term) {
         return true
       }
 
