@@ -95,9 +95,7 @@ export default defineComponent({
     const tree = computed<Tree | null>(() => store.getters['mark/tree'])
     const author = computed<string>(() => store.getters['mark/author'])
     const form = computed<MarkForm | null>(() => store.getters['mark/selectedForm'])
-    const date = computed<Date>(() => {
-      return new Date(store.getters['mark/date'] as Date|string)
-    })
+    const date = computed<Date>(() => new Date(store.getters['mark/date'] as string))
     /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 
     const savable = computed<boolean>(() => {
