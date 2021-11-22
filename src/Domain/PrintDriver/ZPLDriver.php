@@ -32,14 +32,9 @@ class ZPLDriver implements PrintDriverInterface
     private const CODE_BYLINE_FACTOR = 1;
 
     /**
-     * Size of the QR code relative to the height of a default line
+     * Size of the QR code relative to the paper width
      */
-    private const QR_CODE_FACTOR = 0.2;
-
-    /**
-     * Factor to map the QR code size to dots
-     */
-    private const QR_CODE_REAL_WIDTH_FACTOR = 21;
+    private const QR_CODE_SIZE = 0.35;
 
     /**
      * Margin between two objects like lines or a line and code
@@ -103,10 +98,13 @@ class ZPLDriver implements PrintDriverInterface
         $this->qr = $qr;
     }
 
-    public function setCode(string $code): void
+    public function setCode(string $code, bool $addByline = true ): void
     {
         $this->code = $code;
-        array_unshift($this->lines, new Line($code));
+
+        if ($addByline) {
+            array_unshift($this->lines, new Line($code));
+        }
     }
 
     public function addLine(Line $line): void
@@ -149,9 +147,6 @@ class ZPLDriver implements PrintDriverInterface
         $top = $this->top;
         $left = $this->left;
 
-        $qr_size = (int)min(10, round($this->default_font_size * self::QR_CODE_FACTOR));
-        $qr_width = (int)round($qr_size * self::QR_CODE_REAL_WIDTH_FACTOR);
-
         $code128_height = (int)round($this->default_font_size * self::CODE_HEIGHT_FACTOR);
 
         if ($this->code128) {
@@ -161,9 +156,15 @@ class ZPLDriver implements PrintDriverInterface
         }
 
         if ($this->qr) {
-            $this->zpl_fields[] = "^BY0,0,0^FO$left,{$this->top}^BQ,2,$qr_size^FDH,$this->code";
+            $maxWidth = round($this->paper_x * self::QR_CODE_SIZE);
 
-            $this->left += $qr_width + (int)round($this->default_font_size * self::OBJECT_MARGIN);
+            $code = new QRCode($this->code);
+            $qrCodeZpl = $code->getZPL($maxWidth);
+            $qrWidth = $code->getEffectiveWidth($maxWidth);
+
+            $this->zpl_fields[] = "^BY0,0,0^FO$left,{$this->top}$qrCodeZpl";
+
+            $this->left += $qrWidth + (int)round($this->default_font_size * self::OBJECT_MARGIN);
         }
     }
 

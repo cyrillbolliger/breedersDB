@@ -16,11 +16,16 @@ class PrintableBehavior extends Behavior {
      *
      * @return string
      */
-    public function getZPL( array $description, string $code = null, string $date = null ) {
+    public function getZPL(
+        array $description,
+        string $code = null,
+        string $date = null,
+        bool $codeByline = true,
+    ) {
         $driver = new ZPLDriver(50, 31);
 
         if ($code) {
-            $driver->setCode($code);
+            $driver->setCode($code, $codeByline);
         }
 
         foreach($description as $line) {

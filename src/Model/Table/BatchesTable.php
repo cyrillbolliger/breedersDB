@@ -224,10 +224,15 @@ class BatchesTable extends Table {
 	 * @return string
 	 */
 	public function getLabelZpl( int $id ) {
-		$batch       = $this->get( $id );
-		$description = $batch->crossing_batch;
+        $batch = $this->get($id);
+        $code = $batch->crossing_batch;
 
-		return $this->getZPL( [$description] );
+        $codeParts = explode('.', $code);
+        $description = [
+            "$codeParts[0].",
+            $codeParts[1]
+        ];
 
+        return $this->getZPL($description, $code, null, false);
 	}
 }
