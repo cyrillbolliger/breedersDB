@@ -2,6 +2,8 @@
 
 namespace App\Domain\PrintDriver;
 
+use App\Domain\Settings;
+
 /**
  * Class ZPLDriver
  * @package App\Domain\PrintDriver
@@ -96,6 +98,7 @@ class ZPLDriver implements PrintDriverInterface
         $this->paper_y = (int)$paper_height * self::PRINT_DENSITY;
         $this->code128 = $code128;
         $this->qr = $qr;
+        $this->left = Settings::getZplDriverOffsetLeft() * self::PRINT_DENSITY;
     }
 
     public function setCode(string $code, bool $addByline = true ): void
@@ -117,8 +120,8 @@ class ZPLDriver implements PrintDriverInterface
         $this->determineDefaultFontSize();
 
         $margin = $this->getBorderMargin();
-        $this->top = $margin;
-        $this->left = $margin;
+        $this->top += $margin;
+        $this->left += $margin;
 
         if (!empty($this->code)) {
             $this->placeCode();
