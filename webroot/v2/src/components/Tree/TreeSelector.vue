@@ -19,7 +19,8 @@
       v-model="publicid"
       :label="t('trees.publicid')"
       @keyup.enter="loadTree"
-      type="text"
+      type="number"
+      inputmode="numeric"
       :autofocus="true"
     />
 
