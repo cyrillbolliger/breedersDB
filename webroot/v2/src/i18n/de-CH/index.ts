@@ -15,7 +15,9 @@ export default {
     },
     selectTree: {
       title: 'Baum auswählen',
-      tab: 'Baum'
+      tab: 'Baum',
+      scanQrCode: 'QR-Code scannen',
+      manualEntry: 'Publicid eingeben'
     },
     markTree: {
       title: 'Baum bewerten',

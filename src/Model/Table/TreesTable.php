@@ -207,7 +207,7 @@ class TreesTable extends Table
 
         // convert dates
         foreach (['date_grafted', 'date_planted', 'date_eliminated', 'date_labeled'] as $field) {
-            if ($data[$field]) {
+            if (isset($data[$field]) && $data[$field]) {
                 $data[$field] = DateTimeHandler::parseDateToYmdString($data[$field]);
             }
         }

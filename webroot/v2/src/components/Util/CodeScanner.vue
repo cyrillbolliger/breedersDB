@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, onMounted, onBeforeUnmount} from 'vue';
+import {defineComponent, ref, watch, onMounted, onBeforeUnmount} from 'vue';
 import jsQR from 'jsqr';
 import {useI18n} from 'vue-i18n';
 import {Point} from 'jsqr/dist/locator';
@@ -16,7 +16,7 @@ const frameColor = '#FF3B58';
 
 export default defineComponent({
   name: 'CodeReader',
-  emits: ['onDetected'],
+  emits: ['onDetected', 'onReady'],
   props: {},
   setup(_, {emit}) {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
@@ -100,6 +100,12 @@ export default defineComponent({
       }
       requestAnimationFrame(tick);
     }
+
+    watch(loading, val => {
+      if (!val) {
+        emit('onReady')
+      }
+    });
 
     return {
       t,

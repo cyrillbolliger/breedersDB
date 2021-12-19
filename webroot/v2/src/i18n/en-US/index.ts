@@ -19,6 +19,8 @@ export default {
     selectTree: {
       title: 'Select Tree',
       tab: 'Tree',
+      scanQrCode: 'scan QR-code',
+      manualEntry: 'enter publicid'
     },
 
     markTree: {
