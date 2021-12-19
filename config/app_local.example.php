@@ -7,6 +7,7 @@
  */
 
 use Cake\Http\Exception\MissingControllerException;
+use Cake\Http\Middleware\CsrfProtectionMiddleware;
 
 return [
     /*
@@ -106,6 +107,6 @@ return [
      * a non existing route by any visitor
      */
     'Error' => [
-        'skipLog' => [MissingControllerException::class],
-    ]
+        'skipLog' => [MissingControllerException::class, CsrfProtectionMiddleware::class],
+    ],
 ];
