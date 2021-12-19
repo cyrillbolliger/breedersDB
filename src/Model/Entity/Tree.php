@@ -9,10 +9,10 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $publicid
- * @property \Cake\I18n\Time $date_grafted
- * @property \Cake\I18n\Time $date_planted
- * @property \Cake\I18n\Time $date_eliminated
- * @property \Cake\I18n\Time $date_labeled
+ * @property \Cake\I18n\FrozenTime $date_grafted
+ * @property \Cake\I18n\FrozenTime $date_planted
+ * @property \Cake\I18n\FrozenTime $date_eliminated
+ * @property \Cake\I18n\FrozenTime $date_labeled
  * @property bool $genuine_seedling
  * @property bool $migrated_tree
  * @property float $offset
@@ -25,8 +25,8 @@ use Cake\ORM\Entity;
  * @property int $grafting_id
  * @property int $row_id
  * @property int $experiment_site_id
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  * @property string $convar
  *
  * @property \App\Model\Entity\Variety $variety

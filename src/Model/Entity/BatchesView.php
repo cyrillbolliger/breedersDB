@@ -9,11 +9,11 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $crossing_batch
- * @property \Cake\I18n\Time $date_sowed
+ * @property \Cake\I18n\FrozenTime $date_sowed
  * @property int $numb_seeds_sowed
  * @property int $numb_sprouts_grown
  * @property string $seed_tray
- * @property \Cake\I18n\Time $date_planted
+ * @property \Cake\I18n\FrozenTime $date_planted
  * @property int $numb_sprouts_planted
  * @property string $patch
  * @property string $note

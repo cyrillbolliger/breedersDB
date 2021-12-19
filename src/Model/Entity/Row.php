@@ -10,11 +10,11 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $code
  * @property string $note
- * @property \Cake\I18n\Time $date_created
- * @property \Cake\I18n\Time $date_eliminated
- * @property \Cake\I18n\Time $deleted
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $date_created
+ * @property \Cake\I18n\FrozenTime $date_eliminated
+ * @property \Cake\I18n\FrozenTime $deleted
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\Tree[] $trees
  */

@@ -9,9 +9,9 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $code
- * @property \Cake\I18n\Time $deleted
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $deleted
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\Query[] $queries
  */

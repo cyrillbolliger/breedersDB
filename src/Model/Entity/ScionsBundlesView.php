@@ -11,7 +11,7 @@ use Cake\ORM\Entity;
  * @property string $identification
  * @property string $convar
  * @property int $numb_scions
- * @property \Cake\I18n\Time $date_scions_harvest
+ * @property \Cake\I18n\FrozenTime $date_scions_harvest
  * @property string $descents_publicid_list
  * @property string $note
  * @property bool $external_use

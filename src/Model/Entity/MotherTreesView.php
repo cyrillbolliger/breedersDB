@@ -10,9 +10,9 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $code
  * @property bool $planed
- * @property \Cake\I18n\Time $date_pollen_harvested
- * @property \Cake\I18n\Time $date_impregnated
- * @property \Cake\I18n\Time $date_fruit_harvested
+ * @property \Cake\I18n\FrozenTime $date_pollen_harvested
+ * @property \Cake\I18n\FrozenTime $date_impregnated
+ * @property \Cake\I18n\FrozenTime $date_fruit_harvested
  * @property int $numb_portions
  * @property int $numb_flowers
  * @property int $numb_fruits

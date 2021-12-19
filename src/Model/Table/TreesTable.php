@@ -3,6 +3,7 @@
 namespace App\Model\Table;
 
 use App\Utility\DateTimeHandler;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -11,7 +12,6 @@ use Cake\Event\Event;
 use ArrayObject;
 use SoftDelete\Model\Table\SoftDeleteTrait;
 use App\Model\Rule\IsNotReferredBy;
-use Cake\I18n\Time;
 
 /**
  * Trees Model
@@ -396,7 +396,7 @@ class TreesTable extends Table
 
         $date = null;
         if ($with_date) {
-            $now = Time::now();
+            $now = FrozenTime::now();
             $date = $now->i18nFormat([\IntlDateFormatter::MEDIUM, -1], $timezone);
         }
 

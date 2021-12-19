@@ -8,8 +8,8 @@
 
 namespace App\Utility;
 
-use Cake\I18n\Date;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 
 /**
  * Class RulesetToConditionsConverter is used to convert rules
@@ -30,9 +30,9 @@ class RulesetToConditionsConverter {
 		if ( empty( $ruleset ) ) {
 			return [];
 		}
-		
+
 		$conditions = [];
-		
+
 		if ( is_object( $ruleset ) &&
 		     property_exists( $ruleset, 'rules' ) &&
 		     property_exists( $ruleset, 'condition' )
@@ -43,7 +43,7 @@ class RulesetToConditionsConverter {
 			}
 			$conditions[] = $tmp;
 		} else { // it's a rule
-			
+
 			if ( ! $this->_isMarkProperty( $ruleset->id ) ) {
 				// if it's not a Mark Property
 				return $this->_convertRule( $ruleset );
@@ -52,10 +52,10 @@ class RulesetToConditionsConverter {
 				return $this->_getMarkPropertyConditionFromRule( $ruleset );
 			}
 		}
-		
+
 		return $conditions;
 	}
-	
+
 	/**
 	 * Return true if its a mark property else false
 	 *
@@ -66,7 +66,7 @@ class RulesetToConditionsConverter {
 	private function _isMarkProperty( string $id ): bool {
 		return 0 === strpos( $id, 'MarkProperty' );
 	}
-	
+
 	/**
 	 * Return cake where condition array from given rule
 	 *
@@ -76,7 +76,7 @@ class RulesetToConditionsConverter {
 	 */
 	private function _convertRule( \stdClass $rule ): array {
 		$this->_typecastValue( $rule );
-		
+
 		switch ( $rule->operator ) {
 			case 'equal':
 				return [ $rule->field => $rule->value ];
@@ -118,7 +118,7 @@ class RulesetToConditionsConverter {
 				throw new \InvalidArgumentException( "Given operator {$rule->operator} is not supported" );
 		}
 	}
-	
+
 	/**
 	 * Typecast the where query typed value(s) to cakephps orm understandable values
 	 *
@@ -129,38 +129,38 @@ class RulesetToConditionsConverter {
 	private function _typecastValue( \stdClass &$rule ): void {
 		$simple  = [ 'integer', 'double', 'boolean', 'string' ];
 		$complex = [ 'date', 'time', 'datetime' ];
-		
+
 		if ( in_array( $rule->type, $simple ) ) {
 			if ( is_array( $rule->value ) ) {
 				foreach ( $rule->value as &$value ) {
 					settype( $value, $rule->type );
 				}
-				
+
 				return;
 			} else {
 				settype( $value, $rule->type );
-				
+
 				return;
 			}
 		}
-		
+
 		if ( in_array( $rule->type, $complex ) ) {
 			if ( is_array( $rule->value ) ) {
 				foreach ( $rule->value as &$value ) {
 					$rule->value = $this->_parseTime( $rule->type, (string) $rule->value );
 				}
-				
+
 				return;
 			} else {
 				$rule->value = $this->_parseTime( $rule->type, (string) $rule->value );
-				
+
 				return;
 			}
 		}
-		
+
 		throw new \InvalidArgumentException( "The given type '{$rule->type}' is not supported." );
 	}
-	
+
 	/**
 	 * Return given date, time or datetime in mysql format
 	 *
@@ -174,26 +174,26 @@ class RulesetToConditionsConverter {
 	private function _parseTime( string $type, string $value ): string {
 		switch ( $type ) {
 			case 'date':
-				$date = Date::parse( $value );
-				
+				$date = FrozenDate::parse( $value );
+
 				return $date->format( 'Y-m-d' );
-			
+
 			case 'time':
-				$date = Time::parse( $value );
-				
+				$date = FrozenTime::parse( $value );
+
 				return $date->format( 'H:i:s' );
-			
+
 			case 'datetime':
-				$date = Time::parse( $value );
-				
+				$date = FrozenTime::parse( $value );
+
 				return $date->format( 'Y-m-d H:i:s' );
-			
+
 			default:
 				throw new \InvalidArgumentException( "The given type '{$type}' is not supported." );
 		}
-		
+
 	}
-	
+
 	/**
 	 * Return cake where condition array from given mark property rule
 	 *
@@ -204,7 +204,7 @@ class RulesetToConditionsConverter {
 	private function _getMarkPropertyConditionFromRule( \stdClass $rule ): array {
 		$property    = substr( $rule->id, strpos( $rule->id, '.' ) + 1 );
 		$rule->field = 'MarksView.value';
-		
+
 		// if it is a Mark Property
 		return [
 			'AND' => [

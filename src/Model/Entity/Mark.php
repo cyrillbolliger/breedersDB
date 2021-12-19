@@ -8,15 +8,15 @@ use Cake\ORM\Entity;
  * Mark Entity
  *
  * @property int $id
- * @property \Cake\I18n\Time $date
+ * @property \Cake\I18n\FrozenTime $date
  * @property string $author
  * @property string $locked
  * @property int $mark_form_id
  * @property int $tree_id
  * @property int $clone_id
  * @property int $batch_id
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\MarkForm $mark_form
  * @property \App\Model\Entity\Tree $tree
@@ -25,7 +25,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\MarkValue[] $mark_values
  */
 class Mark extends Entity {
-	
+
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
 	 *
