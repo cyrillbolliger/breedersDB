@@ -50,20 +50,20 @@
       >{{ listMeta }}</p>
     </template>
 
-    <Loader
+    <SpinLoader
       v-else
     />
 
   </q-pull-to-refresh>
 </template>
 <script lang="ts">
-import Loader from 'components/Util/Loader.vue'
+import SpinLoader from 'components/Util/SpinLoader.vue'
 import {useI18n} from 'vue-i18n';
 import {computed, defineComponent, PropType, ref} from 'vue';
 
 export default defineComponent({
   name: 'List',
-  components: {Loader},
+  components: {SpinLoader},
   emits: ['refresh'],
   props: {
     items: {
