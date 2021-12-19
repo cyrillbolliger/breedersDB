@@ -2,20 +2,35 @@
   <div class="q-gutter-md">
 
     <!--suppress RequiredAttributes -->
+    <q-btn-toggle
+      v-model="mode"
+      toggle-color="primary"
+      size="sm"
+      :options="[
+        {label: t('marks.selectTree.scanQrCode'), value: InputMode.Camera, icon: 'qr_code_scanner'},
+        {label: t('marks.selectTree.manualEntry'), value: InputMode.Keyboard, icon: 'keyboard'},
+      ]"
+    />
+
+    <!--suppress RequiredAttributes -->
     <q-input
+      v-if="mode === InputMode.Keyboard"
       outlined
       v-model="publicid"
       :label="t('trees.publicid')"
       @keyup.enter="loadTree"
       type="text"
+      :autofocus="true"
     />
 
     <div
+      v-if="mode === InputMode.Camera"
       class="q-mb-md row justify-center bg-grey-5"
       :class="{loading}"
     >
       <CodeScanner
         @on-detected="onScanned"
+        @on-ready="onCodeScannerReady"
       />
     </div>
 
@@ -31,13 +46,20 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue'
+import {defineComponent, ref, computed, watch, onMounted} from 'vue'
 import {useI18n} from 'vue-i18n';
 import Loader from 'components/Util/Loader.vue';
 import {Tree} from 'src/models/tree';
 import useApi from 'src/composables/api'
 import CodeScanner from 'components/Util/CodeScanner.vue';
 import {Notify} from 'quasar';
+
+const localStorageInputMethod = 'breedersdb_mark_input_method';
+
+enum InputMode {
+  Camera = 'CAMERA',
+  Keyboard = 'KEYBOARD',
+}
 
 export default defineComponent({
   name: 'TreeSelector',
@@ -46,9 +68,32 @@ export default defineComponent({
 
   setup(_, {emit}) {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
-    const {working, get} = useApi()
+    const {working: apiLoading, get} = useApi()
 
+    const scannerLoading = ref(true)
     const publicid = ref('')
+
+    const loading = computed(() => apiLoading.value || scannerLoading.value)
+
+    const mode = ref<InputMode>(window.localStorage.getItem(localStorageInputMethod) === InputMode.Keyboard
+      ? InputMode.Keyboard
+      : InputMode.Camera
+    )
+
+    watch(mode, val => {
+      window.localStorage.setItem(localStorageInputMethod, val)
+      scannerLoading.value = InputMode.Camera === getInputMode()
+    })
+
+    onMounted(() => {
+      if (InputMode.Keyboard === getInputMode()) {
+        scannerLoading.value = false
+      }
+    })
+
+    function getInputMode() {
+      return mode.value;
+    }
 
     function loadTree() {
       const params = new URLSearchParams()
@@ -75,20 +120,27 @@ export default defineComponent({
       loadTree()
     }
 
+    function onCodeScannerReady() {
+      scannerLoading.value = false
+    }
+
     return {
       t,
       publicid,
       loadTree,
-      loading: working,
+      loading,
       onScanned,
+      onCodeScannerReady,
+      mode,
+      InputMode,
     }
   }
 })
 </script>
 
 <style scoped lang="scss">
-  .loading {
-    filter: grayscale(1) opacity(0.2) blur(4px);
-    transition: all 200ms;
-  }
+.loading {
+  filter: grayscale(1) opacity(0.2) blur(4px);
+  transition: all 200ms;
+}
 </style>
