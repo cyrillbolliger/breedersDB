@@ -102,10 +102,10 @@ class RowsTable extends Table {
 
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
-        if ($data['date_created']) {
+        if (isset($data['date_created']) && $data['date_created']) {
             $data['date_created'] = DateTimeHandler::parseDateToYmdString($data['date_created']);
         }
-        if ($data['date_eliminated']) {
+        if (isset($data['date_eliminated']) && $data['date_eliminated']) {
             $data['date_eliminated'] = DateTimeHandler::parseDateToYmdString($data['date_eliminated']);
         }
     }
