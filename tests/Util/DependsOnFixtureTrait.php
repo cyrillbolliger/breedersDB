@@ -47,6 +47,10 @@ trait DependsOnFixtureTrait {
     }
 
     private function getTable( string $tableName ) {
+        if ( \Cake\ORM\TableRegistry::getTableLocator()->exists($tableName) ) {
+            return \Cake\ORM\TableRegistry::getTableLocator()->get( $tableName );
+        }
+
         return \Cake\ORM\TableRegistry::getTableLocator()
                                       ->get( $tableName, [
                                           'connection' => ConnectionManager::get( 'test' ),
