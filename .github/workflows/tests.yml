@@ -1,0 +1,21 @@
+---
+name: Tests
+on: [push]
+jobs:
+  php-unit-tests:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Info
+        run: echo "Tests triggered by a ${{ github.event_name }} event to the ${{ github.ref }} branch."
+
+      - uses: actions/checkout@v2
+
+      - name: Install everything
+        run: bash install.sh
+
+      - name: Run PHPUnit
+        run: docker exec -e XDEBUG_MODE=off poc_app vendor/bin/phpunit
+
+      - name: Show error log if tests failed
+        if: ${{ failure() }}
+        run: cat logs/*.log
