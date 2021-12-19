@@ -3,7 +3,7 @@
 
     <h5 class="q-mb-sm q-mt-sm">{{ t('marks.selectForm.title') }}</h5>
 
-    <List
+    <TabularList
       :items="markForms"
       :loading="loading"
       :filter-function="filterFunction"
@@ -28,7 +28,7 @@
           </q-item-section>
         </q-item>
       </template>
-    </List>
+    </TabularList>
   </q-page>
 </template>
 
@@ -41,11 +41,11 @@ import {useRouter} from 'vue-router'
 import useLayout from 'src/composables/layout'
 import useMarkTabNav from 'src/composables/marks/tab-nav';
 import useApi from 'src/composables/api'
-import List from 'components/Util/List.vue';
+import TabularList from 'components/Util/TabularList.vue';
 
 export default defineComponent({
   name: 'MarksSelectForm',
-  components: {List},
+  components: {TabularList},
 
   setup() {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method

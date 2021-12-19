@@ -62,7 +62,7 @@ import {useI18n} from 'vue-i18n';
 import {computed, defineComponent, PropType, ref} from 'vue';
 
 export default defineComponent({
-  name: 'List',
+  name: 'TabularList',
   components: {SpinLoader},
   emits: ['refresh'],
   props: {
