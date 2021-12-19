@@ -159,6 +159,7 @@ class MarksControllerTest extends TestCase
         $mark = $this->getTable('Marks')
             ->find()
             ->contain(['MarkValues'])
+            ->all()
             ->last();
 
         $expectedResponse = [
@@ -293,6 +294,7 @@ class MarksControllerTest extends TestCase
         $mark = $this->getTable('Marks')
             ->find()
             ->contain(['MarkValues'])
+            ->all()
             ->last();
 
         $finalFilename = $mark->mark_values[0]->value;
