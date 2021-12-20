@@ -12,6 +12,8 @@ jobs:
 
       - name: Install everything
         run: bash install.sh
+        env:
+          GITHUB_DOCKER_USER: root
 
       - name: Run PHPUnit
         run: docker exec -e XDEBUG_MODE=off poc_app vendor/bin/phpunit
