@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: .docker/App.Dockerfile
+    user: ${GITHUB_DOCKER_USER:-www-data}
     ports:
       - '8000:80'
     volumes:
@@ -50,7 +51,7 @@ services:
   nodev1:
     image: node:14
     working_dir: /home/node/app/webroot/v1
-    user: node
+    user: ${GITHUB_DOCKER_USER:-node}
     volumes:
       - ./:/home/node/app
     command: npm run watch
@@ -60,6 +61,7 @@ services:
     build:
       context: .
       dockerfile: .docker/Node.Dockerfile
+    user: ${GITHUB_DOCKER_USER:-node}
     working_dir: /home/node/app/webroot/v2
     volumes:
       - ./:/home/node/app
