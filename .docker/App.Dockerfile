@@ -63,9 +63,6 @@ ENV APP_HOME /var/www/html
 # set the working dir
 WORKDIR $APP_HOME
 
-# create vendor dir explicitely (needed for github actions)
-RUN mkdir -p $APP_HOME/vendor
-
 # change ownership of our application
 RUN chown -R www-data:www-data $APP_HOME
 
