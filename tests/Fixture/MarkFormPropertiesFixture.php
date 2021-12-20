@@ -22,6 +22,7 @@ class MarkFormPropertiesFixture extends TestFixture {
      * @return void
      */
     public function init(): void {
+        $this->table = $this->getTable('MarkFormProperties');
         $generator     = new MarkFormPropertiesGenerator();
         $this->records = $generator->generate();
         parent::init();

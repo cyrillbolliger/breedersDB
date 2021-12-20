@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\Fixture;
 
 use App\Generator\ScionsBundlesGenerator;
+use App\Test\Util\DependsOnFixtureTrait;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -23,6 +24,7 @@ class ScionsBundlesFixture extends TestFixture
      */
     public function init(): void
     {
+        $this->table = $this->getTable('ScionsBundles');
         $generator = new ScionsBundlesGenerator();
         $this->records = $generator->generate(200);
         parent::init();
