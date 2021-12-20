@@ -19,6 +19,11 @@ services:
       DB_USERNAME: poc
       DB_PASSWORD: poc
       DB_PORT: 3306
+      DB_TEST_HOST: mysql
+      DB_TEST_DATABASE: cake_test
+      DB_TEST_USERNAME: cake_test
+      DB_TEST_PASSWORD: cake_test
+      DB_TEST_PORT: 3306
     depends_on:
       - mysql
 
