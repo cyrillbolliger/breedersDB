@@ -4,6 +4,9 @@ use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
 use Cake\Error\ExceptionRenderer;
+use Cake\Http\Exception\InvalidCsrfTokenException;
+use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Exception\UnauthorizedException;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
 
@@ -186,7 +189,11 @@ return [
     'Error' => [
         'errorLevel' => E_ALL,
         'exceptionRenderer' => ExceptionRenderer::class,
-        'skipLog' => [],
+        'skipLog' => [
+            NotFoundException::class,
+            UnauthorizedException::class,
+            InvalidCsrfTokenException::class,
+        ],
         'log' => true,
         'trace' => true,
         'ignoredDeprecationPaths' => [],
