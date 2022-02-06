@@ -3,7 +3,6 @@
 namespace App\Test\TestCase\Domain;
 
 use App\Domain\Settings;
-use Cake\Datasource\ConnectionManager;
 use Cake\TestSuite\TestCase;
 
 class SettingsTest extends TestCase

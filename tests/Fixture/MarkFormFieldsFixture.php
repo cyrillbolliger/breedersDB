@@ -23,7 +23,6 @@ class MarkFormFieldsFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->table = $this->getTable('MarkFormFields');
         $generator = new MarkFormFieldsGenerator();
         $this->records = $generator->generate();
         parent::init();

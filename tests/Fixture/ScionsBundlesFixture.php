@@ -24,7 +24,6 @@ class ScionsBundlesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->table = $this->getTable('ScionsBundles');
         $generator = new ScionsBundlesGenerator();
         $this->records = $generator->generate(200);
         parent::init();

@@ -20,7 +20,10 @@ $_SERVER['PHP_SELF'] = '/';
 // @see https://github.com/cakephp/cakephp/issues/14085
 session_id('cli');
 
-// Setup Database
+// Always use the test database
+\Cake\Datasource\ConnectionManager::alias('test', 'default');
+
+// Migrate, truncate and reseed tables
 $views = [
     'batches_view',
     'crossings_view',
@@ -30,15 +33,6 @@ $views = [
     'trees_view',
     'varieties_view'
 ];
-
 $migrator = new Migrator();
-try {
-    $migrator->truncate('test', $views);
-    $migrator->run(['connection' => 'test', 'skip' => $views]);
-} catch (PDOException $e) {
-    // the migrator doesn't handle views well
-    // so we can ignore errors of views
-    if (! str_contains($e->getMessage(), "_view' doesn't exist")) {
-        throw $e;
-    }
-}
+$migrator->truncate('test', $views);
+$migrator->run(['connection' => 'test', 'skip' => $views]);

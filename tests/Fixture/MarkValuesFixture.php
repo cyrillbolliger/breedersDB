@@ -23,7 +23,6 @@ class MarkValuesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->table = $this->getTable('MarkValues');
         $generator = new MarkValuesGenerator();
         $this->records = $generator->generate();
         parent::init();

@@ -23,7 +23,6 @@ class BatchesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->table = $this->getTable('Batches');
         $generator = new BatchesGenerator();
         $this->records = $generator->generate(200);
         parent::init();

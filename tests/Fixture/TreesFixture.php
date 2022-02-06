@@ -23,7 +23,6 @@ class TreesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->table = $this->getTable('Trees');
         $generator = new TreesGenerator();
         $this->records = $generator->generate(200);
         parent::init();
