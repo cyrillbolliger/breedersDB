@@ -21,10 +21,20 @@ $_SERVER['PHP_SELF'] = '/';
 session_id('cli');
 
 // Setup Database
+$views = [
+    'batches_view',
+    'crossings_view',
+    'marks_view',
+    'mother_trees_view',
+    'scions_bundles_view',
+    'trees_view',
+    'varieties_view'
+];
+
 $migrator = new Migrator();
 try {
-    $migrator->truncate('test');
-    $migrator->run(['connection' => 'test']);
+    $migrator->truncate('test', $views);
+    $migrator->run(['connection' => 'test', 'skip' => $views]);
 } catch (PDOException $e) {
     // the migrator doesn't handle views well
     // so we can ignore errors of views
