@@ -13,8 +13,8 @@ use Cake\ORM\Entity;
  * @property string $my_query
  * @property string $description
  * @property int $query_group_id
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\QueryGroup $query_group
  */

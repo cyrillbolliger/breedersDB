@@ -16,8 +16,8 @@ use Cake\ORM\Entity;
  * @property string $input_type
  * @property array $operators
  * @property int $mark_form_property_type_id
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  * @property boolean tree_property
  * @property boolean variety_property
  * @property boolean batch_property

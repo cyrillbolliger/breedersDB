@@ -1,5 +1,5 @@
 <template>
-  <List
+  <TabularList
     :items="properties"
     :loading="loading"
     :filter-function="filterFunction"
@@ -18,18 +18,18 @@
         </q-item-section>
       </q-item>
     </template>
-  </List>
+  </TabularList>
 </template>
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 import useApi from 'src/composables/api';
 import {MarkForm, MarkFormProperty} from 'src/models/form';
-import List from 'components/Util/List.vue';
+import TabularList from 'components/Util/TabularList.vue';
 
 export default defineComponent({
   name: 'MarkFormPropertyList',
-  components: {List},
+  components: {TabularList},
   emits: ['select'],
 
   setup() {

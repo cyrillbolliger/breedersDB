@@ -1,4 +1,7 @@
 <?php
+
+use Migrations\TestSuite\Migrator;
+
 /**
  * Test runner bootstrap.
  *
@@ -16,3 +19,20 @@ $_SERVER['PHP_SELF'] = '/';
 // has been written to.
 // @see https://github.com/cakephp/cakephp/issues/14085
 session_id('cli');
+
+// Always use the test database
+\Cake\Datasource\ConnectionManager::alias('test', 'default');
+
+// Migrate, truncate and reseed tables
+$views = [
+    'batches_view',
+    'crossings_view',
+    'marks_view',
+    'mother_trees_view',
+    'scions_bundles_view',
+    'trees_view',
+    'varieties_view'
+];
+$migrator = new Migrator();
+$migrator->truncate('test', $views);
+$migrator->run(['connection' => 'test', 'skip' => $views]);

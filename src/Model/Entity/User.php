@@ -13,11 +13,11 @@ use Cake\ORM\Entity;
  * @property string $password
  * @property int $level
  * @property string $time_zone
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  */
 class User extends Entity {
-	
+
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
 	 *
@@ -31,7 +31,7 @@ class User extends Entity {
 		'*'  => true,
 		'id' => false
 	];
-	
+
 	/**
 	 * Fields that are excluded from JSON versions of the entity.
 	 *
@@ -40,10 +40,10 @@ class User extends Entity {
 	protected $_hidden = [
 		'password'
 	];
-	
+
 	protected function _setPassword( $value ) {
 		$hasher = new DefaultPasswordHasher();
-		
+
 		return $hasher->hash( $value );
 	}
 }

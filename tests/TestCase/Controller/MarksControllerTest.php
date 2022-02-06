@@ -72,24 +72,16 @@ class MarksControllerTest extends TestCase {
         $this->assertResponseSuccess();
         $this->assertResponseCode( 200 );
 
-        $query = $this->Table
+        /** @var Mark $first */
+        $first = $this->Table
             ->find()
             ->contain(self::CONTAINS)
             ->orderDesc( self::TABLE . '.modified' )
             ->limit( 100 )
-            ->all();
-
-        /** @var Mark $first */
-        $first = $query->first();
-        $last  = $query->last();
+            ->firstOrFail();
 
         $this->assertResponseContains( Number::format( $first->id ) );
         $this->assertResponseContains( $first->mark_values[0]->mark_form_property->name .': '.$first->mark_values[0]->value );
-
-        $this->assertResponseContains( Number::format( $last->id ) );
-        if ($last->mark_values){
-            $this->assertResponseContains( $last->mark_values[0]->mark_form_property->name .': '.$last->mark_values[0]->value );
-        }
     }
 
     /**

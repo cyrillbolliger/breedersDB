@@ -11,14 +11,14 @@ use Cake\ORM\Entity;
  * @property int $priority
  * @property int $mark_form_id
  * @property int $mark_form_property_id
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\MarkForm $mark_form
  * @property \App\Model\Entity\MarkFormProperty $mark_form_property
  */
 class MarkFormField extends Entity {
-	
+
 	/**
 	 * Fields that can be mass assigned using newEntity() or patchEntity().
 	 *

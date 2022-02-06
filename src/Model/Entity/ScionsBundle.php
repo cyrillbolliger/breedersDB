@@ -10,15 +10,15 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $code
  * @property int $numb_scions
- * @property \Cake\I18n\Time $date_scions_harvest
+ * @property \Cake\I18n\FrozenTime $date_scions_harvest
  * @property string $descents_publicid_list
  * @property string $note
  * @property bool $external_use
  * @property bool $deleted
  * @property bool $locked
  * @property int $variety_id
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\Variety $variety
  */

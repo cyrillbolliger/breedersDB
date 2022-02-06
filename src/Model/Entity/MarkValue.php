@@ -2,6 +2,7 @@
 
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 use Cake\I18n\Date;
 
@@ -13,8 +14,8 @@ use Cake\I18n\Date;
  * @property bool $exceptional_mark
  * @property int $mark_form_property_id
  * @property int $mark_id
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\MarkFormProperty $mark_form_property
  * @property \App\Model\Entity\Mark $mark
@@ -51,7 +52,7 @@ class MarkValue extends Entity {
 		$type = $MarkFormProperties->get( $this->_fields['mark_form_property_id'] )->field_type;
 
 		if ( 'DATE' === $type ) {
-			$date = Date::parse( $this->_fields['value'] );
+			$date = FrozenTime::parse( $this->_fields['value'] );
 
 			return $date->i18nFormat();
 		}

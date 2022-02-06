@@ -189,6 +189,7 @@ class MarkFormsController extends AppController {
         $old_mark_form_property_ids = $this->MarkForms->MarkFormFields
             ->find()
             ->where( [ 'mark_form_id' => $id ] )
+            ->all()
             ->extract('mark_form_property_id')
             ->toArray();
 

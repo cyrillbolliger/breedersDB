@@ -10,9 +10,9 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $publicid
  * @property string $convar
- * @property \Cake\I18n\Time $date_grafted
- * @property \Cake\I18n\Time $date_planted
- * @property \Cake\I18n\Time $date_eliminated
+ * @property \Cake\I18n\FrozenTime $date_grafted
+ * @property \Cake\I18n\FrozenTime $date_planted
+ * @property \Cake\I18n\FrozenTime $date_eliminated
  * @property bool $genuine_seedling
  * @property float $offset
  * @property string $row

@@ -18,8 +18,8 @@ use Cake\ORM\Entity;
  * @property bool $deleted
  * @property bool $locked
  * @property int $batch_id
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  * @property string $convar
  *
  * @property \App\Model\Entity\Batch $batch

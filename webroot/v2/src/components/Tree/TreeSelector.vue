@@ -19,7 +19,8 @@
       v-model="publicid"
       :label="t('trees.publicid')"
       @keyup.enter="loadTree"
-      type="text"
+      type="number"
+      inputmode="numeric"
       :autofocus="true"
     />
 
@@ -41,14 +42,14 @@
       @click="loadTree"
     />
 
-    <Loader v-if="loading"/>
+    <SpinLoader v-if="loading"/>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent, ref, computed, watch, onMounted} from 'vue'
 import {useI18n} from 'vue-i18n';
-import Loader from 'components/Util/Loader.vue';
+import SpinLoader from 'components/Util/SpinLoader.vue';
 import {Tree} from 'src/models/tree';
 import useApi from 'src/composables/api'
 import CodeScanner from 'components/Util/CodeScanner.vue';
@@ -64,7 +65,7 @@ enum InputMode {
 export default defineComponent({
   name: 'TreeSelector',
   emits: ['selected'],
-  components: {CodeScanner, Loader},
+  components: {CodeScanner, SpinLoader},
 
   setup(_, {emit}) {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method

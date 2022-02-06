@@ -5,11 +5,11 @@
     "type": "project",
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": ">=8.0.0",
+        "php": ">=8.1.0",
         "ext-zip": "*",
         "ext-gd": "*",
         "ext-json": "*",
-        "cakephp/cakephp": "4.2.*",
+        "cakephp/cakephp": "^4.3",
         "mobiledetect/mobiledetectlib": "2.*",
         "cakephp/plugin-installer": "*",
         "phpoffice/phpspreadsheet": "^1.14",
@@ -19,7 +19,8 @@
         "ext-intl": "*",
         "ext-fileinfo": "*",
         "ralouphie/mimey": "^1.0",
-        "ext-imagick": "*"
+        "ext-imagick": "*",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",

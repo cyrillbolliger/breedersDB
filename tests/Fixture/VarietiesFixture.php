@@ -23,6 +23,10 @@ class VarietiesFixture extends TestFixture
      */
     public function init(): void
     {
+        $this->import = [
+            'connection' => 'test',
+            'table' => 'varieties',
+        ];
         $generator = new VarietiesGenerator();
         $this->records = $generator->generate(200);
         parent::init();

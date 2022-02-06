@@ -254,7 +254,7 @@ class TreesControllerTest extends TestCase {
         $this->enableSecurityToken();
 
         $query = $this->getEntityQueryFromArray( [ 'publicid' => '#' . $entity->publicid ] );
-        $this->deleteWithAssociated( $query );
+        $this->deleteWithAssociated( clone $query );
 
         $this->post( self::ENDPOINT . '/update/' . $entity->id, $data );
 
@@ -264,9 +264,9 @@ class TreesControllerTest extends TestCase {
 
         /** @var Tree $dbData */
         $dbData = $query->first();
-        self::assertEquals( $dbData->publicid, '#' . $entity->publicid );
-        self::assertEquals( $dbData->date_eliminated->format( 'd.m.Y' ), $data['date_eliminated'] );
-        self::assertEquals( $dbData->note, $data['note'] );
+        self::assertEquals( '#' . $entity->publicid, $dbData->publicid, );
+        self::assertEquals( $data['date_eliminated'], $dbData->date_eliminated->format( 'd.m.Y' ) );
+        self::assertEquals( $data['note'], $dbData->note );
     }
 
     /**

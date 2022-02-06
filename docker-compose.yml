@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: .docker/App.Dockerfile
+    user: ${GITHUB_DOCKER_USER:-www-data}
     ports:
       - '8000:80'
     volumes:
@@ -18,6 +19,11 @@ services:
       DB_USERNAME: poc
       DB_PASSWORD: poc
       DB_PORT: 3306
+      DB_TEST_HOST: mysql
+      DB_TEST_DATABASE: cake_test
+      DB_TEST_USERNAME: cake_test
+      DB_TEST_PASSWORD: cake_test
+      DB_TEST_PORT: 3306
     depends_on:
       - mysql
 
@@ -50,7 +56,7 @@ services:
   nodev1:
     image: node:14
     working_dir: /home/node/app/webroot/v1
-    user: node
+    user: ${GITHUB_DOCKER_USER:-node}
     volumes:
       - ./:/home/node/app
     command: npm run watch
@@ -60,6 +66,7 @@ services:
     build:
       context: .
       dockerfile: .docker/Node.Dockerfile
+    user: ${GITHUB_DOCKER_USER:-node}
     working_dir: /home/node/app/webroot/v2
     volumes:
       - ./:/home/node/app

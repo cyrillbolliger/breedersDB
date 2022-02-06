@@ -12,9 +12,9 @@ use Cake\ORM\Entity;
  * @property int $mother_variety_id
  * @property int $father_variety_id
  * @property string $target
- * @property \Cake\I18n\Time $deleted
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $deleted
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\Variety $mother_variety
  * @property \App\Model\Entity\Variety $father_variety

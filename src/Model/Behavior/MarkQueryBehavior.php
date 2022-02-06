@@ -159,7 +159,7 @@ class MarkQueryBehavior extends Behavior {
 	 */
 	private function _groupByMark( Query $marks ): CollectionInterface {
 		// group by mark AND breeders object otherwise we'll aggregate all objects
-		return $marks->groupBy( function ( $mark ) {
+		return $marks->all()->groupBy( function ( $mark ) {
 			switch ( $this->mode ) {
 				case 'trees':
 					return $mark->tree_id . '_' . $mark->property_id;

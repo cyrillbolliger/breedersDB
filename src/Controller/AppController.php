@@ -19,9 +19,7 @@ use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Database\TypeFactory;
 use Cake\I18n\FrozenDate;
-use Cake\I18n\Date;
 use Cake\I18n\FrozenTime;
-use Cake\I18n\Time;
 use Cake\Core\Configure;
 
 /**
@@ -80,8 +78,6 @@ class AppController extends Controller {
 
         FrozenTime::setToStringFormat( __x( 'datetime format', 'dd.MM.yyyy HH:mm' ) );
         FrozenDate::setToStringFormat( __x( 'date format', 'dd.MM.yyyy' ) );
-        Time::setToStringFormat( __x( 'datetime format', 'dd.MM.yyyy HH:mm' ) );
-        Date::setToStringFormat( __x( 'date format', 'dd.MM.yyyy' ) );
 
         Configure::write('localizedDate', true);
     }

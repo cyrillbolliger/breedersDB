@@ -3,12 +3,12 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
-use Cake\I18n\Date;
+use Cake\I18n\FrozenDate;
 
 /**
  * MarksView Entity
  *
- * @property \Cake\I18n\Time $date
+ * @property \Cake\I18n\FrozenTime $date
  * @property string $author
  * @property int $tree_id
  * @property int $variety_id
@@ -33,13 +33,13 @@ class MarksView extends Entity {
 	 */
 	protected function _getValue() {
 		$type = $this->_fields['field_type'];
-		
+
 		if ( 'DATE' === $type ) {
-			$date = Date::parse( $this->_fields['value'] );
-			
+			$date = FrozenDate::parse( $this->_fields['value'] );
+
 			return $date->i18nFormat();
 		}
-		
+
 		return $this->_fields['value'];
 	}
 }
