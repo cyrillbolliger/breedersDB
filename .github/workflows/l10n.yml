@@ -68,6 +68,7 @@ jobs:
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
+          source_branch: l10n_crowdin
           destination_branch: dev
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "[L10N] Updated translations"
