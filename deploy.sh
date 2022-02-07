@@ -86,6 +86,8 @@ deploysingle() {
 
         ssh "$host" "\"$composer\" --working-dir=\"${target}\" install"
     fi
+
+    ssh "$host" "\"${target}/bin/cake\" cache clear_all"
 }
 
 sync() {
