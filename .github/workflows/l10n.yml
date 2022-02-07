@@ -36,7 +36,7 @@ jobs:
           # download options
           download_translations: true
 #          push_translations: true
-#          localization_branch_name: l10n_crowdin
+          localization_branch_name: l10n_crowdin
 #          create_pull_request: true
 
           # config file
@@ -45,6 +45,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
+      - name: Switch to l10n_corwdin branch
+        run: git checkout l10n_crowdin
 
       - name: Fix quoting of translation file
         run: ./swap-quotes.py < webroot/v2/src/i18n/de-CH/index.ts > webroot/v2/src/i18n/de-CH/index.ts.tmp
@@ -55,8 +58,8 @@ jobs:
         uses: github-actions-x/commit@v2.8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          push-branch: 'l10n'
-          commit-message: '[L10N] updated translations'
+          push-branch: l10n_crowdin
+          commit-message: '[L10N] Fix quoting'
           force-add: 'true'
           files: webroot/v2/src/i18n/de-CH/index.ts
           name: Crowdin via GithubAction
