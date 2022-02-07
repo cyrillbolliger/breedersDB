@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-10-11 13:40+0000\n"
+"POT-Creation-Date: 2022-02-07 15:34+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,2738 +14,2793 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Controller/AppController.php:81
-#: Controller/AppController.php:83
+#: ./src/Controller/AppController.php:79
 msgctxt "datetime format"
 msgid "dd.MM.yyyy HH:mm"
 msgstr ""
 
-#: Controller/AppController.php:82
-#: Controller/AppController.php:84
+#: ./src/Controller/AppController.php:80
 msgctxt "date format"
 msgid "dd.MM.yyyy"
 msgstr ""
 
-#: Controller/BatchesController.php:89
-#: Controller/BatchesController.php:116
+#: ./src/Controller/BatchesController.php:89
+#: ./src/Controller/BatchesController.php:116
 msgid "The batch has been saved."
 msgstr ""
 
-#: Controller/BatchesController.php:93
-#: Controller/BatchesController.php:120
+#: ./src/Controller/BatchesController.php:93
+#: ./src/Controller/BatchesController.php:120
 msgid "The batch could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/BatchesController.php:140
+#: ./src/Controller/BatchesController.php:140
 msgid "The batch has been deleted."
 msgstr ""
 
-#: Controller/BatchesController.php:142
+#: ./src/Controller/BatchesController.php:142
 msgid "The batch could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/BatchesController.php:184
-#: Controller/CrossingsController.php:180
-#: Controller/MarkFormPropertiesController.php:173
-#: Controller/MarkFormsController.php:239
-#: Controller/MarksController.php:288
-#: Controller/MarksViewController.php:25
-#: Controller/MotherTreesController.php:153
-#: Controller/RowsController.php:134
-#: Controller/ScionsBundlesController.php:146
-#: Controller/TreesController.php:294
-#: Controller/TreesController.php:402
-#: Controller/VarietiesController.php:202
-#: Controller/VarietiesController.php:221
-#: Controller/VarietiesController.php:240
-#: Controller/VarietiesController.php:276
+#: ./src/Controller/BatchesController.php:184
+#: ./src/Controller/CrossingsController.php:180
+#: ./src/Controller/MarkFormPropertiesController.php:173
+#: ./src/Controller/MarkFormsController.php:240
+#: ./src/Controller/MarksController.php:343
+#: ./src/Controller/MarksViewController.php:25
+#: ./src/Controller/MotherTreesController.php:153
+#: ./src/Controller/RowsController.php:134
+#: ./src/Controller/ScionsBundlesController.php:146
+#: ./src/Controller/TreesController.php:294
+#: ./src/Controller/TreesController.php:402
+#: ./src/Controller/VarietiesController.php:202
+#: ./src/Controller/VarietiesController.php:221
+#: ./src/Controller/VarietiesController.php:240
+#: ./src/Controller/VarietiesController.php:276
 msgid "Direct access not allowed."
 msgstr ""
 
-#: Controller/BatchesController.php:214
-#: Controller/TreesController.php:434
+#: ./src/Controller/BatchesController.php:214
+#: ./src/Controller/TreesController.php:434
 msgid "Regular"
 msgstr ""
 
-#: Controller/Component/ExcelComponent.php:97
-#: Controller/Component/ExcelComponent.php:98
+#: ./src/Controller/Component/ExcelComponent.php:97
+#: ./src/Controller/Component/ExcelComponent.php:98
 msgid "Breeders Database"
 msgstr ""
 
-#: Controller/Component/ExcelComponent.php:188
+#: ./src/Controller/Component/ExcelComponent.php:188
 msgid "median"
 msgstr ""
 
-#: Controller/Component/ExcelComponent.php:189
+#: ./src/Controller/Component/ExcelComponent.php:189
 msgid "average"
 msgstr ""
 
-#: Controller/Component/ExcelComponent.php:190
+#: ./src/Controller/Component/ExcelComponent.php:190
 msgid "count"
 msgstr ""
 
-#: Controller/Component/ExcelComponent.php:193
+#: ./src/Controller/Component/ExcelComponent.php:193
 msgid "standard deviation"
 msgstr ""
 
-#: Controller/Component/ExcelComponent.php:195
+#: ./src/Controller/Component/ExcelComponent.php:195
 msgid "value"
 msgstr ""
 
-#: Controller/Component/ExcelComponent.php:197
+#: ./src/Controller/Component/ExcelComponent.php:197
 msgid "values"
 msgstr ""
 
-#: Controller/Component/ExcelComponent.php:191
-#: element/Query/mark_value.php:29
+#: ./src/Controller/Component/ExcelComponent.php:191
+#: ./templates/element/Query/mark_value.php:29
 msgctxt "short: minimum"
 msgid "min"
 msgstr ""
 
-#: Controller/Component/ExcelComponent.php:192
-#: element/Query/mark_value.php:35
+#: ./src/Controller/Component/ExcelComponent.php:192
+#: ./templates/element/Query/mark_value.php:35
 msgctxt "short: maximum"
 msgid "max"
 msgstr ""
 
-#: Controller/Component/MarksReaderComponent.php:61
+#: ./src/Controller/Component/MarksReaderComponent.php:61
 msgid "Invalid arguments."
 msgstr ""
 
-#: Controller/CrossingsController.php:82
-#: Controller/CrossingsController.php:124
+#: ./src/Controller/CrossingsController.php:82
+#: ./src/Controller/CrossingsController.php:124
 msgid "The crossing has been saved."
 msgstr ""
 
-#: Controller/CrossingsController.php:86
+#: ./src/Controller/CrossingsController.php:86
 msgid "The crossing could not be saved. Please try again."
 msgstr ""
 
-#: Controller/CrossingsController.php:128
+#: ./src/Controller/CrossingsController.php:128
 msgid "The crossing could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/CrossingsController.php:158
+#: ./src/Controller/CrossingsController.php:158
 msgid "The crossing has been deleted."
 msgstr ""
 
-#: Controller/CrossingsController.php:160
+#: ./src/Controller/CrossingsController.php:160
 msgid "The crossing could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/ExperimentSitesController.php:51
-#: Controller/ExperimentSitesController.php:77
+#: ./src/Controller/ExperimentSitesController.php:51
+#: ./src/Controller/ExperimentSitesController.php:77
 msgid "The experiment site has been saved."
 msgstr ""
 
-#: Controller/ExperimentSitesController.php:55
-#: Controller/ExperimentSitesController.php:81
+#: ./src/Controller/ExperimentSitesController.php:55
+#: ./src/Controller/ExperimentSitesController.php:81
 msgid "The experiment site could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/ExperimentSitesController.php:100
+#: ./src/Controller/ExperimentSitesController.php:100
 msgid "The experiment site has been deleted."
 msgstr ""
 
-#: Controller/ExperimentSitesController.php:102
+#: ./src/Controller/ExperimentSitesController.php:102
 msgid "The experiment site could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/GraftingsController.php:51
-#: Controller/GraftingsController.php:77
+#: ./src/Controller/GraftingsController.php:51
+#: ./src/Controller/GraftingsController.php:77
 msgid "The grafting has been saved."
 msgstr ""
 
-#: Controller/GraftingsController.php:55
-#: Controller/GraftingsController.php:81
+#: ./src/Controller/GraftingsController.php:55
+#: ./src/Controller/GraftingsController.php:81
 msgid "The grafting could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/GraftingsController.php:100
+#: ./src/Controller/GraftingsController.php:100
 msgid "The grafting has been deleted."
 msgstr ""
 
-#: Controller/GraftingsController.php:102
+#: ./src/Controller/GraftingsController.php:102
 msgid "The grafting could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormPropertiesController.php:65
-#: Controller/MarkFormPropertiesController.php:93
+#: ./src/Controller/MarkFormPropertiesController.php:65
+#: ./src/Controller/MarkFormPropertiesController.php:93
 msgid "The mark form property has been saved."
 msgstr ""
 
-#: Controller/MarkFormPropertiesController.php:69
-#: Controller/MarkFormPropertiesController.php:97
+#: ./src/Controller/MarkFormPropertiesController.php:69
+#: ./src/Controller/MarkFormPropertiesController.php:97
 msgid "The mark form property could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormPropertiesController.php:118
+#: ./src/Controller/MarkFormPropertiesController.php:118
 msgid "The mark form property has been deleted."
 msgstr ""
 
-#: Controller/MarkFormPropertiesController.php:120
+#: ./src/Controller/MarkFormPropertiesController.php:120
 msgid "The mark form property could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormPropertyTypesController.php:54
-#: Controller/MarkFormPropertyTypesController.php:81
+#: ./src/Controller/MarkFormPropertyTypesController.php:54
+#: ./src/Controller/MarkFormPropertyTypesController.php:81
 msgid "The mark form property type has been saved."
 msgstr ""
 
-#: Controller/MarkFormPropertyTypesController.php:58
-#: Controller/MarkFormPropertyTypesController.php:85
+#: ./src/Controller/MarkFormPropertyTypesController.php:58
+#: ./src/Controller/MarkFormPropertyTypesController.php:85
 msgid "The mark form property type could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormPropertyTypesController.php:104
+#: ./src/Controller/MarkFormPropertyTypesController.php:104
 msgid "The mark form property type has been deleted."
 msgstr ""
 
-#: Controller/MarkFormPropertyTypesController.php:106
+#: ./src/Controller/MarkFormPropertyTypesController.php:106
 msgid "The mark form property type could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormsController.php:89
-#: Controller/MarkFormsController.php:169
+#: ./src/Controller/MarkFormsController.php:89
+#: ./src/Controller/MarkFormsController.php:169
 msgid "The mark form has been saved."
 msgstr ""
 
-#: Controller/MarkFormsController.php:99
-#: Controller/MarkFormsController.php:173
+#: ./src/Controller/MarkFormsController.php:99
+#: ./src/Controller/MarkFormsController.php:173
 msgid "The mark form could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/MarkFormsController.php:218
+#: ./src/Controller/MarkFormsController.php:219
 msgid "The mark form has been deleted."
 msgstr ""
 
-#: Controller/MarkFormsController.php:220
+#: ./src/Controller/MarkFormsController.php:221
 msgid "The mark form could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MarkValuesController.php:29
+#: ./src/Controller/MarkValuesController.php:29
 msgid "The mark value has been saved."
 msgstr ""
 
-#: Controller/MarkValuesController.php:33
+#: ./src/Controller/MarkValuesController.php:33
 msgid "The mark value could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/MarkValuesController.php:73
+#: ./src/Controller/MarkValuesController.php:73
 msgid "The mark value has been deleted."
 msgstr ""
 
-#: Controller/MarkValuesController.php:75
+#: ./src/Controller/MarkValuesController.php:75
 msgid "The mark value could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MarksController.php:108
-#: Controller/MarksController.php:157
-#: Controller/MarksController.php:218
+#: ./src/Controller/MarksController.php:118
+#: ./src/Controller/MarksController.php:163
+#: ./src/Controller/MarksController.php:212
+#: ./src/Controller/MarksController.php:273
 msgid "The mark has been saved."
 msgstr ""
 
-#: Controller/MarksController.php:112
-#: Controller/MarksController.php:161
-#: Controller/MarksController.php:222
+#: ./src/Controller/MarksController.php:122
+#: ./src/Controller/MarksController.php:167
+#: ./src/Controller/MarksController.php:216
+#: ./src/Controller/MarksController.php:277
 msgid "The mark could not be saved."
 msgstr ""
 
-#: Controller/MarksController.php:115
-msgid "Please select a variety."
+#: ./src/Controller/MarksController.php:125
+msgid "Please select a tree by public id."
 msgstr ""
 
-#: Controller/MarksController.php:118
-#: Controller/MarksController.php:167
+#: ./src/Controller/MarksController.php:128
+#: ./src/Controller/MarksController.php:173
+#: ./src/Controller/MarksController.php:222
 msgid "One of the mark values violates the validation rules. Please check data types."
 msgstr ""
 
-#: Controller/MarksController.php:164
+#: ./src/Controller/MarksController.php:170
+msgid "Please select a variety."
+msgstr ""
+
+#: ./src/Controller/MarksController.php:219
 msgid "Please select a batch."
 msgstr ""
 
-#: Controller/MarksController.php:246
+#: ./src/Controller/MarksController.php:301
 msgid "The mark has been deleted."
 msgstr ""
 
-#: Controller/MarksController.php:248
+#: ./src/Controller/MarksController.php:303
 msgid "The mark could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/MotherTreesController.php:66
-#: Controller/MotherTreesController.php:100
+#: ./src/Controller/MotherTreesController.php:66
+#: ./src/Controller/MotherTreesController.php:100
 msgid "The mother tree has been saved."
 msgstr ""
 
-#: Controller/MotherTreesController.php:70
-#: Controller/MotherTreesController.php:104
+#: ./src/Controller/MotherTreesController.php:70
+#: ./src/Controller/MotherTreesController.php:104
 msgid "The mother tree could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/MotherTreesController.php:126
+#: ./src/Controller/MotherTreesController.php:126
 msgid "The mother tree has been deleted."
 msgstr ""
 
-#: Controller/MotherTreesController.php:128
+#: ./src/Controller/MotherTreesController.php:128
 msgid "The mother tree could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/QueriesController.php:209
-#: Controller/QueriesController.php:289
+#: ./src/Controller/QueriesController.php:209
+#: ./src/Controller/QueriesController.php:289
 msgid "The query has been saved."
 msgstr ""
 
-#: Controller/QueriesController.php:213
-#: Controller/QueriesController.php:293
+#: ./src/Controller/QueriesController.php:213
+#: ./src/Controller/QueriesController.php:293
 msgid "The query could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/QueriesController.php:361
+#: ./src/Controller/QueriesController.php:361
 msgid "The query has been deleted."
 msgstr ""
 
-#: Controller/QueriesController.php:363
+#: ./src/Controller/QueriesController.php:363
 msgid "The query could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/QueryGroupsController.php:24
-#: Controller/QueryGroupsController.php:51
+#: ./src/Controller/QueryGroupsController.php:24
+#: ./src/Controller/QueryGroupsController.php:51
 msgid "The query group has been saved."
 msgstr ""
 
-#: Controller/QueryGroupsController.php:28
-#: Controller/QueryGroupsController.php:55
+#: ./src/Controller/QueryGroupsController.php:28
+#: ./src/Controller/QueryGroupsController.php:55
 msgid "The query group could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/QueryGroupsController.php:75
+#: ./src/Controller/QueryGroupsController.php:75
 msgid "The query group has been deleted."
 msgstr ""
 
-#: Controller/QueryGroupsController.php:77
+#: ./src/Controller/QueryGroupsController.php:77
 msgid "The query group could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/RootstocksController.php:51
-#: Controller/RootstocksController.php:77
+#: ./src/Controller/RootstocksController.php:51
+#: ./src/Controller/RootstocksController.php:77
 msgid "The rootstock has been saved."
 msgstr ""
 
-#: Controller/RootstocksController.php:55
-#: Controller/RootstocksController.php:81
+#: ./src/Controller/RootstocksController.php:55
+#: ./src/Controller/RootstocksController.php:81
 msgid "The rootstock could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/RootstocksController.php:100
+#: ./src/Controller/RootstocksController.php:100
 msgid "The rootstock has been deleted."
 msgstr ""
 
-#: Controller/RootstocksController.php:102
+#: ./src/Controller/RootstocksController.php:102
 msgid "The rootstock could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/RowsController.php:64
-#: Controller/RowsController.php:90
+#: ./src/Controller/RowsController.php:64
+#: ./src/Controller/RowsController.php:90
 msgid "The row has been saved."
 msgstr ""
 
-#: Controller/RowsController.php:68
-#: Controller/RowsController.php:94
+#: ./src/Controller/RowsController.php:68
+#: ./src/Controller/RowsController.php:94
 msgid "The row could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/RowsController.php:113
+#: ./src/Controller/RowsController.php:113
 msgid "The row has been deleted."
 msgstr ""
 
-#: Controller/RowsController.php:115
+#: ./src/Controller/RowsController.php:115
 msgid "The row could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/ScionsBundlesController.php:69
-#: Controller/ScionsBundlesController.php:100
+#: ./src/Controller/ScionsBundlesController.php:69
+#: ./src/Controller/ScionsBundlesController.php:100
 msgid "The scions bundle has been saved."
 msgstr ""
 
-#: Controller/ScionsBundlesController.php:73
-#: Controller/ScionsBundlesController.php:104
+#: ./src/Controller/ScionsBundlesController.php:73
+#: ./src/Controller/ScionsBundlesController.php:104
 msgid "The scions bundle could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/ScionsBundlesController.php:125
+#: ./src/Controller/ScionsBundlesController.php:125
 msgid "The scions bundle has been deleted."
 msgstr ""
 
-#: Controller/ScionsBundlesController.php:127
+#: ./src/Controller/ScionsBundlesController.php:127
 msgid "The scions bundle could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/TreesController.php:102
-#: Controller/TreesController.php:138
-#: Controller/TreesController.php:174
-#: Controller/TreesController.php:214
-#: Controller/TreesController.php:251
+#: ./src/Controller/SettingsController.php:37
+msgid "Invalid setting."
+msgstr ""
+
+#: ./src/Controller/SettingsController.php:43
+msgid "Invalid offset. Accepted values are between 0 and 100."
+msgstr ""
+
+#: ./src/Controller/SettingsController.php:50
+#: ./src/Controller/SettingsController.php:71
+msgid "Setting not found."
+msgstr ""
+
+#: ./src/Controller/SettingsController.php:55
+msgid "Setting saved."
+msgstr ""
+
+#: ./src/Controller/SettingsController.php:64
+#: ./templates/Settings/index.php:17
+msgid "Printer label offset left"
+msgstr ""
+
+#: ./src/Controller/SettingsController.php:66
+msgid "How many millimeters should the label be shifted to the right? Value must be between 0 and 100."
+msgstr ""
+
+#: ./src/Controller/TreesController.php:102
+#: ./src/Controller/TreesController.php:138
+#: ./src/Controller/TreesController.php:174
+#: ./src/Controller/TreesController.php:214
+#: ./src/Controller/TreesController.php:251
 msgid "The tree has been saved."
 msgstr ""
 
-#: Controller/TreesController.php:106
-#: Controller/TreesController.php:142
-#: Controller/TreesController.php:178
-#: Controller/TreesController.php:218
-#: Controller/TreesController.php:253
+#: ./src/Controller/TreesController.php:106
+#: ./src/Controller/TreesController.php:142
+#: ./src/Controller/TreesController.php:178
+#: ./src/Controller/TreesController.php:218
+#: ./src/Controller/TreesController.php:253
 msgid "The tree could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/TreesController.php:347
+#: ./src/Controller/TreesController.php:347
 msgid "The tree has been deleted."
 msgstr ""
 
-#: Controller/TreesController.php:349
+#: ./src/Controller/TreesController.php:349
 msgid "The tree could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/TreesController.php:438
+#: ./src/Controller/TreesController.php:438
 msgid "Anonymous"
 msgstr ""
 
-#: Controller/UsersController.php:53
-#: Controller/UsersController.php:84
+#: ./src/Controller/UsersController.php:53
+#: ./src/Controller/UsersController.php:84
 msgid "The user has been saved."
 msgstr ""
 
-#: Controller/UsersController.php:57
-#: Controller/UsersController.php:88
+#: ./src/Controller/UsersController.php:57
+#: ./src/Controller/UsersController.php:88
 msgid "The user could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/UsersController.php:108
+#: ./src/Controller/UsersController.php:108
 msgid "The user has been deleted."
 msgstr ""
 
-#: Controller/UsersController.php:110
+#: ./src/Controller/UsersController.php:110
 msgid "The user could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/UsersController.php:129
+#: ./src/Controller/UsersController.php:129
 msgid "Your username or password is incorrect."
 msgstr ""
 
-#: Controller/VarietiesController.php:95
-#: Controller/VarietiesController.php:121
-#: Controller/VarietiesController.php:148
+#: ./src/Controller/VarietiesController.php:95
+#: ./src/Controller/VarietiesController.php:121
+#: ./src/Controller/VarietiesController.php:148
 msgid "The variety has been saved."
 msgstr ""
 
-#: Controller/VarietiesController.php:99
-#: Controller/VarietiesController.php:125
-#: Controller/VarietiesController.php:152
+#: ./src/Controller/VarietiesController.php:99
+#: ./src/Controller/VarietiesController.php:125
+#: ./src/Controller/VarietiesController.php:152
 msgid "The variety could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/VarietiesController.php:182
+#: ./src/Controller/VarietiesController.php:182
 msgid "The variety has been deleted."
 msgstr ""
 
-#: Controller/VarietiesController.php:184
+#: ./src/Controller/VarietiesController.php:184
 msgid "The variety could not be deleted. Please, try again."
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:150
-#: Model/Behavior/GetFilterDataBehavior.php:153
-#: Model/Behavior/GetFilterDataBehavior.php:167
-#: Model/Behavior/GetFilterDataBehavior.php:169
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:150
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:153
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:167
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:169
 msgid "Please enter a number"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:151
-#: Model/Behavior/GetFilterDataBehavior.php:152
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:151
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:152
 msgid "Only integers allowed"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:154
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:154
 msgid "The given number must not be smaller then %s"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:156
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:156
 msgid "The given number must not be greater then %s"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:168
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:168
 msgid "Only numbers allowed"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:185
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:185
 msgid "Please enter a date"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:197
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:197
 msgid "Please enter date and time"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:209
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:209
 msgid "Please enter a time"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:226
-#: Marks/view.php:76
-#: MotherTrees/view.php:24
-#: ScionsBundles/view.php:30
-#: Trees/view.php:37
-#: Trees/view.php:67
-#: Trees/view.php:71
-#: element/MarkView/tooltip.php:29
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:226
+#: ./templates/Marks/view.php:76
+#: ./templates/MotherTrees/view.php:24
+#: ./templates/ScionsBundles/view.php:30
+#: ./templates/Trees/view.php:37
+#: ./templates/Trees/view.php:67
+#: ./templates/Trees/view.php:71
+#: ./templates/element/MarkView/tooltip.php:29
 msgid "Yes"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:226
-#: MotherTrees/view.php:24
-#: ScionsBundles/view.php:30
-#: Trees/view.php:37
-#: Trees/view.php:67
-#: Trees/view.php:71
-#: element/MarkView/tooltip.php:29
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:226
+#: ./templates/MotherTrees/view.php:24
+#: ./templates/ScionsBundles/view.php:30
+#: ./templates/Trees/view.php:37
+#: ./templates/Trees/view.php:67
+#: ./templates/Trees/view.php:71
+#: ./templates/element/MarkView/tooltip.php:29
 msgid "No"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:180
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:180
 msgctxt "moment.js date format"
 msgid "DD.MM.YYYY"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:183
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:183
 msgctxt "moment.js date format"
 msgid "The given date must match the format DD.MM.YYYY"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:192
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:192
 msgctxt "moment.js datetime format"
 msgid "DD.MM.YYYY HH:mm:ss"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:195
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:195
 msgctxt "moment.js datetime format"
 msgid "The given date and time must match the format DD.MM.YYYY HH:mm:ss"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:204
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:204
 msgctxt "moment.js time format"
 msgid "HH:mm:ss"
 msgstr ""
 
-#: Model/Behavior/GetFilterDataBehavior.php:207
+#: ./src/Model/Behavior/GetFilterDataBehavior.php:207
 msgctxt "moment.js time format"
 msgid "The given time must match the format HH:mm:ss"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:25
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:25
 msgid "Batch -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:26
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:26
 msgid "Batch -> Crossing.Batch"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:27
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:27
 msgid "Batch -> Date Sowed"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:28
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:28
 msgid "Batch -> Numb Seeds Sowed"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:29
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:29
 msgid "Batch -> Numb Sprouts Grown"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:30
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:30
 msgid "Batch -> Seed Tray"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:31
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:31
 msgid "Batch -> Date Planted"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:32
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:32
 msgid "Batch -> Numb Sprouts Planted"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:33
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:33
 msgid "Batch -> Patch"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:34
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:34
 msgid "Batch -> Note"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:35
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:35
 msgid "Batch -> Crossing Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:36
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:36
 msgid "Crossing -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:37
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:37
 msgid "Crossing -> Code"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:38
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:38
 msgid "Crossing -> Mother Variety"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:39
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:39
 msgid "Crossing -> Father Variety"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:40
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:40
 msgid "Crossing -> Target"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:41
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:41
 msgid "Mark -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:42
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:42
 msgid "Mark -> Date"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:43
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:43
 msgid "Mark -> Author"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:44
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:44
 msgid "Mark -> Tree Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:45
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:45
 msgid "Mark -> Variety Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:46
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:46
 msgid "Mark -> Batch Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:47
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:47
 msgid "Mark -> Value"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:48
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:48
 msgid "Mark -> Exceptional Mark"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:49
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:49
 msgid "Mark -> Property"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:50
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:50
 msgid "Mark -> Property Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:51
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:51
 msgid "Mark -> Data Type"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:52
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:52
 msgid "Mark -> Property Type"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:53
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:53
 msgid "Mother Tree -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:54
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:54
 msgid "Mother Tree -> Crossing"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:55
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:55
 msgid "Mother Tree -> Identification"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:56
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:56
 msgid "Mother Tree -> Planed"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:57
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:57
 msgid "Mother Tree -> Date Pollen Harvested"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:58
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:58
 msgid "Mother Tree -> Date Impregnated"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:59
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:59
 msgid "Mother Tree -> Date Fruit Harvested"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:60
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:60
 msgid "Mother Tree -> Numb Portions"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:61
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:61
 msgid "Mother Tree -> Numb Flowers"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:62
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:62
 msgid "Mother Tree -> Numb Fruits"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:63
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:63
 msgid "Mother Tree -> Numb Seeds"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:64
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:64
 msgid "Mother Tree -> Note"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:65
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:65
 msgid "Mother Tree -> Convar"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:66
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:66
 msgid "Mother Tree -> Publicid"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:67
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:67
 msgid "Mother Tree -> Offset"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:68
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:68
 msgid "Mother Tree -> Row"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:69
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:69
 msgid "Mother Tree -> Experiment Site"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:70
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:70
 msgid "Mother Tree -> Tree Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:71
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:71
 msgid "Mother Tree -> Crossing Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:72
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:72
 msgid "Scions Bundle -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:73
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:73
 msgid "Scions Bundle -> Identification"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:74
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:74
 msgid "Scions Bundle -> Convar"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:75
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:75
 msgid "Scions Bundle -> Numb Scions"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:76
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:76
 msgid "Scions Bundle -> Date Scions Harvest"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:77
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:77
 msgid "Scions Bundle -> Descents (Publicids)"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:78
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:78
 msgid "Scions Bundle -> Note"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:79
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:79
 msgid "Scions Bundle -> Reserved for external partners"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:80
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:80
 msgid "Scions Bundle -> Varienty Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:81
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:81
 msgid "Tree -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:82
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:82
 msgid "Tree -> Publicid"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:83
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:83
 msgid "Tree -> Convar"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:84
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:84
 msgid "Tree -> Date Grafted"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:85
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:85
 msgid "Tree -> Date Planted"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:86
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:86
 msgid "Tree -> Date Eliminated"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:87
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:87
 msgid "Tree -> Date Labeled"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:88
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:88
 msgid "Tree -> Genuine Seedling"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:89
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:89
 msgid "Tree -> Offset"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:90
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:90
 msgid "Tree -> Don't eliminate"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:91
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:91
 msgid "Tree -> Row"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:92
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:92
 msgid "Tree -> Note"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:93
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:93
 msgid "Tree -> Variety Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:94
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:94
 msgid "Tree -> Grafting"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:95
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:95
 msgid "Tree -> Rootstock"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:96
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:96
 msgid "Tree -> Experiment Site"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:97
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:97
 msgid "Varieties -> Id"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:98
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:98
 msgid "Varieties -> Convar"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:99
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:99
 msgid "Varieties -> Official Name"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:100
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:100
 msgid "Varieties -> Acronym"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:101
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:101
 msgid "Varieties -> Plant Breeder"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:102
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:102
 msgid "Varieties -> Registration"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:103
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:103
 msgid "Varieties -> Description"
 msgstr ""
 
-#: Model/Behavior/TranslatableFieldsBehavior.php:104
+#: ./src/Model/Behavior/TranslatableFieldsBehavior.php:104
 msgid "Varieties -> Batch Id"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:59
+#: ./src/Model/Entity/MarkFormProperty.php:59
 msgid "Count"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:60
+#: ./src/Model/Entity/MarkFormProperty.php:60
 msgid "Average"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:61
+#: ./src/Model/Entity/MarkFormProperty.php:61
 msgid "Min"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:62
+#: ./src/Model/Entity/MarkFormProperty.php:62
 msgid "Max"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:63
+#: ./src/Model/Entity/MarkFormProperty.php:63
 msgid "Median"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:64
+#: ./src/Model/Entity/MarkFormProperty.php:64
 msgid "Standard deviation"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:129
-#: Model/Entity/MarkFormProperty.php:142
-#: Model/Entity/MarkFormProperty.php:156
+#: ./src/Model/Entity/MarkFormProperty.php:129
+#: ./src/Model/Entity/MarkFormProperty.php:142
+#: ./src/Model/Entity/MarkFormProperty.php:156
 msgid "equal"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:130
-#: Model/Entity/MarkFormProperty.php:143
-#: Model/Entity/MarkFormProperty.php:157
+#: ./src/Model/Entity/MarkFormProperty.php:130
+#: ./src/Model/Entity/MarkFormProperty.php:143
+#: ./src/Model/Entity/MarkFormProperty.php:157
 msgid "not equal"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:131
+#: ./src/Model/Entity/MarkFormProperty.php:131
 msgid "less"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:132
+#: ./src/Model/Entity/MarkFormProperty.php:132
 msgid "less or equal"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:133
+#: ./src/Model/Entity/MarkFormProperty.php:133
 msgid "greater"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:134
+#: ./src/Model/Entity/MarkFormProperty.php:134
 msgid "greater or equal"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:135
+#: ./src/Model/Entity/MarkFormProperty.php:135
 msgid "is null"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:136
+#: ./src/Model/Entity/MarkFormProperty.php:136
 msgid "is not null"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:144
+#: ./src/Model/Entity/MarkFormProperty.php:144
 msgid "begins with"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:145
+#: ./src/Model/Entity/MarkFormProperty.php:145
 msgid "doesn't begin with"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:146
+#: ./src/Model/Entity/MarkFormProperty.php:146
 msgid "contains"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:147
+#: ./src/Model/Entity/MarkFormProperty.php:147
 msgid "doesn't contain"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:148
+#: ./src/Model/Entity/MarkFormProperty.php:148
 msgid "end with"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:149
+#: ./src/Model/Entity/MarkFormProperty.php:149
 msgid "doesn't end with"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:150
+#: ./src/Model/Entity/MarkFormProperty.php:150
 msgid "is empty"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:151
+#: ./src/Model/Entity/MarkFormProperty.php:151
 msgid "is not empty"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:162
+#: ./src/Model/Entity/MarkFormProperty.php:162
 msgid "has photo"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:163
+#: ./src/Model/Entity/MarkFormProperty.php:163
 msgid "doesn't have photo"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:178
-#: element/Mark/field.php:32
-#: element/Mark/list.php:49
+#: ./src/Model/Entity/MarkFormProperty.php:178
+#: ./templates/element/Mark/field.php:32
+#: ./templates/element/Mark/list.php:49
 msgid "True"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:178
-#: element/Mark/field.php:33
+#: ./src/Model/Entity/MarkFormProperty.php:178
+#: ./templates/element/Mark/field.php:33
 msgid "False"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:69
+#: ./src/Model/Entity/MarkFormProperty.php:69
 msgctxt "every"
 msgid "Every"
 msgstr ""
 
-#: Model/Entity/MarkFormProperty.php:70
+#: ./src/Model/Entity/MarkFormProperty.php:70
 msgctxt "at least one"
 msgid "Any"
 msgstr ""
 
-#: Model/Entity/Query.php:193
-#: Model/Table/QueriesTable.php:195
-#: MarkFormProperties/add.php:47
-#: MarkFormProperties/edit.php:50
-#: Trees/index.php:18
-#: element/Tree/nav.php:2
-#: element/top_nav.php:5
+#: ./src/Model/Entity/Query.php:193
+#: ./src/Model/Table/QueriesTable.php:195
+#: ./templates/MarkFormProperties/add.php:47
+#: ./templates/MarkFormProperties/edit.php:50
+#: ./templates/Trees/index.php:18
+#: ./templates/element/Tree/nav.php:2
+#: ./templates/element/top_nav.php:5
 msgid "Trees"
 msgstr ""
 
-#: Model/Entity/Query.php:194
-#: Model/Table/QueriesTable.php:196
-#: MarkFormProperties/add.php:48
-#: MarkFormProperties/edit.php:51
-#: Varieties/index.php:16
-#: element/Variety/nav.php:2
-#: element/top_nav.php:4
+#: ./src/Model/Entity/Query.php:194
+#: ./src/Model/Table/QueriesTable.php:196
+#: ./templates/MarkFormProperties/add.php:48
+#: ./templates/MarkFormProperties/edit.php:51
+#: ./templates/Varieties/index.php:16
+#: ./templates/element/Variety/nav.php:2
+#: ./templates/element/top_nav.php:4
 msgid "Varieties"
 msgstr ""
 
-#: Model/Entity/Query.php:195
-#: Model/Table/QueriesTable.php:190
-#: Batches/index.php:14
-#: MarkFormProperties/add.php:49
-#: MarkFormProperties/edit.php:52
-#: element/Batch/nav.php:2
-#: element/top_nav.php:3
+#: ./src/Model/Entity/Query.php:195
+#: ./src/Model/Table/QueriesTable.php:190
+#: ./templates/Batches/index.php:14
+#: ./templates/MarkFormProperties/add.php:49
+#: ./templates/MarkFormProperties/edit.php:52
+#: ./templates/element/Batch/nav.php:2
+#: ./templates/element/top_nav.php:3
 msgid "Batches"
 msgstr ""
 
-#: Model/Entity/Query.php:196
-#: Batches/view.php:68
-#: element/MarkView/tooltip.php:87
-#: element/MarkView/tooltip.php:131
-#: element/Tree/related_table.php:8
+#: ./src/Model/Entity/Query.php:196
+#: ./templates/Batches/view.php:68
+#: ./templates/element/MarkView/tooltip.php:87
+#: ./templates/element/MarkView/tooltip.php:131
+#: ./templates/element/Tree/related_table.php:8
 msgid "Convar"
 msgstr ""
 
-#: Model/Table/BatchesTable.php:75
-#: Model/Table/CrossingsTable.php:75
-#: Model/Table/ExperimentSitesTable.php:56
-#: Model/Table/GraftingsTable.php:56
-#: Model/Table/MarkFormFieldsTable.php:64
-#: Model/Table/MarkFormPropertiesTable.php:76
-#: Model/Table/MarkFormPropertyTypesTable.php:56
-#: Model/Table/MarkFormsTable.php:67
-#: Model/Table/MarkValuesTable.php:155
-#: Model/Table/MarksTable.php:81
-#: Model/Table/MotherTreesTable.php:69
-#: Model/Table/QueriesTable.php:69
-#: Model/Table/QueryGroupsTable.php:62
-#: Model/Table/RootstocksTable.php:56
-#: Model/Table/RowsTable.php:64
-#: Model/Table/ScionsBundlesTable.php:64
-#: Model/Table/TreesTable.php:91
-#: Model/Table/UsersTable.php:52
-#: Model/Table/VarietiesTable.php:74
+#: ./src/Model/Table/BatchesTable.php:75
+#: ./src/Model/Table/CrossingsTable.php:75
+#: ./src/Model/Table/ExperimentSitesTable.php:56
+#: ./src/Model/Table/GraftingsTable.php:56
+#: ./src/Model/Table/MarkFormFieldsTable.php:64
+#: ./src/Model/Table/MarkFormPropertiesTable.php:76
+#: ./src/Model/Table/MarkFormPropertyTypesTable.php:56
+#: ./src/Model/Table/MarkFormsTable.php:67
+#: ./src/Model/Table/MarkValuesTable.php:155
+#: ./src/Model/Table/MarksTable.php:81
+#: ./src/Model/Table/MotherTreesTable.php:69
+#: ./src/Model/Table/QueriesTable.php:69
+#: ./src/Model/Table/QueryGroupsTable.php:62
+#: ./src/Model/Table/RootstocksTable.php:56
+#: ./src/Model/Table/RowsTable.php:64
+#: ./src/Model/Table/ScionsBundlesTable.php:64
+#: ./src/Model/Table/TreesTable.php:91
+#: ./src/Model/Table/UsersTable.php:52
+#: ./src/Model/Table/VarietiesTable.php:74
 msgid "This field is required"
 msgstr ""
 
-#: Model/Table/BatchesTable.php:85
+#: ./src/Model/Table/BatchesTable.php:85
 msgid "Input not valid. The code must match the following pattern: \"NumberNumberUppercaseletter\". Example: 17A"
 msgstr ""
 
-#: Model/Table/BatchesTable.php:136
+#: ./src/Model/Table/BatchesTable.php:136
 msgid "A batch with this code and this crossing already exists."
 msgstr ""
 
-#: Model/Table/CrossingsTable.php:85
+#: ./src/Model/Table/CrossingsTable.php:85
 msgid "Input not valid. The code must only contain alphanumerical characters (without umlauts). Length between four and eight characters."
 msgstr ""
 
-#: Model/Table/CrossingsTable.php:105
-#: Model/Table/MotherTreesTable.php:151
-#: Model/Table/RowsTable.php:96
-#: Model/Table/ScionsBundlesTable.php:104
+#: ./src/Model/Table/CrossingsTable.php:105
+#: ./src/Model/Table/MotherTreesTable.php:151
+#: ./src/Model/Table/RowsTable.php:96
+#: ./src/Model/Table/ScionsBundlesTable.php:104
 msgid "This code has already been used. Please use a unique code."
 msgstr ""
 
-#: Model/Table/CrossingsTable.php:110
+#: ./src/Model/Table/CrossingsTable.php:110
 msgid "A crossing with the same mother variety and the same father variety already exists."
 msgstr ""
 
-#: Model/Table/ExperimentSitesTable.php:77
-#: Model/Table/GraftingsTable.php:77
-#: Model/Table/MarkFormPropertiesTable.php:186
-#: Model/Table/MarkFormPropertyTypesTable.php:77
-#: Model/Table/MarkFormsTable.php:93
-#: Model/Table/RootstocksTable.php:77
+#: ./src/Model/Table/ExperimentSitesTable.php:77
+#: ./src/Model/Table/GraftingsTable.php:77
+#: ./src/Model/Table/MarkFormPropertiesTable.php:186
+#: ./src/Model/Table/MarkFormPropertyTypesTable.php:77
+#: ./src/Model/Table/MarkFormsTable.php:93
+#: ./src/Model/Table/RootstocksTable.php:77
 msgid "This name has already been used. Please use a unique name."
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:84
-#: Model/Table/MarkFormsTable.php:76
+#: ./src/Model/Table/MarkFormPropertiesTable.php:84
+#: ./src/Model/Table/MarkFormsTable.php:76
 msgid "This name has already been used."
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:104
+#: ./src/Model/Table/MarkFormPropertiesTable.php:104
 msgid "The min value is required and must be smaller than the max value"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:116
+#: ./src/Model/Table/MarkFormPropertiesTable.php:116
 msgid "The max value is required and must be greater than the max value"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:128
+#: ./src/Model/Table/MarkFormPropertiesTable.php:128
 msgid "The step value is required and must be greater than zero and smaller or equal to the difference between the max and the min value."
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:140
-#: Model/Table/MarkFormPropertiesTable.php:152
-#: Model/Table/MarkFormPropertiesTable.php:164
+#: ./src/Model/Table/MarkFormPropertiesTable.php:140
+#: ./src/Model/Table/MarkFormPropertiesTable.php:152
+#: ./src/Model/Table/MarkFormPropertiesTable.php:164
 msgid "Select at least one domain"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:228
+#: ./src/Model/Table/MarkFormPropertiesTable.php:228
 msgid "Integer"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:229
+#: ./src/Model/Table/MarkFormPropertiesTable.php:229
 msgid "Floating-point number"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:230
+#: ./src/Model/Table/MarkFormPropertiesTable.php:230
 msgid "Text ( < 255 characters)"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:231
+#: ./src/Model/Table/MarkFormPropertiesTable.php:231
 msgid "Boolean"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:232
-#: Marks/view.php:28
-#: element/Mark/list.php:4
-#: element/MarkView/tooltip.php:20
+#: ./src/Model/Table/MarkFormPropertiesTable.php:232
+#: ./templates/Marks/view.php:28
+#: ./templates/element/Mark/list.php:4
+#: ./templates/element/MarkView/tooltip.php:20
 msgid "Date"
 msgstr ""
 
-#: Model/Table/MarkFormPropertiesTable.php:233
+#: ./src/Model/Table/MarkFormPropertiesTable.php:233
 msgid "Photo"
 msgstr ""
 
-#: Model/Table/MarkValuesTable.php:165
+#: ./src/Model/Table/MarkValuesTable.php:165
 msgid "The validation rules of this data type has been violated. Please check data type again."
 msgstr ""
 
-#: Model/Table/MarksTable.php:89
+#: ./src/Model/Table/MarksTable.php:89
 msgid "Please select a tree"
 msgstr ""
 
-#: Model/Table/MarksTable.php:96
+#: ./src/Model/Table/MarksTable.php:96
 msgid "Variety and batch must not be selected"
 msgstr ""
 
-#: Model/Table/MarksTable.php:100
+#: ./src/Model/Table/MarksTable.php:100
 msgid "Please select a variety"
 msgstr ""
 
-#: Model/Table/MarksTable.php:107
+#: ./src/Model/Table/MarksTable.php:107
 msgid "Tree and batch must not be selected"
 msgstr ""
 
-#: Model/Table/MarksTable.php:111
+#: ./src/Model/Table/MarksTable.php:111
 msgid "Please select a batch"
 msgstr ""
 
-#: Model/Table/MarksTable.php:118
+#: ./src/Model/Table/MarksTable.php:118
 msgid "Tree and variety must not be selected"
 msgstr ""
 
-#: Model/Table/MotherTreesTable.php:98
+#: ./src/Model/Table/MotherTreesTable.php:98
 msgid "The variety of the mother tree must match the mother variety of the crossing."
 msgstr ""
 
-#: Model/Table/QueriesTable.php:191
-#: Crossings/index.php:14
-#: element/Crossing/nav.php:2
-#: element/top_nav.php:2
+#: ./src/Model/Table/QueriesTable.php:191
+#: ./templates/Crossings/index.php:14
+#: ./templates/element/Crossing/nav.php:2
+#: ./templates/element/top_nav.php:2
 msgid "Crossings"
 msgstr ""
 
-#: Model/Table/QueriesTable.php:192
-#: Marks/index.php:14
-#: element/Mark/index_table.php:6
-#: element/Mark/nav.php:2
-#: element/top_nav.php:9
+#: ./src/Model/Table/QueriesTable.php:192
+#: ./templates/Marks/index.php:14
+#: ./templates/element/Mark/index_table.php:6
+#: ./templates/element/Mark/nav.php:2
+#: ./templates/element/top_nav.php:9
 msgid "Marks"
 msgstr ""
 
-#: Model/Table/QueriesTable.php:193
-#: MotherTrees/index.php:18
-#: element/Crossing/nav.php:5
+#: ./src/Model/Table/QueriesTable.php:193
+#: ./templates/MotherTrees/index.php:18
+#: ./templates/element/Crossing/nav.php:5
 msgid "Mother Trees"
 msgstr ""
 
-#: Model/Table/QueriesTable.php:194
-#: ScionsBundles/index.php:15
-#: element/ScionsBundle/nav.php:2
-#: element/top_nav.php:6
+#: ./src/Model/Table/QueriesTable.php:194
+#: ./templates/ScionsBundles/index.php:15
+#: ./templates/element/ScionsBundle/nav.php:2
+#: ./templates/element/top_nav.php:6
 msgid "Scions Bundles"
 msgstr ""
 
-#: Model/Table/TreesTable.php:100
+#: ./src/Model/Table/TreesTable.php:100
 msgid "This number has already been used."
 msgstr ""
 
-#: Model/Table/TreesTable.php:110
+#: ./src/Model/Table/TreesTable.php:110
 msgid "Input not valid. The publicid must only contain numbers within 1 and 9999999."
 msgstr ""
 
-#: Model/Table/TreesTable.php:178
+#: ./src/Model/Table/TreesTable.php:178
 msgid "The # prefix means, the tree was eliminated. It must therefore also have an elimination date."
 msgstr ""
 
-#: Model/Table/VarietiesTable.php:109
+#: ./src/Model/Table/VarietiesTable.php:109
 msgid "A variety with this code and the same batch already exists."
 msgstr ""
 
-#: Batches/add.php:8
+#: ./templates/Batches/add.php:8
 msgid "Add Batch"
 msgstr ""
 
-#: Batches/add.php:33
-#: Batches/edit.php:33
-#: Crossings/add.php:25
-#: Crossings/edit.php:23
-#: ExperimentSites/add.php:12
-#: ExperimentSites/edit.php:12
-#: Graftings/add.php:12
-#: Graftings/edit.php:12
-#: MarkFormProperties/add.php:53
-#: MarkFormProperties/edit.php:56
-#: MarkFormPropertyTypes/add.php:12
-#: MarkFormPropertyTypes/edit.php:12
-#: MarkForms/add.php:35
-#: MarkForms/edit.php:36
-#: MarkValues/edit.php:17
-#: Marks/edit.php:59
-#: MotherTrees/add.php:55
-#: MotherTrees/edit.php:42
-#: Queries/add.php:19
-#: Queries/add_mark_query.php:19
-#: Queries/edit.php:19
-#: QueryGroups/add.php:12
-#: QueryGroups/edit.php:12
-#: Rootstocks/add.php:12
-#: Rootstocks/edit.php:12
-#: Rows/add.php:20
-#: Rows/edit.php:25
-#: ScionsBundles/add.php:32
-#: ScionsBundles/edit.php:32
-#: Trees/add.php:58
-#: Trees/add_genuine_seedling.php:33
-#: Trees/add_graft_tree.php:44
-#: Trees/edit.php:62
-#: Users/add.php:17
-#: Users/edit.php:17
-#: Varieties/add_breeder_variety.php:23
-#: Varieties/add_official_variety.php:30
-#: Varieties/edit.php:24
-#: element/Mark/basic_mark_form.php:36
-#: element/Tree/eliminate_form.php:24
-#: element/Tree/plant_form.php:27
+#: ./templates/Batches/add.php:33
+#: ./templates/Batches/edit.php:33
+#: ./templates/Crossings/add.php:25
+#: ./templates/Crossings/edit.php:23
+#: ./templates/ExperimentSites/add.php:12
+#: ./templates/ExperimentSites/edit.php:12
+#: ./templates/Graftings/add.php:12
+#: ./templates/Graftings/edit.php:12
+#: ./templates/MarkFormProperties/add.php:53
+#: ./templates/MarkFormProperties/edit.php:56
+#: ./templates/MarkFormPropertyTypes/add.php:12
+#: ./templates/MarkFormPropertyTypes/edit.php:12
+#: ./templates/MarkForms/add.php:35
+#: ./templates/MarkForms/edit.php:36
+#: ./templates/MarkValues/edit.php:17
+#: ./templates/Marks/edit.php:59
+#: ./templates/MotherTrees/add.php:55
+#: ./templates/MotherTrees/edit.php:42
+#: ./templates/Queries/add.php:19
+#: ./templates/Queries/add_mark_query.php:19
+#: ./templates/Queries/edit.php:19
+#: ./templates/QueryGroups/add.php:12
+#: ./templates/QueryGroups/edit.php:12
+#: ./templates/Rootstocks/add.php:12
+#: ./templates/Rootstocks/edit.php:12
+#: ./templates/Rows/add.php:20
+#: ./templates/Rows/edit.php:25
+#: ./templates/ScionsBundles/add.php:32
+#: ./templates/ScionsBundles/edit.php:32
+#: ./templates/Trees/add.php:58
+#: ./templates/Trees/add_genuine_seedling.php:33
+#: ./templates/Trees/add_graft_tree.php:44
+#: ./templates/Trees/edit.php:62
+#: ./templates/Users/add.php:17
+#: ./templates/Users/edit.php:17
+#: ./templates/Varieties/add_breeder_variety.php:23
+#: ./templates/Varieties/add_official_variety.php:30
+#: ./templates/Varieties/edit.php:24
+#: ./templates/element/Mark/basic_mark_form.php:36
+#: ./templates/element/Tree/eliminate_form.php:24
+#: ./templates/element/Tree/plant_form.php:27
 msgid "Submit"
 msgstr ""
 
-#: Batches/edit.php:8
+#: ./templates/Batches/edit.php:8
 msgid "Edit Batch"
 msgstr ""
 
-#: Batches/index.php:17
+#: ./templates/Batches/index.php:17
 msgid "Filter by Crossing.Batch..."
 msgstr ""
 
-#: Batches/view.php:6
-#: Trees/view.php:6
+#: ./templates/Batches/view.php:6
+#: ./templates/Trees/view.php:6
 msgid "Print label"
 msgstr ""
 
-#: Batches/view.php:10
-#: Marks/view.php:13
-#: element/Mark/index_table.php:21
+#: ./templates/Batches/view.php:10
+#: ./templates/Marks/view.php:13
+#: ./templates/element/Mark/index_table.php:21
 msgid "Batch:"
 msgstr ""
 
-#: Batches/view.php:13
-#: Batches/view.php:67
-#: Crossings/view.php:8
-#: Crossings/view.php:39
-#: Crossings/view.php:82
-#: ExperimentSites/view.php:8
-#: Graftings/view.php:8
-#: MarkFormProperties/view.php:8
-#: MarkFormProperties/view.php:60
-#: MarkFormPropertyTypes/view.php:8
-#: MarkFormPropertyTypes/view.php:21
-#: MarkForms/view.php:8
-#: MarkForms/view.php:29
-#: Marks/view.php:24
-#: Marks/view.php:58
-#: MotherTrees/view.php:9
-#: Rootstocks/view.php:8
-#: Rows/view.php:8
-#: ScionsBundles/view.php:8
-#: Trees/view.php:13
-#: Varieties/view.php:9
-#: Varieties/view.php:58
-#: element/Mark/list.php:3
-#: element/Tree/related_table.php:6
+#: ./templates/Batches/view.php:13
+#: ./templates/Batches/view.php:67
+#: ./templates/Crossings/view.php:8
+#: ./templates/Crossings/view.php:39
+#: ./templates/Crossings/view.php:82
+#: ./templates/ExperimentSites/view.php:8
+#: ./templates/Graftings/view.php:8
+#: ./templates/MarkFormProperties/view.php:8
+#: ./templates/MarkFormProperties/view.php:60
+#: ./templates/MarkFormPropertyTypes/view.php:8
+#: ./templates/MarkFormPropertyTypes/view.php:21
+#: ./templates/MarkForms/view.php:8
+#: ./templates/MarkForms/view.php:29
+#: ./templates/Marks/view.php:24
+#: ./templates/Marks/view.php:58
+#: ./templates/MotherTrees/view.php:9
+#: ./templates/Rootstocks/view.php:8
+#: ./templates/Rows/view.php:8
+#: ./templates/ScionsBundles/view.php:8
+#: ./templates/Trees/view.php:13
+#: ./templates/Varieties/view.php:9
+#: ./templates/Varieties/view.php:58
+#: ./templates/element/Mark/list.php:3
+#: ./templates/element/Tree/related_table.php:6
 msgid "Id"
 msgstr ""
 
-#: Batches/view.php:17
-#: MotherTrees/view.php:18
-#: element/MarkView/tooltip.php:41
+#: ./templates/Batches/view.php:17
+#: ./templates/MotherTrees/view.php:18
+#: ./templates/element/MarkView/tooltip.php:41
 msgid "Crossing"
 msgstr ""
 
-#: Batches/view.php:22
-#: Crossings/view.php:41
-#: element/MarkView/tooltip.php:45
+#: ./templates/Batches/view.php:22
+#: ./templates/Crossings/view.php:41
+#: ./templates/element/MarkView/tooltip.php:45
 msgid "Date Sowed"
 msgstr ""
 
-#: Batches/view.php:26
-#: Crossings/view.php:42
-#: element/MarkView/tooltip.php:49
+#: ./templates/Batches/view.php:26
+#: ./templates/Crossings/view.php:42
+#: ./templates/element/MarkView/tooltip.php:49
 msgid "Numb Seeds Sowed"
 msgstr ""
 
-#: Batches/view.php:30
-#: element/MarkView/tooltip.php:53
+#: ./templates/Batches/view.php:30
+#: ./templates/element/MarkView/tooltip.php:53
 msgid "Numb Sprouts Grown"
 msgstr ""
 
-#: Batches/view.php:34
-#: Crossings/view.php:43
-#: element/MarkView/tooltip.php:57
+#: ./templates/Batches/view.php:34
+#: ./templates/Crossings/view.php:43
+#: ./templates/element/MarkView/tooltip.php:57
 msgid "Seed Tray"
 msgstr ""
 
-#: Batches/view.php:38
-#: Crossings/view.php:44
-#: Trees/view.php:58
-#: element/MarkView/tooltip.php:61
+#: ./templates/Batches/view.php:38
+#: ./templates/Crossings/view.php:44
+#: ./templates/Trees/view.php:58
+#: ./templates/element/MarkView/tooltip.php:61
 msgid "Date Planted"
 msgstr ""
 
-#: Batches/view.php:42
-#: element/MarkView/tooltip.php:65
+#: ./templates/Batches/view.php:42
+#: ./templates/element/MarkView/tooltip.php:65
 msgid "Numb Sprouts Planted"
 msgstr ""
 
-#: Batches/view.php:46
-#: Crossings/view.php:45
-#: element/MarkView/tooltip.php:69
+#: ./templates/Batches/view.php:46
+#: ./templates/Crossings/view.php:45
+#: ./templates/element/MarkView/tooltip.php:69
 msgid "Patch"
 msgstr ""
 
-#: Batches/view.php:50
-#: Crossings/view.php:22
-#: MarkFormProperties/view.php:43
-#: MarkForms/view.php:12
-#: Marks/view.php:45
-#: MotherTrees/view.php:55
-#: Rows/view.php:20
-#: ScionsBundles/view.php:33
-#: Trees/view.php:74
-#: Users/view.php:20
-#: Varieties/view.php:41
+#: ./templates/Batches/view.php:50
+#: ./templates/Crossings/view.php:22
+#: ./templates/MarkFormProperties/view.php:43
+#: ./templates/MarkForms/view.php:12
+#: ./templates/Marks/view.php:45
+#: ./templates/MotherTrees/view.php:55
+#: ./templates/Rows/view.php:20
+#: ./templates/ScionsBundles/view.php:33
+#: ./templates/Trees/view.php:74
+#: ./templates/Users/view.php:20
+#: ./templates/Varieties/view.php:41
 msgid "Created"
 msgstr ""
 
-#: Batches/view.php:54
-#: Crossings/view.php:26
-#: MarkFormProperties/view.php:47
-#: MarkFormProperties/view.php:62
-#: MarkFormPropertyTypes/view.php:23
-#: MarkForms/view.php:16
-#: MarkForms/view.php:32
-#: Marks/view.php:49
-#: Marks/view.php:62
-#: MotherTrees/view.php:59
-#: Rows/view.php:24
-#: ScionsBundles/view.php:37
-#: Trees/view.php:78
-#: Users/view.php:24
-#: Varieties/view.php:45
-#: Varieties/view.php:63
-#: element/Tree/related_table.php:13
+#: ./templates/Batches/view.php:54
+#: ./templates/Crossings/view.php:26
+#: ./templates/MarkFormProperties/view.php:47
+#: ./templates/MarkFormProperties/view.php:62
+#: ./templates/MarkFormPropertyTypes/view.php:23
+#: ./templates/MarkForms/view.php:16
+#: ./templates/MarkForms/view.php:32
+#: ./templates/Marks/view.php:49
+#: ./templates/Marks/view.php:62
+#: ./templates/MotherTrees/view.php:59
+#: ./templates/Rows/view.php:24
+#: ./templates/ScionsBundles/view.php:37
+#: ./templates/Trees/view.php:78
+#: ./templates/Users/view.php:24
+#: ./templates/Varieties/view.php:45
+#: ./templates/Varieties/view.php:63
+#: ./templates/element/Tree/related_table.php:13
 msgid "Modified"
 msgstr ""
 
-#: Batches/view.php:59
-#: MarkFormProperties/view.php:52
-#: MotherTrees/view.php:64
-#: Rows/view.php:29
-#: ScionsBundles/view.php:42
-#: Trees/view.php:83
-#: element/MarkView/tooltip.php:74
-#: element/MarkView/tooltip.php:156
-#: element/Tree/related_table.php:11
+#: ./templates/Batches/view.php:59
+#: ./templates/MarkFormProperties/view.php:52
+#: ./templates/MotherTrees/view.php:64
+#: ./templates/Rows/view.php:29
+#: ./templates/ScionsBundles/view.php:42
+#: ./templates/Trees/view.php:83
+#: ./templates/element/MarkView/tooltip.php:74
+#: ./templates/element/MarkView/tooltip.php:156
+#: ./templates/element/Tree/related_table.php:11
 msgid "Note"
 msgstr ""
 
-#: Batches/view.php:63
+#: ./templates/Batches/view.php:63
 msgid "Related Varieties"
 msgstr ""
 
-#: Batches/view.php:69
-#: Crossings/view.php:46
-#: Crossings/view.php:89
-#: ExperimentSites/index.php:11
-#: Graftings/index.php:11
-#: MarkFormProperties/view.php:63
-#: MarkFormPropertyTypes/index.php:11
-#: MarkFormPropertyTypes/view.php:24
-#: Marks/view.php:63
-#: Rootstocks/index.php:11
-#: Users/index.php:14
-#: Varieties/view.php:64
-#: element/Batch/index_table.php:11
-#: element/Crossing/index_table.php:8
-#: element/Mark/index_table.php:8
-#: element/Mark/list.php:10
-#: element/MarkForm/index_table.php:8
-#: element/MarkFormProperty/index_table.php:10
-#: element/MotherTree/index_table.php:16
-#: element/Row/index_table.php:10
-#: element/ScionsBundle/index_table.php:11
-#: element/Tree/get_tree.php:10
-#: element/Tree/index_table.php:15
-#: element/Tree/related_table.php:14
-#: element/Variety/index_table.php:10
+#: ./templates/Batches/view.php:69
+#: ./templates/Crossings/view.php:46
+#: ./templates/Crossings/view.php:89
+#: ./templates/ExperimentSites/index.php:11
+#: ./templates/Graftings/index.php:11
+#: ./templates/MarkFormProperties/view.php:63
+#: ./templates/MarkFormPropertyTypes/index.php:11
+#: ./templates/MarkFormPropertyTypes/view.php:24
+#: ./templates/Marks/view.php:63
+#: ./templates/Rootstocks/index.php:11
+#: ./templates/Settings/index.php:12
+#: ./templates/Users/index.php:14
+#: ./templates/Varieties/view.php:64
+#: ./templates/element/Batch/index_table.php:11
+#: ./templates/element/Crossing/index_table.php:8
+#: ./templates/element/Mark/index_table.php:8
+#: ./templates/element/Mark/list.php:10
+#: ./templates/element/MarkForm/index_table.php:8
+#: ./templates/element/MarkFormProperty/index_table.php:10
+#: ./templates/element/MotherTree/index_table.php:16
+#: ./templates/element/Row/index_table.php:10
+#: ./templates/element/ScionsBundle/index_table.php:11
+#: ./templates/element/Tree/get_tree.php:10
+#: ./templates/element/Tree/index_table.php:15
+#: ./templates/element/Tree/related_table.php:14
+#: ./templates/element/Variety/index_table.php:10
 msgid "Actions"
 msgstr ""
 
-#: Batches/view.php:78
-#: Crossings/view.php:60
-#: Crossings/view.php:103
-#: ExperimentSites/index.php:22
-#: Graftings/index.php:21
-#: MarkFormProperties/view.php:73
-#: MarkFormPropertyTypes/index.php:22
-#: MarkFormPropertyTypes/view.php:34
-#: Rootstocks/index.php:21
-#: Users/index.php:27
-#: Varieties/view.php:77
-#: element/Batch/index_table.php:26
-#: element/Crossing/index_table.php:32
-#: element/Mark/index_table.php:49
-#: element/Mark/list.php:53
-#: element/MarkForm/index_table.php:21
-#: element/MarkFormProperty/index_table.php:26
-#: element/MotherTree/index_table.php:33
-#: element/Row/index_table.php:24
-#: element/ScionsBundle/index_table.php:27
-#: element/Tree/index_table.php:33
-#: element/Tree/related_table.php:30
-#: element/Variety/index_table.php:24
+#: ./templates/Batches/view.php:78
+#: ./templates/Crossings/view.php:60
+#: ./templates/Crossings/view.php:103
+#: ./templates/ExperimentSites/index.php:22
+#: ./templates/Graftings/index.php:21
+#: ./templates/MarkFormProperties/view.php:73
+#: ./templates/MarkFormPropertyTypes/index.php:22
+#: ./templates/MarkFormPropertyTypes/view.php:34
+#: ./templates/Rootstocks/index.php:21
+#: ./templates/Users/index.php:27
+#: ./templates/Varieties/view.php:77
+#: ./templates/element/Batch/index_table.php:26
+#: ./templates/element/Crossing/index_table.php:32
+#: ./templates/element/Mark/index_table.php:49
+#: ./templates/element/Mark/list.php:53
+#: ./templates/element/MarkForm/index_table.php:21
+#: ./templates/element/MarkFormProperty/index_table.php:26
+#: ./templates/element/MotherTree/index_table.php:33
+#: ./templates/element/Row/index_table.php:24
+#: ./templates/element/ScionsBundle/index_table.php:27
+#: ./templates/element/Tree/index_table.php:33
+#: ./templates/element/Tree/related_table.php:30
+#: ./templates/element/Variety/index_table.php:24
 msgid "View"
 msgstr ""
 
-#: Batches/view.php:81
-#: Crossings/view.php:63
-#: Crossings/view.php:106
-#: ExperimentSites/index.php:25
-#: Graftings/index.php:23
-#: MarkFormProperties/view.php:76
-#: MarkFormPropertyTypes/index.php:25
-#: MarkFormPropertyTypes/view.php:37
-#: Marks/view.php:88
-#: Rootstocks/index.php:23
-#: Users/index.php:29
-#: Varieties/view.php:80
-#: element/Batch/index_table.php:28
-#: element/Crossing/index_table.php:34
-#: element/Mark/index_table.php:51
-#: element/Mark/list.php:57
-#: element/MarkForm/index_table.php:23
-#: element/MarkFormProperty/index_table.php:29
-#: element/MotherTree/index_table.php:35
-#: element/Query/nav.php:7
-#: element/Query/nav.php:24
-#: element/Row/index_table.php:26
-#: element/ScionsBundle/index_table.php:29
-#: element/Tree/index_table.php:35
-#: element/Tree/related_table.php:33
-#: element/Variety/index_table.php:26
+#: ./templates/Batches/view.php:81
+#: ./templates/Crossings/view.php:63
+#: ./templates/Crossings/view.php:106
+#: ./templates/ExperimentSites/index.php:25
+#: ./templates/Graftings/index.php:23
+#: ./templates/MarkFormProperties/view.php:76
+#: ./templates/MarkFormPropertyTypes/index.php:25
+#: ./templates/MarkFormPropertyTypes/view.php:37
+#: ./templates/Marks/view.php:88
+#: ./templates/Rootstocks/index.php:23
+#: ./templates/Settings/index.php:21
+#: ./templates/Users/index.php:29
+#: ./templates/Varieties/view.php:80
+#: ./templates/element/Batch/index_table.php:28
+#: ./templates/element/Crossing/index_table.php:34
+#: ./templates/element/Mark/index_table.php:51
+#: ./templates/element/Mark/list.php:57
+#: ./templates/element/MarkForm/index_table.php:23
+#: ./templates/element/MarkFormProperty/index_table.php:29
+#: ./templates/element/MotherTree/index_table.php:35
+#: ./templates/element/Query/nav.php:7
+#: ./templates/element/Query/nav.php:24
+#: ./templates/element/Row/index_table.php:26
+#: ./templates/element/ScionsBundle/index_table.php:29
+#: ./templates/element/Tree/index_table.php:35
+#: ./templates/element/Tree/related_table.php:33
+#: ./templates/element/Variety/index_table.php:26
 msgid "Edit"
 msgstr ""
 
-#: Batches/view.php:85
-#: Crossings/view.php:67
-#: Crossings/view.php:110
-#: ExperimentSites/index.php:29
-#: Graftings/index.php:27
-#: MarkFormPropertyTypes/index.php:29
-#: MarkFormPropertyTypes/view.php:42
-#: Marks/view.php:93
-#: Rootstocks/index.php:27
-#: Users/index.php:33
-#: Varieties/view.php:84
-#: element/Batch/index_table.php:32
-#: element/Crossing/index_table.php:38
-#: element/Mark/index_table.php:55
-#: element/Mark/list.php:62
-#: element/MarkForm/index_table.php:27
-#: element/MarkFormProperty/index_table.php:33
-#: element/MotherTree/index_table.php:39
-#: element/Query/nav.php:12
-#: element/Query/nav.php:28
-#: element/Row/index_table.php:30
-#: element/ScionsBundle/index_table.php:33
-#: element/Tree/index_table.php:39
-#: element/Tree/related_table.php:37
-#: element/Variety/index_table.php:30
+#: ./templates/Batches/view.php:85
+#: ./templates/Crossings/view.php:67
+#: ./templates/Crossings/view.php:110
+#: ./templates/ExperimentSites/index.php:29
+#: ./templates/Graftings/index.php:27
+#: ./templates/MarkFormPropertyTypes/index.php:29
+#: ./templates/MarkFormPropertyTypes/view.php:42
+#: ./templates/Marks/view.php:93
+#: ./templates/Rootstocks/index.php:27
+#: ./templates/Users/index.php:33
+#: ./templates/Varieties/view.php:84
+#: ./templates/element/Batch/index_table.php:32
+#: ./templates/element/Crossing/index_table.php:38
+#: ./templates/element/Mark/index_table.php:55
+#: ./templates/element/Mark/list.php:62
+#: ./templates/element/MarkForm/index_table.php:27
+#: ./templates/element/MarkFormProperty/index_table.php:33
+#: ./templates/element/MotherTree/index_table.php:39
+#: ./templates/element/Query/nav.php:12
+#: ./templates/element/Query/nav.php:28
+#: ./templates/element/Row/index_table.php:30
+#: ./templates/element/ScionsBundle/index_table.php:33
+#: ./templates/element/Tree/index_table.php:39
+#: ./templates/element/Tree/related_table.php:37
+#: ./templates/element/Variety/index_table.php:30
 msgid "Delete"
 msgstr ""
 
-#: Batches/view.php:86
-#: Crossings/view.php:68
-#: Crossings/view.php:111
-#: ExperimentSites/index.php:30
-#: Graftings/index.php:28
-#: MarkFormPropertyTypes/index.php:30
-#: MarkFormPropertyTypes/view.php:43
-#: Marks/view.php:94
-#: Rootstocks/index.php:28
-#: Varieties/view.php:85
-#: element/Batch/index_table.php:33
-#: element/Crossing/index_table.php:39
-#: element/MarkForm/index_table.php:28
-#: element/MarkFormProperty/index_table.php:34
-#: element/MotherTree/index_table.php:40
-#: element/Row/index_table.php:31
-#: element/ScionsBundle/index_table.php:34
-#: element/Tree/index_table.php:40
-#: element/Tree/related_table.php:38
-#: element/Variety/index_table.php:31
+#: ./templates/Batches/view.php:86
+#: ./templates/Crossings/view.php:68
+#: ./templates/Crossings/view.php:111
+#: ./templates/ExperimentSites/index.php:30
+#: ./templates/Graftings/index.php:28
+#: ./templates/MarkFormPropertyTypes/index.php:30
+#: ./templates/MarkFormPropertyTypes/view.php:43
+#: ./templates/Marks/view.php:94
+#: ./templates/Rootstocks/index.php:28
+#: ./templates/Varieties/view.php:85
+#: ./templates/element/Batch/index_table.php:33
+#: ./templates/element/Crossing/index_table.php:39
+#: ./templates/element/MarkForm/index_table.php:28
+#: ./templates/element/MarkFormProperty/index_table.php:34
+#: ./templates/element/MotherTree/index_table.php:40
+#: ./templates/element/Row/index_table.php:31
+#: ./templates/element/ScionsBundle/index_table.php:34
+#: ./templates/element/Tree/index_table.php:40
+#: ./templates/element/Tree/related_table.php:38
+#: ./templates/element/Variety/index_table.php:31
 msgid "Are you sure you want to delete \"{0}\" (id: {1})?"
 msgstr ""
 
-#: Crossings/add.php:7
+#: ./templates/Crossings/add.php:7
 msgid "Add Crossing"
 msgstr ""
 
-#: Crossings/add.php:14
+#: ./templates/Crossings/add.php:14
 msgid "Mother Variety"
 msgstr ""
 
-#: Crossings/add.php:20
+#: ./templates/Crossings/add.php:20
 msgid "Father Variety"
 msgstr ""
 
-#: Crossings/edit.php:7
+#: ./templates/Crossings/edit.php:7
 msgid "Edit Crossing"
 msgstr ""
 
-#: Crossings/index.php:17
+#: ./templates/Crossings/index.php:17
 msgid "Filter by code..."
 msgstr ""
 
-#: Crossings/view.php:5
+#: ./templates/Crossings/view.php:5
 msgid "Crossing:"
 msgstr ""
 
-#: Crossings/view.php:12
+#: ./templates/Crossings/view.php:12
 msgid "Mother variety"
 msgstr ""
 
-#: Crossings/view.php:17
+#: ./templates/Crossings/view.php:17
 msgid "Father variety"
 msgstr ""
 
-#: Crossings/view.php:31
+#: ./templates/Crossings/view.php:31
 msgid "Target"
 msgstr ""
 
-#: Crossings/view.php:35
+#: ./templates/Crossings/view.php:35
 msgid "Related Batches"
 msgstr ""
 
-#: Crossings/view.php:40
-#: Crossings/view.php:83
-#: Varieties/view.php:59
+#: ./templates/Crossings/view.php:40
+#: ./templates/Crossings/view.php:83
+#: ./templates/Varieties/view.php:59
 msgid "Code"
 msgstr ""
 
-#: Crossings/view.php:78
+#: ./templates/Crossings/view.php:78
 msgid "Related Mother Trees"
 msgstr ""
 
-#: Crossings/view.php:84
-#: element/MarkView/tooltip.php:125
-#: element/MotherTree/index_table.php:9
-#: element/Tree/get_tree.php:4
-#: element/Tree/related_table.php:7
+#: ./templates/Crossings/view.php:84
+#: ./templates/element/MarkView/tooltip.php:125
+#: ./templates/element/MotherTree/index_table.php:9
+#: ./templates/element/Tree/get_tree.php:4
+#: ./templates/element/Tree/related_table.php:7
 msgid "Publicid"
 msgstr ""
 
-#: Crossings/view.php:85
-#: MotherTrees/view.php:23
+#: ./templates/Crossings/view.php:85
+#: ./templates/MotherTrees/view.php:23
 msgid "Planed"
 msgstr ""
 
-#: Crossings/view.php:86
-#: MotherTrees/view.php:27
+#: ./templates/Crossings/view.php:86
+#: ./templates/MotherTrees/view.php:27
 msgid "Numb Portions"
 msgstr ""
 
-#: Crossings/view.php:87
-#: MotherTrees/view.php:31
+#: ./templates/Crossings/view.php:87
+#: ./templates/MotherTrees/view.php:31
 msgid "Numb Flowers"
 msgstr ""
 
-#: Crossings/view.php:88
-#: MotherTrees/view.php:39
+#: ./templates/Crossings/view.php:88
+#: ./templates/MotherTrees/view.php:39
 msgid "Numb Seeds"
 msgstr ""
 
-#: Crossings/view.php:95
-#: element/MotherTree/index_table.php:24
+#: ./templates/Crossings/view.php:95
+#: ./templates/element/MotherTree/index_table.php:24
 msgid "Mother tree not set."
 msgstr ""
 
-#: ExperimentSites/add.php:7
+#: ./templates/ExperimentSites/add.php:7
 msgid "Add Experiment Site"
 msgstr ""
 
-#: ExperimentSites/edit.php:7
+#: ./templates/ExperimentSites/edit.php:7
 msgid "Edit Experiment Site"
 msgstr ""
 
-#: ExperimentSites/index.php:5
-#: element/Setting/nav.php:8
+#: ./templates/ExperimentSites/index.php:5
+#: ./templates/element/Setting/nav.php:8
 msgid "Experiment Sites"
 msgstr ""
 
-#: ExperimentSites/index.php:40
-#: Graftings/index.php:38
-#: MarkFormPropertyTypes/index.php:40
-#: Rootstocks/index.php:38
-#: Users/index.php:43
-#: element/Batch/index_table.php:43
-#: element/Crossing/index_table.php:49
-#: element/Mark/index_table.php:65
-#: element/MarkForm/index_table.php:38
-#: element/MarkFormProperty/index_table.php:45
-#: element/MotherTree/index_table.php:50
-#: element/Query/mark_results_table.php:79
-#: element/Query/results_table.php:23
-#: element/Row/index_table.php:40
-#: element/ScionsBundle/index_table.php:44
-#: element/Tree/index_table.php:50
-#: element/Variety/index_table.php:41
+#: ./templates/ExperimentSites/index.php:40
+#: ./templates/Graftings/index.php:38
+#: ./templates/MarkFormPropertyTypes/index.php:40
+#: ./templates/Rootstocks/index.php:38
+#: ./templates/Users/index.php:43
+#: ./templates/element/Batch/index_table.php:43
+#: ./templates/element/Crossing/index_table.php:49
+#: ./templates/element/Mark/index_table.php:65
+#: ./templates/element/MarkForm/index_table.php:38
+#: ./templates/element/MarkFormProperty/index_table.php:45
+#: ./templates/element/MotherTree/index_table.php:50
+#: ./templates/element/Query/mark_results_table.php:79
+#: ./templates/element/Query/results_table.php:23
+#: ./templates/element/Row/index_table.php:40
+#: ./templates/element/ScionsBundle/index_table.php:44
+#: ./templates/element/Tree/index_table.php:50
+#: ./templates/element/Variety/index_table.php:41
 msgid "first"
 msgstr ""
 
-#: ExperimentSites/index.php:41
-#: Graftings/index.php:39
-#: MarkFormPropertyTypes/index.php:41
-#: Rootstocks/index.php:39
-#: Users/index.php:44
-#: element/Batch/index_table.php:44
-#: element/Crossing/index_table.php:50
-#: element/Mark/index_table.php:66
-#: element/MarkForm/index_table.php:39
-#: element/MarkFormProperty/index_table.php:46
-#: element/MotherTree/index_table.php:51
-#: element/Query/mark_results_table.php:80
-#: element/Query/results_table.php:24
-#: element/Row/index_table.php:41
-#: element/ScionsBundle/index_table.php:45
-#: element/Tree/index_table.php:51
-#: element/Variety/index_table.php:42
+#: ./templates/ExperimentSites/index.php:41
+#: ./templates/Graftings/index.php:39
+#: ./templates/MarkFormPropertyTypes/index.php:41
+#: ./templates/Rootstocks/index.php:39
+#: ./templates/Users/index.php:44
+#: ./templates/element/Batch/index_table.php:44
+#: ./templates/element/Crossing/index_table.php:50
+#: ./templates/element/Mark/index_table.php:66
+#: ./templates/element/MarkForm/index_table.php:39
+#: ./templates/element/MarkFormProperty/index_table.php:46
+#: ./templates/element/MotherTree/index_table.php:51
+#: ./templates/element/Query/mark_results_table.php:80
+#: ./templates/element/Query/results_table.php:24
+#: ./templates/element/Row/index_table.php:41
+#: ./templates/element/ScionsBundle/index_table.php:45
+#: ./templates/element/Tree/index_table.php:51
+#: ./templates/element/Variety/index_table.php:42
 msgid "previous"
 msgstr ""
 
-#: ExperimentSites/index.php:43
-#: Graftings/index.php:41
-#: MarkFormPropertyTypes/index.php:43
-#: Rootstocks/index.php:41
-#: Users/index.php:46
-#: element/Batch/index_table.php:46
-#: element/Crossing/index_table.php:52
-#: element/Mark/index_table.php:68
-#: element/MarkForm/index_table.php:41
-#: element/MarkFormProperty/index_table.php:48
-#: element/MotherTree/index_table.php:53
-#: element/Query/mark_results_table.php:82
-#: element/Query/results_table.php:26
-#: element/Row/index_table.php:43
-#: element/ScionsBundle/index_table.php:47
-#: element/Tree/index_table.php:53
-#: element/Variety/index_table.php:44
+#: ./templates/ExperimentSites/index.php:43
+#: ./templates/Graftings/index.php:41
+#: ./templates/MarkFormPropertyTypes/index.php:43
+#: ./templates/Rootstocks/index.php:41
+#: ./templates/Users/index.php:46
+#: ./templates/element/Batch/index_table.php:46
+#: ./templates/element/Crossing/index_table.php:52
+#: ./templates/element/Mark/index_table.php:68
+#: ./templates/element/MarkForm/index_table.php:41
+#: ./templates/element/MarkFormProperty/index_table.php:48
+#: ./templates/element/MotherTree/index_table.php:53
+#: ./templates/element/Query/mark_results_table.php:82
+#: ./templates/element/Query/results_table.php:26
+#: ./templates/element/Row/index_table.php:43
+#: ./templates/element/ScionsBundle/index_table.php:47
+#: ./templates/element/Tree/index_table.php:53
+#: ./templates/element/Variety/index_table.php:44
 msgid "next"
 msgstr ""
 
-#: ExperimentSites/index.php:44
-#: Graftings/index.php:42
-#: MarkFormPropertyTypes/index.php:44
-#: Rootstocks/index.php:42
-#: Users/index.php:47
-#: element/Batch/index_table.php:47
-#: element/Crossing/index_table.php:53
-#: element/Mark/index_table.php:69
-#: element/MarkForm/index_table.php:42
-#: element/MarkFormProperty/index_table.php:49
-#: element/MotherTree/index_table.php:54
-#: element/Query/mark_results_table.php:83
-#: element/Query/results_table.php:27
-#: element/Row/index_table.php:44
-#: element/ScionsBundle/index_table.php:48
-#: element/Tree/index_table.php:54
-#: element/Variety/index_table.php:45
+#: ./templates/ExperimentSites/index.php:44
+#: ./templates/Graftings/index.php:42
+#: ./templates/MarkFormPropertyTypes/index.php:44
+#: ./templates/Rootstocks/index.php:42
+#: ./templates/Users/index.php:47
+#: ./templates/element/Batch/index_table.php:47
+#: ./templates/element/Crossing/index_table.php:53
+#: ./templates/element/Mark/index_table.php:69
+#: ./templates/element/MarkForm/index_table.php:42
+#: ./templates/element/MarkFormProperty/index_table.php:49
+#: ./templates/element/MotherTree/index_table.php:54
+#: ./templates/element/Query/mark_results_table.php:83
+#: ./templates/element/Query/results_table.php:27
+#: ./templates/element/Row/index_table.php:44
+#: ./templates/element/ScionsBundle/index_table.php:48
+#: ./templates/element/Tree/index_table.php:54
+#: ./templates/element/Variety/index_table.php:45
 msgid "last"
 msgstr ""
 
-#: ExperimentSites/index.php:46
-#: Graftings/index.php:44
-#: MarkFormPropertyTypes/index.php:46
-#: Rootstocks/index.php:44
-#: Users/index.php:49
-#: element/Batch/index_table.php:49
-#: element/Crossing/index_table.php:55
-#: element/Mark/index_table.php:71
-#: element/MarkForm/index_table.php:44
-#: element/MarkFormProperty/index_table.php:51
-#: element/MotherTree/index_table.php:56
-#: element/Query/mark_results_table.php:85
-#: element/Query/results_table.php:29
-#: element/Row/index_table.php:46
-#: element/ScionsBundle/index_table.php:50
-#: element/Tree/index_table.php:56
-#: element/Variety/index_table.php:47
+#: ./templates/ExperimentSites/index.php:46
+#: ./templates/Graftings/index.php:44
+#: ./templates/MarkFormPropertyTypes/index.php:46
+#: ./templates/Rootstocks/index.php:44
+#: ./templates/Users/index.php:49
+#: ./templates/element/Batch/index_table.php:49
+#: ./templates/element/Crossing/index_table.php:55
+#: ./templates/element/Mark/index_table.php:71
+#: ./templates/element/MarkForm/index_table.php:44
+#: ./templates/element/MarkFormProperty/index_table.php:51
+#: ./templates/element/MotherTree/index_table.php:56
+#: ./templates/element/Query/mark_results_table.php:85
+#: ./templates/element/Query/results_table.php:29
+#: ./templates/element/Row/index_table.php:46
+#: ./templates/element/ScionsBundle/index_table.php:50
+#: ./templates/element/Tree/index_table.php:56
+#: ./templates/element/Variety/index_table.php:47
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 
-#: ExperimentSites/select.php:2
+#: ./templates/ExperimentSites/select.php:2
 msgid "Select Experiment Site"
 msgstr ""
 
-#: ExperimentSites/select.php:5
+#: ./templates/ExperimentSites/select.php:5
 msgid "Ok"
 msgstr ""
 
-#: ExperimentSites/view.php:5
+#: ./templates/ExperimentSites/view.php:5
 msgid "Experiment Site:"
 msgstr ""
 
-#: ExperimentSites/view.php:12
-#: Graftings/view.php:12
-#: MarkFormPropertyTypes/view.php:12
-#: MarkFormPropertyTypes/view.php:22
-#: Rootstocks/view.php:12
-#: Rows/add.php:10
-#: Rows/edit.php:10
-#: element/Row/index_table.php:5
+#: ./templates/ExperimentSites/view.php:12
+#: ./templates/Graftings/view.php:12
+#: ./templates/MarkFormPropertyTypes/view.php:12
+#: ./templates/MarkFormPropertyTypes/view.php:22
+#: ./templates/Rootstocks/view.php:12
+#: ./templates/Rows/add.php:10
+#: ./templates/Rows/edit.php:10
+#: ./templates/element/Row/index_table.php:5
 msgid "Name"
 msgstr ""
 
-#: Graftings/add.php:7
+#: ./templates/Graftings/add.php:7
 msgid "Add Grafting"
 msgstr ""
 
-#: Graftings/edit.php:7
+#: ./templates/Graftings/edit.php:7
 msgid "Edit Grafting"
 msgstr ""
 
-#: Graftings/index.php:5
-#: element/Setting/nav.php:5
+#: ./templates/Graftings/index.php:5
+#: ./templates/element/Setting/nav.php:5
 msgid "Graftings"
 msgstr ""
 
-#: Graftings/view.php:5
+#: ./templates/Graftings/view.php:5
 msgid "Grafting:"
 msgstr ""
 
-#: MarkFormProperties/add.php:7
+#: ./templates/MarkFormProperties/add.php:7
 msgid "Add Property"
 msgstr ""
 
-#: MarkFormProperties/add.php:12
-#: MarkFormProperties/edit.php:12
-#: MarkFormProperties/view.php:12
-#: element/MarkFormProperty/index_table.php:7
+#: ./templates/MarkFormProperties/add.php:12
+#: ./templates/MarkFormProperties/edit.php:12
+#: ./templates/MarkFormProperties/view.php:12
+#: ./templates/element/MarkFormProperty/index_table.php:7
 msgid "Property Type"
 msgstr ""
 
-#: MarkFormProperties/add.php:17
-#: MarkFormProperties/edit.php:17
-#: MarkFormProperties/view.php:21
-#: element/MarkFormProperty/index_table.php:6
+#: ./templates/MarkFormProperties/add.php:17
+#: ./templates/MarkFormProperties/edit.php:17
+#: ./templates/MarkFormProperties/view.php:21
+#: ./templates/element/MarkFormProperty/index_table.php:6
 msgid "Data Type"
 msgstr ""
 
-#: MarkFormProperties/add.php:24
-#: MarkFormProperties/edit.php:25
-#: MarkFormProperties/view.php:26
+#: ./templates/MarkFormProperties/add.php:24
+#: ./templates/MarkFormProperties/edit.php:25
+#: ./templates/MarkFormProperties/view.php:26
 msgid "Minimum Value"
 msgstr ""
 
-#: MarkFormProperties/add.php:32
-#: MarkFormProperties/edit.php:34
-#: MarkFormProperties/view.php:32
+#: ./templates/MarkFormProperties/add.php:32
+#: ./templates/MarkFormProperties/edit.php:34
+#: ./templates/MarkFormProperties/view.php:32
 msgid "Maximum Value"
 msgstr ""
 
-#: MarkFormProperties/add.php:45
-#: MarkFormProperties/edit.php:48
+#: ./templates/MarkFormProperties/add.php:45
+#: ./templates/MarkFormProperties/edit.php:48
 msgid "This property serves to mark:"
 msgstr ""
 
-#: MarkFormProperties/edit.php:7
+#: ./templates/MarkFormProperties/edit.php:7
 msgid "Add Mark Form Property"
 msgstr ""
 
-#: MarkFormProperties/index.php:14
+#: ./templates/MarkFormProperties/index.php:14
 msgid "Mark Form Properties"
 msgstr ""
 
-#: MarkFormProperties/index.php:17
-#: MarkForms/index.php:17
-#: Rows/index.php:17
+#: ./templates/MarkFormProperties/index.php:17
+#: ./templates/MarkForms/index.php:17
+#: ./templates/Rows/index.php:17
 msgid "Filter by name..."
 msgstr ""
 
-#: MarkFormProperties/view.php:5
+#: ./templates/MarkFormProperties/view.php:5
 msgid "Mark Form Property:"
 msgstr ""
 
-#: MarkFormProperties/view.php:38
+#: ./templates/MarkFormProperties/view.php:38
 msgid "Step"
 msgstr ""
 
-#: MarkFormProperties/view.php:56
+#: ./templates/MarkFormProperties/view.php:56
 msgid "Related Mark Forms"
 msgstr ""
 
-#: MarkFormProperties/view.php:61
-#: Marks/view.php:36
+#: ./templates/MarkFormProperties/view.php:61
+#: ./templates/Marks/view.php:36
 msgid "Mark Form"
 msgstr ""
 
-#: MarkFormPropertyTypes/add.php:7
+#: ./templates/MarkFormPropertyTypes/add.php:7
 msgid "Add Mark Property Type"
 msgstr ""
 
-#: MarkFormPropertyTypes/edit.php:7
+#: ./templates/MarkFormPropertyTypes/edit.php:7
 msgid "Edit Mark Property Type"
 msgstr ""
 
-#: MarkFormPropertyTypes/index.php:5
-#: element/Setting/nav.php:13
+#: ./templates/MarkFormPropertyTypes/index.php:5
+#: ./templates/element/Setting/nav.php:13
 msgid "Mark Property Types"
 msgstr ""
 
-#: MarkFormPropertyTypes/view.php:5
+#: ./templates/MarkFormPropertyTypes/view.php:5
 msgid "Mark Property Type:"
 msgstr ""
 
-#: MarkFormPropertyTypes/view.php:17
+#: ./templates/MarkFormPropertyTypes/view.php:17
 msgid "Related Mark Properties"
 msgstr ""
 
-#: MarkForms/add.php:7
+#: ./templates/MarkForms/add.php:7
 msgid "Add Mark Form"
 msgstr ""
 
-#: MarkForms/add.php:11
-#: MarkForms/edit.php:11
-#: element/Mark/basic_mark_form.php:20
+#: ./templates/MarkForms/add.php:11
+#: ./templates/MarkForms/edit.php:11
+#: ./templates/element/Mark/basic_mark_form.php:20
 msgid "Fields"
 msgstr ""
 
-#: MarkForms/add.php:27
-#: MarkForms/edit.php:28
-#: element/Mark/basic_mark_form.php:29
+#: ./templates/MarkForms/add.php:27
+#: ./templates/MarkForms/edit.php:28
+#: ./templates/element/Mark/basic_mark_form.php:29
 msgid "Add mark field to form"
 msgstr ""
 
-#: MarkForms/edit.php:7
+#: ./templates/MarkForms/edit.php:7
 msgid "Edit Mark Form"
 msgstr ""
 
-#: MarkForms/index.php:14
+#: ./templates/MarkForms/index.php:14
 msgid "Mark Forms"
 msgstr ""
 
-#: MarkForms/view.php:5
+#: ./templates/MarkForms/view.php:5
 msgid "Mark Form:"
 msgstr ""
 
-#: MarkForms/view.php:21
-#: Varieties/view.php:50
-#: element/MarkView/tooltip.php:112
+#: ./templates/MarkForms/view.php:21
+#: ./templates/Varieties/view.php:50
+#: ./templates/element/MarkView/tooltip.php:112
 msgid "Description"
 msgstr ""
 
-#: MarkForms/view.php:25
+#: ./templates/MarkForms/view.php:25
 msgid "Form Fields"
 msgstr ""
 
-#: MarkForms/view.php:30
-#: element/Query/builder.php:60
+#: ./templates/MarkForms/view.php:30
+#: ./templates/element/Query/builder.php:60
 msgid "Mark Property"
 msgstr ""
 
-#: MarkForms/view.php:31
+#: ./templates/MarkForms/view.php:31
 msgid "Priority"
 msgstr ""
 
-#: MarkValues/edit.php:7
+#: ./templates/MarkValues/edit.php:7
 msgid "Edit Mark Value"
 msgstr ""
 
-#: Marks/add_batch_mark.php:8
-#: element/Mark/nav.php:6
+#: ./templates/Marks/add_batch_mark.php:8
+#: ./templates/element/Mark/nav.php:9
 msgid "Mark Batch"
 msgstr ""
 
-#: Marks/add_batch_mark.php:14
-#: Marks/edit.php:18
-#: Varieties/add_breeder_variety.php:14
-#: Varieties/add_official_variety.php:19
-#: Varieties/edit.php:14
-#: element/Batch/index_table.php:5
+#: ./templates/Marks/add_batch_mark.php:14
+#: ./templates/Marks/edit.php:18
+#: ./templates/Varieties/add_breeder_variety.php:14
+#: ./templates/Varieties/add_official_variety.php:19
+#: ./templates/Varieties/edit.php:14
+#: ./templates/element/Batch/index_table.php:5
 msgid "Crossing.Batch"
 msgstr ""
 
-#: Marks/add_tree_mark.php:17
+#: ./templates/Marks/add_tree_mark.php:17
+#: ./templates/element/Mark/nav.php:3
 msgid "Mark Tree"
 msgstr ""
 
-#: Marks/add_tree_mark.php:21
-#: MotherTrees/add.php:20
-#: Trees/eliminate.php:18
-#: Trees/eliminate_by_scanner.php:18
-#: Trees/plant.php:18
+#: ./templates/Marks/add_tree_mark.php:21
+#: ./templates/MotherTrees/add.php:20
+#: ./templates/Trees/eliminate.php:18
+#: ./templates/Trees/eliminate_by_scanner.php:18
+#: ./templates/Trees/plant.php:18
 msgid "Enter publicid..."
 msgstr ""
 
-#: Marks/add_tree_mark_by_scanner.php:13
+#: ./templates/Marks/add_tree_mark_by_scanner.php:13
 msgid "Mark Tree by Scanner"
 msgstr ""
 
-#: Marks/add_tree_mark_by_scanner.php:16
+#: ./templates/Marks/add_tree_mark_by_scanner.php:16
 msgid "Fill out form then scan tree and marks in here"
 msgstr ""
 
-#: Marks/add_tree_mark_by_scanner.php:18
+#: ./templates/Marks/add_tree_mark_by_scanner.php:18
 msgid "Please wait..."
 msgstr ""
 
-#: Marks/add_variety_mark.php:8
-#: element/Mark/nav.php:5
+#: ./templates/Marks/add_variety_mark.php:8
+#: ./templates/element/Mark/nav.php:8
 msgid "Mark Variety"
 msgstr ""
 
-#: Marks/edit.php:6
+#: ./templates/Marks/edit.php:6
 msgid "Edit Mark"
 msgstr ""
 
-#: Marks/index.php:18
+#: ./templates/Marks/index.php:18
 msgid "Filter by mark type"
 msgstr ""
 
-#: Marks/view.php:7
-#: Trees/view.php:10
-#: element/Mark/index_table.php:15
-#: element/Mark/list.php:16
+#: ./templates/Marks/view.php:7
+#: ./templates/Trees/view.php:10
+#: ./templates/element/Mark/index_table.php:15
+#: ./templates/element/Mark/list.php:16
 msgid "Tree:"
 msgstr ""
 
-#: Marks/view.php:10
-#: Varieties/view.php:6
-#: element/Mark/index_table.php:18
-#: element/Mark/list.php:21
+#: ./templates/Marks/view.php:10
+#: ./templates/Varieties/view.php:6
+#: ./templates/element/Mark/index_table.php:18
+#: ./templates/element/Mark/list.php:21
 msgid "Variety:"
 msgstr ""
 
-#: Marks/view.php:21
+#: ./templates/Marks/view.php:21
 msgid "Mark:"
 msgstr ""
 
-#: Marks/view.php:32
-#: element/Mark/list.php:7
-#: element/MarkView/tooltip.php:24
+#: ./templates/Marks/view.php:32
+#: ./templates/element/Mark/list.php:7
+#: ./templates/element/MarkView/tooltip.php:24
 msgid "Author"
 msgstr ""
 
-#: Marks/view.php:41
-#: element/Mark/index_table.php:5
+#: ./templates/Marks/view.php:41
+#: ./templates/element/Mark/index_table.php:5
 msgid "Object"
 msgstr ""
 
-#: Marks/view.php:54
-#: element/Query/mark_results_table.php:57
+#: ./templates/Marks/view.php:54
+#: ./templates/element/Query/mark_results_table.php:57
 msgid "Values"
 msgstr ""
 
-#: Marks/view.php:59
-#: element/Mark/list.php:5
-#: element/MarkView/tooltip.php:16
+#: ./templates/Marks/view.php:59
+#: ./templates/element/Mark/list.php:5
+#: ./templates/element/MarkView/tooltip.php:16
 msgid "Property"
 msgstr ""
 
-#: Marks/view.php:60
-#: element/Mark/list.php:6
-#: element/MarkView/tooltip.php:11
-#: element/Query/mark_results_table.php:54
+#: ./templates/Marks/view.php:60
+#: ./templates/Settings/index.php:11
+#: ./templates/element/Mark/list.php:6
+#: ./templates/element/MarkView/tooltip.php:11
+#: ./templates/element/Query/mark_results_table.php:54
 msgid "Value"
 msgstr ""
 
-#: Marks/view.php:61
-#: element/MarkView/tooltip.php:28
+#: ./templates/Marks/view.php:61
+#: ./templates/element/MarkView/tooltip.php:28
 msgid "Exceptional Mark"
 msgstr ""
 
-#: MotherTrees/add.php:17
+#: ./templates/MotherTrees/add.php:17
 msgid "Add Mother Tree"
 msgstr ""
 
-#: MotherTrees/add.php:30
-#: MotherTrees/edit.php:17
-#: ScionsBundles/add.php:15
-#: ScionsBundles/edit.php:15
-#: element/MotherTree/index_table.php:8
-#: element/ScionsBundle/index_table.php:6
+#: ./templates/MotherTrees/add.php:30
+#: ./templates/MotherTrees/edit.php:17
+#: ./templates/ScionsBundles/add.php:15
+#: ./templates/ScionsBundles/edit.php:15
+#: ./templates/element/MotherTree/index_table.php:8
+#: ./templates/element/ScionsBundle/index_table.php:6
 msgid "Identification"
 msgstr ""
 
-#: MotherTrees/edit.php:8
+#: ./templates/MotherTrees/edit.php:8
 msgid "Edit Mother Tree"
 msgstr ""
 
-#: MotherTrees/index.php:21
+#: ./templates/MotherTrees/index.php:21
 msgid "Filter by code oder publicid..."
 msgstr ""
 
-#: MotherTrees/view.php:6
+#: ./templates/MotherTrees/view.php:6
 msgid "Mother Tree:"
 msgstr ""
 
-#: MotherTrees/view.php:13
-#: element/MarkView/tooltip.php:122
+#: ./templates/MotherTrees/view.php:13
+#: ./templates/element/MarkView/tooltip.php:122
 msgid "Tree"
 msgstr ""
 
-#: MotherTrees/view.php:35
+#: ./templates/MotherTrees/view.php:35
 msgid "Numb Fruits"
 msgstr ""
 
-#: MotherTrees/view.php:43
+#: ./templates/MotherTrees/view.php:43
 msgid "Date Pollen Harvested"
 msgstr ""
 
-#: MotherTrees/view.php:47
+#: ./templates/MotherTrees/view.php:47
 msgid "Date Impregnated"
 msgstr ""
 
-#: MotherTrees/view.php:51
+#: ./templates/MotherTrees/view.php:51
 msgid "Date Fruit Harvested"
 msgstr ""
 
-#: Queries/add.php:7
-#: Queries/add_mark_query.php:7
+#: ./templates/Queries/add.php:7
+#: ./templates/Queries/add_mark_query.php:7
 msgid "Add Query"
 msgstr ""
 
-#: Queries/edit.php:7
+#: ./templates/Queries/edit.php:7
 msgid "Edit Query"
 msgstr ""
 
-#: Queries/index.php:5
-#: element/top_nav.php:10
+#: ./templates/Queries/index.php:5
+#: ./templates/element/top_nav.php:10
 msgid "Queries"
 msgstr ""
 
-#: Queries/view.php:7
-#: Queries/view_mark_query.php:7
+#: ./templates/Queries/view.php:7
+#: ./templates/Queries/view_mark_query.php:7
 msgid "Export to excel"
 msgstr ""
 
-#: Queries/view.php:11
-#: Queries/view_mark_query.php:11
+#: ./templates/Queries/view.php:11
+#: ./templates/Queries/view_mark_query.php:11
 msgid "Query:"
 msgstr ""
 
-#: QueryGroups/add.php:7
+#: ./templates/QueryGroups/add.php:7
 msgid "Add Query Group"
 msgstr ""
 
-#: QueryGroups/edit.php:7
+#: ./templates/QueryGroups/edit.php:7
 msgid "Edit Query Group"
 msgstr ""
 
-#: Rootstocks/add.php:7
+#: ./templates/Rootstocks/add.php:7
 msgid "Add Rootstock"
 msgstr ""
 
-#: Rootstocks/edit.php:7
+#: ./templates/Rootstocks/edit.php:7
 msgid "Edit Rootstock"
 msgstr ""
 
-#: Rootstocks/index.php:5
-#: element/Setting/nav.php:2
+#: ./templates/Rootstocks/index.php:5
+#: ./templates/element/Setting/nav.php:2
 msgid "Rootstocks"
 msgstr ""
 
-#: Rootstocks/view.php:5
+#: ./templates/Rootstocks/view.php:5
 msgid "Rootstock:"
 msgstr ""
 
-#: Rows/add.php:7
+#: ./templates/Rows/add.php:7
 msgid "Add Row"
 msgstr ""
 
-#: Rows/edit.php:7
+#: ./templates/Rows/edit.php:7
 msgid "Edit Row"
 msgstr ""
 
-#: Rows/index.php:14
-#: element/Row/nav.php:2
-#: element/top_nav.php:8
+#: ./templates/Rows/index.php:14
+#: ./templates/element/Row/nav.php:2
+#: ./templates/element/top_nav.php:8
 msgid "Rows"
 msgstr ""
 
-#: Rows/view.php:5
+#: ./templates/Rows/view.php:5
 msgid "Row:"
 msgstr ""
 
-#: Rows/view.php:12
+#: ./templates/Rows/view.php:12
 msgid "Date Created"
 msgstr ""
 
-#: Rows/view.php:16
-#: Trees/view.php:62
+#: ./templates/Rows/view.php:16
+#: ./templates/Trees/view.php:62
 msgid "Date Eliminated"
 msgstr ""
 
-#: Rows/view.php:33
-#: Varieties/view.php:95
+#: ./templates/Rows/view.php:33
+#: ./templates/Varieties/view.php:95
 msgid "Related Trees"
 msgstr ""
 
-#: ScionsBundles/add.php:7
+#: ./templates/ScionsBundles/add.php:7
 msgid "Add Scions Bundle"
 msgstr ""
 
-#: ScionsBundles/add.php:24
-#: ScionsBundles/edit.php:24
+#: ./templates/ScionsBundles/add.php:24
+#: ./templates/ScionsBundles/edit.php:24
 msgid "List of publicids of the descent trees, separeted by a comma"
 msgstr ""
 
-#: ScionsBundles/add.php:27
-#: ScionsBundles/edit.php:27
-#: ScionsBundles/view.php:29
+#: ./templates/ScionsBundles/add.php:27
+#: ./templates/ScionsBundles/edit.php:27
+#: ./templates/ScionsBundles/view.php:29
 msgid "Reserved for external partners"
 msgstr ""
 
-#: ScionsBundles/edit.php:7
+#: ./templates/ScionsBundles/edit.php:7
 msgid "Edit Scions Bundle"
 msgstr ""
 
-#: ScionsBundles/index.php:18
+#: ./templates/ScionsBundles/index.php:18
 msgid "Filter by code or convar..."
 msgstr ""
 
-#: ScionsBundles/view.php:5
+#: ./templates/ScionsBundles/view.php:5
 msgid "Scions Bundle:"
 msgstr ""
 
-#: ScionsBundles/view.php:12
+#: ./templates/ScionsBundles/view.php:12
 msgid "Descents Publicid List"
 msgstr ""
 
-#: ScionsBundles/view.php:16
-#: Trees/view.php:17
-#: element/MarkView/tooltip.php:84
-#: element/Tree/get_tree.php:5
+#: ./templates/ScionsBundles/view.php:16
+#: ./templates/Trees/view.php:17
+#: ./templates/element/MarkView/tooltip.php:84
+#: ./templates/element/Tree/get_tree.php:5
 msgid "Variety"
 msgstr ""
 
-#: ScionsBundles/view.php:21
-#: Varieties/view.php:60
+#: ./templates/ScionsBundles/view.php:21
+#: ./templates/Varieties/view.php:60
 msgid "Numb Scions"
 msgstr ""
 
-#: ScionsBundles/view.php:25
-#: Varieties/view.php:61
+#: ./templates/ScionsBundles/view.php:25
+#: ./templates/Varieties/view.php:61
 msgid "Date Scions Harvest"
 msgstr ""
 
-#: Settings/index.php:6
-#: layout/default-v1.php:87
+#: ./templates/Settings/edit.php:7
+msgid "Edit %s"
+msgstr ""
+
+#: ./templates/Settings/edit.php:16
+msgid "Save"
+msgstr ""
+
+#: ./templates/Settings/index.php:6
+#: ./templates/layout/default-v1.php:87
 msgid "Settings"
 msgstr ""
 
-#: Settings/index.php:7
-msgid "See and edit settings in the menu on the left hand side."
+#: ./templates/Settings/index.php:10
+msgid "Key"
 msgstr ""
 
-#: Trees/add.php:7
+#: ./templates/Trees/add.php:7
 msgid "Add Tree"
 msgstr ""
 
-#: Trees/add_genuine_seedling.php:7
+#: ./templates/Trees/add_genuine_seedling.php:7
 msgid "Add Genuine Seedling"
 msgstr ""
 
-#: Trees/add_graft_tree.php:7
+#: ./templates/Trees/add_graft_tree.php:7
 msgid "Add Graft Tree"
 msgstr ""
 
-#: Trees/edit.php:7
+#: ./templates/Trees/edit.php:7
 msgid "Edit Tree"
 msgstr ""
 
-#: Trees/eliminate.php:15
-#: element/Tree/nav.php:8
+#: ./templates/Trees/eliminate.php:15
+#: ./templates/element/Tree/nav.php:8
 msgid "Eliminate Tree"
 msgstr ""
 
-#: Trees/eliminate_by_scanner.php:15
-#: element/Tree/nav.php:9
+#: ./templates/Trees/eliminate_by_scanner.php:15
+#: ./templates/element/Tree/nav.php:9
 msgid "Eliminate Tree (by scanner)"
 msgstr ""
 
-#: Trees/index.php:21
+#: ./templates/Trees/index.php:21
 msgid "Filter by publicid or convar..."
 msgstr ""
 
-#: Trees/plant.php:15
-#: element/Tree/nav.php:7
+#: ./templates/Trees/plant.php:15
+#: ./templates/element/Tree/nav.php:7
 msgid "Plant Tree"
 msgstr ""
 
-#: Trees/view.php:22
-#: element/Tree/get_tree.php:6
+#: ./templates/Trees/view.php:22
+#: ./templates/element/Tree/get_tree.php:6
 msgid "Experiment Site"
 msgstr ""
 
-#: Trees/view.php:27
-#: element/MarkView/tooltip.php:147
-#: element/Tree/get_tree.php:7
-#: element/Tree/related_table.php:9
+#: ./templates/Trees/view.php:27
+#: ./templates/element/MarkView/tooltip.php:147
+#: ./templates/element/Tree/get_tree.php:7
+#: ./templates/element/Tree/related_table.php:9
 msgid "Row"
 msgstr ""
 
-#: Trees/view.php:32
-#: element/MarkView/tooltip.php:151
-#: element/Tree/get_tree.php:8
-#: element/Tree/related_table.php:10
+#: ./templates/Trees/view.php:32
+#: ./templates/element/MarkView/tooltip.php:151
+#: ./templates/element/Tree/get_tree.php:8
+#: ./templates/element/Tree/related_table.php:10
 msgid "Offset"
 msgstr ""
 
-#: Trees/view.php:36
+#: ./templates/Trees/view.php:36
 msgid "Genuine Seedling"
 msgstr ""
 
-#: Trees/view.php:40
+#: ./templates/Trees/view.php:40
 msgid "Date Labeled"
 msgstr ""
 
-#: Trees/view.php:44
+#: ./templates/Trees/view.php:44
 msgid "Date Grafted"
 msgstr ""
 
-#: Trees/view.php:48
+#: ./templates/Trees/view.php:48
 msgid "Rootstock"
 msgstr ""
 
-#: Trees/view.php:53
+#: ./templates/Trees/view.php:53
 msgid "Grafting"
 msgstr ""
 
-#: Trees/view.php:66
+#: ./templates/Trees/view.php:66
 msgid "Migrated Tree"
 msgstr ""
 
-#: Trees/view.php:70
+#: ./templates/Trees/view.php:70
 msgid "Don't Eliminate"
 msgstr ""
 
-#: Users/add.php:7
+#: ./templates/Users/add.php:7
 msgid "Add User"
 msgstr ""
 
-#: Users/edit.php:7
+#: ./templates/Users/edit.php:7
 msgid "Edit User"
 msgstr ""
 
-#: Users/index.php:5
-#: element/Setting/nav.php:18
+#: ./templates/Users/index.php:5
+#: ./templates/element/Setting/nav.php:18
 msgid "Users"
 msgstr ""
 
-#: Users/index.php:34
+#: ./templates/Users/index.php:34
 msgid "Are you sure you want to delete this user: {0}?"
 msgstr ""
 
-#: Users/login.php:3
-#: Users/login.php:7
+#: ./templates/Users/login.php:3
+#: ./templates/Users/login.php:7
 msgid "Login"
 msgstr ""
 
-#: Users/view.php:8
+#: ./templates/Users/view.php:8
 msgid "Email"
 msgstr ""
 
-#: Users/view.php:12
+#: ./templates/Users/view.php:12
 msgid "Level"
 msgstr ""
 
-#: Users/view.php:16
+#: ./templates/Users/view.php:16
 msgid "Time zone"
 msgstr ""
 
-#: Varieties/add_breeder_variety.php:8
+#: ./templates/Varieties/add_breeder_variety.php:8
 msgid "Add Breeder Variety"
 msgstr ""
 
-#: Varieties/add_official_variety.php:8
+#: ./templates/Varieties/add_official_variety.php:8
 msgid "Add Official Variety"
 msgstr ""
 
-#: Varieties/edit.php:8
+#: ./templates/Varieties/edit.php:8
 msgid "Edit Variety"
 msgstr ""
 
-#: Varieties/index.php:19
+#: ./templates/Varieties/index.php:19
 msgid "Filter by ID, convar or breeder variety code..."
 msgstr ""
 
-#: Varieties/view.php:13
-#: element/Mark/list.php:26
-#: element/MarkView/tooltip.php:38
+#: ./templates/Varieties/view.php:13
+#: ./templates/element/Mark/list.php:26
+#: ./templates/element/MarkView/tooltip.php:38
 msgid "Batch"
 msgstr ""
 
-#: Varieties/view.php:21
-#: element/MarkView/tooltip.php:91
+#: ./templates/Varieties/view.php:21
+#: ./templates/element/MarkView/tooltip.php:91
 msgid "Official Name"
 msgstr ""
 
-#: Varieties/view.php:25
-#: element/MarkView/tooltip.php:95
+#: ./templates/Varieties/view.php:25
+#: ./templates/element/MarkView/tooltip.php:95
 msgid "Acronym"
 msgstr ""
 
-#: Varieties/view.php:29
-#: element/MarkView/tooltip.php:99
+#: ./templates/Varieties/view.php:29
+#: ./templates/element/MarkView/tooltip.php:99
 msgid "Breeder Variety Code"
 msgstr ""
 
-#: Varieties/view.php:33
-#: element/MarkView/tooltip.php:103
+#: ./templates/Varieties/view.php:33
+#: ./templates/element/MarkView/tooltip.php:103
 msgid "Plant Breeder"
 msgstr ""
 
-#: Varieties/view.php:37
-#: element/MarkView/tooltip.php:107
+#: ./templates/Varieties/view.php:37
+#: ./templates/element/MarkView/tooltip.php:107
 msgid "Registration"
 msgstr ""
 
-#: Varieties/view.php:54
+#: ./templates/Varieties/view.php:54
 msgid "Related Scions Bundles"
 msgstr ""
 
-#: Varieties/view.php:62
+#: ./templates/Varieties/view.php:62
 msgid "External Use"
 msgstr ""
 
-#: element/Batch/nav.php:3
+#: ./templates/element/Batch/nav.php:3
 msgid "List Batches"
 msgstr ""
 
-#: element/Batch/nav.php:4
+#: ./templates/element/Batch/nav.php:4
 msgid "New Batch"
 msgstr ""
 
-#: element/Crossing/index_table.php:6
+#: ./templates/element/Crossing/index_table.php:6
 msgid "Mother trees"
 msgstr ""
 
-#: element/Crossing/nav.php:3
+#: ./templates/element/Crossing/nav.php:3
 msgid "List Crossings"
 msgstr ""
 
-#: element/Crossing/nav.php:4
+#: ./templates/element/Crossing/nav.php:4
 msgid "New Crossing"
 msgstr ""
 
-#: element/Crossing/nav.php:6
+#: ./templates/element/Crossing/nav.php:6
 msgid "List Mother Trees"
 msgstr ""
 
-#: element/Crossing/nav.php:8
+#: ./templates/element/Crossing/nav.php:8
 msgid "New Mother Tree"
 msgstr ""
 
-#: element/Mark/field.php:11
+#: ./templates/element/Mark/field.php:11
 msgid "or ''{now}'' (literally)"
 msgstr ""
 
-#: element/Mark/field.php:20
+#: ./templates/element/Mark/field.php:20
 msgid "The date must be valid and match one of the following formats: 'dd.mm.yyyy' or 'dd-mm-yyyy' or 'dd/mm/yyyy'"
 msgstr ""
 
-#: element/Mark/field.php:24
+#: ./templates/element/Mark/field.php:24
 msgid "Enter \"{now}\" (literally) to get a scanner code that produces always the current date."
 msgstr ""
 
-#: element/Mark/index_table.php:56
+#: ./templates/element/Mark/index_table.php:56
 msgid "Are you sure you want to delete the Mark with the id {0}?"
 msgstr ""
 
-#: element/Mark/list.php:8
-#: element/MarkView/tooltip.php:37
-#: element/MarkView/tooltip.php:83
-#: element/MarkView/tooltip.php:121
+#: ./templates/element/Mark/list.php:8
+#: ./templates/element/MarkView/tooltip.php:37
+#: ./templates/element/MarkView/tooltip.php:83
+#: ./templates/element/MarkView/tooltip.php:121
 msgid "Marked object"
 msgstr ""
 
-#: element/Mark/list.php:9
+#: ./templates/element/Mark/list.php:9
 msgid "Exceptional"
 msgstr ""
 
-#: element/Mark/list.php:64
+#: ./templates/element/Mark/list.php:64
 msgid "Are you sure you want to delete \"{0}\" (id: {1,number,integer})?"
 msgstr ""
 
-#: element/Mark/nav.php:3
+#: ./templates/element/Mark/nav.php:4
+msgid "Mark Tree (Scanner)"
+msgstr ""
+
+#: ./templates/element/Mark/nav.php:6
 msgid "Mark Tree (Mobile)"
 msgstr ""
 
-#: element/Mark/nav.php:7
+#: ./templates/element/Mark/nav.php:10
 msgid "List Marks"
 msgstr ""
 
-#: element/Mark/nav.php:8
+#: ./templates/element/Mark/nav.php:11
 msgid "Forms"
 msgstr ""
 
-#: element/Mark/nav.php:9
+#: ./templates/element/Mark/nav.php:12
 msgid "New Form"
 msgstr ""
 
-#: element/Mark/nav.php:10
+#: ./templates/element/Mark/nav.php:13
 msgid "List Forms"
 msgstr ""
 
-#: element/Mark/nav.php:11
+#: ./templates/element/Mark/nav.php:14
 msgid "Properties"
 msgstr ""
 
-#: element/Mark/nav.php:12
+#: ./templates/element/Mark/nav.php:15
 msgid "New Property"
 msgstr ""
 
-#: element/Mark/nav.php:14
+#: ./templates/element/Mark/nav.php:17
 msgid "List Properties"
 msgstr ""
 
-#: element/MarkForm/index_table.php:16
-#: element/MarkFormProperty/index_table.php:20
-#: element/Row/index_table.php:18
-#: element/Tree/index_table.php:28
-#: element/Tree/related_table.php:23
+#: ./templates/element/MarkForm/index_table.php:16
+#: ./templates/element/MarkFormProperty/index_table.php:20
+#: ./templates/element/Row/index_table.php:18
+#: ./templates/element/Tree/index_table.php:28
+#: ./templates/element/Tree/related_table.php:23
 msgid "Read"
 msgstr ""
 
-#: element/MarkView/tooltip.php:1
+#: ./templates/element/MarkView/tooltip.php:1
 msgid "Mark details"
 msgstr ""
 
-#: element/MarkView/tooltip.php:32
+#: ./templates/element/MarkView/tooltip.php:32
 msgid "Details about the marked object"
 msgstr ""
 
-#: element/MarkView/tooltip.php:135
+#: ./templates/element/MarkView/tooltip.php:135
 msgid "Date planted"
 msgstr ""
 
-#: element/MarkView/tooltip.php:139
+#: ./templates/element/MarkView/tooltip.php:139
 msgid "Date eliminated"
 msgstr ""
 
-#: element/MarkView/tooltip.php:143
+#: ./templates/element/MarkView/tooltip.php:143
 msgid "Experiment site"
 msgstr ""
 
-#: element/MotherTree/index_table.php:2
-#: element/Tree/index_table.php:2
-#: element/Tree/related_table.php:2
+#: ./templates/element/MotherTree/index_table.php:2
+#: ./templates/element/Tree/index_table.php:2
+#: ./templates/element/Tree/related_table.php:2
 msgid "Show eliminated trees"
 msgstr ""
 
-#: element/Query/builder.php:1
+#: ./templates/element/Query/builder.php:1
 msgid "Search Query"
 msgstr ""
 
-#: element/Query/builder.php:7
+#: ./templates/element/Query/builder.php:7
 msgid "Main table"
 msgstr ""
 
-#: element/Query/builder.php:16
+#: ./templates/element/Query/builder.php:16
 msgid "Group marks by"
 msgstr ""
 
-#: element/Query/builder.php:26
+#: ./templates/element/Query/builder.php:26
 msgid "Select columns shown in the results"
 msgstr ""
 
-#: element/Query/builder.php:82
+#: ./templates/element/Query/builder.php:82
 msgid "Set filter criteria"
 msgstr ""
 
-#: element/Query/mark_results_table.php:49
+#: ./templates/element/Query/mark_results_table.php:49
 msgid "Plot"
 msgstr ""
 
-#: element/Query/mark_results_table.php:51
+#: ./templates/element/Query/mark_results_table.php:51
 msgid "Stats"
 msgstr ""
 
-#: element/Query/mark_value.php:21
+#: ./templates/element/Query/mark_value.php:21
 msgctxt "short: median"
 msgid "med"
 msgstr ""
 
-#: element/Query/mark_value.php:23
+#: ./templates/element/Query/mark_value.php:23
 msgctxt "short: count"
 msgid "cnt"
 msgstr ""
 
-#: element/Query/mark_value.php:27
+#: ./templates/element/Query/mark_value.php:27
 msgctxt "short: average"
 msgid "avg"
 msgstr ""
 
-#: element/Query/mark_value.php:33
+#: ./templates/element/Query/mark_value.php:33
 msgctxt "short: standard deviation"
 msgid "std"
 msgstr ""
 
-#: element/Query/nav.php:13
+#: ./templates/element/Query/nav.php:13
 msgid "Are you sure you want to delete this group: {0}?"
 msgstr ""
 
-#: element/Query/nav.php:29
+#: ./templates/element/Query/nav.php:29
 msgid "Are you sure you want to delete this query: {0}?"
 msgstr ""
 
-#: element/Query/nav.php:35
+#: ./templates/element/Query/nav.php:35
 msgid "New Query"
 msgstr ""
 
-#: element/Query/nav.php:41
+#: ./templates/element/Query/nav.php:41
 msgid "New Group"
 msgstr ""
 
-#: element/Query/validation_message.php:5
+#: ./templates/element/Query/validation_message.php:5
 msgid "We've found some errors in the query."
 msgstr ""
 
-#: element/Row/nav.php:3
+#: ./templates/element/Row/nav.php:3
 msgid "List Rows"
 msgstr ""
 
-#: element/Row/nav.php:4
+#: ./templates/element/Row/nav.php:4
 msgid "New Row"
 msgstr ""
 
-#: element/ScionsBundle/nav.php:3
+#: ./templates/element/ScionsBundle/nav.php:3
 msgid "List Scions Bundles"
 msgstr ""
 
-#: element/ScionsBundle/nav.php:4
+#: ./templates/element/ScionsBundle/nav.php:4
 msgid "New Scions Bundle"
 msgstr ""
 
-#: element/Setting/nav.php:3
+#: ./templates/element/Setting/nav.php:3
 msgid "List Rootstocks"
 msgstr ""
 
-#: element/Setting/nav.php:4
+#: ./templates/element/Setting/nav.php:4
 msgid "New Rootstock"
 msgstr ""
 
-#: element/Setting/nav.php:6
+#: ./templates/element/Setting/nav.php:6
 msgid "List Graftings"
 msgstr ""
 
-#: element/Setting/nav.php:7
+#: ./templates/element/Setting/nav.php:7
 msgid "New Grafting"
 msgstr ""
 
-#: element/Setting/nav.php:9
+#: ./templates/element/Setting/nav.php:9
 msgid "List Experiment Sites"
 msgstr ""
 
-#: element/Setting/nav.php:11
+#: ./templates/element/Setting/nav.php:11
 msgid "New Experiment Site"
 msgstr ""
 
-#: element/Setting/nav.php:14
+#: ./templates/element/Setting/nav.php:14
 msgid "List Property Types"
 msgstr ""
 
-#: element/Setting/nav.php:16
+#: ./templates/element/Setting/nav.php:16
 msgid "New Property Type"
 msgstr ""
 
-#: element/Setting/nav.php:19
+#: ./templates/element/Setting/nav.php:19
 msgid "List Users"
 msgstr ""
 
-#: element/Setting/nav.php:20
+#: ./templates/element/Setting/nav.php:20
 msgid "New User"
 msgstr ""
 
-#: element/Tree/eliminate_form.php:4
+#: ./templates/element/Setting/nav.php:21
+msgid "General"
+msgstr ""
+
+#: ./templates/element/Setting/nav.php:22
+msgid "List General Settings"
+msgstr ""
+
+#: ./templates/element/Tree/eliminate_form.php:4
 msgid "For this tree the don't eliminate flag was set!"
 msgstr ""
 
-#: element/Tree/get_tree.php:27
+#: ./templates/element/Tree/get_tree.php:27
 msgid "Print"
 msgstr ""
 
-#: element/Tree/index_table.php:13
-#: element/Tree/related_table.php:12
+#: ./templates/element/Tree/index_table.php:13
+#: ./templates/element/Tree/related_table.php:12
 msgid "Eliminated"
 msgstr ""
 
-#: element/Tree/index_table.php:29
-#: element/Tree/related_table.php:25
+#: ./templates/element/Tree/index_table.php:29
+#: ./templates/element/Tree/related_table.php:25
 msgid "eliminated"
 msgstr ""
 
-#: element/Tree/nav.php:3
+#: ./templates/element/Tree/nav.php:3
 msgid "List Trees"
 msgstr ""
 
-#: element/Tree/nav.php:4
+#: ./templates/element/Tree/nav.php:4
 msgid "New Tree"
 msgstr ""
 
-#: element/Tree/nav.php:5
+#: ./templates/element/Tree/nav.php:5
 msgid "New Genuine Seedling"
 msgstr ""
 
-#: element/Tree/nav.php:6
+#: ./templates/element/Tree/nav.php:6
 msgid "New Graft Tree"
 msgstr ""
 
-#: element/Variety/nav.php:3
+#: ./templates/element/Variety/nav.php:3
 msgid "List Varieties"
 msgstr ""
 
-#: element/Variety/nav.php:4
+#: ./templates/element/Variety/nav.php:4
 msgid "New Breeder Variety"
 msgstr ""
 
-#: element/Variety/nav.php:5
+#: ./templates/element/Variety/nav.php:5
 msgid "New Official Variety"
 msgstr ""
 
-#: element/nothing_found.php:2
+#: ./templates/element/nothing_found.php:2
 msgid "Nothing found..."
 msgstr ""
 
-#: element/print.php:5
+#: ./templates/element/print.php:5
 msgid "Print a label?"
 msgstr ""
 
-#: element/print.php:16
+#: ./templates/element/print.php:16
 msgid "Don't print"
 msgstr ""
 
-#: layout/default-v1.php:53
+#: ./templates/layout/default-v1.php:53
 msgid "Searching..."
 msgstr ""
 
-#: layout/default-v1.php:54
+#: ./templates/layout/default-v1.php:54
 msgid "Loading..."
 msgstr ""
 
-#: layout/default-v1.php:56
+#: ./templates/layout/default-v1.php:56
 msgid "Nothing found. Create new covar of:"
 msgstr ""
 
-#: layout/default-v1.php:58
+#: ./templates/layout/default-v1.php:58
 msgid "NEW"
 msgstr ""
 
-#: layout/default-v1.php:59
+#: ./templates/layout/default-v1.php:59
 msgid "Automatically prefilled"
 msgstr ""
 
-#: layout/default-v1.php:62
+#: ./templates/layout/default-v1.php:62
 msgid "{0} matching elements for this mark were found."
 msgstr ""
 
-#: layout/default-v1.php:63
+#: ./templates/layout/default-v1.php:63
 msgid "No tree could be found"
 msgstr ""
 
-#: layout/default-v1.php:66
+#: ./templates/layout/default-v1.php:66
 msgid "Please wait, while your report is generated. This may take up to few minutes."
 msgstr ""
 
-#: layout/default-v1.php:67
+#: ./templates/layout/default-v1.php:67
 msgid "Sorry, your report couldn't be generated. Please try again."
 msgstr ""
 
-#: layout/default-v1.php:68
+#: ./templates/layout/default-v1.php:68
 msgid "There were invalid rules in the query builder we could not restore. Please rebuild the ruleset."
 msgstr ""
 
-#: layout/default-v1.php:69
+#: ./templates/layout/default-v1.php:69
 msgid "If marks are your main table, you must select some marks to display."
 msgstr ""
 
-#: layout/default-v1.php:70
+#: ./templates/layout/default-v1.php:70
 msgid "There are multiple forms on this page. Submitting by scanner does not work!"
 msgstr ""
 
-#: layout/default-v1.php:84
+#: ./templates/layout/default-v1.php:84
 msgid "Location: {0}"
 msgstr ""
 
-#: layout/default-v1.php:88
+#: ./templates/layout/default-v1.php:88
 msgid "Logout"
 msgstr ""
 
-#: layout/default-v1.php:52
+#: ./templates/layout/default-v1.php:52
 msgctxt "Date format"
 msgid "dd.mm.yy"
 msgstr ""
 
-#: layout/default-v1.php:55
+#: ./templates/layout/default-v1.php:55
 msgctxt "{0} is replaced by an entity name."
 msgid "There was an error loading {0}"
 msgstr ""
 
-#: layout/default-v1.php:57
+#: ./templates/layout/default-v1.php:57
 msgctxt "The entitiy"
 msgid "mark"
 msgstr ""
 
-#: layout/default-v1.php:60
+#: ./templates/layout/default-v1.php:60
 msgctxt "after the : the name of the element to delete is inserted"
 msgid "Are you sure you want to delete:"
 msgstr ""
 
-#: layout/default-v1.php:64
+#: ./templates/layout/default-v1.php:64
 msgctxt "Query builder. {0} is replaced by the table name."
 msgid "{0} will be deselected, since they aren't connected to the other selected entities."
 msgstr ""
 
-#: layout/error.php:35
+#: ./templates/layout/error.php:35
 msgid "Error"
 msgstr ""
 
-#: layout/error.php:43
+#: ./templates/layout/error.php:43
 msgid "Back"
 msgstr ""
 
