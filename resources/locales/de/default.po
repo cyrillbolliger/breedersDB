@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
 "POT-Creation-Date: 2022-02-07 15:34+0000\n"
-"PO-Revision-Date: 2022-02-07 15:34\n"
+"PO-Revision-Date: 2022-02-07 17:48\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -255,7 +255,7 @@ msgstr "Die Bewertung konnte nicht gespeichert werden."
 
 #: ./src/Controller/MarksController.php:125
 msgid "Please select a tree by public id."
-msgstr ""
+msgstr "Bitte wähle einen Baum über seine Publicid."
 
 #: ./src/Controller/MarksController.php:128
 #: ./src/Controller/MarksController.php:173
@@ -389,29 +389,29 @@ msgstr "Das Reiserbündel konnte nicht gelöscht werden. Bitte versuche es erneu
 
 #: ./src/Controller/SettingsController.php:37
 msgid "Invalid setting."
-msgstr ""
+msgstr "Ungültige Einstellung."
 
 #: ./src/Controller/SettingsController.php:43
 msgid "Invalid offset. Accepted values are between 0 and 100."
-msgstr ""
+msgstr "Ungültiger Offset. Akzeptierte Werte sind zwischen 0 und 100."
 
 #: ./src/Controller/SettingsController.php:50
 #: ./src/Controller/SettingsController.php:71
 msgid "Setting not found."
-msgstr ""
+msgstr "Einstellung nicht gefunden."
 
 #: ./src/Controller/SettingsController.php:55
 msgid "Setting saved."
-msgstr ""
+msgstr "Einstellung gespeichert."
 
 #: ./src/Controller/SettingsController.php:64
 #: ./templates/Settings/index.php:17
 msgid "Printer label offset left"
-msgstr ""
+msgstr "Versatz von Links für Ettikettendruck"
 
 #: ./src/Controller/SettingsController.php:66
 msgid "How many millimeters should the label be shifted to the right? Value must be between 0 and 100."
-msgstr ""
+msgstr "Wie viele Millimeter soll die Etikette nach rechts verschoben werden? Der Wert muss zwischen 0 und 100 liegen."
 
 #: ./src/Controller/TreesController.php:102
 #: ./src/Controller/TreesController.php:138
@@ -2212,11 +2212,11 @@ msgstr "Datum Reiserernte"
 
 #: ./templates/Settings/edit.php:7
 msgid "Edit %s"
-msgstr ""
+msgstr "%s bearbeiten"
 
 #: ./templates/Settings/edit.php:16
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: ./templates/Settings/index.php:6
 #: ./templates/layout/default-v1.php:87
@@ -2225,7 +2225,7 @@ msgstr "Einstellungen"
 
 #: ./templates/Settings/index.php:10
 msgid "Key"
-msgstr ""
+msgstr "Schlüssel"
 
 #: ./templates/Trees/add.php:7
 msgid "Add Tree"
@@ -2459,7 +2459,7 @@ msgstr "\"{0}\" wirklich löschen (id: {1,number,integer})?"
 
 #: ./templates/element/Mark/nav.php:4
 msgid "Mark Tree (Scanner)"
-msgstr ""
+msgstr "Baum bewerten (Scanner)"
 
 #: ./templates/element/Mark/nav.php:6
 msgid "Mark Tree (Mobile)"
@@ -2653,11 +2653,11 @@ msgstr "Neuer Benutzer"
 
 #: ./templates/element/Setting/nav.php:21
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
 #: ./templates/element/Setting/nav.php:22
 msgid "List General Settings"
-msgstr ""
+msgstr "Allgemeine Einstellungen auflisten"
 
 #: ./templates/element/Tree/eliminate_form.php:4
 msgid "For this tree the don't eliminate flag was set!"
