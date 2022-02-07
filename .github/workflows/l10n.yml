@@ -27,7 +27,7 @@ jobs:
         run: docker exec -e XDEBUG_MODE=off poc_app bin/cake i18n extract --extract-core=no --overwrite --paths=src,templates --output=resources/locales
 
       - name: Synchronize translations with crowdin
-        uses: crowdin/github-action@1.4.4
+        uses: crowdin/github-action@1.4.6
         with:
           # upload options
           upload_sources: true
