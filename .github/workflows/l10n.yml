@@ -20,8 +20,11 @@ jobs:
 
       - uses: actions/checkout@v2
 
+      - name: Install everything
+        run: GITHUB_DOCKER_USER=root bash install.sh
+
       - name: Extract pot from cake
-        run: XDEBUG_MODE=off bin/cake i18n extract --extract-core=no --overwrite --paths=src,templates --output=resources/locales
+        run: docker exec -e XDEBUG_MODE=off poc_app bin/cake i18n extract --extract-core=no --overwrite --paths=src,templates --output=resources/locales
 
       - name: Synchronize translations with crowdin
         uses: crowdin/github-action@1.4.4
