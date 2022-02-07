@@ -1,5 +1,5 @@
 /config/app_local.php
-/config/Migrations/schema-dump-default.lock
+/config/Migrations/schema-dump-*.lock
 /tmp
 /logs
 node_modules
