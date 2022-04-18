@@ -1,5 +1,5 @@
 ---
-name: Crowdin Localization
+name: Crowdin Sync
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
         run: docker exec -e XDEBUG_MODE=off poc_app bin/cake i18n extract --extract-core=no --overwrite --paths=src,templates --output=resources/locales
 
       - name: Synchronize translations with crowdin
-        uses: crowdin/github-action@1.4.6
+        uses: crowdin/github-action@1.4.8
         with:
           # upload options
           upload_sources: true
@@ -55,7 +55,7 @@ jobs:
       - run: mv webroot/v2/src/i18n/de-CH/index.ts{.tmp,}
 
       - name: push
-        uses: github-actions-x/commit@v2.8
+        uses: github-actions-x/commit@v2.9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           push-branch: l10n_crowdin
