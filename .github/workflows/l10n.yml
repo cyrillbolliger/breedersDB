@@ -55,7 +55,7 @@ jobs:
       - run: mv webroot/v2/src/i18n/de-CH/index.ts{.tmp,}
 
       - name: push
-        uses: github-actions-x/commit@v2.8
+        uses: github-actions-x/commit@v2.9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           push-branch: l10n_crowdin
