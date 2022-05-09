@@ -65,3 +65,6 @@ WORKDIR $APP_HOME
 
 # change ownership of our application
 RUN chown -R www-data:www-data $APP_HOME
+
+# run as www-data
+USER www-data:www-data
