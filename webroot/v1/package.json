@@ -29,7 +29,7 @@
     "jQuery-QueryBuilder": "^2.6.0",
     "jquery": "^3.6.0",
     "jquery-ui": "^1.12.1",
-    "jquery-validation": "^1.19.3",
+    "jquery-validation": "^1.19.4",
     "jquery.cookie": "^1.4.1",
     "moment": "^2.29.1",
     "natives": "^1.1.6",
