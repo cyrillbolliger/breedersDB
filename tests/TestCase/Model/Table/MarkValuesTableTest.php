@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
@@ -74,8 +75,9 @@ class MarkValuesTableTest extends TestCase
         /**
          * add photos
          */
-        $faker = \Faker\Factory::create();
-        $pathTmpFile = $faker->image();
+        $pathOrigImage = ROOT . DS . 'tests/4k.jpeg';
+        $pathTmpFile = ROOT . DS . 'tests/tmp.jpeg';
+        copy($pathOrigImage, $pathTmpFile);
 
         $ext = pathinfo($pathTmpFile, PATHINFO_EXTENSION);
         $finalFilename = substr(hash(Security::$hashType, Security::randomBytes(16), false), 0, 32);

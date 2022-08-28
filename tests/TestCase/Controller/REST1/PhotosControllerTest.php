@@ -45,8 +45,7 @@ class PhotosControllerTest extends TestCase
      */
     public function testView(): void
     {
-        $faker = \Faker\Factory::create();
-        $pathTmpFile = $faker->image();
+        $pathTmpFile = $this->getPathTmpImage();
 
         $ext = pathinfo($pathTmpFile, PATHINFO_EXTENSION);
         $finalFilename = substr(hash(Security::$hashType, Security::randomBytes(16), false), 0, 32) . '.' . $ext;
@@ -69,8 +68,7 @@ class PhotosControllerTest extends TestCase
      */
     public function testView__maxWidth(): void
     {
-        $faker = \Faker\Factory::create();
-        $pathTmpFile = $faker->image();
+        $pathTmpFile = $this->getPathTmpImage();
 
         [$imgWidth, $imgHeight] = getimagesize($pathTmpFile);
 
@@ -100,8 +98,7 @@ class PhotosControllerTest extends TestCase
      */
     public function testView__maxHeight(): void
     {
-        $faker = \Faker\Factory::create();
-        $pathTmpFile = $faker->image();
+        $pathTmpFile = $this->getPathTmpImage();
 
         [$imgWidth, $imgHeight] = getimagesize($pathTmpFile);
 
@@ -131,8 +128,7 @@ class PhotosControllerTest extends TestCase
      */
     public function testView__maxWidthHeight(): void
     {
-        $faker = \Faker\Factory::create();
-        $pathTmpFile = $faker->image();
+        $pathTmpFile = $this->getPathTmpImage();
 
         [$imgWidth, $imgHeight] = getimagesize($pathTmpFile);
 
@@ -157,8 +153,8 @@ class PhotosControllerTest extends TestCase
 
     public function testAdd(): void
     {
-        $faker = \Faker\Factory::create();
-        $imgPath = $faker->image();
+        $imgPath = ROOT . DS . 'tests/4k.jpeg';
+
         $imgStream = fopen($imgPath, 'rb');
 
         $imgSize = filesize($imgPath);
@@ -248,5 +244,13 @@ class PhotosControllerTest extends TestCase
     public function testDelete(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    private function getPathTmpImage(): string
+    {
+        $pathOrigImage = ROOT . DS . 'tests/4k.jpeg';
+        $pathTmpFile = ROOT . DS . 'tests/tmp.jpeg';
+        copy($pathOrigImage, $pathTmpFile);
+        return $pathTmpFile;
     }
 }

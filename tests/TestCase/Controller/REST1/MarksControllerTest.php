@@ -186,8 +186,7 @@ class MarksControllerTest extends TestCase
         /**
          * upload image
          */
-        $faker = \Faker\Factory::create();
-        $imgPath = $faker->image(null, 200, 200);
+        $imgPath = ROOT . DS .'tests/200.png';
 
         $image = new \Laminas\Diactoros\UploadedFile(
             $imgPath,
