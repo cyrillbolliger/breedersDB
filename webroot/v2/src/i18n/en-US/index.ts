@@ -42,6 +42,9 @@ export default {
     publicid: 'Publicid'
   },
 
+  queries: {
+    title: 'Queries',
+  },
 
   general: {
     search: 'Search',
@@ -100,6 +103,10 @@ export default {
     trees: {
       title: 'Trees',
       caption: 'List of all trees.'
-    }
+    },
+    queries: {
+      title: 'Queries',
+      caption: 'Search the database.'
+    },
   }
 };

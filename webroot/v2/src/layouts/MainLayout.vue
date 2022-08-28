@@ -145,6 +145,12 @@ export default defineComponent({
         caption: t('navigation.trees.caption'),
         icon: 'park',
         link: webroot + 'trees'
+      },
+      {
+        title: t('navigation.queries.title'),
+        caption: t('navigation.queries.caption'),
+        icon: 'saved_search',
+        link: '/queries/new'
       }
     ];
 
