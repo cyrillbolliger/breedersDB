@@ -104,7 +104,7 @@ class TranslatableFieldsBehavior extends Behavior {
             'VarietiesView.batch_id'                   => __( 'Varieties -> Batch Id' ),
         ];
 
-        if ( ! key_exists( $key, $translations ) ) {
+        if ( ! array_key_exists($key, $translations ) ) {
             throw new \Exception( "Translation of field {$key} not found." );
         }
 

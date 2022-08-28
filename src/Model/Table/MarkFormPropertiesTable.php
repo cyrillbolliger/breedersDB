@@ -271,7 +271,7 @@ class MarkFormPropertiesTable extends Table {
 			}
 		}
 
-		if ( ! in_array( $slug, array_keys( $this->namesBySlug ) ) ) {
+		if ( !array_key_exists($slug, $this->namesBySlug)) {
 			throw new \Exception( "There is no mark property belonging to the given slug '{$this->namesBySlug}'" );
 		}
 
