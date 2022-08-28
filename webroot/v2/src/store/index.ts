@@ -8,9 +8,11 @@ import {
 
 import layout from './module-layout'
 import mark from './module-mark'
+import query from './module-query'
 
 import {LayoutStateInterface} from 'src/store/module-layout/state';
 import {MarkStateInterface} from 'src/store/module-mark/state';
+import {QueryStateInterface} from 'src/store/module-query/state';
 
 /*
  * If not building with SSR mode, you can
@@ -23,7 +25,8 @@ import {MarkStateInterface} from 'src/store/module-mark/state';
 
 export interface StateInterface {
   layout: Module<LayoutStateInterface, StateInterface>,
-  mark: Module<MarkStateInterface, StateInterface>
+  mark: Module<MarkStateInterface, StateInterface>,
+  query: Module<QueryStateInterface, StateInterface>,
 }
 
 // provide typings for `this.$store`
@@ -40,7 +43,8 @@ export default store(function (/* { ssrContext } */) {
   const Store = createStore<StateInterface>({
     modules: {
       layout,
-      mark
+      mark,
+      query,
     },
 
     // enable strict mode (adds overhead!)

@@ -44,6 +44,46 @@ export default {
 
   queries: {
     title: 'Queries',
+
+    query: 'Query',
+
+    baseTable: 'Base',
+
+    crossings: 'Crossings',
+    batches: 'Batches',
+    varieties: 'Varieties',
+    trees: 'Trees',
+    motherTrees: 'Mother Trees',
+    scionsBundles: 'Scions Bundles',
+
+    defaultFilter: 'Filter criteria',
+    batchFilter: 'Filter criteria to select the batches',
+    varietyFilter: 'Filter criteria to select the varieties',
+    treeFilter: 'Filter criteria to select the trees',
+    markFilter: 'Filter criteria to select the marks',
+
+    filter: {
+      column: 'Column',
+      comparator: 'Comparator',
+
+      equals: 'equals',
+      notEquals: 'notEquals',
+      less: 'less than',
+      lessOrEqual: 'less or equals',
+      greater: 'greater than',
+      greaterOrEqual: 'greater or equals',
+      startsWith: 'starts with',
+      startsNotWith: 'starts not with',
+      contains: 'contains',
+      notContains: 'contains not',
+      endsWith: 'ends with',
+      notEndsWith: 'ends not with',
+      empty: 'is empty',
+      notEmpty: 'is not empty',
+      has: 'has',
+    },
+
+    results: 'Results',
   },
 
   general: {
