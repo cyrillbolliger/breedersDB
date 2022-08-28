@@ -98,7 +98,9 @@ class Installer
         foreach (static::WRITABLE_DIRS as $path) {
             $path = $dir . '/' . $path;
             if (!file_exists($path)) {
-                mkdir($path);
+                if (!mkdir($path) && !is_dir($path)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
+                }
                 $io->write('Created `' . $path . '` directory');
             }
         }

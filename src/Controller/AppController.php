@@ -194,8 +194,8 @@ class AppController extends Controller {
 
         $sessionsDir = TMP . 'sessions';
 
-        if ( ! is_dir( $sessionsDir ) ) {
-            mkdir( $sessionsDir, 0700, true );
+        if (!mkdir($sessionsDir, 0700, true) && !is_dir($sessionsDir)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $sessionsDir));
         }
     }
 
