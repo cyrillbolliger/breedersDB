@@ -65,9 +65,10 @@ export default {
     filter: {
       column: 'Column',
       comparator: 'Comparator',
+      criteria: 'Criteria',
 
       equals: 'equals',
-      notEquals: 'notEquals',
+      notEquals: 'not equals',
       less: 'less than',
       lessOrEqual: 'less or equals',
       greater: 'greater than',
@@ -80,7 +81,9 @@ export default {
       notEndsWith: 'ends not with',
       empty: 'is empty',
       notEmpty: 'is not empty',
-      has: 'has',
+      hasPhoto: 'has photo',
+      isTrue: 'is true',
+      isFalse: 'is false',
     },
 
     results: 'Results',
