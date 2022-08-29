@@ -192,7 +192,15 @@ const criteriaInputIsValid = computed<boolean>(() => {
   color: rgba(0, 0, 0, 0.6);
   cursor: grab;
 }
+.drag-handle:hover {
+  color: var(--q-primary);
+}
+
 .delete-button {
   color: rgba(0, 0, 0, 0.6);
+}
+.delete-button:hover,
+.delete-button:focus {
+  color: var(--q-negative);
 }
 </style>
