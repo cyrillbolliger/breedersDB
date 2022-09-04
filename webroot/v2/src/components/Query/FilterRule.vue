@@ -1,5 +1,5 @@
 <template>
-  <div class="row items-center">
+  <div class="row items-center filter-rule">
     <q-icon
       name="drag_indicator"
       size="md"
@@ -188,6 +188,13 @@ const criteriaInputIsValid = computed<boolean>(() => {
 </script>
 
 <style scoped>
+.filter-rule {
+  border-left: 3px solid var(--q-primary);
+  box-shadow: 0 1px 5px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%);
+  border-radius: 3px;
+  padding: 3px;
+}
+
 .drag-handle {
   color: rgba(0, 0, 0, 0.6);
   cursor: grab;
