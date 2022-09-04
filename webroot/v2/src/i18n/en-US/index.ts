@@ -84,6 +84,9 @@ export default {
       hasPhoto: 'has photo',
       isTrue: 'is true',
       isFalse: 'is false',
+
+      andFilter: 'and criteria',
+      orFilter: 'or criteria',
     },
 
     results: 'Results',

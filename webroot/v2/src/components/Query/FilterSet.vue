@@ -2,12 +2,26 @@
   <FilterRule
     :options="options1"
   />
+  <q-btn
+    class="q-mt-md"
+    :label="t('queries.filter.andFilter')"
+    color="primary"
+    outline
+  />
+  <q-btn
+    class="q-mt-md q-ml-sm"
+    :label="t('queries.filter.orFilter')"
+    color="accent"
+    outline
+  />
 </template>
 
 <script setup lang="ts">
 import FilterRule from 'components/Query/FilterRule.vue';
 import {DataType} from 'src/models/filterOptions';
+import {useI18n} from 'vue-i18n';
 
+const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 
 
 
