@@ -1,5 +1,11 @@
 <template>
-  <div class="row items-center filter-rule">
+  <div
+    class="row items-center filter-rule"
+    :class="{
+      'filter-rule--and': operand === FilterOperand.And,
+      'filter-rule--or': operand === FilterOperand.Or
+    }"
+  >
     <q-icon
       name="drag_indicator"
       size="md"
@@ -9,7 +15,8 @@
       <q-select
         class="col-12 col-md-4"
         outlined
-        v-model="column"
+        :model-value="column"
+        @update:model-value="updateColumn"
         :options="options"
         :label="t('queries.filter.column')"
         autocomplete="off"
@@ -18,7 +25,8 @@
       <q-select
         class="col-12 col-md-4"
         outlined
-        v-model="comparator"
+        :model-value="comparator"
+        @update:model-value="updateComparator"
         :options="comparatorOptions"
         :label="t('queries.filter.comparator')"
         autocomplete="off"
@@ -28,10 +36,11 @@
         :disable="column === undefined"
       />
       <q-input
-        v-if="isInputCriteria || column === undefined"
+        v-if="hasInputCriteria || column === undefined"
         class="col-12 col-md-4"
         outlined
-        v-model.trim="criteria"
+        :model-value="criteria"
+        @update:model-value="updateCriteria"
         :label="t('queries.filter.criteria')"
         autocomplete="off"
         :error="!criteriaInputIsValid && column !== undefined && comparator !== undefined"
@@ -51,6 +60,7 @@
       icon="delete_outline"
       dense
       class="q-ml-sm delete-button"
+      @click="deleteRule"
       rounded
       flat
     />
@@ -59,18 +69,59 @@
 </template>
 
 <script setup lang="ts">
-import {computed, PropType, ref} from 'vue';
+import {computed, PropType} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {DataType, FilterComparator, FilterComparatorOption, FilterOption} from 'src/models/filterOptions';
+import {
+  DataType,
+  FilterComparatorOption,
+  FilterCriteria,
+  FilterLeaf,
+  FilterOperand,
+  FilterOption
+} from 'src/store/module-query/state';
+import {useStore} from 'src/store';
+import {FilterComparator} from 'src/models/filterOptions';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
+const store = useStore();
 
-defineProps({
+const props = defineProps({
   options: {
     type: Object as PropType<Array<FilterOption>>,
     required: true,
   },
+  node: {
+    type: Object as PropType<FilterLeaf>,
+    required: true,
+  },
+  operand: {
+    type: String as PropType<FilterOperand>,
+    required: true,
+  }
 });
+
+// noinspection TypeScriptUnresolvedVariable
+const column = computed<FilterOption | undefined>(() => props.node.filter.column)
+// noinspection TypeScriptUnresolvedVariable
+const comparator = computed<FilterComparatorOption | undefined>(() => props.node.filter.comparator)
+// noinspection TypeScriptUnresolvedVariable
+const criteria = computed<FilterCriteria | undefined>(() => props.node.filter.criteria);
+
+function updateColumn(value: FilterOption) {
+  store.commit('query/updateFilterColumn', {node: props.node, value})
+}
+
+function updateComparator(value: FilterComparatorOption) {
+  store.commit('query/updateFilterComparator', {node: props.node, value})
+}
+
+function updateCriteria(value: FilterCriteria) {
+  store.commit('query/updateFilterCriteria', {node: props.node, value})
+}
+
+function deleteRule() {
+  store.commit('query/deleteFilter', {node: props.node})
+}
 
 const allComparatorOptions: FilterComparatorOption[] = [
   {
@@ -116,11 +167,6 @@ const allComparatorOptions: FilterComparatorOption[] = [
   {label: t('queries.filter.isFalse'), value: FilterComparator.Empty, type: [DataType.Boolean]},
 ]
 
-
-const column = ref<FilterOption>()
-const comparator = ref<FilterComparatorOption>()
-const criteria = ref<string>()
-
 const comparatorOptions = computed<FilterComparatorOption[]>(() => {
   return allComparatorOptions.filter((option: FilterComparatorOption) =>
     option.type.find(type => type === column.value?.type)
@@ -131,7 +177,7 @@ const comparatorIsValid = computed<boolean>(() =>
   comparatorOptions.value.find((c: FilterComparatorOption) => c.value === comparator.value?.value) !== undefined
 )
 
-const isInputCriteria = computed<boolean>(() => {
+const hasInputCriteria = computed<boolean>(() => {
   switch (column.value?.type) {
     case DataType.Date:
     case DataType.Integer:
@@ -169,7 +215,7 @@ const criteriaStep = computed<number | false>(() => {
 })
 
 const criteriaInputIsValid = computed<boolean>(() => {
-  if (typeof criteria.value !== 'string') {
+  if (typeof criteria.value !== 'string' && typeof criteria.value !== 'number') {
     return false
   }
 
@@ -189,16 +235,26 @@ const criteriaInputIsValid = computed<boolean>(() => {
 
 <style scoped>
 .filter-rule {
-  border-left: 3px solid var(--q-primary);
+  border-left-width: 3px;
+  border-left-style: solid;
   box-shadow: 0 1px 5px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%);
   border-radius: 3px;
   padding: 3px;
+}
+
+.filter-rule--and {
+  border-left-color: var(--q-primary);
+}
+
+.filter-rule--or {
+  border-left-color: var(--q-accent);
 }
 
 .drag-handle {
   color: rgba(0, 0, 0, 0.6);
   cursor: grab;
 }
+
 .drag-handle:hover {
   color: var(--q-primary);
 }
@@ -206,6 +262,7 @@ const criteriaInputIsValid = computed<boolean>(() => {
 .delete-button {
   color: rgba(0, 0, 0, 0.6);
 }
+
 .delete-button:hover,
 .delete-button:focus {
   color: var(--q-negative);

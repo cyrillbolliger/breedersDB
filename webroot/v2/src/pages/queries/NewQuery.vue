@@ -15,8 +15,7 @@
       }}</p>
     <p class="text-overline q-mb-none q-mt-lg" v-else-if="base === BaseTable.Trees">{{ t('queries.treeFilter') }}</p>
     <p class="text-overline q-mb-none q-mt-lg" v-else>{{ t('queries.defaultFilter') }}</p>
-    <FilterSet />
-
+    <FilterTreeRoot/>
     <template v-if="marksAvailable">
       <p class="text-overline q-mb-none q-mt-lg">{{ t('queries.markFilter') }}</p>
       Filter 2
@@ -32,7 +31,7 @@ import {useI18n} from 'vue-i18n';
 import {BaseTable} from 'src/store/module-query/state';
 import {computed} from 'vue';
 import {useStore} from 'src/store';
-import FilterSet from 'components/Query/FilterSet.vue';
+import FilterTreeRoot from 'components/Query/FilterTreeRoot.vue';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const layout = useLayout()

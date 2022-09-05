@@ -1,12 +1,3 @@
-export enum DataType {
-  Integer = 'INTEGER',
-  Float = 'FLOAT',
-  String = 'VARCHAR',
-  Boolean = 'BOOLEAN',
-  Date = 'DATE',
-  Photo = 'PHOTO',
-}
-
 export enum FilterComparator {
   Equal = '===',
   NotEqual = '!==',
@@ -22,16 +13,4 @@ export enum FilterComparator {
   NotEndsWith = 'notEndsWith',
   Empty = 'empty',
   NotEmpty = 'notEmpty'
-}
-
-export interface FilterOption {
-  label: string,
-  value: string,
-  type: DataType,
-}
-
-export interface FilterComparatorOption {
-  label: string,
-  value: string,
-  type: DataType[],
 }

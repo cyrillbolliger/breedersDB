@@ -1,33 +1,20 @@
 <template>
-  <FilterRule
-    :options="options1"
-  />
-  <q-btn
-    class="q-mt-md"
-    :label="t('queries.filter.andFilter')"
-    color="primary"
-    outline
-  />
-  <q-btn
-    class="q-mt-md q-ml-sm"
-    :label="t('queries.filter.orFilter')"
-    color="accent"
-    outline
+  <FilterTree
+    :node="filter.getBaseFilter()"
+    :options="options"
+    :operand="filter.getBaseFilter().operand"
   />
 </template>
 
 <script setup lang="ts">
-import FilterRule from 'components/Query/FilterRule.vue';
-import {DataType} from 'src/models/filterOptions';
-import {useI18n} from 'vue-i18n';
+import FilterTree from 'components/Query/FilterTree.vue';
+import useFilter from 'src/composables/queries/filter';
+import {DataType} from 'src/store/module-query/state';
 
-const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
-
-
-
+const filter = useFilter();
 
 // todo: replace stubs
-const options1 = [
+const options = [
   {label: 'Trees -> ID', value: 'trees_id', type: DataType.Integer},
   {label: 'Trees -> Row', value: 'trees_row', type: DataType.Float},
   {label: 'Marks -> Note', value: 'marks_note', type: DataType.String},
@@ -35,7 +22,6 @@ const options1 = [
   {label: 'Marks -> Date', value: 'marks_date', type: DataType.Date},
   {label: 'Marks -> Original', value: 'marks_original', type: DataType.Boolean},
 ];
-
 
 </script>
 
