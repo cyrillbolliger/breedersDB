@@ -26,14 +26,14 @@
           <FilterTree
             :node="tree"
             :options="options"
-            :operand="tree.operand"
+            :operand="tree.operand || node.operand"
           />
           <div
             class="filter-tree__operand"
             :class="{
-      'filter-tree__operand--and': operand === FilterOperand.And,
-      'filter-tree__operand--or': operand === FilterOperand.Or
-    }"
+              'filter-tree__operand--and': operand === FilterOperand.And,
+              'filter-tree__operand--or': operand === FilterOperand.Or
+            }"
             v-if="idx+1 < node.children.length"
           >
             {{
