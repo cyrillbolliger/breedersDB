@@ -37,6 +37,7 @@
         :disable="column === undefined"
         :bg-color="column === undefined ? 'transparent' : 'white'"
       />
+      <!--suppress PointlessBooleanExpressionJS -->
       <q-input
         v-if="hasInputCriteria || column === undefined"
         class="col-12 col-md-4"
@@ -45,7 +46,6 @@
         @update:model-value="updateCriteria"
         :label="t('queries.filter.criteria')"
         autocomplete="off"
-        :error="!criteriaInputIsValid && column !== undefined && comparator !== undefined"
         hide-bottom-space
         dense
         :type="criteriaInputType"
@@ -59,10 +59,16 @@
         v-else
       />
     </div>
+    <q-icon
+      :name="ruleIsValid ? 'check' : 'warning'"
+      :color="ruleIsValid ? 'positive' : 'negative'"
+      size="sm"
+      class="q-ml-sm"
+    />
     <q-btn
       icon="delete_outline"
       dense
-      class="q-ml-sm delete-button"
+      class="delete-button"
       @click="deleteRule"
       rounded
       flat
@@ -232,6 +238,10 @@ const criteriaInputIsValid = computed<boolean>(() => {
     default:
       return criteria.value.length > 0
   }
+})
+
+const ruleIsValid = computed<boolean>(() => {
+  return !!(column.value && comparatorIsValid.value && criteriaInputIsValid.value)
 })
 
 </script>
