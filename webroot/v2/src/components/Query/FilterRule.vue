@@ -21,6 +21,7 @@
         :label="t('queries.filter.column')"
         autocomplete="off"
         dense
+        bg-color="white"
       />
       <q-select
         class="col-12 col-md-4"
@@ -34,6 +35,7 @@
         hide-bottom-space
         dense
         :disable="column === undefined"
+        :bg-color="column === undefined ? 'transparent' : 'white'"
       />
       <q-input
         v-if="hasInputCriteria || column === undefined"
@@ -50,6 +52,7 @@
         :step="criteriaStep"
         :disable="comparator === undefined"
         :stack-label="column?.type === DataType.Date"
+        :bg-color="comparator === undefined ? 'transparent' : 'white'"
       />
       <q-space
         class="col-12 col-md-4"
@@ -235,11 +238,8 @@ const criteriaInputIsValid = computed<boolean>(() => {
 
 <style scoped>
 .filter-rule {
-  border-left-width: 3px;
-  border-left-style: solid;
-  box-shadow: 0 1px 5px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%);
-  border-radius: 3px;
-  padding: 3px;
+  padding: 4px 3px 4px 1px;
+  background: #EFEFEF;
 }
 
 .filter-rule--and {

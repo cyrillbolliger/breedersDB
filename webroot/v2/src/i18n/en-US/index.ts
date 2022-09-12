@@ -85,8 +85,12 @@ export default {
       isTrue: 'is true',
       isFalse: 'is false',
 
+      add: 'Add',
       andFilter: 'and criteria',
       orFilter: 'or criteria',
+
+      and: 'and',
+      or: 'or',
     },
 
     results: 'Results',
