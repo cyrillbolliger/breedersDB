@@ -1,4 +1,5 @@
 import {
+  FilterBase,
   FilterChild,
   FilterLeaf,
   FilterTree,
@@ -143,9 +144,32 @@ function replaceNode(
   currentNodeParent.children[currentNodeIdx] = newNode as FilterTree | FilterLeaf;
 }
 
+function isDescendantOf(
+  state: QueryStateInterface,
+  parent: FilterTreeRoot | FilterBase,
+  child: FilterChild | FilterBase
+): boolean {
+  if (! ('children' in parent && 'parentId' in child)) {
+    return false;
+  }
+
+  const candidate = getFilterById(state, child.parentId);
+
+  if (false === candidate) {
+    return false;
+  }
+
+  if (candidate.id === parent.id) {
+    return true;
+  }
+
+  return isDescendantOf(state, parent, candidate);
+}
+
 export default {
   regenerateChildLevels,
   getFilterById,
   deleteFilterFromTree,
   replaceNode,
+  isDescendantOf,
 }

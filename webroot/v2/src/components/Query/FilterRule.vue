@@ -1,80 +1,83 @@
 <template>
-  <div
-    class="row items-center filter-rule"
-    :class="{
-      'filter-rule--and': operand === FilterOperand.And,
-      'filter-rule--or': operand === FilterOperand.Or
-    }"
-  >
-    <q-icon
-      name="drag_indicator"
-      size="md"
-      class="drag-handle"
-    />
-    <div class="col row q-col-gutter-sm">
-      <q-select
-        class="col-12 col-md-4"
-        outlined
-        :model-value="column"
-        @update:model-value="updateColumn"
-        :options="options"
-        :label="t('queries.filter.column')"
-        autocomplete="off"
-        dense
-        bg-color="white"
+  <div class="filter-rule">
+    <div
+      class="row items-center"
+      :class="{
+        'filter-rule--and': operand === FilterOperand.And,
+        'filter-rule--or': operand === FilterOperand.Or
+      }"
+    >
+      <q-icon
+        name="drag_indicator"
+        size="md"
+        class="drag-handle"
+        @mousedown="$emit('dragMouseDown')"
+        @mouseup="$emit('dragMouseUp')"
       />
-      <q-select
-        class="col-12 col-md-4"
-        outlined
-        :model-value="comparator"
-        @update:model-value="updateComparator"
-        :options="comparatorOptions"
-        :label="t('queries.filter.comparator')"
-        autocomplete="off"
-        :error="!comparatorIsValid && column !== undefined && comparator !== undefined"
-        hide-bottom-space
-        dense
-        :disable="column === undefined"
-        :bg-color="column === undefined ? 'transparent' : 'white'"
+      <div class="col row q-col-gutter-sm">
+        <q-select
+          class="col-12 col-md-4"
+          outlined
+          :model-value="column"
+          @update:model-value="updateColumn"
+          :options="options"
+          :label="t('queries.filter.column')"
+          autocomplete="off"
+          dense
+          bg-color="white"
+        />
+        <q-select
+          class="col-12 col-md-4"
+          outlined
+          :model-value="comparator"
+          @update:model-value="updateComparator"
+          :options="comparatorOptions"
+          :label="t('queries.filter.comparator')"
+          autocomplete="off"
+          :error="!comparatorIsValid && column !== undefined && comparator !== undefined"
+          hide-bottom-space
+          dense
+          :disable="column === undefined"
+          :bg-color="column === undefined ? 'transparent' : 'white'"
+        />
+        <!--suppress PointlessBooleanExpressionJS -->
+        <q-input
+          v-if="hasInputCriteria || column === undefined"
+          class="col-12 col-md-4"
+          outlined
+          :model-value="criteria"
+          @update:model-value="updateCriteria"
+          :label="t('queries.filter.criteria')"
+          autocomplete="off"
+          hide-bottom-space
+          dense
+          :type="criteriaInputType"
+          :step="criteriaStep"
+          :disable="comparator === undefined"
+          :stack-label="column?.type === DataType.Date"
+          :bg-color="comparator === undefined ? 'transparent' : 'white'"
+        />
+        <q-space
+          class="col-12 col-md-4"
+          v-else
+        />
+      </div>
+      <q-icon
+        :name="ruleIsValid ? 'check' : 'warning'"
+        :color="ruleIsValid ? 'positive' : 'negative'"
+        size="sm"
+        class="q-ml-sm"
       />
-      <!--suppress PointlessBooleanExpressionJS -->
-      <q-input
-        v-if="hasInputCriteria || column === undefined"
-        class="col-12 col-md-4"
-        outlined
-        :model-value="criteria"
-        @update:model-value="updateCriteria"
-        :label="t('queries.filter.criteria')"
-        autocomplete="off"
-        hide-bottom-space
+      <q-btn
+        icon="delete_outline"
         dense
-        :type="criteriaInputType"
-        :step="criteriaStep"
-        :disable="comparator === undefined"
-        :stack-label="column?.type === DataType.Date"
-        :bg-color="comparator === undefined ? 'transparent' : 'white'"
-      />
-      <q-space
-        class="col-12 col-md-4"
-        v-else
+        class="delete-button"
+        @click="deleteRule"
+        rounded
+        flat
       />
     </div>
-    <q-icon
-      :name="ruleIsValid ? 'check' : 'warning'"
-      :color="ruleIsValid ? 'positive' : 'negative'"
-      size="sm"
-      class="q-ml-sm"
-    />
-    <q-btn
-      icon="delete_outline"
-      dense
-      class="delete-button"
-      @click="deleteRule"
-      rounded
-      flat
-    />
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -93,6 +96,8 @@ import {FilterComparator} from 'src/models/filterOptions';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const store = useStore();
+
+defineEmits(['dragMouseDown', 'dragMouseUp'])
 
 const props = defineProps({
   options: {
@@ -224,7 +229,7 @@ const criteriaStep = computed<number | false>(() => {
 })
 
 const criteriaInputIsValid = computed<boolean>(() => {
-  if (typeof criteria.value !== 'string' && typeof criteria.value !== 'number') {
+  if (typeof criteria.value !== 'string') {
     return false
   }
 
@@ -241,7 +246,7 @@ const criteriaInputIsValid = computed<boolean>(() => {
 })
 
 const ruleIsValid = computed<boolean>(() => {
-  return !!(column.value && comparatorIsValid.value && criteriaInputIsValid.value)
+  return !! (column.value && comparatorIsValid.value && criteriaInputIsValid.value)
 })
 
 </script>

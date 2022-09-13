@@ -1,95 +1,130 @@
 <template>
   <div
-    v-if="isFilterTree"
     class="filter-tree"
+    :draggable="!!dragging"
+    @dragstart="dragStart"
+    @dragend="dragEnd"
   >
-    <div class="row items-stretch">
-      <div
-        class="filter-tree__drag-bg row items-center"
-        :class="{
+    <div
+      class="filter-rule__drop filter-rule__drop--before"
+      @dragleave="mouseInDropZoneAbove = false"
+      @dragenter="mouseInDropZoneAbove = true"
+      @dragover.prevent="$event.dataTransfer.dropEffect = 'move'"
+      @drop.prevent="onDrop('before')"
+      :class="{
+        'filter-rule__drop--hover': mouseInDropZoneAbove,
+        'filter-rule__drop--active': dragActive,
+      }"
+    />
+
+    <div
+      v-if="isFilterTree"
+    >
+      <div class="row items-stretch">
+        <div
+          class="filter-tree__drag-bg row items-center"
+          :class="{
           'filter-tree__drag-bg--and': operand === FilterOperand.And,
           'filter-tree__drag-bg--or': operand === FilterOperand.Or,
           'filter-tree__drag-bg--root': node.level === 0,
         }"
-      >
-        <q-icon
-          name="drag_indicator"
-          size="md"
-          class="filter-tree__drag-handle"
-        />
-      </div>
-      <div class="col">
-        <template
-          v-for="(tree, idx) in node.children"
-          :key="tree.id"
         >
-          <FilterTree
-            :node="tree"
-            :options="options"
-            :operand="tree.operand || node.operand"
+          <q-icon
+            name="drag_indicator"
+            size="md"
+            class="filter-tree__drag-handle"
+            @mousedown="setDragObj(node)"
+            @mouseup="setDragObj(false)"
           />
-          <div
-            class="filter-tree__operand"
-            :class="{
+        </div>
+        <div class="col">
+          <template
+            v-for="(tree, idx) in node.children"
+            :key="tree.id"
+          >
+            <FilterTree
+              :node="tree"
+              :options="options"
+              :operand="tree.operand || node.operand"
+            />
+            <div
+              class="filter-tree__operand"
+              :class="{
               'filter-tree__operand--and': operand === FilterOperand.And,
               'filter-tree__operand--or': operand === FilterOperand.Or
             }"
-            v-if="idx+1 < node.children.length"
-          >
-            {{
-              operand === FilterOperand.And
-                ? t('queries.filter.and')
-                : t('queries.filter.or')
-            }}
-          </div>
-        </template>
+              v-if="idx+1 < node.children.length"
+            >
+              {{
+                operand === FilterOperand.And
+                  ? t('queries.filter.and')
+                  : t('queries.filter.or')
+              }}
+            </div>
+          </template>
+        </div>
       </div>
+      <q-fab
+        :label="t('queries.filter.add')"
+        :color="operand === FilterOperand.And ? 'primary' : 'accent'"
+        icon="add"
+        direction="down"
+        v-model="actionsVisible"
+        unelevated
+        padding="xs"
+        :hide-label="!actionButtonHover && !actionsVisible"
+        @mouseenter="actionButtonHover = true"
+        @mouseleave="actionButtonHover = false"
+        class="filter-tree__action-btn"
+        :class="{'filter-tree__action-btn--root': node.level === 0}"
+        vertical-actions-align="left"
+      >
+        <q-fab-action
+          v-if="hasAndButton"
+          class=""
+          :label="t('queries.filter.andFilter')"
+          color="primary"
+          @click="addRule(FilterOperand.And)"
+          padding="xs"
+        />
+        <q-fab-action
+          v-if="hasOrButton"
+          class=""
+          :label="t('queries.filter.orFilter')"
+          color="accent"
+          @click="addRule(FilterOperand.Or)"
+          padding="xs"
+        />
+      </q-fab>
     </div>
-    <q-fab
-      :label="t('queries.filter.add')"
-      :color="operand === FilterOperand.And ? 'primary' : 'accent'"
-      icon="add"
-      direction="down"
-      v-model="actionsVisible"
-      unelevated
-      padding="xs"
-      :hide-label="!actionButtonHover && !actionsVisible"
-      @mouseenter="actionButtonHover = true"
-      @mouseleave="actionButtonHover = false"
-      class="filter-tree__action-btn"
-      :class="{'filter-tree__action-btn--root': node.level === 0}"
-      vertical-actions-align="left"
-    >
-      <q-fab-action
-        v-if="hasAndButton"
-        class=""
-        :label="t('queries.filter.andFilter')"
-        color="primary"
-        @click="addRule(FilterOperand.And)"
-        padding="xs"
-      />
-      <q-fab-action
-        v-if="hasOrButton"
-        class=""
-        :label="t('queries.filter.orFilter')"
-        color="accent"
-        @click="addRule(FilterOperand.Or)"
-        padding="xs"
-      />
-    </q-fab>
-  </div>
 
-  <FilterRule
-    v-else
-    :options="options"
-    :node="node"
-    :operand="operand"
-  />
+    <FilterRule
+      v-else
+      :options="options"
+      :node="node"
+      :operand="operand"
+      @drag-mouse-down="setDragObj(node)"
+      @drag-mouse-up="setDragObj(false)"
+    />
+
+    <div
+      class="filter-rule__drop filter-rule__drop--after"
+      @dragleave="mouseInDropZoneBelow = false"
+      @dragenter="mouseInDropZoneBelow = true"
+      @dragover.prevent="$event.dataTransfer.dropEffect = 'move'"
+      @drop.prevent="onDrop('after')"
+      :class="{
+        'filter-rule__drop--hover': mouseInDropZoneBelow,
+        'filter-rule__drop--active': dragActive,
+      }"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
 import {computed, PropType, ref} from 'vue';
 import {
+  FilterDragObject,
   FilterLeaf,
   FilterOperand,
   FilterOption,
@@ -99,6 +134,7 @@ import {
 import useFilter from 'src/composables/queries/filter';
 import {useI18n} from 'vue-i18n';
 import FilterRule from 'src/components/Query/FilterRule.vue'
+import {useStore} from 'src/store';
 
 const props = defineProps({
   node: {
@@ -117,6 +153,7 @@ const props = defineProps({
 
 const filter = useFilter();
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
+const store = useStore();
 
 const actionsVisible = ref(false);
 const actionButtonHover = ref(false);
@@ -145,9 +182,50 @@ const hasOrButton = computed<boolean>(() => {
   return isRoot.value || props.node.operand === FilterOperand.Or
 })
 
+const mouseInDropZoneAbove = ref(false);
+const mouseInDropZoneBelow = ref(false);
+const dragging = ref<FilterDragObject>(false);
+
+const dragObj = computed<FilterDragObject>(() => {
+  return store.getters['query/dragObject']; // eslint-disable-line
+})
+
+const dragActive = computed<boolean>(() => {
+  // noinspection TypeScriptUnresolvedVariable
+  return dragObj.value?.type === props.node.type
+});
+
+function setDragObj(node: FilterDragObject) {
+  dragging.value = node;
+  void store.dispatch('query/dragObject', dragging.value);
+}
+
+function dragStart(event: DragEvent) {
+  event.dataTransfer.effectAllowed = 'move';
+  event.dataTransfer.dropEffect = 'move';
+}
+
+function dragEnd() {
+  setDragObj(false);
+}
+
+function onDrop(position: 'before' | 'after') {
+  store.commit('query/moveFilter', {
+    subject: dragObj.value,
+    target: props.node,
+    position
+  });
+
+  setDragObj(false);
+}
+
 </script>
 
 <style scoped>
+.filter-tree {
+  position: relative;
+}
+
 .filter-tree__drag-bg {
   border-right-width: 3px;
   border-right-style: solid;
@@ -197,5 +275,34 @@ const hasOrButton = computed<boolean>(() => {
 
 .filter-tree__operand--or {
   color: var(--q-accent);
+}
+
+.filter-rule__drop {
+  height: 20px;
+  width: 100%;
+  opacity: 0.25;
+  display: none;
+  position: absolute;
+  left: 0;
+  z-index: -1;
+}
+
+.filter-rule__drop--before {
+  top: -20px;
+  background: red;
+}
+
+.filter-rule__drop--after {
+  bottom: -20px;
+  background: blue;
+}
+
+.filter-rule__drop--active {
+  display: block;
+  z-index: 10;
+}
+
+.filter-rule__drop--hover {
+  opacity: 1;
 }
 </style>

@@ -3,6 +3,7 @@ import {
   BaseTable,
   FilterComparatorOption,
   FilterCriteria,
+  FilterDragObject,
   FilterLeaf,
   FilterOperand,
   FilterOption,
@@ -108,6 +109,57 @@ const mutation: MutationTree<QueryStateInterface> = {
   ) {
     // eslint-disable-line @typescript-eslint/no-unsafe-call
     filterHelper.deleteFilterFromTree(state, payload.node);
+  },
+
+  dragObject(
+    state: QueryStateInterface,
+    payload: FilterDragObject
+  ) {
+    state.dragObject = payload;
+  },
+
+  moveFilter(state: QueryStateInterface,
+           payload: { subject: FilterTree | FilterLeaf, target: FilterTree | FilterLeaf, position: 'after' | 'before' }
+  ) {
+    const {subject, target, position} = payload
+    // abort if subject === target
+    if (subject.id === target.id) {
+      return;
+    }
+
+    // abort if subject.type !== target.type
+    // prevent mixing base and mark filter
+    if (subject.type !== target.type) {
+      return;
+    }
+
+    // abort if target is child of subject (circular)
+    if (filterHelper.isDescendantOf(state, subject, target)) {
+      return;
+    }
+
+    const targetParent = filterHelper.getFilterById(state, target.parentId);
+    const subjectParent = filterHelper.getFilterById(state, subject.parentId);
+    if ( ! targetParent
+      || ! subjectParent
+      || ! ('children' in targetParent)
+      || ! ('children' in subjectParent)
+    ) {
+      return;
+    }
+
+    // delete subject from old location
+    filterHelper.deleteFilterFromTree(state, subject);
+
+    // insert subject in new location
+    const targetIdx = targetParent.children.indexOf(target);
+    const insertIdx = targetIdx + ('after' === position ? 1 : 0);
+    targetParent.children.splice(insertIdx, 0, subject);
+
+    // adapt subject
+    subject.parentId = targetParent.id;
+    subject.level = target.level;
+    filterHelper.regenerateChildLevels(subject);
   },
 };
 

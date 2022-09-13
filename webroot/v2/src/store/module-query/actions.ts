@@ -1,6 +1,6 @@
 import {ActionTree} from 'vuex';
 import {StateInterface} from '../index';
-import {BaseTable, FilterTreeRoot, QueryStateInterface} from './state';
+import {BaseTable, FilterDragObject, FilterTreeRoot, QueryStateInterface} from './state';
 
 const actions: ActionTree<QueryStateInterface, StateInterface> = {
   base({commit}, base: BaseTable) {
@@ -17,6 +17,10 @@ const actions: ActionTree<QueryStateInterface, StateInterface> = {
 
   incrementFilterId({commit}) {
     commit('incrementFilterId')
+  },
+
+  dragObject({commit}, state: FilterDragObject) {
+    commit('dragObject', state)
   }
 };
 

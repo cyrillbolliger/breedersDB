@@ -18,6 +18,10 @@ const getters: GetterTree<QueryStateInterface, StateInterface> = {
   lastFilterId(state: QueryStateInterface) {
     return state.lastFilterId
   },
+
+  dragObject(state: QueryStateInterface) {
+    return state.dragObject
+  },
 };
 
 export default getters;

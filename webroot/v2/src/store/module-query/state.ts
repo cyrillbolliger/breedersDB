@@ -53,7 +53,7 @@ export interface FilterBase {
 }
 
 export interface FilterTreeRoot extends FilterBase {
-  children: Array<FilterTree|FilterLeaf>,
+  children: Array<FilterTree | FilterLeaf>,
   operand: FilterOperand,
 }
 
@@ -68,11 +68,14 @@ export interface FilterLeaf extends FilterBase, FilterChild {
   filter: FilterRule,
 }
 
+export type FilterDragObject = FilterLeaf | FilterTree | false;
+
 export interface QueryStateInterface {
   base: BaseTable,
   baseFilter: FilterTreeRoot,
   markFilter: FilterTreeRoot,
   lastFilterId: number,
+  dragObject: FilterDragObject,
 }
 
 function state(): QueryStateInterface {
@@ -93,6 +96,7 @@ function state(): QueryStateInterface {
       operand: FilterOperand.And,
     },
     lastFilterId: 1,
+    dragObject: false,
   };
 }
 
