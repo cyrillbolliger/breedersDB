@@ -54,6 +54,9 @@ jobs:
       - run: rm webroot/v2/src/i18n/de-CH/index.ts
       - run: mv webroot/v2/src/i18n/de-CH/index.ts{.tmp,}
 
+      - name: Prepend comment to disable spellcheck
+        run: sed -i '1s;^;// noinspection SpellCheckingInspection\n;' webroot/v2/src/i18n/de-CH/index.ts
+
       - name: push
         uses: github-actions-x/commit@v2.9
         with:
