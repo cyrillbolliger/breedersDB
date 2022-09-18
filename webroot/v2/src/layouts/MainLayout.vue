@@ -115,9 +115,8 @@ import NavLink from 'components/Util/NavLink.vue'
 
 import {computed, defineComponent, ref} from 'vue'
 import {useStore} from 'src/store';
-import {LayoutBreadcrumbsInterface} from 'src/store/module-layout/state';
-import {LayoutTabsInterface} from 'src/store/module-layout/state';
 import {useI18n} from 'vue-i18n';
+import {useLayoutStore} from 'stores/layout';
 
 declare const webroot: string;
 
@@ -129,7 +128,7 @@ export default defineComponent({
   },
 
   setup () {
-    const store = useStore()
+    const store = useLayoutStore()
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
     const rightDrawerOpen = ref(false)
 
@@ -157,14 +156,10 @@ export default defineComponent({
 
 
     return {
-      /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-      /* eslint-disable @typescript-eslint/no-unsafe-return */
-      title: computed<string>(() => store.getters['layout/title']),
-      back: computed<string|null>(() => store.getters['layout/back']),
-      breadcrumbs: computed<LayoutBreadcrumbsInterface[]>(() => store.getters['layout/breadcrumbs']),
-      tabs: computed<LayoutTabsInterface[]>(() => store.getters['layout/tabs']),
-      /* eslint-enable @typescript-eslint/no-unsafe-member-access */
-      /* eslint-enable @typescript-eslint/no-unsafe-return */
+      title: computed(() => store.title),
+      back: computed(() => store.back),
+      breadcrumbs: computed(() => store.breadcrumbs),
+      tabs: computed(() => store.tabs),
       navLinks,
       rightDrawerOpen,
       toggleRightDrawer() {

@@ -2,7 +2,7 @@ import {useStore} from 'src/store';
 import {i18n} from 'src/boot/i18n'
 
 import {computed} from 'vue';
-import {LayoutTabsInterface} from 'src/store/module-layout/state';
+import {LayoutTabsInterface} from 'src/models/layout';
 
 export default function useMarkTabNav() {
   const store = useStore()

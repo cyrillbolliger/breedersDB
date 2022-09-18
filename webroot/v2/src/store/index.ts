@@ -6,11 +6,9 @@ import {
   useStore as vuexUseStore,
 } from 'vuex'
 
-import layout from './module-layout'
 import mark from './module-mark'
 import query from './module-query'
 
-import {LayoutStateInterface} from 'src/store/module-layout/state';
 import {MarkStateInterface} from 'src/store/module-mark/state';
 import {QueryStateInterface} from 'src/store/module-query/state';
 
@@ -24,7 +22,6 @@ import {QueryStateInterface} from 'src/store/module-query/state';
  */
 
 export interface StateInterface {
-  layout: Module<LayoutStateInterface, StateInterface>,
   mark: Module<MarkStateInterface, StateInterface>,
   query: Module<QueryStateInterface, StateInterface>,
 }
@@ -42,7 +39,6 @@ export const storeKey: InjectionKey<VuexStore<StateInterface>> = Symbol('vuex-ke
 export default store(function (/* { ssrContext } */) {
   const Store = createStore<StateInterface>({
     modules: {
-      layout,
       mark,
       query,
     },
