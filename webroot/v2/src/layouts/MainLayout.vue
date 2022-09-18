@@ -114,7 +114,6 @@
 import NavLink from 'components/Util/NavLink.vue'
 
 import {computed, defineComponent, ref} from 'vue'
-import {useStore} from 'src/store';
 import {useI18n} from 'vue-i18n';
 import {useLayoutStore} from 'stores/layout';
 

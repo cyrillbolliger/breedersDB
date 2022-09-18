@@ -35,13 +35,13 @@
 <script lang="ts">
 import {computed, defineComponent, ref} from 'vue'
 import {useI18n} from 'vue-i18n';
-import {useStore} from 'src/store';
 import {MarkForm} from 'src/models/form';
 import {useRouter} from 'vue-router'
 import useLayout from 'src/composables/layout'
 import useMarkTabNav from 'src/composables/marks/tab-nav';
 import useApi from 'src/composables/api'
 import TabularList from 'components/Util/TabularList.vue';
+import {useMarkStore} from 'stores/mark';
 
 export default defineComponent({
   name: 'MarksSelectForm',
@@ -49,14 +49,14 @@ export default defineComponent({
 
   setup() {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
-    const store = useStore()
+    const store = useMarkStore()
     const {working, get} = useApi()
     const router = useRouter()
     const {setToolbarTitle, setToolbarTabs} = useLayout()
 
     const markForms = ref<MarkForm[]>([])
 
-    const selectedForm = computed<MarkForm | null>(() => store.getters['mark/selectedForm']) // eslint-disable-line
+    const selectedForm = computed(() => store.selectedForm)
 
     function loadForms(done: () => void = () => null) {
       void get<MarkForm[]>('markForms/index', done)
@@ -71,7 +71,7 @@ export default defineComponent({
 
     function selectForm(form: MarkForm) {
       void get<MarkForm>(`markForms/view/${form.id}`)
-        .then(data => store.dispatch('mark/selectForm', data))
+        .then(data => store.selectedForm = data as MarkForm)
         .then(() => void router.push('/marks/set-meta'))
     }
 

@@ -1,24 +1,22 @@
-import {useStore} from 'src/store';
 import {i18n} from 'src/boot/i18n'
 
 import {computed} from 'vue';
 import {LayoutTabsInterface} from 'src/models/layout';
+import {useMarkStore} from 'stores/mark';
 
 export default function useMarkTabNav() {
-  const store = useStore()
+  const store = useMarkStore()
   const t = i18n.global.t // eslint-disable-line @typescript-eslint/unbound-method
 
   const disableSetTreeTab = computed<boolean>(() => {
-    /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
-    return !store.getters['mark/selectedForm']
-      || !store.getters['mark/author']
-      || !store.getters['mark/date']
-    /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
+    return !store.selectedForm
+      || !store.author
+      || !store.date
   });
 
   const disableMarkTab = computed<boolean>(() => {
     return disableSetTreeTab.value
-      || !store.getters['mark/tree'] // eslint-disable-line
+      || !store.tree
   });
 
   const tabs: LayoutTabsInterface[] = [
