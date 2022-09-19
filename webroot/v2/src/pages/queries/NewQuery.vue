@@ -5,20 +5,25 @@
     <p class="text-overline q-mb-none">{{ t('queries.baseTable') }}</p>
     <q-btn-toggle
       :options="baseOptions"
-      v-model="base"
+      v-model="baseTable"
       no-wrap
     />
 
-    <p class="text-overline q-mb-none q-mt-lg" v-if="base === BaseTable.Batches">{{ t('queries.batchFilter') }}</p>
-    <p class="text-overline q-mb-none q-mt-lg" v-else-if="base === BaseTable.Varieties">{{
+    <p class="text-overline q-mb-none q-mt-lg" v-if="baseTable === BaseTable.Batches">{{ t('queries.batchFilter') }}</p>
+    <p class="text-overline q-mb-none q-mt-lg" v-else-if="baseTable === BaseTable.Varieties">{{
         t('queries.varietyFilter')
       }}</p>
-    <p class="text-overline q-mb-none q-mt-lg" v-else-if="base === BaseTable.Trees">{{ t('queries.treeFilter') }}</p>
+    <p class="text-overline q-mb-none q-mt-lg" v-else-if="baseTable === BaseTable.Trees">{{ t('queries.treeFilter') }}</p>
     <p class="text-overline q-mb-none q-mt-lg" v-else>{{ t('queries.defaultFilter') }}</p>
-    <FilterTreeRoot/>
+    <FilterTreeRoot
+      :filter="baseFilter"
+    />
+
     <template v-if="marksAvailable">
       <p class="text-overline q-mb-none q-mt-lg">{{ t('queries.markFilter') }}</p>
-      Filter 2
+      <FilterTreeRoot
+        :filter="markFilter"
+      />
     </template>
 
     <h5 class="q-mb-sm q-mt-sm">{{ t('queries.results') }}</h5>
@@ -28,14 +33,16 @@
 <script setup lang="ts">
 import useLayout from 'src/composables/layout';
 import {useI18n} from 'vue-i18n';
-import {BaseTable} from 'src/store/module-query/state';
 import {computed} from 'vue';
-import {useStore} from 'src/store';
 import FilterTreeRoot from 'components/Query/FilterTreeRoot.vue';
+import {useQueryStore} from 'stores/query';
+import {BaseTable} from 'src/models/query/query';
+import useFilter from 'src/composables/queries/filter';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const layout = useLayout()
-const store = useStore()
+const store = useQueryStore()
+const filter = useFilter()
 
 layout.setToolbarTitle(t('queries.title'))
 layout.setToolbarTabs([])
@@ -50,16 +57,19 @@ const baseOptions = [
   {value: BaseTable.ScionsBundles, label: t('queries.scionsBundles')},
 ]
 
-const base = computed<BaseTable>({
-  get: () => store.getters['query/base'], // eslint-disable-line
-  set: (val: BaseTable) => store.dispatch('query/base', val)
+const baseTable = computed<BaseTable>({
+  get: () => store.baseTable,
+  set: (val: BaseTable) => store.baseTable = val,
 });
 
 const marksAvailable = computed<boolean>(() => {
-  return base.value === BaseTable.Batches
-    || base.value === BaseTable.Varieties
-    || base.value === BaseTable.Trees
+  return baseTable.value === BaseTable.Batches
+    || baseTable.value === BaseTable.Varieties
+    || baseTable.value === BaseTable.Trees
 });
+
+const baseFilter = computed(() => filter.getBaseFilter());
+const markFilter = computed(() => filter.getMarkFilter());
 
 </script>
 

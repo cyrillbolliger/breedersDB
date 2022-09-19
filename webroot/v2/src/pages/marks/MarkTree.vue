@@ -80,7 +80,6 @@ import {computed, defineComponent, ref} from 'vue'
 import {useI18n} from 'vue-i18n';
 import useLayout from 'src/composables/layout';
 import useMarkTabNav from 'src/composables/marks/tab-nav';
-import {useStore} from 'src/store';
 import {Mark, MarkForm, MarkFormFieldType, MarkFormProperty, MarkValue, MarkValueValue} from 'src/models/form';
 import {Tree} from 'src/models/tree';
 import {useRouter} from 'vue-router'
@@ -90,13 +89,14 @@ import useApi from 'src/composables/api';
 import TreeCard from 'components/Util/TreeCard.vue';
 import useUploader from 'src/composables/uploader';
 import MarkFormPropertyList from 'src/components/Mark/MarkFormPropertyList.vue';
+import {useMarkStore} from 'stores/mark';
 
 export default defineComponent({
   name: 'MarkTree',
   components: {MarkFormPropertyList, TreeCard, MarkInput},
   setup() {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
-    const store = useStore()
+    const store = useMarkStore()
     const router = useRouter()
     const $q = useQuasar()
     const api = useApi();
@@ -113,12 +113,10 @@ export default defineComponent({
     const uploading = ref(false);
     const working = computed(() => api.working.value || uploading.value);
 
-    /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
-    const tree = computed<Tree | null>(() => store.getters['mark/tree'])
-    const author = computed<string>(() => store.getters['mark/author'])
-    const form = computed<MarkForm | null>(() => store.getters['mark/selectedForm'])
-    const date = computed<Date>(() => new Date(store.getters['mark/date'] as string))
-    /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
+    const tree = computed(() => store.tree)
+    const author = computed(() => store.author)
+    const form = computed(() => store.selectedForm)
+    const date = computed(() => new Date(store.date))
 
     const addedProperties = ref([] as MarkFormProperty[])
     const properties = computed(() => {

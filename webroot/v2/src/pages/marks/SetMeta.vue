@@ -42,17 +42,17 @@
 import {computed, defineComponent, ref} from 'vue'
 import {useRouter} from 'vue-router'
 import {useI18n} from 'vue-i18n';
-import {useStore} from 'src/store';
 import useMarkTabNav from 'src/composables/marks/tab-nav';
 import useLayout from 'src/composables/layout';
 import {QInput} from 'quasar';
+import {useMarkStore} from 'stores/mark';
 
 export default defineComponent({
   name: 'SetMeta',
 
   setup() {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
-    const store = useStore()
+    const store = useMarkStore()
     const router = useRouter()
 
 
@@ -66,12 +66,12 @@ export default defineComponent({
 
 
     const author = computed<string>({
-      get: () => store.getters['mark/author'], // eslint-disable-line
-      set: (val: string) => store.dispatch('mark/author', val)
+      get: () => store.author,
+      set: (val: string) => store.setAuthor(val)
     });
     const date = computed<string>({
-      get: () => store.getters['mark/date'], // eslint-disable-line
-      set: (val: string) => store.dispatch('mark/date', val)
+      get: () => store.date,
+      set: (val: string) => store.date = val
     });
 
 
