@@ -42,6 +42,7 @@ export default {
     publicid: 'Publicid'
   },
 
+
   queries: {
     title: 'Queries',
 
@@ -49,18 +50,22 @@ export default {
 
     baseTable: 'Base',
 
-    crossings: 'Crossings',
-    batches: 'Batches',
-    varieties: 'Varieties',
-    trees: 'Trees',
-    motherTrees: 'Mother Trees',
-    scionsBundles: 'Scions Bundles',
+    crossings: 'crossings',
+    batches: 'batches',
+    varieties: 'varieties',
+    trees: 'trees',
+    motherTrees: 'mother trees',
+    scionsBundles: 'scions bundles',
+
+    marks: 'marks',
 
     defaultFilter: 'Filter criteria',
     batchFilter: 'Filter criteria to select the batches',
     varietyFilter: 'Filter criteria to select the varieties',
     treeFilter: 'Filter criteria to select the trees',
     markFilter: 'Filter criteria to select the marks',
+
+    noFilter: 'No filter criteria defined. All {entity} will be selected. Click the plus button below to add filter criteria.',
 
     simplifiable: 'Unnecessary complexity detected.',
     simplify: 'Simplify filter',

@@ -76,38 +76,10 @@
           </template>
         </div>
       </div>
-      <q-fab
-        :label="t('queries.filter.add')"
-        :color="operand === FilterOperand.And ? 'primary' : 'accent'"
-        icon="add"
-        direction="down"
-        v-model="actionsVisible"
-        unelevated
-        padding="xs"
-        :hide-label="!actionButtonHover && !actionsVisible"
-        @mouseenter="actionButtonHover = true"
-        @mouseleave="actionButtonHover = false"
-        class="filter-tree__action-btn"
-        :class="{'filter-tree__action-btn--root': node.isRoot()}"
-        vertical-actions-align="left"
-      >
-        <q-fab-action
-          v-if="hasAndButton"
-          class=""
-          :label="t('queries.filter.andFilter')"
-          color="primary"
-          @click="addLeaf(FilterOperand.And)"
-          padding="xs"
-        />
-        <q-fab-action
-          v-if="hasOrButton"
-          class=""
-          :label="t('queries.filter.orFilter')"
-          color="accent"
-          @click="addLeaf(FilterOperand.Or)"
-          padding="xs"
-        />
-      </q-fab>
+      <FilterRuleButtonAdd
+        :operand="operand"
+        :node="node"
+      />
     </div>
 
     <div
@@ -131,6 +103,7 @@ import {computed, PropType, ref, watch} from 'vue';
 import useFilter from 'src/composables/queries/filter';
 import {useI18n} from 'vue-i18n';
 import FilterRule from 'src/components/Query/FilterRule.vue'
+import FilterRuleButtonAdd from 'src/components/Query/FilterRuleButtonAdd.vue';
 import {FilterNode} from 'src/models/query/filterNode';
 import {FilterOperand, FilterOption} from 'src/models/query/filterTypes';
 import {useQueryStore} from 'stores/query';
@@ -154,24 +127,6 @@ const props = defineProps({
 const filter = useFilter();
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore();
-
-const actionsVisible = ref(false);
-const actionButtonHover = ref(false);
-
-function addLeaf(operand: FilterOperand) {
-  // noinspection TypeScriptValidateTypes
-  filter.addLeaf(props.node, operand)
-}
-
-const hasAndButton = computed<boolean>(() => {
-  // noinspection TypeScriptUnresolvedFunction
-  return props.node.isRoot() || props.node.getChildrensOperand() === FilterOperand.And
-})
-
-const hasOrButton = computed<boolean>(() => {
-  // noinspection TypeScriptUnresolvedFunction
-  return props.node.isRoot() || props.node.getChildrensOperand() === FilterOperand.Or
-})
 
 const mouseInDropZoneAbove = ref(false);
 const mouseInDropZoneBelow = ref(false);
@@ -286,14 +241,6 @@ watch(dragObj, dragObj => {
 
 .filter-tree__drag-handle:hover {
   color: var(--q-primary);
-}
-
-.filter-tree__action-btn {
-  transform: translateX(18px);
-}
-
-.filter-tree__action-btn--root {
-  transform: translateX(-15px);
 }
 
 .filter-tree__operand {
