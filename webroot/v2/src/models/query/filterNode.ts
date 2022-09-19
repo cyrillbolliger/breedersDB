@@ -57,6 +57,7 @@ export class FilterNode {
     return this.id;
   }
 
+  // noinspection JSUnusedGlobalSymbols
   getFilterType() {
     return this.filterType;
   }
@@ -129,10 +130,12 @@ export class FilterNode {
     this.childrensOperand = operand;
   }
 
+  // noinspection JSUnusedGlobalSymbols
   getFilterRule() {
     return this.filterRule;
   }
 
+  // noinspection JSUnusedGlobalSymbols
   setFilterRule(filterRule: FilterRule) {
     if (this.hasChildren()) {
       throw Error('Can not set filter rule on non leaf node. Remove children first.');
@@ -204,6 +207,7 @@ export class FilterNode {
     return false;
   }
 
+  // noinspection JSUnusedGlobalSymbols
   simplify() {
     for (const child of this.getChildren()) {
       if (child.isSimplifiable()) {

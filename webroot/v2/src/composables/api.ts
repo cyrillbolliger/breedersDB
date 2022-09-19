@@ -1,5 +1,5 @@
 import {i18n} from 'boot/i18n'
-import {Notify} from 'quasar'
+import {Notify, QNotifyCreateOptions} from 'quasar'
 import {ref} from 'vue';
 import {api as axios} from 'boot/axios';
 import {AxiosError} from 'axios';
@@ -66,7 +66,7 @@ export default function useApi() {
         actions: [
           {label: t('general.retry'), color: 'white', handler: resolve},
         ]
-      })
+      } as QNotifyCreateOptions)
     })
       .then(() => cb());
   }

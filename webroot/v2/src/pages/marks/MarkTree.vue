@@ -214,6 +214,7 @@ export default defineComponent({
           return;
         }
 
+        // noinspection TypeScriptUnresolvedVariable
         const mark: Mark = {
           date: date.value,
           author: author.value,

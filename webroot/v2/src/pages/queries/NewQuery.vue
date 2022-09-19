@@ -15,12 +15,14 @@
       }}</p>
     <p class="text-overline q-mb-none q-mt-lg" v-else-if="baseTable === BaseTable.Trees">{{ t('queries.treeFilter') }}</p>
     <p class="text-overline q-mb-none q-mt-lg" v-else>{{ t('queries.defaultFilter') }}</p>
+    <!--suppress JSValidateTypes -->
     <FilterTreeRoot
       :filter="baseFilter"
     />
 
     <template v-if="marksAvailable">
       <p class="text-overline q-mb-none q-mt-lg">{{ t('queries.markFilter') }}</p>
+      <!--suppress JSValidateTypes -->
       <FilterTreeRoot
         :filter="markFilter"
       />
