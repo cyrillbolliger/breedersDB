@@ -83,7 +83,6 @@
 <script setup lang="ts">
 import {computed, PropType} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {useQueryStore} from 'stores/query';
 import {
   FilterComparator,
   FilterComparatorOption,
@@ -94,7 +93,6 @@ import {
 import {FilterNode} from 'src/models/query/filterNode';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
-const store = useQueryStore();
 
 defineEmits(['dragMouseDown', 'dragMouseUp'])
 

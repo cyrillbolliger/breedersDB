@@ -1,6 +1,6 @@
 import {useQueryStore} from 'stores/query';
 import {FilterNode} from 'src/models/query/filterNode';
-import type {FilterOperand} from 'src/models/query/filterTypes';
+import {FilterOperand} from 'src/models/query/filterTypes';
 import {FilterRule} from 'src/models/query/filterRule';
 
 export default function useFilter() {
@@ -24,9 +24,14 @@ export default function useFilter() {
       return;
     }
 
+    const parentsOperand = parent.getChildrensOperand();
+    if (!parentsOperand) {
+      throw Error('Failed to add leaf: Missing childrensOperand on parent node.');
+    }
+
     const leaf = FilterNode.FilterLeaf(parent, rule);
     const intermediateNode = FilterNode.FilterNode(
-      parent.getChildrensOperand()!,
+      parentsOperand,
       parent
     );
 

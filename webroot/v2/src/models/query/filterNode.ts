@@ -242,7 +242,7 @@ export class FilterNode {
     }
 
     if (1 === this.getParent()?.getChildCount() && this.getChildrensOperand()) {
-      this.getParent()?.setChildrensOperand(this.getChildrensOperand()!);
+      this.getParent()?.setChildrensOperand(this.getChildrensOperand() as FilterOperand);
     }
 
     const parentsChildren = parent.getChildren();
