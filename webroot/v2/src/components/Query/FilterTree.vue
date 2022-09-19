@@ -6,18 +6,12 @@
     @dragstart="dragStart"
     @dragend="dragEnd"
   >
-    <div
-      class="filter-rule__drop filter-rule__drop--before"
-      @dragleave="mouseInDropZoneAbove = false"
-      @dragenter="mouseInDropZoneAbove = true"
-      @dragover.prevent="$event.dataTransfer.dropEffect = 'move'"
+    <FilterRuleDropZone
+      :active="dragActive && canBeTarget"
+      :color="dropOperand === FilterOperand.And ? 'primary' : 'accent'"
+      :dragging="!!dragObj"
       @drop.prevent="onDrop('before')"
-      :class="{
-        'filter-rule__drop--hover': canDropAbove,
-        'filter-rule__drop--active': dragActive && canBeTarget,
-        'filter-rule__drop--and': dropOperand === FilterOperand.And,
-        'filter-rule__drop--or': dropOperand === FilterOperand.Or,
-      }"
+      class="filter-rule__drop--before"
     />
 
     <FilterRule
@@ -82,24 +76,18 @@
       />
     </div>
 
-    <div
-      class="filter-rule__drop filter-rule__drop--after"
-      @dragleave="mouseInDropZoneBelow = false"
-      @dragenter="mouseInDropZoneBelow = true"
-      @dragover.prevent="$event.dataTransfer.dropEffect = 'move'"
+    <FilterRuleDropZone
+      :active="dragActive && canBeTarget"
+      :color="dropOperand === FilterOperand.And ? 'primary' : 'accent'"
+      :dragging="!!dragObj"
       @drop.prevent="onDrop('after')"
-      :class="{
-        'filter-rule__drop--hover': canDropBelow,
-        'filter-rule__drop--active': dragActive && canBeTarget,
-        'filter-rule__drop--and': dropOperand === FilterOperand.And,
-        'filter-rule__drop--or': dropOperand === FilterOperand.Or,
-      }"
+      class="filter-rule__drop--after"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed, PropType, ref, watch} from 'vue';
+import {computed, PropType, ref} from 'vue';
 import useFilter from 'src/composables/queries/filter';
 import {useI18n} from 'vue-i18n';
 import FilterRule from 'src/components/Query/FilterRule.vue'
@@ -108,6 +96,7 @@ import {FilterNode} from 'src/models/query/filterNode';
 import {FilterOperand, FilterOption} from 'src/models/query/filterTypes';
 import {useQueryStore} from 'stores/query';
 import {FilterDragNode} from 'src/models/query/query';
+import FilterRuleDropZone from 'src/components/Query/FilterRuleDropZone.vue'
 
 const props = defineProps({
   node: {
@@ -128,8 +117,6 @@ const filter = useFilter();
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore();
 
-const mouseInDropZoneAbove = ref(false);
-const mouseInDropZoneBelow = ref(false);
 const dragging = ref<FilterDragNode>(false);
 
 const dragObj = computed(() => {
@@ -151,14 +138,6 @@ const canBeTarget = computed(() => {
   // noinspection TypeScriptUnresolvedFunction
   return ! target.isDescendantOf(subject) && subject !== target && ! target.isRoot();
 });
-
-const canDropAbove = computed(() => {
-  return mouseInDropZoneAbove.value && canBeTarget.value
-})
-
-const canDropBelow = computed(() => {
-  return mouseInDropZoneBelow.value && canBeTarget.value
-})
 
 const dropOperand = computed(() => {
   // noinspection TypeScriptUnresolvedFunction
@@ -194,15 +173,8 @@ function onDrop(position: 'before' | 'after') {
     );
   }
 
-  setDragObj(false);
+  dragEnd();
 }
-
-watch(dragObj, dragObj => {
-  if (false === dragObj) {
-    mouseInDropZoneAbove.value = false;
-    mouseInDropZoneBelow.value = false;
-  }
-})
 
 </script>
 
@@ -258,38 +230,11 @@ watch(dragObj, dragObj => {
   color: var(--q-accent);
 }
 
-.filter-rule__drop {
-  height: 18px;
-  width: 100%;
-  opacity: 0.25;
-  display: none;
-  position: absolute;
-  left: 0;
-  z-index: -1;
-}
-
 .filter-rule__drop--before {
   top: -18px;
 }
 
 .filter-rule__drop--after {
   bottom: -18px;
-}
-
-.filter-rule__drop--active {
-  display: block;
-  z-index: 10;
-}
-
-.filter-rule__drop--and {
-  background-color: var(--q-primary);
-}
-
-.filter-rule__drop--or {
-  background-color: var(--q-accent);
-}
-
-.filter-rule__drop--hover {
-  opacity: 1;
 }
 </style>
