@@ -80,8 +80,7 @@ import {computed, defineComponent, ref} from 'vue'
 import {useI18n} from 'vue-i18n';
 import useLayout from 'src/composables/layout';
 import useMarkTabNav from 'src/composables/marks/tab-nav';
-import {Mark, MarkForm, MarkFormFieldType, MarkFormProperty, MarkValue, MarkValueValue} from 'src/models/form';
-import {Tree} from 'src/models/tree';
+import {Mark, MarkFormFieldType, MarkFormProperty, MarkValue, MarkValueValue} from 'src/models/form';
 import {useRouter} from 'vue-router'
 import {useQuasar} from 'quasar';
 import MarkInput from 'components/Mark/Input.vue'
