@@ -12,13 +12,22 @@
       @dragover.prevent="$event.dataTransfer.dropEffect = 'move'"
       @drop.prevent="onDrop('before')"
       :class="{
-        'filter-rule__drop--hover': mouseInDropZoneAbove,
-        'filter-rule__drop--active': dragActive,
+        'filter-rule__drop--hover': canDropAbove,
+        'filter-rule__drop--active': dragActive && canBeTarget,
       }"
     />
 
+    <FilterRule
+      v-if="node.isLeaf()"
+      :options="options"
+      :node="node"
+      :operand="operand"
+      @drag-mouse-down="setDragObj(node)"
+      @drag-mouse-up="setDragObj(false)"
+    />
+
     <div
-      v-if="isFilterTree"
+      v-else
     >
       <div class="row items-stretch">
         <div
@@ -26,7 +35,7 @@
           :class="{
           'filter-tree__drag-bg--and': operand === FilterOperand.And,
           'filter-tree__drag-bg--or': operand === FilterOperand.Or,
-          'filter-tree__drag-bg--root': node.level === 0,
+          'filter-tree__drag-bg--root': node.isRoot(),
         }"
         >
           <q-icon
@@ -39,13 +48,13 @@
         </div>
         <div class="col">
           <template
-            v-for="(tree, idx) in node.children"
-            :key="tree.id"
+            v-for="(tree, idx) in node.getChildren()"
+            :key="tree.getId()"
           >
             <FilterTree
               :node="tree"
               :options="options"
-              :operand="tree.operand || node.operand"
+              :operand="tree.getChildrensOperand() || node.getChildrensOperand()"
             />
             <div
               class="filter-tree__operand"
@@ -53,7 +62,7 @@
               'filter-tree__operand--and': operand === FilterOperand.And,
               'filter-tree__operand--or': operand === FilterOperand.Or
             }"
-              v-if="idx+1 < node.children.length"
+              v-if="idx+1 < node.getChildCount()"
             >
               {{
                 operand === FilterOperand.And
@@ -76,7 +85,7 @@
         @mouseenter="actionButtonHover = true"
         @mouseleave="actionButtonHover = false"
         class="filter-tree__action-btn"
-        :class="{'filter-tree__action-btn--root': node.level === 0}"
+        :class="{'filter-tree__action-btn--root': node.isRoot()}"
         vertical-actions-align="left"
       >
         <q-fab-action
@@ -84,7 +93,7 @@
           class=""
           :label="t('queries.filter.andFilter')"
           color="primary"
-          @click="addRule(FilterOperand.And)"
+          @click="addLeaf(FilterOperand.And)"
           padding="xs"
         />
         <q-fab-action
@@ -92,20 +101,11 @@
           class=""
           :label="t('queries.filter.orFilter')"
           color="accent"
-          @click="addRule(FilterOperand.Or)"
+          @click="addLeaf(FilterOperand.Or)"
           padding="xs"
         />
       </q-fab>
     </div>
-
-    <FilterRule
-      v-else
-      :options="options"
-      :node="node"
-      :operand="operand"
-      @drag-mouse-down="setDragObj(node)"
-      @drag-mouse-up="setDragObj(false)"
-    />
 
     <div
       class="filter-rule__drop filter-rule__drop--after"
@@ -114,31 +114,26 @@
       @dragover.prevent="$event.dataTransfer.dropEffect = 'move'"
       @drop.prevent="onDrop('after')"
       :class="{
-        'filter-rule__drop--hover': mouseInDropZoneBelow,
-        'filter-rule__drop--active': dragActive,
+        'filter-rule__drop--hover': canDropBelow,
+        'filter-rule__drop--active': dragActive && canBeTarget,
       }"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed, PropType, ref} from 'vue';
-import {
-  FilterDragObject,
-  FilterLeaf,
-  FilterOperand,
-  FilterOption,
-  FilterTree as FilterTreeType,
-  FilterTreeRoot,
-} from 'src/store/module-query/state';
+import {computed, PropType, ref, watch} from 'vue';
 import useFilter from 'src/composables/queries/filter';
 import {useI18n} from 'vue-i18n';
 import FilterRule from 'src/components/Query/FilterRule.vue'
-import {useStore} from 'src/store';
+import {FilterNode} from 'src/models/query/filterNode';
+import {FilterOperand, FilterOption} from 'src/models/query/filterTypes';
+import {useQueryStore} from 'stores/query';
+import {FilterDragNode} from 'src/models/query/query';
 
 const props = defineProps({
   node: {
-    type: Object as PropType<FilterTreeType | FilterLeaf | FilterTreeRoot>,
+    type: Object as PropType<FilterNode>,
     required: true,
   },
   options: {
@@ -153,51 +148,61 @@ const props = defineProps({
 
 const filter = useFilter();
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
-const store = useStore();
+const store = useQueryStore();
 
 const actionsVisible = ref(false);
 const actionButtonHover = ref(false);
 
-function addRule(operand: FilterOperand) {
+function addLeaf(operand: FilterOperand) {
   // noinspection TypeScriptValidateTypes
-  filter.addRule(props.node, operand)
+  filter.addLeaf(props.node, operand)
 }
 
-const isFilterTree = computed<boolean>(() => {
-  return 'children' in props.node;
-})
-
-const isRoot = computed<boolean>(() => {
-  // noinspection TypeScriptUnresolvedVariable
-  return props.node.parentId === undefined;
-})
-
 const hasAndButton = computed<boolean>(() => {
-  // noinspection TypeScriptUnresolvedVariable
-  return isRoot.value || props.node.operand === FilterOperand.And
+  // noinspection TypeScriptUnresolvedFunction
+  return props.node.isRoot() || props.node.getChildrensOperand() === FilterOperand.And
 })
 
 const hasOrButton = computed<boolean>(() => {
-  // noinspection TypeScriptUnresolvedVariable
-  return isRoot.value || props.node.operand === FilterOperand.Or
+  // noinspection TypeScriptUnresolvedFunction
+  return props.node.isRoot() || props.node.getChildrensOperand() === FilterOperand.Or
 })
 
 const mouseInDropZoneAbove = ref(false);
 const mouseInDropZoneBelow = ref(false);
-const dragging = ref<FilterDragObject>(false);
+const dragging = ref<FilterDragNode>(false);
 
-const dragObj = computed<FilterDragObject>(() => {
-  return store.getters['query/dragObject']; // eslint-disable-line
+const dragObj = computed(() => {
+  return store.filterDragNode
 })
 
-const dragActive = computed<boolean>(() => {
-  // noinspection TypeScriptUnresolvedVariable
-  return dragObj.value?.type === props.node.type
+const dragActive = computed(() => {
+  // noinspection TypeScriptUnresolvedFunction
+  const currentNodeType = props.node.getFilterType();
+  // noinspection TypeScriptUnresolvedFunction
+  const draggedNodeType = dragObj.value ? dragObj.value.getFilterType() : false;
+  return currentNodeType === draggedNodeType;
 });
 
-function setDragObj(node: FilterDragObject) {
+const canBeTarget = computed(() => {
+  const subject = dragObj.value;
+  const target = props.node;
+
+  // noinspection TypeScriptUnresolvedFunction
+  return ! target.isDescendantOf(subject) && subject !== target && ! target.isRoot();
+});
+
+const canDropAbove = computed(() => {
+  return mouseInDropZoneAbove.value && canBeTarget.value
+})
+
+const canDropBelow = computed(() => {
+  return mouseInDropZoneBelow.value && canBeTarget.value
+})
+
+function setDragObj(node: FilterDragNode) {
   dragging.value = node;
-  void store.dispatch('query/dragObject', dragging.value);
+  store.filterDragNode = node;
 }
 
 function dragStart(event: DragEvent) {
@@ -210,14 +215,24 @@ function dragEnd() {
 }
 
 function onDrop(position: 'before' | 'after') {
-  store.commit('query/moveFilter', {
-    subject: dragObj.value,
-    target: props.node,
-    position
-  });
+  if (canBeTarget.value) {
+    // noinspection TypeScriptValidateTypes
+    filter.moveNode(
+      dragObj.value,
+      props.node,
+      position
+    );
+  }
 
   setDragObj(false);
 }
+
+watch(dragObj, dragObj => {
+  if (false === dragObj) {
+    mouseInDropZoneAbove.value = false;
+    mouseInDropZoneBelow.value = false;
+  }
+})
 
 </script>
 

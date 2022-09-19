@@ -62,6 +62,9 @@ export default {
     treeFilter: 'Filter criteria to select the trees',
     markFilter: 'Filter criteria to select the marks',
 
+    simplifiable: 'Unnecessary complexity detected.',
+    simplify: 'Simplify filter',
+
     filter: {
       column: 'Column',
       comparator: 'Comparator',
