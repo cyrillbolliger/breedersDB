@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2022-02-07 15:34+0000\n"
-"PO-Revision-Date: 2022-02-07 17:48\n"
+"POT-Creation-Date: 2022-08-29 19:25+0000\n"
+"PO-Revision-Date: 2022-08-29 19:25\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -54,7 +54,7 @@ msgstr "Das Los konnte nicht gelöscht werden. Bitte versuche es erneut."
 #: ./src/Controller/RowsController.php:134
 #: ./src/Controller/ScionsBundlesController.php:146
 #: ./src/Controller/TreesController.php:294
-#: ./src/Controller/TreesController.php:402
+#: ./src/Controller/TreesController.php:403
 #: ./src/Controller/VarietiesController.php:202
 #: ./src/Controller/VarietiesController.php:221
 #: ./src/Controller/VarietiesController.php:240
@@ -63,7 +63,7 @@ msgid "Direct access not allowed."
 msgstr "Direkter Zugriff nicht erlaubt."
 
 #: ./src/Controller/BatchesController.php:214
-#: ./src/Controller/TreesController.php:434
+#: ./src/Controller/TreesController.php:435
 msgid "Regular"
 msgstr "Normal"
 
@@ -72,37 +72,37 @@ msgstr "Normal"
 msgid "Breeders Database"
 msgstr "Züchter-Datenbank"
 
-#: ./src/Controller/Component/ExcelComponent.php:188
+#: ./src/Controller/Component/ExcelComponent.php:191
 msgid "median"
 msgstr "Median"
 
-#: ./src/Controller/Component/ExcelComponent.php:189
+#: ./src/Controller/Component/ExcelComponent.php:192
 msgid "average"
 msgstr "Durchschnitt"
 
-#: ./src/Controller/Component/ExcelComponent.php:190
+#: ./src/Controller/Component/ExcelComponent.php:193
 msgid "count"
 msgstr "Anzahl"
 
-#: ./src/Controller/Component/ExcelComponent.php:193
+#: ./src/Controller/Component/ExcelComponent.php:196
 msgid "standard deviation"
 msgstr "Standardabweichung"
 
-#: ./src/Controller/Component/ExcelComponent.php:195
+#: ./src/Controller/Component/ExcelComponent.php:198
 msgid "value"
 msgstr "Wert"
 
-#: ./src/Controller/Component/ExcelComponent.php:197
+#: ./src/Controller/Component/ExcelComponent.php:200
 msgid "values"
 msgstr "Werte"
 
-#: ./src/Controller/Component/ExcelComponent.php:191
+#: ./src/Controller/Component/ExcelComponent.php:194
 #: ./templates/element/Query/mark_value.php:29
 msgctxt "short: minimum"
 msgid "min"
 msgstr "Min"
 
-#: ./src/Controller/Component/ExcelComponent.php:192
+#: ./src/Controller/Component/ExcelComponent.php:195
 #: ./templates/element/Query/mark_value.php:35
 msgctxt "short: maximum"
 msgid "max"
@@ -429,15 +429,15 @@ msgstr "Der Baum wurde gespeichert."
 msgid "The tree could not be saved. Please, try again."
 msgstr "Der Baum konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: ./src/Controller/TreesController.php:347
+#: ./src/Controller/TreesController.php:348
 msgid "The tree has been deleted."
 msgstr "Der Baum wurde gelöscht."
 
-#: ./src/Controller/TreesController.php:349
+#: ./src/Controller/TreesController.php:350
 msgid "The tree could not be deleted. Please, try again."
 msgstr "Der Baum konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: ./src/Controller/TreesController.php:438
+#: ./src/Controller/TreesController.php:439
 msgid "Anonymous"
 msgstr "Anonymisiert"
 

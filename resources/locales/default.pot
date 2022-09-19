@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-02-07 17:18+0000\n"
+"POT-Creation-Date: 2022-09-19 15:44+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -52,7 +52,7 @@ msgstr ""
 #: ./src/Controller/RowsController.php:134
 #: ./src/Controller/ScionsBundlesController.php:146
 #: ./src/Controller/TreesController.php:294
-#: ./src/Controller/TreesController.php:402
+#: ./src/Controller/TreesController.php:403
 #: ./src/Controller/VarietiesController.php:202
 #: ./src/Controller/VarietiesController.php:221
 #: ./src/Controller/VarietiesController.php:240
@@ -61,7 +61,7 @@ msgid "Direct access not allowed."
 msgstr ""
 
 #: ./src/Controller/BatchesController.php:214
-#: ./src/Controller/TreesController.php:434
+#: ./src/Controller/TreesController.php:435
 msgid "Regular"
 msgstr ""
 
@@ -70,37 +70,37 @@ msgstr ""
 msgid "Breeders Database"
 msgstr ""
 
-#: ./src/Controller/Component/ExcelComponent.php:188
+#: ./src/Controller/Component/ExcelComponent.php:191
 msgid "median"
 msgstr ""
 
-#: ./src/Controller/Component/ExcelComponent.php:189
+#: ./src/Controller/Component/ExcelComponent.php:192
 msgid "average"
 msgstr ""
 
-#: ./src/Controller/Component/ExcelComponent.php:190
+#: ./src/Controller/Component/ExcelComponent.php:193
 msgid "count"
 msgstr ""
 
-#: ./src/Controller/Component/ExcelComponent.php:193
+#: ./src/Controller/Component/ExcelComponent.php:196
 msgid "standard deviation"
 msgstr ""
 
-#: ./src/Controller/Component/ExcelComponent.php:195
+#: ./src/Controller/Component/ExcelComponent.php:198
 msgid "value"
 msgstr ""
 
-#: ./src/Controller/Component/ExcelComponent.php:197
+#: ./src/Controller/Component/ExcelComponent.php:200
 msgid "values"
 msgstr ""
 
-#: ./src/Controller/Component/ExcelComponent.php:191
+#: ./src/Controller/Component/ExcelComponent.php:194
 #: ./templates/element/Query/mark_value.php:29
 msgctxt "short: minimum"
 msgid "min"
 msgstr ""
 
-#: ./src/Controller/Component/ExcelComponent.php:192
+#: ./src/Controller/Component/ExcelComponent.php:195
 #: ./templates/element/Query/mark_value.php:35
 msgctxt "short: maximum"
 msgid "max"
@@ -427,15 +427,15 @@ msgstr ""
 msgid "The tree could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TreesController.php:347
+#: ./src/Controller/TreesController.php:348
 msgid "The tree has been deleted."
 msgstr ""
 
-#: ./src/Controller/TreesController.php:349
+#: ./src/Controller/TreesController.php:350
 msgid "The tree could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TreesController.php:438
+#: ./src/Controller/TreesController.php:439
 msgid "Anonymous"
 msgstr ""
 
