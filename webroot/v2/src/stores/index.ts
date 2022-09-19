@@ -8,6 +8,7 @@ import {store} from 'quasar/wrappers';
  * @see https://pinia.vuejs.org/core-concepts/plugins.html#typing-new-store-properties
  */
 declare module 'pinia' {
+  // noinspection JSUnusedGlobalSymbols
   export interface PiniaCustomProperties {
     readonly router: Router;
   }
@@ -23,6 +24,7 @@ declare module 'pinia' {
  */
 
 export default store((/* { ssrContext } */) => {
+  // noinspection UnnecessaryLocalVariableJS
   const pinia = createPinia()
 
   // You can add Pinia plugins here

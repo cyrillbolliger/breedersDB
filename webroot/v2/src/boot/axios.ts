@@ -2,6 +2,7 @@ import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance } from 'axios';
 
 declare module '@vue/runtime-core' {
+  // noinspection JSUnusedGlobalSymbols
   interface ComponentCustomProperties {
     $axios: AxiosInstance;
   }
@@ -26,6 +27,7 @@ const api = axios.create({
   headers: {'X-CSRF-Token': csrfToken}
 });
 
+// noinspection JSUnusedGlobalSymbols
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
