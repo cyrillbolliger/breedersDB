@@ -1,6 +1,7 @@
 <template>
   <div
     class="filter-tree"
+    :class="{'filter-tree--dragging': !!dragging}"
     :draggable="!!dragging"
     @dragstart="dragStart"
     @dragend="dragEnd"
@@ -14,6 +15,8 @@
       :class="{
         'filter-rule__drop--hover': canDropAbove,
         'filter-rule__drop--active': dragActive && canBeTarget,
+        'filter-rule__drop--and': dropOperand === FilterOperand.And,
+        'filter-rule__drop--or': dropOperand === FilterOperand.Or,
       }"
     />
 
@@ -116,6 +119,8 @@
       :class="{
         'filter-rule__drop--hover': canDropBelow,
         'filter-rule__drop--active': dragActive && canBeTarget,
+        'filter-rule__drop--and': dropOperand === FilterOperand.And,
+        'filter-rule__drop--or': dropOperand === FilterOperand.Or,
       }"
     />
   </div>
@@ -200,6 +205,16 @@ const canDropBelow = computed(() => {
   return mouseInDropZoneBelow.value && canBeTarget.value
 })
 
+const dropOperand = computed(() => {
+  // noinspection TypeScriptUnresolvedFunction
+  if (props.node.isLeaf()) {
+    return props.operand;
+  }
+
+  // noinspection TypeScriptUnresolvedFunction
+  return props.node.getParent()?.getChildrensOperand();
+});
+
 function setDragObj(node: FilterDragNode) {
   dragging.value = node;
   store.filterDragNode = node;
@@ -239,6 +254,10 @@ watch(dragObj, dragObj => {
 <style scoped>
 .filter-tree {
   position: relative;
+}
+
+.filter-tree--dragging {
+  opacity: 0.4;
 }
 
 .filter-tree__drag-bg {
@@ -293,7 +312,7 @@ watch(dragObj, dragObj => {
 }
 
 .filter-rule__drop {
-  height: 20px;
+  height: 18px;
   width: 100%;
   opacity: 0.25;
   display: none;
@@ -303,18 +322,24 @@ watch(dragObj, dragObj => {
 }
 
 .filter-rule__drop--before {
-  top: -20px;
-  background: red;
+  top: -18px;
 }
 
 .filter-rule__drop--after {
-  bottom: -20px;
-  background: blue;
+  bottom: -18px;
 }
 
 .filter-rule__drop--active {
   display: block;
   z-index: 10;
+}
+
+.filter-rule__drop--and {
+  background-color: var(--q-primary);
+}
+
+.filter-rule__drop--or {
+  background-color: var(--q-accent);
 }
 
 .filter-rule__drop--hover {
