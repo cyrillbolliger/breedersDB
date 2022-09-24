@@ -1,5 +1,8 @@
 <template>
-  <div class="filter-rule">
+  <div
+    class="filter-rule"
+    :class="{'filter-rule--invalid': !ruleIsValid}"
+  >
     <div
       :class="{
         'filter-rule--and': operand === FilterOperand.And,
@@ -281,6 +284,10 @@ const ruleIsValid = computed<boolean>(() => {
 .filter-rule {
   padding: 4px 3px 4px 1px;
   background: #EFEFEF;
+}
+
+.filter-rule--invalid {
+  background: #fad9dd;
 }
 
 .filter-rule--and {
