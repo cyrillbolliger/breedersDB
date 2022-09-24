@@ -2,7 +2,7 @@
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
+use App\Model\Behavior\FilterSchemaBehavior;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -21,6 +21,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\BatchesView patchEntity( \Cake\Datasource\EntityInterface $entity, array $data, array $options = [] )
  * @method \App\Model\Entity\BatchesView[] patchEntities( $entities, array $data, array $options = [] )
  * @method \App\Model\Entity\BatchesView findOrCreate( $search, callable $callback = null, $options = [] )
+ *
+ * @mixin FilterSchemaBehavior
  */
 class BatchesViewTable extends Table {
 	/**
@@ -47,6 +49,28 @@ class BatchesViewTable extends Table {
 		return $this->select;
 	}
 
+    public function getTranslatedName(): string {
+        return __('Batches');
+    }
+
+    public function getTranslatedColumnName(string $column): ?string {
+        $columns = [
+            'id'                           => __( 'Id' ),
+            'crossing_batch'               => __( 'Crossing.Batch' ),
+            'date_sowed'                   => __( 'Date Sowed' ),
+            'numb_seeds_sowed'             => __( 'Numb Seeds Sowed' ),
+            'numb_sprouts_grown'           => __( 'Numb Sprouts Grown' ),
+            'seed_tray'                    => __( 'Seed Tray' ),
+            'date_planted'                 => __( 'Date Planted' ),
+            'numb_sprouts_planted'         => __( 'Numb Sprouts Planted' ),
+            'patch'                        => __( 'Patch' ),
+            'note'                         => __( 'Note' ),
+            'crossing_id'                  => __( 'Crossing Id' ),
+        ];
+
+        return $columns[$column] ?? null;
+    }
+
 	/**
 	 * Initialize method
 	 *
@@ -60,6 +84,8 @@ class BatchesViewTable extends Table {
 		$this->setTable( 'batches_view' );
 		$this->setDisplayField( 'code' );
 		$this->setPrimaryKey( 'id' );
+
+        $this->addBehavior( 'FilterSchema' );
 
 		$this->belongsTo( 'CrossingsView', [
 			'foreignKey' => 'crossing_id',

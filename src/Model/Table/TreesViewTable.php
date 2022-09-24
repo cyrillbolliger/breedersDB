@@ -2,6 +2,7 @@
 
 namespace App\Model\Table;
 
+use App\Model\Behavior\FilterSchemaBehavior;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -21,6 +22,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\TreesView patchEntity( \Cake\Datasource\EntityInterface $entity, array $data, array $options = [] )
  * @method \App\Model\Entity\TreesView[] patchEntities( $entities, array $data, array $options = [] )
  * @method \App\Model\Entity\TreesView findOrCreate( $search, callable $callback = null, $options = [] )
+ *
+ * @mixin FilterSchemaBehavior
  */
 class TreesViewTable extends Table {
 	/**
@@ -47,6 +50,30 @@ class TreesViewTable extends Table {
 		return $this->select;
 	}
 
+    public function getTranslatedName(): string {
+        return __('Trees');
+    }
+
+    public function getTranslatedColumnName(string $column): ?string {
+        $columns = [
+            'id'               => __( 'Id' ),
+            'publicid'         => __( 'Publicid' ),
+            'convar'           => __( 'Convar' ),
+            'date_grafted'     => __( 'Date Grafted' ),
+            'date_planted'     => __( 'Date Planted' ),
+            'date_eliminated'  => __( 'Date Eliminated' ),
+            'date_labeled'     => __( 'Date Labeled' ),
+            'genuine_seedling' => __( 'Genuine Seedling' ),
+            'offset'           => __( 'Offset' ),
+            'dont_eliminate'   => __( "Don't eliminate" ),
+            'row'              => __( 'Row' ),
+            'note'             => __( 'Note' ),
+            'variety_id'       => __( 'Variety Id' ),
+        ];
+
+        return $columns[$column] ?? null;
+    }
+
 	/**
 	 * Initialize method
 	 *
@@ -60,6 +87,8 @@ class TreesViewTable extends Table {
 		$this->setTable( 'trees_view' );
 		$this->setDisplayField( 'publicid' );
 		$this->setPrimaryKey( 'id' );
+
+        $this->addBehavior( 'FilterSchema' );
 
 		$this->belongsTo( 'VarietiesView', [
 			'foreignKey' => 'variety_id',

@@ -2,6 +2,7 @@
 
 namespace App\Model\Table;
 
+use App\Model\Behavior\FilterSchemaBehavior;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -20,6 +21,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\MotherTreesView patchEntity( \Cake\Datasource\EntityInterface $entity, array $data, array $options = [] )
  * @method \App\Model\Entity\MotherTreesView[] patchEntities( $entities, array $data, array $options = [] )
  * @method \App\Model\Entity\MotherTreesView findOrCreate( $search, callable $callback = null, $options = [] )
+ *
+ * @mixin FilterSchemaBehavior
  */
 class MotherTreesViewTable extends Table {
 	/**
@@ -46,6 +49,35 @@ class MotherTreesViewTable extends Table {
 		return $this->select;
 	}
 
+    public function getTranslatedName(): string {
+        return __('Mother Trees');
+    }
+
+    public function getTranslatedColumnName(string $column): ?string {
+        $columns = [
+            'id'                       => __( 'Id' ),
+            'crossing'                 => __( 'Crossing' ),
+            'code'                     => __( 'Identification' ),
+            'planed'                   => __( 'Planed' ),
+            'date_pollen_harvested'    => __( 'Date Pollen Harvested' ),
+            'date_impregnated'         => __( 'Date Impregnated' ),
+            'date_fruit_harvested'     => __( 'Date Fruit Harvested' ),
+            'numb_portions'            => __( 'Numb Portions' ),
+            'numb_flowers'             => __( 'Numb Flowers' ),
+            'numb_fruits'              => __( 'Numb Fruits' ),
+            'numb_seeds'               => __( 'Numb Seeds' ),
+            'note'                     => __( 'Note' ),
+            'convar'                   => __( 'Convar' ),
+            'publicid'                 => __( 'Publicid' ),
+            'offset'                   => __( 'Offset' ),
+            'row'                      => __( 'Row' ),
+            'experiment_site'          => __( 'Experiment Site' ),
+            'tree_id'                  => __( 'Tree Id' ),
+            'crossing_id'              => __( 'Crossing Id' ),
+        ];
+
+        return $columns[$column] ?? null;
+    }
 
 	/**
 	 * Initialize method
@@ -60,6 +92,8 @@ class MotherTreesViewTable extends Table {
 		$this->setTable( 'mother_trees_view' );
 		$this->setDisplayField( 'code' );
 		$this->setPrimaryKey( 'id' );
+
+        $this->addBehavior( 'FilterSchema' );
 
 		$this->belongsTo( 'TreesView', [
 			'foreignKey' => 'tree_id',
