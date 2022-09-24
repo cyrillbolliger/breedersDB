@@ -56,19 +56,22 @@ class TreesViewTable extends Table {
 
     public function getTranslatedColumnName(string $column): ?string {
         $columns = [
-            'id'               => __( 'Id' ),
-            'publicid'         => __( 'Publicid' ),
-            'convar'           => __( 'Convar' ),
-            'date_grafted'     => __( 'Date Grafted' ),
-            'date_planted'     => __( 'Date Planted' ),
-            'date_eliminated'  => __( 'Date Eliminated' ),
-            'date_labeled'     => __( 'Date Labeled' ),
-            'genuine_seedling' => __( 'Genuine Seedling' ),
-            'offset'           => __( 'Offset' ),
-            'dont_eliminate'   => __( "Don't eliminate" ),
-            'row'              => __( 'Row' ),
-            'note'             => __( 'Note' ),
-            'variety_id'       => __( 'Variety Id' ),
+            'id' => __('Id'),
+            'publicid' => __('Publicid'),
+            'convar' => __('Convar'),
+            'date_grafted' => __('Date Grafted'),
+            'date_planted' => __('Date Planted'),
+            'date_eliminated' => __('Date Eliminated'),
+            'date_labeled' => __('Date Labeled'),
+            'genuine_seedling' => __('Genuine Seedling'),
+            'offset' => __('Offset'),
+            'dont_eliminate' => __("Don't eliminate"),
+            'row' => __('Row'),
+            'note' => __('Note'),
+            'variety_id' => __('Variety Id'),
+            'grafting' => __('Grafting'),
+            'rootstock' => __('Rootstock'),
+            'experiment_site' => __('Experiment Site'),
         ];
 
         return $columns[$column] ?? null;
