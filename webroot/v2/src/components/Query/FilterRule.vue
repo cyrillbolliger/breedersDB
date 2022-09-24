@@ -1,96 +1,97 @@
 <template>
   <div class="filter-rule">
     <div
-      class="row items-center"
       :class="{
         'filter-rule--and': operand === FilterOperand.And,
         'filter-rule--or': operand === FilterOperand.Or
       }"
+      class="row items-center"
     >
       <q-icon
+        class="drag-handle"
         name="drag_indicator"
         size="md"
-        class="drag-handle"
         @mousedown="$emit('dragMouseDown')"
         @mouseup="$emit('dragMouseUp')"
       />
       <div class="col row q-col-gutter-sm">
         <q-select
-          class="col-12 col-md-4"
-          outlined
-          :model-value="column"
-          @update:model-value="updateColumn"
-          :options="options"
           :label="t('queries.filter.column')"
+          :model-value="column"
+          :options="filterOptions"
           autocomplete="off"
-          dense
           bg-color="white"
+          class="col-12 col-md-4"
+          dense
+          outlined
+          @update:model-value="updateColumn"
         />
         <q-select
-          class="col-12 col-md-4"
-          outlined
-          :model-value="comparator"
-          @update:model-value="updateComparator"
-          :options="comparatorOptions"
-          :label="t('queries.filter.comparator')"
-          autocomplete="off"
-          :error="!comparatorIsValid && column !== undefined && comparator !== undefined"
-          hide-bottom-space
-          dense
-          :disable="column === undefined"
           :bg-color="column === undefined ? 'transparent' : 'white'"
+          :disable="column === undefined"
+          :error="!comparatorIsValid && column !== undefined && comparator !== undefined"
+          :label="t('queries.filter.comparator')"
+          :model-value="comparator"
+          :options="comparatorOptions"
+          autocomplete="off"
+          class="col-12 col-md-4"
+          dense
+          hide-bottom-space
+          outlined
+          @update:model-value="updateComparator"
         />
         <!--suppress PointlessBooleanExpressionJS -->
         <q-input
           v-if="hasInputCriteria || column === undefined"
-          class="col-12 col-md-4"
-          outlined
-          :model-value="criteria"
-          @update:model-value="updateCriteria"
-          :label="t('queries.filter.criteria')"
-          autocomplete="off"
-          hide-bottom-space
-          dense
-          :type="criteriaInputType"
-          :step="criteriaStep"
-          :disable="comparator === undefined"
-          :stack-label="column?.type === FilterDataType.Date"
           :bg-color="comparator === undefined ? 'transparent' : 'white'"
+          :disable="comparator === undefined"
+          :label="t('queries.filter.criteria')"
+          :model-value="criteria"
+          :stack-label="column?.type === PropertySchemaOptionType.Date"
+          :step="criteriaStep"
+          :type="criteriaInputType"
+          autocomplete="off"
+          class="col-12 col-md-4"
+          dense
+          hide-bottom-space
+          outlined
+          @update:model-value="updateCriteria"
         />
         <q-space
-          class="col-12 col-md-4"
           v-else
+          class="col-12 col-md-4"
         />
       </div>
       <q-icon
-        :name="ruleIsValid ? 'check' : 'warning'"
         :color="ruleIsValid ? 'positive' : 'negative'"
-        size="sm"
+        :name="ruleIsValid ? 'check' : 'warning'"
         class="q-ml-sm"
+        size="sm"
       />
       <q-btn
-        icon="delete_outline"
-        dense
         class="delete-button"
-        @click="deleteRule"
-        rounded
+        dense
         flat
+        icon="delete_outline"
+        rounded
+        @click="deleteRule"
       />
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {computed, PropType} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {
   FilterComparator,
   FilterComparatorOption,
-  FilterCriteria, FilterDataType,
+  FilterCriteria,
   FilterOperand,
   FilterOption
 } from 'src/models/query/filterTypes';
 import {FilterNode} from 'src/models/query/filterNode';
+import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 
@@ -98,7 +99,7 @@ defineEmits(['dragMouseDown', 'dragMouseUp'])
 
 const props = defineProps({
   options: {
-    type: Object as PropType<Array<FilterOption>>,
+    type: Object as PropType<PropertySchema[]>,
     required: true,
   },
   node: {
@@ -116,6 +117,16 @@ const filterRule = computed(() => props.node.getFilterRule())
 const column = computed(() => filterRule.value?.column)
 const comparator = computed(() => filterRule.value?.comparator)
 const criteria = computed(() => filterRule.value?.criteria);
+const filterOptions = computed<FilterOption[]>(() => {
+  // noinspection TypeScriptUnresolvedFunction
+  return props.options.map((option: PropertySchema) => {
+    return {
+      label: option.label,
+      value: option.name,
+      type: option.options.type,
+    } as FilterOption;
+  });
+})
 
 function updateColumn(value: FilterOption) {
   filterRule.value.column = value;
@@ -138,44 +149,56 @@ const allComparatorOptions: FilterComparatorOption[] = [
   {
     label: t('queries.filter.equals'),
     value: FilterComparator.Equal,
-    type: [FilterDataType.Integer, FilterDataType.Float, FilterDataType.String, FilterDataType.Date]
+    type: [PropertySchemaOptionType.Integer, PropertySchemaOptionType.Float, PropertySchemaOptionType.String, PropertySchemaOptionType.Date]
   },
   {
     label: t('queries.filter.notEquals'),
     value: FilterComparator.NotEqual,
-    type: [FilterDataType.Integer, FilterDataType.Float, FilterDataType.String, FilterDataType.Date]
+    type: [PropertySchemaOptionType.Integer, PropertySchemaOptionType.Float, PropertySchemaOptionType.String, PropertySchemaOptionType.Date]
   },
   {
     label: t('queries.filter.less'),
     value: FilterComparator.Less,
-    type: [FilterDataType.Integer, FilterDataType.Float, FilterDataType.Date]
+    type: [PropertySchemaOptionType.Integer, PropertySchemaOptionType.Float, PropertySchemaOptionType.Date]
   },
   {
     label: t('queries.filter.lessOrEqual'),
     value: FilterComparator.LessOrEqual,
-    type: [FilterDataType.Integer, FilterDataType.Float, FilterDataType.Date]
+    type: [PropertySchemaOptionType.Integer, PropertySchemaOptionType.Float, PropertySchemaOptionType.Date]
   },
   {
     label: t('queries.filter.greater'),
     value: FilterComparator.Greater,
-    type: [FilterDataType.Integer, FilterDataType.Float, FilterDataType.Date]
+    type: [PropertySchemaOptionType.Integer, PropertySchemaOptionType.Float, PropertySchemaOptionType.Date]
   },
   {
     label: t('queries.filter.greaterOrEqual'),
     value: FilterComparator.GreaterOrEqual,
-    type: [FilterDataType.Integer, FilterDataType.Float, FilterDataType.Date]
+    type: [PropertySchemaOptionType.Integer, PropertySchemaOptionType.Float, PropertySchemaOptionType.Date]
   },
-  {label: t('queries.filter.startsWith'), value: FilterComparator.StartsWith, type: [FilterDataType.String]},
-  {label: t('queries.filter.startsNotWith'), value: FilterComparator.StartsNotWith, type: [FilterDataType.String]},
-  {label: t('queries.filter.contains'), value: FilterComparator.Contains, type: [FilterDataType.String]},
-  {label: t('queries.filter.notContains'), value: FilterComparator.NotContains, type: [FilterDataType.String]},
-  {label: t('queries.filter.endsWith'), value: FilterComparator.EndsWith, type: [FilterDataType.String]},
-  {label: t('queries.filter.notEndsWith'), value: FilterComparator.NotEndsWith, type: [FilterDataType.String]},
-  {label: t('queries.filter.empty'), value: FilterComparator.Empty, type: [FilterDataType.String]},
-  {label: t('queries.filter.notEmpty'), value: FilterComparator.NotEmpty, type: [FilterDataType.String]},
-  {label: t('queries.filter.hasPhoto'), value: FilterComparator.NotEmpty, type: [FilterDataType.Photo]},
-  {label: t('queries.filter.isTrue'), value: FilterComparator.NotEmpty, type: [FilterDataType.Boolean]},
-  {label: t('queries.filter.isFalse'), value: FilterComparator.Empty, type: [FilterDataType.Boolean]},
+  {label: t('queries.filter.startsWith'), value: FilterComparator.StartsWith, type: [PropertySchemaOptionType.String]},
+  {
+    label: t('queries.filter.startsNotWith'),
+    value: FilterComparator.StartsNotWith,
+    type: [PropertySchemaOptionType.String]
+  },
+  {label: t('queries.filter.contains'), value: FilterComparator.Contains, type: [PropertySchemaOptionType.String]},
+  {
+    label: t('queries.filter.notContains'),
+    value: FilterComparator.NotContains,
+    type: [PropertySchemaOptionType.String]
+  },
+  {label: t('queries.filter.endsWith'), value: FilterComparator.EndsWith, type: [PropertySchemaOptionType.String]},
+  {
+    label: t('queries.filter.notEndsWith'),
+    value: FilterComparator.NotEndsWith,
+    type: [PropertySchemaOptionType.String]
+  },
+  {label: t('queries.filter.empty'), value: FilterComparator.Empty, type: [PropertySchemaOptionType.String]},
+  {label: t('queries.filter.notEmpty'), value: FilterComparator.NotEmpty, type: [PropertySchemaOptionType.String]},
+  {label: t('queries.filter.hasPhoto'), value: FilterComparator.NotEmpty, type: [PropertySchemaOptionType.Photo]},
+  {label: t('queries.filter.isTrue'), value: FilterComparator.NotEmpty, type: [PropertySchemaOptionType.Boolean]},
+  {label: t('queries.filter.isFalse'), value: FilterComparator.Empty, type: [PropertySchemaOptionType.Boolean]},
 ]
 
 const comparatorOptions = computed<FilterComparatorOption[]>(() => {
@@ -190,11 +213,11 @@ const comparatorIsValid = computed<boolean>(() =>
 
 const hasInputCriteria = computed<boolean>(() => {
   switch (column.value?.type) {
-    case FilterDataType.Date:
-    case FilterDataType.Integer:
-    case FilterDataType.Float:
+    case PropertySchemaOptionType.Date:
+    case PropertySchemaOptionType.Integer:
+    case PropertySchemaOptionType.Float:
       return true
-    case FilterDataType.String:
+    case PropertySchemaOptionType.String:
       return comparator.value?.value !== FilterComparator.Empty
         && comparator.value?.value !== FilterComparator.NotEmpty
     default:
@@ -204,10 +227,10 @@ const hasInputCriteria = computed<boolean>(() => {
 
 const criteriaInputType = computed<'date' | 'number' | 'text'>(() => {
   switch (column.value?.type) {
-    case FilterDataType.Date:
+    case PropertySchemaOptionType.Date:
       return 'date'
-    case FilterDataType.Integer:
-    case FilterDataType.Float:
+    case PropertySchemaOptionType.Integer:
+    case PropertySchemaOptionType.Float:
       return 'number'
     default:
       return 'text'
@@ -216,9 +239,9 @@ const criteriaInputType = computed<'date' | 'number' | 'text'>(() => {
 
 const criteriaStep = computed<number | false>(() => {
   switch (column.value?.type) {
-    case FilterDataType.Integer:
+    case PropertySchemaOptionType.Integer:
       return 1
-    case FilterDataType.Float:
+    case PropertySchemaOptionType.Float:
       return 0.1
     default:
       return false
@@ -226,16 +249,22 @@ const criteriaStep = computed<number | false>(() => {
 })
 
 const criteriaInputIsValid = computed<boolean>(() => {
+  if (column.value?.type === PropertySchemaOptionType.Boolean
+    || column.value?.type === PropertySchemaOptionType.Photo
+  ) {
+    return true;
+  }
+
   if (typeof criteria.value !== 'string') {
     return false
   }
 
   switch (column.value?.type) {
-    case FilterDataType.Integer:
+    case PropertySchemaOptionType.Integer:
       return Number.parseFloat(criteria.value) % 1 === 0.0
-    case FilterDataType.Float:
+    case PropertySchemaOptionType.Float:
       return ! isNaN(Number.parseFloat(criteria.value))
-    case FilterDataType.Date:
+    case PropertySchemaOptionType.Date:
       return ! isNaN(Date.parse(criteria.value))
     default:
       return criteria.value.length > 0

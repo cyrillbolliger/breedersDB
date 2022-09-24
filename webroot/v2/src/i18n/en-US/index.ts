@@ -58,6 +58,7 @@ export default {
     scionsBundles: 'scions bundles',
 
     marks: 'marks',
+    Marks: 'Marks',
 
     defaultFilter: 'Filter criteria',
     batchFilter: 'Filter criteria to select the batches',

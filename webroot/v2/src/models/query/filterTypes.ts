@@ -1,3 +1,5 @@
+import {PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
+
 export enum FilterComparator {
   Equal = '===',
   NotEqual = '!==',
@@ -28,22 +30,13 @@ export enum FilterType {
 export interface FilterOption {
   label: string,
   value: string,
-  type: FilterDataType,
+  type: PropertySchemaOptionType,
 }
 
 export interface FilterComparatorOption {
   label: string,
   value: string,
-  type: FilterDataType[],
-}
-
-export enum FilterDataType {
-  Integer = 'INTEGER',
-  Float = 'FLOAT',
-  String = 'VARCHAR',
-  Boolean = 'BOOLEAN',
-  Date = 'DATE',
-  Photo = 'PHOTO',
+  type: PropertySchemaOptionType[],
 }
 
 export type FilterCriteria = string;

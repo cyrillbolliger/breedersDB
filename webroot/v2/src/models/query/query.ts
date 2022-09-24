@@ -1,12 +1,12 @@
 import {FilterNode} from 'src/models/query/filterNode';
 
 export enum BaseTable {
-  Crossings = 'crossings',
-  Batches = 'batches',
-  Varieties = 'varieties',
-  Trees = 'trees',
-  MotherTrees = 'motherTrees',
-  ScionsBundles = 'scionsBundles',
+  Crossings = 'Crossings',
+  Batches = 'Batches',
+  Varieties = 'Varieties',
+  Trees = 'Trees',
+  MotherTrees = 'MotherTrees',
+  ScionsBundles = 'ScionsBundles',
 }
 
 export type FilterDragNode = FilterNode | false;

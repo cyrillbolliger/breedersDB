@@ -35,12 +35,13 @@
 
 <script setup lang="ts">
 import FilterTree from 'components/Query/FilterTree.vue';
-import {FilterOperand, FilterOption, FilterType} from 'src/models/query/filterTypes';
+import {FilterOperand, FilterType} from 'src/models/query/filterTypes';
 import {computed, PropType} from 'vue';
 import {FilterNode} from 'src/models/query/filterNode';
 import {useI18n} from 'vue-i18n';
 import FilterRuleButtonAdd from 'components/Query/FilterRuleButtonAdd.vue';
 import {useQueryStore} from 'stores/query';
+import {PropertySchema} from 'src/models/query/filterOptionSchema';
 
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore();
@@ -51,7 +52,7 @@ const props = defineProps({
     required: true
   },
   options: {
-    type: Object as PropType<Array<FilterOption>>,
+    type: Object as PropType<PropertySchema[]>,
     required: true,
   },
 });
@@ -67,7 +68,7 @@ const entityName = computed(() => {
     return t('queries.marks');
   }
 
-  return t('queries.' + store.baseTable.toString());
+  return t('queries.' + store.baseTable.toString().toLowerCase());
 });
 
 function simplify() {
