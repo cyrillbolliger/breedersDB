@@ -1,7 +1,7 @@
 <template>
   <div
     class="filter-rule"
-    :class="{'filter-rule--invalid': !ruleIsValid}"
+    :class="{'filter-rule--invalid': ruleIsInvalid}"
   >
     <div
       :class="{
@@ -274,8 +274,27 @@ const criteriaInputIsValid = computed<boolean>(() => {
   }
 })
 
+const columnIsValid = computed<boolean>(() => {
+  return filterOptions.value.findIndex(
+    (item: FilterOption) => item.value === column.value?.value
+  ) > -1;
+})
+
+const ruleIsInvalid = computed<boolean>(() => {
+  return ! ruleIsValid.value
+    && column.value !== undefined
+    && comparator.value !== undefined
+    && (
+      (
+        column.value?.type === PropertySchemaOptionType.Boolean
+        || column.value?.type === PropertySchemaOptionType.Photo
+      )
+      || criteria.value !== undefined
+    )
+})
+
 const ruleIsValid = computed<boolean>(() => {
-  return !! (column.value && comparatorIsValid.value && criteriaInputIsValid.value)
+  return columnIsValid.value && comparatorIsValid.value && criteriaInputIsValid.value
 })
 
 </script>
