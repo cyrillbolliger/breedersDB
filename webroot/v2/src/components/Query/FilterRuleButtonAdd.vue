@@ -34,7 +34,7 @@ import {PropType, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {FilterOperand} from 'src/models/query/filterTypes';
 import {FilterNode} from 'src/models/query/filterNode';
-import useFilter from 'src/composables/queries/filter';
+import useFilterNodeActions from 'src/composables/queries/filterNodeActions';
 
 const props = defineProps({
   operand: {
@@ -48,7 +48,7 @@ const props = defineProps({
 });
 
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
-const filter = useFilter();
+const filter = useFilterNodeActions();
 
 const actionsVisible = ref(false);
 const actionButtonHover = ref(false);

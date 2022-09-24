@@ -1,11 +1,8 @@
-import {useQueryStore} from 'stores/query';
 import {FilterNode} from 'src/models/query/filterNode';
 import {FilterOperand} from 'src/models/query/filterTypes';
 import {FilterRule} from 'src/models/query/filterRule';
 
-export default function useFilter() {
-  const store = useQueryStore();
-
+export default function useFilterNodeActions() {
   function addLeaf(parent: FilterNode, operand: FilterOperand) {
     const rule: FilterRule = {
       column: undefined,
@@ -64,17 +61,7 @@ export default function useFilter() {
     targetParent.setChildren(targetParentsChildren);
   }
 
-  function getBaseFilter() {
-    return store.baseFilter;
-  }
-
-  function getMarkFilter() {
-    return store.markFilter
-  }
-
   return {
-    getBaseFilter,
-    getMarkFilter,
     addLeaf,
     moveNode,
   }

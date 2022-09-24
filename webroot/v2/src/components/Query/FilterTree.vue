@@ -88,7 +88,7 @@
 
 <script setup lang="ts">
 import {computed, PropType, ref} from 'vue';
-import useFilter from 'src/composables/queries/filter';
+import useFilterNodeActions from 'src/composables/queries/filterNodeActions';
 import {useI18n} from 'vue-i18n';
 import FilterRule from 'src/components/Query/FilterRule.vue'
 import FilterRuleButtonAdd from 'src/components/Query/FilterRuleButtonAdd.vue';
@@ -113,7 +113,7 @@ const props = defineProps({
   },
 });
 
-const filter = useFilter();
+const filter = useFilterNodeActions();
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore();
 

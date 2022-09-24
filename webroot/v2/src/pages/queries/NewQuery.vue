@@ -4,7 +4,7 @@
 
     <p class="text-overline q-mb-none">{{ t('queries.baseTable') }}</p>
     <q-btn-toggle
-      :options="baseOptions"
+      :options="baseTableOptions"
       v-model="baseTable"
       no-wrap
     />
@@ -18,6 +18,7 @@
     <!--suppress JSValidateTypes -->
     <FilterTreeRoot
       :filter="baseFilter"
+      :options="baseFilterOptions"
     />
 
     <template v-if="marksAvailable">
@@ -25,6 +26,7 @@
       <!--suppress JSValidateTypes -->
       <FilterTreeRoot
         :filter="markFilter"
+        :options="markFilterOptions"
       />
     </template>
 
@@ -39,18 +41,17 @@ import {computed} from 'vue';
 import FilterTreeRoot from 'components/Query/FilterTreeRoot.vue';
 import {useQueryStore} from 'stores/query';
 import {BaseTable} from 'src/models/query/query';
-import useFilter from 'src/composables/queries/filter';
+import {FilterDataType} from 'src/models/query/filterTypes';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const layout = useLayout()
 const store = useQueryStore()
-const filter = useFilter()
 
 layout.setToolbarTitle(t('queries.title'))
 layout.setToolbarTabs([])
 layout.setToolbarBreadcrumbs([])
 
-const baseOptions = [
+const baseTableOptions = [
   {value: BaseTable.Crossings, label: t('queries.crossings')},
   {value: BaseTable.Batches, label: t('queries.batches')},
   {value: BaseTable.Varieties, label: t('queries.varieties')},
@@ -70,8 +71,21 @@ const marksAvailable = computed<boolean>(() => {
     || baseTable.value === BaseTable.Trees
 });
 
-const baseFilter = computed(() => filter.getBaseFilter());
-const markFilter = computed(() => filter.getMarkFilter());
+const baseFilter = computed(() => store.baseFilter);
+const markFilter = computed(() => store.markFilter);
+
+// todo: replace stubs
+const options = [
+  {label: 'Trees -> ID', value: 'trees_id', type: FilterDataType.Integer},
+  {label: 'Trees -> Row', value: 'trees_row', type: FilterDataType.Float},
+  {label: 'Marks -> Note', value: 'marks_note', type: FilterDataType.String},
+  {label: 'Marks -> Photo', value: 'marks_photo', type: FilterDataType.Photo},
+  {label: 'Marks -> Date', value: 'marks_date', type: FilterDataType.Date},
+  {label: 'Marks -> Original', value: 'marks_original', type: FilterDataType.Boolean},
+];
+
+const markFilterOptions = options;
+const baseFilterOptions = options;
 
 </script>
 

@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import FilterTree from 'components/Query/FilterTree.vue';
-import {FilterDataType, FilterOperand, FilterType} from 'src/models/query/filterTypes';
+import {FilterOperand, FilterOption, FilterType} from 'src/models/query/filterTypes';
 import {computed, PropType} from 'vue';
 import {FilterNode} from 'src/models/query/filterNode';
 import {useI18n} from 'vue-i18n';
@@ -49,7 +49,11 @@ const props = defineProps({
   filter: {
     type: Object as PropType<FilterNode>,
     required: true
-  }
+  },
+  options: {
+    type: Object as PropType<Array<FilterOption>>,
+    required: true,
+  },
 });
 
 // noinspection TypeScriptUnresolvedFunction
@@ -73,16 +77,6 @@ function simplify() {
     props.filter.simplify()
   }
 }
-
-// todo: replace stubs
-const options = [
-  {label: 'Trees -> ID', value: 'trees_id', type: FilterDataType.Integer},
-  {label: 'Trees -> Row', value: 'trees_row', type: FilterDataType.Float},
-  {label: 'Marks -> Note', value: 'marks_note', type: FilterDataType.String},
-  {label: 'Marks -> Photo', value: 'marks_photo', type: FilterDataType.Photo},
-  {label: 'Marks -> Date', value: 'marks_date', type: FilterDataType.Date},
-  {label: 'Marks -> Original', value: 'marks_original', type: FilterDataType.Boolean},
-];
 
 </script>
 
