@@ -1,4 +1,4 @@
-import {PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
+import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 
 export enum FilterComparator {
   Equal = '===',
@@ -30,7 +30,7 @@ export enum FilterType {
 export interface FilterOption {
   label: string,
   value: string,
-  type: PropertySchemaOptionType,
+  schema: PropertySchema,
 }
 
 export interface FilterComparatorOption {

@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="App\Test\" />
       <sourceFolder url="file://$MODULE_DIR$/./vendor/cakephp/cakephp/tests" isTestSource="true" packagePrefix="Cake\Test\" />
+      <sourceFolder url="file://$MODULE_DIR$/config/Generators" isTestSource="true" packagePrefix="App\Generator\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/cakephp/cakephp" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/cakephp/chronos" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/cakephp/plugin-installer" />

@@ -45,9 +45,7 @@ export interface PropertySchemaBooleanOptions {
 export interface PropertySchemaEnumOptions {
   type: PropertySchemaOptionType.Enum,
   validation: {
-    options: {
-      [key: string]: string
-    }
+    options: string[]
   },
 }
 

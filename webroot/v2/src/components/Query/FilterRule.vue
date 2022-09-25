@@ -22,6 +22,8 @@
           :label="t('queries.filter.column')"
           :model-value="column"
           :options="filterOptions"
+          :error="column !== undefined && !columnIsValid"
+          hide-bottom-space
           autocomplete="off"
           bg-color="white"
           class="col-12 col-md-4"
@@ -43,26 +45,14 @@
           outlined
           @update:model-value="updateComparator"
         />
-        <!--suppress PointlessBooleanExpressionJS -->
-        <q-input
-          v-if="hasInputCriteria || column === undefined"
-          :bg-color="comparator === undefined ? 'transparent' : 'white'"
-          :disable="comparator === undefined"
-          :label="t('queries.filter.criteria')"
+        <FilterRuleCriteria
+          :schema="column?.schema || null"
+          :disabled="comparator === undefined"
+          :hide="!hasInputCriteria"
           :model-value="criteria"
-          :stack-label="column?.type === PropertySchemaOptionType.Date"
-          :step="criteriaStep"
-          :type="criteriaInputType"
-          autocomplete="off"
-          class="col-12 col-md-4"
-          dense
-          hide-bottom-space
-          outlined
           @update:model-value="updateCriteria"
-        />
-        <q-space
-          v-else
-          class="col-12 col-md-4"
+          @valid="criteriaInputIsValid = true"
+          @invalid="criteriaInputIsValid = false"
         />
       </div>
       <q-icon
@@ -84,7 +74,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, PropType} from 'vue';
+import {computed, PropType, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {
   FilterComparator,
@@ -95,6 +85,7 @@ import {
 } from 'src/models/query/filterTypes';
 import {FilterNode} from 'src/models/query/filterNode';
 import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
+import FilterRuleCriteria from 'components/Query/FilterRuleCriteria.vue';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 
@@ -115,6 +106,8 @@ const props = defineProps({
   }
 });
 
+const criteriaInputIsValid = ref<boolean>();
+
 // noinspection TypeScriptUnresolvedFunction
 const filterRule = computed(() => props.node.getFilterRule())
 const column = computed(() => filterRule.value?.column)
@@ -126,7 +119,7 @@ const filterOptions = computed<FilterOption[]>(() => {
     return {
       label: option.label,
       value: option.name,
-      type: option.options.type,
+      schema: option,
     } as FilterOption;
   });
 })
@@ -152,12 +145,12 @@ const allComparatorOptions: FilterComparatorOption[] = [
   {
     label: t('queries.filter.equals'),
     value: FilterComparator.Equal,
-    type: [PropertySchemaOptionType.Integer, PropertySchemaOptionType.Float, PropertySchemaOptionType.String, PropertySchemaOptionType.Date]
+    type: [PropertySchemaOptionType.Integer, PropertySchemaOptionType.Float, PropertySchemaOptionType.String, PropertySchemaOptionType.Date, PropertySchemaOptionType.Enum]
   },
   {
     label: t('queries.filter.notEquals'),
     value: FilterComparator.NotEqual,
-    type: [PropertySchemaOptionType.Integer, PropertySchemaOptionType.Float, PropertySchemaOptionType.String, PropertySchemaOptionType.Date]
+    type: [PropertySchemaOptionType.Integer, PropertySchemaOptionType.Float, PropertySchemaOptionType.String, PropertySchemaOptionType.Date, PropertySchemaOptionType.Enum]
   },
   {
     label: t('queries.filter.less'),
@@ -206,7 +199,7 @@ const allComparatorOptions: FilterComparatorOption[] = [
 
 const comparatorOptions = computed<FilterComparatorOption[]>(() => {
   return allComparatorOptions.filter((option: FilterComparatorOption) =>
-    option.type.find(type => type === column.value?.type)
+    option.type.find(type => type === column.value?.schema.options.type)
   )
 });
 
@@ -215,62 +208,17 @@ const comparatorIsValid = computed<boolean>(() =>
 )
 
 const hasInputCriteria = computed<boolean>(() => {
-  switch (column.value?.type) {
+  switch (column.value?.schema.options.type) {
     case PropertySchemaOptionType.Date:
     case PropertySchemaOptionType.Integer:
     case PropertySchemaOptionType.Float:
+    case PropertySchemaOptionType.Enum:
       return true
     case PropertySchemaOptionType.String:
       return comparator.value?.value !== FilterComparator.Empty
         && comparator.value?.value !== FilterComparator.NotEmpty
     default:
       return false
-  }
-})
-
-const criteriaInputType = computed<'date' | 'number' | 'text'>(() => {
-  switch (column.value?.type) {
-    case PropertySchemaOptionType.Date:
-      return 'date'
-    case PropertySchemaOptionType.Integer:
-    case PropertySchemaOptionType.Float:
-      return 'number'
-    default:
-      return 'text'
-  }
-})
-
-const criteriaStep = computed<number | false>(() => {
-  switch (column.value?.type) {
-    case PropertySchemaOptionType.Integer:
-      return 1
-    case PropertySchemaOptionType.Float:
-      return 0.1
-    default:
-      return false
-  }
-})
-
-const criteriaInputIsValid = computed<boolean>(() => {
-  if (column.value?.type === PropertySchemaOptionType.Boolean
-    || column.value?.type === PropertySchemaOptionType.Photo
-  ) {
-    return true;
-  }
-
-  if (typeof criteria.value !== 'string') {
-    return false
-  }
-
-  switch (column.value?.type) {
-    case PropertySchemaOptionType.Integer:
-      return Number.parseFloat(criteria.value) % 1 === 0.0
-    case PropertySchemaOptionType.Float:
-      return ! isNaN(Number.parseFloat(criteria.value))
-    case PropertySchemaOptionType.Date:
-      return ! isNaN(Date.parse(criteria.value))
-    default:
-      return criteria.value.length > 0
   }
 })
 
@@ -286,15 +234,17 @@ const ruleIsInvalid = computed<boolean>(() => {
     && comparator.value !== undefined
     && (
       (
-        column.value?.type === PropertySchemaOptionType.Boolean
-        || column.value?.type === PropertySchemaOptionType.Photo
+        column.value?.schema.options.type === PropertySchemaOptionType.Boolean
+        || column.value?.schema.options.type === PropertySchemaOptionType.Photo
       )
       || criteria.value !== undefined
     )
 })
 
 const ruleIsValid = computed<boolean>(() => {
-  return columnIsValid.value && comparatorIsValid.value && criteriaInputIsValid.value
+  return columnIsValid.value
+    && comparatorIsValid.value
+    && criteriaInputIsValid.value === true; // may also be undefined
 })
 
 </script>
