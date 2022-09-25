@@ -39,7 +39,7 @@
       dense
       hide-bottom-space
       outlined
-      @update:model-value="value => $emit('update:modelValue', value)"
+      @update:model-value="value => $emit('update:modelValue', value.trim())"
     />
   </template>
 </template>
