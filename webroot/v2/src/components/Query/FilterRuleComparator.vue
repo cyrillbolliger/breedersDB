@@ -5,18 +5,28 @@
     :error="isInvalid"
     :label="t('queries.filter.comparator')"
     :model-value="modelValue"
-    :options="comparatorOptions"
+    :options="filteredComparatorOptions"
     autocomplete="off"
     class="col-12 col-md-4"
     dense
     hide-bottom-space
     outlined
+    use-input
+    @filter="filterComparatorOptions"
     @update:model-value="value => $emit('update:modelValue', value)"
-  />
+  >
+    <template v-slot:no-option>
+      <q-item>
+        <q-item-section class="text-grey">
+          {{t('queries.filter.noResults')}}
+        </q-item-section>
+      </q-item>
+    </template>
+  </q-select>
 </template>
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n';
-import {computed, PropType, watch} from 'vue';
+import {computed, PropType, ref, watch} from 'vue';
 import {FilterComparator, FilterComparatorOption} from 'src/models/query/filterTypes';
 import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 
@@ -93,20 +103,40 @@ const allComparatorOptions: FilterComparatorOption[] = [
   {label: t('queries.filter.isFalse'), value: FilterComparator.Empty, type: [PropertySchemaOptionType.Boolean]},
 ]
 
-const comparatorOptions = computed<FilterComparatorOption[]>(() => {
+const availableComparatorOptions = computed<FilterComparatorOption[]>(() => {
   // noinspection TypeScriptUnresolvedVariable
   return allComparatorOptions.filter((option: FilterComparatorOption) =>
     option.type.find(type => type === props.schema?.options.type)
   )
 });
 
+const filteredComparatorOptions = ref(availableComparatorOptions.value);
+
+function filterComparatorOptions(value: string, update: (cb: () => void) => void) {
+  if (value === '') {
+    update(() => {
+      filteredComparatorOptions.value = availableComparatorOptions.value;
+    })
+    return;
+  }
+
+  update(() => {
+    const locale = navigator.languages[0] || navigator.language;
+    const needle = value.toLocaleLowerCase(locale);
+
+    filteredComparatorOptions.value = availableComparatorOptions.value.filter(
+      v => v.label.toLocaleLowerCase(locale).indexOf(needle) > -1
+    );
+  })
+}
+
 const isValid = computed<boolean>(() => {
-  if (undefined === props.modelValue || ! ('value' in props.modelValue)) {
+  if (! props.modelValue || ! ('value' in props.modelValue)) {
     return false;
   }
 
   // noinspection TypeScriptUnresolvedVariable
-  return comparatorOptions.value
+  return availableComparatorOptions.value
     .findIndex((c: FilterComparatorOption) => c.value === props.modelValue.value) > -1;
 })
 

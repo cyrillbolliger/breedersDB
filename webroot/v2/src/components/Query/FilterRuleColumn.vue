@@ -3,19 +3,29 @@
     :error="isInvalid"
     :label="t('queries.filter.column')"
     :model-value="modelValue"
-    :options="filterOptions"
+    :options="filteredFilterOptions"
     autocomplete="off"
     bg-color="white"
     class="col-12 col-md-4"
     dense
     hide-bottom-space
     outlined
+    use-input
+    @filter="filterFilterOptions"
     @update:model-value="value => $emit('update:modelValue', value)"
-  />
+  >
+    <template v-slot:no-option>
+      <q-item>
+        <q-item-section class="text-grey">
+          {{t('queries.filter.noResults')}}
+        </q-item-section>
+      </q-item>
+    </template>
+  </q-select>
 </template>
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n';
-import {computed, PropType, watch} from 'vue';
+import {computed, PropType, ref, watch} from 'vue';
 import {PropertySchema} from 'src/models/query/filterOptionSchema';
 import {FilterOption} from 'src/models/query/filterTypes';
 
@@ -45,6 +55,26 @@ const filterOptions = computed<FilterOption[]>(() => {
     } as FilterOption;
   });
 })
+
+const filteredFilterOptions = ref(filterOptions.value);
+
+function filterFilterOptions(value: string, update: (cb: () => void) => void) {
+  if (value === '') {
+    update(() => {
+      filteredFilterOptions.value = filterOptions.value;
+    })
+    return;
+  }
+
+  update(() => {
+    const locale = navigator.languages[0] || navigator.language;
+    const needle = value.toLocaleLowerCase(locale);
+
+    filteredFilterOptions.value = filterOptions.value.filter(
+      v => v.label.toLocaleLowerCase(locale).indexOf(needle) > -1
+    );
+  })
+}
 
 const isValid = computed<boolean>(() => {
   if (props.modelValue === undefined || ! ('value' in props.modelValue)) {
