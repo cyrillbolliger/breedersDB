@@ -48,6 +48,7 @@
 import {computed, PropType, watch} from 'vue';
 import {PropertySchema, PropertySchemaOptions, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 import {useI18n} from 'vue-i18n';
+import naturalSort from 'src/composables/naturalSort';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 
@@ -137,7 +138,8 @@ const selectOptions = computed<string[]>(() => {
   // noinspection TypeScriptUnresolvedVariable
   const options: PropertySchemaOptions | null = props.schema?.options || null;
   if (options && 'validation' in options && 'options' in options.validation) {
-    return options.validation.options;
+    const selectOptions = options.validation.options;
+    return naturalSort(selectOptions);
   }
   return [];
 })
