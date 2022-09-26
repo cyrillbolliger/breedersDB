@@ -75,10 +75,10 @@ class QueriesControllerTest extends TestCase
      * @return void
      * @uses \App\Controller\REST1\TreesController::getTree()
      */
-    public function testGetBaseFilterSchemas(): void
+    public function testGetFilterSchemas(): void
     {
         $this->setAjaxHeader();
-        $this->get(self::ENDPOINT . '/get-base-filter-schemas');
+        $this->get(self::ENDPOINT . '/get-filter-schemas');
 
         $this->assertResponseSuccess();
         $this->assertResponseCode(200);
@@ -92,6 +92,7 @@ class QueriesControllerTest extends TestCase
         self::assertArrayHasKey('ScionsBundles', $resp['data']);
         self::assertArrayHasKey('Trees', $resp['data']);
         self::assertArrayHasKey('Varieties', $resp['data']);
+        self::assertArrayHasKey('Marks', $resp['data']);
     }
 
     /**

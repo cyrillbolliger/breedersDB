@@ -34,7 +34,7 @@
       <!--suppress JSValidateTypes -->
       <FilterTreeRoot
         :filter="markFilter"
-        :options="markFilterOptions"
+        :options="allFilterOptions?.Marks || []"
         v-if="!loading"
       />
       <q-spinner
@@ -58,7 +58,7 @@ import {BaseTable} from 'src/models/query/query';
 import useApi from 'src/composables/api';
 import {MarkFormFieldType, MarkFormProperty} from 'src/models/form';
 import {
-  BaseFilterOptionSchemas,
+  FilterOptionSchemas,
   PropertySchema,
   PropertySchemaOptions,
   PropertySchemaOptionType
@@ -97,18 +97,18 @@ const baseFilter = computed(() => store.baseFilter);
 const markFilter = computed(() => store.markFilter);
 
 const loading = ref<boolean>(true);
-const allBaseFilterOptions = ref<BaseFilterOptionSchemas | null>(null);
-const markFilterOptions = ref<PropertySchema[]>([]);
+const allFilterOptions = ref<FilterOptionSchemas | null>(null);
+const markFormPropertyFilterOptions = ref<PropertySchema[]>([]);
 
 const baseFilterOptions = computed<PropertySchema[]>(() => {
-  if (!allBaseFilterOptions.value){
+  if (!allFilterOptions.value){
     return [];
   }
 
-  const options: PropertySchema[] = allBaseFilterOptions.value[baseTable.value] || [];
+  const options: PropertySchema[] = allFilterOptions.value[baseTable.value] || [];
 
   if (marksAvailable.value) {
-    options.push(...markFilterOptions.value);
+    options.push(...markFormPropertyFilterOptions.value);
   }
 
   return options;
@@ -117,17 +117,17 @@ const baseFilterOptions = computed<PropertySchema[]>(() => {
 async function loadFilterOptions() {
   loading.value = true;
 
-  const base = api.get<BaseFilterOptionSchemas>('queries/get-base-filter-schemas')
-    .then(data => allBaseFilterOptions.value = data as BaseFilterOptionSchemas)
+  const base = api.get<FilterOptionSchemas>('queries/get-filter-schemas')
+    .then(data => allFilterOptions.value = data as FilterOptionSchemas)
   const mark = api.get<MarkFormProperty[]>('mark-form-properties')
-    .then(data => setMarkFilterOptions(data as MarkFormProperty[]))
+    .then(data => setMarkFormPropertyFilterOptions(data as MarkFormProperty[]))
 
   await Promise.all([base, mark])
     .then(() => loading.value = false);
 }
 
-function setMarkFilterOptions(markFormProperties: MarkFormProperty[]) {
-  markFilterOptions.value = markFormProperties.map(item => {
+function setMarkFormPropertyFilterOptions(markFormProperties: MarkFormProperty[]) {
+  markFormPropertyFilterOptions.value = markFormProperties.map(item => {
     return {
       name: `Mark.${item.id}`,
       label: t('queries.Marks') + ' > ' + item.name,

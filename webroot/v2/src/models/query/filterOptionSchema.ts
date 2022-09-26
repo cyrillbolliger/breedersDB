@@ -87,11 +87,12 @@ export interface PropertySchema {
   options: PropertySchemaOptions
 }
 
-export interface BaseFilterOptionSchemas {
+export interface FilterOptionSchemas {
   [BaseTable.Batches]: PropertySchema[],
   [BaseTable.Crossings]: PropertySchema[],
   [BaseTable.MotherTrees]: PropertySchema[],
   [BaseTable.ScionsBundles]: PropertySchema[],
   [BaseTable.Trees]: PropertySchema[],
   [BaseTable.Varieties]: PropertySchema[],
+  Marks: PropertySchema[],
 }

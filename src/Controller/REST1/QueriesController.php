@@ -15,7 +15,7 @@ use Cake\Datasource\FactoryLocator;
  */
 class QueriesController extends REST1Controller
 {
-    public function getBaseFilterSchemas(): void
+    public function getFilterSchemas(): void
     {
         $tablesBaseNames = [
             'Batches',
@@ -24,6 +24,7 @@ class QueriesController extends REST1Controller
             'ScionsBundles',
             'Trees',
             'Varieties',
+            'Marks'
         ];
 
         $schemas = [];
