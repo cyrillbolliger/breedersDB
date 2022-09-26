@@ -22,7 +22,7 @@ import {FilterOption} from 'src/models/query/filterTypes';
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void
+  (e: 'update:modelValue', value: PropertySchema): void
   (e: 'valid'): void
   (e: 'invalid'): void
 }>()
