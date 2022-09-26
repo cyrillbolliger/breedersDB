@@ -18,18 +18,12 @@
         @mouseup="$emit('dragMouseUp')"
       />
       <div class="col row q-col-gutter-sm">
-        <q-select
-          :label="t('queries.filter.column')"
+        <FilterRuleColumn
           :model-value="column"
-          :options="filterOptions"
-          :error="column !== undefined && !columnIsValid"
-          hide-bottom-space
-          autocomplete="off"
-          bg-color="white"
-          class="col-12 col-md-4"
-          dense
-          outlined
+          :options="options"
           @update:model-value="updateColumn"
+          @valid="columnIsValid = true"
+          @invalid="columnIsValid = false"
         />
         <q-select
           :bg-color="column === undefined ? 'transparent' : 'white'"
@@ -86,6 +80,7 @@ import {
 import {FilterNode} from 'src/models/query/filterNode';
 import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 import FilterRuleCriteria from 'components/Query/FilterRuleCriteria.vue';
+import FilterRuleColumn from 'components/Query/FilterRuleColumn.vue';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 
@@ -106,6 +101,7 @@ const props = defineProps({
   }
 });
 
+const columnIsValid = ref<boolean>();
 const criteriaInputIsValid = ref<boolean>();
 
 // noinspection TypeScriptUnresolvedFunction
@@ -113,16 +109,6 @@ const filterRule = computed(() => props.node.getFilterRule())
 const column = computed(() => filterRule.value?.column)
 const comparator = computed(() => filterRule.value?.comparator)
 const criteria = computed(() => filterRule.value?.criteria);
-const filterOptions = computed<FilterOption[]>(() => {
-  // noinspection TypeScriptUnresolvedFunction
-  return props.options.map((option: PropertySchema) => {
-    return {
-      label: option.label,
-      value: option.name,
-      schema: option,
-    } as FilterOption;
-  });
-})
 
 function updateColumn(value: FilterOption) {
   filterRule.value.column = value;
@@ -222,12 +208,6 @@ const hasInputCriteria = computed<boolean>(() => {
   }
 })
 
-const columnIsValid = computed<boolean>(() => {
-  return filterOptions.value.findIndex(
-    (item: FilterOption) => item.value === column.value?.value
-  ) > -1;
-})
-
 const ruleIsInvalid = computed<boolean>(() => {
   return ! ruleIsValid.value
     && column.value !== undefined
@@ -242,7 +222,7 @@ const ruleIsInvalid = computed<boolean>(() => {
 })
 
 const ruleIsValid = computed<boolean>(() => {
-  return columnIsValid.value
+  return columnIsValid.value === true // may also be undefined
     && comparatorIsValid.value
     && criteriaInputIsValid.value === true; // may also be undefined
 })
