@@ -29,6 +29,8 @@ import {useI18n} from 'vue-i18n';
 import {computed, PropType, ref, watch} from 'vue';
 import {FilterComparator, FilterComparatorOption} from 'src/models/query/filterTypes';
 import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
+import {QSelect} from 'quasar';
+import {filterOptions, FilterUpdateFn} from 'src/composables/queries/filterRuleSelectOptionFilter';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 
@@ -112,22 +114,14 @@ const availableComparatorOptions = computed<FilterComparatorOption[]>(() => {
 
 const filteredComparatorOptions = ref(availableComparatorOptions.value);
 
-function filterComparatorOptions(value: string, update: (cb: () => void) => void) {
-  if (value === '') {
-    update(() => {
-      filteredComparatorOptions.value = availableComparatorOptions.value;
-    })
-    return;
-  }
-
-  update(() => {
-    const locale = navigator.languages[0] || navigator.language;
-    const needle = value.toLocaleLowerCase(locale);
-
-    filteredComparatorOptions.value = availableComparatorOptions.value.filter(
-      v => v.label.toLocaleLowerCase(locale).indexOf(needle) > -1
-    );
-  })
+function filterComparatorOptions(value: string, update: FilterUpdateFn) {
+  filterOptions<FilterComparatorOption>(
+    value,
+    update,
+    availableComparatorOptions.value,
+    filteredComparatorOptions,
+    item => item.label
+  );
 }
 
 const isValid = computed<boolean>(() => {

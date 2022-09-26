@@ -28,6 +28,7 @@ import {useI18n} from 'vue-i18n';
 import {computed, PropType, ref, watch} from 'vue';
 import {PropertySchema} from 'src/models/query/filterOptionSchema';
 import {FilterOption} from 'src/models/query/filterTypes';
+import {filterOptions as filterSelectOptions, FilterUpdateFn} from 'src/composables/queries/filterRuleSelectOptionFilter';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 
@@ -58,22 +59,14 @@ const filterOptions = computed<FilterOption[]>(() => {
 
 const filteredFilterOptions = ref(filterOptions.value);
 
-function filterFilterOptions(value: string, update: (cb: () => void) => void) {
-  if (value === '') {
-    update(() => {
-      filteredFilterOptions.value = filterOptions.value;
-    })
-    return;
-  }
-
-  update(() => {
-    const locale = navigator.languages[0] || navigator.language;
-    const needle = value.toLocaleLowerCase(locale);
-
-    filteredFilterOptions.value = filterOptions.value.filter(
-      v => v.label.toLocaleLowerCase(locale).indexOf(needle) > -1
-    );
-  })
+function filterFilterOptions(value: string, update: FilterUpdateFn) {
+  filterSelectOptions<FilterOption>(
+    value,
+    update,
+    filterOptions.value,
+    filteredFilterOptions,
+    item => item.label
+  );
 }
 
 const isValid = computed<boolean>(() => {

@@ -60,6 +60,7 @@ import {computed, PropType, ref, watch} from 'vue';
 import {PropertySchema, PropertySchemaOptions, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 import {useI18n} from 'vue-i18n';
 import naturalSort from 'src/composables/naturalSort';
+import {filterOptions, FilterUpdateFn} from 'src/composables/queries/filterRuleSelectOptionFilter';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 
@@ -258,22 +259,14 @@ const isInvalid = computed<boolean>(() => {
   return ! isValid.value && props.modelValue !== undefined;
 })
 
-function filterSelectOptions(value: string, update: (cb: () => void) => void) {
-  if (value === '') {
-    update(() => {
-      filteredSelectOptions.value = selectOptions.value;
-    })
-    return;
-  }
-
-  update(() => {
-    const locale = navigator.languages[0] || navigator.language;
-    const needle = value.toLocaleLowerCase(locale);
-
-    filteredSelectOptions.value = selectOptions.value.filter(
-      v => v.toLocaleLowerCase(locale).indexOf(needle) > -1
-    );
-  })
+function filterSelectOptions(value: string, update: FilterUpdateFn) {
+  filterOptions<string>(
+    value,
+    update,
+    selectOptions.value,
+    filteredSelectOptions,
+    item => item
+  );
 }
 
 watch(isValid, () => {
