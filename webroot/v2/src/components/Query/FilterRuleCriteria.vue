@@ -12,14 +12,25 @@
       :error="isInvalid"
       :label="t('queries.filter.criteria')"
       :model-value="modelValue"
-      :options="selectOptions"
+      :options="filteredSelectOptions"
       autocomplete="off"
       class="col-12 col-md-4"
       dense
       hide-bottom-space
       outlined
+      use-input
+      @filter="filterSelectOptions"
       @update:model-value="value => $emit('update:modelValue', value)"
-    />
+    >
+      <template v-slot:no-option>
+        <q-item>
+          <q-item-section class="text-grey">
+           {{t('queries.filter.noResults')}}
+          </q-item-section>
+        </q-item>
+      </template>
+    </q-select>
+
     <q-input
       v-else
       :bg-color="disabled ? 'transparent' : 'white'"
@@ -45,7 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, PropType, watch} from 'vue';
+import {computed, PropType, ref, watch} from 'vue';
 import {PropertySchema, PropertySchemaOptions, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 import {useI18n} from 'vue-i18n';
 import naturalSort from 'src/composables/naturalSort';
@@ -143,6 +154,8 @@ const selectOptions = computed<string[]>(() => {
   }
   return [];
 })
+
+const filteredSelectOptions = ref(selectOptions.value);
 
 const inputType = computed<'date' | 'time' | 'number' | 'text'>(() => {
   switch (type.value) {
@@ -244,6 +257,24 @@ const isValid = computed<boolean>(() => {
 const isInvalid = computed<boolean>(() => {
   return ! isValid.value && props.modelValue !== undefined;
 })
+
+function filterSelectOptions(value: string, update: (cb: () => void) => void) {
+  if (value === '') {
+    update(() => {
+      filteredSelectOptions.value = selectOptions.value;
+    })
+    return;
+  }
+
+  update(() => {
+    const locale = navigator.languages[0] || navigator.language;
+    const needle = value.toLocaleLowerCase(locale);
+
+    filteredSelectOptions.value = selectOptions.value.filter(
+      v => v.toLocaleLowerCase(locale).indexOf(needle) > -1
+    );
+  })
+}
 
 watch(isValid, () => {
   if (isValid.value) {

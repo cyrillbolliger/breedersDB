@@ -100,6 +100,8 @@ export default {
 
       and: 'and',
       or: 'or',
+
+      noResults: 'No results.',
     },
 
     results: 'Results',
