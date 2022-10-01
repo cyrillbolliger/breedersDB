@@ -4,11 +4,7 @@ import {FilterRule} from 'src/models/query/filterRule';
 
 export default function useFilterNodeActions() {
   function addLeaf(parent: FilterNode, operand: FilterOperand) {
-    const rule: FilterRule = {
-      column: undefined,
-      comparator: undefined,
-      criteria: undefined,
-    };
+    const rule = new FilterRule();
 
     if (parent.getChildCount() <= 1) {
       parent.setChildrensOperand(operand);

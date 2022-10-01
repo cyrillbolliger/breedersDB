@@ -303,4 +303,14 @@ export class FilterNode {
     gradParentsChildren.splice(parentIdx, 1, this);
     grandParent.setChildren(gradParentsChildren);
   }
+
+  toJSON() {
+    return {
+      id: this.getId(),
+      level: this.getLevel(),
+      children: this.getChildren(),
+      childrensOperand: this.getChildrensOperand(),
+      filterRule: this.getFilterRule(),
+    }
+  }
 }

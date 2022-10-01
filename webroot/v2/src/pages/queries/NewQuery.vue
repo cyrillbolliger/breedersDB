@@ -45,6 +45,10 @@
     </template>
 
     <h5 class="q-mb-sm q-mt-sm">{{ t('queries.results') }}</h5>
+    <pre>
+      {{baseFilterJson}}
+      {{markFilterJson}}
+    </pre>
   </q-page>
 </template>
 
@@ -95,6 +99,9 @@ const marksAvailable = computed<boolean>(() => {
 
 const baseFilter = computed(() => store.baseFilter);
 const markFilter = computed(() => store.markFilter);
+
+const baseFilterJson = computed(() => baseFilter.value);
+const markFilterJson = computed(() => baseFilter.value);
 
 const loading = ref<boolean>(true);
 const allFilterOptions = ref<FilterOptionSchemas | null>(null);
