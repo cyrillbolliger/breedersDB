@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, PropType, ref, watch} from 'vue';
+import {computed, onMounted, PropType, ref, watch} from 'vue';
 import {PropertySchema, PropertySchemaOptions, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 import {useI18n} from 'vue-i18n';
 import naturalSort from 'src/composables/naturalSort';
@@ -269,15 +269,16 @@ function filterSelectOptions(value: string, update: FilterUpdateFn) {
   );
 }
 
-watch(isValid, () => {
+function emitValidity() {
   if (isValid.value) {
     emit('valid');
   }
-});
-
-watch(isInvalid, () => {
   if (isInvalid.value) {
     emit('invalid');
   }
-})
+}
+
+watch(isValid, emitValidity);
+watch(isInvalid, emitValidity);
+onMounted(emitValidity);
 </script>

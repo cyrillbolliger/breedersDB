@@ -70,6 +70,8 @@ export default {
 
     simplifiable: 'Unnecessary complexity detected.',
     simplify: 'Simplify filter',
+    invalid: 'Invalid filter rules. Rectify or delete them.',
+    valid: 'Congrats, all rules are valid.',
 
     filter: {
       column: 'Column',

@@ -156,6 +156,20 @@ export class FilterNode {
     return this.getParent()?.getChildCount() === 1;
   }
 
+  isValid() {
+    if (this.isLeaf()) {
+      return this.getFilterRule()?.isValid || false;
+    }
+
+    for (const child of this.getChildren()) {
+      if (! child.isValid()) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   remove() {
     if (this.isRoot()) {
       throw Error('Can not remove root node.');

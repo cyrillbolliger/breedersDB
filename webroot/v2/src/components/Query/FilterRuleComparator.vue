@@ -26,7 +26,7 @@
 </template>
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n';
-import {computed, PropType, ref, watch} from 'vue';
+import {computed, onMounted, PropType, ref, watch} from 'vue';
 import {FilterComparator, FilterComparatorOption} from 'src/models/query/filterTypes';
 import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 import {QSelect} from 'quasar';
@@ -138,15 +138,16 @@ const isInvalid = computed<boolean>(() => {
   return ! isValid.value && props.modelValue !== undefined;
 })
 
-watch(isValid, () => {
+function emitValidity() {
   if (isValid.value) {
     emit('valid');
   }
-});
-
-watch(isInvalid, () => {
   if (isInvalid.value) {
     emit('invalid');
   }
-})
+}
+
+watch(isValid, emitValidity);
+watch(isInvalid, emitValidity);
+onMounted(emitValidity);
 </script>

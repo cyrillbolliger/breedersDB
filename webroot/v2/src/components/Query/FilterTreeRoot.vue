@@ -13,8 +13,8 @@
 
   <template v-else>
     <div
-      class="filter-tree-root__notification"
       v-if="isSimplifiable"
+      class="filter-tree-root__notification--error"
     >
       <q-icon name="warning"/>
       {{ t('queries.simplifiable') }}
@@ -25,6 +25,21 @@
         {{ t('queries.simplify') }}
       </button>
     </div>
+    <div
+      v-else-if="! isValid"
+      class="filter-tree-root__notification--error"
+    >
+      <q-icon name="warning"/>
+      {{ t('queries.invalid') }}
+    </div>
+    <div
+      v-else
+      class="filter-tree-root__notification--success"
+    >
+      <q-icon name="check"/>
+      {{ t('queries.valid') }}
+    </div>
+
     <FilterTree
       :node="filter"
       :options="options"
@@ -61,6 +76,8 @@ const props = defineProps({
 const isSimplifiable = computed(() => props.filter.isSimplifiable());
 // noinspection TypeScriptUnresolvedFunction
 const isEmpty = computed(() => ! props.filter.hasChildren());
+// noinspection TypeScriptUnresolvedFunction
+const isValid = computed(() => props.filter.isValid());
 
 const entityName = computed(() => {
   // noinspection TypeScriptUnresolvedFunction
@@ -82,8 +99,12 @@ function simplify() {
 </script>
 
 <style scoped>
-.filter-tree-root__notification {
+.filter-tree-root__notification--error {
   color: var(--q-accent);
+}
+
+.filter-tree-root__notification--success {
+  color: var(--q-primary);
 }
 
 .filter-tree-root__simplify {

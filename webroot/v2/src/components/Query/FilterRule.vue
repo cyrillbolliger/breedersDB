@@ -1,7 +1,7 @@
 <template>
   <div
     class="filter-rule"
-    :class="{'filter-rule--invalid': ruleIsInvalid}"
+    :class="{'filter-rule--invalid': isInvalid}"
   >
     <div
       :class="{
@@ -44,8 +44,8 @@
         />
       </div>
       <q-icon
-        :color="ruleIsValid ? 'positive' : 'negative'"
-        :name="ruleIsValid ? 'check' : 'warning'"
+        :color="isValid ? 'positive' : 'negative'"
+        :name="isValid ? 'check' : 'warning'"
         class="q-ml-sm"
         size="sm"
       />
@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, PropType, ref} from 'vue';
+import {computed, onMounted, PropType, ref, watch} from 'vue';
 import {
   FilterComparator,
   FilterComparatorOption,
@@ -135,8 +135,8 @@ const hasInputCriteria = computed<boolean>(() => {
   }
 })
 
-const ruleIsInvalid = computed<boolean>(() => {
-  return ! ruleIsValid.value
+const isInvalid = computed<boolean>(() => {
+  return ! isValid.value
     && column.value !== undefined
     && comparator.value !== undefined
     && (
@@ -148,11 +148,24 @@ const ruleIsInvalid = computed<boolean>(() => {
     )
 })
 
-const ruleIsValid = computed<boolean>(() => {
+const isValid = computed<boolean>(() => {
   return columnIsValid.value === true // may also be undefined
     && comparatorIsValid.value === true // may also be undefined
     && criteriaInputIsValid.value === true; // may also be undefined
 })
+
+function setValidity() {
+  if (isValid.value) {
+    filterRule.value.isValid = true;
+  }
+  if (isInvalid.value) {
+    filterRule.value.isValid = false;
+  }
+}
+
+watch(isValid, setValidity);
+watch(isInvalid, setValidity);
+onMounted(setValidity);
 
 </script>
 
