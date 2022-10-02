@@ -19,7 +19,14 @@ export const useQueryStore = defineStore('query', {
   }),
 
 
-  getters: {},
+  getters: {
+    marksAvailable(state) {
+      const s = state as QueryState;
+      return s.baseTable === BaseTable.Batches
+        || s.baseTable === BaseTable.Varieties
+        || s.baseTable === BaseTable.Trees
+    },
+  },
 
 
   actions: {},

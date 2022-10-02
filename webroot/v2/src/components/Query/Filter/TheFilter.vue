@@ -77,14 +77,9 @@ const baseTable = computed<BaseTable>({
   set: (val: BaseTable) => store.baseTable = val,
 });
 
-const marksAvailable = computed<boolean>(() => {
-  return baseTable.value === BaseTable.Batches
-    || baseTable.value === BaseTable.Varieties
-    || baseTable.value === BaseTable.Trees
-});
-
 const baseFilter = computed(() => store.baseFilter);
 const markFilter = computed(() => store.markFilter);
+const marksAvailable = computed<boolean>(() => store.marksAvailable);
 
 const loading = ref<boolean>(true);
 const allFilterOptions = ref<FilterOptionSchemas | null>(null);
