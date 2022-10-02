@@ -49,12 +49,12 @@
 </template>
 
 <script lang="ts" setup>
-import FilterTree from 'components/Query/FilterTree.vue';
+import FilterTree from 'components/Query/Filter/FilterTree.vue';
 import {FilterOperand, FilterType} from 'src/models/query/filterTypes';
 import {computed, PropType} from 'vue';
 import {FilterNode} from 'src/models/query/filterNode';
 import {useI18n} from 'vue-i18n';
-import FilterRuleButtonAdd from 'components/Query/FilterRuleButtonAdd.vue';
+import FilterRuleButtonAdd from 'components/Query/Filter/FilterRuleButtonAdd.vue';
 import {useQueryStore} from 'stores/query';
 import {PropertySchema} from 'src/models/query/filterOptionSchema';
 

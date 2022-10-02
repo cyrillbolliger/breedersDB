@@ -90,13 +90,13 @@
 import {computed, PropType, ref} from 'vue';
 import useFilterNodeActions from 'src/composables/queries/filterNodeActions';
 import {useI18n} from 'vue-i18n';
-import FilterRule from 'src/components/Query/FilterRule.vue'
-import FilterRuleButtonAdd from 'src/components/Query/FilterRuleButtonAdd.vue';
+import FilterRule from 'components/Query/Filter/FilterRule.vue'
+import FilterRuleButtonAdd from 'components/Query/Filter/FilterRuleButtonAdd.vue';
 import {FilterNode} from 'src/models/query/filterNode';
 import {FilterOperand} from 'src/models/query/filterTypes';
 import {useQueryStore} from 'stores/query';
 import {FilterDragNode} from 'src/models/query/query';
-import FilterRuleDropZone from 'src/components/Query/FilterRuleDropZone.vue'
+import FilterRuleDropZone from 'components/Query/Filter/FilterRuleDropZone.vue'
 import {PropertySchema} from 'src/models/query/filterOptionSchema';
 
 const props = defineProps({

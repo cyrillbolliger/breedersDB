@@ -72,9 +72,9 @@ import {
 } from 'src/models/query/filterTypes';
 import {FilterNode} from 'src/models/query/filterNode';
 import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
-import FilterRuleCriteria from 'components/Query/FilterRuleCriteria.vue';
-import FilterRuleColumn from 'components/Query/FilterRuleColumn.vue';
-import FilterRuleComparator from 'components/Query/FilterRuleComparator.vue';
+import FilterRuleCriteria from 'components/Query/Filter/FilterRuleCriteria.vue';
+import FilterRuleColumn from 'components/Query/Filter/FilterRuleColumn.vue';
+import FilterRuleComparator from 'components/Query/Filter/FilterRuleComparator.vue';
 
 defineEmits<{
   (e: 'dragMouseDown'): void
