@@ -318,6 +318,7 @@ export class FilterNode {
     grandParent.setChildren(gradParentsChildren);
   }
 
+  // noinspection JSUnusedGlobalSymbols
   toJSON() {
     return {
       id: this.getId(),
