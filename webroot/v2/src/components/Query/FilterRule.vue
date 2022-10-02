@@ -76,7 +76,10 @@ import FilterRuleCriteria from 'components/Query/FilterRuleCriteria.vue';
 import FilterRuleColumn from 'components/Query/FilterRuleColumn.vue';
 import FilterRuleComparator from 'components/Query/FilterRuleComparator.vue';
 
-defineEmits(['dragMouseDown', 'dragMouseUp'])
+defineEmits<{
+  (e: 'dragMouseDown'): void
+  (e: 'dragMouseUp'): void
+}>()
 
 const props = defineProps({
   options: {
