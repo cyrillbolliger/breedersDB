@@ -39,6 +39,7 @@ const loading = ref(false);
 const result = ref<string|null>(null); // todo: type
 const error = ref(false);
 
+const baseTable = computed(() => queryStore.baseTable);
 const baseFilter = computed(() => queryStore.baseFilter);
 const markFilter = computed(() => queryStore.markFilter);
 const marksAvailable = computed<boolean>(() => queryStore.marksAvailable);
@@ -58,12 +59,13 @@ async function loadResults() {
   error.value = false
 
   const data = {
+    baseTable: baseTable.value,
     baseFilter: baseFilter.value,
     markFilter: marksAvailable.value ? markFilter.value : null,
   }
 
   try {
-    await api.post<typeof data, string>('queries/find', data)
+    await api.post<typeof data, string>('queries/find-results', data)
       .then((resp: string) => result.value = resp) // todo: type
   } catch (e) {
     console.error(e);
@@ -76,6 +78,7 @@ async function loadResults() {
 const debouncedLoadResults = debounce(loadResults, 2000);
 
 function queueLoadResults() {
+  loading.value = true
   debouncedLoadResults.cancel()
   void debouncedLoadResults()
 }
