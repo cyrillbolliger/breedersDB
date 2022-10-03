@@ -138,23 +138,25 @@ const hasInputCriteria = computed<boolean>(() => {
   }
 })
 
+const criteriaIsValid = computed(() => {
+  if (! hasInputCriteria.value) {
+    return true;
+  }
+
+  return criteriaInputIsValid.value;
+})
+
 const isInvalid = computed<boolean>(() => {
   return ! isValid.value
     && column.value !== undefined
     && comparator.value !== undefined
-    && (
-      (
-        column.value?.schema.options.type === PropertySchemaOptionType.Boolean
-        || column.value?.schema.options.type === PropertySchemaOptionType.Photo
-      )
-      || criteria.value !== undefined
-    )
+    && hasInputCriteria.value && criteria.value !== undefined
 })
 
 const isValid = computed<boolean>(() => {
   return columnIsValid.value === true // may also be undefined
     && comparatorIsValid.value === true // may also be undefined
-    && criteriaInputIsValid.value === true; // may also be undefined
+    && criteriaIsValid.value === true;
 })
 
 function setValidity() {
