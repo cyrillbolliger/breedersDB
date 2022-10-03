@@ -1,0 +1,31 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\FilterQuery;
+
+class RegularFilterQueryBuilder extends FilterQueryBuilder
+{
+    /**
+     * @throws FilterQueryException
+     */
+    protected function buildQuery(): void
+    {
+        $this->setTable();
+
+        $this->query = $this->table->find();
+
+        if (!empty($this->rawQuery['baseFilter'])) {
+            $this->addWhere();
+        }
+    }
+
+    /**
+     * @throws FilterQueryException
+     */
+    protected function addWhere(): void
+    {
+        $filterQuery = new FilterQueryNode($this->rawQuery['baseFilter']);
+        $this->query->where($filterQuery->getConditions([$this->baseTable]));
+    }
+}

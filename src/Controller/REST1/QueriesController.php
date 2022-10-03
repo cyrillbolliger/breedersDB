@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\REST1;
 
+use App\Controller\Component\JsonResponseComponent;
 use App\Controller\REST1Controller;
+use App\Domain\FilterQuery\FilterQueryBuilder;
 use App\Model\Table\BatchesViewTable;
 use App\Model\Table\CrossingsViewTable;
 use App\Model\Table\MarksViewTable;
@@ -17,6 +19,7 @@ use Cake\Datasource\FactoryLocator;
  * Queries Controller
  *
  * @property \App\Model\Table\QueriesTable $Queries
+ * @property JsonResponseComponent $JsonResponse
  * @method \App\Model\Entity\Query[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class QueriesController extends REST1Controller
@@ -41,5 +44,22 @@ class QueriesController extends REST1Controller
         }
 
         $this->set('data', $schemas);
+    }
+
+    public function findResults() {
+        if (!$this->request->is('post')) {
+            return $this->response
+                ->withStatus(405)
+                ->withAddedHeader('Allow', 'POST');
+        }
+
+        $queryBuilder = FilterQueryBuilder::create($this->request->getData('data'));
+        $query = $queryBuilder->getQuery();
+
+        if (!$query || !$queryBuilder->isValid()) {
+            return $this->JsonResponse->respondWithErrorJson($queryBuilder->getErrors(), 422);
+        }
+
+        $this->set('data', $query->all());
     }
 }
