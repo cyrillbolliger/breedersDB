@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\FilterQuery;
 
+use Cake\Database\Expression\QueryExpression;
+use Cake\Datasource\QueryInterface;
+
 class MarkableFilterQueryBuilder extends FilterQueryBuilder
 {
     private const MARKS_TABLE = 'MarksView';
@@ -11,26 +14,43 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
     protected function buildQuery(): void
     {
         $this->setTable();
+        $tablePrimaryKey = "{$this->baseTable}.id";
 
-        $this->query = $this->table
+        $subQuery = $this->table
             ->find()
-            ->leftJoinWith(self::MARKS_TABLE);
+            ->select([$tablePrimaryKey])
+            ->distinct($tablePrimaryKey)
+            ->leftJoinWith(self::MARKS_TABLE)
+            ->where('1=1'); // required, else the query built is invalid of no baseFilter is given
 
         if (!empty($this->rawQuery['baseFilter'])) {
-            $this->addWhere();
+            $subQuery = $this->addWhere($subQuery, $this->rawQuery['baseFilter']);
         }
 
-        // todo: filter by markFilter
+        $query = $this->table
+            ->find()
+            ->leftJoinWith(self::MARKS_TABLE)
+            ->contain(self::MARKS_TABLE)
+            ->where(
+                fn(QueryExpression $exp) =>
+                $exp->in($tablePrimaryKey, $subQuery)
+            );
+
+        if (!empty($this->rawQuery['markFilter'])) {
+            $query = $this->addWhere($query, $this->rawQuery['markFilter']);
+        }
+
+        $this->query = $query;
     }
 
     /**
      * @throws FilterQueryException
      */
-    protected function addWhere(): void
+    protected function addWhere(QueryInterface $query, array $rawFilter): QueryInterface
     {
-        $filterData = $this->transformMarkCriteriaRecursive($this->rawQuery['baseFilter']);
+        $filterData = $this->transformMarkCriteriaRecursive($rawFilter);
         $filterQuery = new FilterQueryNode($filterData);
-        $this->query->where($filterQuery->getConditions($this->getAllowedTables()));
+        return $query->andWhere($filterQuery->getConditions($this->getAllowedTables()));
     }
 
     private function transformMarkCriteriaRecursive(array $filter): array
