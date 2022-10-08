@@ -6,8 +6,8 @@ namespace App\Domain\FilterQuery;
 
 use Cake\Collection\CollectionInterface;
 use Cake\Datasource\FactoryLocator;
+use Cake\Datasource\QueryInterface;
 use Cake\Datasource\RepositoryInterface;
-use Cake\ORM\Query;
 
 abstract class FilterQueryBuilder
 {
@@ -26,7 +26,7 @@ abstract class FilterQueryBuilder
         'TreesView',
     ];
     protected string $baseTable;
-    protected Query $query;
+    protected QueryInterface $query;
     protected RepositoryInterface $table;
     /**
      * @var string[]
@@ -79,7 +79,7 @@ abstract class FilterQueryBuilder
         return $this->getQuery()?->count();
     }
 
-    public function getQuery(): Query|null
+    public function getQuery(): QueryInterface|null
     {
         if (!isset($this->query)) {
             if (!$this->isValid()) {
