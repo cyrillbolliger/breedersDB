@@ -119,7 +119,7 @@ class FilterQueryRule
             Comparator::Less,
             Comparator::LessOrEqual,
             Comparator::Greater,
-            Comparator::GreaterOrEqual => (float) $criteria,
+            Comparator::GreaterOrEqual => $criteria ?? 0,
 
             Comparator::Empty,
             Comparator::NotEmpty => null,
