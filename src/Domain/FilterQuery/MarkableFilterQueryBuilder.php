@@ -10,34 +10,57 @@ use Cake\Datasource\QueryInterface;
 class MarkableFilterQueryBuilder extends FilterQueryBuilder
 {
     private const MARKS_TABLE = 'MarksView';
+    private const VARIETIES_TABLE = 'VarietiesView';
+    private const TREES_TABLE = 'TreesView';
 
     protected function buildQuery(): void
     {
         $this->setTable();
         $tablePrimaryKey = "{$this->baseTable}.id";
 
-        $subQuery = $this->table
+        $baseSubQuery = $this->table
             ->find()
             ->select([$tablePrimaryKey])
             ->distinct($tablePrimaryKey)
-            ->leftJoinWith(self::MARKS_TABLE)
-            ->where('1=1'); // required, else the query built is invalid of no baseFilter is given
+            ->where('1=1'); // required, else the query built is invalid if no baseFilter is given
 
         if (!empty($this->rawQuery['baseFilter'])) {
-            $subQuery = $this->addWhere($subQuery, $this->rawQuery['baseFilter']);
+            $this->addWhere($baseSubQuery, $this->rawQuery['baseFilter']);
         }
+
+        if ($this->isVarietyQuery()) {
+            // consider variety marks AND at tree marks
+            $varietiesWithTreeMarks = clone $baseSubQuery;
+            $varietiesWithTreeMarks->leftJoinWith(self::TREES_TABLE . '.' . self::MARKS_TABLE);
+            $varietiesWithVarietyMarks = $baseSubQuery->leftJoinWith(self::MARKS_TABLE);
+            $union = $varietiesWithVarietyMarks->union($varietiesWithTreeMarks);
+
+            // wrap union into a select statement, else we can't use it as subquery
+            $subQuery = $this->table
+                ->find()
+                ->from([$this->baseTable => $union], true)
+                ->select([$tablePrimaryKey])
+                ->distinct($tablePrimaryKey);
+        } else {
+            $subQuery = $baseSubQuery->leftJoinWith(self::MARKS_TABLE);
+        }
+
 
         $query = $this->table
             ->find()
+            ->distinct($tablePrimaryKey)
+            ->contain([self::MARKS_TABLE])
             ->leftJoinWith(self::MARKS_TABLE)
-            ->contain(self::MARKS_TABLE)
-            ->where(
-                fn(QueryExpression $exp) =>
-                $exp->in($tablePrimaryKey, $subQuery)
-            );
+            ->where(fn(QueryExpression $exp) => $exp->in($tablePrimaryKey, $subQuery));
 
         if (!empty($this->rawQuery['markFilter'])) {
-            $query = $this->addWhere($query, $this->rawQuery['markFilter']);
+            $this->addWhere($query, $this->rawQuery['markFilter']);
+        }
+
+        if ($this->isVarietyQuery()) {
+            // add tree marks
+            $query->contain([self::TREES_TABLE . '.' . self::MARKS_TABLE])
+                ->leftJoinWith(self::TREES_TABLE . '.' . self::MARKS_TABLE);
         }
 
         $this->query = $query;
@@ -56,7 +79,7 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
     private function transformMarkCriteriaRecursive(array $filter): array
     {
         if (!empty($filter['children'])) {
-            foreach($filter['children'] as $idx => $child) {
+            foreach ($filter['children'] as $idx => $child) {
                 $filter['children'][$idx] = $this->transformMarkCriteriaRecursive($child);
             }
         }
@@ -66,11 +89,6 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
         }
 
         return $filter;
-    }
-
-    protected function getAllowedTables(): array
-    {
-        return [$this->baseTable, self::MARKS_TABLE];
     }
 
     private function transformSingleCriteria(array &$filterNode): void
@@ -115,5 +133,15 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
         $filterNode['filterRule'] = null;
         $filterNode['childrensOperand'] = 'and';
         $filterNode['children'] = [$node1, $node2];
+    }
+
+    protected function getAllowedTables(): array
+    {
+        return [$this->baseTable, self::MARKS_TABLE];
+    }
+
+    private function isVarietyQuery(): bool
+    {
+        return $this->baseTable === self::VARIETIES_TABLE;
     }
 }

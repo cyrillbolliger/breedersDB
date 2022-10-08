@@ -9,6 +9,9 @@
       error!
     </template>
     <template v-else>
+      <code>
+        SQL: {{ result?.debug?.sql }}
+      </code>
       {{ result }}
     </template>
 
