@@ -13,6 +13,7 @@ use App\Model\Table\MarksViewTable;
 use App\Model\Table\MotherTreesViewTable;
 use App\Model\Table\ScionsBundlesViewTable;
 use App\Model\Table\TreesViewTable;
+use Cake\Core\Configure;
 use Cake\Datasource\FactoryLocator;
 
 /**
@@ -54,12 +55,17 @@ class QueriesController extends REST1Controller
         }
 
         $queryBuilder = FilterQueryBuilder::create($this->request->getData('data'));
-        $query = $queryBuilder->getQuery();
 
-        if (!$query || !$queryBuilder->isValid()) {
+        if (!$queryBuilder->getQuery() || !$queryBuilder->isValid()) {
             return $this->JsonResponse->respondWithErrorJson($queryBuilder->getErrors(), 422);
         }
 
-        $this->set('data', $query->all());
+        $this->set('data', [
+            'count' => $queryBuilder->getCount(),
+            'results' => $queryBuilder->getResults(),
+            'debug' => Configure::read('debug', false)
+                ? $queryBuilder->getDebugInfo()
+                : 'Turn on debug mode to see the sql query.'
+        ]);
     }
 }

@@ -129,4 +129,8 @@ abstract class FilterQueryBuilder
         $this->table = FactoryLocator::get('Table')
             ->get($this->baseTable);
     }
+
+    public function getDebugInfo(): array {
+        return $this->getQuery()?->__debugInfo();
+    }
 }
