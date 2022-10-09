@@ -64,8 +64,8 @@ class QueriesController extends REST1Controller
             'count' => $queryBuilder->getCount(),
             'results' => $queryBuilder->getResults(),
             'debug' => Configure::read('debug', false)
-                ? $queryBuilder->getDebugInfo()
-                : 'Turn on debug mode to see the sql query.'
+                ? $queryBuilder->getSql()
+                : null
         ]);
     }
 }

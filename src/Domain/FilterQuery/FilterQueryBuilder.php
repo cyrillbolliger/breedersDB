@@ -130,7 +130,10 @@ abstract class FilterQueryBuilder
             ->get($this->baseTable);
     }
 
-    public function getDebugInfo(): array {
-        return $this->getQuery()?->__debugInfo();
+    public function getSql(): array {
+        return [
+            'sql' => $this->getQuery()?->sql(),
+            'params' => $this->getQuery()?->getValueBinder()->bindings(),
+        ];
     }
 }
