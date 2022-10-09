@@ -1,23 +1,27 @@
 <template>
   <q-table
+    ref="tableRef"
+    v-model:pagination="pagination"
     :columns="columns"
-    :rows="rows"
     :loading="loading"
-    row-key="name"
-    virtual-scroll
-    :virtual-scroll-item-size="48"
-    :virtual-scroll-sticky-size-start="48"
-    :pagination="{ rowsPerPage: 0 }"
-    :rows-per-page-options="[0]"
+    :rows="rows"
+    :rows-per-page-options="[]"
     class="query-result-table"
+    row-key="name"
+    @request="event => $emit('requestData', event)"
   />
 </template>
 
 <script lang="ts" setup>
-import {computed, PropType} from 'vue';
+import {computed, onMounted, PropType, ref, watch} from 'vue';
 import {QueryResponse, QueryResponseSchemas, ViewEntity} from 'src/models/query/query';
 import {useQueryStore} from 'stores/query';
 import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
+import {QTable} from 'quasar';
+
+defineEmits<{
+  (e: 'requestData', data: Parameters<QTable['onRequest']>[0]): void
+}>();
 
 const props = defineProps({
   result: {
@@ -28,6 +32,8 @@ const props = defineProps({
     default: false,
   }
 });
+
+const ROWS_PER_PAGE = 100;
 
 const store = useQueryStore();
 
@@ -98,6 +104,50 @@ const rows = computed(() => {
     return data;
   });
 });
+
+const totalRowsDB = computed<number>(() => {
+  // noinspection TypeScriptUnresolvedVariable
+  return props.result?.count || 0;
+});
+
+const offset = computed<number>(() => {
+  // noinspection TypeScriptUnresolvedVariable
+  return props.result?.offset || 0;
+})
+
+const page = computed<number>(() => {
+  return 1 + (offset.value / ROWS_PER_PAGE)
+})
+
+const sortBy = computed<string>(() => {
+  // noinspection TypeScriptUnresolvedVariable
+  return props.result?.sortBy || '';
+});
+
+const descending = computed<boolean>(() => {
+  // noinspection TypeScriptUnresolvedVariable
+  return props.result?.order === 'desc';
+});
+
+const tableRef = ref<QTable | undefined>()
+const pagination = ref({
+  sortBy: sortBy.value,
+  descending: descending.value,
+  page: page.value,
+  rowsPerPage: ROWS_PER_PAGE,
+  rowsNumber: totalRowsDB.value
+})
+
+onMounted(() => {
+  // get initial data from server (1st page)
+  // noinspection TypeScriptUnresolvedFunction
+  // tableRef.value.requestServerInteraction()
+})
+
+watch(totalRowsDB, count => pagination.value.rowsNumber = count);
+watch(page, num => pagination.value.page = num);
+watch(sortBy, col => pagination.value.sortBy = col);
+watch(descending, order => pagination.value.descending = order);
 
 </script>
 

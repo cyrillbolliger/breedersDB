@@ -16,8 +16,6 @@ class RegularFilterQueryBuilder extends FilterQueryBuilder
      */
     protected function buildQuery(): void
     {
-        $this->setTable();
-
         $this->query = $this->table->find();
 
         if (!empty($this->rawQuery['baseFilter'])) {

@@ -35,7 +35,6 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
 
     protected function buildQuery(): void
     {
-        $this->setTable();
         $tablePrimaryKey = "{$this->baseTable}.id";
 
         $subQueryPrimaryKey = '_id';

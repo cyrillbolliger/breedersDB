@@ -28,6 +28,9 @@ export type QueryResponseSchemas = {[key: string]: PropertySchema[]};
 
 export interface QueryResponse {
   count: number,
+  offset: number,
+  sortBy: string,
+  order: 'asc' | 'desc',
   debug: null | QueryResponseDebug,
   results: ViewEntity[],
   schema: QueryResponseSchemas,

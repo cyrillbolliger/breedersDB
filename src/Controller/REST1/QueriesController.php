@@ -58,11 +58,18 @@ class QueriesController extends REST1Controller
         }
 
         $queryBuilder = FilterQueryBuilder::create($this->request->getData('data'));
+        $queryBuilder->setLimit(100);
+        $queryBuilder->setOffset((int) $this->request->getQuery('offset', 0));
+        $queryBuilder->setSortBy($this->request->getQuery('sortBy'));
+        $queryBuilder->setOrder($this->request->getQuery('order'));
 
         try {
             $count = $queryBuilder->getCount();
             $schema = $queryBuilder->getSchema(); // todo: load from cache if page > 0
             $results = $queryBuilder->getResults();
+            $sortBy = $queryBuilder->getSortBy();
+            $order = $queryBuilder->getOrder();
+            $offset = $queryBuilder->getOffset();
         } catch (\Exception $e) {
             return $this->JsonResponse->respondWithErrorJson([$e->getMessage()], 422);
         }
@@ -73,6 +80,9 @@ class QueriesController extends REST1Controller
 
         $this->set('data', [
             'count' => $count,
+            'offset' => $offset,
+            'sortBy' => $sortBy,
+            'order' => $order,
             'schema' => $schema,
             'results' => $results,
             'debug' => Configure::read('debug', false)
