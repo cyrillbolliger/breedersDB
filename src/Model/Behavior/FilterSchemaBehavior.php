@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Behavior;
 
+use Cake\Collection\CollectionInterface;
 use Cake\Database\Schema\TableSchemaInterface;
 use Cake\ORM\Behavior;
 
@@ -124,7 +125,7 @@ class FilterSchemaBehavior extends Behavior
         };
     }
 
-    private function enumValues(string $columnName)
+    private function enumValues(string $columnName): CollectionInterface
     {
         $result = $this->table()->find()
             ->enableHydration(false)
