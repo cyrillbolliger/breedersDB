@@ -18,10 +18,13 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
         $this->setTable();
         $tablePrimaryKey = "{$this->baseTable}.id";
 
+        $subQueryPrimaryKey = '_id';
+        $subQueryTableAlias = '_SubQuery';
+
         $baseSubQuery = $this->table
             ->find()
-            ->select([$tablePrimaryKey])
-            ->distinct($tablePrimaryKey)
+            ->select([$subQueryPrimaryKey => $tablePrimaryKey])
+            ->distinct($subQueryPrimaryKey)
             ->where('1=1'); // required, else the query built is invalid if no baseFilter is given
 
         if (!empty($this->rawQuery['baseFilter'])) {
@@ -38,9 +41,9 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
             // wrap union into a select statement, else we can't use it as subquery
             $subQuery = $this->table
                 ->find()
-                ->from([$this->baseTable => $union], true)
-                ->select([$tablePrimaryKey])
-                ->distinct($tablePrimaryKey);
+                ->from([$subQueryTableAlias => $union])
+                ->select(["$subQueryTableAlias.$subQueryPrimaryKey"])
+                ->distinct("$subQueryTableAlias.$subQueryPrimaryKey");
         } else {
             $subQuery = $baseSubQuery->leftJoinWith(self::MARKS_TABLE);
         }
