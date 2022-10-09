@@ -13,20 +13,21 @@
 
       <ResultsTable
         :result="result"
+        :loading="loading"
       />
 
-      <code>
-        SQL: {{ result?.debug?.sql }}
-      </code>
+<!--      <code>-->
+<!--        SQL: {{ result?.debug?.sql }}-->
+<!--      </code>-->
 
     </template>
 
-    <pre>
-      {{ baseFilter }}
-      <template v-if="marksAvailable">
-        {{ markFilter }}
-      </template>
-    </pre>
+<!--    <pre>-->
+<!--      {{ baseFilter }}-->
+<!--      <template v-if="marksAvailable">-->
+<!--        {{ markFilter }}-->
+<!--      </template>-->
+<!--    </pre>-->
   </template>
   <template v-else>
     Invalid

@@ -2,8 +2,14 @@
   <q-table
     :columns="columns"
     :rows="rows"
+    :loading="loading"
     row-key="name"
-    title="Results !!!!"
+    virtual-scroll
+    :virtual-scroll-item-size="48"
+    :virtual-scroll-sticky-size-start="48"
+    :pagination="{ rowsPerPage: 0 }"
+    :rows-per-page-options="[0]"
+    class="query-result-table"
   />
 </template>
 
@@ -16,6 +22,10 @@ import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterO
 const props = defineProps({
   result: {
     type: Object as PropType<QueryResponse>
+  },
+  loading: {
+    type: Boolean,
+    default: false,
   }
 });
 
@@ -92,5 +102,33 @@ const rows = computed(() => {
 </script>
 
 <style>
+/* Do not scope this tag, else we loose the
+   sticky definitions for the header and footer */
+
+.query-result-table {
+  height: calc(100vh - 100px);
+}
+
+.query-result-table .q-table__top,
+.query-result-table .q-table__bottom,
+.query-result-table thead tr:first-child th {
+  /* bg color is important for th; just specify one */
+  background-color: #ffffff;
+}
+
+.query-result-table thead tr th {
+  position: sticky;
+  z-index: 1;
+}
+
+.query-result-table thead tr:first-child th {
+  top: 0;
+}
+
+/* this is when the loading indicator appears */
+.query-result-table.q-table--loading thead tr:last-child th {
+  /* height of all previous header rows */
+  top: 48px
+}
 
 </style>
