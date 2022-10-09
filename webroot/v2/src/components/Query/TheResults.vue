@@ -9,10 +9,16 @@
       error!
     </template>
     <template v-else>
+      <p>Count: {{result?.count || 'loading...'}}</p>
+
+      <ResultsTable
+        :result="result"
+      />
+
       <code>
         SQL: {{ result?.debug?.sql }}
       </code>
-      {{ result }}
+
     </template>
 
     <pre>
@@ -33,13 +39,15 @@ import {computed, onMounted, ref, watch} from 'vue';
 import {useQueryStore} from 'stores/query';
 import useApi from 'src/composables/api';
 import {debounce} from 'quasar';
+import {QueryResponse} from 'src/models/query/query';
+import ResultsTable from 'src/components/Query/ResultTable.vue';
 
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const queryStore = useQueryStore();
 const api = useApi();
 
 const loading = ref(false);
-const result = ref<string|null>(null); // todo: type
+const result = ref<QueryResponse|null>(null);
 const error = ref(false);
 
 const baseTable = computed(() => queryStore.baseTable);
@@ -68,8 +76,9 @@ async function loadResults() {
   }
 
   try {
-    await api.post<typeof data, string>('queries/find-results', data)
-      .then((resp: string) => result.value = resp) // todo: type
+    result.value = null;
+    await api.post<typeof data, QueryResponse>('queries/find-results', data)
+      .then((resp: QueryResponse) => result.value = resp)
   } catch (e) {
     console.error(e);
     error.value = true;
