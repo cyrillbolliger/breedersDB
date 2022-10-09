@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\FilterQuery;
 
 use Cake\Database\Expression\QueryExpression;
+use Cake\Datasource\FactoryLocator;
 use Cake\Datasource\QueryInterface;
 
 class MarkableFilterQueryBuilder extends FilterQueryBuilder
@@ -12,6 +13,25 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
     private const MARKS_TABLE = 'MarksView';
     private const VARIETIES_TABLE = 'VarietiesView';
     private const TREES_TABLE = 'TreesView';
+
+    public function getSchema(): array|null
+    {
+        $schemas = [
+            $this->baseTable => $this->getFilterSchema($this->table),
+            'MarksView' => $this->getFilterSchema(FactoryLocator::get('Table')->get('MarksView')),
+        ];
+
+        if ($this->isVarietyQuery()) {
+            $schemas['TreesView'] = $this->getFilterSchema(FactoryLocator::get('Table')->get('TreesView'));
+        }
+
+        return $schemas;
+    }
+
+    private function isVarietyQuery(): bool
+    {
+        return $this->baseTable === self::VARIETIES_TABLE;
+    }
 
     protected function buildQuery(): void
     {
@@ -141,10 +161,5 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
     protected function getAllowedTables(): array
     {
         return [$this->baseTable, self::MARKS_TABLE];
-    }
-
-    private function isVarietyQuery(): bool
-    {
-        return $this->baseTable === self::VARIETIES_TABLE;
     }
 }

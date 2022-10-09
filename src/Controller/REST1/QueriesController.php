@@ -47,6 +47,9 @@ class QueriesController extends REST1Controller
         $this->set('data', $schemas);
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function findResults() {
         if (!$this->request->is('post')) {
             return $this->response
@@ -56,13 +59,22 @@ class QueriesController extends REST1Controller
 
         $queryBuilder = FilterQueryBuilder::create($this->request->getData('data'));
 
-        if (!$queryBuilder->getQuery() || !$queryBuilder->isValid()) {
+        try {
+            $count = $queryBuilder->getCount();
+            $schema = $queryBuilder->getSchema(); // todo: load from cache if page > 0
+            $results = $queryBuilder->getResults();
+        } catch (\Exception $e) {
+            return $this->JsonResponse->respondWithErrorJson([$e->getMessage()], 422);
+        }
+
+        if (!$queryBuilder->isValid()) {
             return $this->JsonResponse->respondWithErrorJson($queryBuilder->getErrors(), 422);
         }
 
         $this->set('data', [
-            'count' => $queryBuilder->getCount(),
-            'results' => $queryBuilder->getResults(),
+            'count' => $count,
+            'schema' => $schema,
+            'results' => $results,
             'debug' => Configure::read('debug', false)
                 ? $queryBuilder->getSql()
                 : null

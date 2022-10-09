@@ -117,6 +117,26 @@ abstract class FilterQueryBuilder
         return $this->errors;
     }
 
+    abstract public function getSchema(): array|null;
+
+    public function getSql(): array
+    {
+        return [
+            'sql' => $this->getQuery()?->sql(),
+            'params' => $this->getQuery()?->getValueBinder()->bindings(),
+        ];
+    }
+
+    protected function getFilterSchema(RepositoryInterface $table): array|null
+    {
+        if (is_callable([$table, 'getFilterSchema'])) {
+            return $table->getFilterSchema();
+        }
+
+        $this->addError('No filter schema available for table: ' . $table->getAlias());
+        return null;
+    }
+
     /**
      * @throws FilterQueryException
      */
@@ -128,12 +148,5 @@ abstract class FilterQueryBuilder
 
         $this->table = FactoryLocator::get('Table')
             ->get($this->baseTable);
-    }
-
-    public function getSql(): array {
-        return [
-            'sql' => $this->getQuery()?->sql(),
-            'params' => $this->getQuery()?->getValueBinder()->bindings(),
-        ];
     }
 }
