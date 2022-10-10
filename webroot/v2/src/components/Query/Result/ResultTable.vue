@@ -19,13 +19,9 @@
     @request="event => $emit('requestData', event)"
   >
     <template #top-right>
-      <q-select
-        :disable="availableColumnsOption.length === 0"
-        @update:model-value="showColumn"
-        :model-value="null"
-        use-input
-        :options="availableColumnsOption"
-        :label="t('queries.addColumn')"
+      <ResultTableColumnSelector
+        :columns="columns"
+        v-model="visibleColumns"
       />
 
       <q-btn
@@ -59,9 +55,7 @@ import {useQueryStore} from 'stores/query';
 import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 import {QTable, QTableColumn} from 'quasar';
 import {useI18n} from 'vue-i18n';
-
-// todo: make column selector work with keyboard input
-// todo: extract column selector into own component
+import ResultTableColumnSelector from 'components/Query/Result/ResultTableColumnSelector.vue';
 
 defineEmits<{
   (e: 'requestData', data: Parameters<QTable['onRequest']>[0]): void
@@ -78,13 +72,16 @@ const props = defineProps({
 });
 
 const ROWS_PER_PAGE = 100;
-const DEFAULT_DISPLAY_COLS_COUNT = 5;
 
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore();
 
 const fullscreen = ref(false);
-const lastBaseTableName = ref<string>();
+const visibleColumns = ref<string[]>([]);
+
+function hideColumn(name: string) {
+  visibleColumns.value = visibleColumns.value.filter(column => column !== name);
+}
 
 function formatColumnValue(val: string | number | Date | null, type: PropertySchemaOptionType) {
   if (null === val) {
@@ -139,56 +136,6 @@ const columns = computed<QTableColumn[]>(() => {
     }
   });
 });
-
-const allColumnNames = computed<string[]>(() => {
-  return columns.value.map(item => item.name);
-})
-
-const hiddenColumns = ref<string[]>([]);
-
-const visibleColumns = computed<string[]>(() => {
-  return allColumnNames.value.filter(
-    available => -1 === hiddenColumns.value.indexOf(available)
-  );
-})
-
-const availableColumnsOption = computed<{ label: string, value: string }[]>(() => {
-  return columns.value
-    .filter(column => -1 === visibleColumns.value.indexOf(column.name))
-    .map(column => {
-      return {label: column.label, value: column.name};
-    });
-});
-
-function hideColumn(name: string) {
-  hiddenColumns.value.push(name);
-}
-
-function showColumn(option: {label: string, value: string}) {
-  hiddenColumns.value = hiddenColumns.value.filter(hidden => hidden !== option.value);
-}
-
-function resetVisibleColumns() {
-  if (allColumnNames.value.length <= DEFAULT_DISPLAY_COLS_COUNT) {
-    hiddenColumns.value = [];
-    return;
-  }
-
-  hiddenColumns.value = allColumnNames.value.slice(DEFAULT_DISPLAY_COLS_COUNT);
-}
-
-function resetVisibleColumnsOnBaseTableChange() {
-  if (baseTableName.value === lastBaseTableName.value) {
-    return;
-  }
-
-  if (allColumnNames.value.length === 0) {
-    return;
-  }
-
-  resetVisibleColumns();
-  lastBaseTableName.value = baseTableName.value;
-}
 
 const rows = computed(() => {
   return rowData.value?.map((item: ViewEntity) => {
@@ -245,9 +192,6 @@ watch(page, num => pagination.value.page = num);
 watch(sortBy, col => pagination.value.sortBy = col);
 watch(descending, order => pagination.value.descending = order);
 watch(rowsPerPage, limit => pagination.value.rowsPerPage = limit);
-
-watch(allColumnNames, resetVisibleColumnsOnBaseTableChange)
-
 </script>
 
 <style>
@@ -262,6 +206,7 @@ watch(allColumnNames, resetVisibleColumnsOnBaseTableChange)
   height: 100vh;
 }
 
+/*noinspection CssUnusedSymbol*/
 .query-result-table .q-table__top,
 .query-result-table .q-table__bottom,
 .query-result-table thead tr:first-child th {

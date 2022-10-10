@@ -9,7 +9,7 @@
 import useLayout from 'src/composables/layout';
 import {useI18n} from 'vue-i18n';
 import TheFilter from 'components/Query/Filter/TheFilter.vue';
-import TheResults from 'components/Query/TheResults.vue';
+import TheResults from 'components/Query/Result/TheResults.vue';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const layout = useLayout()

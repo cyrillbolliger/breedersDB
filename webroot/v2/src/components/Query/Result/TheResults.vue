@@ -39,7 +39,7 @@ import {useQueryStore} from 'stores/query';
 import useApi from 'src/composables/api';
 import {debounce, QTable} from 'quasar';
 import {QueryResponse} from 'src/models/query/query';
-import ResultsTable from 'src/components/Query/ResultTable.vue';
+import ResultsTable from 'components/Query/Result/ResultTable.vue';
 
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const queryStore = useQueryStore();
