@@ -85,7 +85,7 @@ const entityName = computed(() => {
     return t('queries.marks');
   }
 
-  return t('queries.' + store.baseTable.toString().toLowerCase());
+  return t('queries.' + lowerCaseFirstChar(store.baseTable.toString()));
 });
 
 function simplify() {
@@ -94,6 +94,10 @@ function simplify() {
     // noinspection TypeScriptUnresolvedFunction
     props.filter.simplify()
   }
+}
+
+function lowerCaseFirstChar(str: string) {
+  return str[0].toLowerCase() + str.slice(1)
 }
 
 </script>
