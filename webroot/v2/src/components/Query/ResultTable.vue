@@ -10,9 +10,20 @@
     :virtual-scroll-item-size="48"
     :virtual-scroll-sticky-size-start="48"
     class="query-result-table"
+    :class="{'query-result-table--fullscreen': fullscreen}"
     row-key="name"
     @request="event => $emit('requestData', event)"
-  />
+    :fullscreen="fullscreen"
+  >
+    <template #top-right>
+      <q-btn
+        flat round dense
+        :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'"
+        @click="fullscreen = !fullscreen"
+        class="q-ml-md"
+      />
+    </template>
+  </q-table>
 </template>
 
 <script lang="ts" setup>
@@ -39,6 +50,8 @@ const props = defineProps({
 const ROWS_PER_PAGE = 100;
 
 const store = useQueryStore();
+
+const fullscreen = ref(false);
 
 function formatColumnValue(val: string | number | Date | null, type: PropertySchemaOptionType) {
   if (null === val) {
@@ -166,6 +179,10 @@ watch(rowsPerPage, limit => pagination.value.rowsPerPage = limit);
 
 .query-result-table {
   height: calc(100vh - 100px);
+}
+
+.query-result-table--fullscreen {
+  height: 100vh;
 }
 
 .query-result-table .q-table__top,
