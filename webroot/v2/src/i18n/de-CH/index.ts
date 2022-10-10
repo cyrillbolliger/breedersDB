@@ -46,13 +46,18 @@ export default {
     trees: 'Trees',
     motherTrees: 'Mother Trees',
     scionsBundles: 'Scions Bundles',
+    marks: 'marks',
+    Marks: 'Marks',
     defaultFilter: 'Filter criteria',
     batchFilter: 'Filter criteria to select the batches',
     varietyFilter: 'Filter criteria to select the varieties',
     treeFilter: 'Filter criteria to select the trees',
     markFilter: 'Filter criteria to select the marks',
+    noFilter: 'No filter criteria defined. All {entity} will be selected. Click the plus button below to add filter criteria.',
     simplifiable: 'Unnecessary complexity detected.',
     simplify: 'Simplify filter',
+    invalid: 'Invalid filter rules. Rectify or delete them.',
+    valid: 'Congrats, all rules are valid.',
     filter: {
       column: 'Column',
       comparator: 'Comparator',
@@ -78,7 +83,8 @@ export default {
       andFilter: 'and criteria',
       orFilter: 'or criteria',
       and: 'and',
-      or: 'or'
+      or: 'or',
+      noResults: 'No results.'
     },
     results: 'Results'
   },

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2022-08-29 19:25+0000\n"
-"PO-Revision-Date: 2022-08-29 19:25\n"
+"POT-Creation-Date: 2022-09-26 19:08+0000\n"
+"PO-Revision-Date: 2022-09-26 19:08\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -1013,6 +1013,7 @@ msgstr "Ein"
 
 #: ./src/Model/Entity/Query.php:193
 #: ./src/Model/Table/QueriesTable.php:195
+#: ./src/Model/Table/TreesViewTable.php:54
 #: ./templates/MarkFormProperties/add.php:47
 #: ./templates/MarkFormProperties/edit.php:50
 #: ./templates/Trees/index.php:18
@@ -1023,6 +1024,7 @@ msgstr "Bäume"
 
 #: ./src/Model/Entity/Query.php:194
 #: ./src/Model/Table/QueriesTable.php:196
+#: ./src/Model/Table/VarietiesViewTable.php:54
 #: ./templates/MarkFormProperties/add.php:48
 #: ./templates/MarkFormProperties/edit.php:51
 #: ./templates/Varieties/index.php:16
@@ -1032,6 +1034,7 @@ msgid "Varieties"
 msgstr "Sorten"
 
 #: ./src/Model/Entity/Query.php:195
+#: ./src/Model/Table/BatchesViewTable.php:53
 #: ./src/Model/Table/QueriesTable.php:190
 #: ./templates/Batches/index.php:14
 #: ./templates/MarkFormProperties/add.php:49
@@ -1042,6 +1045,10 @@ msgid "Batches"
 msgstr "Lose"
 
 #: ./src/Model/Entity/Query.php:196
+#: ./src/Model/Table/MotherTreesViewTable.php:70
+#: ./src/Model/Table/ScionsBundlesViewTable.php:59
+#: ./src/Model/Table/TreesViewTable.php:61
+#: ./src/Model/Table/VarietiesViewTable.php:60
 #: ./templates/Batches/view.php:68
 #: ./templates/element/MarkView/tooltip.php:87
 #: ./templates/element/MarkView/tooltip.php:131
@@ -1079,6 +1086,120 @@ msgstr "Eingabe nicht gültig. Der Code muss dem folgenden Muster entsprechen: \
 msgid "A batch with this code and this crossing already exists."
 msgstr "Ein Los mit diesem Code und dieser Kreuzung ist bereits vorhanden."
 
+#: ./src/Model/Table/BatchesViewTable.php:58
+#: ./src/Model/Table/CrossingsViewTable.php:59
+#: ./src/Model/Table/MarksViewTable.php:62
+#: ./src/Model/Table/MotherTreesViewTable.php:58
+#: ./src/Model/Table/ScionsBundlesViewTable.php:57
+#: ./src/Model/Table/TreesViewTable.php:59
+#: ./src/Model/Table/VarietiesViewTable.php:59
+#: ./templates/Batches/view.php:13
+#: ./templates/Batches/view.php:67
+#: ./templates/Crossings/view.php:8
+#: ./templates/Crossings/view.php:39
+#: ./templates/Crossings/view.php:82
+#: ./templates/ExperimentSites/view.php:8
+#: ./templates/Graftings/view.php:8
+#: ./templates/MarkFormProperties/view.php:8
+#: ./templates/MarkFormProperties/view.php:60
+#: ./templates/MarkFormPropertyTypes/view.php:8
+#: ./templates/MarkFormPropertyTypes/view.php:21
+#: ./templates/MarkForms/view.php:8
+#: ./templates/MarkForms/view.php:29
+#: ./templates/Marks/view.php:24
+#: ./templates/Marks/view.php:58
+#: ./templates/MotherTrees/view.php:9
+#: ./templates/Rootstocks/view.php:8
+#: ./templates/Rows/view.php:8
+#: ./templates/ScionsBundles/view.php:8
+#: ./templates/Trees/view.php:13
+#: ./templates/Varieties/view.php:9
+#: ./templates/Varieties/view.php:58
+#: ./templates/element/Mark/list.php:3
+#: ./templates/element/Tree/related_table.php:6
+msgid "Id"
+msgstr "Id"
+
+#: ./src/Model/Table/BatchesViewTable.php:59
+#: ./templates/Marks/add_batch_mark.php:14
+#: ./templates/Marks/edit.php:18
+#: ./templates/Varieties/add_breeder_variety.php:14
+#: ./templates/Varieties/add_official_variety.php:19
+#: ./templates/Varieties/edit.php:14
+#: ./templates/element/Batch/index_table.php:5
+msgid "Crossing.Batch"
+msgstr "Kreuzung.Sorte"
+
+#: ./src/Model/Table/BatchesViewTable.php:60
+#: ./templates/Batches/view.php:22
+#: ./templates/Crossings/view.php:41
+#: ./templates/element/MarkView/tooltip.php:45
+msgid "Date Sowed"
+msgstr "Datum Aussaat"
+
+#: ./src/Model/Table/BatchesViewTable.php:61
+#: ./templates/Batches/view.php:26
+#: ./templates/Crossings/view.php:42
+#: ./templates/element/MarkView/tooltip.php:49
+msgid "Numb Seeds Sowed"
+msgstr "Anzahl ausgesäte Samen"
+
+#: ./src/Model/Table/BatchesViewTable.php:62
+#: ./templates/Batches/view.php:30
+#: ./templates/element/MarkView/tooltip.php:53
+msgid "Numb Sprouts Grown"
+msgstr "Anzahl gewachsener Sprossen"
+
+#: ./src/Model/Table/BatchesViewTable.php:63
+#: ./templates/Batches/view.php:34
+#: ./templates/Crossings/view.php:43
+#: ./templates/element/MarkView/tooltip.php:57
+msgid "Seed Tray"
+msgstr "Saatschale"
+
+#: ./src/Model/Table/BatchesViewTable.php:64
+#: ./src/Model/Table/TreesViewTable.php:63
+#: ./templates/Batches/view.php:38
+#: ./templates/Crossings/view.php:44
+#: ./templates/Trees/view.php:58
+#: ./templates/element/MarkView/tooltip.php:61
+msgid "Date Planted"
+msgstr "Pflanzdatum"
+
+#: ./src/Model/Table/BatchesViewTable.php:65
+#: ./templates/Batches/view.php:42
+#: ./templates/element/MarkView/tooltip.php:65
+msgid "Numb Sprouts Planted"
+msgstr "Anzahl ausgepflanzter Sprossen"
+
+#: ./src/Model/Table/BatchesViewTable.php:66
+#: ./templates/Batches/view.php:46
+#: ./templates/Crossings/view.php:45
+#: ./templates/element/MarkView/tooltip.php:69
+msgid "Patch"
+msgstr "Beet"
+
+#: ./src/Model/Table/BatchesViewTable.php:67
+#: ./src/Model/Table/MotherTreesViewTable.php:69
+#: ./src/Model/Table/ScionsBundlesViewTable.php:63
+#: ./src/Model/Table/TreesViewTable.php:70
+#: ./templates/Batches/view.php:59
+#: ./templates/MarkFormProperties/view.php:52
+#: ./templates/MotherTrees/view.php:64
+#: ./templates/Rows/view.php:29
+#: ./templates/ScionsBundles/view.php:42
+#: ./templates/Trees/view.php:83
+#: ./templates/element/MarkView/tooltip.php:74
+#: ./templates/element/MarkView/tooltip.php:156
+#: ./templates/element/Tree/related_table.php:11
+msgid "Note"
+msgstr "Bemerkung"
+
+#: ./src/Model/Table/BatchesViewTable.php:68
+#: ./src/Model/Table/MotherTreesViewTable.php:76
+msgid "Crossing Id"
+msgstr ""
+
 #: ./src/Model/Table/CrossingsTable.php:85
 msgid "Input not valid. The code must only contain alphanumerical characters (without umlauts). Length between four and eight characters."
 msgstr "Eingabe nicht gültig. Der Code darf nur alphanumerische Zeichen (ohne Umlaute) enthalten. Länge zwischen vier und acht Zeichen."
@@ -1093,6 +1214,36 @@ msgstr "Dieser Code wurde bereits verwendet. Bitte wähle einen unverwechselbare
 #: ./src/Model/Table/CrossingsTable.php:110
 msgid "A crossing with the same mother variety and the same father variety already exists."
 msgstr "Eine Kreuzung mit der gleichen Muttersorte und der gleichen Vatersorte ist bereits vorhanden."
+
+#: ./src/Model/Table/CrossingsViewTable.php:54
+#: ./src/Model/Table/QueriesTable.php:191
+#: ./templates/Crossings/index.php:14
+#: ./templates/element/Crossing/nav.php:2
+#: ./templates/element/top_nav.php:2
+msgid "Crossings"
+msgstr "Kreuzungen"
+
+#: ./src/Model/Table/CrossingsViewTable.php:60
+#: ./templates/Crossings/view.php:40
+#: ./templates/Crossings/view.php:83
+#: ./templates/Varieties/view.php:59
+msgid "Code"
+msgstr "Code"
+
+#: ./src/Model/Table/CrossingsViewTable.php:61
+#: ./templates/Crossings/add.php:14
+msgid "Mother Variety"
+msgstr "Muttersorte"
+
+#: ./src/Model/Table/CrossingsViewTable.php:62
+#: ./templates/Crossings/add.php:20
+msgid "Father Variety"
+msgstr "Vatersorte"
+
+#: ./src/Model/Table/CrossingsViewTable.php:63
+#: ./templates/Crossings/view.php:31
+msgid "Target"
+msgstr "Ziel"
 
 #: ./src/Model/Table/ExperimentSitesTable.php:77
 #: ./src/Model/Table/GraftingsTable.php:77
@@ -1143,6 +1294,7 @@ msgid "Boolean"
 msgstr "Boole'scher Wert"
 
 #: ./src/Model/Table/MarkFormPropertiesTable.php:232
+#: ./src/Model/Table/MarksViewTable.php:63
 #: ./templates/Marks/view.php:28
 #: ./templates/element/Mark/list.php:4
 #: ./templates/element/MarkView/tooltip.php:20
@@ -1181,17 +1333,7 @@ msgstr "Bitte wähle ein Los aus"
 msgid "Tree and variety must not be selected"
 msgstr "Baum und Sorte dürfen nicht ausgewählt sein"
 
-#: ./src/Model/Table/MotherTreesTable.php:98
-msgid "The variety of the mother tree must match the mother variety of the crossing."
-msgstr "Die Sorte des Mutterbaums muss mit der Muttersorte der Kreuzung übereinstimmen."
-
-#: ./src/Model/Table/QueriesTable.php:191
-#: ./templates/Crossings/index.php:14
-#: ./templates/element/Crossing/nav.php:2
-#: ./templates/element/top_nav.php:2
-msgid "Crossings"
-msgstr "Kreuzungen"
-
+#: ./src/Model/Table/MarksViewTable.php:56
 #: ./src/Model/Table/QueriesTable.php:192
 #: ./templates/Marks/index.php:14
 #: ./templates/element/Mark/index_table.php:6
@@ -1200,18 +1342,212 @@ msgstr "Kreuzungen"
 msgid "Marks"
 msgstr "Bewertungen"
 
+#: ./src/Model/Table/MarksViewTable.php:64
+#: ./templates/Marks/view.php:32
+#: ./templates/element/Mark/list.php:7
+#: ./templates/element/MarkView/tooltip.php:24
+msgid "Author"
+msgstr "Autor"
+
+#: ./src/Model/Table/MarksViewTable.php:65
+#: ./src/Model/Table/MotherTreesViewTable.php:75
+msgid "Tree Id"
+msgstr ""
+
+#: ./src/Model/Table/MarksViewTable.php:66
+#: ./src/Model/Table/TreesViewTable.php:71
+msgid "Variety Id"
+msgstr ""
+
+#: ./src/Model/Table/MarksViewTable.php:67
+#: ./src/Model/Table/VarietiesViewTable.php:66
+msgid "Batch Id"
+msgstr ""
+
+#: ./src/Model/Table/MarksViewTable.php:68
+#: ./templates/Marks/view.php:60
+#: ./templates/Settings/index.php:11
+#: ./templates/element/Mark/list.php:6
+#: ./templates/element/MarkView/tooltip.php:11
+#: ./templates/element/Query/mark_results_table.php:54
+msgid "Value"
+msgstr "Wert"
+
+#: ./src/Model/Table/MarksViewTable.php:69
+#: ./templates/Marks/view.php:61
+#: ./templates/element/MarkView/tooltip.php:28
+msgid "Exceptional Mark"
+msgstr "Ausserplanmässige Bewertung"
+
+#: ./src/Model/Table/MarksViewTable.php:70
+#: ./templates/Marks/view.php:59
+#: ./templates/element/Mark/list.php:5
+#: ./templates/element/MarkView/tooltip.php:16
+msgid "Property"
+msgstr "Eigenschaft"
+
+#: ./src/Model/Table/MarksViewTable.php:71
+msgid "Property Id"
+msgstr ""
+
+#: ./src/Model/Table/MarksViewTable.php:72
+#: ./templates/MarkFormProperties/add.php:17
+#: ./templates/MarkFormProperties/edit.php:17
+#: ./templates/MarkFormProperties/view.php:21
+#: ./templates/element/MarkFormProperty/index_table.php:6
+msgid "Data Type"
+msgstr "Datentyp"
+
+#: ./src/Model/Table/MarksViewTable.php:73
+#: ./templates/MarkFormProperties/add.php:12
+#: ./templates/MarkFormProperties/edit.php:12
+#: ./templates/MarkFormProperties/view.php:12
+#: ./templates/element/MarkFormProperty/index_table.php:7
+msgid "Property Type"
+msgstr "Eigenschaftstyp"
+
+#: ./src/Model/Table/MotherTreesTable.php:98
+msgid "The variety of the mother tree must match the mother variety of the crossing."
+msgstr "Die Sorte des Mutterbaums muss mit der Muttersorte der Kreuzung übereinstimmen."
+
+#: ./src/Model/Table/MotherTreesViewTable.php:53
 #: ./src/Model/Table/QueriesTable.php:193
 #: ./templates/MotherTrees/index.php:18
 #: ./templates/element/Crossing/nav.php:5
 msgid "Mother Trees"
 msgstr "Mutterbäume"
 
+#: ./src/Model/Table/MotherTreesViewTable.php:59
+#: ./templates/Batches/view.php:17
+#: ./templates/MotherTrees/view.php:18
+#: ./templates/element/MarkView/tooltip.php:41
+msgid "Crossing"
+msgstr "Kreuzung"
+
+#: ./src/Model/Table/MotherTreesViewTable.php:60
+#: ./src/Model/Table/ScionsBundlesViewTable.php:58
+#: ./templates/MotherTrees/add.php:30
+#: ./templates/MotherTrees/edit.php:17
+#: ./templates/ScionsBundles/add.php:15
+#: ./templates/ScionsBundles/edit.php:15
+#: ./templates/element/MotherTree/index_table.php:8
+#: ./templates/element/ScionsBundle/index_table.php:6
+msgid "Identification"
+msgstr "Kennzeichnung"
+
+#: ./src/Model/Table/MotherTreesViewTable.php:61
+#: ./templates/Crossings/view.php:85
+#: ./templates/MotherTrees/view.php:23
+msgid "Planed"
+msgstr "Geplant"
+
+#: ./src/Model/Table/MotherTreesViewTable.php:62
+#: ./templates/MotherTrees/view.php:43
+msgid "Date Pollen Harvested"
+msgstr "Datum Pollenernte"
+
+#: ./src/Model/Table/MotherTreesViewTable.php:63
+#: ./templates/MotherTrees/view.php:47
+msgid "Date Impregnated"
+msgstr "Datum Befruchtung"
+
+#: ./src/Model/Table/MotherTreesViewTable.php:64
+#: ./templates/MotherTrees/view.php:51
+msgid "Date Fruit Harvested"
+msgstr "Datum Fruchternte"
+
+#: ./src/Model/Table/MotherTreesViewTable.php:65
+#: ./templates/Crossings/view.php:86
+#: ./templates/MotherTrees/view.php:27
+msgid "Numb Portions"
+msgstr "Anz. Portionen"
+
+#: ./src/Model/Table/MotherTreesViewTable.php:66
+#: ./templates/Crossings/view.php:87
+#: ./templates/MotherTrees/view.php:31
+msgid "Numb Flowers"
+msgstr "Anz. Blüten"
+
+#: ./src/Model/Table/MotherTreesViewTable.php:67
+#: ./templates/MotherTrees/view.php:35
+msgid "Numb Fruits"
+msgstr "Anz. Früchte"
+
+#: ./src/Model/Table/MotherTreesViewTable.php:68
+#: ./templates/Crossings/view.php:88
+#: ./templates/MotherTrees/view.php:39
+msgid "Numb Seeds"
+msgstr "Anz. Samen"
+
+#: ./src/Model/Table/MotherTreesViewTable.php:71
+#: ./src/Model/Table/TreesViewTable.php:60
+#: ./templates/Crossings/view.php:84
+#: ./templates/element/MarkView/tooltip.php:125
+#: ./templates/element/MotherTree/index_table.php:9
+#: ./templates/element/Tree/get_tree.php:4
+#: ./templates/element/Tree/related_table.php:7
+msgid "Publicid"
+msgstr "Publicid"
+
+#: ./src/Model/Table/MotherTreesViewTable.php:72
+#: ./src/Model/Table/TreesViewTable.php:67
+#: ./templates/Trees/view.php:32
+#: ./templates/element/MarkView/tooltip.php:151
+#: ./templates/element/Tree/get_tree.php:8
+#: ./templates/element/Tree/related_table.php:10
+msgid "Offset"
+msgstr "Offset"
+
+#: ./src/Model/Table/MotherTreesViewTable.php:73
+#: ./src/Model/Table/TreesViewTable.php:69
+#: ./templates/Trees/view.php:27
+#: ./templates/element/MarkView/tooltip.php:147
+#: ./templates/element/Tree/get_tree.php:7
+#: ./templates/element/Tree/related_table.php:9
+msgid "Row"
+msgstr "Zeile"
+
+#: ./src/Model/Table/MotherTreesViewTable.php:74
+#: ./src/Model/Table/TreesViewTable.php:74
+#: ./templates/Trees/view.php:22
+#: ./templates/element/Tree/get_tree.php:6
+msgid "Experiment Site"
+msgstr "Versuchsort"
+
 #: ./src/Model/Table/QueriesTable.php:194
+#: ./src/Model/Table/ScionsBundlesViewTable.php:52
 #: ./templates/ScionsBundles/index.php:15
 #: ./templates/element/ScionsBundle/nav.php:2
 #: ./templates/element/top_nav.php:6
 msgid "Scions Bundles"
 msgstr "Reiserbündel"
+
+#: ./src/Model/Table/ScionsBundlesViewTable.php:60
+#: ./templates/ScionsBundles/view.php:21
+#: ./templates/Varieties/view.php:60
+msgid "Numb Scions"
+msgstr "Anz. Reiser"
+
+#: ./src/Model/Table/ScionsBundlesViewTable.php:61
+#: ./templates/ScionsBundles/view.php:25
+#: ./templates/Varieties/view.php:61
+msgid "Date Scions Harvest"
+msgstr "Datum Reiserernte"
+
+#: ./src/Model/Table/ScionsBundlesViewTable.php:62
+msgid "Descents (Publicids)"
+msgstr ""
+
+#: ./src/Model/Table/ScionsBundlesViewTable.php:64
+#: ./templates/ScionsBundles/add.php:27
+#: ./templates/ScionsBundles/edit.php:27
+#: ./templates/ScionsBundles/view.php:29
+msgid "Reserved for external partners"
+msgstr "Reserviert für externe Partner"
+
+#: ./src/Model/Table/ScionsBundlesViewTable.php:65
+msgid "Varienty Id"
+msgstr ""
 
 #: ./src/Model/Table/TreesTable.php:100
 msgid "This number has already been used."
@@ -1225,9 +1561,75 @@ msgstr "Eingabe nicht gültig. Die Publicid darf nur Zahlen zwischen 1 und 99999
 msgid "The # prefix means, the tree was eliminated. It must therefore also have an elimination date."
 msgstr "Das Präfix # bedeutet, dass der Baum eliminiert wurde. Er muss daher auch ein Löschdatum haben."
 
+#: ./src/Model/Table/TreesViewTable.php:62
+#: ./templates/Trees/view.php:44
+msgid "Date Grafted"
+msgstr "Veredelungsdatum"
+
+#: ./src/Model/Table/TreesViewTable.php:64
+#: ./templates/Rows/view.php:16
+#: ./templates/Trees/view.php:62
+msgid "Date Eliminated"
+msgstr "Eliminierungsdatum"
+
+#: ./src/Model/Table/TreesViewTable.php:65
+#: ./templates/Trees/view.php:40
+msgid "Date Labeled"
+msgstr "Ettiketierungsdatum"
+
+#: ./src/Model/Table/TreesViewTable.php:66
+#: ./templates/Trees/view.php:36
+msgid "Genuine Seedling"
+msgstr "Originalsämling"
+
+#: ./src/Model/Table/TreesViewTable.php:68
+msgid "Don't eliminate"
+msgstr ""
+
+#: ./src/Model/Table/TreesViewTable.php:72
+#: ./templates/Trees/view.php:53
+msgid "Grafting"
+msgstr "Veredelung"
+
+#: ./src/Model/Table/TreesViewTable.php:73
+#: ./templates/Trees/view.php:48
+msgid "Rootstock"
+msgstr "Unterlage"
+
 #: ./src/Model/Table/VarietiesTable.php:109
 msgid "A variety with this code and the same batch already exists."
 msgstr "Eine Sorte mit diesem und dem gleichen Los ist bereits vorhanden."
+
+#: ./src/Model/Table/VarietiesViewTable.php:61
+#: ./templates/Varieties/view.php:21
+#: ./templates/element/MarkView/tooltip.php:91
+msgid "Official Name"
+msgstr "Offizieller Name"
+
+#: ./src/Model/Table/VarietiesViewTable.php:62
+#: ./templates/Varieties/view.php:25
+#: ./templates/element/MarkView/tooltip.php:95
+msgid "Acronym"
+msgstr "Kürzel"
+
+#: ./src/Model/Table/VarietiesViewTable.php:63
+#: ./templates/Varieties/view.php:33
+#: ./templates/element/MarkView/tooltip.php:103
+msgid "Plant Breeder"
+msgstr "Züchter"
+
+#: ./src/Model/Table/VarietiesViewTable.php:64
+#: ./templates/Varieties/view.php:37
+#: ./templates/element/MarkView/tooltip.php:107
+msgid "Registration"
+msgstr "Registrierung"
+
+#: ./src/Model/Table/VarietiesViewTable.php:65
+#: ./templates/MarkForms/view.php:21
+#: ./templates/Varieties/view.php:50
+#: ./templates/element/MarkView/tooltip.php:112
+msgid "Description"
+msgstr "Beschreibung"
 
 #: ./templates/Batches/add.php:8
 msgid "Add Batch"
@@ -1296,80 +1698,6 @@ msgstr "Etikette drucken"
 msgid "Batch:"
 msgstr "Los:"
 
-#: ./templates/Batches/view.php:13
-#: ./templates/Batches/view.php:67
-#: ./templates/Crossings/view.php:8
-#: ./templates/Crossings/view.php:39
-#: ./templates/Crossings/view.php:82
-#: ./templates/ExperimentSites/view.php:8
-#: ./templates/Graftings/view.php:8
-#: ./templates/MarkFormProperties/view.php:8
-#: ./templates/MarkFormProperties/view.php:60
-#: ./templates/MarkFormPropertyTypes/view.php:8
-#: ./templates/MarkFormPropertyTypes/view.php:21
-#: ./templates/MarkForms/view.php:8
-#: ./templates/MarkForms/view.php:29
-#: ./templates/Marks/view.php:24
-#: ./templates/Marks/view.php:58
-#: ./templates/MotherTrees/view.php:9
-#: ./templates/Rootstocks/view.php:8
-#: ./templates/Rows/view.php:8
-#: ./templates/ScionsBundles/view.php:8
-#: ./templates/Trees/view.php:13
-#: ./templates/Varieties/view.php:9
-#: ./templates/Varieties/view.php:58
-#: ./templates/element/Mark/list.php:3
-#: ./templates/element/Tree/related_table.php:6
-msgid "Id"
-msgstr "Id"
-
-#: ./templates/Batches/view.php:17
-#: ./templates/MotherTrees/view.php:18
-#: ./templates/element/MarkView/tooltip.php:41
-msgid "Crossing"
-msgstr "Kreuzung"
-
-#: ./templates/Batches/view.php:22
-#: ./templates/Crossings/view.php:41
-#: ./templates/element/MarkView/tooltip.php:45
-msgid "Date Sowed"
-msgstr "Datum Aussaat"
-
-#: ./templates/Batches/view.php:26
-#: ./templates/Crossings/view.php:42
-#: ./templates/element/MarkView/tooltip.php:49
-msgid "Numb Seeds Sowed"
-msgstr "Anzahl ausgesäte Samen"
-
-#: ./templates/Batches/view.php:30
-#: ./templates/element/MarkView/tooltip.php:53
-msgid "Numb Sprouts Grown"
-msgstr "Anzahl gewachsener Sprossen"
-
-#: ./templates/Batches/view.php:34
-#: ./templates/Crossings/view.php:43
-#: ./templates/element/MarkView/tooltip.php:57
-msgid "Seed Tray"
-msgstr "Saatschale"
-
-#: ./templates/Batches/view.php:38
-#: ./templates/Crossings/view.php:44
-#: ./templates/Trees/view.php:58
-#: ./templates/element/MarkView/tooltip.php:61
-msgid "Date Planted"
-msgstr "Pflanzdatum"
-
-#: ./templates/Batches/view.php:42
-#: ./templates/element/MarkView/tooltip.php:65
-msgid "Numb Sprouts Planted"
-msgstr "Anzahl ausgepflanzter Sprossen"
-
-#: ./templates/Batches/view.php:46
-#: ./templates/Crossings/view.php:45
-#: ./templates/element/MarkView/tooltip.php:69
-msgid "Patch"
-msgstr "Beet"
-
 #: ./templates/Batches/view.php:50
 #: ./templates/Crossings/view.php:22
 #: ./templates/MarkFormProperties/view.php:43
@@ -1403,18 +1731,6 @@ msgstr "Erstellt"
 #: ./templates/element/Tree/related_table.php:13
 msgid "Modified"
 msgstr "Geändert"
-
-#: ./templates/Batches/view.php:59
-#: ./templates/MarkFormProperties/view.php:52
-#: ./templates/MotherTrees/view.php:64
-#: ./templates/Rows/view.php:29
-#: ./templates/ScionsBundles/view.php:42
-#: ./templates/Trees/view.php:83
-#: ./templates/element/MarkView/tooltip.php:74
-#: ./templates/element/MarkView/tooltip.php:156
-#: ./templates/element/Tree/related_table.php:11
-msgid "Note"
-msgstr "Bemerkung"
 
 #: ./templates/Batches/view.php:63
 msgid "Related Varieties"
@@ -1560,14 +1876,6 @@ msgstr "\"{0}\" wirklich löschen (id: {0})?"
 msgid "Add Crossing"
 msgstr "Kreuzung hinzufügen"
 
-#: ./templates/Crossings/add.php:14
-msgid "Mother Variety"
-msgstr "Muttersorte"
-
-#: ./templates/Crossings/add.php:20
-msgid "Father Variety"
-msgstr "Vatersorte"
-
 #: ./templates/Crossings/edit.php:7
 msgid "Edit Crossing"
 msgstr "Kreuzung bearbeiten"
@@ -1588,51 +1896,13 @@ msgstr "Muttersorte"
 msgid "Father variety"
 msgstr "Vatersorte"
 
-#: ./templates/Crossings/view.php:31
-msgid "Target"
-msgstr "Ziel"
-
 #: ./templates/Crossings/view.php:35
 msgid "Related Batches"
 msgstr "Verwandte Lose"
 
-#: ./templates/Crossings/view.php:40
-#: ./templates/Crossings/view.php:83
-#: ./templates/Varieties/view.php:59
-msgid "Code"
-msgstr "Code"
-
 #: ./templates/Crossings/view.php:78
 msgid "Related Mother Trees"
 msgstr "Verwandte Mutterbäume"
-
-#: ./templates/Crossings/view.php:84
-#: ./templates/element/MarkView/tooltip.php:125
-#: ./templates/element/MotherTree/index_table.php:9
-#: ./templates/element/Tree/get_tree.php:4
-#: ./templates/element/Tree/related_table.php:7
-msgid "Publicid"
-msgstr "Publicid"
-
-#: ./templates/Crossings/view.php:85
-#: ./templates/MotherTrees/view.php:23
-msgid "Planed"
-msgstr "Geplant"
-
-#: ./templates/Crossings/view.php:86
-#: ./templates/MotherTrees/view.php:27
-msgid "Numb Portions"
-msgstr "Anz. Portionen"
-
-#: ./templates/Crossings/view.php:87
-#: ./templates/MotherTrees/view.php:31
-msgid "Numb Flowers"
-msgstr "Anz. Blüten"
-
-#: ./templates/Crossings/view.php:88
-#: ./templates/MotherTrees/view.php:39
-msgid "Numb Seeds"
-msgstr "Anz. Samen"
 
 #: ./templates/Crossings/view.php:95
 #: ./templates/element/MotherTree/index_table.php:24
@@ -1796,20 +2066,6 @@ msgstr "Veredelung:"
 msgid "Add Property"
 msgstr "Eigenschaft hinzufügen"
 
-#: ./templates/MarkFormProperties/add.php:12
-#: ./templates/MarkFormProperties/edit.php:12
-#: ./templates/MarkFormProperties/view.php:12
-#: ./templates/element/MarkFormProperty/index_table.php:7
-msgid "Property Type"
-msgstr "Eigenschaftstyp"
-
-#: ./templates/MarkFormProperties/add.php:17
-#: ./templates/MarkFormProperties/edit.php:17
-#: ./templates/MarkFormProperties/view.php:21
-#: ./templates/element/MarkFormProperty/index_table.php:6
-msgid "Data Type"
-msgstr "Datentyp"
-
 #: ./templates/MarkFormProperties/add.php:24
 #: ./templates/MarkFormProperties/edit.php:25
 #: ./templates/MarkFormProperties/view.php:26
@@ -1907,12 +2163,6 @@ msgstr "Bewertungsformulare"
 msgid "Mark Form:"
 msgstr "Bewertungsformular:"
 
-#: ./templates/MarkForms/view.php:21
-#: ./templates/Varieties/view.php:50
-#: ./templates/element/MarkView/tooltip.php:112
-msgid "Description"
-msgstr "Beschreibung"
-
 #: ./templates/MarkForms/view.php:25
 msgid "Form Fields"
 msgstr "Felder des Bewertungsformulars"
@@ -1934,15 +2184,6 @@ msgstr "Wert der Bewertung bearbeiten"
 #: ./templates/element/Mark/nav.php:9
 msgid "Mark Batch"
 msgstr "Los bewerten"
-
-#: ./templates/Marks/add_batch_mark.php:14
-#: ./templates/Marks/edit.php:18
-#: ./templates/Varieties/add_breeder_variety.php:14
-#: ./templates/Varieties/add_official_variety.php:19
-#: ./templates/Varieties/edit.php:14
-#: ./templates/element/Batch/index_table.php:5
-msgid "Crossing.Batch"
-msgstr "Kreuzung.Sorte"
 
 #: ./templates/Marks/add_tree_mark.php:17
 #: ./templates/element/Mark/nav.php:3
@@ -2000,12 +2241,6 @@ msgstr "Sorte:"
 msgid "Mark:"
 msgstr "Bewertung:"
 
-#: ./templates/Marks/view.php:32
-#: ./templates/element/Mark/list.php:7
-#: ./templates/element/MarkView/tooltip.php:24
-msgid "Author"
-msgstr "Autor"
-
 #: ./templates/Marks/view.php:41
 #: ./templates/element/Mark/index_table.php:5
 msgid "Object"
@@ -2016,37 +2251,9 @@ msgstr "Objekt"
 msgid "Values"
 msgstr "Werte"
 
-#: ./templates/Marks/view.php:59
-#: ./templates/element/Mark/list.php:5
-#: ./templates/element/MarkView/tooltip.php:16
-msgid "Property"
-msgstr "Eigenschaft"
-
-#: ./templates/Marks/view.php:60
-#: ./templates/Settings/index.php:11
-#: ./templates/element/Mark/list.php:6
-#: ./templates/element/MarkView/tooltip.php:11
-#: ./templates/element/Query/mark_results_table.php:54
-msgid "Value"
-msgstr "Wert"
-
-#: ./templates/Marks/view.php:61
-#: ./templates/element/MarkView/tooltip.php:28
-msgid "Exceptional Mark"
-msgstr "Ausserplanmässige Bewertung"
-
 #: ./templates/MotherTrees/add.php:17
 msgid "Add Mother Tree"
 msgstr "Mutterbaum hinzufügen"
-
-#: ./templates/MotherTrees/add.php:30
-#: ./templates/MotherTrees/edit.php:17
-#: ./templates/ScionsBundles/add.php:15
-#: ./templates/ScionsBundles/edit.php:15
-#: ./templates/element/MotherTree/index_table.php:8
-#: ./templates/element/ScionsBundle/index_table.php:6
-msgid "Identification"
-msgstr "Kennzeichnung"
 
 #: ./templates/MotherTrees/edit.php:8
 msgid "Edit Mother Tree"
@@ -2064,22 +2271,6 @@ msgstr "Mutterbaum:"
 #: ./templates/element/MarkView/tooltip.php:122
 msgid "Tree"
 msgstr "Baum"
-
-#: ./templates/MotherTrees/view.php:35
-msgid "Numb Fruits"
-msgstr "Anz. Früchte"
-
-#: ./templates/MotherTrees/view.php:43
-msgid "Date Pollen Harvested"
-msgstr "Datum Pollenernte"
-
-#: ./templates/MotherTrees/view.php:47
-msgid "Date Impregnated"
-msgstr "Datum Befruchtung"
-
-#: ./templates/MotherTrees/view.php:51
-msgid "Date Fruit Harvested"
-msgstr "Datum Fruchternte"
 
 #: ./templates/Queries/add.php:7
 #: ./templates/Queries/add_mark_query.php:7
@@ -2152,11 +2343,6 @@ msgstr "Zeile:"
 msgid "Date Created"
 msgstr "Erstellt am"
 
-#: ./templates/Rows/view.php:16
-#: ./templates/Trees/view.php:62
-msgid "Date Eliminated"
-msgstr "Eliminierungsdatum"
-
 #: ./templates/Rows/view.php:33
 #: ./templates/Varieties/view.php:95
 msgid "Related Trees"
@@ -2170,12 +2356,6 @@ msgstr "Reiserbündel hinzufügen"
 #: ./templates/ScionsBundles/edit.php:24
 msgid "List of publicids of the descent trees, separeted by a comma"
 msgstr "Liste der Publicids der abstammenden Bäume, separiert durch ein Komma"
-
-#: ./templates/ScionsBundles/add.php:27
-#: ./templates/ScionsBundles/edit.php:27
-#: ./templates/ScionsBundles/view.php:29
-msgid "Reserved for external partners"
-msgstr "Reserviert für externe Partner"
 
 #: ./templates/ScionsBundles/edit.php:7
 msgid "Edit Scions Bundle"
@@ -2199,16 +2379,6 @@ msgstr "Auflistung der Publicids der Herkunft"
 #: ./templates/element/Tree/get_tree.php:5
 msgid "Variety"
 msgstr "Sorte"
-
-#: ./templates/ScionsBundles/view.php:21
-#: ./templates/Varieties/view.php:60
-msgid "Numb Scions"
-msgstr "Anz. Reiser"
-
-#: ./templates/ScionsBundles/view.php:25
-#: ./templates/Varieties/view.php:61
-msgid "Date Scions Harvest"
-msgstr "Datum Reiserernte"
 
 #: ./templates/Settings/edit.php:7
 msgid "Edit %s"
@@ -2261,45 +2431,6 @@ msgstr "Nach Publicid oder Convar filtern..."
 #: ./templates/element/Tree/nav.php:7
 msgid "Plant Tree"
 msgstr "Baum auspflanzen"
-
-#: ./templates/Trees/view.php:22
-#: ./templates/element/Tree/get_tree.php:6
-msgid "Experiment Site"
-msgstr "Versuchsort"
-
-#: ./templates/Trees/view.php:27
-#: ./templates/element/MarkView/tooltip.php:147
-#: ./templates/element/Tree/get_tree.php:7
-#: ./templates/element/Tree/related_table.php:9
-msgid "Row"
-msgstr "Zeile"
-
-#: ./templates/Trees/view.php:32
-#: ./templates/element/MarkView/tooltip.php:151
-#: ./templates/element/Tree/get_tree.php:8
-#: ./templates/element/Tree/related_table.php:10
-msgid "Offset"
-msgstr "Offset"
-
-#: ./templates/Trees/view.php:36
-msgid "Genuine Seedling"
-msgstr "Originalsämling"
-
-#: ./templates/Trees/view.php:40
-msgid "Date Labeled"
-msgstr "Ettiketierungsdatum"
-
-#: ./templates/Trees/view.php:44
-msgid "Date Grafted"
-msgstr "Veredelungsdatum"
-
-#: ./templates/Trees/view.php:48
-msgid "Rootstock"
-msgstr "Unterlage"
-
-#: ./templates/Trees/view.php:53
-msgid "Grafting"
-msgstr "Veredelung"
 
 #: ./templates/Trees/view.php:66
 msgid "Migrated Tree"
@@ -2365,30 +2496,10 @@ msgstr "Nach ID, Convar oder Züchter-Sorten-Code filtern..."
 msgid "Batch"
 msgstr "Los"
 
-#: ./templates/Varieties/view.php:21
-#: ./templates/element/MarkView/tooltip.php:91
-msgid "Official Name"
-msgstr "Offizieller Name"
-
-#: ./templates/Varieties/view.php:25
-#: ./templates/element/MarkView/tooltip.php:95
-msgid "Acronym"
-msgstr "Kürzel"
-
 #: ./templates/Varieties/view.php:29
 #: ./templates/element/MarkView/tooltip.php:99
 msgid "Breeder Variety Code"
 msgstr "Züchter-Sorten-Code"
-
-#: ./templates/Varieties/view.php:33
-#: ./templates/element/MarkView/tooltip.php:103
-msgid "Plant Breeder"
-msgstr "Züchter"
-
-#: ./templates/Varieties/view.php:37
-#: ./templates/element/MarkView/tooltip.php:107
-msgid "Registration"
-msgstr "Registrierung"
 
 #: ./templates/Varieties/view.php:54
 msgid "Related Scions Bundles"
