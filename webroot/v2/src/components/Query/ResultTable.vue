@@ -1,37 +1,67 @@
 <template>
   <q-table
-    ref="tableRef"
     v-model:pagination="pagination"
+    :class="{'query-result-table--fullscreen': fullscreen}"
     :columns="columns"
+    :fullscreen="fullscreen"
     :loading="loading"
     :rows="rows"
     :rows-per-page-options="[10,100,1000]"
-    virtual-scroll
+    :title="t('queries.results')"
     :virtual-scroll-item-size="48"
     :virtual-scroll-sticky-size-start="48"
+    :visible-columns="visibleColumns"
+    binary-state-sort
     class="query-result-table"
-    :class="{'query-result-table--fullscreen': fullscreen}"
+    color="primary"
     row-key="name"
+    virtual-scroll
     @request="event => $emit('requestData', event)"
-    :fullscreen="fullscreen"
   >
     <template #top-right>
-      <q-btn
-        flat round dense
-        :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'"
-        @click="fullscreen = !fullscreen"
-        class="q-ml-md"
+      <q-select
+        :disable="availableColumnsOption.length === 0"
+        @update:model-value="showColumn"
+        :model-value="null"
+        use-input
+        :options="availableColumnsOption"
+        :label="t('queries.addColumn')"
       />
+
+      <q-btn
+        :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'" class="q-ml-md" dense
+        flat
+        round
+        @click="fullscreen = !fullscreen"
+      />
+    </template>
+
+    <template #header-cell="props">
+      <q-th :props="props">
+        {{ props.col.label }}
+        <q-btn
+          dense
+          flat
+          icon="close"
+          round
+          size="xs"
+          @click.stop="hideColumn(props.col.name)"
+        />
+      </q-th>
     </template>
   </q-table>
 </template>
 
 <script lang="ts" setup>
-import {computed, onMounted, PropType, ref, watch} from 'vue';
+import {computed, PropType, ref, watch} from 'vue';
 import {QueryResponse, QueryResponseSchemas, ViewEntity} from 'src/models/query/query';
 import {useQueryStore} from 'stores/query';
 import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
-import {QTable} from 'quasar';
+import {QTable, QTableColumn} from 'quasar';
+import {useI18n} from 'vue-i18n';
+
+// todo: make column selector work with keyboard input
+// todo: extract column selector into own component
 
 defineEmits<{
   (e: 'requestData', data: Parameters<QTable['onRequest']>[0]): void
@@ -48,10 +78,13 @@ const props = defineProps({
 });
 
 const ROWS_PER_PAGE = 100;
+const DEFAULT_DISPLAY_COLS_COUNT = 5;
 
+const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore();
 
 const fullscreen = ref(false);
+const lastBaseTableName = ref<string>();
 
 function formatColumnValue(val: string | number | Date | null, type: PropertySchemaOptionType) {
   if (null === val) {
@@ -85,7 +118,7 @@ const rowData = computed<ViewEntity[]>(() => {
   return props.result?.results || [];
 })
 
-const columns = computed(() => {
+const columns = computed<QTableColumn[]>(() => {
   const schema = schemas.value[baseTableName.value];
 
   if ( ! schema) {
@@ -107,6 +140,56 @@ const columns = computed(() => {
     }
   });
 });
+
+const allColumnNames = computed<string[]>(() => {
+  return columns.value.map(item => item.name);
+})
+
+const hiddenColumns = ref<string[]>([]);
+
+const visibleColumns = computed<string[]>(() => {
+  return allColumnNames.value.filter(
+    available => -1 === hiddenColumns.value.indexOf(available)
+  );
+})
+
+const availableColumnsOption = computed<{ label: string, value: string }[]>(() => {
+  return columns.value
+    .filter(column => -1 === visibleColumns.value.indexOf(column.name))
+    .map(column => {
+      return {label: column.label, value: column.name};
+    });
+});
+
+function hideColumn(name: string) {
+  hiddenColumns.value.push(name);
+}
+
+function showColumn(option: {label: string, value: string}) {
+  hiddenColumns.value = hiddenColumns.value.filter(hidden => hidden !== option.value);
+}
+
+function resetVisibleColumns() {
+  if (allColumnNames.value.length <= DEFAULT_DISPLAY_COLS_COUNT) {
+    hiddenColumns.value = [];
+    return;
+  }
+
+  hiddenColumns.value = allColumnNames.value.slice(DEFAULT_DISPLAY_COLS_COUNT);
+}
+
+function resetVisibleColumnsOnBaseTableChange() {
+  if (baseTableName.value === lastBaseTableName.value) {
+    return;
+  }
+
+  if (allColumnNames.value.length === 0) {
+    return;
+  }
+
+  resetVisibleColumns();
+  lastBaseTableName.value = baseTableName.value;
+}
 
 const rows = computed(() => {
   return rowData.value?.map((item: ViewEntity) => {
@@ -150,7 +233,6 @@ const rowsPerPage = computed<number>(() => {
   return props.result?.limit || ROWS_PER_PAGE;
 });
 
-const tableRef = ref<QTable | undefined>()
 const pagination = ref({
   sortBy: sortBy.value,
   descending: descending.value,
@@ -159,17 +241,13 @@ const pagination = ref({
   rowsNumber: totalRowsDB.value
 })
 
-onMounted(() => {
-  // get initial data from server (1st page)
-  // noinspection TypeScriptUnresolvedFunction
-  // tableRef.value.requestServerInteraction()
-})
-
 watch(totalRowsDB, count => pagination.value.rowsNumber = count);
 watch(page, num => pagination.value.page = num);
 watch(sortBy, col => pagination.value.sortBy = col);
 watch(descending, order => pagination.value.descending = order);
 watch(rowsPerPage, limit => pagination.value.rowsPerPage = limit);
+
+watch(allColumnNames, resetVisibleColumnsOnBaseTableChange)
 
 </script>
 

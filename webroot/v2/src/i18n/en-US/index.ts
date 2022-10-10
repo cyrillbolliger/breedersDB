@@ -107,6 +107,7 @@ export default {
     },
 
     results: 'Results',
+    addColumn: 'Add Column'
   },
 
   general: {
