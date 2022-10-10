@@ -66,10 +66,11 @@ function requestData(requestProps: Parameters<QTable['onRequest']>[0]) {
     offset: (page - 1) * rowsPerPage,
     sortBy,
     order: descending ? 'desc' : 'asc',
+    limit: rowsPerPage,
   });
 }
 
-function getUrl(pagination?: { offset: number, sortBy: string | null, order: 'asc' | 'desc' }) {
+function getUrl(pagination?: { offset: number, sortBy: string | null, order: 'asc' | 'desc', limit: number }) {
   let url = 'queries/find-results';
   url += '?offset=' + String(pagination?.offset || 0);
 
@@ -78,10 +79,14 @@ function getUrl(pagination?: { offset: number, sortBy: string | null, order: 'as
     url += '&order=' + pagination.order;
   }
 
+  if (pagination?.limit) {
+    url += '&limit=' + pagination.limit.toString();
+  }
+
   return url;
 }
 
-async function loadResults(pagination?: { offset: number, sortBy: string | null, order: 'asc' | 'desc' }) {
+async function loadResults(pagination?: { offset: number, sortBy: string | null, order: 'asc' | 'desc', limit: number }) {
   if ( ! isValid.value) {
     return;
   }

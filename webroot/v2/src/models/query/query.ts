@@ -31,6 +31,7 @@ export interface QueryResponse {
   offset: number,
   sortBy: string,
   order: 'asc' | 'desc',
+  limit: number,
   debug: null | QueryResponseDebug,
   results: ViewEntity[],
   schema: QueryResponseSchemas,

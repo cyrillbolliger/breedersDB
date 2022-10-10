@@ -57,8 +57,13 @@ class QueriesController extends REST1Controller
                 ->withAddedHeader('Allow', 'POST');
         }
 
+        $limit = (int) $this->request->getQuery('limit');
+        if ($limit <= 0 || $limit > 1000) {
+            $limit = 100;
+        }
+
         $queryBuilder = FilterQueryBuilder::create($this->request->getData('data'));
-        $queryBuilder->setLimit(100);
+        $queryBuilder->setLimit($limit);
         $queryBuilder->setOffset((int) $this->request->getQuery('offset', 0));
         $queryBuilder->setSortBy($this->request->getQuery('sortBy'));
         $queryBuilder->setOrder($this->request->getQuery('order'));
@@ -70,6 +75,7 @@ class QueriesController extends REST1Controller
             $sortBy = $queryBuilder->getSortBy();
             $order = $queryBuilder->getOrder();
             $offset = $queryBuilder->getOffset();
+            $limit = $queryBuilder->getLimit();
         } catch (\Exception $e) {
             return $this->JsonResponse->respondWithErrorJson([$e->getMessage()], 422);
         }
@@ -83,6 +89,7 @@ class QueriesController extends REST1Controller
             'offset' => $offset,
             'sortBy' => $sortBy,
             'order' => $order,
+            'limit' => $limit,
             'schema' => $schema,
             'results' => $results,
             'debug' => Configure::read('debug', false)

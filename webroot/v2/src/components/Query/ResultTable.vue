@@ -5,7 +5,10 @@
     :columns="columns"
     :loading="loading"
     :rows="rows"
-    :rows-per-page-options="[]"
+    :rows-per-page-options="[10,100,1000]"
+    virtual-scroll
+    :virtual-scroll-item-size="48"
+    :virtual-scroll-sticky-size-start="48"
     class="query-result-table"
     row-key="name"
     @request="event => $emit('requestData', event)"
@@ -116,7 +119,7 @@ const offset = computed<number>(() => {
 })
 
 const page = computed<number>(() => {
-  return 1 + (offset.value / ROWS_PER_PAGE)
+  return 1 + (offset.value / rowsPerPage.value)
 })
 
 const sortBy = computed<string>(() => {
@@ -129,12 +132,17 @@ const descending = computed<boolean>(() => {
   return props.result?.order === 'desc';
 });
 
+const rowsPerPage = computed<number>(() => {
+  // noinspection TypeScriptUnresolvedVariable
+  return props.result?.limit || ROWS_PER_PAGE;
+});
+
 const tableRef = ref<QTable | undefined>()
 const pagination = ref({
   sortBy: sortBy.value,
   descending: descending.value,
   page: page.value,
-  rowsPerPage: ROWS_PER_PAGE,
+  rowsPerPage: rowsPerPage.value,
   rowsNumber: totalRowsDB.value
 })
 
@@ -148,6 +156,7 @@ watch(totalRowsDB, count => pagination.value.rowsNumber = count);
 watch(page, num => pagination.value.page = num);
 watch(sortBy, col => pagination.value.sortBy = col);
 watch(descending, order => pagination.value.descending = order);
+watch(rowsPerPage, limit => pagination.value.rowsPerPage = limit);
 
 </script>
 
