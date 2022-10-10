@@ -122,7 +122,6 @@ const columns = computed<QTableColumn[]>(() => {
   const schema = schemas.value[baseTableName.value];
 
   if ( ! schema) {
-    console.error(`Schema not found: ${baseTableName.value}`);
     return [];
   }
 
