@@ -99,6 +99,9 @@ class FilterQueryRule
 
             Comparator::Empty => $exp->or($exp->isNull($column)->eq($column, '')),
             Comparator::NotEmpty => $exp->and($exp->isNotNull($column)->notEq($column, '')),
+
+            Comparator::True => $exp->eq($column, true),
+            Comparator::False => $exp->eq($column, false),
         };
     }
 
@@ -122,7 +125,9 @@ class FilterQueryRule
             Comparator::GreaterOrEqual => $criteria ?? 0,
 
             Comparator::Empty,
-            Comparator::NotEmpty => null,
+            Comparator::NotEmpty,
+            Comparator::True,
+            Comparator::False => null,
         };
     }
 

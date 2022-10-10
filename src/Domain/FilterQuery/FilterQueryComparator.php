@@ -20,4 +20,6 @@ enum FilterQueryComparator: string
     case NotEndsWith = 'notEndsWith';
     case Empty = 'empty';
     case NotEmpty = 'notEmpty';
+    case True = 'true';
+    case False = 'false';
 }

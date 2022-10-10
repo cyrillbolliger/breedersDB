@@ -101,8 +101,8 @@ const allComparatorOptions: FilterComparatorOption[] = [
   {label: t('queries.filter.empty'), value: FilterComparator.Empty, type: [PropertySchemaOptionType.String]},
   {label: t('queries.filter.notEmpty'), value: FilterComparator.NotEmpty, type: [PropertySchemaOptionType.String]},
   {label: t('queries.filter.hasPhoto'), value: FilterComparator.NotEmpty, type: [PropertySchemaOptionType.Photo]},
-  {label: t('queries.filter.isTrue'), value: FilterComparator.NotEmpty, type: [PropertySchemaOptionType.Boolean]},
-  {label: t('queries.filter.isFalse'), value: FilterComparator.Empty, type: [PropertySchemaOptionType.Boolean]},
+  {label: t('queries.filter.isTrue'), value: FilterComparator.True, type: [PropertySchemaOptionType.Boolean]},
+  {label: t('queries.filter.isFalse'), value: FilterComparator.False, type: [PropertySchemaOptionType.Boolean]},
 ]
 
 const availableComparatorOptions = computed<FilterComparatorOption[]>(() => {

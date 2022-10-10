@@ -14,7 +14,9 @@ export enum FilterComparator {
   EndsWith = 'endsWith',
   NotEndsWith = 'notEndsWith',
   Empty = 'empty',
-  NotEmpty = 'notEmpty'
+  NotEmpty = 'notEmpty',
+  True = 'true',
+  False = 'false'
 }
 
 export enum FilterOperand {
