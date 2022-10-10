@@ -125,7 +125,7 @@ class FilterSchemaBehavior extends Behavior
         };
     }
 
-    private function enumValues(string $columnName): CollectionInterface
+    private function enumValues(string $columnName): array
     {
         $result = $this->table()->find()
             ->enableHydration(false)
@@ -133,6 +133,9 @@ class FilterSchemaBehavior extends Behavior
             ->distinct()
             ->orderAsc($columnName);
 
-        return $result->all()->map(static fn($item) => $item[$columnName]);
+        return $result
+            ->all()
+            ->map(static fn($item) => $item[$columnName])
+            ->toArray();
     }
 }

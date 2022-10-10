@@ -65,7 +65,7 @@ class QueriesController extends REST1Controller
 
         try {
             $count = $queryBuilder->getCount();
-            $schema = $queryBuilder->getSchema(); // todo: load from cache if page > 0
+            $schema = $queryBuilder->getCachedSchema();
             $results = $queryBuilder->getResults();
             $sortBy = $queryBuilder->getSortBy();
             $order = $queryBuilder->getOrder();

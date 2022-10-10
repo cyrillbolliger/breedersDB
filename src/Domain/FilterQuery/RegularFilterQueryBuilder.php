@@ -6,7 +6,7 @@ namespace App\Domain\FilterQuery;
 
 class RegularFilterQueryBuilder extends FilterQueryBuilder
 {
-    public function getSchema(): array
+    protected function getSchema(): array
     {
         return [$this->baseTable => $this->getFilterSchema($this->table)];
     }

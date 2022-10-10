@@ -14,7 +14,7 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
     private const VARIETIES_TABLE = 'VarietiesView';
     private const TREES_TABLE = 'TreesView';
 
-    public function getSchema(): array|null
+    protected function getSchema(): array|null
     {
         $schemas = [
             $this->baseTable => $this->getFilterSchema($this->table),

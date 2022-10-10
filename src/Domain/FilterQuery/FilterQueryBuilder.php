@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\FilterQuery;
 
+use Cake\Cache\Cache;
 use Cake\Collection\CollectionInterface;
 use Cake\Datasource\FactoryLocator;
 use Cake\Datasource\QueryInterface;
@@ -25,6 +26,9 @@ abstract class FilterQueryBuilder
         'VarietiesView',
         'TreesView',
     ];
+
+    private const FILTER_SCHEMA_CACHE_KEY = 'FilterQueryBuilderFilterSchema';
+
     protected string $baseTable;
     protected QueryInterface $query;
     protected RepositoryInterface $table;
@@ -206,8 +210,6 @@ abstract class FilterQueryBuilder
         return $this->errors;
     }
 
-    abstract public function getSchema(): array|null;
-
     public function getSql(): array
     {
         return [
@@ -215,6 +217,26 @@ abstract class FilterQueryBuilder
             'params' => $this->getQuery()?->getValueBinder()->bindings(),
         ];
     }
+
+    public function getCachedSchema(): array|null
+    {
+        $cacheKey = self::FILTER_SCHEMA_CACHE_KEY . '-' . $this->baseTable;
+
+        if (0 < $this->getOffset()) {
+            $schema = Cache::read($cacheKey);
+        }
+
+        if (!empty($schema)) {
+            return $schema;
+        }
+
+        $schema = $this->getSchema();
+        Cache::add($cacheKey, $schema);
+
+        return $schema;
+    }
+
+    abstract protected function getSchema(): array|null;
 
     protected function getFilterSchema(RepositoryInterface $table): array|null
     {
