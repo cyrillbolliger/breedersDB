@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
 "POT-Creation-Date: 2022-09-26 19:08+0000\n"
-"PO-Revision-Date: 2022-09-26 19:08\n"
+"PO-Revision-Date: 2022-10-10 20:06\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -1198,7 +1198,7 @@ msgstr "Bemerkung"
 #: ./src/Model/Table/BatchesViewTable.php:68
 #: ./src/Model/Table/MotherTreesViewTable.php:76
 msgid "Crossing Id"
-msgstr ""
+msgstr "Kreuzungsid"
 
 #: ./src/Model/Table/CrossingsTable.php:85
 msgid "Input not valid. The code must only contain alphanumerical characters (without umlauts). Length between four and eight characters."
@@ -1352,17 +1352,17 @@ msgstr "Autor"
 #: ./src/Model/Table/MarksViewTable.php:65
 #: ./src/Model/Table/MotherTreesViewTable.php:75
 msgid "Tree Id"
-msgstr ""
+msgstr "Baumid"
 
 #: ./src/Model/Table/MarksViewTable.php:66
 #: ./src/Model/Table/TreesViewTable.php:71
 msgid "Variety Id"
-msgstr ""
+msgstr "Sortenid"
 
 #: ./src/Model/Table/MarksViewTable.php:67
 #: ./src/Model/Table/VarietiesViewTable.php:66
 msgid "Batch Id"
-msgstr ""
+msgstr "Losid"
 
 #: ./src/Model/Table/MarksViewTable.php:68
 #: ./templates/Marks/view.php:60
@@ -1388,7 +1388,7 @@ msgstr "Eigenschaft"
 
 #: ./src/Model/Table/MarksViewTable.php:71
 msgid "Property Id"
-msgstr ""
+msgstr "Eigenschaftsid"
 
 #: ./src/Model/Table/MarksViewTable.php:72
 #: ./templates/MarkFormProperties/add.php:17
@@ -1536,7 +1536,7 @@ msgstr "Datum Reiserernte"
 
 #: ./src/Model/Table/ScionsBundlesViewTable.php:62
 msgid "Descents (Publicids)"
-msgstr ""
+msgstr "Abstammung (Publicids)"
 
 #: ./src/Model/Table/ScionsBundlesViewTable.php:64
 #: ./templates/ScionsBundles/add.php:27
@@ -1547,7 +1547,7 @@ msgstr "Reserviert für externe Partner"
 
 #: ./src/Model/Table/ScionsBundlesViewTable.php:65
 msgid "Varienty Id"
-msgstr ""
+msgstr "Sortenid"
 
 #: ./src/Model/Table/TreesTable.php:100
 msgid "This number has already been used."
@@ -1584,7 +1584,7 @@ msgstr "Originalsämling"
 
 #: ./src/Model/Table/TreesViewTable.php:68
 msgid "Don't eliminate"
-msgstr ""
+msgstr "Nicht eliminieren"
 
 #: ./src/Model/Table/TreesViewTable.php:72
 #: ./templates/Trees/view.php:53
