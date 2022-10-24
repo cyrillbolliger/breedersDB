@@ -54,10 +54,7 @@ import {computed, onMounted, ref} from 'vue';
 import {
   FilterOptionSchemas,
   PropertySchema,
-  PropertySchemaOptions,
-  PropertySchemaOptionType
 } from 'src/models/query/filterOptionSchema';
-import {MarkFormFieldType, MarkFormProperty} from 'src/models/form';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore()
@@ -104,61 +101,11 @@ async function loadFilterOptions() {
 
   const base = api.get<FilterOptionSchemas>('queries/get-filter-schemas')
     .then(data => allFilterOptions.value = data as FilterOptionSchemas)
-  const mark = store.getMarkFormProperties
-    .then(data => setMarkFormPropertyFilterOptions(data))
+  const mark = store.maybeLoadMarkFormProperties()
+    .then(() => markFormPropertyFilterOptions.value = store.markPropertySchema(t('queries.Marks') + ' > '))
 
   await Promise.all([base, mark])
     .then(() => loading.value = false);
-}
-
-function setMarkFormPropertyFilterOptions(markFormProperties: MarkFormProperty[]) {
-  markFormPropertyFilterOptions.value = markFormProperties.map(item => {
-    return {
-      name: `Mark.${item.id}`,
-      label: t('queries.Marks') + ' > ' + item.name,
-      options: convertMarkFormPropertyToSchemaOption(item),
-    } as PropertySchema
-  });
-}
-
-function convertMarkFormPropertyToSchemaOption(property: MarkFormProperty): PropertySchemaOptions {
-  const type = {
-    [MarkFormFieldType.Integer]: 'integer',
-    [MarkFormFieldType.Float]: 'double',
-    [MarkFormFieldType.Boolean]: 'boolean',
-    [MarkFormFieldType.Date]: 'date',
-    [MarkFormFieldType.String]: 'string',
-    [MarkFormFieldType.Photo]: 'photo',
-  }[property.field_type] || undefined;
-
-  if (undefined === type){
-    throw Error(`Unknown mark form property field type: ${property.field_type}`);
-  }
-
-  // noinspection TypeScriptValidateTypes
-  const options: PropertySchemaOptions = {
-    type: type as PropertySchemaOptionType,
-    allowEmpty: false
-  }
-
-  switch (type) {
-    case 'string':
-      // noinspection TypeScriptUnresolvedVariable
-      options.validation = {
-        maxLen: 255,
-        pattern: null,
-      }
-      break;
-    case 'integer':
-    case 'double':
-      // noinspection TypeScriptUnresolvedVariable
-      options.validation = property.number_constraints
-      break;
-    default:
-      break;
-  }
-
-  return options;
 }
 
 onMounted(() => {

@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, PropType, ref, watch} from 'vue';
+import {computed, onMounted, PropType, ref, watch} from 'vue';
 import {QueryResponse, QueryResponseSchemas, ViewEntity} from 'src/models/query/query';
 import {useQueryStore} from 'stores/query';
 import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
@@ -122,6 +122,10 @@ const columns = computed<QTableColumn[]>(() => {
     return [];
   }
 
+  if (store.marksAvailable) {
+    schema.push(...store.markPropertySchema(t('queries.Marks') + ' > '));
+  }
+
   return schema.map((item: PropertySchema) => {
     const isNum = item.options.type === PropertySchemaOptionType.Integer
       || item.options.type === PropertySchemaOptionType.Float;
@@ -192,6 +196,10 @@ watch(page, num => pagination.value.page = num);
 watch(sortBy, col => pagination.value.sortBy = col);
 watch(descending, order => pagination.value.descending = order);
 watch(rowsPerPage, limit => pagination.value.rowsPerPage = limit);
+
+onMounted(() => {
+  void store.maybeLoadMarkFormProperties();
+});
 </script>
 
 <style>

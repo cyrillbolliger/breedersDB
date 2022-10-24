@@ -4,6 +4,9 @@ import {FilterNode} from 'src/models/query/filterNode';
 import {FilterOperand, FilterType} from 'src/models/query/filterTypes';
 import {MarkFormProperty} from 'src/models/form';
 import useApi from 'src/composables/api';
+import useMarkFormPropertyConverter from 'src/composables/queries/markFormPropertyConverter';
+
+const markFormPropertyConverter = useMarkFormPropertyConverter();
 
 export interface QueryState {
   baseTable: BaseTable,
@@ -31,16 +34,26 @@ export const useQueryStore = defineStore('query', {
         || s.baseTable === BaseTable.Trees
     },
 
-    async getMarkFormProperties(state) {
+    markPropertySchema: (state) => (prefix: string) => {
       const s = state as QueryState;
-      if (! s.markFormProperties.length) {
-        await useApi().get<MarkFormProperty[]>('mark-form-properties')
-          .then(data => s.markFormProperties = data as MarkFormProperty[]);
-      }
-      return s.markFormProperties;
-    },
+      return s.markFormProperties
+        .map(markFormPropertyConverter.toPropertySchema)
+        .map(item => {
+          if (!item.label.startsWith(prefix)){
+            item.label = prefix + item.label
+          }
+          return item;
+        });
+    }
   },
 
 
-  actions: {},
+  actions: {
+    async maybeLoadMarkFormProperties() {
+      if (! this.markFormProperties.length) {
+        await useApi().get<MarkFormProperty[]>('mark-form-properties')
+          .then(data => this.markFormProperties = data as MarkFormProperty[]);
+      }
+    }
+  },
 });
