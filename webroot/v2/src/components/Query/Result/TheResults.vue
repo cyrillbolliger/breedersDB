@@ -2,33 +2,47 @@
   <h5 class="q-mb-sm q-mt-sm">{{ t('queries.results') }}</h5>
 
   <template v-if="isValid">
-    <template v-if="error">
-      error!
+    <ResultsTable
+      :loading="loading"
+      :result="result"
+      @requestData="requestData"
+    />
+
+    <template v-if="result?.debug?.sql">
+      <q-btn
+        v-if="debug === false"
+        class="q-mt-lg"
+        color="primary"
+        dense
+        flat
+        no-caps
+        size="sm"
+        @click="debug = true"
+      >{{ t('queries.debugShow') }}
+      </q-btn>
+      <div
+        class="bg-grey-3 q-pa-md q-mt-md q-mb-md"
+        v-if="debug === true"
+      >
+        <code>{{ result?.debug?.sql }}</code>
+        <q-btn
+          v-if="debug === true"
+          @click="debug = false"
+          color="primary"
+          size="sm"
+          class="q-mt-sm"
+        >{{ t('queries.debugHide') }}
+        </q-btn>
+      </div>
     </template>
-    <template v-else>
-<!--      <p>Count: {{ result?.count || 'loading...' }}</p>-->
-
-      <ResultsTable
-        :loading="loading"
-        :result="result"
-        @requestData="requestData"
-      />
-
-      <!--      <code>-->
-      <!--        SQL: {{ result?.debug?.sql }}-->
-      <!--      </code>-->
-
-    </template>
-
-    <!--    <pre>-->
-    <!--      {{ baseFilter }}-->
-    <!--      <template v-if="marksAvailable">-->
-    <!--        {{ markFilter }}-->
-    <!--      </template>-->
-    <!--    </pre>-->
   </template>
   <template v-else>
-    Invalid
+    <q-banner class="bg-grey-3">
+      <template #avatar>
+        <q-icon name="warning"/>
+      </template>
+      {{ t('queries.invalidNoResults') }}
+    </q-banner>
   </template>
 </template>
 
@@ -47,7 +61,7 @@ const api = useApi();
 
 const loading = ref(false);
 const result = ref<QueryResponse | null>(null);
-const error = ref(false);
+const debug = ref(false);
 
 const baseTable = computed(() => queryStore.baseTable);
 const baseFilter = computed(() => queryStore.baseFilter);
@@ -92,7 +106,6 @@ async function loadResults(pagination?: { offset: number, sortBy: string | null,
   }
 
   loading.value = true
-  error.value = false
 
   const data = {
     baseTable: baseTable.value,
@@ -100,14 +113,9 @@ async function loadResults(pagination?: { offset: number, sortBy: string | null,
     markFilter: marksAvailable.value ? markFilter.value : null,
   }
 
-  try {
-    result.value = null;
-    await api.post<typeof data, QueryResponse>(getUrl(pagination), data)
-      .then((resp: QueryResponse) => result.value = resp)
-  } catch (e) {
-    console.error(e);
-    error.value = true;
-  }
+  result.value = null;
+  await api.post<typeof data, QueryResponse>(getUrl(pagination), data)
+    .then((resp: QueryResponse) => result.value = resp)
 
   loading.value = false
 }
@@ -126,6 +134,8 @@ watch(markFilter.value, queueLoadResults);
 watch(baseTable, queueLoadResults);
 </script>
 
-<style>
-
+<style scoped>
+code {
+  display: block;
+}
 </style>

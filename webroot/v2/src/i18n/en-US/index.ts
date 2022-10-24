@@ -106,8 +106,12 @@ export default {
       noResults: 'No results.',
     },
 
+    invalidNoResults: 'Invalid filter rules. Rectify or delete them to get results.',
     results: 'Results',
-    addColumn: 'Add Column'
+    addColumn: 'Add Column',
+
+    debugShow: 'Show debug info',
+    debugHide: 'Hide debug info',
   },
 
   general: {
