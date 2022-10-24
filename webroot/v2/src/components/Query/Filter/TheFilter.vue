@@ -104,8 +104,8 @@ async function loadFilterOptions() {
 
   const base = api.get<FilterOptionSchemas>('queries/get-filter-schemas')
     .then(data => allFilterOptions.value = data as FilterOptionSchemas)
-  const mark = api.get<MarkFormProperty[]>('mark-form-properties')
-    .then(data => setMarkFormPropertyFilterOptions(data as MarkFormProperty[]))
+  const mark = store.getMarkFormProperties
+    .then(data => setMarkFormPropertyFilterOptions(data))
 
   await Promise.all([base, mark])
     .then(() => loading.value = false);
