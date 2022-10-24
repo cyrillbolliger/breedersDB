@@ -8,34 +8,12 @@
       @requestData="requestData"
     />
 
-    <template v-if="result?.debug?.sql">
-      <q-btn
-        v-if="debug === false"
-        class="q-mt-lg"
-        color="primary"
-        dense
-        flat
-        no-caps
-        size="sm"
-        @click="debug = true"
-      >{{ t('queries.debugShow') }}
-      </q-btn>
-      <div
-        class="bg-grey-3 q-pa-md q-mt-md q-mb-md"
-        v-if="debug === true"
-      >
-        <code>{{ result?.debug?.sql }}</code>
-        <q-btn
-          v-if="debug === true"
-          @click="debug = false"
-          color="primary"
-          size="sm"
-          class="q-mt-sm"
-        >{{ t('queries.debugHide') }}
-        </q-btn>
-      </div>
-    </template>
+    <ResultDebug
+      v-if="result?.debug"
+      :data="result.debug"
+    />
   </template>
+
   <template v-else>
     <q-banner class="bg-grey-3">
       <template #avatar>
@@ -44,6 +22,7 @@
       {{ t('queries.invalidNoResults') }}
     </q-banner>
   </template>
+
 </template>
 
 <script lang="ts" setup>
@@ -54,6 +33,7 @@ import useApi from 'src/composables/api';
 import {debounce, QTable} from 'quasar';
 import {QueryResponse} from 'src/models/query/query';
 import ResultsTable from 'components/Query/Result/ResultTable.vue';
+import ResultDebug from 'components/Query/Result/ResultDebug.vue';
 
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const queryStore = useQueryStore();
@@ -61,7 +41,6 @@ const api = useApi();
 
 const loading = ref(false);
 const result = ref<QueryResponse | null>(null);
-const debug = ref(false);
 
 const baseTable = computed(() => queryStore.baseTable);
 const baseFilter = computed(() => queryStore.baseFilter);
