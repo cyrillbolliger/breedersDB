@@ -50,12 +50,13 @@
 
 <script lang="ts" setup>
 import {computed, onMounted, PropType, ref, watch} from 'vue';
-import {QueryResponse, QueryResponseSchemas, ViewEntity} from 'src/models/query/query';
+import {MarkCell, QueryResponse, QueryResponseSchemas, ViewEntity} from 'src/models/query/query';
 import {useQueryStore} from 'stores/query';
 import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 import {QTable, QTableColumn} from 'quasar';
 import {useI18n} from 'vue-i18n';
 import ResultTableColumnSelector from 'components/Query/Result/ResultTableColumnSelector.vue';
+import {MarkFormProperty} from 'src/models/form';
 
 defineEmits<{
   (e: 'requestData', data: Parameters<QTable['onRequest']>[0]): void
@@ -115,6 +116,28 @@ const rowData = computed<ViewEntity[]>(() => {
   return props.result?.results || [];
 })
 
+function getMarkData(row: ViewEntity, property: MarkFormProperty) {
+  if (! ('marks_view' in row)) {
+    return [];
+  }
+
+  const marks: MarkCell[] = (row.marks_view as ViewEntity[])
+    .filter((mark: ViewEntity) => mark.property_id === property.id)
+    .map((mark: ViewEntity) => {
+      const cell = mark as MarkCell;
+      cell.entity = row as MarkCell['entity'];
+      return cell;
+    });
+
+  if ('trees_view' in row && Array.isArray(row.trees_view)) {
+    for (const tree of row.trees_view) {
+      marks.push(...getMarkData(tree, property))
+    }
+  }
+
+  return marks;
+}
+
 const columns = computed<QTableColumn[]>(() => {
   const schema = schemas.value[baseTableName.value];
 
@@ -122,11 +145,7 @@ const columns = computed<QTableColumn[]>(() => {
     return [];
   }
 
-  if (store.marksAvailable) {
-    schema.push(...store.markPropertySchema(t('queries.Marks') + ' > '));
-  }
-
-  return schema.map((item: PropertySchema) => {
+  const columns = schema.map((item: PropertySchema) => {
     const isNum = item.options.type === PropertySchemaOptionType.Integer
       || item.options.type === PropertySchemaOptionType.Float;
 
@@ -137,8 +156,30 @@ const columns = computed<QTableColumn[]>(() => {
       align: isNum ? 'right' : 'left',
       sortable: true,
       format: (val: string | number | Date | null | undefined) => formatColumnValue(val || null, item.options.type)
-    }
+    } as QTableColumn;
   });
+
+  if (store.marksAvailable) {
+    const namePrefix = t('queries.Marks') + ' > ';
+    const markColumns = store.markFormProperties.map((item: MarkFormProperty) => {
+      return {
+        name: `Mark.${item.id}`,
+        label: namePrefix + item.name,
+        field: (row: ViewEntity) => getMarkData(row, item),
+        sortable: false,
+        format: (val: MarkCell[] | null | undefined) => {
+          if (Array.isArray(val)) {
+            return val.map((item: MarkCell) => item.value).join(', ');
+          }
+          return '';
+        }
+      } as QTableColumn;
+    });
+
+    columns.push(...markColumns);
+  }
+
+  return columns;
 });
 
 const rows = computed(() => {

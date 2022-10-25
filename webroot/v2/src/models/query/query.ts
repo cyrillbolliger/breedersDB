@@ -1,5 +1,8 @@
 import {FilterNode} from 'src/models/query/filterNode';
 import {PropertySchema} from 'src/models/query/filterOptionSchema';
+import {TreeView} from 'src/models/tree';
+import {VarietyView} from 'src/models/variety';
+import {BatchView} from 'src/models/batch';
 
 export enum BaseTable {
   Crossings = 'Crossings',
@@ -35,4 +38,20 @@ export interface QueryResponse {
   debug: null | QueryResponseDebug,
   results: ViewEntity[],
   schema: QueryResponseSchemas,
+}
+
+export interface MarkCell {
+  id: number,
+  property_id: number,
+  name: string,
+  author: string,
+  batch_id: number|null,
+  variety_id: number|null,
+  tree_id: number|null,
+  date: string,
+  exceptional_mark: boolean,
+  field_type: 'INTEGER' | 'FLOAT' | 'BOOLEAN' | 'DATE' | 'VARCHAR' | 'PHOTO',
+  property_type: string,
+  value: string,
+  entity: TreeView | VarietyView | BatchView
 }
