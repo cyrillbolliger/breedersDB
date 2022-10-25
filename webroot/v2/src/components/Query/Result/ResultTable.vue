@@ -45,6 +45,12 @@
         />
       </q-th>
     </template>
+
+    <template #body-cell="props">
+      <ResultTableCell
+        :cellProps="props"
+      />
+    </template>
   </q-table>
 </template>
 
@@ -57,6 +63,7 @@ import {QTable, QTableColumn} from 'quasar';
 import {useI18n} from 'vue-i18n';
 import ResultTableColumnSelector from 'components/Query/Result/ResultTableColumnSelector.vue';
 import {MarkFormProperty} from 'src/models/form';
+import ResultTableCell from 'components/Query/Result/ResultTableCell.vue';
 
 defineEmits<{
   (e: 'requestData', data: Parameters<QTable['onRequest']>[0]): void
@@ -124,8 +131,12 @@ function getMarkData(row: ViewEntity, property: MarkFormProperty) {
   const marks: MarkCell[] = (row.marks_view as ViewEntity[])
     .filter((mark: ViewEntity) => mark.property_id === property.id)
     .map((mark: ViewEntity) => {
+      const entity = Object.assign({}, row);
+      delete entity.marks_view;
+      delete entity.trees_view;
+
       const cell = mark as MarkCell;
-      cell.entity = row as MarkCell['entity'];
+      cell.entity = entity as MarkCell['entity'];
       return cell;
     });
 
@@ -166,13 +177,8 @@ const columns = computed<QTableColumn[]>(() => {
         name: `Mark.${item.id}`,
         label: namePrefix + item.name,
         field: (row: ViewEntity) => getMarkData(row, item),
+        align: 'center',
         sortable: false,
-        format: (val: MarkCell[] | null | undefined) => {
-          if (Array.isArray(val)) {
-            return val.map((item: MarkCell) => item.value).join(', ');
-          }
-          return '';
-        }
       } as QTableColumn;
     });
 
