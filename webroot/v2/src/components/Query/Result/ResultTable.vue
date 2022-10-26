@@ -11,6 +11,7 @@
     :virtual-scroll-item-size="48"
     :virtual-scroll-sticky-size-start="48"
     :visible-columns="visibleColumns"
+    :wrap-cells="true"
     binary-state-sort
     class="query-result-table"
     color="primary"
@@ -20,8 +21,8 @@
   >
     <template #top-right>
       <ResultTableColumnSelector
-        :columns="columns"
         v-model="visibleColumns"
+        :columns="columns"
       />
 
       <q-btn
@@ -123,17 +124,42 @@ const rowData = computed<ViewEntity[]>(() => {
   return props.result?.results || [];
 })
 
+function removePropertyPrefix(obj: Record<string, unknown>) {
+  const prefixed = Object.keys(obj);
+  const values: unknown[] = (<any>Object).values(obj); // eslint-disable-line
+
+  if (0 === values.length) {
+    return obj;
+  }
+
+  const prefixLen = prefixed[0].indexOf('.') + 1;
+
+  if (0 >= prefixLen) {
+    return obj;
+  }
+
+  const unprefixed = prefixed.map(key => key.substring(prefixLen));
+
+  // noinspection TypeScriptValidateTypes
+  return Object.assign( // eslint-disable-line
+    {},
+    ...unprefixed.map((k, i) => ({[k]: values[i]}))
+  );
+}
+
 function getMarkData(row: ViewEntity, property: MarkFormProperty) {
-  if (! ('marks_view' in row)) {
+  if ( ! ('marks_view' in row)) {
     return [];
   }
 
   const marks: MarkCell[] = (row.marks_view as ViewEntity[])
     .filter((mark: ViewEntity) => mark.property_id === property.id)
     .map((mark: ViewEntity) => {
-      const entity = Object.assign({}, row);
+      let entity = Object.assign({}, row);
       delete entity.marks_view;
       delete entity.trees_view;
+      // noinspection TypeScriptValidateTypes
+      entity = removePropertyPrefix(entity) as MarkCell['entity'];
 
       const cell = mark as MarkCell;
       cell.entity = entity as MarkCell['entity'];
@@ -276,6 +302,7 @@ onMounted(() => {
 
 .query-result-table thead tr:first-child th {
   top: 0;
+  white-space: nowrap;
 }
 
 /* this is when the loading indicator appears */

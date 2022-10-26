@@ -1,6 +1,9 @@
 <template>
-  <q-td :props="cellProps">
+  <q-td
+    :props="cellProps"
+  >
     <template v-if="isMarkValue">
+      <!--suppress JSValidateTypes -->
       <ResultTableCellMark
         v-for="(mark, idx) in cellValue" :key="idx"
         :mark="mark"
@@ -38,6 +41,5 @@ const isMarkValue = computed(() => {
 
 </script>
 
-<style>
-
+<style scoped>
 </style>

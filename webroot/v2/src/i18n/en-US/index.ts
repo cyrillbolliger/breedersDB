@@ -39,7 +39,35 @@ export default {
 
 
   trees: {
-    publicid: 'Publicid'
+    publicid: 'Publicid',
+    convar: 'Convar',
+    datePlanted: 'Date planted',
+    dateEliminated: 'Date eliminated',
+    experimentSite: 'Experiment site',
+    row: 'Row',
+    offset: 'Offset',
+    note: 'Note'
+  },
+
+
+  varieties: {
+    officialName: 'Official name',
+    acronym: 'Acronym',
+    plantBreeder: 'Plant breeder',
+    registration: 'Registration',
+    description: 'Description',
+  },
+
+
+  batches: {
+    dateSowed: 'Date sowed',
+    numbSeedsSowed: 'Number of seeds sowed',
+    numbSproutsGrown: 'Number of sprouts grown',
+    seedTray: 'Seed tray',
+    datePlanted: 'Date planted',
+    numbSproutsPlanted: 'Number of sprouts planted',
+    patch: 'Patch',
+    note: 'Note',
   },
 
 
