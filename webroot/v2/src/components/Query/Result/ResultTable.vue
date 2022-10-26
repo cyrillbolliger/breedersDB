@@ -2,7 +2,7 @@
   <q-table
     v-model:pagination="pagination"
     :class="{'query-result-table--fullscreen': fullscreen}"
-    :columns="columns"
+    :columns="orderedColumns"
     :fullscreen="fullscreen"
     :loading="loading"
     :rows="rows"
@@ -36,7 +36,8 @@
     <template #header-cell="props">
       <ResultTableHeaderCell
         :cellProps="props"
-        @hideColumn="colName => hideColumn(colName)"
+        @colDropped="reorderColumns"
+        @hideColumn="hideColumn"
       />
     </template>
 
@@ -81,6 +82,8 @@ const store = useQueryStore();
 
 const fullscreen = ref(false);
 const visibleColumns = ref<string[]>([]);
+
+const columnOrder = ref<string[]>([]);
 
 function hideColumn(name: string) {
   visibleColumns.value = visibleColumns.value.filter(column => column !== name);
@@ -168,6 +171,42 @@ function getMarkData(row: ViewEntity, property: MarkFormProperty) {
 
   return marks;
 }
+
+function reorderColumns(targetColName: string, moveColName: string, pos: 'before' | 'after') {
+  // noinspection TypeScriptValidateTypes
+  let moveColIdx = columnOrder.value.indexOf(moveColName);
+  // noinspection TypeScriptValidateTypes
+  let targetColIdx = columnOrder.value.indexOf(targetColName);
+
+  if (0 === columnOrder.value.length || -1 === moveColIdx || -1 === targetColIdx) {
+    columnOrder.value = columns.value.map(col => col.name);
+    // noinspection TypeScriptValidateTypes
+    moveColIdx = columnOrder.value.indexOf(moveColName);
+  }
+
+  // remove moveCol
+  columnOrder.value.splice(moveColIdx, 1);
+
+  // noinspection TypeScriptValidateTypes
+  targetColIdx = columnOrder.value.indexOf(targetColName);
+
+  if ('after' === pos) {
+    targetColIdx++;
+  }
+
+  columnOrder.value.splice(targetColIdx, 0, moveColName);
+}
+
+const orderedColumns = computed(() => {
+  if (0 === columnOrder.value.length) {
+    return columns.value;
+  }
+
+  return columns.value.slice().sort((a, b) => {
+    // noinspection TypeScriptValidateTypes
+    return columnOrder.value.indexOf(a.name) - columnOrder.value.indexOf(b.name);
+  });
+});
 
 const columns = computed<QTableColumn[]>(() => {
   const schema = schemas.value[baseTableName.value];
