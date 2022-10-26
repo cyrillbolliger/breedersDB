@@ -34,17 +34,10 @@
     </template>
 
     <template #header-cell="props">
-      <q-th :props="props">
-        {{ props.col.label }}
-        <q-btn
-          dense
-          flat
-          icon="close"
-          round
-          size="xs"
-          @click.stop="hideColumn(props.col.name)"
-        />
-      </q-th>
+      <ResultTableHeaderCell
+        :cellProps="props"
+        @hideColumn="colName => hideColumn(colName)"
+      />
     </template>
 
     <template #body-cell="props">
@@ -65,6 +58,7 @@ import {useI18n} from 'vue-i18n';
 import ResultTableColumnSelector from 'components/Query/Result/ResultTableColumnSelector.vue';
 import {MarkFormProperty} from 'src/models/form';
 import ResultTableCell from 'components/Query/Result/ResultTableCell.vue';
+import ResultTableHeaderCell from 'components/Query/Result/ResultTableHeaderCell.vue';
 
 defineEmits<{
   (e: 'requestData', data: Parameters<QTable['onRequest']>[0]): void
@@ -298,11 +292,6 @@ onMounted(() => {
 .query-result-table thead tr th {
   position: sticky;
   z-index: 1;
-}
-
-.query-result-table thead tr:first-child th {
-  top: 0;
-  white-space: nowrap;
 }
 
 /* this is when the loading indicator appears */
