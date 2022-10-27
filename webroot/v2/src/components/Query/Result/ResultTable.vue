@@ -60,6 +60,7 @@ import ResultTableColumnSelector from 'components/Query/Result/ResultTableColumn
 import {MarkFormProperty} from 'src/models/form';
 import ResultTableCell from 'components/Query/Result/ResultTableCell.vue';
 import ResultTableHeaderCell from 'components/Query/Result/ResultTableHeaderCell.vue';
+import useQueryLocalStorageHelper from 'src/composables/queries/queryLocalStorageHelper';
 
 defineEmits<{
   (e: 'requestData', data: Parameters<QTable['onRequest']>[0]): void
@@ -79,6 +80,7 @@ const ROWS_PER_PAGE = 100;
 
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore();
+const localStorageHelper = useQueryLocalStorageHelper();
 
 const fullscreen = ref(false);
 const visibleColumns = ref<string[]>([]);
@@ -297,11 +299,13 @@ const pagination = ref({
   rowsNumber: totalRowsDB.value
 })
 
+
 watch(totalRowsDB, count => pagination.value.rowsNumber = count);
 watch(page, num => pagination.value.page = num);
 watch(sortBy, col => pagination.value.sortBy = col);
 watch(descending, order => pagination.value.descending = order);
 watch(rowsPerPage, limit => pagination.value.rowsPerPage = limit);
+watch(visibleColumns, cols => localStorageHelper.setVisibleColumns(cols));
 
 onMounted(() => {
   void store.maybeLoadMarkFormProperties();

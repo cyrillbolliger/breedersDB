@@ -11,10 +11,11 @@
 </template>
 <script lang="ts" setup>
 
-import {computed, PropType, ref, watch} from 'vue';
+import {computed, onMounted, PropType, ref, watch} from 'vue';
 import {QSelectProps, QTableColumn} from 'quasar';
 import {useI18n} from 'vue-i18n';
 import {useQueryStore} from 'stores/query';
+import useQueryLocalStorageHelper from 'src/composables/queries/queryLocalStorageHelper';
 
 const emit = defineEmits<{
   (e: 'update:modelValue', data: string[]): void
@@ -37,6 +38,7 @@ const DEFAULT_DISPLAY_COLS_COUNT = 5;
 
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore();
+const localStorageHelper = useQueryLocalStorageHelper();
 
 const lastBaseTable = ref<string>();
 
@@ -98,12 +100,15 @@ function filterFn(value: string, update: Parameters<QSelectProps['onFilter']>[1]
 }
 
 function resetVisibleColumns() {
+  let defaultCols: string[];
+
   if (allColumnNames.value.length <= DEFAULT_DISPLAY_COLS_COUNT) {
-    visibleColumns.value = allColumnNames.value;
-    return;
+    defaultCols = allColumnNames.value;
+  } else {
+    defaultCols = allColumnNames.value.slice(0, DEFAULT_DISPLAY_COLS_COUNT);
   }
 
-  visibleColumns.value = allColumnNames.value.slice(0, DEFAULT_DISPLAY_COLS_COUNT);
+  visibleColumns.value = localStorageHelper.getVisibleColumns(defaultCols);
 }
 
 function resetVisibleColumnsOnBaseTableChange() {
@@ -119,7 +124,7 @@ function resetVisibleColumnsOnBaseTableChange() {
   lastBaseTable.value = baseTable.value;
 }
 
-watch(allColumnNames, resetVisibleColumnsOnBaseTableChange)
+watch(allColumnNames, resetVisibleColumnsOnBaseTableChange);
 
 </script>
 
