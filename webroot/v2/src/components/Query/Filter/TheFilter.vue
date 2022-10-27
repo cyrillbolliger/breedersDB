@@ -55,10 +55,12 @@ import {
   FilterOptionSchemas,
   PropertySchema,
 } from 'src/models/query/filterOptionSchema';
+import useQueryLocalStorageHelper from 'src/composables/queries/queryLocalStorageHelper';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore()
 const api = useApi()
+const localStorageHelper = useQueryLocalStorageHelper();
 
 const baseTableOptions = [
   {value: BaseTable.Crossings, label: t('queries.crossings')},
@@ -71,7 +73,10 @@ const baseTableOptions = [
 
 const baseTable = computed<BaseTable>({
   get: () => store.baseTable,
-  set: (val: BaseTable) => store.baseTable = val,
+  set: (val: BaseTable) => {
+    store.baseTable = val;
+    localStorageHelper.setBaseTable(val);
+  }
 });
 
 const baseFilter = computed(() => store.baseFilter);

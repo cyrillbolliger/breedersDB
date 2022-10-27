@@ -5,8 +5,10 @@ import {FilterOperand, FilterType} from 'src/models/query/filterTypes';
 import {MarkFormProperty} from 'src/models/form';
 import useApi from 'src/composables/api';
 import useMarkFormPropertyConverter from 'src/composables/queries/markFormPropertyConverter';
+import useQueryLocalStorageHelper from 'src/composables/queries/queryLocalStorageHelper';
 
 const markFormPropertyConverter = useMarkFormPropertyConverter();
+const localStorageHelper = useQueryLocalStorageHelper();
 
 export interface QueryState {
   baseTable: BaseTable,
@@ -18,7 +20,7 @@ export interface QueryState {
 
 export const useQueryStore = defineStore('query', {
   state: (): QueryState => ({
-    baseTable: BaseTable.Varieties,
+    baseTable: localStorageHelper.getBaseTable(BaseTable.Varieties),
     baseFilter: FilterNode.FilterRoot(FilterOperand.And, FilterType.Base),
     markFilter: FilterNode.FilterRoot(FilterOperand.And, FilterType.Mark),
     filterDragNode: false,
