@@ -25,11 +25,10 @@ function setFilteredOptions<T>(
   if (value === '') {
     filteredOptions.value = allOptions;
   } else {
-    const locale = navigator.languages[0] || navigator.language;
-    const needle = value.toLocaleLowerCase(locale);
+    const needle = value.toLocaleLowerCase();
 
     filteredOptions.value = allOptions.filter(
-      v => valueExtractorFn(v).toLocaleLowerCase(locale).indexOf(needle) > -1
+      v => valueExtractorFn(v).toLocaleLowerCase().indexOf(needle) > -1
     );
   }
 }
