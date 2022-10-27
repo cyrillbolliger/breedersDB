@@ -11,7 +11,7 @@
 </template>
 <script lang="ts" setup>
 
-import {computed, onMounted, PropType, ref, watch} from 'vue';
+import {computed, PropType, ref, watch} from 'vue';
 import {QSelectProps, QTableColumn} from 'quasar';
 import {useI18n} from 'vue-i18n';
 import {useQueryStore} from 'stores/query';
