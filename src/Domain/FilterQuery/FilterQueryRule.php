@@ -45,11 +45,11 @@ class FilterQueryRule
      */
     private function parseColumn(): void
     {
-        if (empty($this->rawRule['column'])) {
+        if (empty($this->rawRule['column']['value'])) {
             throw new FilterQueryException('Invalid filter rule: empty column.');
         }
 
-        $column = $this->rawRule['column'];
+        $column = $this->rawRule['column']['value'];
         $table = explode('.', $column)[0];
 
         if (!in_array($table, $this->allowedTables, true)) {
@@ -64,14 +64,14 @@ class FilterQueryRule
      */
     private function parseComparator(): void
     {
-        if (empty($this->rawRule['comparator'])) {
+        if (empty($this->rawRule['comparator']['value'])) {
             throw new FilterQueryException('Invalid filter rule: empty comparator.');
         }
 
-        $comparator = Comparator::tryFrom($this->rawRule['comparator']);
+        $comparator = Comparator::tryFrom($this->rawRule['comparator']['value']);
 
         if ($comparator === null) {
-            throw new FilterQueryException("Invalid comparator in filter rule: {$this->rawRule['comparator']}");
+            throw new FilterQueryException("Invalid comparator in filter rule: {$this->rawRule['comparator']['value']}");
         }
 
         $this->comparator = $comparator;

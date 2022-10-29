@@ -121,23 +121,23 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
 
         $rule = $filterNode['filterRule'];
 
-        if (empty($rule['column'])) {
+        if (empty($rule['column']['value'])) {
             return;
         }
 
         $matches = [];
-        if (!preg_match('/Mark\.(\d+)/', $rule['column'], $matches)) {
+        if (!preg_match('/Mark\.(\d+)/', $rule['column']['value'], $matches)) {
             return;
         }
 
         $rule1 = [
-            'column' => 'MarksView.property_id',
-            'comparator' => '===',
+            'column' => ['value' => 'MarksView.property_id'],
+            'comparator' => ['value' => '==='],
             'criteria' => (int)$matches[1]
         ];
         $rule2 = [
-            'column' => 'MarksView.value',
-            'comparator' => $rule['comparator'] ?? null,
+            'column' => ['value' => 'MarksView.value'],
+            'comparator' => ['value' => $rule['comparator']['value'] ?? null],
             'criteria' => $rule['criteria'] ?? null
         ];
 
