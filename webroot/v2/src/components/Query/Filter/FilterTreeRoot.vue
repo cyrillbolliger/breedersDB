@@ -51,15 +51,17 @@
 <script lang="ts" setup>
 import FilterTree from 'components/Query/Filter/FilterTree.vue';
 import {FilterOperand, FilterType} from 'src/models/query/filterTypes';
-import {computed, PropType} from 'vue';
+import {computed, PropType, watch} from 'vue';
 import {FilterNode} from 'src/models/query/filterNode';
 import {useI18n} from 'vue-i18n';
 import FilterRuleButtonAdd from 'components/Query/Filter/FilterRuleButtonAdd.vue';
 import {useQueryStore} from 'stores/query';
 import {PropertySchema} from 'src/models/query/filterOptionSchema';
+import useQueryLocalStorageHelper from 'src/composables/queries/queryLocalStorageHelper';
 
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore();
+const localStorageHelper = useQueryLocalStorageHelper();
 
 const props = defineProps({
   filter: {
@@ -99,6 +101,18 @@ function simplify() {
 function lowerCaseFirstChar(str: string) {
   return str[0].toLowerCase() + str.slice(1)
 }
+
+
+watch(props.filter, filter => {
+  // noinspection TypeScriptUnresolvedVariable
+  if (props.filter.filterType === 'base') {
+    // noinspection TypeScriptValidateTypes
+    localStorageHelper.setBaseFilter(filter)
+  } else {
+    // noinspection TypeScriptValidateTypes
+    localStorageHelper.setMarkFilter(filter)
+  }
+});
 
 </script>
 

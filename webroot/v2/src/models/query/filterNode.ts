@@ -1,5 +1,7 @@
 import {FilterOperand, FilterType} from 'src/models/query/filterTypes';
-import type {FilterRule} from 'src/models/query/filterRule';
+import {FilterRule} from 'src/models/query/filterRule';
+
+type FilterNodeJson = { id: number, level: number, children: FilterNodeJson[], childrensOperand: FilterOperand | null, filterRule: FilterRule | null, filterType: FilterType }
 
 export class FilterNode {
   private readonly id: number;
@@ -162,7 +164,7 @@ export class FilterNode {
     }
 
     for (const child of this.getChildren()) {
-      if (! child.isValid()) {
+      if ( ! child.isValid()) {
         return false;
       }
     }
@@ -247,7 +249,7 @@ export class FilterNode {
     return ! this.isRoot()
       && this.isOnlyChild()
       && (
-        (this.isLeaf() && !this.getParent()?.isRoot()) // mergeOnlyChildIntoGrandParent
+        (this.isLeaf() && ! this.getParent()?.isRoot()) // mergeOnlyChildIntoGrandParent
         || ! this.isLeaf() // mergeOnlyChildsChildrenIntoParent
       );
   }
@@ -319,13 +321,47 @@ export class FilterNode {
   }
 
   // noinspection JSUnusedGlobalSymbols
-  toJSON() {
+  toJSON(): FilterNodeJson {
     return {
       id: this.getId(),
       level: this.getLevel(),
-      children: this.getChildren(),
+      children: (this.getChildren() as unknown) as FilterNodeJson[],
       childrensOperand: this.getChildrensOperand(),
       filterRule: this.getFilterRule(),
+      filterType: this.getFilterType(),
     }
+  }
+
+  static FromJSON(json: string | FilterNodeJson, parent: FilterNode | null = null) {
+    if ('string' === typeof json) {
+      json = JSON.parse(json) as FilterNodeJson;
+    }
+
+    if (parent && json.filterRule) {
+      return FilterNode.FilterLeaf(
+        parent,
+        json.filterRule
+      );
+    }
+
+    let node: FilterNode;
+
+    if (parent && json.childrensOperand) {
+      node = FilterNode.FilterNode(
+        json.childrensOperand,
+        parent
+      );
+    } else {
+      node = FilterNode.FilterRoot(
+        json.childrensOperand || FilterOperand.And,
+        json.filterType,
+      );
+    }
+
+    json.children.forEach(item => {
+      node.appendChild(FilterNode.FromJSON(item, node));
+    });
+
+    return node;
   }
 }

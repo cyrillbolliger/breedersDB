@@ -5,13 +5,4 @@ export class FilterRule {
   comparator: FilterComparatorOption | undefined;
   criteria: FilterCriteria | undefined;
   isValid = false;
-
-  // noinspection JSUnusedGlobalSymbols
-  toJSON() {
-    return {
-      column: this.column?.value,
-      comparator: this.comparator?.value,
-      criteria: this.criteria
-    }
-  }
 }

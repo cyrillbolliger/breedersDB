@@ -6,9 +6,13 @@ import {MarkFormProperty} from 'src/models/form';
 import useApi from 'src/composables/api';
 import useMarkFormPropertyConverter from 'src/composables/queries/markFormPropertyConverter';
 import useQueryLocalStorageHelper from 'src/composables/queries/queryLocalStorageHelper';
+import {FilterOptionSchemas, PropertySchema} from 'src/models/query/filterOptionSchema';
 
 const markFormPropertyConverter = useMarkFormPropertyConverter();
 const localStorageHelper = useQueryLocalStorageHelper();
+
+const defaultBaseFilter = FilterNode.FilterRoot(FilterOperand.And, FilterType.Base);
+const defaultMarkFilter = FilterNode.FilterRoot(FilterOperand.And, FilterType.Mark);
 
 export interface QueryState {
   baseTable: BaseTable,
@@ -16,15 +20,17 @@ export interface QueryState {
   markFilter: FilterNode,
   filterDragNode: FilterDragNode,
   markFormProperties: MarkFormProperty[],
+  filterOptionSchemas: FilterOptionSchemas | undefined,
 }
 
 export const useQueryStore = defineStore('query', {
   state: (): QueryState => ({
     baseTable: localStorageHelper.getBaseTable(BaseTable.Varieties),
-    baseFilter: FilterNode.FilterRoot(FilterOperand.And, FilterType.Base),
-    markFilter: FilterNode.FilterRoot(FilterOperand.And, FilterType.Mark),
+    baseFilter: localStorageHelper.getBaseFilter(defaultBaseFilter), // use getters and actions
+    markFilter: localStorageHelper.getMarkFilter(defaultMarkFilter), // use getters and actions
     filterDragNode: false,
     markFormProperties: [],
+    filterOptionSchemas: undefined,
   }),
 
 
@@ -36,26 +42,91 @@ export const useQueryStore = defineStore('query', {
         || s.baseTable === BaseTable.Trees
     },
 
-    markPropertySchema: (state) => (prefix: string) => {
+    markPropertySchema(state) {
       const s = state as QueryState;
+      const prefix = 'Marks > '// todo: fix prefix localization -- probably pull out of store!
       return s.markFormProperties
         .map(markFormPropertyConverter.toPropertySchema)
         .map(item => {
-          if (!item.label.startsWith(prefix)){
+          if ( ! item.label.startsWith(prefix)) {
             item.label = prefix + item.label
           }
           return item;
         });
-    }
+    },
+
+    baseFilterOptions(state) {
+      const s = state as QueryState;
+      if ( ! s.filterOptionSchemas || ! s.baseFilter) {
+        return [];
+      }
+
+      const options: PropertySchema[] = s.filterOptionSchemas[s.baseTable] || [];
+
+      if (this.marksAvailable) {
+        options.push(...this.markPropertySchema);
+      }
+
+      return options;
+    },
+
+    markFilterOptions(state) {
+      const s = state as QueryState;
+      if ( ! s.filterOptionSchemas) {
+        return [];
+      }
+
+      return s.filterOptionSchemas['Marks'] || [];
+    },
+
+    getBaseFilter(state) {
+      if ( ! this.baseFilterOptions) {
+        return defaultBaseFilter;
+      }
+
+      return (state as QueryState).baseFilter;
+    },
+
+    getMarkFilter(state) {
+      if ( ! this.markFilterOptions) {
+        return defaultMarkFilter;
+      }
+
+      return (state as QueryState).markFilter;
+    },
   },
 
 
   actions: {
     async maybeLoadMarkFormProperties() {
-      if (! this.markFormProperties.length) {
+      if ( ! this.markFormProperties.length) {
         await useApi().get<MarkFormProperty[]>('mark-form-properties')
           .then(data => this.markFormProperties = data as MarkFormProperty[]);
       }
-    }
+    },
+
+    async maybeLoadFilterOptionSchemas() {
+      if (undefined === this.filterOptionSchemas) {
+        await useApi().get<FilterOptionSchemas>('queries/get-filter-schemas')
+          .then(data => this.filterOptionSchemas = data as FilterOptionSchemas)
+      }
+    },
+
+    async ensureSchemasLoaded() {
+      const base = this.maybeLoadFilterOptionSchemas();
+      const mark = this.maybeLoadMarkFormProperties();
+
+      await Promise.all([base, mark])
+    },
+
+    setBaseFilter(filter: FilterNode) {
+      // use object assign to maintain reactivity
+      Object.assign(this.baseFilter, filter);
+    },
+
+    setMarkFilter(filter: FilterNode) {
+      // use object assign to maintain reactivity
+      Object.assign(this.markFilter, filter);
+    },
   },
 });

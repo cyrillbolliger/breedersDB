@@ -43,8 +43,8 @@ const loading = ref(false);
 const result = ref<QueryResponse | null>(null);
 
 const baseTable = computed(() => queryStore.baseTable);
-const baseFilter = computed(() => queryStore.baseFilter);
-const markFilter = computed(() => queryStore.markFilter);
+const baseFilter = computed(() => queryStore.getBaseFilter);
+const markFilter = computed(() => queryStore.getMarkFilter);
 const marksAvailable = computed<boolean>(() => queryStore.marksAvailable);
 
 const isValid = computed(() => {

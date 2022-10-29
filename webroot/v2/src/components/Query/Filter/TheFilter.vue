@@ -3,63 +3,61 @@
 
   <p class="text-overline q-mb-none">{{ t('queries.baseTable') }}</p>
   <q-btn-toggle
-    :options="baseTableOptions"
     v-model="baseTable"
+    :disable="loading"
+    :options="baseTableOptions"
     no-wrap
   />
 
-  <p class="text-overline q-mb-none q-mt-lg" v-if="baseTable === BaseTable.Batches">{{ t('queries.batchFilter') }}</p>
-  <p class="text-overline q-mb-none q-mt-lg" v-else-if="baseTable === BaseTable.Varieties">{{
+  <p v-if="baseTable === BaseTable.Batches" class="text-overline q-mb-none q-mt-lg">{{ t('queries.batchFilter') }}</p>
+  <p v-else-if="baseTable === BaseTable.Varieties" class="text-overline q-mb-none q-mt-lg">{{
       t('queries.varietyFilter')
     }}</p>
-  <p class="text-overline q-mb-none q-mt-lg" v-else-if="baseTable === BaseTable.Trees">{{
+  <p v-else-if="baseTable === BaseTable.Trees" class="text-overline q-mb-none q-mt-lg">{{
       t('queries.treeFilter')
     }}</p>
-  <p class="text-overline q-mb-none q-mt-lg" v-else>{{ t('queries.defaultFilter') }}</p>
+  <p v-else class="text-overline q-mb-none q-mt-lg">{{ t('queries.defaultFilter') }}</p>
   <!--suppress JSValidateTypes -->
   <FilterTreeRoot
+    v-if="!loading"
     :filter="baseFilter"
     :options="baseFilterOptions"
-    v-if="!loading"
   />
   <q-spinner
+    v-else
     color="primary"
     size="4em"
-    v-else
   />
 
   <template v-if="marksAvailable">
     <p class="text-overline q-mb-none q-mt-lg">{{ t('queries.markFilter') }}</p>
     <!--suppress JSValidateTypes -->
     <FilterTreeRoot
-      :filter="markFilter"
-      :options="allFilterOptions?.Marks || []"
       v-if="!loading"
+      :filter="markFilter"
+      :options="markFilterOptions"
     />
     <q-spinner
+      v-else
       color="primary"
       size="4em"
-      v-else
     />
   </template>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import FilterTreeRoot from 'components/Query/Filter/FilterTreeRoot.vue';
 import {useI18n} from 'vue-i18n';
 import {useQueryStore} from 'stores/query';
-import useApi from 'src/composables/api';
 import {BaseTable} from 'src/models/query/query';
-import {computed, onMounted, ref} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import {
-  FilterOptionSchemas,
   PropertySchema,
 } from 'src/models/query/filterOptionSchema';
 import useQueryLocalStorageHelper from 'src/composables/queries/queryLocalStorageHelper';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore()
-const api = useApi()
 const localStorageHelper = useQueryLocalStorageHelper();
 
 const baseTableOptions = [
@@ -79,39 +77,28 @@ const baseTable = computed<BaseTable>({
   }
 });
 
-const baseFilter = computed(() => store.baseFilter);
-const markFilter = computed(() => store.markFilter);
+const baseFilter = computed(() => store.getBaseFilter);
+const markFilter = computed(() => store.getMarkFilter);
 const marksAvailable = computed<boolean>(() => store.marksAvailable);
 
 const loading = ref<boolean>(true);
-const allFilterOptions = ref<FilterOptionSchemas | null>(null);
-const markFormPropertyFilterOptions = ref<PropertySchema[]>([]);
 
-const baseFilterOptions = computed<PropertySchema[]>(() => {
-  if (!allFilterOptions.value){
-    return [];
-  }
-
-  const options: PropertySchema[] = allFilterOptions.value[baseTable.value] || [];
-
-  if (marksAvailable.value) {
-    options.push(...markFormPropertyFilterOptions.value);
-  }
-
-  return options;
-});
+const baseFilterOptions = computed<PropertySchema[]>(() => store.baseFilterOptions);
+const markFilterOptions = computed<PropertySchema[]>(() => store.markFilterOptions);
 
 async function loadFilterOptions() {
   loading.value = true;
-
-  const base = api.get<FilterOptionSchemas>('queries/get-filter-schemas')
-    .then(data => allFilterOptions.value = data as FilterOptionSchemas)
-  const mark = store.maybeLoadMarkFormProperties()
-    .then(() => markFormPropertyFilterOptions.value = store.markPropertySchema(t('queries.Marks') + ' > '))
-
-  await Promise.all([base, mark])
-    .then(() => loading.value = false);
+  await store.ensureSchemasLoaded();
+  setFilters();
+  loading.value = false;
 }
+
+function setFilters() {
+  store.setBaseFilter(localStorageHelper.getBaseFilter(baseFilter.value));
+  store.setMarkFilter(localStorageHelper.getMarkFilter(markFilter.value));
+}
+
+watch(baseTable, setFilters);
 
 onMounted(() => {
   void loadFilterOptions();
