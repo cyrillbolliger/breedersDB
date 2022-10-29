@@ -83,8 +83,16 @@ const marksAvailable = computed<boolean>(() => store.marksAvailable);
 
 const loading = ref<boolean>(true);
 
-const baseFilterOptions = computed<PropertySchema[]>(() => store.baseFilterOptions);
 const markFilterOptions = computed<PropertySchema[]>(() => store.markFilterOptions);
+const baseFilterOptions = computed<PropertySchema[]>(() => {
+  const prefix = t('queries.Marks') + ' > ';
+  return store.baseFilterOptions.map(item => {
+    if ( ! item.label.includes('>')) {
+      item.label = prefix + item.label
+    }
+    return item;
+  });
+});
 
 async function loadFilterOptions() {
   loading.value = true;

@@ -44,15 +44,8 @@ export const useQueryStore = defineStore('query', {
 
     markPropertySchema(state) {
       const s = state as QueryState;
-      const prefix = 'Marks > '// todo: fix prefix localization -- probably pull out of store!
       return s.markFormProperties
         .map(markFormPropertyConverter.toPropertySchema)
-        .map(item => {
-          if ( ! item.label.startsWith(prefix)) {
-            item.label = prefix + item.label
-          }
-          return item;
-        });
     },
 
     baseFilterOptions(state) {

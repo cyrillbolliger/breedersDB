@@ -82,7 +82,11 @@ class MarkFormPropertiesTable extends Table {
 				'rule'     => 'validateUnique',
 				'provider' => 'table',
 				'message'  => __( 'This name has already been used.' ),
-			] );
+			] )
+            ->add('name', 'custom', [
+                'rule' => static fn($value) => !str_contains($value, '>'),
+                'message' => __('The ">" sign is not allowed in the name.'),
+            ]);
 
 		$validator
 			->requirePresence( 'field_type', 'create' )
