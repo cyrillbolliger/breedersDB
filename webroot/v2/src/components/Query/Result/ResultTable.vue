@@ -335,6 +335,7 @@ onMounted(() => {
 .query-result-table thead tr th {
   position: sticky;
   z-index: 1;
+  top: 0;
 }
 
 /* this is when the loading indicator appears */
