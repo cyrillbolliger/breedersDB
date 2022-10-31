@@ -26,8 +26,8 @@ export type QueryResponseDebug = {
   }
 };
 
-export type ViewEntity = {[key: string]: null | number | string | ViewEntity[] }
-export type QueryResponseSchemas = {[key: string]: PropertySchema[]};
+export type ViewEntity = { [key: string]: null | number | string | ViewEntity[] }
+export type QueryResponseSchemas = { [key: string]: PropertySchema[] };
 
 export interface QueryResponse {
   count: number,
@@ -40,29 +40,25 @@ export interface QueryResponse {
   schema: QueryResponseSchemas,
 }
 
-export enum MarkAggregation {
-  None = 'none',
-  Count = 'count',
-  Median = 'median',
-  Average = 'average',
-  StandardDev = 'stddev',
-  Minima = 'min',
-  Maxima = 'max',
-}
-
 export interface MarkCell {
   id: number,
   property_id: number,
   name: string,
   author: string,
-  batch_id: number|null,
-  variety_id: number|null,
-  tree_id: number|null,
+  batch_id: number | null,
+  variety_id: number | null,
+  tree_id: number | null,
   date: string,
   exceptional_mark: boolean,
   field_type: 'INTEGER' | 'FLOAT' | 'BOOLEAN' | 'DATE' | 'VARCHAR' | 'PHOTO',
   property_type: string,
-  value: string,
+  value: string | number | boolean,
   entity: TreeView | VarietyView | BatchView,
-  aggregation: MarkAggregation,
+}
+
+export interface AggregatedMarkCell {
+  property_id: number,
+  name: string,
+  value: string | number | boolean,
+  rawValues: MarkCell[],
 }

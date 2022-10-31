@@ -144,6 +144,16 @@ export default {
     altPhoto: 'Photo taken {date} by {author}',
     photo: 'Photo',
     downloadPhoto: 'Download photo',
+
+    countSuffix: 'count',
+    maxSuffix: 'max',
+    minSuffix: 'min',
+    meanSuffix: 'mean',
+    medianSuffix: 'median',
+    stdDevSuffix: 'std. deviation',
+
+    yes: 'yes',
+    no: 'no',
   },
 
   general: {

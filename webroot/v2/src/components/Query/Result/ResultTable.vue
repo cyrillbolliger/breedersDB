@@ -154,7 +154,7 @@ const columns = computed<QTableColumn[]>(() => {
   if (store.marksAvailable) {
     const markColumns = columnConverter.markFormPropertiesToColumn(
       store.markFormProperties,
-      t('queries.Marks') + ' > '
+      t
     );
     columns.push(...markColumns);
   }

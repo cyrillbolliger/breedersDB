@@ -9,10 +9,9 @@
         :mark="mark"
       />
     </template>
-    <template v-else-if="isAggregatedMarkValue">
-      <ResultTableCellMark
-        :mark="cellValue"
-      />
+    <template v-else-if="isAggregatedMark">
+      <!-- todo: nice popup with single values -->
+      {{ cellValue.value }}
     </template>
 
     <template v-else>
@@ -25,7 +24,7 @@
 
 import {computed, PropType} from 'vue';
 import {QTableSlots} from 'quasar';
-import {MarkCell} from 'src/models/query/query';
+import {AggregatedMarkCell, MarkCell} from 'src/models/query/query';
 import ResultTableCellMark from 'components/Query/Result/ResultTableCellMark.vue';
 
 const props = defineProps({
@@ -34,15 +33,15 @@ const props = defineProps({
   }
 });
 
-const cellValue = computed<string | MarkCell | MarkCell[]>(() => {
+const cellValue = computed<string | number | boolean | AggregatedMarkCell | MarkCell[]>(() => {
   // noinspection TypeScriptUnresolvedVariable
-  const value = props.cellProps.value as string | null | undefined | MarkCell | MarkCell[]; // eslint-disable-line @typescript-eslint/no-unsafe-member-access
-  return value ? value : '';
+  const value = props.cellProps.value as null | undefined | string | number | boolean | AggregatedMarkCell | MarkCell[]; // eslint-disable-line @typescript-eslint/no-unsafe-member-access
+  return null === value || undefined === value ? '' : value;
 });
 
-const isAggregatedMarkValue = computed(() => {
+const isAggregatedMark = computed(() => {
   return 'object' === typeof cellValue.value
-    && 'aggregated' in cellValue.value;
+    && 'rawValues' in cellValue.value;
 })
 
 const isNonAggregatedMark = computed(() => {
