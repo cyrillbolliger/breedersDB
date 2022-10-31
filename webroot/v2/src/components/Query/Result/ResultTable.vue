@@ -51,16 +51,15 @@
 
 <script lang="ts" setup>
 import {computed, onMounted, PropType, ref, watch} from 'vue';
-import {MarkCell, QueryResponse, QueryResponseSchemas, ViewEntity} from 'src/models/query/query';
+import {QueryResponse, QueryResponseSchemas, ViewEntity} from 'src/models/query/query';
 import {useQueryStore} from 'stores/query';
-import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 import {QTable, QTableColumn} from 'quasar';
 import {useI18n} from 'vue-i18n';
 import ResultTableColumnSelector from 'components/Query/Result/ResultTableColumnSelector.vue';
-import {MarkFormProperty} from 'src/models/form';
 import ResultTableCell from 'components/Query/Result/ResultTableCell.vue';
 import ResultTableHeaderCell from 'components/Query/Result/ResultTableHeaderCell.vue';
 import useQueryLocalStorageHelper from 'src/composables/queries/queryLocalStorageHelper';
+import useResultColumnConverter from 'src/composables/queries/resultTableColumnConverter';
 
 defineEmits<{
   (e: 'requestData', data: Parameters<QTable['onRequest']>[0]): void
@@ -81,6 +80,7 @@ const ROWS_PER_PAGE = 100;
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore();
 const localStorageHelper = useQueryLocalStorageHelper();
+const columnConverter = useResultColumnConverter();
 
 const fullscreen = ref(false);
 const visibleColumns = ref<string[]>([]);
@@ -89,24 +89,6 @@ const columnOrder = ref<string[]>([]);
 
 function hideColumn(name: string) {
   visibleColumns.value = visibleColumns.value.filter(column => column !== name);
-}
-
-function formatColumnValue(val: string | number | Date | null, type: PropertySchemaOptionType) {
-  if (null === val) {
-    return '';
-  } else if (val instanceof Date) {
-    return val.toLocaleDateString();
-  } else if (typeof (val) === 'number') {
-    return val.toLocaleString();
-  } else if (type === PropertySchemaOptionType.Integer) {
-    return parseInt(val).toLocaleString();
-  } else if (type === PropertySchemaOptionType.Float) {
-    return parseFloat(val).toLocaleString();
-  } else if (type === PropertySchemaOptionType.Date) {
-    return new Date(val).toLocaleDateString();
-  }
-
-  return val;
 }
 
 const baseTableName = computed(() => {
@@ -123,56 +105,6 @@ const rowData = computed<ViewEntity[]>(() => {
   return props.result?.results || [];
 })
 
-function removePropertyPrefix(obj: Record<string, unknown>) {
-  const prefixed = Object.keys(obj);
-  const values: unknown[] = (<any>Object).values(obj); // eslint-disable-line
-
-  if (0 === values.length) {
-    return obj;
-  }
-
-  const prefixLen = prefixed[0].indexOf('.') + 1;
-
-  if (0 >= prefixLen) {
-    return obj;
-  }
-
-  const unprefixed = prefixed.map(key => key.substring(prefixLen));
-
-  // noinspection TypeScriptValidateTypes
-  return Object.assign( // eslint-disable-line
-    {},
-    ...unprefixed.map((k, i) => ({[k]: values[i]}))
-  );
-}
-
-function getMarkData(row: ViewEntity, property: MarkFormProperty) {
-  if ( ! ('marks_view' in row)) {
-    return [];
-  }
-
-  const marks: MarkCell[] = (row.marks_view as ViewEntity[])
-    .filter((mark: ViewEntity) => mark.property_id === property.id)
-    .map((mark: ViewEntity) => {
-      let entity = Object.assign({}, row);
-      delete entity.marks_view;
-      delete entity.trees_view;
-      // noinspection TypeScriptValidateTypes
-      entity = removePropertyPrefix(entity) as MarkCell['entity'];
-
-      const cell = mark as MarkCell;
-      cell.entity = entity as MarkCell['entity'];
-      return cell;
-    });
-
-  if ('trees_view' in row && Array.isArray(row.trees_view)) {
-    for (const tree of row.trees_view) {
-      marks.push(...getMarkData(tree, property))
-    }
-  }
-
-  return marks;
-}
 
 function reorderColumns(targetColName: string, moveColName: string, pos: 'before' | 'after') {
   // noinspection TypeScriptValidateTypes
@@ -217,32 +149,13 @@ const columns = computed<QTableColumn[]>(() => {
     return [];
   }
 
-  const columns = schema.map((item: PropertySchema) => {
-    const isNum = item.options.type === PropertySchemaOptionType.Integer
-      || item.options.type === PropertySchemaOptionType.Float;
-
-    return {
-      name: item.name,
-      label: item.label,
-      field: item.name,
-      align: isNum ? 'right' : 'left',
-      sortable: true,
-      format: (val: string | number | Date | null | undefined) => formatColumnValue(val || null, item.options.type)
-    } as QTableColumn;
-  });
+  const columns = columnConverter.schemaToColumn(schema);
 
   if (store.marksAvailable) {
-    const namePrefix = t('queries.Marks') + ' > ';
-    const markColumns = store.markFormProperties.map((item: MarkFormProperty) => {
-      return {
-        name: `Mark.${item.id}`,
-        label: namePrefix + item.name,
-        field: (row: ViewEntity) => getMarkData(row, item),
-        align: 'center',
-        sortable: false,
-      } as QTableColumn;
-    });
-
+    const markColumns = columnConverter.markFormPropertiesToColumn(
+      store.markFormProperties,
+      t('queries.Marks') + ' > '
+    );
     columns.push(...markColumns);
   }
 
