@@ -16,7 +16,9 @@ class RegularFilterQueryBuilder extends FilterQueryBuilder
      */
     protected function buildQuery(): void
     {
-        $this->query = $this->table->find();
+        $this->query = $this->table
+            ->find()
+            ->where('1=1'); // required, else the query built is invalid if no baseFilter is given
 
         if (!empty($this->rawQuery['baseFilter'])) {
             $this->addWhere();
@@ -29,6 +31,6 @@ class RegularFilterQueryBuilder extends FilterQueryBuilder
     protected function addWhere(): void
     {
         $filterQuery = new FilterQueryNode($this->rawQuery['baseFilter']);
-        $this->query->where($filterQuery->getConditions([$this->baseTable]));
+        $this->query->andWhere($filterQuery->getConditions([$this->baseTable]));
     }
 }
