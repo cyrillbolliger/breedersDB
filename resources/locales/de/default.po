@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
 "POT-Creation-Date: 2022-10-29 18:29+0000\n"
-"PO-Revision-Date: 2022-10-29 18:30\n"
+"PO-Revision-Date: 2022-10-31 21:13\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -1261,7 +1261,7 @@ msgstr "Dieser Name wurde bereits verwendet."
 
 #: ./src/Model/Table/MarkFormPropertiesTable.php:88
 msgid "The \">\" sign is not allowed in the name."
-msgstr ""
+msgstr "Das Zeichen \">\" ist im Namen nicht erlaubt."
 
 #: ./src/Model/Table/MarkFormPropertiesTable.php:108
 msgid "The min value is required and must be smaller than the max value"
