@@ -54,7 +54,7 @@ export const useQueryStore = defineStore('query', {
         return [];
       }
 
-      const options: PropertySchema[] = s.filterOptionSchemas[s.baseTable] || [];
+      const options: PropertySchema[] = [...s.filterOptionSchemas[s.baseTable]] || [];
 
       if (this.marksAvailable) {
         options.push(...this.markPropertySchema);
