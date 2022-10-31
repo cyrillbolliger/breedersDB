@@ -140,6 +140,10 @@ export default {
 
     debugShow: 'Show debug info',
     debugHide: 'Hide debug info',
+
+    altPhoto: 'Photo taken {date} by {author}',
+    photo: 'Photo',
+    downloadPhoto: 'Download photo',
   },
 
   general: {

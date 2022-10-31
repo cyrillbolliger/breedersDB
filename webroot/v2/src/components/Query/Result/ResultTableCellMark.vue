@@ -1,16 +1,53 @@
 <template>
   <q-chip
     :color="bgColor"
-    :label="mark.value"
+    :label="label"
+    :outline="showTooltip && !autocloseToolbar"
     class="result-table-cell-mark__chip"
+    clickable
     size="sm"
+    style="box-shadow: none"
+    @click="toggleToolbar"
+    @mouseenter="displayToolbar"
+    @mouseleave="maybeCloseToolbar"
   >
-    <q-tooltip class="result-table-cell-mark__tooltip">
+    <q-menu
+      v-model="showTooltip"
+      @hide="autocloseToolbar = true"
+      :offset="[0, 8]"
+      anchor="bottom middle"
+      class="bg-grey-9 q-pa-sm"
+      dark
+      max-height="80vh"
+      max-width="80vw"
+      no-parent-event
+      self="top middle"
+    >
       <div
         v-if="'VARCHAR' === mark.field_type"
         class="result-table-cell-mark__text text-body2 text-bold"
       >{{ mark.value }}
       </div>
+      <div v-if="'PHOTO' === mark.field_type"
+           class="result-table-cell-mark__photo-block"
+      >
+        <div class="result-table-cell-mark__photo-wrapper">
+          <img
+            :alt="t('queries.altPhoto', {date: localizeDate(mark.date), author: mark.author})"
+            :src="`${apiUrl}/photos/view/${mark.value}?h=400`"
+            class="result-table-cell-mark__photo"
+          />
+        </div>
+        <q-btn
+          :href="`${apiUrl}/photos/view/${mark.value}`"
+          :label="t('queries.downloadPhoto')"
+          download
+          outline
+          size="xs"
+          type="a"
+        />
+      </div>
+
       <q-icon name="person"/>&nbsp;{{ mark.author }}<br>
       <q-icon name="today"/>&nbsp;{{ localizeDate(mark.date) }}
 
@@ -134,27 +171,37 @@
           <span v-html="n2br(mark.entity.note)"/>
         </div>
       </template>
-    </q-tooltip>
+    </q-menu>
   </q-chip>
 </template>
 
 <script lang="ts" setup>
-import {computed, PropType} from 'vue';
+import {computed, PropType, ref} from 'vue';
 import {MarkCell} from 'src/models/query/query';
 import IconTree from 'components/Util/Icons/IconTree.vue';
 import IconBatch from 'components/Util/Icons/IconBatch.vue';
 import IconVariety from 'components/Util/Icons/IconVariety.vue';
 import {useI18n} from 'vue-i18n';
 
-const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
-
 type MarkEntityType = 'tree' | 'batch' | 'variety';
+
+declare const cake: {
+  data: {
+    apiUrl: string
+  }
+};
+
+const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
+const apiUrl = cake.data.apiUrl;
 
 const props = defineProps({
   mark: {
     type: Object as PropType<MarkCell>,
   }
 })
+
+const showTooltip = ref(false);
+const autocloseToolbar = ref(true);
 
 const type = computed<MarkEntityType>(() => {
   // noinspection TypeScriptUnresolvedVariable
@@ -168,7 +215,21 @@ const type = computed<MarkEntityType>(() => {
   return 'batch';
 })
 
+const label = computed(() => {
+  // noinspection TypeScriptUnresolvedVariable
+  if ('PHOTO' === props.mark.field_type) {
+    return t('queries.photo');
+  }
+
+  // noinspection TypeScriptUnresolvedVariable
+  return props.mark.value;
+});
+
 const bgColor = computed(() => {
+  if (showTooltip.value && ! autocloseToolbar.value) {
+    return 'accent';
+  }
+
   switch (type.value) {
     case 'tree':
       return 'green-2';
@@ -179,20 +240,35 @@ const bgColor = computed(() => {
   }
 })
 
-function n2br(text: string|null) {
-  if (!text) {
+function n2br(text: string | null) {
+  if ( ! text) {
     return text;
   }
 
   return text.replace(/\r*\n/g, '<br>');
 }
 
-function localizeDate(strDate: string|null) {
-  if (!strDate) {
+function localizeDate(strDate: string | null) {
+  if ( ! strDate) {
     return strDate;
   }
 
   return (new Date(strDate)).toLocaleDateString();
+}
+
+function maybeCloseToolbar() {
+  if (autocloseToolbar.value) {
+    showTooltip.value = false;
+  }
+}
+
+function displayToolbar() {
+  showTooltip.value = true;
+}
+
+function toggleToolbar() {
+  showTooltip.value = autocloseToolbar.value;
+  autocloseToolbar.value = ! autocloseToolbar.value;
 }
 
 </script>
@@ -200,10 +276,7 @@ function localizeDate(strDate: string|null) {
 <style scoped>
 .result-table-cell-mark__chip {
   max-width: 80px;
-}
-
-.result-table-cell-mark__tooltip {
-  max-width: 250px;
+  cursor: pointer;
 }
 
 table {
@@ -228,4 +301,24 @@ td {
   padding-right: 0;
 }
 
+.result-table-cell-mark__photo-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.result-table-cell-mark__photo-wrapper {
+  background: black;
+  height: 200px;
+  width: 100%;
+  text-align: center;
+}
+
+img {
+  max-width: 100%;
+  height: 100%;
+}
 </style>
