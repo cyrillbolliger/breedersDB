@@ -182,6 +182,8 @@ import IconTree from 'components/Util/Icons/IconTree.vue';
 import IconBatch from 'components/Util/Icons/IconBatch.vue';
 import IconVariety from 'components/Util/Icons/IconVariety.vue';
 import {useI18n} from 'vue-i18n';
+import useResultColumnConverter from 'src/composables/queries/resultTableColumnConverter';
+import {PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 
 type MarkEntityType = 'tree' | 'batch' | 'variety';
 
@@ -192,6 +194,7 @@ declare const cake: {
 };
 
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
+const columnConverter = useResultColumnConverter();
 const apiUrl = cake.data.apiUrl;
 
 const props = defineProps({
@@ -217,12 +220,25 @@ const type = computed<MarkEntityType>(() => {
 
 const label = computed(() => {
   // noinspection TypeScriptUnresolvedVariable
-  if ('PHOTO' === props.mark.field_type) {
-    return t('queries.photo');
+  switch (props.mark.field_type) {
+    case 'PHOTO':
+      return t('queries.photo');
+    case 'BOOLEAN':
+      // noinspection TypeScriptUnresolvedVariable
+      return props.mark.value ? t('queries.yes') : t('queries.no');
+    case 'DATE':
+      // noinspection TypeScriptUnresolvedVariable
+      return columnConverter.formatColumnValue(props.mark.value, PropertySchemaOptionType.Date);
+    case 'INTEGER':
+      // noinspection TypeScriptUnresolvedVariable
+      return columnConverter.formatColumnValue(props.mark.value, PropertySchemaOptionType.Integer);
+    case 'FLOAT':
+      // noinspection TypeScriptUnresolvedVariable
+      return columnConverter.formatColumnValue(props.mark.value, PropertySchemaOptionType.Float);
+    default:
+      // noinspection TypeScriptUnresolvedVariable
+      return props.mark.value;
   }
-
-  // noinspection TypeScriptUnresolvedVariable
-  return props.mark.value;
 });
 
 const bgColor = computed(() => {
