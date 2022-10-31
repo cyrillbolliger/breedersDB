@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2022-09-26 19:08+0000\n"
-"PO-Revision-Date: 2022-10-10 20:06\n"
+"POT-Creation-Date: 2022-10-29 18:29+0000\n"
+"PO-Revision-Date: 2022-10-29 18:30\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -1247,7 +1247,7 @@ msgstr "Ziel"
 
 #: ./src/Model/Table/ExperimentSitesTable.php:77
 #: ./src/Model/Table/GraftingsTable.php:77
-#: ./src/Model/Table/MarkFormPropertiesTable.php:186
+#: ./src/Model/Table/MarkFormPropertiesTable.php:190
 #: ./src/Model/Table/MarkFormPropertyTypesTable.php:77
 #: ./src/Model/Table/MarkFormsTable.php:93
 #: ./src/Model/Table/RootstocksTable.php:77
@@ -1259,41 +1259,45 @@ msgstr "Dieser Name wurde bereits verwendet. Bitte wähle einen unverwechselbare
 msgid "This name has already been used."
 msgstr "Dieser Name wurde bereits verwendet."
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:104
+#: ./src/Model/Table/MarkFormPropertiesTable.php:88
+msgid "The \">\" sign is not allowed in the name."
+msgstr ""
+
+#: ./src/Model/Table/MarkFormPropertiesTable.php:108
 msgid "The min value is required and must be smaller than the max value"
 msgstr "Der Minimalwert erforderlich und muss kleiner sein als der Maximalwert"
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:116
+#: ./src/Model/Table/MarkFormPropertiesTable.php:120
 msgid "The max value is required and must be greater than the max value"
 msgstr "Der Maximalwert ist erforderlich und muss grösser sein als der Minimalwert"
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:128
+#: ./src/Model/Table/MarkFormPropertiesTable.php:132
 msgid "The step value is required and must be greater than zero and smaller or equal to the difference between the max and the min value."
 msgstr "Die Schrittgrösse ist erforderlich und muss grösser als null sein und kleiner oder gleich der Differenz zwischen dem Maximalwert und dem Minimalwert."
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:140
-#: ./src/Model/Table/MarkFormPropertiesTable.php:152
-#: ./src/Model/Table/MarkFormPropertiesTable.php:164
+#: ./src/Model/Table/MarkFormPropertiesTable.php:144
+#: ./src/Model/Table/MarkFormPropertiesTable.php:156
+#: ./src/Model/Table/MarkFormPropertiesTable.php:168
 msgid "Select at least one domain"
 msgstr "Wähle mindestens eine Domäne"
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:228
+#: ./src/Model/Table/MarkFormPropertiesTable.php:232
 msgid "Integer"
 msgstr "Ganzzahl"
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:229
+#: ./src/Model/Table/MarkFormPropertiesTable.php:233
 msgid "Floating-point number"
 msgstr "Gleitkommazahl"
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:230
+#: ./src/Model/Table/MarkFormPropertiesTable.php:234
 msgid "Text ( < 255 characters)"
 msgstr "Text (< 255 Zeichen)"
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:231
+#: ./src/Model/Table/MarkFormPropertiesTable.php:235
 msgid "Boolean"
 msgstr "Boole'scher Wert"
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:232
+#: ./src/Model/Table/MarkFormPropertiesTable.php:236
 #: ./src/Model/Table/MarksViewTable.php:63
 #: ./templates/Marks/view.php:28
 #: ./templates/element/Mark/list.php:4
@@ -1301,7 +1305,7 @@ msgstr "Boole'scher Wert"
 msgid "Date"
 msgstr "Datum"
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:233
+#: ./src/Model/Table/MarkFormPropertiesTable.php:237
 msgid "Photo"
 msgstr "Foto"
 
