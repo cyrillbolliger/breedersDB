@@ -2,11 +2,16 @@
   <q-td
     :props="cellProps"
   >
-    <template v-if="isMarkValue">
+    <template v-if="isNonAggregatedMark">
       <!--suppress JSValidateTypes -->
       <ResultTableCellMark
         v-for="(mark, idx) in cellValue" :key="idx"
         :mark="mark"
+      />
+    </template>
+    <template v-else-if="isAggregatedMarkValue">
+      <ResultTableCellMark
+        :mark="cellValue"
       />
     </template>
 
@@ -16,7 +21,7 @@
   </q-td>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {computed, PropType} from 'vue';
 import {QTableSlots} from 'quasar';
@@ -29,15 +34,20 @@ const props = defineProps({
   }
 });
 
-const cellValue = computed<string|MarkCell[]>(() => {
+const cellValue = computed<string | MarkCell | MarkCell[]>(() => {
   // noinspection TypeScriptUnresolvedVariable
-  const value = props.cellProps.value as string|null|undefined|MarkCell[]; // eslint-disable-line @typescript-eslint/no-unsafe-member-access
+  const value = props.cellProps.value as string | null | undefined | MarkCell | MarkCell[]; // eslint-disable-line @typescript-eslint/no-unsafe-member-access
   return value ? value : '';
 });
 
-const isMarkValue = computed(() => {
-  return Array.isArray(cellValue.value);
+const isAggregatedMarkValue = computed(() => {
+  return 'object' === typeof cellValue.value
+    && 'aggregated' in cellValue.value;
 })
+
+const isNonAggregatedMark = computed(() => {
+  return Array.isArray(cellValue.value);
+});
 
 </script>
 

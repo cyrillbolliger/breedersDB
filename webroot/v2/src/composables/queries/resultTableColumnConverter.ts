@@ -1,7 +1,7 @@
 import {PropertySchema, PropertySchemaOptionType} from 'src/models/query/filterOptionSchema';
 import {QTableColumn} from 'quasar';
 import {MarkFormProperty} from 'src/models/form';
-import {MarkCell, ViewEntity} from 'src/models/query/query';
+import {MarkAggregation, MarkCell, ViewEntity} from 'src/models/query/query';
 
 
 function schemaToColumn(schema: PropertySchema[]): QTableColumn[] {
@@ -66,6 +66,7 @@ function getMarkData(row: ViewEntity, property: MarkFormProperty) {
 
       const cell = (mark as unknown) as MarkCell;
       cell.entity = markCellEntity;
+      cell.aggregation = MarkAggregation.None;
       return cell;
     });
 

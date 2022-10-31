@@ -40,6 +40,16 @@ export interface QueryResponse {
   schema: QueryResponseSchemas,
 }
 
+export enum MarkAggregation {
+  None = 'none',
+  Count = 'count',
+  Median = 'median',
+  Average = 'average',
+  StandardDev = 'stddev',
+  Minima = 'min',
+  Maxima = 'max',
+}
+
 export interface MarkCell {
   id: number,
   property_id: number,
@@ -53,5 +63,6 @@ export interface MarkCell {
   field_type: 'INTEGER' | 'FLOAT' | 'BOOLEAN' | 'DATE' | 'VARCHAR' | 'PHOTO',
   property_type: string,
   value: string,
-  entity: TreeView | VarietyView | BatchView
+  entity: TreeView | VarietyView | BatchView,
+  aggregation: MarkAggregation,
 }
