@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\FilterQuery;
 
 use Cake\Database\Expression\QueryExpression;
+use Cake\ORM\Query;
 
 class FilterQueryNode
 {
@@ -33,10 +34,14 @@ class FilterQueryNode
             return $this->filterRule->getCondition($this->allowedTables);
         }
 
-        return fn(QueryExpression $exp) => match ($this->childrensOperand) {
-            'and' => $exp->and($this->getChildConditions()),
-            'or' => $exp->or($this->getChildConditions()),
-            default => throw new FilterQueryException("Invalid filter query: Missing childrens operand."),
+        return function (QueryExpression|Query $exp) {
+            if ($exp instanceof Query) {
+                return $exp->andWhere(
+                    fn(QueryExpression $queryExp) => $this->getConditionExpression($queryExp)
+                );
+            }
+
+            return $this->getConditionExpression($exp);
         };
     }
 
@@ -79,6 +84,18 @@ class FilterQueryNode
     private function isLeaf(): bool
     {
         return !empty($this->filterRule);
+    }
+
+    /**
+     * @throws FilterQueryException
+     */
+    private function getConditionExpression(QueryExpression $exp): QueryExpression
+    {
+        return match ($this->childrensOperand) {
+            'and' => $exp->and($this->getChildConditions()),
+            'or' => $exp->or($this->getChildConditions()),
+            default => throw new FilterQueryException("Invalid filter query: Missing childrens operand."),
+        };
     }
 
     /**

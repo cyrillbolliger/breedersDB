@@ -47,7 +47,7 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
             ->where('1=1'); // required, else the query built is invalid if no baseFilter is given
 
         if (!empty($this->rawQuery['baseFilter'])) {
-            $this->addWhere($baseSubQuery, $this->rawQuery['baseFilter']);
+            $baseSubQuery->andWhere($this->getFilterConditions($this->rawQuery['baseFilter']));
         }
 
         if ($this->isVarietyQuery()) {
@@ -68,20 +68,23 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
         }
 
 
+        if (!empty($this->rawQuery['markFilter'])) {
+            $markFilterConditions = $this->getFilterConditions($this->rawQuery['markFilter']);
+        }
+
+        /** @noinspection ProperNullCoalescingOperatorUsageInspection */
         $query = $this->table
             ->find()
             ->distinct($tablePrimaryKey)
-            ->contain([self::MARKS_TABLE])
+            ->contain(self::MARKS_TABLE, $markFilterConditions ?? false)
             ->leftJoinWith(self::MARKS_TABLE)
             ->where(fn(QueryExpression $exp) => $exp->in($tablePrimaryKey, $subQuery));
 
-        if (!empty($this->rawQuery['markFilter'])) {
-            $this->addWhere($query, $this->rawQuery['markFilter']);
-        }
 
         if ($this->isVarietyQuery()) {
             // add tree marks
-            $query->contain([self::TREES_TABLE . '.' . self::MARKS_TABLE])
+            /** @noinspection ProperNullCoalescingOperatorUsageInspection */
+            $query->contain(self::TREES_TABLE . '.' . self::MARKS_TABLE, $markFilterConditions ?? false)
                 ->leftJoinWith(self::TREES_TABLE . '.' . self::MARKS_TABLE);
         }
 
@@ -91,11 +94,11 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
     /**
      * @throws FilterQueryException
      */
-    protected function addWhere(QueryInterface $query, array $rawFilter): QueryInterface
+    protected function getFilterConditions(array $rawFilter): callable
     {
         $filterData = $this->transformMarkCriteriaRecursive($rawFilter);
-        $filterQuery = new FilterQueryNode($filterData);
-        return $query->andWhere($filterQuery->getConditions($this->getAllowedTables()));
+        return (new FilterQueryNode($filterData))
+            ->getConditions($this->getAllowedTables());
     }
 
     private function transformMarkCriteriaRecursive(array $filter): array
