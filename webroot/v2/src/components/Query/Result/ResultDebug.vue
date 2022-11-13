@@ -1,7 +1,7 @@
 <template>
   <q-btn
     v-if="expanded === false"
-    class="q-mt-lg"
+    class="q-my-md block"
     color="primary"
     dense
     flat
