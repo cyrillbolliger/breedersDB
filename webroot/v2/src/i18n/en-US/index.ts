@@ -154,6 +154,8 @@ export default {
 
     yes: 'yes',
     no: 'no',
+
+    download: 'Download'
   },
 
   general: {
