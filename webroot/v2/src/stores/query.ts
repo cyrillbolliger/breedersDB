@@ -21,6 +21,7 @@ export interface QueryState {
   filterDragNode: FilterDragNode,
   markFormProperties: MarkFormProperty[],
   filterOptionSchemas: FilterOptionSchemas | undefined,
+  visibleColumns: string[],
 }
 
 export const useQueryStore = defineStore('query', {
@@ -31,6 +32,7 @@ export const useQueryStore = defineStore('query', {
     filterDragNode: false,
     markFormProperties: [],
     filterOptionSchemas: undefined,
+    visibleColumns: localStorageHelper.getVisibleColumns(),
   }),
 
 
@@ -87,6 +89,10 @@ export const useQueryStore = defineStore('query', {
 
       return (state as QueryState).markFilter;
     },
+
+    getVisibleColumns(state) {
+      return (state as QueryState).visibleColumns;
+    },
   },
 
 
@@ -120,6 +126,11 @@ export const useQueryStore = defineStore('query', {
     setMarkFilter(filter: FilterNode) {
       // use object assign to maintain reactivity
       Object.assign(this.markFilter, filter);
+    },
+
+    setVisibleColumns(columns: string[]) {
+      this.visibleColumns = columns;
+      localStorageHelper.setVisibleColumns(columns);
     },
   },
 });

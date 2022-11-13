@@ -17,20 +17,11 @@ import {useI18n} from 'vue-i18n';
 import {useQueryStore} from 'stores/query';
 import useQueryLocalStorageHelper from 'src/composables/queries/queryLocalStorageHelper';
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', data: string[]): void
-}>()
-
 const props = defineProps({
   columns: {
     type: Object as PropType<QTableColumn[]>,
     required: true,
     default: () => [] as QTableColumn[],
-  },
-  modelValue: {
-    type: Array as PropType<string[]>,
-    required: true,
-    default: () => [] as string[],
   }
 });
 
@@ -56,8 +47,8 @@ const allColumnNames = computed<string[]>(() => {
 })
 
 const visibleColumns = computed<string[]>({
-  get: (): string[] => props.modelValue || [],
-  set: (values: string[]) => emit('update:modelValue', values),
+  get: (): string[] => store.getVisibleColumns,
+  set: (values: string[]) => store.setVisibleColumns(values),
 });
 
 const availableColumnsOption = computed<{ label: string, value: string }[]>(() => {

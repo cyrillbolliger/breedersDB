@@ -21,7 +21,6 @@
   >
     <template #top-right>
       <ResultTableColumnSelector
-        v-model="visibleColumns"
         :columns="columns"
       />
 
@@ -58,7 +57,6 @@ import {useI18n} from 'vue-i18n';
 import ResultTableColumnSelector from 'components/Query/Result/ResultTableColumnSelector.vue';
 import ResultTableCell from 'components/Query/Result/ResultTableCell.vue';
 import ResultTableHeaderCell from 'components/Query/Result/ResultTableHeaderCell.vue';
-import useQueryLocalStorageHelper from 'src/composables/queries/queryLocalStorageHelper';
 import useResultColumnConverter from 'src/composables/queries/resultTableColumnConverter';
 
 defineEmits<{
@@ -79,16 +77,17 @@ const ROWS_PER_PAGE = 100;
 
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore();
-const localStorageHelper = useQueryLocalStorageHelper();
 const columnConverter = useResultColumnConverter();
 
 const fullscreen = ref(false);
-const visibleColumns = ref<string[]>([]);
-
 const columnOrder = ref<string[]>([]);
 
+const visibleColumns = computed(() => store.getVisibleColumns)
+
 function hideColumn(name: string) {
-  visibleColumns.value = visibleColumns.value.filter(column => column !== name);
+  store.setVisibleColumns(
+    store.getVisibleColumns.filter(column => column !== name)
+  );
 }
 
 const baseTableName = computed(() => {
@@ -218,7 +217,6 @@ watch(page, num => pagination.value.page = num);
 watch(sortBy, col => pagination.value.sortBy = col);
 watch(descending, order => pagination.value.descending = order);
 watch(rowsPerPage, limit => pagination.value.rowsPerPage = limit);
-watch(visibleColumns, cols => localStorageHelper.setVisibleColumns(cols));
 
 onMounted(() => {
   void store.maybeLoadMarkFormProperties();
