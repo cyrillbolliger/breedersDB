@@ -8,6 +8,10 @@
       @requestData="requestData"
     />
 
+    <ResultDownload
+      :enabled="!loading && !!result"
+    />
+
     <ResultDebug
       v-if="result?.debug"
       :data="result.debug"
@@ -33,6 +37,7 @@ import useApi from 'src/composables/api';
 import {debounce, QTable} from 'quasar';
 import {QueryResponse} from 'src/models/query/query';
 import ResultsTable from 'components/Query/Result/ResultTable.vue';
+import ResultDownload from 'components/Query/Result/ResultDownload.vue';
 import ResultDebug from 'components/Query/Result/ResultDebug.vue';
 
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
