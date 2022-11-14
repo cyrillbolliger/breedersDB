@@ -50,24 +50,30 @@ async function download() {
     columns: queryStore.getVisibleColumns,
   }
 
-  const resp = await useApi().post<typeof data, { data: Blob }>(
+  const resp = await useApi().post<typeof data, string>(
     'queries/download',
     data,
     () => loading.value = false,
-    {responseType: 'blob', timeout: 60000}
-  );
+    {timeout: 60000}
+  ) as string;
 
-  triggerDownload(resp as { data: Blob });
+  const mimeType = 'application/vnd.openxmlformatsofficedocument.spreadsheetml.sheet';
+
+  const blob = await fetch(`data:${mimeType};base64,${resp}`)
+    .then(data => data.blob());
+
+  triggerDownload(blob);
 }
 
-function triggerDownload(resp: { data: Blob }) {
-  const url = URL.createObjectURL(new Blob([resp.data], {type: 'application/vnd.openxmlformatsofficedocument.spreadsheetml.sheet'}));
+function triggerDownload(blob: Blob) {
+  const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
   link.setAttribute('download', filename.value);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
 
 </script>
