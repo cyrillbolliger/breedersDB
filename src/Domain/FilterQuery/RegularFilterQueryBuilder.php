@@ -23,6 +23,10 @@ class RegularFilterQueryBuilder extends FilterQueryBuilder
         if (!empty($this->rawQuery['baseFilter'])) {
             $this->addWhere();
         }
+
+        if (!empty($this->rawQuery['columns'])) {
+            $this->setColumns();
+        }
     }
 
     /**
@@ -32,5 +36,10 @@ class RegularFilterQueryBuilder extends FilterQueryBuilder
     {
         $filterQuery = new FilterQueryNode($this->rawQuery['baseFilter']);
         $this->query->andWhere($filterQuery->getConditions([$this->baseTable]));
+    }
+
+    private function setColumns(): void
+    {
+        $this->query->select($this->rawQuery['columns']);
     }
 }

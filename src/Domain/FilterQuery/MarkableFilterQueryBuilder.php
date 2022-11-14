@@ -6,7 +6,7 @@ namespace App\Domain\FilterQuery;
 
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\FactoryLocator;
-use Cake\Datasource\QueryInterface;
+use Cake\ORM\Query;
 
 class MarkableFilterQueryBuilder extends FilterQueryBuilder
 {
@@ -72,23 +72,35 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
             $markFilterConditions = $this->getFilterConditions($this->rawQuery['markFilter']);
         }
 
-        /** @noinspection ProperNullCoalescingOperatorUsageInspection */
+        if (!empty($this->rawQuery['columns'])) {
+            /** @noinspection ProperNullCoalescingOperatorUsageInspection */
+            $columnLimitedMarkFilterConditions = $this->getColumnLimitedMarkFilterConditions(
+                $this->rawQuery['columns'],
+                $markFilterConditions ?? false
+            );
+        }
+
+        $containCondition = $columnLimitedMarkFilterConditions ?? $markFilterConditions ?? false;
+
         $query = $this->table
             ->find()
             ->distinct($tablePrimaryKey)
-            ->contain(self::MARKS_TABLE, $markFilterConditions ?? false)
+            ->contain(self::MARKS_TABLE, $containCondition)
             ->leftJoinWith(self::MARKS_TABLE)
             ->where(fn(QueryExpression $exp) => $exp->in($tablePrimaryKey, $subQuery));
 
 
         if ($this->isVarietyQuery()) {
             // add tree marks
-            /** @noinspection ProperNullCoalescingOperatorUsageInspection */
-            $query->contain(self::TREES_TABLE . '.' . self::MARKS_TABLE, $markFilterConditions ?? false)
+            $query->contain(self::TREES_TABLE . '.' . self::MARKS_TABLE, $containCondition)
                 ->leftJoinWith(self::TREES_TABLE . '.' . self::MARKS_TABLE);
         }
 
         $this->query = $query;
+
+        if (!empty($this->rawQuery['columns'])) {
+            $this->setColumns();
+        }
     }
 
     /**
@@ -128,15 +140,15 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
             return;
         }
 
-        $matches = [];
-        if (!preg_match('/Mark\.(\d+)/', $rule['column']['value'], $matches)) {
+        $markPropertyId = $this->parseMarkPropertyId($rule['column']['value']);
+        if (!$markPropertyId) {
             return;
         }
 
         $rule1 = [
             'column' => ['value' => 'MarksView.property_id'],
             'comparator' => ['value' => '==='],
-            'criteria' => (int)$matches[1]
+            'criteria' => $markPropertyId
         ];
         $rule2 = [
             'column' => ['value' => 'MarksView.value'],
@@ -160,8 +172,72 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
         $filterNode['children'] = [$node1, $node2];
     }
 
+    private function parseMarkPropertyId(string $columnName): int|null
+    {
+        $matches = [];
+        if (!preg_match('/Mark\.(\d+)/', $columnName, $matches)) {
+            return null;
+        }
+        return (int)$matches[1];
+    }
+
     protected function getAllowedTables(): array
     {
         return [$this->baseTable, self::MARKS_TABLE];
+    }
+
+    private function getColumnLimitedMarkFilterConditions(array $columns, callable|bool $markFilterConditions): callable
+    {
+        $conditionExp = function (QueryExpression $exp) use ($columns, $markFilterConditions): QueryExpression {
+            $columnConditions = [];
+            foreach ($columns as $column) {
+                $propertyId = $this->parseMarkPropertyId($column);
+                if ($propertyId) {
+                    $columnConditions[$propertyId] = $exp->eq('MarksView.property_id', $propertyId);
+                }
+            }
+
+            if ($markFilterConditions) {
+                return $exp->and([
+                                     $markFilterConditions,
+                                     $exp->or($columnConditions)
+                                 ]);
+            }
+
+            return $exp->or($columnConditions);
+        };
+
+
+        return static function (QueryExpression|Query $exp) use ($conditionExp) {
+            if ($exp instanceof Query) {
+                return $exp->andWhere(
+                    fn(QueryExpression $queryExp) => $conditionExp($queryExp)
+                );
+            }
+
+            return $conditionExp($exp);
+        };
+    }
+
+    private function setColumns(): void
+    {
+        $frontendColumns = $this->rawQuery['columns'];
+
+        $sqlColumns = [];
+        foreach ($frontendColumns as $column) {
+            $markPropertyId = $this->parseMarkPropertyId($column);
+            if (!$markPropertyId) {
+                // only add regular columns. The marks are limited by the contain expression
+                $sqlColumns[] = $column;
+            }
+        }
+
+        // the ORM requires the primary key
+        $primaryKey = "{$this->baseTable}.id";
+        if (!in_array($primaryKey, $sqlColumns, true)) {
+            $sqlColumns[] = $primaryKey;
+        }
+
+        $this->query->select($sqlColumns);
     }
 }
