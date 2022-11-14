@@ -120,8 +120,11 @@ abstract class FilterQueryBuilder
                 return null;
             }
 
-            $this->query->offset($this->getOffset());
-            $this->query->limit($this->getLimit());
+            if ($this->getLimit()) {
+                $this->query->limit($this->getLimit());
+                $this->query->offset($this->getOffset());
+            }
+
             $this->query->order([$this->getSortBy() => $this->getOrder()]);
         }
 
