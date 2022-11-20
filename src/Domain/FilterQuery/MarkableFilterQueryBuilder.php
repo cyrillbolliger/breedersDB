@@ -86,7 +86,7 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
             ->find()
             ->distinct($tablePrimaryKey)
             ->contain(self::MARKS_TABLE, $containCondition)
-            ->leftJoinWith(self::MARKS_TABLE)
+            ->leftJoinWith(self::MARKS_TABLE, $containCondition)
             ->where(fn(QueryExpression $exp) => $exp->in($tablePrimaryKey, $subQuery));
 
 
@@ -189,22 +189,22 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
     private function getColumnLimitedMarkFilterConditions(array $columns, callable|bool $markFilterConditions): callable
     {
         $conditionExp = function (QueryExpression $exp) use ($columns, $markFilterConditions): QueryExpression {
-            $columnConditions = [];
+            $propertyIds = [];
             foreach ($columns as $column) {
                 $propertyId = $this->parseMarkPropertyId($column);
                 if ($propertyId) {
-                    $columnConditions[$propertyId] = $exp->eq('MarksView.property_id', $propertyId);
+                    $propertyIds[$propertyId] = $propertyId;
                 }
             }
 
+            // join only marks with the given property ids
+            $markPropertyCondition = $exp->in('MarksView.property_id', $propertyIds);
+
             if ($markFilterConditions) {
-                return $exp->and([
-                                     $markFilterConditions,
-                                     $exp->or($columnConditions)
-                                 ]);
+                return $exp->and([$markFilterConditions, $markPropertyCondition]);
             }
 
-            return $exp->or($columnConditions);
+            return $markPropertyCondition;
         };
 
 
