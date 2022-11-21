@@ -18,6 +18,8 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 
 /**
  * Application Controller
@@ -107,6 +109,10 @@ class REST1Controller extends Controller {
         if ( ! $this->Auth->user() ) {
             $this->Auth->setConfig( 'authError', false );
         }
+
+        // disable date and time formatting for the JSON api
+        FrozenDate::setDefaultLocale('en_US');
+        FrozenTime::setDefaultLocale('en_US');
     }
 
     /**
