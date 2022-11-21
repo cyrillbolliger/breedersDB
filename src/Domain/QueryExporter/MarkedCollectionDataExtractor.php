@@ -42,6 +42,10 @@ class MarkedCollectionDataExtractor extends DataExtractor
             return;
         }
 
+        // set mark key to an invalid value so the get
+        // marks method will grab the tree mark.
+        $this->currentKey['mark'] = -2;
+
         if ($this->hasMoreTreeMarks()) {
             $this->currentKey['tree.mark']++;
             return;
