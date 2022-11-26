@@ -4,6 +4,7 @@ use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
 use Cake\Error\ExceptionRenderer;
+use Cake\Error\Renderer\WebExceptionRenderer;
 use Cake\Http\Exception\InvalidCsrfTokenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Exception\UnauthorizedException;
@@ -188,7 +189,7 @@ return [
      */
     'Error' => [
         'errorLevel' => E_ALL,
-        'exceptionRenderer' => ExceptionRenderer::class,
+        'exceptionRenderer' => WebExceptionRenderer::class,
         'skipLog' => [
             NotFoundException::class,
             UnauthorizedException::class,
