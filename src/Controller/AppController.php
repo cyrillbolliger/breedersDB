@@ -73,7 +73,10 @@ class AppController extends Controller {
                 'controller' => 'Users',
                 'action'     => 'login'
             ],
-            'unauthorizedRedirect' => $this->referer() // If unauthorized, return them to page they were just on
+            'unauthorizedRedirect' => [
+                'controller' => 'Users',
+                'action' => 'login',
+            ],
         ] );
 
         FrozenTime::setToStringFormat( __x( 'datetime format', 'dd.MM.yyyy HH:mm' ) );
