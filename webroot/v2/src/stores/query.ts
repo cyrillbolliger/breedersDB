@@ -93,13 +93,23 @@ export const useQueryStore = defineStore('query', {
     },
 
     getVisibleColumns(state) {
-      return (state as QueryState).visibleColumns;
+      const columns = (state as QueryState).visibleColumns;
+      const baseTable = (state as QueryState).baseTable;
+      const marksAvailable = this.marksAvailable;
+
+      return columns.filter((col: string): boolean => {
+        if (col.startsWith(`${baseTable}View.`)) {
+          return true;
+        }
+
+        return marksAvailable && col.startsWith('Mark.');
+      });
     },
 
-    hasVisibleMarkColumns(state) {
+    hasVisibleMarkColumns(): boolean {
       // noinspection JSIncompatibleTypesComparison
-      return (state as QueryState).visibleColumns
-        .find((col: string) => col.startsWith('Mark.')) !== undefined
+      return this.getVisibleColumns
+        .find((col: string): boolean => col.startsWith('Mark.')) !== undefined;
     },
 
     rowsWithMarksOnly(state) {
