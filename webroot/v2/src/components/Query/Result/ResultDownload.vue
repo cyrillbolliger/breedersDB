@@ -48,6 +48,7 @@ async function download() {
     baseFilter: queryStore.baseFilter,
     markFilter: queryStore.marksAvailable ? queryStore.markFilter : null,
     columns: queryStore.getVisibleColumns,
+    onlyRowsWithMarks: queryStore.rowsWithMarksOnly,
   }
 
   const resp = await useApi().post<typeof data, string>(

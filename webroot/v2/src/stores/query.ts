@@ -101,6 +101,14 @@ export const useQueryStore = defineStore('query', {
       return (state as QueryState).visibleColumns
         .find((col: string) => col.startsWith('Mark.')) !== undefined
     },
+
+    rowsWithMarksOnly(state) {
+      if (!this.marksAvailable || !this.hasVisibleMarkColumns) {
+        return false;
+      }
+
+      return !(state as QueryState).showRowsWithoutMarks
+    },
   },
 
 

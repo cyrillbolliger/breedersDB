@@ -8,6 +8,7 @@ use App\Model\Entity\BatchesView;
 use App\Model\Entity\MarksView;
 use App\Model\Entity\TreesView;
 use App\Model\Entity\VarietiesView;
+use Cake\Collection\CollectionInterface;
 use Cake\Datasource\FactoryLocator;
 use Cake\ORM\Entity;
 
@@ -34,6 +35,15 @@ class MarkedCollectionDataExtractor extends DataExtractor
     ];
 
     private Entity $currentRow;
+
+    public function __construct(
+        CollectionInterface $collection,
+        array $columnKeys,
+        private readonly bool $onlyRowsWithMarks,
+    ) {
+        parent::__construct($collection, $columnKeys);
+        $this->rewind();
+    }
 
     public function next(): void
     {
@@ -66,6 +76,10 @@ class MarkedCollectionDataExtractor extends DataExtractor
         $this->currentKey['tree'] = 0;
         $this->currentKey['tree.mark'] = 0;
         $this->collection->next();
+
+        if ($this->onlyRowsWithMarks) {
+            $this->advanceCursorUntilRowWithMarks();
+        }
     }
 
     private function hasMoreMarks(): bool
@@ -252,6 +266,17 @@ class MarkedCollectionDataExtractor extends DataExtractor
             'tree.mark' => 0,
         ];
         $this->collection->rewind();
+
+        if ($this->onlyRowsWithMarks) {
+            $this->advanceCursorUntilRowWithMarks();
+        }
+    }
+
+    private function advanceCursorUntilRowWithMarks(): void
+    {
+        while ($this->valid() && !$this->getMark() && !$this->getTreeMark()) {
+            $this->next();
+        }
     }
 
     public function getHeaders(): array

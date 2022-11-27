@@ -96,7 +96,7 @@ class QueriesController extends REST1Controller
             'order' => $order,
             'limit' => $limit,
             'schema' => $schema,
-            'results' => $results?->toArray(false),
+            'results' => $results?->compile(false),
             'debug' => Configure::read('debug', false)
                 ? $queryBuilder->getSql()
                 : null
@@ -125,9 +125,16 @@ class QueriesController extends REST1Controller
         }
 
         if ($queryBuilder instanceof MarkableFilterQueryBuilder) {
-            $dataExtractor = new MarkedCollectionDataExtractor($results, $this->request->getData('data.columns'), []);
+            $dataExtractor = new MarkedCollectionDataExtractor(
+                $results,
+                $this->request->getData('data.columns', []),
+                $this->request->getData('data.onlyRowsWithMarks', false),
+            );
         } else {
-            $dataExtractor = new RegularCollectionDataExtractor($results, $this->request->getData('data.columns'), []);
+            $dataExtractor = new RegularCollectionDataExtractor(
+                $results,
+                $this->request->getData('data.columns', []),
+            );
         }
 
         $exporter = new ExcelExporter($dataExtractor);
