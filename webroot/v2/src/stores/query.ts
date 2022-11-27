@@ -22,6 +22,7 @@ export interface QueryState {
   markFormProperties: MarkFormProperty[],
   filterOptionSchemas: FilterOptionSchemas | undefined,
   visibleColumns: string[],
+  showRowsWithoutMarks: boolean,
 }
 
 export const useQueryStore = defineStore('query', {
@@ -33,6 +34,7 @@ export const useQueryStore = defineStore('query', {
     markFormProperties: [],
     filterOptionSchemas: undefined,
     visibleColumns: localStorageHelper.getVisibleColumns(),
+    showRowsWithoutMarks: localStorageHelper.getShowRowsWithoutMarks(true),
   }),
 
 
@@ -93,6 +95,12 @@ export const useQueryStore = defineStore('query', {
     getVisibleColumns(state) {
       return (state as QueryState).visibleColumns;
     },
+
+    hasVisibleMarkColumns(state) {
+      // noinspection JSIncompatibleTypesComparison
+      return (state as QueryState).visibleColumns
+        .find((col: string) => col.startsWith('Mark.')) !== undefined
+    },
   },
 
 
@@ -131,6 +139,11 @@ export const useQueryStore = defineStore('query', {
     setVisibleColumns(columns: string[]) {
       this.visibleColumns = columns;
       localStorageHelper.setVisibleColumns(columns);
+    },
+
+    setShowRowsWithoutMarks(show: boolean) {
+      this.showRowsWithoutMarks = show;
+      localStorageHelper.setShowRowsWithoutMarks(show);
     },
   },
 });

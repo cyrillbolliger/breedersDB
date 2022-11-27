@@ -84,6 +84,28 @@ function getMarkFilterKey() {
   return `breedersdb_query_mark_filter--${baseTableName}`;
 }
 
+function setShowRowsWithoutMarks(show: boolean) {
+  window.localStorage.setItem(
+    getShowRowsWithoutMarksKey(),
+    JSON.stringify(show)
+  );
+}
+
+function getShowRowsWithoutMarks(defaultValue: boolean): boolean {
+  const encoded = window.localStorage.getItem(getShowRowsWithoutMarksKey())
+
+  // noinspection JSIncompatibleTypesComparison
+  if (null === encoded) {
+    return defaultValue
+  }
+
+  return JSON.parse(encoded) as boolean;
+}
+
+function getShowRowsWithoutMarksKey() {
+  return 'breedersdb_query_show_rows_without_marks';
+}
+
 export default function useQueryLocalStorageHelper() {
   return {
     setVisibleColumns,
@@ -94,5 +116,7 @@ export default function useQueryLocalStorageHelper() {
     getBaseFilter,
     setMarkFilter,
     getMarkFilter,
+    setShowRowsWithoutMarks,
+    getShowRowsWithoutMarks,
   }
 }

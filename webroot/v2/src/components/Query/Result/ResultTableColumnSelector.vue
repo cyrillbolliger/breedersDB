@@ -7,6 +7,11 @@
     use-input
     @filter="filterFn"
     @update:model-value="option => showColumn(option.value)"
+    dense
+    bg-color="white"
+    autocomplete="off"
+    hide-bottom-space
+    outlined
   />
 </template>
 <script lang="ts" setup>
@@ -116,6 +121,7 @@ function resetVisibleColumnsOnBaseTableChange() {
 }
 
 watch(allColumnNames, resetVisibleColumnsOnBaseTableChange);
+watch(baseTable, resetVisibleColumnsOnBaseTableChange)
 
 </script>
 

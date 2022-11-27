@@ -137,6 +137,7 @@ export default {
     invalidNoResults: 'Invalid filter rules. Rectify or delete them to get results.',
     results: 'Results',
     addColumn: 'Add Column',
+    showRowsWithoutMarks: 'Show rows without marks',
 
     debugShow: 'Show debug info',
     debugHide: 'Hide debug info',

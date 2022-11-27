@@ -51,11 +51,22 @@ const baseTable = computed(() => queryStore.baseTable);
 const baseFilter = computed(() => queryStore.getBaseFilter);
 const markFilter = computed(() => queryStore.getMarkFilter);
 const marksAvailable = computed<boolean>(() => queryStore.marksAvailable);
+const showRowsWithoutMarks = computed<boolean>(() => queryStore.showRowsWithoutMarks);
+const hasVisibleMarkColumns = computed(() => queryStore.hasVisibleMarkColumns);
+const visibleColumns = computed(() => queryStore.getVisibleColumns)
 
 const isValid = computed(() => {
   return marksAvailable.value
     ? baseFilter.value.isValid() && markFilter.value.isValid()
     : baseFilter.value.isValid()
+})
+
+const fetchOnlyRowsWithMarks = computed(() => {
+  if (!marksAvailable.value || !hasVisibleMarkColumns.value) {
+    return false;
+  }
+
+  return showRowsWithoutMarks.value
 })
 
 function requestData(requestProps: Parameters<QTable['onRequest']>[0]) {
@@ -95,6 +106,8 @@ async function loadResults(pagination?: { offset: number, sortBy: string | null,
     baseTable: baseTable.value,
     baseFilter: baseFilter.value,
     markFilter: marksAvailable.value ? markFilter.value : null,
+    onlyRowsWithMarks: fetchOnlyRowsWithMarks.value,
+    columns: visibleColumns.value,
   }
 
   result.value = null;
@@ -116,6 +129,13 @@ onMounted(queueLoadResults);
 watch(baseFilter.value, queueLoadResults);
 watch(markFilter.value, queueLoadResults);
 watch(baseTable, queueLoadResults);
+watch(showRowsWithoutMarks, queueLoadResults);
+watch(visibleColumns, (after, before) => {
+  if (after.length > before.length) {
+    // more columns selected
+    queueLoadResults()
+  }
+});
 </script>
 
 <style scoped>

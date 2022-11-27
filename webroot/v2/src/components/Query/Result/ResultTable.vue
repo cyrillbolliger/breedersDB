@@ -20,8 +20,16 @@
     @request="event => $emit('requestData', event)"
   >
     <template #top-right>
+      <q-toggle
+        v-if="hasVisibleMarkColumns"
+        v-model="showRowsWithoutMarks"
+        :label="t('queries.showRowsWithoutMarks')"
+        dense
+      />
+
       <ResultTableColumnSelector
         :columns="columns"
+        class="q-ml-lg"
       />
 
       <q-btn
@@ -83,6 +91,12 @@ const fullscreen = ref(false);
 const columnOrder = ref<string[]>([]);
 
 const visibleColumns = computed(() => store.getVisibleColumns)
+const hasVisibleMarkColumns = computed(() => store.hasVisibleMarkColumns);
+
+const showRowsWithoutMarks = computed<boolean>({
+  get: () => store.showRowsWithoutMarks,
+  set: (show: boolean) => store.setShowRowsWithoutMarks(show),
+});
 
 function hideColumn(name: string) {
   store.setVisibleColumns(
@@ -236,11 +250,15 @@ onMounted(() => {
 }
 
 /*noinspection CssUnusedSymbol*/
-.query-result-table .q-table__top,
-.query-result-table .q-table__bottom,
 .query-result-table thead tr:first-child th {
   /* bg color is important for th; just specify one */
   background-color: #ffffff;
+}
+
+/*noinspection CssUnusedSymbol*/
+.query-result-table .q-table__bottom,
+.query-result-table .q-table__top {
+  background-color: #efefef;
 }
 
 .query-result-table thead tr th {
