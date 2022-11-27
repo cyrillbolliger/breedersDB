@@ -66,7 +66,7 @@ const fetchOnlyRowsWithMarks = computed(() => {
     return false;
   }
 
-  return showRowsWithoutMarks.value
+  return !showRowsWithoutMarks.value
 })
 
 function requestData(requestProps: Parameters<QTable['onRequest']>[0]) {
@@ -130,12 +130,7 @@ watch(baseFilter.value, queueLoadResults);
 watch(markFilter.value, queueLoadResults);
 watch(baseTable, queueLoadResults);
 watch(showRowsWithoutMarks, queueLoadResults);
-watch(visibleColumns, (after, before) => {
-  if (after.length > before.length) {
-    // more columns selected
-    queueLoadResults()
-  }
-});
+watch(visibleColumns, queueLoadResults);
 </script>
 
 <style scoped>
