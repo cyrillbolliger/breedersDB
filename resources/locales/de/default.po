@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2022-10-29 18:29+0000\n"
-"PO-Revision-Date: 2022-10-31 21:13\n"
+"POT-Creation-Date: 2022-11-27 20:32+0000\n"
+"PO-Revision-Date: 2022-11-27 20:33\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -16,12 +16,12 @@ msgstr ""
 "X-Crowdin-File-ID: 25\n"
 "Language: de_CH\n"
 
-#: ./src/Controller/AppController.php:79
+#: ./src/Controller/AppController.php:82
 msgctxt "datetime format"
 msgid "dd.MM.yyyy HH:mm"
 msgstr "dd.MM.yyyy HH:mm"
 
-#: ./src/Controller/AppController.php:80
+#: ./src/Controller/AppController.php:83
 msgctxt "date format"
 msgid "dd.MM.yyyy"
 msgstr "dd.MM.yyyy"
@@ -69,6 +69,8 @@ msgstr "Normal"
 
 #: ./src/Controller/Component/ExcelComponent.php:97
 #: ./src/Controller/Component/ExcelComponent.php:98
+#: ./src/Domain/QueryExporter/ExcelExporter.php:42
+#: ./src/Domain/QueryExporter/ExcelExporter.php:43
 msgid "Breeders Database"
 msgstr "Züchter-Datenbank"
 
@@ -482,6 +484,14 @@ msgstr "Die Sorte wurde gelöscht."
 #: ./src/Controller/VarietiesController.php:184
 msgid "The variety could not be deleted. Please, try again."
 msgstr "Die Sorte konnte nicht gelöscht werden. Bitte versuche es erneut."
+
+#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:288
+#: ./templates/element/Mark/list.php:8
+#: ./templates/element/MarkView/tooltip.php:37
+#: ./templates/element/MarkView/tooltip.php:83
+#: ./templates/element/MarkView/tooltip.php:121
+msgid "Marked object"
+msgstr "Bewertetes Objekt"
 
 #: ./src/Model/Behavior/GetFilterDataBehavior.php:150
 #: ./src/Model/Behavior/GetFilterDataBehavior.php:153
@@ -2556,13 +2566,6 @@ msgstr "Gib \"{now}\" (wörtlich) ein, um einen Scannercode zu erhalten, der imm
 #: ./templates/element/Mark/index_table.php:56
 msgid "Are you sure you want to delete the Mark with the id {0}?"
 msgstr "Bewertung mit der id {0} wirklich löschen?"
-
-#: ./templates/element/Mark/list.php:8
-#: ./templates/element/MarkView/tooltip.php:37
-#: ./templates/element/MarkView/tooltip.php:83
-#: ./templates/element/MarkView/tooltip.php:121
-msgid "Marked object"
-msgstr "Bewertetes Objekt"
 
 #: ./templates/element/Mark/list.php:9
 msgid "Exceptional"

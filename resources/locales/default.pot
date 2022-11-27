@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-10-31 14:44+0000\n"
+"POT-Creation-Date: 2022-11-27 21:09+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,12 +14,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./src/Controller/AppController.php:79
+#: ./src/Controller/AppController.php:82
 msgctxt "datetime format"
 msgid "dd.MM.yyyy HH:mm"
 msgstr ""
 
-#: ./src/Controller/AppController.php:80
+#: ./src/Controller/AppController.php:83
 msgctxt "date format"
 msgid "dd.MM.yyyy"
 msgstr ""
@@ -67,6 +67,8 @@ msgstr ""
 
 #: ./src/Controller/Component/ExcelComponent.php:97
 #: ./src/Controller/Component/ExcelComponent.php:98
+#: ./src/Domain/QueryExporter/ExcelExporter.php:42
+#: ./src/Domain/QueryExporter/ExcelExporter.php:43
 msgid "Breeders Database"
 msgstr ""
 
@@ -479,6 +481,14 @@ msgstr ""
 
 #: ./src/Controller/VarietiesController.php:184
 msgid "The variety could not be deleted. Please, try again."
+msgstr ""
+
+#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:288
+#: ./templates/element/Mark/list.php:8
+#: ./templates/element/MarkView/tooltip.php:37
+#: ./templates/element/MarkView/tooltip.php:83
+#: ./templates/element/MarkView/tooltip.php:121
+msgid "Marked object"
 msgstr ""
 
 #: ./src/Model/Behavior/GetFilterDataBehavior.php:150
@@ -2553,13 +2563,6 @@ msgstr ""
 
 #: ./templates/element/Mark/index_table.php:56
 msgid "Are you sure you want to delete the Mark with the id {0}?"
-msgstr ""
-
-#: ./templates/element/Mark/list.php:8
-#: ./templates/element/MarkView/tooltip.php:37
-#: ./templates/element/MarkView/tooltip.php:83
-#: ./templates/element/MarkView/tooltip.php:121
-msgid "Marked object"
 msgstr ""
 
 #: ./templates/element/Mark/list.php:9
