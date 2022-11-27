@@ -67,39 +67,37 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
             $subQuery = $baseSubQuery->leftJoinWith(self::MARKS_TABLE);
         }
 
+        $query = $this->table
+            ->find()
+            ->distinct($tablePrimaryKey)
+            ->where(fn(QueryExpression $exp) => $exp->in($tablePrimaryKey, $subQuery));
 
         if (!empty($this->rawQuery['markFilter'])) {
             $markFilterConditions = $this->getFilterConditions($this->rawQuery['markFilter']);
         }
 
-        if (!empty($this->rawQuery['columns'])) {
-            /** @noinspection ProperNullCoalescingOperatorUsageInspection */
-            $columnLimitedMarkFilterConditions = $this->getColumnLimitedMarkFilterConditions(
-                $this->rawQuery['columns'],
-                $markFilterConditions ?? false
-            );
-        }
+        /** @noinspection ProperNullCoalescingOperatorUsageInspection */
+        $columnLimitedMarkFilterConditions = $this->getColumnLimitedMarkFilterConditions(
+            $this->rawQuery['columns'],
+            $markFilterConditions ?? false
+        );
 
-        $containCondition = $columnLimitedMarkFilterConditions ?? $markFilterConditions ?? false;
+        if ($this->hasMarkColumns()) {
+            $containCondition = $columnLimitedMarkFilterConditions ?? $markFilterConditions ?? false;
+            $query->contain(self::MARKS_TABLE, $containCondition)
+                ->leftJoinWith(self::MARKS_TABLE, $containCondition);
 
-        $query = $this->table
-            ->find()
-            ->distinct($tablePrimaryKey)
-            ->contain(self::MARKS_TABLE, $containCondition)
-            ->leftJoinWith(self::MARKS_TABLE, $containCondition)
-            ->where(fn(QueryExpression $exp) => $exp->in($tablePrimaryKey, $subQuery));
-
-
-        if ($this->isVarietyQuery()) {
-            // add tree marks
-            $query->contain(self::TREES_TABLE . '.' . self::MARKS_TABLE, $containCondition)
-                ->leftJoinWith(self::TREES_TABLE . '.' . self::MARKS_TABLE);
+            if ($this->isVarietyQuery()) {
+                // add tree marks
+                $query->contain(self::TREES_TABLE . '.' . self::MARKS_TABLE, $containCondition)
+                    ->leftJoinWith(self::TREES_TABLE . '.' . self::MARKS_TABLE);
+            }
         }
 
         $this->query = $query;
 
-        if (!empty($this->rawQuery['columns'])) {
-            $this->setColumns();
+        $this->setColumns();
+
         }
     }
 
@@ -240,4 +238,16 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
 
         $this->query->select($sqlColumns);
     }
+
+    private function hasMarkColumns(): bool
+    {
+        foreach ($this->rawQuery['columns'] as $column) {
+            if (str_starts_with($column, 'Mark.')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

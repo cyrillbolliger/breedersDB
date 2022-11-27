@@ -24,9 +24,7 @@ class RegularFilterQueryBuilder extends FilterQueryBuilder
             $this->addWhere();
         }
 
-        if (!empty($this->rawQuery['columns'])) {
-            $this->setColumns();
-        }
+        $this->setColumns();
     }
 
     /**
@@ -40,6 +38,11 @@ class RegularFilterQueryBuilder extends FilterQueryBuilder
 
     private function setColumns(): void
     {
+        if (empty($this->rawQuery['columns'])) {
+            $this->query->select(['id']);
+            return;
+        }
+
         $this->query->select($this->rawQuery['columns']);
     }
 }
