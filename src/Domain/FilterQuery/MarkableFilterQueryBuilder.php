@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\FilterQuery;
 
+use App\Model\Entity\BatchesView;
+use App\Model\Entity\TreesView;
+use App\Model\Entity\VarietiesView;
+use Cake\Collection\CollectionInterface;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\FactoryLocator;
+use Cake\Datasource\QueryInterface;
 use Cake\ORM\Query;
 
 class MarkableFilterQueryBuilder extends FilterQueryBuilder
@@ -14,23 +19,67 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
     private const VARIETIES_TABLE = 'VarietiesView';
     private const TREES_TABLE = 'TreesView';
 
-    protected function getSchema(): array|null
+    private CollectionInterface $results;
+
+    public function getCount(): int|null
     {
-        $schemas = [
-            $this->baseTable => $this->getFilterSchema($this->table),
-            'MarksView' => $this->getFilterSchema(FactoryLocator::get('Table')->get('MarksView')),
-        ];
-
-        if ($this->isVarietyQuery()) {
-            $schemas['TreesView'] = $this->getFilterSchema(FactoryLocator::get('Table')->get('TreesView'));
-        }
-
-        return $schemas;
+        return $this->getAllResults()?->count();
     }
 
-    private function isVarietyQuery(): bool
+    private function getAllResults(): CollectionInterface|null
     {
-        return $this->baseTable === self::VARIETIES_TABLE;
+        if (isset($this->results)) {
+            return $this->results;
+        }
+
+        $collection = $this->getQuery()?->all();
+
+        if (!$collection) {
+            return null;
+        }
+
+        if ($this->rawQuery['onlyRowsWithMarks']) {
+            $collection = $collection->filter(function (BatchesView|TreesView|VarietiesView $entry) {
+                if (!empty($entry->marks_view)) {
+                    return true;
+                }
+
+                /** @noinspection NotOptimalIfConditionsInspection */
+                if ($this->isVarietyQuery() && !empty($entry->trees_view)) {
+                    foreach ($entry->trees_view as $tree) {
+                        if (!empty($tree->marks_view)) {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            });
+        }
+
+        $this->results = $collection;
+
+        return $this->results;
+    }
+
+    protected function getQuery(): QueryInterface|null
+    {
+        if (!isset($this->query)) {
+            if (!$this->isValid()) {
+                return null;
+            }
+
+            try {
+                $this->buildQuery();
+            } catch (FilterQueryException $e) {
+                $this->addError($e->getMessage());
+                return null;
+            }
+
+            $this->query->order([$this->getSortBy() => $this->getOrder()]);
+        }
+
+        return $this->query;
     }
 
     protected function buildQuery(): void
@@ -97,8 +146,6 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
         $this->query = $query;
 
         $this->setColumns();
-
-        }
     }
 
     /**
@@ -217,6 +264,17 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
         };
     }
 
+    private function hasMarkColumns(): bool
+    {
+        foreach ($this->rawQuery['columns'] as $column) {
+            if (str_starts_with($column, 'Mark.')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function setColumns(): void
     {
         $frontendColumns = $this->rawQuery['columns'];
@@ -239,15 +297,39 @@ class MarkableFilterQueryBuilder extends FilterQueryBuilder
         $this->query->select($sqlColumns);
     }
 
-    private function hasMarkColumns(): bool
+    public function getResults(): CollectionInterface|null
     {
-        foreach ($this->rawQuery['columns'] as $column) {
-            if (str_starts_with($column, 'Mark.')) {
-                return true;
-            }
+        $collection = $this->getAllResults();
+
+        if (!$collection) {
+            return null;
         }
 
-        return false;
+        if ($this->getLimit()) {
+            $collection = $collection
+                ->skip($this->getOffset())
+                ->take($this->getLimit());
+        }
+
+        return $collection;
     }
 
+    protected function getSchema(): array|null
+    {
+        $schemas = [
+            $this->baseTable => $this->getFilterSchema($this->table),
+            'MarksView' => $this->getFilterSchema(FactoryLocator::get('Table')->get('MarksView')),
+        ];
+
+        if ($this->isVarietyQuery()) {
+            $schemas['TreesView'] = $this->getFilterSchema(FactoryLocator::get('Table')->get('TreesView'));
+        }
+
+        return $schemas;
+    }
+
+    private function isVarietyQuery(): bool
+    {
+        return $this->baseTable === self::VARIETIES_TABLE;
+    }
 }

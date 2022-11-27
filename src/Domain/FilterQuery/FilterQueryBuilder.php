@@ -101,58 +101,11 @@ abstract class FilterQueryBuilder
         return new RegularFilterQueryBuilder($rawQuery);
     }
 
-    public function getCount(): int|null
-    {
-        return $this->getQuery()?->count();
-    }
-
-    public function getQuery(): QueryInterface|null
-    {
-        if (!isset($this->query)) {
-            if (!$this->isValid()) {
-                return null;
-            }
-
-            try {
-                $this->buildQuery();
-            } catch (FilterQueryException $e) {
-                $this->addError($e->getMessage());
-                return null;
-            }
-
-            if ($this->getLimit()) {
-                $this->query->limit($this->getLimit());
-                $this->query->offset($this->getOffset());
-            }
-
-            $this->query->order([$this->getSortBy() => $this->getOrder()]);
-        }
-
-        return $this->query;
-    }
+    abstract public function getCount(): int|null;
 
     public function isValid(): bool
     {
         return empty($this->errors);
-    }
-
-    /**
-     * @throws FilterQueryException
-     */
-    abstract protected function buildQuery(): void;
-
-    public function getOffset(): int
-    {
-        if (!isset($this->offset)) {
-            $this->setOffset();
-        }
-
-        return $this->offset;
-    }
-
-    public function setOffset(int $offset = 0): void
-    {
-        $this->offset = $offset;
     }
 
     public function getLimit(): int
@@ -203,10 +156,7 @@ abstract class FilterQueryBuilder
         $this->order = 'desc' === strtolower($order ?? '') ? 'desc' : 'asc';
     }
 
-    public function getResults(): CollectionInterface|null
-    {
-        return $this->getQuery()?->all();
-    }
+    abstract public function getResults(): CollectionInterface|null;
 
     public function getErrors(): array
     {
@@ -220,6 +170,8 @@ abstract class FilterQueryBuilder
             'params' => $this->getQuery()?->getValueBinder()->bindings(),
         ];
     }
+
+    abstract protected function getQuery(): QueryInterface|null;
 
     public function getCachedSchema(): array|null
     {
@@ -239,7 +191,26 @@ abstract class FilterQueryBuilder
         return $schema;
     }
 
+    public function getOffset(): int
+    {
+        if (!isset($this->offset)) {
+            $this->setOffset();
+        }
+
+        return $this->offset;
+    }
+
+    public function setOffset(int $offset = 0): void
+    {
+        $this->offset = $offset;
+    }
+
     abstract protected function getSchema(): array|null;
+
+    /**
+     * @throws FilterQueryException
+     */
+    abstract protected function buildQuery(): void;
 
     protected function getFilterSchema(RepositoryInterface $table): array|null
     {

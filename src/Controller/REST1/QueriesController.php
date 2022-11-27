@@ -96,7 +96,7 @@ class QueriesController extends REST1Controller
             'order' => $order,
             'limit' => $limit,
             'schema' => $schema,
-            'results' => $results,
+            'results' => $results?->toArray(false),
             'debug' => Configure::read('debug', false)
                 ? $queryBuilder->getSql()
                 : null
