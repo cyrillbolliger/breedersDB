@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\QueryExporter;
 
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
@@ -21,6 +24,7 @@ class ExcelExporter
 
     /**
      * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function generate(): string
     {
@@ -51,13 +55,72 @@ class ExcelExporter
         $this->worksheet->fromArray($columns, null, 'A1', true);
     }
 
+    /**
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     private function setData(): void
     {
         $i = 2; // 1 contains the headers
-        while($row = $this->extractor->current()) {
-            $this->worksheet->fromArray($row, null, "A$i", true);
+        while ($row = $this->extractor->current()) {
+            $this->addRow($i, $row);
             $this->extractor->next();
             $i++;
         }
+    }
+
+    /**
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    private function addRow(int $row, array $data): void
+    {
+        $col = 1;
+        foreach ($data as $val) {
+            $this->addCell($row, $col, $val);
+            $col++;
+        }
+    }
+
+    /**
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    private function addCell(int $row, int $col, mixed $val): void
+    {
+        if ($this->isDate($val)) {
+            $excelTimestamp = Date::timestampToExcel($val->getTimestamp());
+            $this->worksheet->setCellValueByColumnAndRow($col, $row, $excelTimestamp);
+            $this->worksheet->getStyle([$col, $row, $col, $row])
+                ->getNumberFormat()
+                ->setBuiltInFormatCode(14);
+
+            return;
+        }
+
+        $this->worksheet->setCellValueByColumnAndRow($col, $row, $val);
+
+        if ($this->isLink($val)) {
+            $this->worksheet->getCell([$col, $row])
+                ->getHyperlink()
+                ->setUrl($val);
+        }
+    }
+
+    private function isDate(mixed $val): bool
+    {
+        return match (true) {
+            $val instanceof \DateTime,
+                $val instanceof \DateTimeImmutable,
+                $val instanceof FrozenTime,
+                $val instanceof FrozenDate => true,
+            default => false,
+        };
+    }
+
+    private function isLink(mixed $val): bool
+    {
+        if (!is_string($val)) {
+            return false;
+        }
+
+        return 1 === preg_match('/^https?:\/\//', $val);
     }
 }
