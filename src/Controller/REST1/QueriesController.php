@@ -142,4 +142,102 @@ class QueriesController extends REST1Controller
 
         $this->set('data', base64_encode($excelFileAsString));
     }
+
+    public function index()
+    {
+        if (!$this->request->is('get')) {
+            return $this->response
+                ->withStatus(405)
+                ->withAddedHeader('Allow', 'GET');
+        }
+
+        $data = $this->Queries
+            ->find('version1')
+            ->contain('QueryGroups')
+            ->order(['QueryGroups.code', 'Queries.code'])
+            ->all();
+
+        $this->set('data', $data);
+    }
+
+    public function add()
+    {
+        if (!$this->request->is('post')) {
+            return $this->response
+                ->withStatus(405)
+                ->withAddedHeader('Allow', 'POST');
+        }
+
+        $query = $this->Queries->newEmptyEntity();
+        $query = $this->Queries->patchEntity(
+            $query,
+            $this->request->getData('data')
+        );
+
+        if (!$this->Queries->save($query)) {
+            return $this->JsonResponse->respondWithErrorJson(
+                $query->getErrors(),
+                422
+            );
+        }
+
+        $this->set('data', $this->Queries->get($query->id));
+    }
+
+    public function view($id)
+    {
+        if (!$this->request->is('get')) {
+            return $this->response
+                ->withStatus(405)
+                ->withAddedHeader('Allow', 'GET');
+        }
+
+        $query = $this->Queries->get((int)$id);
+
+        $this->set('data', $query);
+    }
+
+    public function edit($id)
+    {
+        if (!$this->request->is('patch')) {
+            return $this->response
+                ->withStatus(405)
+                ->withAddedHeader('Allow', 'PATCH');
+        }
+        $query = $this->Queries->get((int)$id);
+        $query = $this->Queries->patchEntity(
+            $query,
+            $this->request->getData('data')
+        );
+
+        if (!$this->Queries->save($query)) {
+            return $this->JsonResponse->respondWithErrorJson(
+                $query->getErrors(),
+                422
+            );
+        }
+
+        $this->set('data', $query);
+    }
+
+    public function delete($id)
+    {
+        if (!$this->request->is('delete')) {
+            return $this->response
+                ->withStatus(405)
+                ->withAddedHeader('Allow', 'DELETE');
+        }
+
+        $query = $this->Queries->get((int)$id);
+
+        if (!$this->Queries->delete($query)) {
+            return $this->JsonResponse->respondWithErrorJson(
+                ["Failed to delete query: $id"],
+                400
+            );
+        }
+
+        return $this->response
+            ->withStatus(204);
+    }
 }
