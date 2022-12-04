@@ -101,4 +101,15 @@ class QueryGroupsTable extends Table {
             ->where(['version IS' => null])
             ->order( 'code' );
     }
+
+    public function findVersion1(Query $query, array $options): Query
+    {
+        return $query->find('all')
+            ->where([
+                        'OR' => [
+                            ['version LIKE' => '1.%'],
+                            ['version' => '1']
+                        ]
+                    ]);
+    }
 }
