@@ -33,8 +33,7 @@ class QueriesController extends AppController {
      * @return void
      */
     public function index() {
-        $this->loadModel( 'QueryGroups' );
-        $queryGroups = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
+        $queryGroups = $this->fetchTable( 'QueryGroups' )->find( 'all' )->contain( 'Queries' )->order( 'code' );
 
         $this->set( compact( 'queryGroups' ) );
         $this->set( '_serialize', [ 'queryGroups' ] );
@@ -66,7 +65,7 @@ class QueriesController extends AppController {
 
         $columns = $this->Queries->getViewQueryColumns( $query );
 
-        $this->loadModel( 'QueryGroups' );
+        $this->QueryGroups = $this->fetchTable( 'QueryGroups' );
         $queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
         $query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
 
@@ -104,7 +103,7 @@ class QueriesController extends AppController {
         $mark_columns    = $this->Queries->getMarkColumns( $query );
 
         // get navigation stuff
-        $this->loadModel( 'QueryGroups' );
+        $this->QueryGroups = $this->fetchTable( 'QueryGroups' );
         $queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
         $query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
 
@@ -233,7 +232,7 @@ class QueriesController extends AppController {
 
         $where_rules = null;
 
-        $this->loadModel( 'QueryGroups' );
+        $this->QueryGroups = $this->fetchTable( 'QueryGroups' );
         $queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
         $query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
 
@@ -312,7 +311,7 @@ class QueriesController extends AppController {
         $filter_data = $this->Queries->getFilterData();
         $where_rules = $query->where_rules_json;
 
-        $this->loadModel( 'QueryGroups' );
+        $this->QueryGroups = $this->fetchTable( 'QueryGroups' );
         $queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
         $query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
 
