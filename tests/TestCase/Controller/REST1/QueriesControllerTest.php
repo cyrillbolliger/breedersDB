@@ -230,6 +230,42 @@ class QueriesControllerTest extends TestCase
         $this->Table->get($entity->id);
     }
 
+    public function testViewByCode__200(): void
+    {
+        $entity = $this->Table->newEntity($this->getNonExistingEntityData());
+        $entity->code = md5(uniqid('query', true));
+        $entity->query_group_id = $this->getQueryGroup()->id;
+        $entity->my_query = json_encode(['fake' => 'query']);
+        $entity->deleted = null;
+
+        $entity = $this->Table->saveOrFail($entity);
+
+        $this->get(self::ENDPOINT . '/viewByCode/' . $entity->code);
+
+        $this->assertResponseSuccess();
+
+        $data = json_decode((string)$this->_response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+        $queryArray = json_decode(json_encode($entity->toArray()), true);
+        $queryArray['raw_query'] = ['fake' => 'query'];
+
+        self::assertEquals($queryArray, $data['data']);
+    }
+
+    public function testViewByCode__404(): void
+    {
+        $entity = $this->Table->newEntity($this->getNonExistingEntityData());
+        $entity->code = md5(uniqid('query', true));
+        $entity->query_group_id = $this->getQueryGroup()->id;
+        $entity->my_query = json_encode(['fake' => 'query']);
+        $entity->deleted = null;
+
+        $entity = $this->Table->saveOrFail($entity);
+
+        $this->get(self::ENDPOINT . '/viewByCode/nonExistingCode');
+
+        $this->assertResponseCode(404);
+    }
+
     protected function setUp(): void
     {
         $this->authenticate();

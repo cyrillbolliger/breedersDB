@@ -240,4 +240,25 @@ class QueriesController extends REST1Controller
         return $this->response
             ->withStatus(204);
     }
+
+    public function viewByCode($code)
+    {
+        if (!$this->request->is('get')) {
+            return $this->response
+                ->withStatus(405)
+                ->withAddedHeader('Allow', 'GET');
+        }
+
+        $query = $this->Queries
+            ->find()
+            ->where(['code' => $code])
+            ->first();
+
+        if (empty($query)) {
+            return $this->response
+                ->withStatus(404);
+        }
+
+        $this->set('data', $query);
+    }
 }
