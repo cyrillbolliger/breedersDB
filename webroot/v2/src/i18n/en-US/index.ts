@@ -73,6 +73,11 @@ export default {
 
   queries: {
     title: 'Queries',
+    unsaved: 'Unsaved query',
+
+    titleNotUnique: 'This name is already in use.',
+    duplicate: 'Duplicate',
+    unsavedChanges: 'unsaved changes',
 
     query: 'Query',
 
@@ -170,6 +175,9 @@ export default {
     dismiss: 'Dismiss',
     navigation: 'Navigation',
     selected: 'selected',
+    more: 'More',
+    save: 'Save',
+    delete: 'Delete',
 
     form: {
       required: 'Field is required',
