@@ -83,6 +83,7 @@ export default function useApi() {
   return {
     working,
     get,
-    post
+    post,
+    handleError,
   }
 }

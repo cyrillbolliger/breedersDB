@@ -39,6 +39,7 @@ import {QueryResponse} from 'src/models/query/query';
 import ResultsTable from 'components/Query/Result/ResultTable.vue';
 import ResultDownload from 'components/Query/Result/ResultDownload.vue';
 import ResultDebug from 'components/Query/Result/ResultDebug.vue';
+import {AxiosError} from 'axios';
 
 const {t} = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
 const queryStore = useQueryStore();
@@ -103,8 +104,18 @@ async function loadResults(pagination?: { offset: number, sortBy: string | null,
   }
 
   result.value = null;
-  await api.post<typeof data, QueryResponse>(getUrl(pagination), data)
+  await api.post<typeof data, QueryResponse>(getUrl(pagination), data, () => null, {}, false)
     .then((resp: QueryResponse) => result.value = resp)
+    .catch(error => {
+      void api.handleError<QueryResponse>(
+        error as AxiosError<QueryResponse>,
+        t('general.failedToLoadData'),
+        () => new Promise(resolve => {
+          queueLoadResults()
+          resolve();
+        }),
+      )
+    });
 
   loading.value = false
 }
