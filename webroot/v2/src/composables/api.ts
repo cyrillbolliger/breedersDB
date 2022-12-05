@@ -2,7 +2,7 @@ import {i18n} from 'boot/i18n'
 import {Notify, QNotifyCreateOptions} from 'quasar'
 import {ref} from 'vue';
 import {api as axios} from 'boot/axios';
-import {AxiosError, AxiosRequestConfig} from 'axios';
+import {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios';
 
 interface ApiResponse<T> {
   data: T
@@ -13,7 +13,7 @@ export default function useApi() {
 
   const working = ref(false)
 
-  function get<T>(url: string, cb: () => void = () => null, config: AxiosRequestConfig = {}): Promise<void | T> {
+  function get<T>(url: string, cb: () => void = () => null, config: AxiosRequestConfig = {}, handleErrors = true): Promise<void | T> {
     working.value = true
 
     return axios.get<void | ApiResponse<T>>(url, config)
@@ -27,11 +27,15 @@ export default function useApi() {
       .catch(error => {
         working.value = false
         cb()
-        return handleError<T>(error as AxiosError<T>, t('general.failedToLoadData'), () => get<T>(url, cb))
+        if (handleErrors) {
+          return handleError<T>(error as AxiosError<T>, t('general.failedToLoadData'), () => get<T>(url, cb, config))
+        } else {
+          return Promise.reject(error);
+        }
       })
   }
 
-  function post<T, R>(url: string, data: T, cb: () => void = () => null, config: AxiosRequestConfig = {}): Promise<void | R> {
+  function post<T, R>(url: string, data: T, cb: () => void = () => null, config: AxiosRequestConfig = {}, handleErrors = true): Promise<void | R> {
     working.value = true
 
     let payload: T | { data: T }
@@ -51,7 +55,11 @@ export default function useApi() {
       .catch(error => {
         working.value = false
         cb()
-        return handleError<R>(error as AxiosError<R>, t('general.failedToSaveData'), () => post<T, R>(url, data, cb))
+        if (handleErrors) {
+          return handleError<R>(error as AxiosError<R>, t('general.failedToSaveData'), () => post<T, R>(url, data, cb, config))
+        } else {
+          return Promise.reject(error);
+        }
       })
   }
 
