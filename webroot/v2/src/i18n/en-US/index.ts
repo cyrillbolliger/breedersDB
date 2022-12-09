@@ -73,6 +73,7 @@ export default {
 
   queries: {
     title: 'Queries',
+    new: 'New query',
     unsaved: 'Unsaved query',
 
     titleNotUnique: 'This name is already in use.',
@@ -227,7 +228,9 @@ export default {
     },
     queries: {
       title: 'Queries',
-      caption: 'Search the database.'
+      caption: 'Search the database.',
+      titleLegacy: 'Queries (old)',
+      captionLegacy: 'Old search interface.',
     },
   }
 };

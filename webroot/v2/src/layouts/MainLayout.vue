@@ -148,8 +148,14 @@ export default defineComponent({
         title: t('navigation.queries.title'),
         caption: t('navigation.queries.caption'),
         icon: 'saved_search',
-        link: '/queries/new'
-      }
+        link: '/queries'
+      },
+      {
+        title: t('navigation.queries.titleLegacy'),
+        caption: t('navigation.queries.captionLegacy'),
+        icon: 'search_off',
+        link: webroot + 'queries'
+      },
     ];
 
 

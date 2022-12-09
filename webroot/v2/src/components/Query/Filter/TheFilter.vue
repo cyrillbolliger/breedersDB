@@ -1,6 +1,4 @@
 <template>
-  <h5 class="q-mb-sm q-mt-sm">{{ t('queries.query') }}</h5>
-
   <p class="text-overline q-mb-none">{{ t('queries.baseTable') }}</p>
   <q-btn-toggle
     v-model="baseTable"
