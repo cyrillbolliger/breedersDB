@@ -75,6 +75,11 @@ export default {
     title: 'Queries',
     new: 'New query',
     unsaved: 'Unsaved query',
+    group: 'Group',
+    editGroups: 'Edit Groups',
+    queryGroupSaveFailed: 'Failed to save. Try another name.',
+    addQueryGroup: 'Add group',
+    queryGroupName: 'Group name',
 
     titleNotUnique: 'This name is already in use.',
     duplicate: 'Duplicate',
@@ -171,6 +176,7 @@ export default {
     retry: 'Retry',
     failedToLoadData: 'Failed to load data.',
     failedToSaveData: 'Failed to save data.',
+    failedToDeleteData: 'Failed to delete data.',
     refreshList: 'Refresh list',
     next: 'Next',
     dismiss: 'Dismiss',
@@ -178,7 +184,9 @@ export default {
     selected: 'selected',
     more: 'More',
     save: 'Save',
+    edit: 'Edit',
     delete: 'Delete',
+    close: 'Close',
 
     form: {
       required: 'Field is required',

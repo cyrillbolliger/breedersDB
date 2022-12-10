@@ -1,10 +1,16 @@
 <template>
   <div class="row the-query-menu">
-    <QueryTitle
-      v-model="titleCode"
-      class="q-pt-sm"
-      @update:model-value="changed = true"
-    />
+    <div class="row the-query-menu__title-path">
+      <QueryGroup
+        v-model="queryGroup"
+        @update:model-value="(_, updated) => changed = changed || updated"
+      />
+      <span class="the-query-menu__title-path-separator">/</span>
+      <QueryName
+        v-model="titleCode"
+        @update:model-value="changed = true"
+      />
+    </div>
     <div class="row the-query-menu__actions">
       <template
         v-if="!showMore"
@@ -12,25 +18,26 @@
         <div
           v-if="changed"
           class="text-grey-8 q-px-sm"
-        >{{t('queries.unsavedChanges')}}</div>
+        >{{ t('queries.unsavedChanges') }}
+        </div>
         <q-btn
           :color="changed ? 'primary' : 'grey-8'"
           :disable="!changed"
+          :title="t('general.save')"
           flat
           icon="save"
-          stack
           round
-          :title="t('general.save')"
+          stack
         />
       </template>
       <q-fab
         v-model="showMore"
         :flat="!showMore"
+        :title="t('general.more')"
         direction="down"
         icon="more_vert"
         padding="sm"
         vertical-actions-align="right"
-        :title="t('general.more')"
       >
         <q-fab-action
           :disable="!changed"
@@ -62,14 +69,16 @@
 
 import {computed, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
-import QueryTitle from 'components/Query/Menu/QueryTitle.vue';
+import QueryName from 'components/Query/Menu/QueryName.vue';
+import QueryGroup from 'components/Query/Menu/QueryGroup.vue';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const titleCode = ref('');
 const changed = ref(false);
 const showMore = ref(false);
 
-const unsaved = computed(() => !changed.value); // todo
+const unsaved = computed(() => ! changed.value); // todo
+const queryGroup = ref<QueryGroup>(); // todo
 
 </script>
 
@@ -80,6 +89,17 @@ const unsaved = computed(() => !changed.value); // todo
 
 .the-query-menu__actions {
   align-items: center;
+}
+
+.the-query-menu__title-path {
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.the-query-menu__title-path-separator {
+  padding: 0 1rem;
+  font-size: 2rem;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .the-query-menu__fab-action {

@@ -65,5 +65,6 @@ async function checkCode(code: string) {
 .q-input {
   max-width: 280px;
   font-size: 1.5rem;
+  padding-top: 20px;
 }
 </style>

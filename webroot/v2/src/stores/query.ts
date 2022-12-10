@@ -7,6 +7,7 @@ import useApi from 'src/composables/api';
 import useMarkFormPropertyConverter from 'src/composables/queries/markFormPropertyConverter';
 import useQueryLocalStorageHelper from 'src/composables/queries/queryLocalStorageHelper';
 import {FilterOptionSchemas, PropertySchema} from 'src/models/query/filterOptionSchema';
+import {QueryGroup} from 'src/models/queryGroup';
 
 const markFormPropertyConverter = useMarkFormPropertyConverter();
 const localStorageHelper = useQueryLocalStorageHelper();
@@ -23,6 +24,7 @@ export interface QueryState {
   filterOptionSchemas: FilterOptionSchemas | undefined,
   visibleColumns: string[],
   showRowsWithoutMarks: boolean,
+  queryGroups: QueryGroup[],
 }
 
 export const useQueryStore = defineStore('query', {
@@ -35,6 +37,7 @@ export const useQueryStore = defineStore('query', {
     filterOptionSchemas: undefined,
     visibleColumns: localStorageHelper.getVisibleColumns(),
     showRowsWithoutMarks: localStorageHelper.getShowRowsWithoutMarks(true),
+    queryGroups: [],
   }),
 
 
@@ -113,11 +116,11 @@ export const useQueryStore = defineStore('query', {
     },
 
     rowsWithMarksOnly(state) {
-      if (!this.marksAvailable || !this.hasVisibleMarkColumns) {
+      if ( ! this.marksAvailable || ! this.hasVisibleMarkColumns) {
         return false;
       }
 
-      return !(state as QueryState).showRowsWithoutMarks
+      return ! (state as QueryState).showRowsWithoutMarks
     },
   },
 
@@ -135,6 +138,17 @@ export const useQueryStore = defineStore('query', {
         await useApi().get<FilterOptionSchemas>('queries/get-filter-schemas')
           .then(data => this.filterOptionSchemas = data as FilterOptionSchemas)
       }
+    },
+
+    async maybeLoadQueryGroups() {
+      if ( ! this.queryGroups.length) {
+        await this.forceLoadQueryGroups();
+      }
+    },
+
+    async forceLoadQueryGroups() {
+      await useApi().get<QueryGroup[]>('query-groups')
+          .then(data => this.queryGroups = data as QueryGroup[]);
     },
 
     async ensureSchemasLoaded() {
