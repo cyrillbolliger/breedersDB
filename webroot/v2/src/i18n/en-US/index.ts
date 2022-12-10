@@ -83,7 +83,6 @@ export default {
 
     titleNotUnique: 'This name is already in use.',
     duplicate: 'Duplicate',
-    unsavedChanges: 'unsaved changes',
 
     query: 'Query',
 
@@ -184,6 +183,7 @@ export default {
     selected: 'selected',
     more: 'More',
     save: 'Save',
+    saved: 'Saved',
     edit: 'Edit',
     delete: 'Delete',
     close: 'Close',

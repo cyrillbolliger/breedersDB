@@ -1,13 +1,13 @@
 <template>
   <q-select
-    :borderless="!hasFocus && !hasChanged"
+    :borderless="!hasFocus && !changed"
     :disable="loading"
     :loading="loading"
-    :model-value="modelValue"
+    :model-value="group"
     :option-label="(item: QueryGroup) => item.code"
     :option-value="(item: QueryGroup) => item.id"
     :options="options"
-    :outlined="hasFocus || hasChanged"
+    :outlined="hasFocus || changed"
     hide-dropdown-icon
     @blur="hasFocus = false"
     @focus="hasFocus = true"
@@ -34,29 +34,30 @@
 import {computed, onMounted, PropType, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {useQueryStore} from 'stores/query';
-import {QueryGroup} from 'src/models/queryGroup';
+import type {QueryGroup} from 'src/models/queryGroup';
 import QueryGroupEdit from 'components/Query/Menu/QueryGroupEdit.vue';
 
 const props = defineProps({
-  modelValue: Object as PropType<QueryGroup>,
+  group: Object as PropType<QueryGroup>,
+  changed: Boolean,
 });
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: QueryGroup, change: boolean): void
+  (e: 'update:group', value: QueryGroup): void
+  (e: 'update:changed', value: boolean): void
 }>();
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore();
 const hasFocus = ref(false);
 const loading = ref(false);
-const hasChanged = ref(false);
 const edit = ref(false);
 
 const options = computed<QueryGroup[]>(() => store.queryGroups);
 
 function change(val: QueryGroup) {
-  hasChanged.value = true;
-  emit('update:modelValue', val, true)
+  emit('update:group', val)
+  emit('update:changed', true);
 }
 
 async function ensureQueryGroupsLoaded() {
@@ -66,8 +67,8 @@ async function ensureQueryGroupsLoaded() {
 }
 
 function setInitialQueryGroup() {
-  if ( ! props.modelValue && options.value.length) {
-    emit('update:modelValue', options.value[0], false);
+  if ( ! props.group && options.value.length) {
+    emit('update:group', options.value[0]);
   }
 }
 
