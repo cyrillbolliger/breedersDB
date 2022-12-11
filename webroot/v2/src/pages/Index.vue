@@ -5,6 +5,11 @@
       color="primary"
       :label="t('marks.title')"
     />
+    <q-btn
+      to="/queries"
+      color="primary"
+      :label="t('queries.title')"
+    />
   </q-page>
 </template>
 

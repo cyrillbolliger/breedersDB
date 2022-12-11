@@ -26,11 +26,11 @@ export default defineComponent({
 
   setup(props, {emit}) {
     const ratingValue = computed<number>(() => {
-      if (typeof props.modelValue === 'number') {
-        return props.modelValue
+      if (props.modelValue === undefined) {
+        return 0
       }
 
-      return 0
+      return props.modelValue
     })
 
     function ratingChanged(val: number) {

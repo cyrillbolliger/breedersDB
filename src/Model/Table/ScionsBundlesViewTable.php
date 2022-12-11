@@ -2,6 +2,7 @@
 
 namespace App\Model\Table;
 
+use App\Model\Behavior\FilterSchemaBehavior;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -19,6 +20,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\ScionsBundlesView patchEntity( \Cake\Datasource\EntityInterface $entity, array $data, array $options = [] )
  * @method \App\Model\Entity\ScionsBundlesView[] patchEntities( $entities, array $data, array $options = [] )
  * @method \App\Model\Entity\ScionsBundlesView findOrCreate( $search, callable $callback = null, $options = [] )
+ *
+ * @mixin FilterSchemaBehavior
  */
 class ScionsBundlesViewTable extends Table {
 	/**
@@ -45,6 +48,26 @@ class ScionsBundlesViewTable extends Table {
 		return $this->select;
 	}
 
+    public function getTranslatedName(): string {
+        return __('Scions Bundles');
+    }
+
+    public function getTranslatedColumnName(string $column): ?string {
+        $columns = [
+            'id'                     => __( 'Id' ),
+            'identification'         => __( 'Identification' ),
+            'convar'                 => __( 'Convar' ),
+            'numb_scions'            => __( 'Numb Scions' ),
+            'date_scions_harvest'    => __( 'Date Scions Harvest' ),
+            'descents_publicid_list' => __( 'Descents (Publicids)' ),
+            'note'                   => __( 'Note' ),
+            'external_use'           => __( 'Reserved for external partners' ),
+            'variety_id'             => __( 'Varienty Id' ),
+        ];
+
+        return $columns[$column] ?? null;
+    }
+
 	/**
 	 * Initialize method
 	 *
@@ -58,6 +81,8 @@ class ScionsBundlesViewTable extends Table {
 		$this->setTable( 'scions_bundles_view' );
 		$this->setDisplayField( 'code' );
 		$this->setPrimaryKey( 'id' );
+
+        $this->addBehavior( 'FilterSchema' );
 
 		$this->belongsTo( 'VarietiesView', [
 			'foreignKey' => 'variety_id',

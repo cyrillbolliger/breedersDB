@@ -134,9 +134,12 @@ class ExcelComponent extends Component {
 		$random   = substr( sha1( uniqid( 'asdfzui', true ) ), 0, 15 );
 		$tmp_file = $slug . '_' . $date . '_' . $random . '.xlsx';
 
-        if ( ! is_dir( $this->exportPath ) ) {
-			mkdir( $this->exportPath, 0700, true );
-		}
+        if (!is_dir($this->exportPath)
+            && !mkdir($this->exportPath, 0700, true)
+            && !is_dir($this->exportPath))
+        {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $this->exportPath));
+        }
 
         return $this->exportPath . $tmp_file;
 	}

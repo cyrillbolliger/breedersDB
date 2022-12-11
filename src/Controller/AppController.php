@@ -73,7 +73,10 @@ class AppController extends Controller {
                 'controller' => 'Users',
                 'action'     => 'login'
             ],
-            'unauthorizedRedirect' => $this->referer() // If unauthorized, return them to page they were just on
+            'unauthorizedRedirect' => [
+                'controller' => 'Users',
+                'action' => 'login',
+            ],
         ] );
 
         FrozenTime::setToStringFormat( __x( 'datetime format', 'dd.MM.yyyy HH:mm' ) );
@@ -194,8 +197,10 @@ class AppController extends Controller {
 
         $sessionsDir = TMP . 'sessions';
 
-        if ( ! is_dir( $sessionsDir ) ) {
-            mkdir( $sessionsDir, 0700, true );
+        if (!is_dir($sessionsDir)
+            && !mkdir($sessionsDir, 0700, true)
+            && !is_dir($sessionsDir)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $sessionsDir));
         }
     }
 

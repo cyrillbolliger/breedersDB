@@ -16,16 +16,16 @@ import useLayout from 'src/composables/layout';
 import useMarkTabNav from 'src/composables/marks/tab-nav';
 import {useI18n} from 'vue-i18n';
 import TreeSelector from 'components/Tree/TreeSelector.vue';
-import {useStore} from 'src/store';
 import {Tree} from 'src/models/tree';
 import {useRouter} from 'vue-router'
+import {useMarkStore} from 'stores/mark';
 
 export default defineComponent({
   name: 'SelectTree',
   components: {TreeSelector},
   setup() {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
-    const store = useStore()
+    const store = useMarkStore()
     const router = useRouter()
 
     const publicid = ref(null)
@@ -36,7 +36,7 @@ export default defineComponent({
 
 
     function setTree(tree: Tree) {
-      void store.dispatch('mark/tree', tree)
+      store.tree = tree;
       void router.push('/marks/mark-tree')
     }
 

@@ -1,8 +1,8 @@
 import {i18n} from 'boot/i18n'
-import {Notify} from 'quasar'
+import {Notify, QNotifyCreateOptions} from 'quasar'
 import {ref} from 'vue';
 import {api as axios} from 'boot/axios';
-import {AxiosError} from 'axios';
+import {AxiosError, AxiosRequestConfig} from 'axios';
 
 interface ApiResponse<T> {
   data: T
@@ -13,10 +13,10 @@ export default function useApi() {
 
   const working = ref(false)
 
-  function get<T>(url: string, cb: () => void = () => null): Promise<void | T> {
+  function get<T>(url: string, cb: () => void = () => null, config: AxiosRequestConfig = {}, handleErrors = true): Promise<void | T> {
     working.value = true
 
-    return axios.get<void | ApiResponse<T>>(url)
+    return axios.get<void | ApiResponse<T>>(url, config)
       .then(resp => {
         cb()
         working.value = false
@@ -27,11 +27,15 @@ export default function useApi() {
       .catch(error => {
         working.value = false
         cb()
-        return handleError<T>(error as AxiosError<T>, t('general.failedToLoadData'), () => get<T>(url, cb))
+        if (handleErrors) {
+          return handleError<T>(error as AxiosError<T>, t('general.failedToLoadData'), () => get<T>(url, cb, config))
+        } else {
+          return Promise.reject(error);
+        }
       })
   }
 
-  function post<T, R>(url: string, data: T, cb: () => void = () => null): Promise<void | R> {
+  function post<T, R>(url: string, data: T, cb: () => void = () => null, config: AxiosRequestConfig = {}, handleErrors = true): Promise<void | R> {
     working.value = true
 
     let payload: T | { data: T }
@@ -41,7 +45,7 @@ export default function useApi() {
       payload = {data}
     }
 
-    return axios.post<T | { data: T }, ApiResponse<{data: R}>>(url, payload)
+    return axios.post<T | { data: T }, ApiResponse<{data: R}>>(url, payload, config)
       .then(resp => {
         if (resp.data) {
           cb()
@@ -51,7 +55,61 @@ export default function useApi() {
       .catch(error => {
         working.value = false
         cb()
-        return handleError<R>(error as AxiosError<R>, t('general.failedToSaveData'), () => post<T, R>(url, data, cb))
+        if (handleErrors) {
+          return handleError<R>(error as AxiosError<R>, t('general.failedToSaveData'), () => post<T, R>(url, data, cb, config))
+        } else {
+          return Promise.reject(error);
+        }
+      })
+  }
+
+  function patch<T, R>(url: string, data: T, cb: () => void = () => null, config: AxiosRequestConfig = {}, handleErrors = true): Promise<void | R> {
+    working.value = true
+
+    let payload: T | { data: T }
+    if (data instanceof FormData) {
+      payload = data
+    } else {
+      payload = {data}
+    }
+
+    return axios.patch<T | { data: T }, ApiResponse<{data: R}>>(url, payload, config)
+      .then(resp => {
+        if (resp.data) {
+          cb()
+          return resp.data.data
+        }
+      })
+      .catch(error => {
+        working.value = false
+        cb()
+        if (handleErrors) {
+          return handleError<R>(error as AxiosError<R>, t('general.failedToSaveData'), () => patch<T, R>(url, data, cb, config))
+        } else {
+          return Promise.reject(error);
+        }
+      })
+  }
+
+  function remove<T>(url: string, cb: () => void = () => null, config: AxiosRequestConfig = {}, handleErrors = true): Promise<void | T> {
+    working.value = true
+
+    return axios.delete<void | ApiResponse<T>>(url, config)
+      .then(resp => {
+        cb()
+        working.value = false
+        if (resp.data) {
+          return resp.data.data
+        }
+      })
+      .catch(error => {
+        working.value = false
+        cb()
+        if (handleErrors) {
+          return handleError<T>(error as AxiosError<T>, t('general.failedToDeleteData'), () => remove<T>(url, cb, config))
+        } else {
+          return Promise.reject(error);
+        }
       })
   }
 
@@ -66,7 +124,7 @@ export default function useApi() {
         actions: [
           {label: t('general.retry'), color: 'white', handler: resolve},
         ]
-      })
+      } as QNotifyCreateOptions)
     })
       .then(() => cb());
   }
@@ -75,6 +133,9 @@ export default function useApi() {
   return {
     working,
     get,
-    post
+    post,
+    patch,
+    delete: remove,
+    handleError,
   }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Model\Table;
 
+use App\Model\Behavior\FilterSchemaBehavior;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -21,6 +22,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\VarietiesView patchEntity( \Cake\Datasource\EntityInterface $entity, array $data, array $options = [] )
  * @method \App\Model\Entity\VarietiesView[] patchEntities( $entities, array $data, array $options = [] )
  * @method \App\Model\Entity\VarietiesView findOrCreate( $search, callable $callback = null, $options = [] )
+ *
+ * @mixin FilterSchemaBehavior
  */
 class VarietiesViewTable extends Table {
 	/**
@@ -47,6 +50,25 @@ class VarietiesViewTable extends Table {
 		return $this->select;
 	}
 
+    public function getTranslatedName(): string {
+        return __('Varieties');
+    }
+
+    public function getTranslatedColumnName(string $column): ?string {
+        $columns = [
+            'id'                         => __( 'Id' ),
+            'convar'                     => __( 'Convar' ),
+            'official_name'              => __( 'Official Name' ),
+            'acronym'                    => __( 'Acronym' ),
+            'plant_breeder'              => __( 'Plant Breeder' ),
+            'registration'               => __( 'Registration' ),
+            'description'                => __( 'Description' ),
+            'batch_id'                   => __( 'Batch Id' ),
+        ];
+
+        return $columns[$column] ?? null;
+    }
+
 	/**
 	 * Initialize method
 	 *
@@ -61,6 +83,8 @@ class VarietiesViewTable extends Table {
 
 		$this->setDisplayField( 'code' );
 		$this->setPrimaryKey( 'id' );
+
+        $this->addBehavior( 'FilterSchema' );
 
 		$this->belongsTo( 'BatchesView', [
 			'foreignKey' => 'batch_id',

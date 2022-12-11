@@ -2,6 +2,7 @@ import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance } from 'axios';
 
 declare module '@vue/runtime-core' {
+  // noinspection JSUnusedGlobalSymbols
   interface ComponentCustomProperties {
     $axios: AxiosInstance;
   }
@@ -18,7 +19,7 @@ declare const cake: {
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
 // If any client changes this (global) instance, it might be a
-// good idea to move this instance creation inside of the
+// good idea to move this instance creation inside the
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({
@@ -26,6 +27,7 @@ const api = axios.create({
   headers: {'X-CSRF-Token': csrfToken}
 });
 
+// noinspection JSUnusedGlobalSymbols
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 

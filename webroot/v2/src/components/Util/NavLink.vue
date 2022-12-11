@@ -2,7 +2,7 @@
   <q-item
     clickable
     tag="a"
-    :to="routerLink"
+    @click="navigateTo(routerLink)"
     :href="externalLink"
   >
     <q-item-section
@@ -23,6 +23,7 @@
 
 <script lang="ts">
 import {computed, defineComponent} from 'vue'
+import {RouteLocationRaw, useRouter} from 'vue-router';
 
 const absUrl = function(url: string) {
   return /^https?:\/\//.test(url);
@@ -43,7 +44,8 @@ export default defineComponent({
 
     link: {
       type: String,
-      default: '#'
+      default: '#',
+      required: true
     },
 
     icon: {
@@ -53,6 +55,8 @@ export default defineComponent({
   },
 
   setup(props) {
+    const router = useRouter();
+
     const routerLink = computed(() => {
       return absUrl(props.link) ? null : props.link
     })
@@ -60,9 +64,17 @@ export default defineComponent({
       return absUrl(props.link) ? props.link : null
     })
 
+    function navigateTo(routerLink: string|null){
+      if (routerLink) {
+        void router
+          .push(routerLink as RouteLocationRaw)
+      }
+    }
+
     return {
       routerLink,
-      externalLink
+      externalLink,
+      navigateTo,
     }
   }
 })

@@ -6,6 +6,7 @@ use App\Controller\Component\CollectionPaginatorComponent;
 use App\Controller\Component\ExcelComponent;
 use App\Model\Table\MarksViewTable;
 use Cake\Http\Cookie\Cookie;
+use Cake\Http\Exception\BadRequestException;
 
 /**
  * Queries Controller
@@ -33,8 +34,7 @@ class QueriesController extends AppController {
      * @return void
      */
     public function index() {
-        $this->loadModel( 'QueryGroups' );
-        $queryGroups = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
+        $queryGroups = $this->fetchTable( 'QueryGroups' )->find('versionNull');
 
         $this->set( compact( 'queryGroups' ) );
         $this->set( '_serialize', [ 'queryGroups' ] );
@@ -57,6 +57,10 @@ class QueriesController extends AppController {
             'contain' => [ 'QueryGroups' ]
         ] );
 
+        if (null !== $query->query_group->version) {
+            throw new BadRequestException('Query incompatible with: '.self::class.'::view()');
+        }
+
         if ( 'MarksView' === $query->query->root_view ) {
             return $this->redirect( [ 'action' => 'viewMarkQuery', $id ] );
         }
@@ -66,9 +70,9 @@ class QueriesController extends AppController {
 
         $columns = $this->Queries->getViewQueryColumns( $query );
 
-        $this->loadModel( 'QueryGroups' );
-        $queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
-        $query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
+        $this->QueryGroups = $this->fetchTable( 'QueryGroups' );
+        $queryGroups  = $this->QueryGroups->find('versionNull');
+        $query_groups = $this->QueryGroups->find('versionNullList');
 
         $this->set( compact( 'query', 'query_groups', 'queryGroups', 'results', 'columns' ) );
         $this->set( '_serialize', [ 'query', 'query_groups', 'queryGroups', 'results', 'columns' ] );
@@ -84,6 +88,10 @@ class QueriesController extends AppController {
     public function viewMarkQuery( $id ) {
         // get query
         $query = $this->Queries->get( (int) $id );
+
+        if (null !== $this->Queries->get( $id, ['contain' => ['QueryGroups']] )->query_group->version) {
+            throw new BadRequestException('Query incompatible with: '.self::class.'::view()');
+        }
 
         // query the data
         /** @var MarksViewTable $marksViewTable */
@@ -104,9 +112,9 @@ class QueriesController extends AppController {
         $mark_columns    = $this->Queries->getMarkColumns( $query );
 
         // get navigation stuff
-        $this->loadModel( 'QueryGroups' );
-        $queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
-        $query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
+        $this->QueryGroups = $this->fetchTable( 'QueryGroups' );
+        $queryGroups  = $this->QueryGroups->find('versionNull');
+        $query_groups = $this->QueryGroups->find('versionNullList');
 
         // set view vars
         $this->set( compact(
@@ -233,9 +241,9 @@ class QueriesController extends AppController {
 
         $where_rules = null;
 
-        $this->loadModel( 'QueryGroups' );
-        $queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
-        $query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
+        $this->QueryGroups = $this->fetchTable( 'QueryGroups' );
+        $queryGroups  = $this->QueryGroups->find('versionNull');
+        $query_groups = $this->QueryGroups->find('versionNullList');
 
         $this->set( compact(
             'query_group_id',
@@ -283,6 +291,11 @@ class QueriesController extends AppController {
         $query = $this->Queries->get( $id, [
             'contain' => []
         ] );
+
+        if (null !== $this->Queries->get( $id, ['contain' => ['QueryGroups']] )->query_group->version) {
+            throw new BadRequestException('Query incompatible with: '.self::class.'::view()');
+        }
+
         if ( $this->request->is( [ 'patch', 'post', 'put' ] ) ) {
             $query = $this->Queries->patchEntityWithQueryData( $query, $this->request->getData());
             if ( $this->Queries->save( $query ) ) {
@@ -312,9 +325,9 @@ class QueriesController extends AppController {
         $filter_data = $this->Queries->getFilterData();
         $where_rules = $query->where_rules_json;
 
-        $this->loadModel( 'QueryGroups' );
-        $queryGroups  = $this->QueryGroups->find( 'all' )->contain( 'Queries' )->order( 'code' );
-        $query_groups = $this->QueryGroups->find( 'list' )->order( 'code' );
+        $this->QueryGroups = $this->fetchTable( 'QueryGroups' );
+        $queryGroups  = $this->QueryGroups->find('versionNull');
+        $query_groups = $this->QueryGroups->find('versionNullList');
 
         $this->set( compact(
             'query',

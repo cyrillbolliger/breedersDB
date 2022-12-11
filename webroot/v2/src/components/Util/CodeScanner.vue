@@ -75,6 +75,7 @@ export default defineComponent({
           requestAnimationFrame(tick);
           return;
         } else {
+          // noinspection TypeScriptValidateTypes
           el = canvasElement.value;
         }
 

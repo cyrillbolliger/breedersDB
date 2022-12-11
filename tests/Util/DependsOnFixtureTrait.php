@@ -9,7 +9,6 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 trait DependsOnFixtureTrait {
     public function __construct() {
-
         if ( ! isset( $this->dependsOnFixture ) ) {
             throw new \RuntimeException( 'Trait DependsOnFixtureTrait used, but $dependsOnFixture field not defined. Add a protected array $dependsOnFixture to your class and define the needed fixtures.' );
         }

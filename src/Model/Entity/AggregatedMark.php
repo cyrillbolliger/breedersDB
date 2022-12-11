@@ -240,7 +240,7 @@ class AggregatedMark {
 		}
 
 		$tmp = array_map( function ( $v ) use ( $avg ) {
-			return pow( ( $v - $avg ), 2 );
+			return ($v - $avg) ** 2;
 		}, $values );
 		$var = array_sum( $tmp ) / $count;
 

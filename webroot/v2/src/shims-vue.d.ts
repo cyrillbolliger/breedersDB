@@ -2,5 +2,6 @@
 declare module '*.vue' {
   import { ComponentOptions } from 'vue'
   const component: ComponentOptions
+  // noinspection JSUnusedGlobalSymbols
   export default component
 }

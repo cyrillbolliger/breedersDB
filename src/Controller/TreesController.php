@@ -296,6 +296,7 @@ class TreesController extends AppController {
 
 		if ( $entries ) {
 			$tree = $entries;
+            $varieties = [];
 			if ( $tree->variety_id ) {
 				$varieties = $this->Trees->Varieties->getConvarList( $tree->variety_id );
 			}

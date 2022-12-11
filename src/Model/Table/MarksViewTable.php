@@ -2,6 +2,7 @@
 
 namespace App\Model\Table;
 
+use App\Model\Behavior\FilterSchemaBehavior;
 use App\Model\Behavior\MarkQueryBehavior;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -23,6 +24,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\MarksView findOrCreate( $search, callable $callback = null, $options = [] )
  *
  * @mixin MarkQueryBehavior
+ * @mixin FilterSchemaBehavior
  */
 class MarksViewTable extends Table {
 	/**
@@ -49,6 +51,31 @@ class MarksViewTable extends Table {
 		return $this->select;
 	}
 
+    public function getTranslatedName(): string
+    {
+        return __('Marks');
+    }
+
+    public function getTranslatedColumnName(string $column): ?string
+    {
+        $columns = [
+            'id' => __('Id'),
+            'date' => __('Date'),
+            'author' => __('Author'),
+            'tree_id' => __('Tree Id'),
+            'variety_id' => __('Variety Id'),
+            'batch_id' => __('Batch Id'),
+            'value' => __('Value'),
+            'exceptional_mark' => __('Exceptional Mark'),
+            'name' => __('Property'),
+            'property_id' => __('Property Id'),
+            'field_type' => __('Data Type'),
+            'property_type' => __('Property Type'),
+        ];
+
+        return $columns[$column] ?? null;
+    }
+
 	/**
 	 * Initialize method
 	 *
@@ -64,6 +91,7 @@ class MarksViewTable extends Table {
 		$this->setPrimaryKey( 'id' );
 
 		$this->addBehavior( 'MarkQuery' );
+        $this->addBehavior( 'FilterSchema' );
 
 		$this->belongsTo( 'TreesView', [
 			'foreignKey' => 'tree_id',

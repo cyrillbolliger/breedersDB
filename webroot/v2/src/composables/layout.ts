@@ -1,19 +1,19 @@
-import {LayoutBreadcrumbsInterface, LayoutTabsInterface} from 'src/store/module-layout/state';
-import {useStore} from 'src/store';
+import {useLayoutStore} from 'stores/layout';
+import {LayoutBreadcrumbsInterface, LayoutTabsInterface} from 'src/models/layout';
 
 export default function useLayout() {
-  const store = useStore();
+  const store = useLayoutStore();
 
   function setToolbarTitle(title: string) {
-    void store.dispatch('layout/title', title)
+    store.title = title
   }
 
   function setToolbarTabs(tabs: LayoutTabsInterface[]) {
-    void store.dispatch('layout/tabs', tabs)
+    store.tabs = tabs;
   }
 
   function setToolbarBreadcrumbs(breadcrumbs: LayoutBreadcrumbsInterface[]) {
-    void store.dispatch('layout/breadcrumbs', breadcrumbs)
+    store.breadcrumbs = breadcrumbs
   }
 
   return {

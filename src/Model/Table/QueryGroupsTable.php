@@ -86,4 +86,30 @@ class QueryGroupsTable extends Table {
 
 		return $rules;
 	}
+
+    public function findVersionNull(Query $query, array $options): Query
+    {
+        return $query->find( 'all' )
+            ->where(['version IS' => null])
+            ->contain( 'Queries' )
+            ->order( 'code' );
+    }
+
+    public function findVersionNullList(Query $query, array $options): Query
+    {
+        return $query->find( 'list' )
+            ->where(['version IS' => null])
+            ->order( 'code' );
+    }
+
+    public function findVersion1(Query $query, array $options): Query
+    {
+        return $query->find('all')
+            ->where([
+                        'OR' => [
+                            ['version LIKE' => '1.%'],
+                            ['version' => '1']
+                        ]
+                    ]);
+    }
 }

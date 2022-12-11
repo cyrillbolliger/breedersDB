@@ -54,7 +54,7 @@ class CollectionPaginatorComponent extends Component {
 			$settings = array_merge( $this->_registry->getController()->paginate, $settings );
 		}
 
-		$alias   = $this->_registry->getController()->loadModel()->getAlias();
+		$alias   = $this->_registry->getController()->fetchTable()->getAlias();
 		$options = $this->Paginator->mergeOptions( $alias, $settings );
 		$options = $this->Paginator->checkLimit( $options );
 
