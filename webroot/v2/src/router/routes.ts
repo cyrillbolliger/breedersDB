@@ -26,8 +26,13 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/marks/MarkTree.vue')
       },
       {
-        path: 'queries/new',
-        component: () => import('pages/queries/NewQuery.vue')
+        path: 'queries',
+        component: () => import('pages/queries/QueriesIndex.vue')
+      },
+      {
+        path: 'queries/:id',
+        component: () => import('pages/queries/TheQuery.vue'),
+        props: true,
       }
     ],
   },

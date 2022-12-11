@@ -4,6 +4,7 @@ namespace App\Model\Entity;
 
 use App\Utility\RulesetToConditionsConverter;
 use Cake\ORM\Entity;
+use Cake\ORM\Locator\TableLocator;
 
 /**
  * Query Entity
@@ -15,6 +16,7 @@ use Cake\ORM\Entity;
  * @property int $query_group_id
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
+ * @property ?\Cake\I18n\FrozenTime $deleted
  *
  * @property \App\Model\Entity\QueryGroup $query_group
  */
@@ -69,12 +71,25 @@ class Query extends Entity {
 	 */
 	private $r_active_tables;
 
-	/**
+    public function __construct(array $properties = [], array $options = [])
+    {
+        parent::__construct($properties, $options);
+
+        if (!$this->isVersionNull()) {
+            $this->setVirtual(['raw_query']);
+        }
+    }
+
+    /**
 	 * Return array with active fields in dot notation. Mark properties are excluded.
 	 *
 	 * @return array
 	 */
 	protected function _getActiveRegularFields(): array {
+        if (! $this->isVersionNull()) {
+            throw new \RuntimeException("Query version 'null' method called on query of higher version.");
+        }
+
 		// if self::r_fields is empty or if self::query has changed
 		if ( empty( $this->r_active_fields ) || $this->isDirty( 'my_query' ) ) {
 			// extract active fields from self::q
@@ -103,6 +118,10 @@ class Query extends Entity {
 	 * @return \stdClass
 	 */
 	protected function _getQuery(): \stdClass {
+        if (! $this->isVersionNull()) {
+            throw new \RuntimeException("Query version 'null' method called on query of higher version.");
+        }
+
 		if ( ! isset( $this->_fields['my_query'] ) ) {
 			return (object) [];
 		}
@@ -115,12 +134,20 @@ class Query extends Entity {
 		return $this->q;
 	}
 
+    protected function _getRawQuery(): \stdClass {
+        return json_decode($this->my_query, false, 512, JSON_THROW_ON_ERROR);
+    }
+
 	/**
 	 * Return object with filter conditions or null if no filter conditions were set.
 	 *
 	 * @return null|array
 	 */
 	protected function _getRegularConditions() {
+        if (! $this->isVersionNull()) {
+            throw new \RuntimeException("Query version 'null' method called on query of higher version.");
+        }
+
 		// if self::r_conditions is empty or if self::query has changed
 		if ( empty( $this->r_conditions ) || $this->isDirty( 'my_query' ) ) {
 			$q = $this->_getQuery();
@@ -143,6 +170,10 @@ class Query extends Entity {
 	 * @return array
 	 */
 	protected function _getMarkConditions(): array {
+        if (! $this->isVersionNull()) {
+            throw new \RuntimeException("Query version 'null' method called on query of higher version.");
+        }
+
 		// if self::m_conditions is empty or if self::query has changed
 		if ( empty( $this->m_conditions ) || $this->isDirty( 'my_query' ) ) {
 			$q = $this->_getQuery();
@@ -168,6 +199,10 @@ class Query extends Entity {
 	 * @return array
 	 */
 	protected function _getActiveMarkFieldIds(): array {
+        if (! $this->isVersionNull()) {
+            throw new \RuntimeException("Query version 'null' method called on query of higher version.");
+        }
+
 		// if self::r_fields is empty or if self::query has changed
 		if ( empty( $this->m_active_field_ids ) || $this->isDirty( 'my_query' ) ) {
 			$q = $this->_getQuery();
@@ -189,6 +224,10 @@ class Query extends Entity {
 	 * @return array
 	 */
 	protected function _getBreedingObjectAggregationModes(): array {
+        if (! $this->isVersionNull()) {
+            throw new \RuntimeException("Query version 'null' method called on query of higher version.");
+        }
+
 		return [
 			'trees'     => __( 'Trees' ),
 			'varieties' => __( 'Varieties' ),
@@ -203,6 +242,10 @@ class Query extends Entity {
 	 * @return string
 	 */
 	protected function _getBreedingObjectAggregationMode(): string {
+        if (! $this->isVersionNull()) {
+            throw new \RuntimeException("Query version 'null' method called on query of higher version.");
+        }
+
 		if ( ! isset( $this->_getQuery()->breeding_obj_aggregation_mode ) ) {
 			return 'convar';
 		}
@@ -216,6 +259,10 @@ class Query extends Entity {
 	 * @return array
 	 */
 	protected function _getActiveViewTables(): array {
+        if (! $this->isVersionNull()) {
+            throw new \RuntimeException("Query version 'null' method called on query of higher version.");
+        }
+
 		// if self::r_active_tables is empty or if self::query has changed
 		if ( empty( $this->r_active_tables ) || $this->isDirty( 'my_query' ) ) {
 			// extract active tables from self::q
@@ -244,6 +291,10 @@ class Query extends Entity {
 	 * @return \stdClass
 	 */
 	protected function _getWhereRules(): \stdClass {
+        if (! $this->isVersionNull()) {
+            throw new \RuntimeException("Query version 'null' method called on query of higher version.");
+        }
+
 		return json_decode( $this->_getWhereRulesJson() );
 	}
 
@@ -253,6 +304,10 @@ class Query extends Entity {
 	 * @return string JSON of the where data
 	 */
 	protected function _getWhereRulesJson(): string {
+        if (! $this->isVersionNull()) {
+            throw new \RuntimeException("Query version 'null' method called on query of higher version.");
+        }
+
 		if ( ! isset( $this->_getQuery()->where ) ) {
 			return json_encode( null );
 		}
@@ -276,6 +331,10 @@ class Query extends Entity {
 	 * @return array
 	 */
 	protected function _getMarkFields(): array {
+        if (! $this->isVersionNull()) {
+            throw new \RuntimeException("Query version 'null' method called on query of higher version.");
+        }
+
 		// if self::m_fields is empty or if self::query has changed
 		if ( empty( $this->m_fields ) || $this->isDirty( 'my_query' ) ) {
 			// extract fields from self::q
@@ -291,4 +350,21 @@ class Query extends Entity {
 
 		return $this->m_fields;
 	}
+
+    private function isVersionNull(): bool
+    {
+        return null === $this->getVersion();
+    }
+
+    private function getVersion(): null|string
+    {
+        if (empty($this->query_group_id)) {
+            return null;
+        }
+
+        return \Cake\Datasource\FactoryLocator::get('Table')
+            ->get('QueryGroups')
+            ->get($this->query_group_id)
+            ->version;
+    }
 }

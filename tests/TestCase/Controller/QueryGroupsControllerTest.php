@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\QueryGroupsController;
 use App\Model\Entity\QueryGroup;
 use App\Model\Table\QueryGroupsTable;
+use App\Test\TestCase\Controller\Shared\QueryGroupsControllerTestTrait;
 use App\Test\Util\AuthenticateTrait;
 use App\Test\Util\DependsOnFixtureTrait;
 use App\Test\Util\ExperimentSiteTrait;
@@ -23,6 +24,7 @@ class QueryGroupsControllerTest extends TestCase {
     use DependsOnFixtureTrait;
     use AuthenticateTrait;
     use ExperimentSiteTrait;
+    use QueryGroupsControllerTestTrait;
 
     private const ENDPOINT = '/query-groups';
     private const TABLE = 'QueryGroups';
@@ -55,6 +57,7 @@ class QueryGroupsControllerTest extends TestCase {
 
         $query = $this->Table
             ->find()
+            ->where(['version IS' => null])
             ->orderDesc( self::TABLE . '.id' )
             ->limit( 100 )
             ->all();
@@ -132,44 +135,5 @@ class QueryGroupsControllerTest extends TestCase {
 
         $query = $this->getEntityQueryFromArray( $entity->toArray() );
         self::assertEquals( 0, $query->count() );
-    }
-
-    private function addEntity(): QueryGroup {
-        $data   = $this->getNonExistingEntityData();
-        $entity = $this->Table->newEntity( $data );
-
-        $saved = $this->Table->saveOrFail( $entity );
-
-        return $this->Table->get( $saved->id, [
-            'contain' => self::CONTAINS,
-        ] );
-    }
-
-    private function getNonExistingEntityData(): array {
-        $data = [
-            'code' => 'myquery-group',
-        ];
-
-        $query = $this->getEntityQueryFromArray( $data );
-
-        $this->Table->deleteManyOrFail( $query );
-
-        return $data;
-    }
-
-    private function getEntityQueryFromArray( array $data ): Query {
-        return $this->Table->find()
-                           ->contain( self::CONTAINS )
-                           ->where( [ self::TABLE . '.code' => $data['code'] ] );
-    }
-
-    private function assertEntityExists( array $expected ): void {
-        $query = $this->getEntityQueryFromArray( $expected );
-
-        self::assertEquals( 1, $query->count() );
-
-        /** @var QueryGroup $dbData */
-        $dbData = $query->first();
-        self::assertEquals( $dbData->code, $expected['code'] );
     }
 }

@@ -62,6 +62,17 @@ export default {
   },
   queries: {
     title: 'Abfragen',
+    add: 'Add query',
+    unsaved: 'Ungespeicherte Abfrage',
+    group: 'Gruppe',
+    editGroups: 'Gruppen bearbeiten',
+    queryGroupSaveFailed: 'Speichern fehlgeschlagen. Versuche es mit einem anderen Namen.',
+    addQueryGroup: 'Gruppe hinzufügen',
+    queryGroupName: 'Gruppe gespeichert',
+    selectQueryGroup: 'Gruppe wählen',
+    description: 'Description',
+    titleNotUnique: 'Dieser Name wird schon verwendet.',
+    duplicate: 'Duplizieren',
     query: 'Abfrage',
     baseTable: 'Basis',
     crossings: 'Kreuzungen',
@@ -135,11 +146,18 @@ export default {
     retry: 'Wiederholen',
     failedToLoadData: 'Fehler beim Laden der Daten.',
     failedToSaveData: 'Fehler beim Speichern der Daten.',
+    failedToDeleteData: 'Fehler beim Löschen der Daten.',
     refreshList: 'Liste aktualisieren',
     next: 'Nächste',
     dismiss: 'Verwerfen',
     navigation: 'Navigation',
     selected: 'ausgewählt',
+    more: 'Mehr',
+    save: 'Speichern',
+    saved: 'Gespeichert',
+    edit: 'Bearbeiten',
+    delete: 'Löschen',
+    close: 'Schliessen',
     form: {
       required: 'Feld ist erforderlich',
       max255chars: 'Max. 255 Zeichen erlaubt',
@@ -184,7 +202,9 @@ export default {
     },
     queries: {
       title: 'Abfragen',
-      caption: 'Datenbank durchsuchen.'
+      caption: 'Datenbank durchsuchen.',
+      titleLegacy: 'Abfragen (alt)',
+      captionLegacy: 'Old search interface.'
     }
   }
 };

@@ -62,3 +62,22 @@ export interface AggregatedMarkCell {
   value: string | number | boolean,
   rawValues: MarkCell[],
 }
+
+export interface Query {
+  id: number,
+  code: string,
+  raw_query: MarkQuery,
+  description: string | null,
+  query_group_id: number,
+  created: string | null,
+  modified: string | null,
+  deleted: string | null,
+}
+
+export interface MarkQuery {
+  baseTable: BaseTable,
+  baseFilter: FilterNode,
+  markFilter?: FilterNode,
+  visibleColumns: string[],
+  showRowsWithoutMarks: boolean,
+}

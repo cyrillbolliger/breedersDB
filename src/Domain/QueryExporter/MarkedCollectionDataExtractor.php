@@ -11,6 +11,7 @@ use App\Model\Entity\VarietiesView;
 use Cake\Collection\CollectionInterface;
 use Cake\Datasource\FactoryLocator;
 use Cake\ORM\Entity;
+use Cake\Routing\Router;
 
 class MarkedCollectionDataExtractor extends DataExtractor
 {
@@ -177,7 +178,11 @@ class MarkedCollectionDataExtractor extends DataExtractor
         }
 
         foreach (self::MARK_COLUMNS as $column) {
-            $mark[$column] = $marksView->$column;
+            if ('value' === $column) {
+                $mark[$column] = $this->getTypedMarkValue($marksView);
+            } else {
+                $mark[$column] = $marksView->$column;
+            }
         }
 
         return $mark;
@@ -299,5 +304,23 @@ class MarkedCollectionDataExtractor extends DataExtractor
         }
 
         return $headers;
+    }
+
+    private function getTypedMarkValue(MarksView $marksView): float|\DateTimeImmutable|bool|int|string
+    {
+        $value = trim($marksView->value);
+
+        if ('' === $value) {
+            return '';
+        }
+
+        return match ($marksView->field_type) {
+            'INTEGER' => (int) $value,
+            'FLOAT' => (float) $value,
+            'BOOLEAN' => (bool) $value,
+            'DATE' => date_create_immutable_from_format('m/d/y H:i:s.u', "{$value} 00:00:00.000000"),
+            'PHOTO' => Router::url(['prefix' => 'REST1', 'controller' => 'Photos', 'action' => 'view', $value], true),
+            default => $value,
+        };
     }
 }

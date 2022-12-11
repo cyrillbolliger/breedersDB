@@ -73,6 +73,18 @@ export default {
 
   queries: {
     title: 'Queries',
+    add: 'Add query',
+    unsaved: 'Unsaved query',
+    group: 'Group',
+    editGroups: 'Edit Groups',
+    queryGroupSaveFailed: 'Failed to save. Try another name.',
+    addQueryGroup: 'Add group',
+    queryGroupName: 'Group name',
+    selectQueryGroup: 'Select group',
+    description: 'Description',
+
+    titleNotUnique: 'This name is already in use.',
+    duplicate: 'Duplicate',
 
     query: 'Query',
 
@@ -165,11 +177,18 @@ export default {
     retry: 'Retry',
     failedToLoadData: 'Failed to load data.',
     failedToSaveData: 'Failed to save data.',
+    failedToDeleteData: 'Failed to delete data.',
     refreshList: 'Refresh list',
     next: 'Next',
     dismiss: 'Dismiss',
     navigation: 'Navigation',
     selected: 'selected',
+    more: 'More',
+    save: 'Save',
+    saved: 'Saved',
+    edit: 'Edit',
+    delete: 'Delete',
+    close: 'Close',
 
     form: {
       required: 'Field is required',
@@ -219,7 +238,9 @@ export default {
     },
     queries: {
       title: 'Queries',
-      caption: 'Search the database.'
+      caption: 'Search the database.',
+      titleLegacy: 'Queries (old)',
+      captionLegacy: 'Old search interface.',
     },
   }
 };

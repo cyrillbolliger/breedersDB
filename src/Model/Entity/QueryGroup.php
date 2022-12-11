@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $code
+ * @property string $version
  * @property \Cake\I18n\FrozenTime $deleted
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified

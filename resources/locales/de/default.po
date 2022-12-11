@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2022-11-27 20:32+0000\n"
-"PO-Revision-Date: 2022-11-27 20:33\n"
+"POT-Creation-Date: 2022-12-04 19:58+0000\n"
+"PO-Revision-Date: 2022-12-11 21:05\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -69,8 +69,8 @@ msgstr "Normal"
 
 #: ./src/Controller/Component/ExcelComponent.php:97
 #: ./src/Controller/Component/ExcelComponent.php:98
-#: ./src/Domain/QueryExporter/ExcelExporter.php:42
-#: ./src/Domain/QueryExporter/ExcelExporter.php:43
+#: ./src/Domain/QueryExporter/ExcelExporter.php:46
+#: ./src/Domain/QueryExporter/ExcelExporter.php:47
 msgid "Breeders Database"
 msgstr "Züchter-Datenbank"
 
@@ -299,21 +299,21 @@ msgstr "Der Mutterbaum wurde gelöscht."
 msgid "The mother tree could not be deleted. Please, try again."
 msgstr "Der Mutterbaum konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: ./src/Controller/QueriesController.php:209
-#: ./src/Controller/QueriesController.php:289
+#: ./src/Controller/QueriesController.php:217
+#: ./src/Controller/QueriesController.php:302
 msgid "The query has been saved."
 msgstr "Die Abfrage wurde gespeichert."
 
-#: ./src/Controller/QueriesController.php:213
-#: ./src/Controller/QueriesController.php:293
+#: ./src/Controller/QueriesController.php:221
+#: ./src/Controller/QueriesController.php:306
 msgid "The query could not be saved. Please, try again."
 msgstr "Die Abfrage konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: ./src/Controller/QueriesController.php:361
+#: ./src/Controller/QueriesController.php:374
 msgid "The query has been deleted."
 msgstr "Die Abfrage wurde gelöscht."
 
-#: ./src/Controller/QueriesController.php:363
+#: ./src/Controller/QueriesController.php:376
 msgid "The query could not be deleted. Please, try again."
 msgstr "Die Abfrage konnte nicht gelöscht werden. Bitte versuche es erneut."
 
@@ -485,7 +485,7 @@ msgstr "Die Sorte wurde gelöscht."
 msgid "The variety could not be deleted. Please, try again."
 msgstr "Die Sorte konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:288
+#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:293
 #: ./templates/element/Mark/list.php:8
 #: ./templates/element/MarkView/tooltip.php:37
 #: ./templates/element/MarkView/tooltip.php:83
@@ -1021,8 +1021,8 @@ msgctxt "at least one"
 msgid "Any"
 msgstr "Ein"
 
-#: ./src/Model/Entity/Query.php:193
-#: ./src/Model/Table/QueriesTable.php:195
+#: ./src/Model/Entity/Query.php:232
+#: ./src/Model/Table/QueriesTable.php:229
 #: ./src/Model/Table/TreesViewTable.php:54
 #: ./templates/MarkFormProperties/add.php:47
 #: ./templates/MarkFormProperties/edit.php:50
@@ -1032,8 +1032,8 @@ msgstr "Ein"
 msgid "Trees"
 msgstr "Bäume"
 
-#: ./src/Model/Entity/Query.php:194
-#: ./src/Model/Table/QueriesTable.php:196
+#: ./src/Model/Entity/Query.php:233
+#: ./src/Model/Table/QueriesTable.php:230
 #: ./src/Model/Table/VarietiesViewTable.php:54
 #: ./templates/MarkFormProperties/add.php:48
 #: ./templates/MarkFormProperties/edit.php:51
@@ -1043,9 +1043,9 @@ msgstr "Bäume"
 msgid "Varieties"
 msgstr "Sorten"
 
-#: ./src/Model/Entity/Query.php:195
+#: ./src/Model/Entity/Query.php:234
 #: ./src/Model/Table/BatchesViewTable.php:53
-#: ./src/Model/Table/QueriesTable.php:190
+#: ./src/Model/Table/QueriesTable.php:224
 #: ./templates/Batches/index.php:14
 #: ./templates/MarkFormProperties/add.php:49
 #: ./templates/MarkFormProperties/edit.php:52
@@ -1054,7 +1054,7 @@ msgstr "Sorten"
 msgid "Batches"
 msgstr "Lose"
 
-#: ./src/Model/Entity/Query.php:196
+#: ./src/Model/Entity/Query.php:235
 #: ./src/Model/Table/MotherTreesViewTable.php:70
 #: ./src/Model/Table/ScionsBundlesViewTable.php:59
 #: ./src/Model/Table/TreesViewTable.php:61
@@ -1077,7 +1077,7 @@ msgstr "Convar"
 #: ./src/Model/Table/MarkValuesTable.php:155
 #: ./src/Model/Table/MarksTable.php:81
 #: ./src/Model/Table/MotherTreesTable.php:69
-#: ./src/Model/Table/QueriesTable.php:69
+#: ./src/Model/Table/QueriesTable.php:74
 #: ./src/Model/Table/QueryGroupsTable.php:62
 #: ./src/Model/Table/RootstocksTable.php:56
 #: ./src/Model/Table/RowsTable.php:64
@@ -1226,7 +1226,7 @@ msgid "A crossing with the same mother variety and the same father variety alrea
 msgstr "Eine Kreuzung mit der gleichen Muttersorte und der gleichen Vatersorte ist bereits vorhanden."
 
 #: ./src/Model/Table/CrossingsViewTable.php:54
-#: ./src/Model/Table/QueriesTable.php:191
+#: ./src/Model/Table/QueriesTable.php:225
 #: ./templates/Crossings/index.php:14
 #: ./templates/element/Crossing/nav.php:2
 #: ./templates/element/top_nav.php:2
@@ -1348,7 +1348,7 @@ msgid "Tree and variety must not be selected"
 msgstr "Baum und Sorte dürfen nicht ausgewählt sein"
 
 #: ./src/Model/Table/MarksViewTable.php:56
-#: ./src/Model/Table/QueriesTable.php:192
+#: ./src/Model/Table/QueriesTable.php:226
 #: ./templates/Marks/index.php:14
 #: ./templates/element/Mark/index_table.php:6
 #: ./templates/element/Mark/nav.php:2
@@ -1425,7 +1425,7 @@ msgid "The variety of the mother tree must match the mother variety of the cross
 msgstr "Die Sorte des Mutterbaums muss mit der Muttersorte der Kreuzung übereinstimmen."
 
 #: ./src/Model/Table/MotherTreesViewTable.php:53
-#: ./src/Model/Table/QueriesTable.php:193
+#: ./src/Model/Table/QueriesTable.php:227
 #: ./templates/MotherTrees/index.php:18
 #: ./templates/element/Crossing/nav.php:5
 msgid "Mother Trees"
@@ -1528,7 +1528,7 @@ msgstr "Zeile"
 msgid "Experiment Site"
 msgstr "Versuchsort"
 
-#: ./src/Model/Table/QueriesTable.php:194
+#: ./src/Model/Table/QueriesTable.php:228
 #: ./src/Model/Table/ScionsBundlesViewTable.php:52
 #: ./templates/ScionsBundles/index.php:15
 #: ./templates/element/ScionsBundle/nav.php:2
