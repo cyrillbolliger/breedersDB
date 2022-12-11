@@ -73,7 +73,7 @@ export default {
 
   queries: {
     title: 'Queries',
-    new: 'New query',
+    add: 'Add query',
     unsaved: 'Unsaved query',
     group: 'Group',
     editGroups: 'Edit Groups',
