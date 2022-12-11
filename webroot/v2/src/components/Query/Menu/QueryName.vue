@@ -1,7 +1,7 @@
 <template>
   <q-input
     :borderless="!hasFocus && !changed"
-    :outlined="hasFocus || changed"
+    :outlined="hasFocus || changed || !!errorMessage"
     :modelValue="code"
     :placeholder="t('queries.unsaved')"
     autocomplete="off"

@@ -125,9 +125,11 @@ function showSavedFlashMsg() {
   window.setTimeout(() => savedFlashMsg.value = false, 800);
 }
 
-function duplicate() {
-  loading.value = ! loading.value;
-  // todo
+async function duplicate() {
+  await router.replace('/queries/new');
+  store.queryCode = '';
+  store.attemptedToSaveQuery = false;
+  unsaved.value = true;
 }
 
 async function deleteQuery() {
