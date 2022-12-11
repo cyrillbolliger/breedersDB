@@ -12,41 +12,65 @@
     @blur="hasFocus = false"
     :loading="loading"
     :debounce="250"
-    :error="false === uniqueName"
-    :error-message="t('queries.titleNotUnique')"
+    :error="!!errorMessage"
+    :error-message="errorMessage"
   >
   </q-input>
 </template>
 
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n';
-import {ref} from 'vue';
+import {computed, ref, watch} from 'vue';
 import useApi from 'src/composables/api';
+import {useQueryStore} from 'stores/query';
 
-defineProps({
-  code: String,
+const props = defineProps({
   changed: Boolean,
 });
 
 const emit = defineEmits<{
-  (e: 'update:code', value: string): void
   (e: 'update:changed', value: boolean): void
 }>();
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const api = useApi();
+const store = useQueryStore();
 
 const hasFocus = ref(false);
 const loading = ref(false);
 const uniqueName = ref<boolean|null>(null);
 
+let savedName: string = store.queryCode;
+
+const code = computed<string>({
+  get: (): string => store.queryCode,
+  set: (code: string) => store.queryCode = code,
+});
+
+const errorMessage = computed<string>(() => {
+  if (false === uniqueName.value && code.value.length > 0) {
+    return t('queries.titleNotUnique');
+  }
+
+  if (store.attemptedToSaveQuery && code.value.length < 1) {
+    return t('general.form.required');
+  }
+
+  return '';
+});
+
 function change(val: string) {
   void checkCode(val);
-  emit('update:code', val)
+  code.value = val;
   emit('update:changed', true)
 }
 
 async function checkCode(code: string) {
+  if (code === savedName) {
+    uniqueName.value = true;
+    return;
+  }
+
   loading.value = true;
 
   try{
@@ -58,6 +82,12 @@ async function checkCode(code: string) {
 
   loading.value = false;
 }
+
+watch(props, () => {
+  if (false === props.changed) {
+    savedName = code.value
+  }
+});
 
 </script>
 

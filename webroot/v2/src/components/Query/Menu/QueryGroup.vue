@@ -31,19 +31,17 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, onMounted, PropType, ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {useQueryStore} from 'stores/query';
 import type {QueryGroup} from 'src/models/queryGroup';
 import QueryGroupEdit from 'components/Query/Menu/QueryGroupEdit.vue';
 
-const props = defineProps({
-  group: Object as PropType<QueryGroup>,
+defineProps({
   changed: Boolean,
 });
 
 const emit = defineEmits<{
-  (e: 'update:group', value: QueryGroup): void
   (e: 'update:changed', value: boolean): void
 }>();
 
@@ -54,9 +52,13 @@ const loading = ref(false);
 const edit = ref(false);
 
 const options = computed<QueryGroup[]>(() => store.queryGroups);
+const group = computed<QueryGroup>({
+  get: (): QueryGroup => store.queryGroup as QueryGroup,
+  set: (group: QueryGroup) => store.queryGroup = group,
+});
 
 function change(val: QueryGroup) {
-  emit('update:group', val)
+  group.value = val;
   emit('update:changed', true);
 }
 
@@ -67,8 +69,8 @@ async function ensureQueryGroupsLoaded() {
 }
 
 function setInitialQueryGroup() {
-  if ( ! props.group && options.value.length) {
-    emit('update:group', options.value[0]);
+  if ( ! group.value && options.value.length) {
+    group.value = options.value[0];
   }
 }
 

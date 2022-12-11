@@ -25,6 +25,10 @@ export interface QueryState {
   visibleColumns: string[],
   showRowsWithoutMarks: boolean,
   queryGroups: QueryGroup[],
+  queryGroup: QueryGroup|null,
+  queryCode: string,
+  queryDescription: string,
+  attemptedToSaveQuery: boolean,
 }
 
 export const useQueryStore = defineStore('query', {
@@ -38,6 +42,10 @@ export const useQueryStore = defineStore('query', {
     visibleColumns: localStorageHelper.getVisibleColumns(),
     showRowsWithoutMarks: localStorageHelper.getShowRowsWithoutMarks(true),
     queryGroups: [],
+    queryGroup: null,
+    queryCode: '',
+    queryDescription: '',
+    attemptedToSaveQuery: false,
   }),
 
 
