@@ -6,7 +6,7 @@
       :label="t('marks.title')"
     />
     <q-btn
-      to="/queries/new"
+      to="/queries"
       color="primary"
       :label="t('queries.title')"
     />
