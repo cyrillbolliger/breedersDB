@@ -81,6 +81,7 @@ export default {
     addQueryGroup: 'Add group',
     queryGroupName: 'Group name',
     selectQueryGroup: 'Select group',
+    description: 'Description',
 
     titleNotUnique: 'This name is already in use.',
     duplicate: 'Duplicate',

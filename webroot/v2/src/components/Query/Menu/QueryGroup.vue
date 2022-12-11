@@ -13,8 +13,14 @@
     @focus="hasFocus = true"
     @update:model-value="change"
     :error="!group"
-    :class="{'query-group__select--no-group': !group}"
+    :class="{
+      'query-group__selector--no-group': !group,
+      'query-group__selector--hoverable': !hasFocus && !changed,
+    }"
     :error-message="t('queries.selectQueryGroup')"
+    dense
+    class="query-group__selector"
+    :title="t('general.edit')"
   >
     <template #after-options>
       <q-btn
@@ -90,15 +96,25 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-/*noinspection CssUnusedSymbol*/
-.q-select {
+<style>
+.query-group__selector {
   max-width: 280px;
   font-size: 1.5rem;
   margin-top: 20px;
 }
 
-.query-group__select--no-group {
+.query-group__selector--no-group {
   min-width: 150px;
+}
+
+/*noinspection CssUnusedSymbol*/
+.query-group__selector span {
+  transition: all var(--q-transition-duration) ease;
+}
+
+/*noinspection CssUnusedSymbol*/
+.query-group__selector--hoverable:hover span {
+  color: var(--q-primary);
+  cursor: pointer;
 }
 </style>

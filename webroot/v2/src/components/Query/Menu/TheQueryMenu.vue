@@ -13,7 +13,9 @@
       @saved="saved"
     />
   </div>
-  todo: add description field
+  <QueryDescription
+    v-model:changed="queryDescriptionChanged"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -23,16 +25,19 @@ import QueryName from 'components/Query/Menu/QueryName.vue';
 import QueryGroup from 'components/Query/Menu/QueryGroup.vue';
 import {useRoute} from 'vue-router';
 import QueryActionButtons from 'components/Query/Menu/QueryActionButtons.vue';
+import QueryDescription from 'components/Query/Menu/QueryDescription.vue';
 
 const route = useRoute();
 
 const isNew = ref(route.params.id === 'new');
 const queryGroupChanged = ref(isNew.value);
 const queryCodeChanged = ref(isNew.value);
+const queryDescriptionChanged = ref(isNew.value);
 
 function saved() {
   queryGroupChanged.value = false;
   queryCodeChanged.value = false;
+  queryDescriptionChanged.value = false;
 }
 
 </script>

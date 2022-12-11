@@ -21,7 +21,7 @@ async function saveQuery(id: string): Promise<void | Query> {
 
   const data = {
     code: store.queryCode,
-    description: '', // todo
+    description: store.queryDescription,
     query_group_id: (store.queryGroup as QueryGroup|null)?.id || -1,
     raw_query: rawQuery,
   } as Query;

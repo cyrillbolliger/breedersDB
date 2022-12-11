@@ -14,6 +14,13 @@
     :debounce="250"
     :error="!!errorMessage"
     :error-message="errorMessage"
+    dense
+    class="query-name__input"
+    :input-class="{
+      'query-name__input-field--hoverable': !hasFocus && !changed,
+      'query-name__input-field': true
+    }"
+    :title="t('general.edit')"
   >
   </q-input>
 </template>
@@ -91,11 +98,22 @@ watch(props, () => {
 
 </script>
 
-<style scoped>
-/*noinspection CssUnusedSymbol*/
-.q-input {
+<style>
+.query-name__input {
   max-width: 280px;
   font-size: 1.5rem;
   padding-top: 20px;
+}
+
+
+/*noinspection CssUnusedSymbol*/
+.query-name__input-field {
+    transition: all var(--q-transition-duration) ease;
+}
+
+/*noinspection CssUnusedSymbol*/
+.query-name__input-field--hoverable:hover {
+  color: var(--q-primary);
+  cursor: pointer;
 }
 </style>
