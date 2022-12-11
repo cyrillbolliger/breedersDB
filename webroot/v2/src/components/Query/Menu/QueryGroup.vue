@@ -36,6 +36,7 @@ import {useI18n} from 'vue-i18n';
 import {useQueryStore} from 'stores/query';
 import type {QueryGroup} from 'src/models/queryGroup';
 import QueryGroupEdit from 'components/Query/Menu/QueryGroupEdit.vue';
+import {useRoute} from 'vue-router';
 
 defineProps({
   changed: Boolean,
@@ -47,6 +48,8 @@ const emit = defineEmits<{
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const store = useQueryStore();
+const route = useRoute();
+
 const hasFocus = ref(false);
 const loading = ref(false);
 const edit = ref(false);
@@ -69,6 +72,10 @@ async function ensureQueryGroupsLoaded() {
 }
 
 function setInitialQueryGroup() {
+  if (route.params.id !== 'new') {
+    return;
+  }
+
   if ( ! group.value && options.value.length) {
     group.value = options.value[0];
   }

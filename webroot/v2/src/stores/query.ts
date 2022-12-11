@@ -185,5 +185,15 @@ export const useQueryStore = defineStore('query', {
       this.showRowsWithoutMarks = show;
       localStorageHelper.setShowRowsWithoutMarks(show);
     },
+
+    async setQueryGroupById(id: number) {
+      await this.maybeLoadQueryGroups();
+      const candidates = this.queryGroups
+        .filter((item: QueryGroup) => item.id === id);
+      if (!candidates.length) {
+        this.queryGroup = this.queryGroups[0];
+      }
+      this.queryGroup = candidates[0];
+    }
   },
 });

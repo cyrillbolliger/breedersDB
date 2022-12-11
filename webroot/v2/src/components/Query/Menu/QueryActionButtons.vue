@@ -3,7 +3,7 @@
     <div>
       <q-btn
         v-if="!loading"
-        :color="changed ? 'primary' : 'grey-8'"
+        color="primary"
         :title="t('general.save')"
         flat
         icon="save"
@@ -41,7 +41,7 @@
     >
       <q-fab-action
         :label="t('general.save')"
-        :text-color="changed ? 'primary' : 'grey-8'"
+        text-color="primary"
         class="query-action-buttons__fab-action"
         icon="save"
         @click="save"
@@ -79,10 +79,6 @@ import {useQueryStore} from 'stores/query';
 const emit = defineEmits<{
   (e: 'saved'): void
 }>();
-
-defineProps({
-  changed: Boolean,
-});
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const route = useRoute();

@@ -31,7 +31,8 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: 'queries/:id',
-        component: () => import('pages/queries/TheQuery.vue')
+        component: () => import('pages/queries/TheQuery.vue'),
+        props: true,
       }
     ],
   },

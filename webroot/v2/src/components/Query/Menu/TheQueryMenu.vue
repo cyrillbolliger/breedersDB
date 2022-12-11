@@ -3,16 +3,13 @@
     <div class="row the-query-menu__title-path">
       <QueryGroup
         v-model:changed="queryGroupChanged"
-        @update:changed="changed = true"
       />
       <span class="text-grey-8 the-query-menu__title-path-separator">/</span>
       <QueryName
         v-model:changed="queryCodeChanged"
-        @update:changed="changed = true"
       />
     </div>
     <QueryActionButtons
-      :changed="changed"
       @saved="saved"
     />
   </div>
@@ -30,7 +27,6 @@ import QueryActionButtons from 'components/Query/Menu/QueryActionButtons.vue';
 const route = useRoute();
 
 const isNew = ref(route.params.id === 'new');
-const changed = ref(isNew.value);
 const queryGroupChanged = ref(isNew.value);
 const queryCodeChanged = ref(isNew.value);
 
