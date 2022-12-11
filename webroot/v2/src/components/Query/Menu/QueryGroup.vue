@@ -7,11 +7,14 @@
     :option-label="(item: QueryGroup) => item.code"
     :option-value="(item: QueryGroup) => item.id"
     :options="options"
-    :outlined="hasFocus || changed"
-    hide-dropdown-icon
+    :outlined="hasFocus || changed || !group"
+    :hide-dropdown-icon="!!group"
     @blur="hasFocus = false"
     @focus="hasFocus = true"
     @update:model-value="change"
+    :error="!group"
+    :class="{'query-group__select--no-group': !group}"
+    :error-message="t('queries.selectQueryGroup')"
   >
     <template #after-options>
       <q-btn
@@ -92,5 +95,10 @@ onMounted(() => {
 .q-select {
   max-width: 280px;
   font-size: 1.5rem;
+  margin-top: 20px;
+}
+
+.query-group__select--no-group {
+  min-width: 150px;
 }
 </style>

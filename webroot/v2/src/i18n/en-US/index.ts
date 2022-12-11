@@ -80,6 +80,7 @@ export default {
     queryGroupSaveFailed: 'Failed to save. Try another name.',
     addQueryGroup: 'Add group',
     queryGroupName: 'Group name',
+    selectQueryGroup: 'Select group',
 
     titleNotUnique: 'This name is already in use.',
     duplicate: 'Duplicate',
