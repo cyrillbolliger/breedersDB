@@ -50,7 +50,9 @@ const description = computed<string>({
 
 function change(val: string) {
   description.value = val;
-  emit('update:changed', true)
+  if (description.value !== savedDescription) {
+    emit('update:changed', true)
+  }
 }
 
 watch(props, () => {
