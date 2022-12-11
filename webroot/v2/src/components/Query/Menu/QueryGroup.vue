@@ -22,6 +22,16 @@
     class="query-group__selector"
     :title="t('general.edit')"
   >
+    <template #no-option>
+      <q-btn
+        :label="t('queries.addQueryGroup')"
+        class="q-px-md q-py-sm full-width"
+        color="primary"
+        flat
+        square
+        @click="edit = true"
+      />
+    </template>
     <template #after-options>
       <q-btn
         :label="t('queries.editGroups')"

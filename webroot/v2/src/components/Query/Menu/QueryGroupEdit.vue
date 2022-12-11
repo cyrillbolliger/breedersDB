@@ -1,6 +1,6 @@
 <template>
   <q-card style="min-width: 300px">
-    <q-card-section>
+    <q-card-section v-if="groups.length">
       <div class="text-h6 q-pb-sm">{{ t('queries.editGroups') }}</div>
       <QueryGroupEditItem
         v-for="group in groups"
