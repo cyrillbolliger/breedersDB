@@ -126,7 +126,7 @@ class RulesetToConditionsConverter {
 	 *
 	 * @throws \InvalidArgumentException if the given rule type is not defined
 	 */
-	private function _typecastValue( \stdClass &$rule ): void {
+	private function _typecastValue( \stdClass $rule ): void {
 		$simple  = [ 'integer', 'double', 'boolean', 'string' ];
 		$complex = [ 'date', 'time', 'datetime' ];
 
