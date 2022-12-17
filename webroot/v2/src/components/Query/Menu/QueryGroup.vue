@@ -108,7 +108,6 @@ onMounted(() => {
 
 <style>
 .query-group__selector {
-  max-width: 280px;
   font-size: 1.5rem;
   margin-top: 20px;
 }
