@@ -50,6 +50,7 @@ function saved() {
 .the-query-menu__title-path {
   align-items: center;
   font-size: 1.5rem;
+  max-width: calc(100% - 90px);
 }
 
 .the-query-menu__title-path-separator {
