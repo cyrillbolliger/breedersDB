@@ -143,9 +143,9 @@ class AppController extends Controller {
         /**
          *  redirect to experiment site selection if none is stored in session
          */
-        $controller = $this->request->getParam( 'controller' );
-        $action     = $this->request->getParam( 'action' );
-        $arg1       = $this->request->getParam( 'pass.0' ) ? $this->request->getParam( 'pass.0' ) : null;
+        $controller = $this->request->getParam( 'controller', '' );
+        $action     = $this->request->getParam( 'action', '' );
+        $arg1       = $this->request->getParam('pass.0', '' );
         $session    = $this->request->getSession();
 
         // exclude this controllers an actions form redirect
