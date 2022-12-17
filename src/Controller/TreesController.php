@@ -308,7 +308,7 @@ class TreesController extends AppController {
 			$tree = $this->Brain->remember( $tree );
 
 			$zpl = null;
-			if ( ! empty( $this->request->getQuery('printable') ) && $this->request->getQuery('printable') != false ) {
+			if ( ! empty( $this->request->getQuery('printable') ) && $this->request->getQuery('printable') !== false ) {
 				$zpl = $this->Trees->getLabelZpl( $tree->id, 'convar', true,
 					$this->request->getSession()->read( 'time_zone' ) );
 			}

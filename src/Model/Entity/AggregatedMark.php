@@ -183,6 +183,8 @@ class AggregatedMark {
 			foreach ( $values as &$value ) {
 				settype( $value, $cast );
 			}
+
+            unset( $value );
 		}
 
 		// calculate reused stats

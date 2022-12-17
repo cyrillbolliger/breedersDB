@@ -6,7 +6,7 @@ use Migrations\AbstractMigration;
 class Initial extends AbstractMigration {
     public function up() {
 
-        $this->table( 'batches' )
+        $this->table( 'batches', ['signed' => true] )
              ->addColumn( 'code', 'string', [
                  'default' => null,
                  'limit'   => 3,
@@ -84,7 +84,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'crossings' )
+        $this->table( 'crossings', ['signed' => true] )
              ->addColumn( 'code', 'string', [
                  'default' => null,
                  'limit'   => 8,
@@ -137,7 +137,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'experiment_sites' )
+        $this->table( 'experiment_sites', ['signed' => true] )
              ->addColumn( 'name', 'string', [
                  'default' => null,
                  'limit'   => 140,
@@ -145,7 +145,7 @@ class Initial extends AbstractMigration {
              ] )
              ->create();
 
-        $this->table( 'graftings' )
+        $this->table( 'graftings', ['signed' => true] )
              ->addColumn( 'name', 'string', [
                  'default' => null,
                  'limit'   => 140,
@@ -153,7 +153,7 @@ class Initial extends AbstractMigration {
              ] )
              ->create();
 
-        $this->table( 'mark_form_fields' )
+        $this->table( 'mark_form_fields', ['signed' => true] )
              ->addColumn( 'priority', 'integer', [
                  'default' => null,
                  'limit'   => 11,
@@ -191,7 +191,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'mark_form_properties' )
+        $this->table( 'mark_form_properties', ['signed' => true] )
              ->addColumn( 'name', 'string', [
                  'default' => null,
                  'limit'   => 45,
@@ -254,7 +254,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'mark_form_property_types' )
+        $this->table( 'mark_form_property_types', ['signed' => true] )
              ->addColumn( 'name', 'string', [
                  'default' => null,
                  'limit'   => 45,
@@ -267,7 +267,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'mark_forms' )
+        $this->table( 'mark_forms', ['signed' => true] )
              ->addColumn( 'name', 'string', [
                  'default' => null,
                  'limit'   => 45,
@@ -295,7 +295,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'mark_scanner_codes' )
+        $this->table( 'mark_scanner_codes', ['signed' => true] )
              ->addColumn( 'code', 'string', [
                  'default' => null,
                  'limit'   => 45,
@@ -318,7 +318,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'mark_values' )
+        $this->table( 'mark_values', ['signed' => true] )
              ->addColumn( 'value', 'string', [
                  'default' => null,
                  'limit'   => 255,
@@ -361,7 +361,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'marks' )
+        $this->table( 'marks', ['signed' => true] )
              ->addColumn( 'date', 'date', [
                  'default' => null,
                  'limit'   => null,
@@ -424,7 +424,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'mother_trees' )
+        $this->table( 'mother_trees', ['signed' => true] )
              ->addColumn( 'code', 'string', [
                  'default' => null,
                  'limit'   => 45,
@@ -517,7 +517,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'queries' )
+        $this->table( 'queries', ['signed' => true] )
              ->addColumn( 'code', 'string', [
                  'default' => null,
                  'limit'   => 120,
@@ -560,7 +560,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'query_groups' )
+        $this->table( 'query_groups', ['signed' => true] )
              ->addColumn( 'code', 'string', [
                  'default' => null,
                  'limit'   => 120,
@@ -583,7 +583,7 @@ class Initial extends AbstractMigration {
              ] )
              ->create();
 
-        $this->table( 'rootstocks' )
+        $this->table( 'rootstocks', ['signed' => true] )
              ->addColumn( 'name', 'string', [
                  'default' => null,
                  'limit'   => 140,
@@ -591,7 +591,7 @@ class Initial extends AbstractMigration {
              ] )
              ->create();
 
-        $this->table( 'rows' )
+        $this->table( 'rows', ['signed' => true] )
              ->addColumn( 'code', 'string', [
                  'default' => null,
                  'limit'   => 45,
@@ -634,7 +634,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'scions_bundles' )
+        $this->table( 'scions_bundles', ['signed' => true] )
              ->addColumn( 'code', 'string', [
                  'default' => null,
                  'limit'   => 45,
@@ -697,7 +697,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'trees' )
+        $this->table( 'trees', ['signed' => true] )
              ->addColumn( 'publicid', 'string', [
                  'default' => null,
                  'limit'   => 9,
@@ -820,7 +820,7 @@ class Initial extends AbstractMigration {
              )
              ->create();
 
-        $this->table( 'users' )
+        $this->table( 'users', ['signed' => true] )
              ->addColumn( 'email', 'string', [
                  'default' => null,
                  'limit'   => 255,
@@ -853,7 +853,7 @@ class Initial extends AbstractMigration {
              ] )
              ->create();
 
-        $this->table( 'varieties' )
+        $this->table( 'varieties', ['signed' => true] )
              ->addColumn( 'code', 'string', [
                  'default' => null,
                  'limit'   => 45,

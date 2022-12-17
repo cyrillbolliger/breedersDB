@@ -72,7 +72,7 @@ class MarkValuesTable extends Table {
 	 * @param ArrayObject $data
 	 * @param ArrayObject $options
 	 */
-	public function beforeMarshal( Event $event, ArrayObject &$data, ArrayObject $options ) {
+	public function beforeMarshal( Event $event, ArrayObject $data, ArrayObject $options ) {
 		$type = $this->MarkFormProperties->get( $data['mark_form_property_id'] )->field_type;
 
         // convert date data into the yyyy-mm-dd format

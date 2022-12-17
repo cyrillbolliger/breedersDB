@@ -304,7 +304,7 @@ class TreesTable extends Table
             return null;
         }
 
-        if (2 == count($where)) {
+        if (2 === count($where)) {
             $condition = ['OR' => [$where[0], $where[1]]];
         } else {
             $condition = $where[0];
