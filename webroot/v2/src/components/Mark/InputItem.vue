@@ -11,7 +11,7 @@
 
       <q-item-label
         v-if="note"
-        class="text-caption q-mt-sm"
+        class="text-caption q-mt-sm mark-input-item__label"
       >{{note}}</q-item-label>
 
     </q-item-section>
@@ -32,3 +32,10 @@ export default defineComponent({
   },
 })
 </script>
+
+<style scoped>
+  .mark-input-item__label{
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+</style>
