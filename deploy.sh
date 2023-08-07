@@ -122,16 +122,16 @@ sync() {
         --exclude='/.idea' \
         --exclude='/webroot/v1/src' \
         --exclude='/webroot/v2/src' \
-        . "${host}:\"${target}\""
+        . "${host}:${target}"
 
     echo "Upload for ${name} completed."
 }
 
 buildassets() {
     echo 'Start building assets'
-    docker-compose run nodev1 npm run build
-    docker-compose run nodev1 npm run dev
-    docker-compose run nodev2 quasar build
+    docker compose run nodev1 npm run build
+    docker compose run nodev1 npm run dev
+    docker compose run nodev2 quasar build
     echo 'Assets built'
 }
 
