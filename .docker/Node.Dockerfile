@@ -1,3 +1,3 @@
-FROM node:14
+FROM node:20
 
 RUN yarn global add @quasar/cli
