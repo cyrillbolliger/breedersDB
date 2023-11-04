@@ -20,10 +20,10 @@ export default function useMarkTabNav() {
   });
 
   const tabs: LayoutTabsInterface[] = [
-    {label: t('marks.selectForm.tab'), to: '/marks/select-form'},
-    {label: t('marks.setMeta.tab'), to: '/marks/set-meta'},
-    {label: t('marks.selectTree.tab'), to: '/marks/select-tree', disable: disableSetTreeTab.value},
-    {label: t('marks.markTree.tab'), to: '/marks/mark-tree', disable: disableMarkTab.value},
+    {label: t('marks.selectForm.tab'), to: '/marks/tree/select-form'},
+    {label: t('marks.setMeta.tab'), to: '/marks/tree/set-meta'},
+    {label: t('marks.selectTree.tab'), to: '/marks/tree/select-tree', disable: disableSetTreeTab.value},
+    {label: t('marks.markTree.tab'), to: '/marks/tree/mark-tree', disable: disableMarkTab.value},
   ];
 
   return tabs

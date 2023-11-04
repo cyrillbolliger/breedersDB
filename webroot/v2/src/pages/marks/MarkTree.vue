@@ -14,7 +14,7 @@
 
     <tree-card
       :tree="tree"
-      @change="$router.push('/marks/select-tree')"
+      @change="$router.push('/marks/tree/select-tree')"
     />
 
     <q-list
@@ -205,12 +205,12 @@ export default defineComponent({
         uploading.value = false;
 
         if ( ! tree.value) {
-          notifyStateError(t('marks.markTree.selectTree'), '/marks/select-tree')
+          notifyStateError(t('marks.markTree.selectTree'), '/marks/tree/select-tree')
           return;
         }
 
         if ( ! form.value) {
-          notifyStateError(t('marks.markTree.selectForm'), '/marks/select-form')
+          notifyStateError(t('marks.markTree.selectForm'), '/marks/tree/select-form')
           return;
         }
 
@@ -231,22 +231,22 @@ export default defineComponent({
               message: t('marks.markTree.saved'),
               color: 'success',
             });
-            void router.push('/marks/select-tree')
+            void router.push('/marks/tree/select-tree')
           })
       });
     }
 
 
     if ( ! form.value) {
-      notifyStateError(t('marks.markTree.selectForm'), '/marks/select-form')
+      notifyStateError(t('marks.markTree.selectForm'), '/marks/tree/select-form')
     }
 
     if ( ! author.value || ! date.value) {
-      notifyStateError(t('marks.markTree.setMeta'), '/marks/set-meta')
+      notifyStateError(t('marks.markTree.setMeta'), '/marks/tree/set-meta')
     }
 
     if ( ! tree.value) {
-      notifyStateError(t('marks.markTree.selectTree'), '/marks/select-tree')
+      notifyStateError(t('marks.markTree.selectTree'), '/marks/tree/select-tree')
     }
 
     function notifyStateError(button: string, route: string) {

@@ -83,7 +83,7 @@ export default defineComponent({
 
     function goToNext() {
       if (isValid()) {
-        void router.push('/marks/select-tree')
+        void router.push('/marks/tree/select-tree')
       }
     }
 

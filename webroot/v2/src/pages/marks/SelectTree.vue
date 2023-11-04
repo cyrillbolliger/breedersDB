@@ -37,7 +37,7 @@ export default defineComponent({
 
     function setTree(tree: Tree) {
       store.tree = tree;
-      void router.push('/marks/mark-tree')
+      void router.push('/marks/tree/mark-tree')
     }
 
     return {

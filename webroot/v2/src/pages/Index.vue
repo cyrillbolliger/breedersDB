@@ -1,7 +1,7 @@
 <template>
   <q-page class="row items-center justify-evenly">
     <q-btn
-      to="/marks/select-form"
+      to="/marks/tree/select-form"
       color="primary"
       :label="t('marks.title')"
     />

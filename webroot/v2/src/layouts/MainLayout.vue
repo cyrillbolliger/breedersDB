@@ -136,7 +136,7 @@ export default defineComponent({
         title: t('navigation.markTrees.title'),
         caption: t('navigation.markTrees.caption'),
         icon: 'star',
-        link: '/marks/select-form'
+        link: '/marks/tree/select-form'
       },
       {
         title: t('navigation.trees.title'),

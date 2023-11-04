@@ -72,7 +72,7 @@ export default defineComponent({
     function selectForm(form: MarkForm) {
       void get<MarkForm>(`markForms/view/${form.id}`)
         .then(data => store.selectedForm = data as MarkForm)
-        .then(() => void router.push('/marks/set-meta'))
+        .then(() => void router.push('/marks/tree/set-meta'))
     }
 
     function filterFunction(term: string, item: MarkForm) {

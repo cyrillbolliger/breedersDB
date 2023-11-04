@@ -10,19 +10,19 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/Index.vue'),
       },
       {
-        path: 'marks/select-form',
+        path: 'marks/:type/select-form',
         component: () => import('pages/marks/SelectForm.vue')
       },
       {
-        path: 'marks/set-meta',
+        path: 'marks/:type/set-meta',
         component: () => import('pages/marks/SetMeta.vue')
       },
       {
-        path: 'marks/select-tree',
+        path: 'marks/tree/select-tree',
         component: () => import('pages/marks/SelectTree.vue')
       },
       {
-        path: 'marks/mark-tree',
+        path: 'marks/tree/mark-tree',
         component: () => import('pages/marks/MarkTree.vue')
       },
       {
