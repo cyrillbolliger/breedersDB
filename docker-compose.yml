@@ -28,7 +28,7 @@ services:
       - mysql
 
   mysql:
-    image: mysql:5.7
+    image: mariadb:10.6
     volumes:
       - db:/var/lib/mysql
       - .docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
