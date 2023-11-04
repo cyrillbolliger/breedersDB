@@ -13,6 +13,8 @@ services:
       - .docker/php.ini:/usr/local/etc/php/php.ini
       - .docker/apache-vhost.conf:/etc/apache2/sites-available/custom-vhost.conf
     container_name: poc_app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       DB_HOST: mysql
       DB_DATABASE: poc
