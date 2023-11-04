@@ -1,35 +1,37 @@
 <template>
-  <q-page padding>
+  <MarkLayout>
+    <q-page padding>
 
-    <h5 class="q-mb-sm q-mt-sm">{{ t('marks.selectForm.title') }}</h5>
+      <h5 class="q-mb-sm q-mt-sm">{{ t('marks.selectForm.title') }}</h5>
 
-    <TabularList
-      :items="markForms"
-      :loading="loading"
-      :filter-function="filterFunction"
-      @refresh="loadForms"
-      max-list-height="calc(100vh - 260px)"
-      :item-height="35"
-    >
-      <template #default="slotProps">
-        <q-item
-          clickable
-          v-ripple
-          :active="slotProps.item.id === selectedForm?.id"
-          @click.stop="selectForm(slotProps.item)"
-        >
-          <q-item-section>
-            <q-item-label>{{ slotProps.item.name }}</q-item-label>
-            <q-item-label caption>{{ slotProps.item.description }}</q-item-label>
-          </q-item-section>
+      <TabularList
+        :filter-function="filterFunction"
+        :item-height="35"
+        :items="markForms"
+        :loading="loading"
+        max-list-height="calc(100vh - 260px)"
+        @refresh="loadForms"
+      >
+        <template #default="slotProps">
+          <q-item
+            v-ripple
+            :active="slotProps.item.id === selectedForm?.id"
+            clickable
+            @click.stop="selectForm(slotProps.item)"
+          >
+            <q-item-section>
+              <q-item-label>{{ slotProps.item.name }}</q-item-label>
+              <q-item-label caption>{{ slotProps.item.description }}</q-item-label>
+            </q-item-section>
 
-          <q-item-section side top v-if="slotProps.item.id === selectedForm?.id">
-            <q-item-label caption>{{ t('general.selected') }}</q-item-label>
-          </q-item-section>
-        </q-item>
-      </template>
-    </TabularList>
-  </q-page>
+            <q-item-section v-if="slotProps.item.id === selectedForm?.id" side top>
+              <q-item-label caption>{{ t('general.selected') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
+      </TabularList>
+    </q-page>
+  </MarkLayout>
 </template>
 
 <script lang="ts">
@@ -37,22 +39,22 @@ import {computed, defineComponent, ref} from 'vue'
 import {useI18n} from 'vue-i18n';
 import {MarkForm} from 'src/models/form';
 import {useRouter} from 'vue-router'
-import useLayout from 'src/composables/layout'
-import useMarkTabNav from 'src/composables/marks/tab-nav';
 import useApi from 'src/composables/api'
 import TabularList from 'components/Util/TabularList.vue';
 import {useMarkStore} from 'stores/mark';
+import MarkLayout from 'components/Mark/MarkLayout.vue';
+import useMarkType from 'src/composables/marks/type';
 
 export default defineComponent({
   name: 'MarksSelectForm',
-  components: {TabularList},
+  components: {MarkLayout, TabularList},
 
   setup() {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
     const store = useMarkStore()
     const {working, get} = useApi()
     const router = useRouter()
-    const {setToolbarTitle, setToolbarTabs} = useLayout()
+    const markType = useMarkType()
 
     const markForms = ref<MarkForm[]>([])
 
@@ -72,7 +74,7 @@ export default defineComponent({
     function selectForm(form: MarkForm) {
       void get<MarkForm>(`markForms/view/${form.id}`)
         .then(data => store.selectedForm = data as MarkForm)
-        .then(() => void router.push('/marks/tree/set-meta'))
+        .then(() => void router.push(`/marks/${markType.value}/set-meta`))
     }
 
     function filterFunction(term: string, item: MarkForm) {
@@ -82,9 +84,6 @@ export default defineComponent({
 
       return item.name.toLowerCase().indexOf(term.toLowerCase()) > -1
     }
-
-    setToolbarTabs(useMarkTabNav())
-    setToolbarTitle(t('marks.title'))
 
     loadForms()
 

@@ -1,85 +1,85 @@
 <template>
-  <q-page padding>
+  <MarkLayout>
+    <q-page padding>
 
-    <h5 class="q-mb-xs q-mt-sm">{{ t('marks.markTree.title') }}</h5>
+      <h5 class="q-mb-xs q-mt-sm">{{ t('marks.markTree.title') }}</h5>
 
-    <div class="row q-gutter-x-sm q-mb-sm">
-      <small>
-        <q-icon name="list"/>&nbsp;{{ form?.name }}</small>
-      <small>
-        <q-icon name="person"/>&nbsp;{{ author }}</small>
-      <small>
-        <q-icon name="today"/>&nbsp;{{ date.toLocaleDateString() }}</small>
-    </div>
+      <div class="row q-gutter-x-sm q-mb-sm">
+        <small>
+          <q-icon name="list"/>&nbsp;{{ form?.name }}</small>
+        <small>
+          <q-icon name="person"/>&nbsp;{{ author }}</small>
+        <small>
+          <q-icon name="today"/>&nbsp;{{ date.toLocaleDateString() }}</small>
+      </div>
 
-    <tree-card
-      :tree="tree"
-      @change="$router.push('/marks/tree/select-tree')"
-    />
-
-    <q-list
-      v-for="(property, idx) in properties"
-      :key="idx"
-    >
-      <mark-input
-        :id="property.id"
-        :name="property.name"
-        :number-constraints="property.number_constraints"
-        :field-type="property.field_type"
-        :note="property.note"
-        :model-value="markValues.get(property.id)?.value"
-        @update:modelValue="setMarkValue(property.id, $event)"
-        @reset:modelValue="resetMarkValue(property.id)"
-        :progress="uploadProgress.get(property.id)"
+      <tree-card
+        :tree="tree"
+        @change="$router.push('/marks/tree/select-tree')"
       />
-      <q-separator spaced inset/>
-    </q-list>
-    <div class="row justify-center">
-      <q-btn
-        flat
-        color="primary"
-        @click="showPropertyDialog = !showPropertyDialog"
-      >{{ t('marks.markTree.addProperty') }}
-      </q-btn>
-    </div>
 
-    <q-page-sticky
-      position="bottom-right"
-      :offset="[18, 18]"
-    >
-      <q-btn
-        fab
-        icon="save"
-        @click="save"
-        :loading="working"
-        :disabled="!savable"
-        color="primary"
-      />
-    </q-page-sticky>
+      <q-list
+        v-for="(property, idx) in properties"
+        :key="idx"
+      >
+        <mark-input
+          :id="property.id"
+          :field-type="property.field_type"
+          :model-value="markValues.get(property.id)?.value"
+          :name="property.name"
+          :note="property.note"
+          :number-constraints="property.number_constraints"
+          :progress="uploadProgress.get(property.id)"
+          @update:modelValue="setMarkValue(property.id, $event)"
+          @reset:modelValue="resetMarkValue(property.id)"
+        />
+        <q-separator inset spaced/>
+      </q-list>
+      <div class="row justify-center">
+        <q-btn
+          color="primary"
+          flat
+          @click="showPropertyDialog = !showPropertyDialog"
+        >{{ t('marks.markTree.addProperty') }}
+        </q-btn>
+      </div>
 
-    <div
-      style="height: 75px"
-    ></div>
+      <q-page-sticky
+        :offset="[18, 18]"
+        position="bottom-right"
+      >
+        <q-btn
+          :disabled="!savable"
+          :loading="working"
+          color="primary"
+          fab
+          icon="save"
+          @click="save"
+        />
+      </q-page-sticky>
 
-    <q-dialog v-model="showPropertyDialog">
-      <q-card style="width: 90vw; max-width: 600px">
-        <q-card-section>
-          <div class="text-h6">{{ t('marks.markTree.selectProperty') }}</div>
-          <mark-form-property-list
-            @select="addProperty"
-          />
-        </q-card-section>
-      </q-card>
-    </q-dialog>
+      <div
+        style="height: 75px"
+      ></div>
 
-  </q-page>
+      <q-dialog v-model="showPropertyDialog">
+        <q-card style="width: 90vw; max-width: 600px">
+          <q-card-section>
+            <div class="text-h6">{{ t('marks.markTree.selectProperty') }}</div>
+            <mark-form-property-list
+              @select="addProperty"
+            />
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+    </q-page>
+  </MarkLayout>
 </template>
 
 <script lang="ts">
 import {computed, defineComponent, ref} from 'vue'
 import {useI18n} from 'vue-i18n';
-import useLayout from 'src/composables/layout';
-import useMarkTabNav from 'src/composables/marks/tab-nav';
 import {Mark, MarkFormFieldType, MarkFormProperty, MarkValue, MarkValueValue} from 'src/models/form';
 import {useRouter} from 'vue-router'
 import {useQuasar} from 'quasar';
@@ -89,10 +89,11 @@ import TreeCard from 'components/Util/TreeCard.vue';
 import useUploader from 'src/composables/uploader';
 import MarkFormPropertyList from 'src/components/Mark/MarkFormPropertyList.vue';
 import {useMarkStore} from 'stores/mark';
+import MarkLayout from 'components/Mark/MarkLayout.vue';
 
 export default defineComponent({
   name: 'MarkTree',
-  components: {MarkFormPropertyList, TreeCard, MarkInput},
+  components: {MarkLayout, MarkFormPropertyList, TreeCard, MarkInput},
   setup() {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
     const store = useMarkStore()
@@ -100,10 +101,6 @@ export default defineComponent({
     const $q = useQuasar()
     const api = useApi();
     const fileUploader = useUploader();
-
-    const {setToolbarTabs, setToolbarTitle} = useLayout()
-    setToolbarTabs(useMarkTabNav())
-    setToolbarTitle(t('marks.title'))
 
     const showPropertyDialog = ref(false)
 

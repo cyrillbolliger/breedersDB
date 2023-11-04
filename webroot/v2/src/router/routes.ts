@@ -18,11 +18,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/marks/SetMeta.vue')
       },
       {
-        path: 'marks/tree/select-tree',
+        path: 'marks/:type/select-tree',
         component: () => import('pages/marks/SelectTree.vue')
       },
       {
-        path: 'marks/tree/mark-tree',
+        path: 'marks/:type/mark-tree',
         component: () => import('pages/marks/MarkTree.vue')
       },
       {

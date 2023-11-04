@@ -1,6 +1,10 @@
 export default {
   marks: {
-    title: 'Marks',
+    title: {
+      tree: 'Mark Tree',
+      variety: 'Mark Variety',
+      batch: 'Mark Batch',
+    },
 
     selectForm: {
       title: 'Select Form',
@@ -23,6 +27,17 @@ export default {
       manualEntry: 'enter publicid'
     },
 
+    selectBatch: {
+      title: 'Select Batch',
+      tab: 'Batch',
+
+    },
+
+    selectVariety: {
+      title: 'Select Variety',
+      tab: 'Variety',
+    },
+
     markTree: {
       title: 'Mark Tree',
       tab: 'Mark',
@@ -34,6 +49,16 @@ export default {
       addProperty: 'Add property',
       selectProperty: 'Select Property',
       propertyAlreadyExists: 'Property {property} can not be added a second time.',
+    },
+
+    markBatch: {
+      title: 'Mark Batch',
+      tab: 'Mark',
+    },
+
+    markVariety: {
+      title: 'Mark Variety',
+      tab: 'Mark',
     },
   },
 
@@ -228,13 +253,21 @@ export default {
 
 
   navigation: {
+    trees: {
+      title: 'Trees',
+      caption: 'List of all trees.'
+    },
     markTrees: {
       title: 'Mark Trees',
       caption: 'Scan trees and rate them.'
     },
-    trees: {
-      title: 'Trees',
-      caption: 'List of all trees.'
+    markVarieties: {
+      title: 'Mark Varieties',
+      caption: 'Rate the breed.'
+    },
+    markBatches: {
+      title: 'Mark Batches',
+      caption: ''
     },
     queries: {
       title: 'Queries',

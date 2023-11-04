@@ -133,16 +133,28 @@ export default defineComponent({
 
     const navLinks = [
       {
+        title: t('navigation.trees.title'),
+        caption: t('navigation.trees.caption'),
+        icon: 'park',
+        link: webroot + 'trees'
+      },
+      {
         title: t('navigation.markTrees.title'),
         caption: t('navigation.markTrees.caption'),
         icon: 'star',
         link: '/marks/tree/select-form'
       },
       {
-        title: t('navigation.trees.title'),
-        caption: t('navigation.trees.caption'),
-        icon: 'park',
-        link: webroot + 'trees'
+        title: t('navigation.markVarieties.title'),
+        caption: t('navigation.markVarieties.caption'),
+        icon: 'star',
+        link: '/marks/variety/select-form'
+      },
+      {
+        title: t('navigation.markBatches.title'),
+        caption: t('navigation.markBatches.caption'),
+        icon: 'star',
+        link: '/marks/batch/select-form'
       },
       {
         title: t('navigation.queries.title'),
