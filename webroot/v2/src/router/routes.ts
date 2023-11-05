@@ -22,6 +22,10 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/marks/SelectTree.vue')
       },
       {
+        path: 'marks/:type/select-variety',
+        component: () => import('pages/marks/SelectVariety.vue')
+      },
+      {
         path: 'marks/:type/mark-tree',
         component: () => import('pages/marks/MarkTree.vue')
       },

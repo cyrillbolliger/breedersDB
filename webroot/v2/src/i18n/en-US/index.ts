@@ -36,6 +36,7 @@ export default {
     selectVariety: {
       title: 'Select Variety',
       tab: 'Variety',
+      searchSelect: 'Search'
     },
 
     markTree: {
