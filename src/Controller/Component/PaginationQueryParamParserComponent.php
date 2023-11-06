@@ -50,6 +50,11 @@ class PaginationQueryParamParserComponent extends Component
             return [];
         }
 
+        // prefix the column with the table name, if no table prefix is given
+        if (!str_contains($sortBy, '.')) {
+            $sortBy = $this->getController()->fetchTable()->getAlias() . '.' . $sortBy;
+        }
+
         return [$sortBy => $order];
     }
 }

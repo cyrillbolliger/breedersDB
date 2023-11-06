@@ -6,7 +6,7 @@ namespace App\Test\TestCase\Controller;
 
 use App\Model\Entity\Variety;
 use App\Model\Table\VarietiesTable;
-use App\Test\TestCase\Controller\Shared\VarietyControllerTestTrait;
+use App\Test\TestCase\Controller\Shared\VarietiesControllerTestTrait;
 use App\Test\Util\AjaxTrait;
 use App\Test\Util\AuthenticateTrait;
 use App\Test\Util\DependsOnFixtureTrait;
@@ -26,7 +26,7 @@ class VarietiesControllerTest extends TestCase
     use AuthenticateTrait;
     use ExperimentSiteTrait;
     use AjaxTrait;
-    use VarietyControllerTestTrait;
+    use VarietiesControllerTestTrait;
 
     private const ENDPOINT = '/varieties';
     private const TABLE = 'Varieties';

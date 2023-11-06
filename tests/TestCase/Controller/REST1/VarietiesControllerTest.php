@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller\REST1;
 
 use App\Model\Table\VarietiesTable;
-use App\Test\TestCase\Controller\Shared\VarietyControllerTestTrait;
+use App\Test\TestCase\Controller\Shared\VarietiesControllerTestTrait;
 use App\Test\Util\AjaxTrait;
 use App\Test\Util\AuthenticateTrait;
 use App\Test\Util\DependsOnFixtureTrait;
@@ -25,7 +25,7 @@ class VarietiesControllerTest extends TestCase
     use AuthenticateTrait;
     use ExperimentSiteTrait;
     use AjaxTrait;
-    use VarietyControllerTestTrait;
+    use VarietiesControllerTestTrait;
 
     private const ENDPOINT = '/api/1/varieties';
     private const TABLE = 'Varieties';
@@ -56,15 +56,15 @@ class VarietiesControllerTest extends TestCase
 
         $expected = [
             'data' => [
-                'count' => 3,
+                'count' => $this->Table->find()->count(),
                 'offset' => 0,
                 'sortBy' => null,
                 'order' => null,
                 'limit' => null,
-                'results' => [$entity1, $entity2, $entity3]
+                'results' => $this->Table->find()->contain(self::CONTAINS)
             ]
         ];
-        $json = json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
+        $json = json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_HEX_QUOT);
         self::assertEquals($json, (string)$this->_response->getBody());
     }
 
@@ -75,12 +75,12 @@ class VarietiesControllerTest extends TestCase
      */
     public function testIndexLimitOffsetSorted(): void
     {
-        $entity1 = $this->addEntity('999');
-        $entity2 = $this->addEntity('998');
-        $entity3 = $this->addEntity('997');
+        $entity1 = $this->addEntity('zzz999');
+        $entity2 = $this->addEntity('zzz998');
+        $entity3 = $this->addEntity('zzz997');
 
         $this->setAjaxHeader();
-        $this->get(self::ENDPOINT . '?limit=1&offset=2&sortBy=convar&order=asc');
+        $this->get(self::ENDPOINT . '?limit=1&offset=2&sortBy=code&order=desc');
 
         $this->assertResponseSuccess();
         $this->assertResponseCode(200);
@@ -88,15 +88,15 @@ class VarietiesControllerTest extends TestCase
 
         $expected = [
             'data' => [
-                'count' => 3,
+                'count' => $this->Table->find()->count(),
                 'offset' => 2,
-                'sortBy' => 'convar',
-                'order' => 'asc',
+                'sortBy' => 'Varieties.code',
+                'order' => 'desc',
                 'limit' => 1,
-                'results' => [$entity1]
+                'results' => [$entity3]
             ]
         ];
-        $json = json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
+        $json = json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_HEX_QUOT);
         self::assertEquals($json, (string)$this->_response->getBody());
     }
 
@@ -107,12 +107,12 @@ class VarietiesControllerTest extends TestCase
      */
     public function testIndexFiltered(): void
     {
-        $entity1 = $this->addEntity('999');
-        $entity2 = $this->addEntity('998');
-        $entity3 = $this->addEntity('997');
+        $entity1 = $this->addEntity('999zzz');
+        $entity2 = $this->addEntity('998zzz');
+        $entity3 = $this->addEntity('997zzz');
 
         $this->setAjaxHeader();
-        $this->get(self::ENDPOINT . '?term=..998');
+        $this->get(self::ENDPOINT . '?term=..998zzz');
 
         $this->assertResponseSuccess();
         $this->assertResponseCode(200);
@@ -128,7 +128,7 @@ class VarietiesControllerTest extends TestCase
                 'results' => [$entity2]
             ]
         ];
-        $json = json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
+        $json = json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_HEX_QUOT);
         self::assertEquals($json, (string)$this->_response->getBody());
     }
 

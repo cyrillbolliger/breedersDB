@@ -6,7 +6,7 @@ use App\Model\Entity\Batch;
 use App\Model\Entity\Variety;
 use Cake\ORM\Query;
 
-trait VarietyControllerTestTrait
+trait VarietiesControllerTestTrait
 {
     private function addEntity($code = '999'): Variety
     {
