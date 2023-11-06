@@ -52,7 +52,11 @@ export default defineComponent({
     const inputMethod = ref<'SEARCH' | 'CAMERA' | 'KEYBOARD'>('SEARCH')
 
     function setVarietyFromTree(tree: Tree) {
-      if (!tree.variety) {
+      setVariety(tree.variety)
+    }
+
+    function setVariety(variety: Variety | undefined | null){
+      if (!variety) {
         Notify.create({
             message: t('general.failedToLoadData'),
             color: 'negative',
@@ -61,10 +65,6 @@ export default defineComponent({
         return
       }
 
-      setVariety(tree.variety)
-    }
-
-    function setVariety(variety: Variety){
       store.setVariety(variety)
       void router.push('/marks/variety/mark-variety')
     }

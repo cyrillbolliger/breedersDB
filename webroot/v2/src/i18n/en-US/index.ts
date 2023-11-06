@@ -36,7 +36,8 @@ export default {
     selectVariety: {
       title: 'Select Variety',
       tab: 'Variety',
-      searchSelect: 'Search'
+      searchSelect: 'Search',
+      moreResults: 'Showing {limit} out of {count} results. Refine your search to narrow the list.',
     },
 
     markTree: {
@@ -197,8 +198,11 @@ export default {
     download: 'Download'
   },
 
+
   general: {
     search: 'Search',
+    typeToSearch: 'Type to search',
+    noResults: 'No results',
     loading: 'Loading...',
     retry: 'Retry',
     failedToLoadData: 'Failed to load data.',
