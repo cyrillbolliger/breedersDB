@@ -9,7 +9,7 @@
     hide-selected
     :hint="t('general.typeToSearch')"
     input-debounce="100"
-    :label="t('marks.selectVariety.searchSelectLabel')"
+    :label="t('marks.selectBatch.searchSelectLabel')"
     outlined
     use-input
     @filter="filterFn"
@@ -40,21 +40,21 @@
 </template>
 
 <script lang="ts" setup>
-import {Variety} from 'src/models/variety';
 import {ref} from 'vue';
 import useApi from 'src/composables/api';
 import {QSelectProps} from 'quasar';
 import {useI18n} from 'vue-i18n';
+import { Batch } from 'src/models/batch';
 
-defineEmits<{ (e: 'selected', value: Variety | undefined): void }>()
+defineEmits<{ (e: 'selected', value: Batch | undefined): void }>()
 
 const {get, working} = useApi()
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 
 const limit = 20
 
-const selected = ref<{ label: string, value: number, entity: Variety } | null>(null)
-const options = ref<{ label: string, value: number, entity: Variety }[]>([])
+const selected = ref<{ label: string, value: number, entity: Batch } | null>(null)
+const options = ref<{ label: string, value: number, entity: Batch }[]>([])
 const optionCount = ref(0)
 
 let requestController: AbortController | null
@@ -69,16 +69,16 @@ function filterFn(val: string, update: Parameters<NonNullable<QSelectProps['onFi
     sortBy: string | null,
     order: 'asc' | 'desc' | null,
     limit: number | null,
-    results: Variety[]
+    results: Batch[]
   }>(
-    `/varieties?limit=${limit}&sortBy=convar&order=asc&term=${val}`,
+    `/batches?limit=${limit}&sortBy=crossing_batch&order=asc&term=${val}`,
     () => null,
     {signal: requestController.signal}
   ).then(data => {
     optionCount.value = data?.count || 0
     const varieties = data?.results || []
     update(() => {
-      options.value = varieties.map(v => ({label: v.convar, value: v.id, entity: v}))
+      options.value = varieties.map(v => ({label: v.crossing_batch, value: v.id, entity: v}))
     })
   })
 }

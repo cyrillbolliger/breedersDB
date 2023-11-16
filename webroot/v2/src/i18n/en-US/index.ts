@@ -30,14 +30,14 @@ export default {
     selectBatch: {
       title: 'Select Batch',
       tab: 'Batch',
-
+      searchSelectLabel: 'Search batch',
     },
 
     selectVariety: {
       title: 'Select Variety',
       tab: 'Variety',
       searchSelect: 'Search',
-      moreResults: 'Showing {limit} out of {count} results. Refine your search to narrow the list.',
+      searchSelectLabel: 'Search variety',
     },
 
     markTree: {
@@ -203,6 +203,7 @@ export default {
     search: 'Search',
     typeToSearch: 'Type to search',
     noResults: 'No results',
+    moreResults: 'Showing {limit} out of {count} results. Refine your search to narrow the list.',
     loading: 'Loading...',
     retry: 'Retry',
     failedToLoadData: 'Failed to load data.',

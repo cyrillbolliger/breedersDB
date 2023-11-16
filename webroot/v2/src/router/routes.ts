@@ -26,6 +26,10 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/marks/SelectVariety.vue')
       },
       {
+        path: 'marks/:type/select-batch',
+        component: () => import('pages/marks/SelectBatch.vue')
+      },
+      {
         path: 'marks/:type/mark-tree',
         component: () => import('pages/marks/MarkTree.vue')
       },
