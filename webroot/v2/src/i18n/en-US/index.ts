@@ -43,14 +43,7 @@ export default {
     markTree: {
       title: 'Mark Tree',
       tab: 'Mark',
-      missingDataError: 'Missing data.',
-      setMeta: 'Add meta data',
       selectTree: 'Select tree',
-      selectForm: 'Select form',
-      saved: 'Marks saved.',
-      addProperty: 'Add property',
-      selectProperty: 'Select Property',
-      propertyAlreadyExists: 'Property {property} can not be added a second time.',
     },
 
     markBatch: {
@@ -61,6 +54,16 @@ export default {
     markVariety: {
       title: 'Mark Variety',
       tab: 'Mark',
+    },
+
+    markObj: {
+      addProperty: 'Add property',
+      selectProperty: 'Select Property',
+      propertyAlreadyExists: 'Property {property} can not be added a second time.',
+      missingDataError: 'Missing data.',
+      selectForm: 'Select form',
+      saved: 'Marks saved.',
+      setMeta: 'Add meta data',
     },
   },
 
