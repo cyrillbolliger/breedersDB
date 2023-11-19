@@ -1,77 +1,71 @@
 <template>
-  <MarkLayout>
-    <q-page padding>
+  <h5 class="q-mb-xs q-mt-sm">{{ title }}</h5>
 
-      <h5 class="q-mb-xs q-mt-sm">{{ title }}</h5>
+  <div class="row q-gutter-x-sm q-mb-sm">
+    <small>
+      <q-icon name="list"/>&nbsp;{{ form?.name }}</small>
+    <small>
+      <q-icon name="person"/>&nbsp;{{ author }}</small>
+    <small>
+      <q-icon name="today"/>&nbsp;{{ date.toLocaleDateString() }}</small>
+  </div>
 
-      <div class="row q-gutter-x-sm q-mb-sm">
-        <small>
-          <q-icon name="list"/>&nbsp;{{ form?.name }}</small>
-        <small>
-          <q-icon name="person"/>&nbsp;{{ author }}</small>
-        <small>
-          <q-icon name="today"/>&nbsp;{{ date.toLocaleDateString() }}</small>
-      </div>
+  <slot name="obj-preview"/>
 
-      <slot name="obj-preview"/>
+  <q-list
+    v-for="(property, idx) in properties"
+    :key="idx"
+  >
+    <mark-input
+      :id="property.id"
+      :field-type="property.field_type"
+      :model-value="markValues.get(property.id)?.value"
+      :name="property.name"
+      :note="property.note || undefined"
+      :number-constraints="property.number_constraints"
+      :progress="uploadProgress.get(property.id)"
+      @update:modelValue="setMarkValue(property.id, $event)"
+      @reset:modelValue="resetMarkValue(property.id)"
+    />
+    <q-separator inset spaced/>
+  </q-list>
+  <div class="row justify-center">
+    <q-btn
+      color="primary"
+      flat
+      @click="showPropertyDialog = !showPropertyDialog"
+    >{{ t('marks.markObj.addProperty') }}
+    </q-btn>
+  </div>
 
-      <q-list
-        v-for="(property, idx) in properties"
-        :key="idx"
-      >
-        <mark-input
-          :id="property.id"
-          :field-type="property.field_type"
-          :model-value="markValues.get(property.id)?.value"
-          :name="property.name"
-          :note="property.note || undefined"
-          :number-constraints="property.number_constraints"
-          :progress="uploadProgress.get(property.id)"
-          @update:modelValue="setMarkValue(property.id, $event)"
-          @reset:modelValue="resetMarkValue(property.id)"
+  <q-page-sticky
+    :offset="[18, 18]"
+    position="bottom-right"
+  >
+    <q-btn
+      :disabled="!savable"
+      :loading="working"
+      color="primary"
+      fab
+      icon="save"
+      @click="save"
+    />
+  </q-page-sticky>
+
+  <div
+    style="height: 75px"
+  ></div>
+
+  <q-dialog v-model="showPropertyDialog">
+    <q-card style="width: 90vw; max-width: 600px">
+      <q-card-section>
+        <div class="text-h6">{{ t('marks.markObj.selectProperty') }}</div>
+        <mark-form-property-list
+          @select="addProperty"
         />
-        <q-separator inset spaced/>
-      </q-list>
-      <div class="row justify-center">
-        <q-btn
-          color="primary"
-          flat
-          @click="showPropertyDialog = !showPropertyDialog"
-        >{{ t('marks.markObj.addProperty') }}
-        </q-btn>
-      </div>
-
-      <q-page-sticky
-        :offset="[18, 18]"
-        position="bottom-right"
-      >
-        <q-btn
-          :disabled="!savable"
-          :loading="working"
-          color="primary"
-          fab
-          icon="save"
-          @click="save"
-        />
-      </q-page-sticky>
-
-      <div
-        style="height: 75px"
-      ></div>
-
-      <q-dialog v-model="showPropertyDialog">
-        <q-card style="width: 90vw; max-width: 600px">
-          <q-card-section>
-            <div class="text-h6">{{ t('marks.markObj.selectProperty') }}</div>
-            <mark-form-property-list
-              @select="addProperty"
-            />
-          </q-card-section>
-        </q-card>
-      </q-dialog>
-
-    </q-page>
-  </MarkLayout>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -85,7 +79,6 @@ import useApi from 'src/composables/api';
 import useUploader from 'src/composables/uploader';
 import MarkFormPropertyList from 'src/components/Mark/MarkFormPropertyList.vue';
 import {useMarkStore} from 'stores/mark';
-import MarkLayout from 'components/Mark/MarkLayout.vue';
 import {Tree} from 'src/models/tree';
 import {Batch} from 'src/models/batch';
 import {Variety} from 'src/models/variety';

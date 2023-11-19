@@ -1,5 +1,7 @@
 <template>
-  <slot/>
+  <q-page padding>
+    <router-view></router-view>
+  </q-page>
 </template>
 
 <script lang="ts" setup>
@@ -8,16 +10,24 @@ import useLayout from 'src/composables/layout';
 import {useI18n} from 'vue-i18n';
 import {watch} from 'vue';
 import useMarkType from 'src/composables/marks/type';
+import {LayoutTabsInterface} from 'src/models/layout';
 
 const {setToolbarTitle, setToolbarTabs, setToolbarBreadcrumbs} = useLayout()
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const type = useMarkType()
 
-setToolbarTabs(useMarkTabNav().value)
-setToolbarBreadcrumbs([])
-setTitle(type.value)
+const tabs = useMarkTabNav()
+setTabs(tabs.value)
+watch(tabs, (newTabs) => setTabs(newTabs))
 
-watch(() => type.value, (newType) => setTitle(newType))
+setTitle(type.value)
+watch(type, (newType) => setTitle(newType))
+
+setBreadcrumbs()
+
+function setTabs(tabs: LayoutTabsInterface[]) {
+  setToolbarTabs(tabs)
+}
 
 function setTitle(type: string) {
   const title = type === 'variety'
@@ -29,4 +39,7 @@ function setTitle(type: string) {
   setToolbarTitle(title)
 }
 
+function setBreadcrumbs() {
+  setToolbarBreadcrumbs([])
+}
 </script>
