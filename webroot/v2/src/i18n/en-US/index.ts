@@ -54,6 +54,7 @@ export default {
     markVariety: {
       title: 'Mark Variety',
       tab: 'Mark',
+      selectVariety: 'Select variety',
     },
 
     markObj: {
@@ -233,20 +234,30 @@ export default {
 
 
   components: {
+    treeCard: {
+      scanBtnLabel: 'Scan',
+      tree: 'Tree',
+      printBtnLabel: 'Print',
+      printTitle: 'Print tree label',
+      printDesc: 'Select regular to print a label with the publicid and the convar or anonymous to hide the convar.',
+      printRegular: 'Regular',
+      printAnonymous: 'Anonymous',
+      windowError: 'Failed to open window for printing. Are you blocking popups?',
+      noTree: 'Please scan tree',
+      noPrint: 'Missing print data',
+    },
+
+    varietyCard: {
+      noVariety: 'Please select variety',
+    },
+
+    batchCard: {
+      noBatch: 'Please select batch',
+    },
+
     util: {
       errorBanner: {
         dismiss: 'dismiss'
-      },
-      treeCard: {
-        scanBtnLabel: 'Scan',
-        tree: 'Tree',
-        printBtnLabel: 'Print',
-        printTitle: 'Print tree label',
-        printDesc: 'Select regular to print a label with the publicid and the convar or anonymous to hide the convar.',
-        printRegular: 'Regular',
-        printAnonymous: 'Anonymous',
-        windowError: 'Failed to open window for printing. Are you blocking popups?',
-        noTree: 'Please Scan Tree'
       },
       codeScanner: {
         permissionRequest: 'Unable to access video stream. Please confirm permission request.',
@@ -256,7 +267,8 @@ export default {
         listMetaFiltered: 'Filtered list. Showing {showing} out of {total} items.',
         listMetaUnfiltered: '{total} items',
         nothingFound: 'Nothing found'
-      }
+      },
+      search: 'Search',
     },
   },
 

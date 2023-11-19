@@ -19,9 +19,9 @@
 <script lang="ts" setup>
 import {computed} from 'vue'
 import {useI18n} from 'vue-i18n';
-import TreeCard from 'components/Util/TreeCard.vue';
 import {useMarkStore} from 'stores/mark';
-import MarkObj from 'pages/marks/MarkObj.vue';
+import MarkObj from 'components/Mark/MarkObj.vue';
+import TreeCard from 'components/Tree/TreeCard.vue';
 
 const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const store = useMarkStore()
