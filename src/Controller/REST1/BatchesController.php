@@ -42,19 +42,21 @@ class BatchesController extends REST1Controller
         }
 
         $query = !empty($term)
-            ? $this->Batches->filterCrossingBatches($term)->contain(['Crossings']) ?? []
+            ? $this->Batches->filterCrossingBatches($term)?->contain(['Crossings'])
             : $this->Batches->find()->contain(['Crossings']);
 
-        $dataQuery = $query->limit($limit)->offset($offset)->order($order);
-        $count = (clone $dataQuery)->count();
+        if ($query) {
+            $dataQuery = $query->limit($limit)->offset($offset)->order($order);
+            $count = (clone $dataQuery)->count();
+        }
 
         $this->set(['data' => [
-            'count' => $count,
+            'count' => $count ?? 0,
             'offset' => $offset ?? 0,
             'sortBy' => !empty($order) ? array_keys($order)[0] : null,
             'order' => !empty($order) ? array_values($order)[0] : null,
             'limit' => $limit,
-            'results' => $dataQuery,
+            'results' => $dataQuery ?? [],
         ]]);
     }
 }
