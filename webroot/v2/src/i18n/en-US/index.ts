@@ -280,11 +280,11 @@ export default {
     },
     markTrees: {
       title: 'Mark Trees',
-      caption: 'Scan trees and rate them.'
+      caption: ''
     },
     markVarieties: {
       title: 'Mark Varieties',
-      caption: 'Rate the breed.'
+      caption: ''
     },
     markBatches: {
       title: 'Mark Batches',
