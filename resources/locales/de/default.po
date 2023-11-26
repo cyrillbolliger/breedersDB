@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2022-12-04 19:58+0000\n"
-"PO-Revision-Date: 2022-12-11 21:05\n"
+"POT-Creation-Date: 2023-11-06 17:52+0000\n"
+"PO-Revision-Date: 2023-11-26 12:54\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -2195,7 +2195,7 @@ msgid "Edit Mark Value"
 msgstr "Wert der Bewertung bearbeiten"
 
 #: ./templates/Marks/add_batch_mark.php:8
-#: ./templates/element/Mark/nav.php:9
+#: ./templates/element/Mark/nav.php:11
 msgid "Mark Batch"
 msgstr "Los bewerten"
 
@@ -2583,31 +2583,39 @@ msgstr "Baum bewerten (Scanner)"
 msgid "Mark Tree (Mobile)"
 msgstr "Baum bewerten (Handy)"
 
-#: ./templates/element/Mark/nav.php:10
+#: ./templates/element/Mark/nav.php:9
+msgid "Mark Variety (Mobile)"
+msgstr "Sorte bewerten (Handy)"
+
+#: ./templates/element/Mark/nav.php:12
+msgid "Mark Batch (Mobile)"
+msgstr "Los bewerten (Handy)"
+
+#: ./templates/element/Mark/nav.php:14
 msgid "List Marks"
 msgstr "Bewertungen auflisten"
 
-#: ./templates/element/Mark/nav.php:11
+#: ./templates/element/Mark/nav.php:15
 msgid "Forms"
 msgstr "Formulare"
 
-#: ./templates/element/Mark/nav.php:12
+#: ./templates/element/Mark/nav.php:16
 msgid "New Form"
 msgstr "Neues Formular"
 
-#: ./templates/element/Mark/nav.php:13
+#: ./templates/element/Mark/nav.php:17
 msgid "List Forms"
 msgstr "Formulare auflisten"
 
-#: ./templates/element/Mark/nav.php:14
+#: ./templates/element/Mark/nav.php:18
 msgid "Properties"
 msgstr "Eigenschaften"
 
-#: ./templates/element/Mark/nav.php:15
+#: ./templates/element/Mark/nav.php:19
 msgid "New Property"
 msgstr "Neue Eigenschaft"
 
-#: ./templates/element/Mark/nav.php:17
+#: ./templates/element/Mark/nav.php:21
 msgid "List Properties"
 msgstr "Eigenschaften auflisten"
 

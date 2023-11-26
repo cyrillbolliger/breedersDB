@@ -1,17 +1,18 @@
 <template>
-  <q-page padding>
-    <TheQueryMenu/>
-    <TheFilter/>
-    <TheResults/>
-    <SpinLoader
-      v-if="loading"
-    />
-  </q-page>
+  <QueryLayout>
+    <q-page padding>
+      <TheQueryMenu/>
+      <TheFilter/>
+      <TheResults/>
+      <SpinLoader
+        v-if="loading"
+      />
+    </q-page>
+</QueryLayout>
 </template>
 
 <script lang="ts" setup>
-import useLayout from 'src/composables/layout';
-import {useI18n} from 'vue-i18n';
+import QueryLayout from 'src/components/Query/QueryLayout.vue';
 import TheFilter from 'components/Query/Filter/TheFilter.vue';
 import TheResults from 'components/Query/Result/TheResults.vue';
 import TheQueryMenu from 'components/Query/Menu/TheQueryMenu.vue';
@@ -26,16 +27,10 @@ const props = defineProps({
   id: String
 });
 
-const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
-const layout = useLayout()
 const store = useQueryStore();
 const api = useApi();
 
 const loading = ref(false);
-
-layout.setToolbarTitle(t('queries.title'))
-layout.setToolbarTabs([])
-layout.setToolbarBreadcrumbs([])
 
 function initQueryData() {
   if ('new' === props.id) {

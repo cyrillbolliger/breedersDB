@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-12-11 21:05+0000\n"
+"POT-Creation-Date: 2023-11-26 12:54+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2193,7 +2193,7 @@ msgid "Edit Mark Value"
 msgstr ""
 
 #: ./templates/Marks/add_batch_mark.php:8
-#: ./templates/element/Mark/nav.php:9
+#: ./templates/element/Mark/nav.php:11
 msgid "Mark Batch"
 msgstr ""
 
@@ -2581,31 +2581,39 @@ msgstr ""
 msgid "Mark Tree (Mobile)"
 msgstr ""
 
-#: ./templates/element/Mark/nav.php:10
-msgid "List Marks"
-msgstr ""
-
-#: ./templates/element/Mark/nav.php:11
-msgid "Forms"
+#: ./templates/element/Mark/nav.php:9
+msgid "Mark Variety (Mobile)"
 msgstr ""
 
 #: ./templates/element/Mark/nav.php:12
-msgid "New Form"
-msgstr ""
-
-#: ./templates/element/Mark/nav.php:13
-msgid "List Forms"
+msgid "Mark Batch (Mobile)"
 msgstr ""
 
 #: ./templates/element/Mark/nav.php:14
-msgid "Properties"
+msgid "List Marks"
 msgstr ""
 
 #: ./templates/element/Mark/nav.php:15
-msgid "New Property"
+msgid "Forms"
+msgstr ""
+
+#: ./templates/element/Mark/nav.php:16
+msgid "New Form"
 msgstr ""
 
 #: ./templates/element/Mark/nav.php:17
+msgid "List Forms"
+msgstr ""
+
+#: ./templates/element/Mark/nav.php:18
+msgid "Properties"
+msgstr ""
+
+#: ./templates/element/Mark/nav.php:19
+msgid "New Property"
+msgstr ""
+
+#: ./templates/element/Mark/nav.php:21
 msgid "List Properties"
 msgstr ""
 

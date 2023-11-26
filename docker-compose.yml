@@ -13,6 +13,8 @@ services:
       - .docker/php.ini:/usr/local/etc/php/php.ini
       - .docker/apache-vhost.conf:/etc/apache2/sites-available/custom-vhost.conf
     container_name: poc_app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       DB_HOST: mysql
       DB_DATABASE: poc
@@ -28,7 +30,7 @@ services:
       - mysql
 
   mysql:
-    image: mysql:5.7
+    image: mariadb:10.6
     volumes:
       - db:/var/lib/mysql
       - .docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d

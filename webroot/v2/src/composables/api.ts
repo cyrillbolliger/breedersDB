@@ -2,7 +2,7 @@ import {i18n} from 'boot/i18n'
 import {Notify, QNotifyCreateOptions} from 'quasar'
 import {ref} from 'vue';
 import {api as axios} from 'boot/axios';
-import {AxiosError, AxiosRequestConfig} from 'axios';
+import axiosStatic, {AxiosError, AxiosRequestConfig} from 'axios';
 
 interface ApiResponse<T> {
   data: T
@@ -45,7 +45,7 @@ export default function useApi() {
       payload = {data}
     }
 
-    return axios.post<T | { data: T }, ApiResponse<{data: R}>>(url, payload, config)
+    return axios.post<T | { data: T }, ApiResponse<{ data: R }>>(url, payload, config)
       .then(resp => {
         if (resp.data) {
           cb()
@@ -73,7 +73,7 @@ export default function useApi() {
       payload = {data}
     }
 
-    return axios.patch<T | { data: T }, ApiResponse<{data: R}>>(url, payload, config)
+    return axios.patch<T | { data: T }, ApiResponse<{ data: R }>>(url, payload, config)
       .then(resp => {
         if (resp.data) {
           cb()
@@ -115,6 +115,11 @@ export default function useApi() {
 
 
   function handleError<T>(error: AxiosError<T>, message: string, cb: () => Promise<void | T>) {
+    if (axiosStatic.isCancel(error)) {
+      // request was canceled
+      return;
+    }
+
     console.log(error.message)
 
     return new Promise<void>(resolve => {

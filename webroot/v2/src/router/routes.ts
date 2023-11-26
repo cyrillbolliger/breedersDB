@@ -1,4 +1,4 @@
-import { RouteRecordRaw } from 'vue-router';
+import {RouteRecordRaw} from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -10,20 +10,42 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/Index.vue'),
       },
       {
-        path: 'marks/select-form',
-        component: () => import('pages/marks/SelectForm.vue')
-      },
-      {
-        path: 'marks/set-meta',
-        component: () => import('pages/marks/SetMeta.vue')
-      },
-      {
-        path: 'marks/select-tree',
-        component: () => import('pages/marks/SelectTree.vue')
-      },
-      {
-        path: 'marks/mark-tree',
-        component: () => import('pages/marks/MarkTree.vue')
+        path: 'marks/:type',
+        component: () => import('pages/marks/Layout.vue'),
+        children: [
+          {
+            path: 'select-form',
+            component: () => import('pages/marks/SelectForm.vue')
+          },
+          {
+            path: 'set-meta',
+            component: () => import('pages/marks/SetMeta.vue')
+          },
+          {
+            path: 'select-tree',
+            component: () => import('pages/marks/SelectTree.vue')
+          },
+          {
+            path: 'select-variety',
+            component: () => import('pages/marks/SelectVariety.vue')
+          },
+          {
+            path: 'select-batch',
+            component: () => import('pages/marks/SelectBatch.vue')
+          },
+          {
+            path: 'mark-tree',
+            component: () => import('pages/marks/MarkTree.vue')
+          },
+          {
+            path: 'mark-variety',
+            component: () => import('pages/marks/MarkVariety.vue')
+          },
+          {
+            path: 'mark-batch',
+            component: () => import('pages/marks/MarkBatch.vue')
+          },
+        ],
       },
       {
         path: 'queries',

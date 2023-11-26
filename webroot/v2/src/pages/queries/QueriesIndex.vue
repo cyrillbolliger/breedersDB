@@ -1,49 +1,52 @@
 <template>
-  <q-page padding>
-    <div class="row items-center">
-      <h5 class="q-my-sm">{{ t('queries.query') }}</h5>
+  <QueryLayout>
+    <q-page padding>
+      <div class="row items-center">
+        <h5 class="q-my-sm">{{ t('queries.query') }}</h5>
 
-      <q-btn
-        :label="t('queries.add')"
-        color="primary"
-        to="/queries/new"
-        size="sm"
-        outline
-        class="q-mx-md"
-      />
-    </div>
-    <TabularList
-      :filter-function="filterFunction"
-      :item-height="35"
-      :items="queries"
-      :loading="loading"
-      max-list-height="calc(100vh - 260px)"
-      @refresh="loadQueries"
-    >
-      <template #default="slotProps">
-        <q-item
-          v-ripple
-          clickable
-          @click.stop="$router.push(`/queries/${slotProps.item.id}`)"
-        >
-          <q-item-section>
-            <q-item-label>
-              <span class="text-grey-6 text-weight-bold">
-                {{ getQueryGroupCodeFromQuery(slotProps.item) }} /
-              </span>
-              {{slotProps.item.code}}
-            </q-item-label>
-            <q-item-label caption>{{ slotProps.item.description }}</q-item-label>
-          </q-item-section>
-        </q-item>
-      </template>
-    </TabularList>
-  </q-page>
+        <q-btn
+          :label="t('queries.add')"
+          color="primary"
+          to="/queries/new"
+          size="sm"
+          outline
+          class="q-mx-md"
+        />
+      </div>
+      <TabularList
+        :filter-function="filterFunction"
+        :item-height="35"
+        :items="queries"
+        :loading="loading"
+        max-list-height="calc(100vh - 260px)"
+        @refresh="loadQueries"
+      >
+        <template #default="slotProps">
+          <q-item
+            v-ripple
+            clickable
+            @click.stop="$router.push(`/queries/${slotProps.item.id}`)"
+          >
+            <q-item-section>
+              <q-item-label>
+                <span class="text-grey-6 text-weight-bold">
+                  {{ getQueryGroupCodeFromQuery(slotProps.item) }} /
+                </span>
+                {{slotProps.item.code}}
+              </q-item-label>
+              <q-item-label caption>{{ slotProps.item.description }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
+      </TabularList>
+    </q-page>
+  </QueryLayout>
 </template>
 
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n';
 import TabularList from 'components/Util/TabularList.vue';
+import QueryLayout from 'src/components/Query/QueryLayout.vue';
 import {computed, onMounted, ref} from 'vue';
 import type {Query} from 'src/models/query/query';
 import type {QueryGroup} from 'src/models/queryGroup';

@@ -1,6 +1,10 @@
 export default {
   marks: {
-    title: 'Marks',
+    title: {
+      tree: 'Mark Tree',
+      variety: 'Mark Variety',
+      batch: 'Mark Batch',
+    },
 
     selectForm: {
       title: 'Select Form',
@@ -23,17 +27,44 @@ export default {
       manualEntry: 'enter publicid'
     },
 
+    selectBatch: {
+      title: 'Select Batch',
+      tab: 'Batch',
+      searchSelectLabel: 'Search batch',
+    },
+
+    selectVariety: {
+      title: 'Select Variety',
+      tab: 'Variety',
+      searchSelect: 'Search',
+      searchSelectLabel: 'Search variety',
+    },
+
     markTree: {
       title: 'Mark Tree',
       tab: 'Mark',
-      missingDataError: 'Missing data.',
-      setMeta: 'Add meta data',
       selectTree: 'Select tree',
-      selectForm: 'Select form',
-      saved: 'Marks saved.',
+    },
+
+    markBatch: {
+      title: 'Mark Batch',
+      tab: 'Mark',
+    },
+
+    markVariety: {
+      title: 'Mark Variety',
+      tab: 'Mark',
+      selectVariety: 'Select variety',
+    },
+
+    markObj: {
       addProperty: 'Add property',
       selectProperty: 'Select Property',
       propertyAlreadyExists: 'Property {property} can not be added a second time.',
+      missingDataError: 'Missing data.',
+      selectForm: 'Select form',
+      saved: 'Marks saved.',
+      setMeta: 'Add meta data',
     },
   },
 
@@ -171,8 +202,12 @@ export default {
     download: 'Download'
   },
 
+
   general: {
     search: 'Search',
+    typeToSearch: 'Type to search',
+    noResults: 'No results',
+    moreResults: 'Showing {limit} out of {count} results. Refine your search to narrow the list.',
     loading: 'Loading...',
     retry: 'Retry',
     failedToLoadData: 'Failed to load data.',
@@ -199,20 +234,30 @@ export default {
 
 
   components: {
+    treeCard: {
+      scanBtnLabel: 'Scan',
+      tree: 'Tree',
+      printBtnLabel: 'Print',
+      printTitle: 'Print tree label',
+      printDesc: 'Select regular to print a label with the publicid and the convar or anonymous to hide the convar.',
+      printRegular: 'Regular',
+      printAnonymous: 'Anonymous',
+      windowError: 'Failed to open window for printing. Are you blocking popups?',
+      noTree: 'Please scan tree',
+      noPrint: 'Missing print data',
+    },
+
+    varietyCard: {
+      noVariety: 'Please select variety',
+    },
+
+    batchCard: {
+      noBatch: 'Please select batch',
+    },
+
     util: {
       errorBanner: {
         dismiss: 'dismiss'
-      },
-      treeCard: {
-        scanBtnLabel: 'Scan',
-        tree: 'Tree',
-        printBtnLabel: 'Print',
-        printTitle: 'Print tree label',
-        printDesc: 'Select regular to print a label with the publicid and the convar or anonymous to hide the convar.',
-        printRegular: 'Regular',
-        printAnonymous: 'Anonymous',
-        windowError: 'Failed to open window for printing. Are you blocking popups?',
-        noTree: 'Please Scan Tree'
       },
       codeScanner: {
         permissionRequest: 'Unable to access video stream. Please confirm permission request.',
@@ -222,19 +267,28 @@ export default {
         listMetaFiltered: 'Filtered list. Showing {showing} out of {total} items.',
         listMetaUnfiltered: '{total} items',
         nothingFound: 'Nothing found'
-      }
+      },
+      search: 'Search',
     },
   },
 
 
   navigation: {
-    markTrees: {
-      title: 'Mark Trees',
-      caption: 'Scan trees and rate them.'
-    },
     trees: {
       title: 'Trees',
       caption: 'List of all trees.'
+    },
+    markTrees: {
+      title: 'Mark Trees',
+      caption: ''
+    },
+    markVarieties: {
+      title: 'Mark Varieties',
+      caption: ''
+    },
+    markBatches: {
+      title: 'Mark Batches',
+      caption: ''
     },
     queries: {
       title: 'Queries',

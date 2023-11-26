@@ -1,119 +1,96 @@
 <template>
-  <div class="q-gutter-md">
+  <!--suppress RequiredAttributes -->
+  <q-input
+    v-if="method === 'KEYBOARD'"
+    v-model="publicid"
+    :autofocus="true"
+    :label="t('trees.publicid')"
+    inputmode="numeric"
+    outlined
+    type="number"
+    @keyup.enter="loadTree"
+  />
 
-    <!--suppress RequiredAttributes -->
-    <q-btn-toggle
-      v-model="mode"
-      toggle-color="primary"
-      size="sm"
-      :options="[
-        {label: t('marks.selectTree.scanQrCode'), value: InputMode.Camera, icon: 'qr_code_scanner'},
-        {label: t('marks.selectTree.manualEntry'), value: InputMode.Keyboard, icon: 'keyboard'},
-      ]"
+  <div
+    v-if="method === 'CAMERA'"
+    :class="{loading}"
+    class="row justify-center bg-grey-5"
+  >
+    <CodeScanner
+      @on-detected="onScanned"
+      @on-ready="onCodeScannerReady"
     />
-
-    <!--suppress RequiredAttributes -->
-    <q-input
-      v-if="mode === InputMode.Keyboard"
-      outlined
-      v-model="publicid"
-      :label="t('trees.publicid')"
-      @keyup.enter="loadTree"
-      type="number"
-      inputmode="numeric"
-      :autofocus="true"
-    />
-
-    <div
-      v-if="mode === InputMode.Camera"
-      class="q-mb-md row justify-center bg-grey-5"
-      :class="{loading}"
-    >
-      <CodeScanner
-        @on-detected="onScanned"
-        @on-ready="onCodeScannerReady"
-      />
-    </div>
-
-    <q-btn
-      color="primary"
-      :label="t('general.next')"
-      :disabled="!publicid"
-      @click="loadTree"
-    />
-
-    <SpinLoader v-if="loading"/>
   </div>
+
+  <q-btn
+    :disabled="!publicid"
+    :label="t('general.next')"
+    color="primary"
+    @click="loadTree"
+  />
+
+  <SpinLoader v-if="loading"/>
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, computed, watch, onMounted} from 'vue'
+import {computed, defineComponent, onMounted, PropType, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n';
 import SpinLoader from 'components/Util/SpinLoader.vue';
-import {Tree} from 'src/models/tree';
-import useApi from 'src/composables/api'
 import CodeScanner from 'components/Util/CodeScanner.vue';
 import {Notify} from 'quasar';
-
-const localStorageInputMethod = 'breedersdb_mark_input_method';
-
-enum InputMode {
-  Camera = 'CAMERA',
-  Keyboard = 'KEYBOARD',
-}
+import {useFetchTree} from 'src/composables/trees/fetchTree';
 
 export default defineComponent({
   name: 'TreeSelector',
   emits: ['selected'],
   components: {CodeScanner, SpinLoader},
+  props: {
+    method: {
+      type: String as PropType<'CAMERA' | 'KEYBOARD'>,
+      required: true
+    },
+  },
 
-  setup(_, {emit}) {
+  setup(props, {emit}) {
     const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
-    const {working: apiLoading, get} = useApi()
+    const {fetchTreeByPublicId} = useFetchTree();
+    const loadingTree = ref(false)
 
     const scannerLoading = ref(true)
     const publicid = ref('')
 
-    const loading = computed(() => apiLoading.value || scannerLoading.value)
+    const loading = computed(() => loadingTree.value || scannerLoading.value)
 
-    const mode = ref<InputMode>(window.localStorage.getItem(localStorageInputMethod) === InputMode.Keyboard
-      ? InputMode.Keyboard
-      : InputMode.Camera
-    )
-
-    watch(mode, val => {
-      window.localStorage.setItem(localStorageInputMethod, val)
-      scannerLoading.value = InputMode.Camera === getInputMode()
-    })
+    watch(() => props.method,
+      newMode => {
+        scannerLoading.value = 'CAMERA' === newMode
+      })
 
     onMounted(() => {
-      if (InputMode.Keyboard === getInputMode()) {
+      if ('KEYBOARD' === props.method) {
         scannerLoading.value = false
       }
     })
 
-    function getInputMode() {
-      return mode.value;
-    }
-
     function loadTree() {
-      const params = new URLSearchParams()
-      params.append('fields[]', 'publicid')
-      params.append('term', publicid.value)
-      const url = 'trees/get-tree?' + params.toString()
+      const {data, loading} = fetchTreeByPublicId(
+        publicid.value,
+        () => loadingTree.value = false
+      )
 
-      void get<Tree>(url)
-        .then(tree => {
-          if (tree) {
-            emit('selected', tree)
-          } else {
-            Notify.create({
-              message: t('general.failedToLoadData'),
-              color: 'negative',
-              closeBtn: true
-            })
-          }
-        })
+      loadingTree.value = loading.value
+
+      void data.then(tree => {
+        if (tree) {
+          emit('selected', tree)
+        } else {
+          Notify.create({
+            message: t('general.failedToLoadData'),
+            color: 'negative',
+            closeBtn: true
+          })
+        }
+      })
     }
 
     function onScanned(code: string) {
@@ -132,14 +109,12 @@ export default defineComponent({
       loading,
       onScanned,
       onCodeScannerReady,
-      mode,
-      InputMode,
     }
   }
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .loading {
   filter: grayscale(1) opacity(0.2) blur(4px);
   transition: all 200ms;

@@ -1,3 +1,5 @@
+import {Variety} from 'src/models/variety';
+
 export interface Tree {
   id: number
   publicid: string
@@ -27,7 +29,7 @@ export interface Tree {
   // row?: Row|null
   // grafting?: Grafting|null
   // rootstock?: Rootstock|null
-  // variety?: Variety
+  variety?: Variety
 }
 
 export interface TreeView {
