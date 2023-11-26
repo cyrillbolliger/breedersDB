@@ -1,7 +1,11 @@
 // noinspection SpellCheckingInspection
 export default {
   marks: {
-    title: 'Bewertungen',
+    title: {
+      tree: 'Baum bewerten',
+      variety: 'Sorte bewerten',
+      batch: 'Los bewerten'
+    },
     selectForm: {
       title: 'Formular auswählen',
       tab: 'Formular'
@@ -20,17 +24,39 @@ export default {
       scanQrCode: 'QR-Code scannen',
       manualEntry: 'Publicid eingeben'
     },
+    selectBatch: {
+      title: 'Los auswählen',
+      tab: 'Los',
+      searchSelectLabel: 'Los suchen'
+    },
+    selectVariety: {
+      title: 'Sorte auswählen',
+      tab: 'Sorte',
+      searchSelect: 'Suchen',
+      searchSelectLabel: 'Sorte suchen'
+    },
     markTree: {
       title: 'Baum bewerten',
       tab: 'Bewerten',
-      missingDataError: 'Fehlende Daten.',
-      setMeta: 'Meta-Daten hinzufügen',
-      selectTree: 'Baum auswählen',
-      selectForm: 'Formular auswählen',
-      saved: 'Bewertungen gespeichert.',
+      selectTree: 'Baum auswählen'
+    },
+    markBatch: {
+      title: 'Los bewerten',
+      tab: 'Bewerten'
+    },
+    markVariety: {
+      title: 'Sorte bewerten',
+      tab: 'Bewerten',
+      selectVariety: 'Sorte auswählen'
+    },
+    markObj: {
       addProperty: 'Eigenschaft hinzufügen',
       selectProperty: 'Eigenschaft auswählen',
-      propertyAlreadyExists: 'Eigenschaft {property} kann kein zweites Mal hinzugefügt werden.'
+      propertyAlreadyExists: 'Eigenschaft {property} kann kein zweites Mal hinzugefügt werden.',
+      missingDataError: 'Fehlende Daten.',
+      selectForm: 'Formular auswählen',
+      saved: 'Bewertungen gespeichert.',
+      setMeta: 'Meta-Daten hinzufügen'
     }
   },
   trees: {
@@ -142,6 +168,9 @@ export default {
   },
   general: {
     search: 'Suchen',
+    typeToSearch: 'Tippen, um zu suchen',
+    noResults: 'Keine Ergebnisse',
+    moreResults: 'Es werden {limit} von {count} Ergebnissen angezeigt. Verfeinere die Suche, wenn das gewünschte Resultat nicht in der Liste erscheint.',
     loading: 'Laden...',
     retry: 'Wiederholen',
     failedToLoadData: 'Fehler beim Laden der Daten.',
@@ -165,20 +194,27 @@ export default {
     }
   },
   components: {
+    treeCard: {
+      scanBtnLabel: 'Scannen',
+      tree: 'Baum',
+      printBtnLabel: 'Drucken',
+      printTitle: 'Etikette drucken',
+      printDesc: 'Wähle normal um ein Etikett mit Publicid und Convar zu drucken oder anonym um das Convar wegzulassen.',
+      printRegular: 'Normal',
+      printAnonymous: 'Anonymisiert',
+      windowError: 'Öffnen des Druckfensters fehlgeschlagen. Werden Popups blockiert?',
+      noTree: 'Bitte Baum scannen',
+      noPrint: 'Fehlende Druckdaten'
+    },
+    varietyCard: {
+      noVariety: 'Bitte Sorte auswählen'
+    },
+    batchCard: {
+      noBatch: 'Bitte Los auswählen'
+    },
     util: {
       errorBanner: {
         dismiss: 'verwerfen'
-      },
-      treeCard: {
-        scanBtnLabel: 'Scannen',
-        tree: 'Baum',
-        printBtnLabel: 'Drucken',
-        printTitle: 'Etikette drucken',
-        printDesc: 'Wähle normal um ein Etikett mit Publicid und Convar zu drucken oder anonym um das Convar wegzulassen.',
-        printRegular: 'Normal',
-        printAnonymous: 'Anonymisiert',
-        windowError: 'Öffnen des Druckfensters fehlgeschlagen. Werden Popups blockiert?',
-        noTree: 'Bitte Baum scannen'
       },
       codeScanner: {
         permissionRequest: 'Zugriff auf den Video-Stream nicht möglich. Bitte die Berechtigungsanfrage bestätigen.',
@@ -188,17 +224,26 @@ export default {
         listMetaFiltered: 'Gefilterte Liste. Zeige {showing} von {total} Elementen.',
         listMetaUnfiltered: '{total} Elemente',
         nothingFound: 'Nichts gefunden'
-      }
+      },
+      search: 'Suchen'
     }
   },
   navigation: {
-    markTrees: {
-      title: 'Baum bewerten',
-      caption: 'Scanne Bäume und bewerte sie.'
-    },
     trees: {
       title: 'Bäume',
       caption: 'Liste aller Bäume.'
+    },
+    markTrees: {
+      title: 'Baum bewerten',
+      caption: ''
+    },
+    markVarieties: {
+      title: 'Sorten bewerten',
+      caption: ''
+    },
+    markBatches: {
+      title: 'Lose bewerten',
+      caption: ''
     },
     queries: {
       title: 'Abfragen',
