@@ -181,10 +181,14 @@ class AppController extends Controller {
         /**
          * write users experiment sites to session
          */
-        if ( empty( $session->read( 'experiment_sites' ) ) ) {
-            $experimentSiteIds = $this->getTableLocator()->get( 'ExperimentSites' )->find()->matching( 'Users', function ( $q ) {
-                return $q->where( [ 'Users.id' => $this->Auth->user( 'id' ) ] );
-            } )->select(['id'])->extract('id')->toList();
+        $userId = $this->Auth->user( 'id' );
+        if ( $userId && empty( $session->read( 'experiment_sites' ) ) ) {
+            $experimentSiteIds = $this->getTableLocator()->get( 'ExperimentSites' )
+                ->find()
+                ->matching( 'Users', fn( $q ) => $q->where( [ 'Users.id' => $userId ] ) )
+                ->select( [ 'id' ] )
+                ->extract( 'id' )
+                ->toList();
 
             $session->write( 'experiment_sites', $experimentSiteIds );
         }
