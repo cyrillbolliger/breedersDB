@@ -13,6 +13,7 @@ use App\Model\Rule\IsNotReferredBy;
  * ExperimentSites Model
  *
  * @property \Cake\ORM\Association\HasMany $Trees
+ * @property \Cake\ORM\Association\BelongsToMany $Users
  *
  * @method \App\Model\Entity\ExperimentSite get( $primaryKey, $options = [] )
  * @method \App\Model\Entity\ExperimentSite newEntity( $data = null, array $options = [] )
@@ -41,6 +42,13 @@ class ExperimentSitesTable extends Table {
 		$this->hasMany( 'Trees', [
 			'foreignKey' => 'experiment_site_id'
 		] );
+
+        $this->belongsToMany('Users', [
+            'foreignKey' => 'experiment_site_id',
+            'targetForeignKey' => 'user_id',
+            'joinTable' => 'users_experiment_sites',
+            'through' => 'UsersExperimentSites',
+        ]);
 	}
 
 	/**

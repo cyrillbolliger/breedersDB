@@ -17,6 +17,10 @@
             <td><?= h( $user->time_zone ) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __( 'ExperimentSites' ) ?></th>
+            <td><?= h( implode(', ', array_map(static fn($e) => $e->name, $user->experiment_sites) ) ) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __( 'Created' ) ?></th>
             <td><?= h( $this->LocalizedTime->getUserTime( $user->created ) ) ?></td>
         </tr>

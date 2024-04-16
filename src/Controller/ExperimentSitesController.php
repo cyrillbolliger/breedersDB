@@ -32,7 +32,9 @@ class ExperimentSitesController extends AppController {
 	 * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
 	 */
 	public function view( $id = null ) {
-		$experimentSite = $this->ExperimentSites->get( $id );
+		$experimentSite = $this->ExperimentSites->get( $id, [
+			'contain' => ['Users']
+		] );
 
 		$this->set( 'experimentSite', $experimentSite );
 		$this->set( '_serialize', [ 'experimentSite' ] );
