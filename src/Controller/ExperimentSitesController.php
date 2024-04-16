@@ -110,17 +110,18 @@ class ExperimentSitesController extends AppController {
 	/**
 	 * Select method
 	 */
-	public function select() {
+	public function select($id = null) {
 		// if site was selected
-		if ( $this->request->is( 'post' ) && ! empty( $this->request->getData('experiment_site_id') ) ) {
+		if ( ! empty( $this->request->getData('experiment_site_id') ) ) {
+            $id = (int)$this->request->getData('experiment_site_id');
+        }
 
-			// get site data
-			$id             = (int) $this->request->getData('experiment_site_id');
-			$experimentSite = $this->ExperimentSites->get( $id );
+        if ($id) {
+            $experimentSite = $this->ExperimentSites->get($id);
 
 			// add the site to the session
 			$session = $this->request->getSession();
-			$session->write( 'experiment_site_id', (int) $id );
+			$session->write( 'experiment_site_id', $id );
 			$session->write( 'experiment_site_name', $experimentSite->name );
 
 			// and redirect the user
@@ -134,9 +135,20 @@ class ExperimentSitesController extends AppController {
 			return $redirect;
 		}
 
-		// show the selection form
-		$experimentSites = $this->ExperimentSites->find( 'list' );
-		$this->set( compact( 'experimentSites' ) );
+		$experimentSites = $this->ExperimentSites
+            ->find( 'list' )
+            ->matching( 'Users', fn($q) => $q->where( ['Users.id' => $this->Auth->user('id')] ) );
+
+        if ( $experimentSites->isEmpty() ) {
+            $this->Flash->error( __( 'No experiment sites available for this user.' ) );
+        }
+
+        if ( $experimentSites->count() === 1 ) {
+            $experimentSiteId = array_keys( $experimentSites->toArray() )[0];
+            return $this->redirect( [ 'controller' => 'ExperimentSites', 'action' => 'select', $experimentSiteId ] );
+        }
+
+		$this->set( ['experimentSites' => $experimentSites] );
 		$this->set( '_serialize', [ 'experimentSites' ] );
 	}
 }
