@@ -56,7 +56,10 @@ class MarksController extends AppController {
 			'MarkValues',
 			'MarkValues.MarkFormProperties'
 		];
-		$marks                     = $this->paginate( $this->Marks );
+		$marks                     = $this->paginate(
+            $this->Marks->find()
+                ->notMatching('Trees', fn($q) => $q->where(['Trees.experiment_site_id NOT IN' => $this->getUserExperimentSiteIds()]))
+        );
 
 		$types = $this->Marks->MarkValues->MarkFormProperties->MarkFormPropertyTypes
 			->find( 'list' )
@@ -86,9 +89,14 @@ class MarksController extends AppController {
 				'Varieties',
 				'Batches',
 				'MarkValues',
-				'MarkValues.MarkFormProperties'
+				'MarkValues.MarkFormProperties',
 			]
 		] );
+
+        if ( $mark->tree->experiment_site_id && !in_array($mark->Trees?->experiment_site_id, $this->getUserExperimentSiteIds()) ) {
+            $this->Flash->error( __( 'You are not allowed to view this mark.' ) );
+            return $this->redirect(['controller' => 'Marks', 'action' => 'index']);
+        }
 
 		$this->set( 'mark', $mark );
 		$this->set( '_serialize', [ 'mark' ] );
@@ -338,7 +346,9 @@ class MarksController extends AppController {
 		     && ! empty( $this->request->getQuery('fields') )
 		     && array_intersect( $allowed_fields, $this->request->getQuery('fields') )
 		) {
-			$entries = $this->Marks->filter( $this->request->getQuery('term') );
+			$entries = $this->Marks
+                ->filter( $this->request->getQuery('term') )
+                ->notMatching('Trees', fn($q) => $q->where(['Trees.experiment_site_id NOT IN' => $this->getUserExperimentSiteIds()]));
 		} else {
 			throw new \Exception( __( 'Direct access not allowed.' ) );
 		}
