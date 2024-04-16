@@ -86,7 +86,10 @@ class MarksReaderComponent extends Component {
 	protected function _findByType( int $typeId, $treeId, $varietyId, $batchId, $markId ) {
 		$where = array();
 		if ( $treeId ) {
-			$where[] = [ 'Marks.tree_id IN' => $treeId ];
+			$where[] = [
+                'Marks.tree_id IN' => $treeId,
+                'Trees.experiment_site_id IN' => $this->getController()->getUserExperimentSiteIds()
+            ];
 		}
 
 		if ( $varietyId ) {
