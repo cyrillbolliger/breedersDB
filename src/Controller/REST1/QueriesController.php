@@ -29,6 +29,11 @@ use Cake\Datasource\FactoryLocator;
  */
 class QueriesController extends REST1Controller
 {
+    public function isAuthorized($user = null): bool
+    {
+        return $user['level'] === 0;
+    }
+
     public function getFilterSchemas(): void
     {
         $tablesBaseNames = [
@@ -112,6 +117,7 @@ class QueriesController extends REST1Controller
         }
 
         $queryBuilder = FilterQueryBuilder::create($this->request->getData('data'));
+        $queryBuilder->setUserExperimentSiteIds($this->getUserExperimentSiteIds());
         $queryBuilder->setLimit(0);
 
         try {
@@ -260,5 +266,13 @@ class QueriesController extends REST1Controller
         }
 
         $this->set('data', $query);
+    }
+
+    private function getUserExperimentSiteIds(): array
+    {
+        $session = $this->request->getSession();
+        $experimentSites = $session->read('experiment_sites');
+
+        return is_array($experimentSites) ? $experimentSites : [];
     }
 }

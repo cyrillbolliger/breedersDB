@@ -20,7 +20,7 @@ class SpaController extends AppController
     {
         $apiUrl = Router::fullBaseUrl().'/api/1';
         $locale = str_replace('_', '-', I18n::getLocale());
-        $this->set('data', ['locale' => $locale, 'apiUrl' => $apiUrl]);
+        $this->set('data', ['locale' => $locale, 'apiUrl' => $apiUrl, 'user' => $this->Auth->user()]);
         $this->render('/element/ajaxreturn', AppController::LAYOUT_V2);
     }
 }

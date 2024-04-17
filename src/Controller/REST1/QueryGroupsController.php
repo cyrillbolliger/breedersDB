@@ -17,6 +17,11 @@ use App\Model\Table\QueryGroupsTable;
  */
 class QueryGroupsController extends REST1Controller
 {
+    public function isAuthorized($user = null): bool
+    {
+        return $user['level'] === 0;
+    }
+
     public function index()
     {
         if (!$this->request->is('get')) {

@@ -119,6 +119,9 @@ class AppController extends Controller {
 
         // This is done here instead of the bootstrap to not affect the debug kit
         $this->setResourcesUrl();
+
+        // expose the user level to the view
+        $this->set('userLevel', $this->Auth->user('level'));
     }
 
     private function setResourcesUrl(): void

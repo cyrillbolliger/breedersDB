@@ -119,6 +119,14 @@ import {useLayoutStore} from 'stores/layout';
 
 declare const webroot: string;
 
+declare const cake: {
+  data?: {
+    user: {
+      level: number
+    }
+  }
+};
+
 export default defineComponent({
   name: 'MainLayout',
 
@@ -156,21 +164,24 @@ export default defineComponent({
         icon: 'star',
         link: '/marks/batch/select-form'
       },
-      {
-        title: t('navigation.queries.title'),
-        caption: t('navigation.queries.caption'),
-        icon: 'saved_search',
-        link: '/queries'
-      },
-      {
-        title: t('navigation.queries.titleLegacy'),
-        caption: t('navigation.queries.captionLegacy'),
-        icon: 'search_off',
-        link: webroot + 'queries'
-      },
     ];
 
-
+    if (cake.data?.user.level === 0) {
+      navLinks.push(
+        {
+          title: t('navigation.queries.title'),
+          caption: t('navigation.queries.caption'),
+          icon: 'saved_search',
+          link: '/queries'
+        },
+        {
+          title: t('navigation.queries.titleLegacy'),
+          caption: t('navigation.queries.captionLegacy'),
+          icon: 'search_off',
+          link: webroot + 'queries'
+        }
+      );
+    }
 
     return {
       title: computed(() => store.title),
