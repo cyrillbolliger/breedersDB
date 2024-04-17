@@ -173,12 +173,6 @@ export default defineComponent({
           caption: t('navigation.queries.caption'),
           icon: 'saved_search',
           link: '/queries'
-        },
-        {
-          title: t('navigation.queries.titleLegacy'),
-          caption: t('navigation.queries.captionLegacy'),
-          icon: 'search_off',
-          link: webroot + 'queries'
         }
       );
     }
