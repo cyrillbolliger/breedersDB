@@ -39,6 +39,7 @@ class VarietiesController extends AppController {
 		$this->paginate['sortableFields'] = [
 			'convar',
 			'official_name',
+            'acronym',
 			'created',
 			'modified',
 			'id',
@@ -48,6 +49,7 @@ class VarietiesController extends AppController {
 			'id',
 			'convar',
 			'official_name',
+            'acronym',
 			'created',
 			'modified',
 		];
@@ -253,6 +255,7 @@ class VarietiesController extends AppController {
         $this->paginate['sortableFields'] = [
             'convar',
             'official_name',
+            'acronym',
             'created',
             'modified',
             'id',
@@ -262,6 +265,7 @@ class VarietiesController extends AppController {
             'id',
             'convar',
             'official_name',
+            'acronym',
             'created',
             'modified',
         ];
