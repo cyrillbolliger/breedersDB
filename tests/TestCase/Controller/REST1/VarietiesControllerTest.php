@@ -64,7 +64,7 @@ class VarietiesControllerTest extends TestCase
                 'results' => $this->Table->find()->contain(self::CONTAINS)
             ]
         ];
-        $json = json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_HEX_QUOT);
+        $json = json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_HEX_QUOT | JSON_HEX_APOS);
         self::assertEquals($json, (string)$this->_response->getBody());
     }
 
@@ -96,7 +96,7 @@ class VarietiesControllerTest extends TestCase
                 'results' => [$entity3]
             ]
         ];
-        $json = json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_HEX_QUOT);
+        $json = json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_HEX_QUOT | JSON_HEX_APOS);
         self::assertEquals($json, (string)$this->_response->getBody());
     }
 
@@ -128,7 +128,7 @@ class VarietiesControllerTest extends TestCase
                 'results' => [$entity2]
             ]
         ];
-        $json = json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_HEX_QUOT);
+        $json = json_encode($expected, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_HEX_QUOT | JSON_HEX_APOS);
         self::assertEquals($json, (string)$this->_response->getBody());
     }
 

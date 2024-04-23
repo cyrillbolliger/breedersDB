@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2023-11-06 17:52+0000\n"
-"PO-Revision-Date: 2023-11-26 12:54\n"
+"POT-Creation-Date: 2024-04-22 12:01+0000\n"
+"PO-Revision-Date: 2024-04-22 12:02\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -55,10 +55,10 @@ msgstr "Das Los konnte nicht gelöscht werden. Bitte versuche es erneut."
 #: ./src/Controller/ScionsBundlesController.php:146
 #: ./src/Controller/TreesController.php:294
 #: ./src/Controller/TreesController.php:403
-#: ./src/Controller/VarietiesController.php:202
-#: ./src/Controller/VarietiesController.php:221
-#: ./src/Controller/VarietiesController.php:240
-#: ./src/Controller/VarietiesController.php:276
+#: ./src/Controller/VarietiesController.php:204
+#: ./src/Controller/VarietiesController.php:223
+#: ./src/Controller/VarietiesController.php:242
+#: ./src/Controller/VarietiesController.php:280
 msgid "Direct access not allowed."
 msgstr "Direkter Zugriff nicht erlaubt."
 
@@ -465,23 +465,23 @@ msgstr "Der Benutzer konnte nicht gelöscht werden. Bitte versuche es erneut."
 msgid "Your username or password is incorrect."
 msgstr "Dein Benutzername oder Passwort ist nicht korrekt."
 
-#: ./src/Controller/VarietiesController.php:95
-#: ./src/Controller/VarietiesController.php:121
-#: ./src/Controller/VarietiesController.php:148
+#: ./src/Controller/VarietiesController.php:97
+#: ./src/Controller/VarietiesController.php:123
+#: ./src/Controller/VarietiesController.php:150
 msgid "The variety has been saved."
 msgstr "Die Sorte wurde gespeichert."
 
-#: ./src/Controller/VarietiesController.php:99
-#: ./src/Controller/VarietiesController.php:125
-#: ./src/Controller/VarietiesController.php:152
+#: ./src/Controller/VarietiesController.php:101
+#: ./src/Controller/VarietiesController.php:127
+#: ./src/Controller/VarietiesController.php:154
 msgid "The variety could not be saved. Please, try again."
 msgstr "Die Sorte konnte nicht gespeichert werden. Bitte versuche es erneut."
 
-#: ./src/Controller/VarietiesController.php:182
+#: ./src/Controller/VarietiesController.php:184
 msgid "The variety has been deleted."
 msgstr "Die Sorte wurde gelöscht."
 
-#: ./src/Controller/VarietiesController.php:184
+#: ./src/Controller/VarietiesController.php:186
 msgid "The variety could not be deleted. Please, try again."
 msgstr "Die Sorte konnte nicht gelöscht werden. Bitte versuche es erneut."
 
