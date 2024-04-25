@@ -93,7 +93,8 @@ class MarksController extends AppController {
 			]
 		] );
 
-        if ( $mark->tree->experiment_site_id && !in_array($mark->Trees?->experiment_site_id, $this->getUserExperimentSiteIds()) ) {
+
+        if ( $mark->tree?->experiment_site_id && !in_array($mark->tree?->experiment_site_id, $this->getUserExperimentSiteIds()) ) {
             $this->Flash->error( __( 'You are not allowed to view this mark.' ) );
             return $this->redirect(['controller' => 'Marks', 'action' => 'index']);
         }
