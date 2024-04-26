@@ -434,4 +434,8 @@ return [
             'session.cookie_lifetime' => 24 * 3600 // seconds; client session cookie lifetime
         ],
     ],
+
+    'Org' => [
+        'abbreviation' => env('ORG_ABBREV', 'POC'),
+    ],
 ];

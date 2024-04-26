@@ -39,7 +39,7 @@ export interface PropertySchemaDoubleOptions {
 }
 
 export interface PropertySchemaBooleanOptions {
-  type: PropertySchemaOptionType.Date,
+  type: PropertySchemaOptionType.Boolean,
 }
 
 export interface PropertySchemaEnumOptions {

@@ -11,6 +11,7 @@ use App\Test\Util\AjaxTrait;
 use App\Test\Util\AuthenticateTrait;
 use App\Test\Util\DependsOnFixtureTrait;
 use App\Test\Util\ExperimentSiteTrait;
+use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -259,8 +260,9 @@ class VarietiesControllerTest extends TestCase
         $this->assertResponseContains($variety->convar);
 
         $this->setAjaxHeader();
+        $org = Configure::readOrFail('Org.abbreviation');
         $this->get(
-            self::ENDPOINT . '/filter?fields%5B%5D=convar&fields%5B%5D=breeder_variety_code&fields%5B%5D=id&term=' . COMPANY_ABBREV . $variety->id
+            self::ENDPOINT . '/filter?fields%5B%5D=convar&fields%5B%5D=breeder_variety_code&fields%5B%5D=id&term=' . $org . $variety->id
         );
         $this->assertResponseSuccess();
         $this->assertResponseContains($variety->convar);

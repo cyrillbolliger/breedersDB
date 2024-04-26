@@ -109,4 +109,9 @@ return [
     'Error' => [
         'skipLog' => [MissingControllerException::class, CsrfProtectionMiddleware::class],
     ],
+
+    'Org' => [
+        // Organisation short name. Use uppercase letters only (no numbers)
+        'abbreviation' => env('ORG_ABBREV', 'POC'),
+    ],
 ];

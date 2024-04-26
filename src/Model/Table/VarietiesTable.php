@@ -2,6 +2,7 @@
 
 namespace App\Model\Table;
 
+use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -126,7 +127,8 @@ class VarietiesTable extends Table {
 	 * @return \Cake\ORM\Query
 	 */
 	public function filter( string $term ) {
-		$is_breeder_variety_code = preg_match( '/^' . COMPANY_ABBREV . '\d+$/i', $term );
+        $org = Configure::readOrFail('Org.abbreviation');
+		$is_breeder_variety_code = preg_match( '/^' . $org . '\d+$/i', $term );
 		$is_id = is_numeric($term);
 
 		if ( $is_breeder_variety_code ) {
@@ -148,7 +150,8 @@ class VarietiesTable extends Table {
 	 * @return \Cake\ORM\Query
 	 */
 	public function filterBreederVarietyCode( string $term ) {
-		$tmp = str_ireplace( COMPANY_ABBREV, '', $term );
+        $org = Configure::readOrFail('Org.abbreviation');
+		$tmp = str_ireplace( $org, '', $term );
 		$id  = ltrim( $tmp, '0' );
 
 		return $this->find()
