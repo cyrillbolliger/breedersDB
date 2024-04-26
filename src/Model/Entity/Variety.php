@@ -2,6 +2,7 @@
 
 namespace App\Model\Entity;
 
+use Cake\Core\Configure;
 use Cake\ORM\Entity;
 
 /**
@@ -45,6 +46,6 @@ class Variety extends Entity {
 	protected $_virtual = [ 'breeder_variety_code' ];
 
 	protected function _getBreederVarietyCode() {
-		return COMPANY_ABBREV . sprintf( '%0' . BREEDER_VARIETY_CODE_NUM_LENGTH . 'd', $this->id );
+		return Configure::readOrFail('Org.abbreviation') . sprintf( '%0' . BREEDER_VARIETY_CODE_NUM_LENGTH . 'd', $this->id );
 	}
 }
