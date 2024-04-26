@@ -18,7 +18,7 @@
     <h3><?= __( 'Trees' ) ?></h3>
     <div>
         <input type="text" class="filter noprint" data-filter='<?= $filter ?>'
-               placeholder="<?= __( 'Filter by publicid or convar...' ) ?>">
+               placeholder="<?= __( 'Filter by publicid, name or convar...' ) ?>">
     </div>
     <div id="index_table">
 		<?= $this->element( 'Tree/index_table' ); ?>

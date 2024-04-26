@@ -6,6 +6,7 @@
     <tr>
         <th scope="col" class="id"><?= $this->Paginator->sort( 'id' ) ?></th>
         <th scope="col"><?= $this->Paginator->sort( 'publicid' ) ?></th>
+        <th scope="col"><?= $this->Paginator->sort( 'name' ) ?></th>
         <th scope="col"><?= $this->Paginator->sort( 'convar' ) ?></th>
         <th scope="col"><?= $this->Paginator->sort( 'row' ) ?></th>
         <th scope="col"><?= $this->Paginator->sort( 'offset' ) ?></th>
@@ -20,6 +21,7 @@
         <tr>
             <td class="id"><?= $this->Number->format( $tree->id ) ?></td>
             <td><?= h( $tree->publicid ) ?></td>
+            <td><?= h( $tree->name ) ?></td>
             <td><?= $tree->has( 'convar' ) ? $this->Html->link( $tree->convar,
 					[ 'controller' => 'Varieties', 'action' => 'view', $tree->variety_id ] ) : '' ?></td>
             <td><?= $tree->has( 'row' ) ? $this->Html->link( $tree->row,

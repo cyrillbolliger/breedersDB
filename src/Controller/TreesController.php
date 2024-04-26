@@ -37,6 +37,7 @@ class TreesController extends AppController {
 		$this->paginate['sortableFields'] = [
 			'convar',
 			'publicid',
+            'name',
 			'row',
 			'offset',
 			'note',
@@ -48,6 +49,7 @@ class TreesController extends AppController {
 		$this->paginate['fields'] = [
 			'id',
 			'publicid',
+            'name',
 			'convar',
 			'row'    => 'Rows.code',
 			'offset',
@@ -357,7 +359,7 @@ class TreesController extends AppController {
 	 * Return filtered index table
 	 */
 	public function filter() {
-		$allowed_fields = [ 'publicid', 'convar' ];
+		$allowed_fields = [ 'publicid', 'convar', 'name' ];
 
 		$this->paginate['contain'] = [
 			'Rows',
@@ -366,6 +368,7 @@ class TreesController extends AppController {
 		$this->paginate['sortableFields'] = [
 			'convar',
 			'publicid',
+            'name',
 			'row',
 			'offset',
 			'note',
@@ -377,6 +380,7 @@ class TreesController extends AppController {
 		$this->paginate['fields'] = [
 			'id',
 			'publicid',
+            'name',
 			'convar',
 			'row'    => 'Rows.code',
 			'offset',

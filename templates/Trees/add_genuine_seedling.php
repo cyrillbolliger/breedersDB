@@ -12,6 +12,7 @@
 			'class'    => 'select2convar select2convar_add',
 		] );
 		echo $this->Form->control( 'publicid' );
+		echo $this->Form->control( 'name' );
 		echo $this->Form->control( 'genuine_seedling', [
 			'checked' => 'checked',
 			'class'   => $tree->setDirty( 'genuine_seedling' ) ? 'brain-prefilled' : '',

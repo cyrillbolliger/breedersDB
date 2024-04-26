@@ -5,6 +5,7 @@
     <tr>
         <th scope="col" class="id"><?= __( 'Id' ) ?></th>
         <th scope="col"><?= __( 'Publicid' ) ?></th>
+        <th scope="col"><?= __( 'Name' ) ?></th>
         <th scope="col"><?= __( 'Convar' ) ?></th>
         <th scope="col"><?= __( 'Row' ) ?></th>
         <th scope="col"><?= __( 'Offset' ) ?></th>
@@ -17,6 +18,7 @@
         <tr class="<?= $tree->date_eliminated ? 'tr-tree-eliminated' : '' ?>">
             <td class="id"><?= h( $tree->id ) ?></td>
             <td><?= h( $tree->publicid ) ?></td>
+            <td><?= h( $tree->name ) ?></td>
             <td><?= h( $tree->convar ) ?></td>
             <td><?= h( $tree->row_code ) ?></td>
             <td><?= h( $tree->offset ) ?></td>

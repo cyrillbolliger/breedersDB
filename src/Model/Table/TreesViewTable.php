@@ -58,6 +58,7 @@ class TreesViewTable extends Table {
         $columns = [
             'id' => __('Id'),
             'publicid' => __('Publicid'),
+            'name' => __('Name'),
             'convar' => __('Convar'),
             'date_grafted' => __('Date Grafted'),
             'date_planted' => __('Date Planted'),

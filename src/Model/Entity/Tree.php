@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $publicid
+ * @property string $name
  * @property \Cake\I18n\FrozenTime $date_grafted
  * @property \Cake\I18n\FrozenTime $date_planted
  * @property \Cake\I18n\FrozenTime $date_eliminated

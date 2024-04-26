@@ -12,6 +12,7 @@
 			'class'    => 'select2convar select2convar_add',
 		] );
 		echo $this->Form->control( 'publicid' );
+		echo $this->Form->control( 'name' );
 		echo $this->Form->control( 'date_grafted', [
 			'empty' => true,
 			'type'  => 'text',

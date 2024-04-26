@@ -14,6 +14,10 @@
             <td><?= $this->Number->format( $tree->id ) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __( 'Name' ) ?></th>
+            <td><?= h( $tree->name ) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __( 'Variety' ) ?></th>
             <td><?= $tree->has( 'variety' ) ? $this->Html->link( $tree->convar,
 					[ 'controller' => 'Varieties', 'action' => 'view', $tree->variety->id ] ) : '' ?></td>

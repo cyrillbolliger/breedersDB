@@ -111,6 +111,14 @@ class TreesTable extends Table
             ]);
 
         $validator
+            ->allowEmptyString('name')
+            ->add( 'name', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table',
+                'message' => __('This name has already been used.'),
+            ] );
+
+        $validator
             ->date('date_grafted',['ymd'])
             ->allowEmptyDate('date_grafted');
 
@@ -278,19 +286,16 @@ class TreesTable extends Table
      */
     public function filter(string $term)
     {
-        // if not a public id
-        if (preg_match('/\.|[a-zA-z]|.{9,}/', $term)) {
-            // set publicid to false
-            $publicid = false;
-        } else {
-            // if publicid
+        $publicid = false;
+        if (preg_match('/^#?\d{8}$/', $term)) {
             $publicid = $this->fillPublicId($term);
         }
 
         $varieties = $this->Varieties->searchConvars($term)->toArray();
         $variety_ids = array_keys($varieties);
 
-        $where = array();
+        $where = ['Trees.name LIKE' => '%'.$term.'%'];
+
         if ($publicid) {
             $where[] = ['publicid' => $publicid];
         }
@@ -304,15 +309,9 @@ class TreesTable extends Table
             return null;
         }
 
-        if (2 === count($where)) {
-            $condition = ['OR' => [$where[0], $where[1]]];
-        } else {
-            $condition = $where[0];
-        }
-
         return $this->find()
             ->contain(['Rootstocks', 'Graftings', 'Rows', 'ExperimentSites'])
-            ->where($condition);
+            ->where(['OR' => $where]);
     }
 
     /**
