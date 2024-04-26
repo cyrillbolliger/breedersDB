@@ -117,7 +117,6 @@ class QueriesController extends REST1Controller
         }
 
         $queryBuilder = FilterQueryBuilder::create($this->request->getData('data'));
-        $queryBuilder->setUserExperimentSiteIds($this->getUserExperimentSiteIds());
         $queryBuilder->setLimit(0);
 
         try {
