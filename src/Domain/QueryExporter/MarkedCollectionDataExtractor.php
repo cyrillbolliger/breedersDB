@@ -18,11 +18,11 @@ class MarkedCollectionDataExtractor extends DataExtractor
     private const MARK_COLUMNS = [
         // 'marked_obj'  <-- this is added manually and only here for documentation
         //                   only used for varieties
-        'name',
-        'value',
-        'date',
-        'author',
-        'exceptional_mark',
+        'Marks.name',
+        'Marks.value',
+        'Marks.date',
+        'Marks.author',
+        'Marks.exceptional_mark',
     ];
 
     private bool $hasMarkColumns;
@@ -177,11 +177,12 @@ class MarkedCollectionDataExtractor extends DataExtractor
             $mark['marked_obj'] = $markedObj;
         }
 
-        foreach (self::MARK_COLUMNS as $column) {
+        foreach (self::MARK_COLUMNS as $prefixedColumn) {
+            $column = str_replace('Marks.', '', $prefixedColumn);
             if ('value' === $column) {
-                $mark[$column] = $this->getTypedMarkValue($marksView);
+                $mark[$prefixedColumn] = $this->getTypedMarkValue($marksView);
             } else {
-                $mark[$column] = $marksView->$column;
+                $mark[$prefixedColumn] = $marksView->$column;
             }
         }
 
@@ -298,8 +299,9 @@ class MarkedCollectionDataExtractor extends DataExtractor
             $marksTableName = $marksTable->getTranslatedName();
 
             foreach (self::MARK_COLUMNS as $key) {
+                $column = str_replace('Marks.', '', $key);
                 /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-                $headers[] = "$marksTableName > " . $marksTable->getTranslatedColumnName($key);
+                $headers[] = "$marksTableName > " . $marksTable->getTranslatedColumnName($column);
             }
         }
 
