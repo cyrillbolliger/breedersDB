@@ -3,6 +3,19 @@
     Author     : cyrillbolliger
 */
 
+:root {
+    --color-primary-1: hsl(var(--base-color) 97% 18%);
+    --color-primary-2: hsl(var(--base-color) 74% 26%);
+    --color-primary-3: hsl(var(--base-color) 74% 32%);
+    --color-primary-4: hsl(var(--base-color) 51% 39%);
+    --color-primary-5: hsl(var(--base-color) 32% 44%);
+    --color-primary-6: hsl(var(--base-color) 75% 36%);
+    --color-primary-7: hsl(var(--base-color) 100% 32%);
+    --color-primary-8: hsl(var(--base-color) 61% 76%);
+    --color-primary-9: hsl(var(--base-color) 58% 82%);
+    --color-primary-35: hsla(var(--base-color) 74% 32% / 50%);
+}
+
 /* ------ general ------ */
 .scroll-box {
     overflow: scroll;
@@ -40,11 +53,11 @@ ul.top-nav li a {
 }
 
 ul.top-nav li a:hover {
-    background: #308e97;
+    background: var(--color-primary-4);
 }
 
 ul.meta-nav li > a {
-    color: #B7E3EC;
+    color: var(--color-primary-9);
 }
 
 /* ------ layout ------- */
@@ -69,7 +82,7 @@ input[type="text"].datepicker {
 input[type="text"].brain-prefilled,
 select.brain-prefilled,
 select.brain-prefilled + span span.select2-selection {
-    background-color: #B7E3EC;
+    background-color: var(--color-primary-9);
 }
 
 .brain_prefilled_msg {
@@ -139,7 +152,7 @@ table .actions {
 }
 
 .sortable_handle:hover {
-    color: #1798A5;
+    color: var(--color-primary-6);
     cursor: ns-resize;
 }
 
@@ -156,7 +169,7 @@ table .actions {
 }
 
 .delete_button:hover {
-    color: #1798A5;
+    color: var(--color-primary-6);
     cursor: pointer;
 }
 
@@ -330,7 +343,7 @@ table .actions {
 }
 
 .mark_value_tooltip .inline-note .inline-note-title {
-    color: #1798A5;
+    color: var(--color-primary-6);
     font-weight: bold;
 }
 
@@ -354,7 +367,7 @@ table .actions {
 }
 
 .query_table_header_last {
-    border-bottom: 2px solid #1798A5;
+    border-bottom: 2px solid var(--color-primary-6);
     font-weight: normal;
 }
 
@@ -371,7 +384,7 @@ table .actions {
 .side-nav li a.nav-action-icon {
     padding: 0;
     display: none;
-    color: rgba(21, 132, 143, 0.5);
+    color: var(--color-primary-35);
 }
 
 .side-nav li a.nav-action-icon:focus,
@@ -385,12 +398,12 @@ table .actions {
 
 .side-nav li a.nav-title-link {
     padding: 0;
-    color: #1798A5;
+    color: var(--color-primary-6);
 }
 
 .side-nav li a.add-nav-item {
     font-style: italic;
-    color: rgba(21, 132, 143, 0.5);
+    color: var(--color-primary-35);
 }
 
 #actions-sidebar {
@@ -400,7 +413,7 @@ table .actions {
 #action-sidebar-toggle-button {
     height: 2em;
     width: 2em;
-    color: #1798A5;
+    color: var(--color-primary-2);
     position: absolute;
     right: -2em;
     background: #fafafa;
@@ -411,7 +424,7 @@ table .actions {
 
 #action-sidebar-toggle-button:hover {
     background: rgba(0, 0, 0, 0.05);
-    color: rgb(21, 119, 130);
+    color: var(--color-primary-4);
 }
 
 /* -------- Queries -------- */

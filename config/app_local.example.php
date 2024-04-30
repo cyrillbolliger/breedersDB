@@ -113,5 +113,6 @@ return [
     'Org' => [
         // Organisation short name. Use uppercase letters only (no numbers)
         'abbreviation' => env('ORG_ABBREV', 'POC'),
+        'color' => env('ORG_COLOR', '185'), // HSL hue
     ],
 ];

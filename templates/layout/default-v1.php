@@ -29,6 +29,8 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
+    <style>:root{--base-color:<?= \Cake\Core\Configure::read('Org.color') ?>}</style>
+
 	<?= $this->Html->css( 'base.css' ) ?>
 	<?= $this->Html->css( 'cake.css' ) ?>
 	<?= $this->Html->css( 'jquery-ui.min.css' ) ?>

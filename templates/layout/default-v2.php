@@ -27,6 +27,20 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
+    <style>:root{
+            --base-color:<?= \Cake\Core\Configure::read('Org.color') ?>;
+            --color-primary-1: hsl(var(--base-color) 97% 18%);
+            --color-primary-2: hsl(var(--base-color) 74% 26%);
+            --color-primary-3: hsl(var(--base-color) 74% 32%);
+            --color-primary-4: hsl(var(--base-color) 51% 39%);
+            --color-primary-5: hsl(var(--base-color) 32% 44%);
+            --color-primary-6: hsl(var(--base-color) 75% 36%);
+            --color-primary-7: hsl(var(--base-color) 100% 32%);
+            --color-primary-8: hsl(var(--base-color) 61% 76%);
+            --color-primary-9: hsl(var(--base-color) 58% 82%);
+            --color-primary-35: hsla(var(--base-color) 74% 32% / 50%);
+}</style>
+
     <?= $css ? $this->Html->css( $css ) : '' ?>
     <?= $js ? $this->Html->script( $js, ['defer' => true] ) : '' ?>
 

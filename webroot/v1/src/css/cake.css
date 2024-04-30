@@ -4,19 +4,19 @@ a.disabled {
 }
 
 a:hover {
-    color: #15848F;
+    color: var(--color-primary-3);
 }
 
 a {
-    color: #1798A5;
+    color: var(--color-primary-6);
 }
 
 .side-nav li a:not(.button) {
-    color: #15848F;
+    color: var(--color-primary-3);
 }
 
 .side-nav li a:not(.button):hover {
-    color: #15848F;
+    color: var(--color-primary-3);
 }
 
 header {
@@ -34,7 +34,7 @@ header .header-title {
 }
 
 legend {
-    color:#15848F;
+    color:var(--color-primary-3);
 }
 
 .row {
@@ -43,13 +43,13 @@ legend {
 
 .actions.columns {
     margin-top:1rem;
-    border-left: 5px solid #15848F;
+    border-left: 5px solid var(--color-primary-3);
     padding-left: 15px;
     padding: 32px 20px;
 }
 
 .actions.columns h3 {
-    color:#15848F;
+    color:var(--color-primary-3);
 }
 
 .related table {
@@ -78,7 +78,7 @@ legend {
     display: inline-block;
     padding: 0.25rem 0.5rem 0.375rem;
     font-size: 0.8rem;
-    background-color: #0097a7;
+    background-color: var(--color-primary-7);
     color: #FFF;
     border-radius: 1000px;
 }
@@ -174,7 +174,7 @@ input[type=radio] {
 }
 
 .view .numbers {
-    background-color: #B7E3EC;
+    background-color: var(--color-primary-9);
     color: #FFF;
     border-radius: 3px;
     box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.24);
@@ -292,7 +292,7 @@ pre {
 .checks {
     padding:30px;
     color: #626262;
-    background-color: #B7E3EC;
+    background-color: var(--color-primary-9);
     border-radius: 3px;
     box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.24);
     margin-bottom: 2em;
@@ -350,20 +350,20 @@ pre {
 }
 
 .top-bar.expanded .title-area {
-    background: #01545b;
+    background: var(--color-primary-1);
 }
 
 .top-bar.expanded, .top-bar,.top-bar-section ul li,.top-bar-section li:not(.has-form) a:not(.button) {
-    background: #116d76;
+    background: var(--color-primary-2);
 }
 
 .top-bar-section li:not(.has-form) a:not(.button):hover {
-    background-color: #308e97;
-    background: #308e97;
+    background-color: var(--color-primary-4);
+    background: var(--color-primary-4);
 }
 
 .side-nav li.heading {
-    color: #1798A5;
+    color: var(--color-primary-6);
     font-size: 0.875rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -398,15 +398,15 @@ table tr {
 }
 
 table thead tr {
-    border-bottom: 1px solid #1798A5;
+    border-bottom: 1px solid var(--color-primary-6);
 }
 
 table tr th {
     padding: 0.5625rem 0.625rem;
     font-size: 0.875rem;
-    color: #1798A5;
+    color: var(--color-primary-6);
     text-align: left;
-    border-bottom: 2px solid #1798A5;
+    border-bottom: 2px solid var(--color-primary-6);
 }
 
 table tr:nth-of-type(even) {
@@ -420,7 +420,7 @@ fieldset {
 }
 
 fieldset legend {
-    border-bottom: 2px solid #1798A5;
+    border-bottom: 2px solid var(--color-primary-6);
     width: 100%;
     line-height: 2rem;
 }
@@ -447,7 +447,7 @@ div.message {
     font-weight: normal;
     padding: 0 1.5rem 0 1.5rem;
     transition: height 300ms ease-out 0s;
-    background-color: #a0d3e8;
+    background-color: var(--color-primary-8);
     color: #626262;
     top: 15px;
     right: 15px;
@@ -472,7 +472,7 @@ div.message:before {
     background-color: #FFF;
     padding: 12px 14px 12px 10px;
     content: "i";
-    color: #a0d3e8;
+    color: var(--color-primary-8);
 }
 
 div.message.error {
@@ -493,7 +493,7 @@ div.message.hidden {
 .vertical-table th {
     padding: 0.5625rem 0.625rem;
     font-size: 0.875rem;
-    color: #1798A5;
+    color: var(--color-primary-6);
     border: none;
     text-align: left;
 }
@@ -543,7 +543,7 @@ div.message.hidden {
 }
 
 .content .related h4 {
-    color: #4d8f97;
+    color: var(--color-primary-5);
     padding-bottom: 0.5rem;
     margin-top: 20px;
     margin-bottom: 10px;
