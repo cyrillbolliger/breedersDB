@@ -437,5 +437,6 @@ return [
 
     'Org' => [
         'abbreviation' => env('ORG_ABBREV', 'POC'),
+        'color' => env('ORG_COLOR', '185'), // HSL hue
     ],
 ];
