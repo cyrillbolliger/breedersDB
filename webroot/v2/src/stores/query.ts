@@ -158,6 +158,7 @@ export const useQueryStore = defineStore('query', {
       if (baseTable === BaseTable.Trees) {
         return [
           'TreesView.publicid',
+          'TreesView.name',
           'TreesView.convar',
           'TreesView.date_planted',
           'TreesView.date_eliminated',

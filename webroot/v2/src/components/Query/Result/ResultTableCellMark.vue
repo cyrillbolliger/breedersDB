@@ -60,7 +60,7 @@
             size="lg"
           />
           <div>
-            <strong>{{ mark.entity.publicid }}</strong><br>
+            <strong>{{ mark.entity.name ?? mark.entity.publicid }}</strong><br>
             {{ mark.entity.convar }}
           </div>
         </div>

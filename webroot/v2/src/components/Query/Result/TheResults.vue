@@ -105,7 +105,7 @@ async function loadResults(pagination?: { offset: number, sortBy: string | null,
     baseFilter: baseFilter.value,
     markFilter: marksAvailable.value ? markFilter.value : null,
     onlyRowsWithMarks: rowsWithMarksOnly.value,
-    columns: visibleColumns.value,
+    columns: columnsToRequest.value,
   }
 
   result.value = null;
