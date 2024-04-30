@@ -54,7 +54,12 @@ const markFilter = computed(() => queryStore.getMarkFilter);
 const marksAvailable = computed<boolean>(() => queryStore.marksAvailable);
 const showRowsWithoutMarks = computed<boolean>(() => queryStore.showRowsWithoutMarks);
 const rowsWithMarksOnly = computed(() => queryStore.rowsWithMarksOnly);
-const visibleColumns = computed(() => queryStore.getVisibleColumns)
+const visibleColumns = computed(() => queryStore.getVisibleColumns);
+const markTooltipColumns = computed(() => queryStore.getMarkTooltipColumns);
+
+const columnsToRequest = computed(() => {
+  return [...new Set([...visibleColumns.value, ...markTooltipColumns.value])];
+});
 
 const isValid = computed(() => {
   return marksAvailable.value
@@ -100,7 +105,7 @@ async function loadResults(pagination?: { offset: number, sortBy: string | null,
     baseFilter: baseFilter.value,
     markFilter: marksAvailable.value ? markFilter.value : null,
     onlyRowsWithMarks: rowsWithMarksOnly.value,
-    columns: visibleColumns.value,
+    columns: columnsToRequest.value,
   }
 
   result.value = null;

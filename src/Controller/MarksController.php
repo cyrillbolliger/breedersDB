@@ -297,7 +297,8 @@ class MarksController extends AppController {
 	public function delete( $id = null ) {
 		$this->request->allowMethod( [ 'post', 'delete' ] );
 		$mark = $this->Marks->get( $id );
-		if ( $this->Marks->delete( $mark ) ) {
+
+		if ( $this->Marks->MarkValues->deleteAll( [ 'mark_id' => $mark->id ] ) >= 0 && $this->Marks->delete( $mark ) ) {
 			$this->Flash->success( __( 'The mark has been deleted.' ) );
 		} else {
 			$this->Flash->error( __( 'The mark could not be deleted. Please, try again.' ) );

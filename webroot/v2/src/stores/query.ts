@@ -123,6 +123,54 @@ export const useQueryStore = defineStore('query', {
         .find((col: string): boolean => col.startsWith('Mark.')) !== undefined;
     },
 
+    getMarkTooltipColumns(state) {
+      if ( ! this.hasVisibleMarkColumns) {
+        return [];
+      }
+
+      const baseTable = (state as QueryState).baseTable;
+
+      if (baseTable === BaseTable.Batches) {
+        return [
+          'BatchesView.crossing_batch',
+          'BatchesView.date_sowed',
+          'BatchesView.numb_seeds_sowed',
+          'BatchesView.numb_sprouts_grown',
+          'BatchesView.seed_tray',
+          'BatchesView.date_planted',
+          'BatchesView.numb_sprouts_planted',
+          'BatchesView.patch',
+          'BatchesView.note',
+        ];
+      }
+
+      if (baseTable === BaseTable.Varieties) {
+        return [
+          'VarietiesView.convar',
+          'VarietiesView.official_name',
+          'VarietiesView.acronym',
+          'VarietiesView.plant_breeder',
+          'VarietiesView.registration',
+          'VarietiesView.description',
+        ];
+      }
+
+      if (baseTable === BaseTable.Trees) {
+        return [
+          'TreesView.publicid',
+          'TreesView.convar',
+          'TreesView.date_planted',
+          'TreesView.date_eliminated',
+          'TreesView.experiment_site',
+          'TreesView.row',
+          'TreesView.offset',
+          'TreesView.note',
+        ];
+      }
+
+      return [];
+    },
+
     rowsWithMarksOnly(state) {
       if ( ! this.marksAvailable || ! this.hasVisibleMarkColumns) {
         return false;
