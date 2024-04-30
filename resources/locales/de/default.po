@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2024-04-22 12:01+0000\n"
-"PO-Revision-Date: 2024-04-22 12:02\n"
+"POT-Creation-Date: 2024-04-26 15:51+0000\n"
+"PO-Revision-Date: 2024-04-26 15:52\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -48,7 +48,7 @@ msgstr "Das Los konnte nicht gelöscht werden. Bitte versuche es erneut."
 #: ./src/Controller/CrossingsController.php:180
 #: ./src/Controller/MarkFormPropertiesController.php:173
 #: ./src/Controller/MarkFormsController.php:240
-#: ./src/Controller/MarksController.php:343
+#: ./src/Controller/MarksController.php:344
 #: ./src/Controller/MarksViewController.php:25
 #: ./src/Controller/MotherTreesController.php:153
 #: ./src/Controller/RowsController.php:134
@@ -273,11 +273,11 @@ msgstr "Bitte wähle eine Sorte aus."
 msgid "Please select a batch."
 msgstr "Bitte wähle ein Los aus."
 
-#: ./src/Controller/MarksController.php:301
+#: ./src/Controller/MarksController.php:302
 msgid "The mark has been deleted."
 msgstr "Die Bewertung wurde gelöscht."
 
-#: ./src/Controller/MarksController.php:303
+#: ./src/Controller/MarksController.php:304
 msgid "The mark could not be deleted. Please, try again."
 msgstr "Die Bewertung konnte nicht gelöscht werden. Bitte versuche es erneut."
 
@@ -485,7 +485,7 @@ msgstr "Die Sorte wurde gelöscht."
 msgid "The variety could not be deleted. Please, try again."
 msgstr "Die Sorte konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:293
+#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:294
 #: ./templates/element/Mark/list.php:8
 #: ./templates/element/MarkView/tooltip.php:37
 #: ./templates/element/MarkView/tooltip.php:83
@@ -1084,7 +1084,7 @@ msgstr "Convar"
 #: ./src/Model/Table/ScionsBundlesTable.php:64
 #: ./src/Model/Table/TreesTable.php:91
 #: ./src/Model/Table/UsersTable.php:52
-#: ./src/Model/Table/VarietiesTable.php:74
+#: ./src/Model/Table/VarietiesTable.php:75
 msgid "This field is required"
 msgstr "Dieses Feld ist erforderlich"
 
@@ -1610,7 +1610,7 @@ msgstr "Veredelung"
 msgid "Rootstock"
 msgstr "Unterlage"
 
-#: ./src/Model/Table/VarietiesTable.php:109
+#: ./src/Model/Table/VarietiesTable.php:110
 msgid "A variety with this code and the same batch already exists."
 msgstr "Eine Sorte mit diesem und dem gleichen Los ist bereits vorhanden."
 
