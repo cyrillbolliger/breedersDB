@@ -54,7 +54,12 @@ const markFilter = computed(() => queryStore.getMarkFilter);
 const marksAvailable = computed<boolean>(() => queryStore.marksAvailable);
 const showRowsWithoutMarks = computed<boolean>(() => queryStore.showRowsWithoutMarks);
 const rowsWithMarksOnly = computed(() => queryStore.rowsWithMarksOnly);
-const visibleColumns = computed(() => queryStore.getVisibleColumns)
+const visibleColumns = computed(() => queryStore.getVisibleColumns);
+const markTooltipColumns = computed(() => queryStore.getMarkTooltipColumns);
+
+const columnsToRequest = computed(() => {
+  return [...new Set([...visibleColumns.value, ...markTooltipColumns.value])];
+});
 
 const isValid = computed(() => {
   return marksAvailable.value
