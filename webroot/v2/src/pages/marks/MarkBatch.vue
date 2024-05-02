@@ -6,6 +6,8 @@
     form-select-url="/marks/batch/select-form"
     mark-obj-select-url="/marks/batch/select-batch"
     meta-set-url="/marks/batch/set-meta"
+    @saved="refreshKey++"
+    :key="refreshKey"
   >
     <template #obj-preview>
       <BatchCard
@@ -17,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed} from 'vue'
+import {computed, ref} from 'vue'
 import {useI18n} from 'vue-i18n';
 import {useMarkStore} from 'stores/mark';
 import MarkObj from 'components/Mark/MarkObj.vue';
@@ -27,4 +29,5 @@ const {t} = useI18n() // eslint-disable-line @typescript-eslint/unbound-method
 const store = useMarkStore()
 
 const batch = computed(() => store.batch)
+const refreshKey = ref(0)
 </script>

@@ -17,7 +17,10 @@ export default {
       author: 'Author',
       authorHint: 'The name of the person who does the rating.',
       date: 'Date',
-      dateHint: 'The date of the rating.'
+      dateHint: 'The date of the rating.',
+      hasTarget: 'Mark the same object multiple times (statistical rating).',
+      markTotalTarget: 'Marks per object',
+      markTotalTargetHint: 'The number of times you aim to mark the same object.',
     },
 
     selectTree: {
@@ -65,6 +68,13 @@ export default {
       selectForm: 'Select form',
       saved: 'Marks saved.',
       setMeta: 'Add meta data',
+    },
+
+    markCounter: {
+      tree: 'During the last 24h, you\'ve added {count} marks with this form to this tree (target {total}).',
+      variety: 'During the last 24h, you\'ve added {count} marks with this form to this variety (target {total}).',
+      batch: 'During the last 24h, you\'ve added {count} marks with this form to this batch (target {total}).',
+      reset: 'Reset counter',
     },
   },
 
