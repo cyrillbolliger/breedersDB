@@ -1,22 +1,19 @@
 <template>
   <mark-input-item
-    v-if="fType === FieldTypes.Rating"
     :title="name"
     :note="note"
+    :value="fType === FieldTypes.Rating ? value : null"
   >
     <rating-input
+      v-if="fType === FieldTypes.Rating"
       v-model="value"
       :steps="steps"
+      :withZero="numberConstraints?.min === 0"
     />
-  </mark-input-item>
 
-  <mark-input-item
-    v-if="fType === FieldTypes.Integer"
-    :title="name"
-    :note="note"
-  >
     <!--suppress RequiredAttributes -->
     <q-input
+      v-if="fType === FieldTypes.Integer"
       outlined
       v-model="value"
       :label="name"
@@ -26,15 +23,10 @@
       :step="numberConstraints.step"
       :rules="[val => validNumber(val, numberConstraints)]"
     />
-  </mark-input-item>
 
-  <mark-input-item
-    v-if="fType === FieldTypes.Float"
-    :title="name"
-    :note="note"
-  >
     <!--suppress RequiredAttributes -->
     <q-input
+      v-if="fType === FieldTypes.Float"
       outlined
       v-model="value"
       :label="name"
@@ -44,44 +36,29 @@
       :step="numberConstraints.step"
       :rules="[val => validNumber(val, numberConstraints)]"
     />
-  </mark-input-item>
 
-  <mark-input-item
-    v-if="fType === FieldTypes.Boolean"
-    :title="name"
-    :note="note"
-  >
     <!--suppress RequiredAttributes -->
     <q-toggle
+      v-if="fType === FieldTypes.Boolean"
       v-model="value"
       checked-icon="check"
       :label="name"
       unchecked-icon="clear"
       toggle-indeterminate
     />
-  </mark-input-item>
 
-  <mark-input-item
-    v-if="fType === FieldTypes.Date"
-    :title="name"
-    :note="note"
-  >
     <!--suppress RequiredAttributes -->
     <q-input
+      v-if="fType === FieldTypes.Date"
       outlined
       v-model="value"
       :label="name"
       type="date"
     />
-  </mark-input-item>
 
-  <mark-input-item
-    v-if="fType === FieldTypes.String"
-    :title="name"
-    :note="note"
-  >
     <!--suppress RequiredAttributes -->
     <q-input
+      v-if="fType === FieldTypes.String"
       outlined
       v-model="value"
       :label="name"
@@ -89,35 +66,33 @@
       autogrow
       hide-bottom-space
     />
-  </mark-input-item>
 
-  <mark-input-item
-    v-if="fType === FieldTypes.Photo"
-    :title="name"
-    :note="note"
-  >
-    <!--suppress RequiredAttributes -->
-    <q-file
-      outlined
-      v-model="value"
-      :label="name"
-      :multiple="false"
-      accept="image/*"
-      capture="environment"
-      clearable
-      v-if="progress === 0"
+    <template
+      v-if="fType === FieldTypes.Photo"
     >
-      <template v-slot:before>
-        <q-icon name="photo_camera" />
-      </template>
-    </q-file>
+      <!--suppress RequiredAttributes -->
+      <q-file
+        outlined
+        v-model="value"
+        :label="name"
+        :multiple="false"
+        accept="image/*"
+        capture="environment"
+        clearable
+        v-if="progress === 0"
+      >
+        <template v-slot:before>
+          <q-icon name="photo_camera" />
+        </template>
+      </q-file>
 
-    <q-linear-progress
-      rounded
-      size="20px"
-      :value="progress"
-      v-else
-    />
+      <q-linear-progress
+        rounded
+        size="20px"
+        :value="progress"
+        v-else
+      />
+    </template>
   </mark-input-item>
 </template>
 
@@ -208,7 +183,7 @@ export default defineComponent({
         return false
       }
 
-      if (props.numberConstraints.min !== 1) {
+      if (props.numberConstraints.min !== 0 && props.numberConstraints.min !== 1) {
         return false
       }
 
