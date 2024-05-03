@@ -10,7 +10,7 @@ $photoMarks = array_filter($allMarks, function ($m) {
 $imgs = array_map(function ($m) {
     $url = $this->Url->build(['prefix' => 'REST1', 'controller' => 'Photos', 'action' => 'view', $m->value]);
     $fileExt = pathinfo($url, PATHINFO_EXTENSION);
-    $entityName = $m->mark->tree?->publicid ?? $m->mark->variety?->convar ?? $m->mark->batch?->code;
+    $entityName = $m->mark->tree?->name ?? $m->mark->tree?->publicid ?? $m->mark->variety?->convar ?? $m->mark->batch?->code;
     return [
         'url' => $url,
         'title' => $entityName . ', ' . $m->mark_form_property->name . ', ' . $m->mark->date . ', ' . $m->mark->author,
