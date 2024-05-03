@@ -16,7 +16,10 @@ export default {
       author: 'Autor',
       authorHint: 'Der Name der Person, die bewertet.',
       date: 'Datum',
-      dateHint: 'Das Datum der Bewertung.'
+      dateHint: 'Das Datum der Bewertung.',
+      hasTarget: 'Das gleiche Objekt mehrfach bewerten (statistische Bewertung).',
+      markTotalTarget: 'Bewertungen pro Objekt',
+      markTotalTargetHint: 'Wie viele Bewertungen willst du pro Objekt hinzufügen?'
     },
     selectTree: {
       title: 'Baum auswählen',
@@ -57,6 +60,12 @@ export default {
       selectForm: 'Formular auswählen',
       saved: 'Bewertungen gespeichert.',
       setMeta: 'Meta-Daten hinzufügen'
+    },
+    markCounter: {
+      tree: 'Während der letzten 24 Stunden hast du diesen Baum {count} Mal mit diesem Formular bewertet (Ziel {total}).',
+      variety: 'Während der letzten 24 Stunden hast du diese Sorte {count} Mal mit diesem Formular bewertet (Ziel {total}).',
+      batch: 'Während der letzten 24 Stunden hast du dieses Los {count} Mal mit diesem Formular bewertet (Ziel {total}).',
+      reset: 'Zähler zurücksetzen'
     }
   },
   trees: {

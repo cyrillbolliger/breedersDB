@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2024-04-22 12:01+0000\n"
-"PO-Revision-Date: 2024-04-22 12:02\n"
+"POT-Creation-Date: 2024-05-02 17:48+0000\n"
+"PO-Revision-Date: 2024-05-03 07:21\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -48,7 +48,7 @@ msgstr "Das Los konnte nicht gelöscht werden. Bitte versuche es erneut."
 #: ./src/Controller/CrossingsController.php:180
 #: ./src/Controller/MarkFormPropertiesController.php:173
 #: ./src/Controller/MarkFormsController.php:240
-#: ./src/Controller/MarksController.php:343
+#: ./src/Controller/MarksController.php:344
 #: ./src/Controller/MarksViewController.php:25
 #: ./src/Controller/MotherTreesController.php:153
 #: ./src/Controller/RowsController.php:134
@@ -273,11 +273,11 @@ msgstr "Bitte wähle eine Sorte aus."
 msgid "Please select a batch."
 msgstr "Bitte wähle ein Los aus."
 
-#: ./src/Controller/MarksController.php:301
+#: ./src/Controller/MarksController.php:302
 msgid "The mark has been deleted."
 msgstr "Die Bewertung wurde gelöscht."
 
-#: ./src/Controller/MarksController.php:303
+#: ./src/Controller/MarksController.php:304
 msgid "The mark could not be deleted. Please, try again."
 msgstr "Die Bewertung konnte nicht gelöscht werden. Bitte versuche es erneut."
 
@@ -485,7 +485,7 @@ msgstr "Die Sorte wurde gelöscht."
 msgid "The variety could not be deleted. Please, try again."
 msgstr "Die Sorte konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:293
+#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:294
 #: ./templates/element/Mark/list.php:8
 #: ./templates/element/MarkView/tooltip.php:37
 #: ./templates/element/MarkView/tooltip.php:83
@@ -1084,7 +1084,7 @@ msgstr "Convar"
 #: ./src/Model/Table/ScionsBundlesTable.php:64
 #: ./src/Model/Table/TreesTable.php:91
 #: ./src/Model/Table/UsersTable.php:52
-#: ./src/Model/Table/VarietiesTable.php:74
+#: ./src/Model/Table/VarietiesTable.php:75
 msgid "This field is required"
 msgstr "Dieses Feld ist erforderlich"
 
@@ -1610,7 +1610,7 @@ msgstr "Veredelung"
 msgid "Rootstock"
 msgstr "Unterlage"
 
-#: ./src/Model/Table/VarietiesTable.php:109
+#: ./src/Model/Table/VarietiesTable.php:110
 msgid "A variety with this code and the same batch already exists."
 msgstr "Eine Sorte mit diesem und dem gleichen Los ist bereits vorhanden."
 
@@ -2403,7 +2403,7 @@ msgid "Save"
 msgstr "Speichern"
 
 #: ./templates/Settings/index.php:6
-#: ./templates/layout/default-v1.php:87
+#: ./templates/layout/default-v1.php:89
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -2843,83 +2843,83 @@ msgstr "Ettikette drucken?"
 msgid "Don't print"
 msgstr "Nicht drucken"
 
-#: ./templates/layout/default-v1.php:53
+#: ./templates/layout/default-v1.php:55
 msgid "Searching..."
 msgstr "Suche..."
 
-#: ./templates/layout/default-v1.php:54
+#: ./templates/layout/default-v1.php:56
 msgid "Loading..."
 msgstr "Suche..."
 
-#: ./templates/layout/default-v1.php:56
+#: ./templates/layout/default-v1.php:58
 msgid "Nothing found. Create new covar of:"
 msgstr "Nichts gefunden. Erzeuge neues Convar aus:"
 
-#: ./templates/layout/default-v1.php:58
+#: ./templates/layout/default-v1.php:60
 msgid "NEW"
 msgstr "NEU"
 
-#: ./templates/layout/default-v1.php:59
+#: ./templates/layout/default-v1.php:61
 msgid "Automatically prefilled"
 msgstr "Automatisch eingefüllt"
 
-#: ./templates/layout/default-v1.php:62
+#: ./templates/layout/default-v1.php:64
 msgid "{0} matching elements for this mark were found."
 msgstr "{0} passende Elemente für für diese Bewertung gefunden."
 
-#: ./templates/layout/default-v1.php:63
+#: ./templates/layout/default-v1.php:65
 msgid "No tree could be found"
 msgstr "Kein Baum gefunden"
 
-#: ./templates/layout/default-v1.php:66
+#: ./templates/layout/default-v1.php:68
 msgid "Please wait, while your report is generated. This may take up to few minutes."
 msgstr "Der Bericht wird generiert. Dies kann einige Minuten dauern."
 
-#: ./templates/layout/default-v1.php:67
+#: ./templates/layout/default-v1.php:69
 msgid "Sorry, your report couldn't be generated. Please try again."
 msgstr "Der Bericht konnte nicht generiert werden. Bitte versuche es erneut."
 
-#: ./templates/layout/default-v1.php:68
+#: ./templates/layout/default-v1.php:70
 msgid "There were invalid rules in the query builder we could not restore. Please rebuild the ruleset."
 msgstr "Es gab ungültige Regeln im Abfrage-Generator, die nicht wiederhergestellt werden konnten. Erstellen den Regelsatz neu."
 
-#: ./templates/layout/default-v1.php:69
+#: ./templates/layout/default-v1.php:71
 msgid "If marks are your main table, you must select some marks to display."
 msgstr "Wenn Bewertungen als Haupttabelle ausgewählt ist, musst du auch Bewertungen auswählen, die angezeigt werden sollen."
 
-#: ./templates/layout/default-v1.php:70
+#: ./templates/layout/default-v1.php:72
 msgid "There are multiple forms on this page. Submitting by scanner does not work!"
 msgstr "Es gibt mehrere Formulare auf dieser Seite. Es kann darum nicht mit dem Scanner abgeschickt werden!"
 
-#: ./templates/layout/default-v1.php:84
+#: ./templates/layout/default-v1.php:86
 msgid "Location: {0}"
 msgstr "Standort: {0}"
 
-#: ./templates/layout/default-v1.php:88
+#: ./templates/layout/default-v1.php:90
 msgid "Logout"
 msgstr "Abmelden"
 
-#: ./templates/layout/default-v1.php:52
+#: ./templates/layout/default-v1.php:54
 msgctxt "Date format"
 msgid "dd.mm.yy"
 msgstr "dd.mm.yy"
 
-#: ./templates/layout/default-v1.php:55
+#: ./templates/layout/default-v1.php:57
 msgctxt "{0} is replaced by an entity name."
 msgid "There was an error loading {0}"
 msgstr "{0} konnte nicht geladen werden"
 
-#: ./templates/layout/default-v1.php:57
+#: ./templates/layout/default-v1.php:59
 msgctxt "The entitiy"
 msgid "mark"
 msgstr "Bewertung"
 
-#: ./templates/layout/default-v1.php:60
+#: ./templates/layout/default-v1.php:62
 msgctxt "after the : the name of the element to delete is inserted"
 msgid "Are you sure you want to delete:"
 msgstr "Folgendes Element wirklich löschen:"
 
-#: ./templates/layout/default-v1.php:64
+#: ./templates/layout/default-v1.php:66
 msgctxt "Query builder. {0} is replaced by the table name."
 msgid "{0} will be deselected, since they aren't connected to the other selected entities."
 msgstr "{0} wird abgewählt, weil es nicht mit den anderen ausgewählten Tabellen verbunden ist."
