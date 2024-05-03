@@ -2,10 +2,18 @@
   <q-item>
     <q-item-section>
 
-      <q-item-label
-        v-if="title"
-        class="text-subtitle1 q-pb-sm"
-      >{{title}}</q-item-label>
+      <div class="row justify-between items-start">
+        <q-item-label
+          v-if="title"
+          class="text-subtitle1 q-pb-sm"
+        >{{title}}</q-item-label>
+        <q-badge
+          v-if="value || value === 0"
+          color="black"
+          :label="value"
+          class="text-weight-bold mark-input-item__badge"
+        />
+      </div>
 
       <slot></slot>
 
@@ -28,6 +36,9 @@ export default defineComponent({
     },
     note: {
       type: String,
+    },
+    value: {
+      default: undefined,
     }
   },
 })
@@ -37,5 +48,9 @@ export default defineComponent({
   .mark-input-item__label{
     hyphens: auto;
     overflow-wrap: break-word;
+  }
+  .mark-input-item__badge {
+    font-size: 0.9125rem;
+    line-height: 1em;
   }
 </style>

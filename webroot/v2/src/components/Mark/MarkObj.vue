@@ -12,6 +12,15 @@
 
   <slot name="obj-preview"/>
 
+  <div class="q-mb-md">
+    <mark-counter
+      v-if="markTotalTarget > 1"
+      :count="markCounter"
+      :total="markTotalTarget"
+      @reset="markCounter = 0"
+    />
+  </div>
+
   <q-list
     v-for="(property, idx) in properties"
     :key="idx"
@@ -75,6 +84,7 @@ import {Mark, MarkFormProperty, MarkValue, MarkValueValue} from 'src/models/form
 import {useRouter} from 'vue-router'
 import {useQuasar} from 'quasar';
 import MarkInput from 'components/Mark/Input.vue'
+import MarkCounter from 'components/Mark/MarkCounter.vue'
 import useApi from 'src/composables/api';
 import useUploader from 'src/composables/uploader';
 import MarkFormPropertyList from 'src/components/Mark/MarkFormPropertyList.vue';
@@ -82,6 +92,11 @@ import {useMarkStore} from 'stores/mark';
 import {Tree} from 'src/models/tree';
 import {Batch} from 'src/models/batch';
 import {Variety} from 'src/models/variety';
+import useMarkCounter from 'src/composables/marks/markCounter';
+
+const emit = defineEmits<{
+  (e: 'saved'): void,
+}>()
 
 const props = defineProps<{
   title: string,
@@ -111,6 +126,14 @@ const working = computed(() => api.working.value || uploading.value);
 const author = computed(() => store.author)
 const form = computed(() => store.selectedForm)
 const date = computed(() => new Date(store.date))
+const markTotalTarget = computed(() => store.markTotalTarget)
+
+const markCounter = useMarkCounter({
+  form_id: form.value?.id || -1,
+  tree_id: props.tree?.id,
+  variety_id: props.variety?.id,
+  batch_id: props.batch?.id
+})
 
 const addedProperties = ref([] as MarkFormProperty[])
 const properties = computed(() => {
@@ -224,8 +247,18 @@ function save() {
         $q.notify({
           message: t('marks.markObj.saved'),
           color: 'success',
+          badgeClass: 'hidden',
         });
-        void router.push(props.markObjSelectUrl)
+        if (markTotalTarget.value > 1) {
+          markCounter.value++;
+          if (markCounter.value < markTotalTarget.value) {
+            emit('saved');
+          } else {
+            void router.push(props.markObjSelectUrl)
+          }
+        } else {
+          void router.push(props.markObjSelectUrl)
+        }
       })
   });
 }

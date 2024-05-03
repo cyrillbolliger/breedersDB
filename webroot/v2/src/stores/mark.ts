@@ -13,6 +13,7 @@ export interface MarkState {
   tree: Tree | null
   variety: Variety | null
   batch: Batch | null
+  markTotalTarget: number
 }
 
 export const useMarkStore = defineStore('mark', {
@@ -23,6 +24,7 @@ export const useMarkStore = defineStore('mark', {
     tree: null,
     variety: null,
     batch: null,
+    markTotalTarget: 1,
   }),
 
 
