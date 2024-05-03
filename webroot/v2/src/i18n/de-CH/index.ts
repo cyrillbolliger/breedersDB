@@ -62,9 +62,9 @@ export default {
       setMeta: 'Meta-Daten hinzufügen'
     },
     markCounter: {
-      tree: 'Während der letzten 24 Stunden hast du diesen Baum {count} Mal mit diesem Formular bewerten (Ziel {total}).',
-      variety: 'Während der letzten 24 Stunden hast du diese Sorte {count} Mal mit diesem Formular bewerten (Ziel {total}).',
-      batch: 'Während der letzten 24 Stunden hast du dieses Los {count} Mal mit diesem Formular bewerten (Ziel {total}).',
+      tree: 'Während der letzten 24 Stunden hast du diesen Baum {count} Mal mit diesem Formular bewertet (Ziel {total}).',
+      variety: 'Während der letzten 24 Stunden hast du diese Sorte {count} Mal mit diesem Formular bewertet (Ziel {total}).',
+      batch: 'Während der letzten 24 Stunden hast du dieses Los {count} Mal mit diesem Formular bewertet (Ziel {total}).',
       reset: 'Zähler zurücksetzen'
     }
   },
