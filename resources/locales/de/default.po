@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2024-05-02 17:48+0000\n"
-"PO-Revision-Date: 2024-05-03 07:21\n"
+"POT-Creation-Date: 2024-05-03 12:25+0000\n"
+"PO-Revision-Date: 2024-05-03 12:46\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -2618,6 +2618,14 @@ msgstr "Neue Eigenschaft"
 #: ./templates/element/Mark/nav.php:21
 msgid "List Properties"
 msgstr "Eigenschaften auflisten"
+
+#: ./templates/element/Mark/photos.php:28
+msgid "Photos"
+msgstr "Fotos"
+
+#: ./templates/element/Mark/photos.php:46
+msgid "Download"
+msgstr "Herunterladen"
 
 #: ./templates/element/MarkForm/index_table.php:16
 #: ./templates/element/MarkFormProperty/index_table.php:20
