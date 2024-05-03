@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2024-04-26 15:51+0000\n"
-"PO-Revision-Date: 2024-04-26 15:52\n"
+"POT-Creation-Date: 2024-05-02 17:48+0000\n"
+"PO-Revision-Date: 2024-05-03 07:21\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -2403,7 +2403,7 @@ msgid "Save"
 msgstr "Speichern"
 
 #: ./templates/Settings/index.php:6
-#: ./templates/layout/default-v1.php:87
+#: ./templates/layout/default-v1.php:89
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -2843,83 +2843,83 @@ msgstr "Ettikette drucken?"
 msgid "Don't print"
 msgstr "Nicht drucken"
 
-#: ./templates/layout/default-v1.php:53
+#: ./templates/layout/default-v1.php:55
 msgid "Searching..."
 msgstr "Suche..."
 
-#: ./templates/layout/default-v1.php:54
+#: ./templates/layout/default-v1.php:56
 msgid "Loading..."
 msgstr "Suche..."
 
-#: ./templates/layout/default-v1.php:56
+#: ./templates/layout/default-v1.php:58
 msgid "Nothing found. Create new covar of:"
 msgstr "Nichts gefunden. Erzeuge neues Convar aus:"
 
-#: ./templates/layout/default-v1.php:58
+#: ./templates/layout/default-v1.php:60
 msgid "NEW"
 msgstr "NEU"
 
-#: ./templates/layout/default-v1.php:59
+#: ./templates/layout/default-v1.php:61
 msgid "Automatically prefilled"
 msgstr "Automatisch eingefüllt"
 
-#: ./templates/layout/default-v1.php:62
+#: ./templates/layout/default-v1.php:64
 msgid "{0} matching elements for this mark were found."
 msgstr "{0} passende Elemente für für diese Bewertung gefunden."
 
-#: ./templates/layout/default-v1.php:63
+#: ./templates/layout/default-v1.php:65
 msgid "No tree could be found"
 msgstr "Kein Baum gefunden"
 
-#: ./templates/layout/default-v1.php:66
+#: ./templates/layout/default-v1.php:68
 msgid "Please wait, while your report is generated. This may take up to few minutes."
 msgstr "Der Bericht wird generiert. Dies kann einige Minuten dauern."
 
-#: ./templates/layout/default-v1.php:67
+#: ./templates/layout/default-v1.php:69
 msgid "Sorry, your report couldn't be generated. Please try again."
 msgstr "Der Bericht konnte nicht generiert werden. Bitte versuche es erneut."
 
-#: ./templates/layout/default-v1.php:68
+#: ./templates/layout/default-v1.php:70
 msgid "There were invalid rules in the query builder we could not restore. Please rebuild the ruleset."
 msgstr "Es gab ungültige Regeln im Abfrage-Generator, die nicht wiederhergestellt werden konnten. Erstellen den Regelsatz neu."
 
-#: ./templates/layout/default-v1.php:69
+#: ./templates/layout/default-v1.php:71
 msgid "If marks are your main table, you must select some marks to display."
 msgstr "Wenn Bewertungen als Haupttabelle ausgewählt ist, musst du auch Bewertungen auswählen, die angezeigt werden sollen."
 
-#: ./templates/layout/default-v1.php:70
+#: ./templates/layout/default-v1.php:72
 msgid "There are multiple forms on this page. Submitting by scanner does not work!"
 msgstr "Es gibt mehrere Formulare auf dieser Seite. Es kann darum nicht mit dem Scanner abgeschickt werden!"
 
-#: ./templates/layout/default-v1.php:84
+#: ./templates/layout/default-v1.php:86
 msgid "Location: {0}"
 msgstr "Standort: {0}"
 
-#: ./templates/layout/default-v1.php:88
+#: ./templates/layout/default-v1.php:90
 msgid "Logout"
 msgstr "Abmelden"
 
-#: ./templates/layout/default-v1.php:52
+#: ./templates/layout/default-v1.php:54
 msgctxt "Date format"
 msgid "dd.mm.yy"
 msgstr "dd.mm.yy"
 
-#: ./templates/layout/default-v1.php:55
+#: ./templates/layout/default-v1.php:57
 msgctxt "{0} is replaced by an entity name."
 msgid "There was an error loading {0}"
 msgstr "{0} konnte nicht geladen werden"
 
-#: ./templates/layout/default-v1.php:57
+#: ./templates/layout/default-v1.php:59
 msgctxt "The entitiy"
 msgid "mark"
 msgstr "Bewertung"
 
-#: ./templates/layout/default-v1.php:60
+#: ./templates/layout/default-v1.php:62
 msgctxt "after the : the name of the element to delete is inserted"
 msgid "Are you sure you want to delete:"
 msgstr "Folgendes Element wirklich löschen:"
 
-#: ./templates/layout/default-v1.php:64
+#: ./templates/layout/default-v1.php:66
 msgctxt "Query builder. {0} is replaced by the table name."
 msgid "{0} will be deselected, since they aren't connected to the other selected entities."
 msgstr "{0} wird abgewählt, weil es nicht mit den anderen ausgewählten Tabellen verbunden ist."

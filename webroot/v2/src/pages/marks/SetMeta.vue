@@ -25,6 +25,26 @@
       type="date"
     />
 
+    <div>
+      <q-toggle
+        v-model="hasTarget"
+        :label="t('marks.setMeta.hasTarget')"
+        @click="markTotalTarget = 1"
+      />
+    </div>
+    <q-input
+      v-if="hasTarget"
+      v-model="markTotalTarget"
+      :hint="t('marks.setMeta.markTotalTargetHint')"
+      :label="t('marks.setMeta.markTotalTarget')"
+      :rules="[val => !!val || t('general.form.required')]"
+      outlined
+      type="number"
+      min="1"
+      max="1000"
+      step="1"
+    />
+
     <q-btn
       :label="t('general.next')"
       color="primary"
@@ -60,6 +80,11 @@ const date = computed<string>({
   get: () => store.date,
   set: (val: string) => store.date = val
 });
+const markTotalTarget = computed<number>({
+  get: () => store.markTotalTarget,
+  set: (val: number | string) => store.markTotalTarget = parseInt(val.toString())
+});
+const hasTarget = ref<boolean>(markTotalTarget.value > 1)
 
 
 function isValid() {

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-04-30 07:47+0000\n"
+"POT-Creation-Date: 2024-05-03 07:28+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2401,7 +2401,7 @@ msgid "Save"
 msgstr ""
 
 #: ./templates/Settings/index.php:6
-#: ./templates/layout/default-v1.php:87
+#: ./templates/layout/default-v1.php:89
 msgid "Settings"
 msgstr ""
 
@@ -2841,83 +2841,83 @@ msgstr ""
 msgid "Don't print"
 msgstr ""
 
-#: ./templates/layout/default-v1.php:53
+#: ./templates/layout/default-v1.php:55
 msgid "Searching..."
 msgstr ""
 
-#: ./templates/layout/default-v1.php:54
+#: ./templates/layout/default-v1.php:56
 msgid "Loading..."
 msgstr ""
 
-#: ./templates/layout/default-v1.php:56
+#: ./templates/layout/default-v1.php:58
 msgid "Nothing found. Create new covar of:"
 msgstr ""
 
-#: ./templates/layout/default-v1.php:58
+#: ./templates/layout/default-v1.php:60
 msgid "NEW"
 msgstr ""
 
-#: ./templates/layout/default-v1.php:59
+#: ./templates/layout/default-v1.php:61
 msgid "Automatically prefilled"
 msgstr ""
 
-#: ./templates/layout/default-v1.php:62
+#: ./templates/layout/default-v1.php:64
 msgid "{0} matching elements for this mark were found."
 msgstr ""
 
-#: ./templates/layout/default-v1.php:63
+#: ./templates/layout/default-v1.php:65
 msgid "No tree could be found"
 msgstr ""
 
-#: ./templates/layout/default-v1.php:66
+#: ./templates/layout/default-v1.php:68
 msgid "Please wait, while your report is generated. This may take up to few minutes."
 msgstr ""
 
-#: ./templates/layout/default-v1.php:67
+#: ./templates/layout/default-v1.php:69
 msgid "Sorry, your report couldn't be generated. Please try again."
 msgstr ""
 
-#: ./templates/layout/default-v1.php:68
+#: ./templates/layout/default-v1.php:70
 msgid "There were invalid rules in the query builder we could not restore. Please rebuild the ruleset."
 msgstr ""
 
-#: ./templates/layout/default-v1.php:69
+#: ./templates/layout/default-v1.php:71
 msgid "If marks are your main table, you must select some marks to display."
 msgstr ""
 
-#: ./templates/layout/default-v1.php:70
+#: ./templates/layout/default-v1.php:72
 msgid "There are multiple forms on this page. Submitting by scanner does not work!"
 msgstr ""
 
-#: ./templates/layout/default-v1.php:84
+#: ./templates/layout/default-v1.php:86
 msgid "Location: {0}"
 msgstr ""
 
-#: ./templates/layout/default-v1.php:88
+#: ./templates/layout/default-v1.php:90
 msgid "Logout"
 msgstr ""
 
-#: ./templates/layout/default-v1.php:52
+#: ./templates/layout/default-v1.php:54
 msgctxt "Date format"
 msgid "dd.mm.yy"
 msgstr ""
 
-#: ./templates/layout/default-v1.php:55
+#: ./templates/layout/default-v1.php:57
 msgctxt "{0} is replaced by an entity name."
 msgid "There was an error loading {0}"
 msgstr ""
 
-#: ./templates/layout/default-v1.php:57
+#: ./templates/layout/default-v1.php:59
 msgctxt "The entitiy"
 msgid "mark"
 msgstr ""
 
-#: ./templates/layout/default-v1.php:60
+#: ./templates/layout/default-v1.php:62
 msgctxt "after the : the name of the element to delete is inserted"
 msgid "Are you sure you want to delete:"
 msgstr ""
 
-#: ./templates/layout/default-v1.php:64
+#: ./templates/layout/default-v1.php:66
 msgctxt "Query builder. {0} is replaced by the table name."
 msgid "{0} will be deselected, since they aren't connected to the other selected entities."
 msgstr ""
