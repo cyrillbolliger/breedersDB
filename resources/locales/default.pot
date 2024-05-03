@@ -2951,3 +2951,10 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
+#: ./templates/element/Mark/photos.php:28
+msgid "Photos"
+msgstr ""
+
+#: ./templates/element/Mark/photos.php:46
+msgid "Download"
+msgstr ""

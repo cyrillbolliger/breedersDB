@@ -2830,5 +2830,11 @@ msgstr "Fehler"
 msgid "Back"
 msgstr "Zurück"
 
-#~ msgid "Mark Tree (Scanner)"
-#~ msgstr "Baum bewerten (Scanner)"
+#: ./templates/element/Mark/photos.php:28
+msgid "Photos"
+msgstr "Fotos"
+
+#: ./templates/element/Mark/photos.php:46
+msgid "Download"
+msgstr "Herunterladen"
+
