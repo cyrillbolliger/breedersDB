@@ -100,6 +100,8 @@
 
     <div class="related">
         <?php if ( ! empty( $marks ) ): ?>
+            <?= $this->element( 'Mark/photos', [ 'marks' => $marks ] ) ?>
+
             <?php foreach ( $marks as $mark_type => $mark_values ): ?>
                 <?php if ( $mark_values->count() ): ?>
                     <h4><?= h( $mark_type ) ?></h4>
