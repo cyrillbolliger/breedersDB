@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-05-03 07:28+0000\n"
+"POT-Creation-Date: 2024-05-03 12:46+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2615,6 +2615,14 @@ msgstr ""
 
 #: ./templates/element/Mark/nav.php:21
 msgid "List Properties"
+msgstr ""
+
+#: ./templates/element/Mark/photos.php:28
+msgid "Photos"
+msgstr ""
+
+#: ./templates/element/Mark/photos.php:46
+msgid "Download"
 msgstr ""
 
 #: ./templates/element/MarkForm/index_table.php:16
