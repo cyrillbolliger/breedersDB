@@ -117,9 +117,12 @@ sync() {
         --exclude='/tests' \
         --exclude='/.htaccess' \
         --exclude='/deploy.*' \
-        --exclude='/install.sh' \
+        --exclude='/*.sh' \
+        --exclude='/*.sql' \
         --exclude='/.docker' \
         --exclude='/.idea' \
+        --exclude='/.github' \
+        --exclude='**/.DS_Store' \
         --exclude='/webroot/v1/src' \
         --exclude='/webroot/v2/src' \
         . "${host}:${target}"
