@@ -39,8 +39,13 @@
 			'required' => 'required',
 		] );
 		$this->Form->unlockField( 'step' );
-		echo $this->Form->control( 'note' );
+		echo $this->Form->control( 'note', ['style' => 'margin-bottom: 0'] );
 		?>
+        <p style="color: #777777; font-size: 0.875rem;">
+            <?= __( "You can use the note field to define a legend for ratings (type integer with min >= 0, max <= 9, step = 1). To do so, separate the values with a semicolon." ) ?><br>
+            <?= __( "Eg.: 0 - 1%; 1 - 4%; 4 - 10%; 10 - 20%; 20 - 30%; 30 - 40%; 40 - 50%; 50 - 70%; > 70%" ) ?><br>
+            <?= __( "The number of legends must match the number of stars." ) ?>
+        </p>
         <fieldset>
             <legend><?= __( 'This property serves to mark:' ) ?></legend>
 			<?php

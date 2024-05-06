@@ -1,7 +1,7 @@
 <template>
   <mark-input-item
     :title="name"
-    :note="note"
+    :note="noteIsLegend ? undefined : note"
     :value="fType === FieldTypes.Rating ? value : null"
   >
     <rating-input
@@ -9,6 +9,7 @@
       v-model="value"
       :steps="steps"
       :withZero="numberConstraints?.min === 0"
+      :legend="noteIsLegend ? note : undefined"
     />
 
     <!--suppress RequiredAttributes -->
@@ -215,6 +216,17 @@ export default defineComponent({
       }
     })
 
+    const noteIsLegend = computed<boolean>(() => {
+      if (fType.value !== FieldTypes.Rating) {
+        return false
+      }
+
+      const segmentCount = props.note?.split(';').length || 0
+      const ratingSteps = steps.value - (props.numberConstraints?.min === 0 ? 1 : 0)
+
+      return segmentCount === ratingSteps
+    })
+
     function validNumber(value: number, constraints: MarkFormFieldNumberConstraint) {
       // valid if no value or no constraints
       if ( ! value || ! constraints) {
@@ -237,6 +249,7 @@ export default defineComponent({
       value,
       t,
       validNumber,
+      noteIsLegend
     }
   }
 })
