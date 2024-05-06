@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row items-start">
     <q-btn
       v-if="withZero"
       color="primary"
@@ -12,15 +12,28 @@
       class="q-pa-none"
       @click="zeroRatingClicked"
     />
-    <q-rating
-        :modelValue="ratingValue"
-        @update:modelValue="ratingChanged"
-        :size="'min(calc((100vw - 64px - '+(steps*2)+'px) / '+steps+'), 3em)'"
-        :max="max"
-        color="primary"
-        icon="star_border"
-        icon-selected="star"
-    />
+    <div class="column">
+      <q-rating
+          :modelValue="ratingValue"
+          @update:modelValue="ratingChanged"
+          :size="'min(calc((100vw - 64px - '+(steps*2)+'px) / '+steps+'), 3em)'"
+          :max="max"
+          color="primary"
+          icon="star_border"
+          icon-selected="star"
+      />
+      <div v-if="legendValues" class="row justify-between">
+        <div
+          v-for="(item, index) in legendValues"
+          :style="`width: ${100/legendValues.length}%`"
+          :key="index"
+        >
+          <small
+            class="legend"
+          >{{item}}</small>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -39,6 +52,9 @@ export default defineComponent({
     withZero: {
       type: Boolean,
       required: true
+    },
+    legend: {
+      type: String,
     }
   },
 
@@ -49,6 +65,10 @@ export default defineComponent({
       }
 
       return props.modelValue
+    })
+
+    const legendValues = computed<string[]>( () => {
+      return props.legend ? props.legend.split(';').map(v => v.trim()) : []
     })
 
     function ratingChanged(val: number) {
@@ -73,8 +93,19 @@ export default defineComponent({
       ratingValue,
       ratingChanged,
       max,
-      zeroRatingClicked
+      zeroRatingClicked,
+      legendValues
     }
   },
 })
 </script>
+
+<style scoped>
+  .legend {
+    writing-mode: tb;
+    white-space: nowrap;
+    margin: 0.5em auto 0;
+    display: block;
+    font-weight: bolder;
+  }
+</style>

@@ -1,4 +1,5 @@
 <?php
+
 /** @var $allMarks Marks[] */
 $allMarks = [];
 foreach ($marks as $mark_values) {
@@ -25,7 +26,14 @@ $imgs = array_map(function ($m) {
 
 <?php
 if (!empty($imgs)): ?>
-    <h4><?= __('Photos') ?></h4>
+    <div style="display: flex; flex-direction: row; align-items: center; gap: 2em; margin: 1em 0">
+        <h4 style="margin: 0; padding: 0"><?= __('Photos') ?></h4>
+        <?php
+        if (count($imgs) > 1): ?>
+            <div class="button img-download-add" style="padding: 0.5em 1em; margin: 0"><?= __('Download all') ?></div>
+        <?php
+        endif; ?>
+    </div>
     <div style="display: flex; flex-wrap: wrap; gap: 0.5em">
         <?php
         foreach ($imgs as $img): ?>
@@ -40,7 +48,7 @@ if (!empty($imgs)): ?>
                 </a>
                 <a
                     href="<?= $img['url'] ?>"
-                    class="button"
+                    class="button img-download"
                     style="padding: 0.5em; margin: 0"
                     download="<?= $img['downloadName'] ?>"
                 ><?= __('Download') ?></a>
@@ -50,3 +58,11 @@ if (!empty($imgs)): ?>
     </div>
 <?php
 endif; ?>
+
+<script>
+    (function () {
+        document.querySelector('.img-download-add').addEventListener('click', () => {
+            document.querySelectorAll('.img-download').forEach((el) => el.click());
+        });
+    })();
+</script>

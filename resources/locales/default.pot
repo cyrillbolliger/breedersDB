@@ -2958,3 +2958,22 @@ msgstr ""
 #: ./templates/element/Mark/photos.php:46
 msgid "Download"
 msgstr ""
+
+#: ./templates/MarkFormProperties/add.php:45
+#: ./templates/MarkFormProperties/edit.php:48
+msgid "You can use the note field to define a legend for ratings (type integer with min >= 0, max <= 9, step = 1). To do so, separate the values with a semicolon."
+msgstr ""
+
+#: ./templates/MarkFormProperties/add.php:46
+#: ./templates/MarkFormProperties/edit.php:49
+msgid "Eg.: 0 - 1%; 1 - 4%; 4 - 10%; 10 - 20%; 20 - 30%; 30 - 40%; 40 - 50%; 50 - 70%; > 70%"
+msgstr ""
+
+#: ./templates/MarkFormProperties/add.php:47
+#: ./templates/MarkFormProperties/edit.php:50
+msgid "The number of legends must match the number of stars."
+msgstr ""
+
+#: ./templates/element/Mark/photos.php:33
+msgid "Download all"
+msgstr ""
