@@ -2857,3 +2857,6 @@ msgstr "Alle Herunterladen"
 msgid "Download"
 msgstr "Herunterladen"
 
+#: ./src/Model/Table/MarksViewTable.php:63
+msgid "Mark Id"
+msgstr "Bewertungsid"

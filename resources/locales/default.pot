@@ -2977,3 +2977,7 @@ msgstr ""
 #: ./templates/element/Mark/photos.php:33
 msgid "Download all"
 msgstr ""
+
+#: ./src/Model/Table/MarksViewTable.php:63
+msgid "Mark Id"
+msgstr ""
