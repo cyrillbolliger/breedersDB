@@ -18,7 +18,9 @@ class MarkedCollectionDataExtractor extends DataExtractor
     private const MARK_COLUMNS = [
         // 'marked_obj'  <-- this is added manually and only here for documentation
         //                   only used for varieties
+        'Marks.mark_id',
         'Marks.name',
+        'Marks.property_id',
         'Marks.value',
         'Marks.date',
         'Marks.author',

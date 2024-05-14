@@ -60,6 +60,7 @@ class MarksViewTable extends Table {
     {
         $columns = [
             'id' => __('Id'),
+            'mark_id' => __('Mark Id'),
             'date' => __('Date'),
             'author' => __('Author'),
             'tree_id' => __('Tree Id'),
