@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2024-05-06 11:06+0000\n"
-"PO-Revision-Date: 2024-05-06 12:26\n"
+"POT-Creation-Date: 2024-05-14 11:55+0000\n"
+"PO-Revision-Date: 2024-05-14 12:04\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -485,7 +485,7 @@ msgstr "Die Sorte wurde gelöscht."
 msgid "The variety could not be deleted. Please, try again."
 msgstr "Die Sorte konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:294
+#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:296
 #: ./templates/element/Mark/list.php:8
 #: ./templates/element/MarkView/tooltip.php:37
 #: ./templates/element/MarkView/tooltip.php:83
@@ -1308,7 +1308,7 @@ msgid "Boolean"
 msgstr "Boole'scher Wert"
 
 #: ./src/Model/Table/MarkFormPropertiesTable.php:236
-#: ./src/Model/Table/MarksViewTable.php:63
+#: ./src/Model/Table/MarksViewTable.php:64
 #: ./templates/Marks/view.php:28
 #: ./templates/element/Mark/list.php:4
 #: ./templates/element/MarkView/tooltip.php:20
@@ -1356,29 +1356,33 @@ msgstr "Baum und Sorte dürfen nicht ausgewählt sein"
 msgid "Marks"
 msgstr "Bewertungen"
 
-#: ./src/Model/Table/MarksViewTable.php:64
+#: ./src/Model/Table/MarksViewTable.php:63
+msgid "Mark Id"
+msgstr "Bewertungsid"
+
+#: ./src/Model/Table/MarksViewTable.php:65
 #: ./templates/Marks/view.php:32
 #: ./templates/element/Mark/list.php:7
 #: ./templates/element/MarkView/tooltip.php:24
 msgid "Author"
 msgstr "Autor"
 
-#: ./src/Model/Table/MarksViewTable.php:65
+#: ./src/Model/Table/MarksViewTable.php:66
 #: ./src/Model/Table/MotherTreesViewTable.php:75
 msgid "Tree Id"
 msgstr "Baumid"
 
-#: ./src/Model/Table/MarksViewTable.php:66
+#: ./src/Model/Table/MarksViewTable.php:67
 #: ./src/Model/Table/TreesViewTable.php:71
 msgid "Variety Id"
 msgstr "Sortenid"
 
-#: ./src/Model/Table/MarksViewTable.php:67
+#: ./src/Model/Table/MarksViewTable.php:68
 #: ./src/Model/Table/VarietiesViewTable.php:66
 msgid "Batch Id"
 msgstr "Losid"
 
-#: ./src/Model/Table/MarksViewTable.php:68
+#: ./src/Model/Table/MarksViewTable.php:69
 #: ./templates/Marks/view.php:60
 #: ./templates/Settings/index.php:11
 #: ./templates/element/Mark/list.php:6
@@ -1387,24 +1391,24 @@ msgstr "Losid"
 msgid "Value"
 msgstr "Wert"
 
-#: ./src/Model/Table/MarksViewTable.php:69
+#: ./src/Model/Table/MarksViewTable.php:70
 #: ./templates/Marks/view.php:61
 #: ./templates/element/MarkView/tooltip.php:28
 msgid "Exceptional Mark"
 msgstr "Ausserplanmässige Bewertung"
 
-#: ./src/Model/Table/MarksViewTable.php:70
+#: ./src/Model/Table/MarksViewTable.php:71
 #: ./templates/Marks/view.php:59
 #: ./templates/element/Mark/list.php:5
 #: ./templates/element/MarkView/tooltip.php:16
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: ./src/Model/Table/MarksViewTable.php:71
+#: ./src/Model/Table/MarksViewTable.php:72
 msgid "Property Id"
 msgstr "Eigenschaftsid"
 
-#: ./src/Model/Table/MarksViewTable.php:72
+#: ./src/Model/Table/MarksViewTable.php:73
 #: ./templates/MarkFormProperties/add.php:17
 #: ./templates/MarkFormProperties/edit.php:17
 #: ./templates/MarkFormProperties/view.php:21
@@ -1412,7 +1416,7 @@ msgstr "Eigenschaftsid"
 msgid "Data Type"
 msgstr "Datentyp"
 
-#: ./src/Model/Table/MarksViewTable.php:73
+#: ./src/Model/Table/MarksViewTable.php:74
 #: ./templates/MarkFormProperties/add.php:12
 #: ./templates/MarkFormProperties/edit.php:12
 #: ./templates/MarkFormProperties/view.php:12
