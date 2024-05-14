@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-05-03 12:46+0000\n"
+"POT-Creation-Date: 2024-05-14 12:04+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -483,7 +483,7 @@ msgstr ""
 msgid "The variety could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:294
+#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:296
 #: ./templates/element/Mark/list.php:8
 #: ./templates/element/MarkView/tooltip.php:37
 #: ./templates/element/MarkView/tooltip.php:83
@@ -1022,8 +1022,8 @@ msgstr ""
 #: ./src/Model/Entity/Query.php:232
 #: ./src/Model/Table/QueriesTable.php:229
 #: ./src/Model/Table/TreesViewTable.php:54
-#: ./templates/MarkFormProperties/add.php:47
-#: ./templates/MarkFormProperties/edit.php:50
+#: ./templates/MarkFormProperties/add.php:52
+#: ./templates/MarkFormProperties/edit.php:55
 #: ./templates/Trees/index.php:18
 #: ./templates/element/Tree/nav.php:2
 #: ./templates/element/top_nav.php:5
@@ -1033,8 +1033,8 @@ msgstr ""
 #: ./src/Model/Entity/Query.php:233
 #: ./src/Model/Table/QueriesTable.php:230
 #: ./src/Model/Table/VarietiesViewTable.php:54
-#: ./templates/MarkFormProperties/add.php:48
-#: ./templates/MarkFormProperties/edit.php:51
+#: ./templates/MarkFormProperties/add.php:53
+#: ./templates/MarkFormProperties/edit.php:56
 #: ./templates/Varieties/index.php:16
 #: ./templates/element/Variety/nav.php:2
 #: ./templates/element/top_nav.php:4
@@ -1045,8 +1045,8 @@ msgstr ""
 #: ./src/Model/Table/BatchesViewTable.php:53
 #: ./src/Model/Table/QueriesTable.php:224
 #: ./templates/Batches/index.php:14
-#: ./templates/MarkFormProperties/add.php:49
-#: ./templates/MarkFormProperties/edit.php:52
+#: ./templates/MarkFormProperties/add.php:54
+#: ./templates/MarkFormProperties/edit.php:57
 #: ./templates/element/Batch/nav.php:2
 #: ./templates/element/top_nav.php:3
 msgid "Batches"
@@ -1306,7 +1306,7 @@ msgid "Boolean"
 msgstr ""
 
 #: ./src/Model/Table/MarkFormPropertiesTable.php:236
-#: ./src/Model/Table/MarksViewTable.php:63
+#: ./src/Model/Table/MarksViewTable.php:64
 #: ./templates/Marks/view.php:28
 #: ./templates/element/Mark/list.php:4
 #: ./templates/element/MarkView/tooltip.php:20
@@ -1354,29 +1354,33 @@ msgstr ""
 msgid "Marks"
 msgstr ""
 
-#: ./src/Model/Table/MarksViewTable.php:64
+#: ./src/Model/Table/MarksViewTable.php:63
+msgid "Mark Id"
+msgstr ""
+
+#: ./src/Model/Table/MarksViewTable.php:65
 #: ./templates/Marks/view.php:32
 #: ./templates/element/Mark/list.php:7
 #: ./templates/element/MarkView/tooltip.php:24
 msgid "Author"
 msgstr ""
 
-#: ./src/Model/Table/MarksViewTable.php:65
+#: ./src/Model/Table/MarksViewTable.php:66
 #: ./src/Model/Table/MotherTreesViewTable.php:75
 msgid "Tree Id"
 msgstr ""
 
-#: ./src/Model/Table/MarksViewTable.php:66
+#: ./src/Model/Table/MarksViewTable.php:67
 #: ./src/Model/Table/TreesViewTable.php:71
 msgid "Variety Id"
 msgstr ""
 
-#: ./src/Model/Table/MarksViewTable.php:67
+#: ./src/Model/Table/MarksViewTable.php:68
 #: ./src/Model/Table/VarietiesViewTable.php:66
 msgid "Batch Id"
 msgstr ""
 
-#: ./src/Model/Table/MarksViewTable.php:68
+#: ./src/Model/Table/MarksViewTable.php:69
 #: ./templates/Marks/view.php:60
 #: ./templates/Settings/index.php:11
 #: ./templates/element/Mark/list.php:6
@@ -1385,24 +1389,24 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: ./src/Model/Table/MarksViewTable.php:69
+#: ./src/Model/Table/MarksViewTable.php:70
 #: ./templates/Marks/view.php:61
 #: ./templates/element/MarkView/tooltip.php:28
 msgid "Exceptional Mark"
 msgstr ""
 
-#: ./src/Model/Table/MarksViewTable.php:70
+#: ./src/Model/Table/MarksViewTable.php:71
 #: ./templates/Marks/view.php:59
 #: ./templates/element/Mark/list.php:5
 #: ./templates/element/MarkView/tooltip.php:16
 msgid "Property"
 msgstr ""
 
-#: ./src/Model/Table/MarksViewTable.php:71
+#: ./src/Model/Table/MarksViewTable.php:72
 msgid "Property Id"
 msgstr ""
 
-#: ./src/Model/Table/MarksViewTable.php:72
+#: ./src/Model/Table/MarksViewTable.php:73
 #: ./templates/MarkFormProperties/add.php:17
 #: ./templates/MarkFormProperties/edit.php:17
 #: ./templates/MarkFormProperties/view.php:21
@@ -1410,7 +1414,7 @@ msgstr ""
 msgid "Data Type"
 msgstr ""
 
-#: ./src/Model/Table/MarksViewTable.php:73
+#: ./src/Model/Table/MarksViewTable.php:74
 #: ./templates/MarkFormProperties/add.php:12
 #: ./templates/MarkFormProperties/edit.php:12
 #: ./templates/MarkFormProperties/view.php:12
@@ -1655,8 +1659,8 @@ msgstr ""
 #: ./templates/ExperimentSites/edit.php:12
 #: ./templates/Graftings/add.php:12
 #: ./templates/Graftings/edit.php:12
-#: ./templates/MarkFormProperties/add.php:53
-#: ./templates/MarkFormProperties/edit.php:56
+#: ./templates/MarkFormProperties/add.php:58
+#: ./templates/MarkFormProperties/edit.php:61
 #: ./templates/MarkFormPropertyTypes/add.php:12
 #: ./templates/MarkFormPropertyTypes/edit.php:12
 #: ./templates/MarkForms/add.php:35
@@ -2092,6 +2096,21 @@ msgstr ""
 
 #: ./templates/MarkFormProperties/add.php:45
 #: ./templates/MarkFormProperties/edit.php:48
+msgid "You can use the note field to define a legend for ratings (type integer with min >= 0, max <= 9, step = 1). To do so, separate the values with a semicolon."
+msgstr ""
+
+#: ./templates/MarkFormProperties/add.php:46
+#: ./templates/MarkFormProperties/edit.php:49
+msgid "Eg.: 0 - 1%; 1 - 4%; 4 - 10%; 10 - 20%; 20 - 30%; 30 - 40%; 40 - 50%; 50 - 70%; > 70%"
+msgstr ""
+
+#: ./templates/MarkFormProperties/add.php:47
+#: ./templates/MarkFormProperties/edit.php:50
+msgid "The number of legends must match the number of stars."
+msgstr ""
+
+#: ./templates/MarkFormProperties/add.php:50
+#: ./templates/MarkFormProperties/edit.php:53
 msgid "This property serves to mark:"
 msgstr ""
 
@@ -2617,11 +2636,15 @@ msgstr ""
 msgid "List Properties"
 msgstr ""
 
-#: ./templates/element/Mark/photos.php:28
+#: ./templates/element/Mark/photos.php:30
 msgid "Photos"
 msgstr ""
 
-#: ./templates/element/Mark/photos.php:46
+#: ./templates/element/Mark/photos.php:33
+msgid "Download all"
+msgstr ""
+
+#: ./templates/element/Mark/photos.php:54
 msgid "Download"
 msgstr ""
 

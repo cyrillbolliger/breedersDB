@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2024-05-03 12:25+0000\n"
-"PO-Revision-Date: 2024-05-03 12:46\n"
+"POT-Creation-Date: 2024-05-14 11:55+0000\n"
+"PO-Revision-Date: 2024-05-14 12:04\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "MIME-Version: 1.0\n"
@@ -485,7 +485,7 @@ msgstr "Die Sorte wurde gelöscht."
 msgid "The variety could not be deleted. Please, try again."
 msgstr "Die Sorte konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:294
+#: ./src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:296
 #: ./templates/element/Mark/list.php:8
 #: ./templates/element/MarkView/tooltip.php:37
 #: ./templates/element/MarkView/tooltip.php:83
@@ -1024,8 +1024,8 @@ msgstr "Ein"
 #: ./src/Model/Entity/Query.php:232
 #: ./src/Model/Table/QueriesTable.php:229
 #: ./src/Model/Table/TreesViewTable.php:54
-#: ./templates/MarkFormProperties/add.php:47
-#: ./templates/MarkFormProperties/edit.php:50
+#: ./templates/MarkFormProperties/add.php:52
+#: ./templates/MarkFormProperties/edit.php:55
 #: ./templates/Trees/index.php:18
 #: ./templates/element/Tree/nav.php:2
 #: ./templates/element/top_nav.php:5
@@ -1035,8 +1035,8 @@ msgstr "Bäume"
 #: ./src/Model/Entity/Query.php:233
 #: ./src/Model/Table/QueriesTable.php:230
 #: ./src/Model/Table/VarietiesViewTable.php:54
-#: ./templates/MarkFormProperties/add.php:48
-#: ./templates/MarkFormProperties/edit.php:51
+#: ./templates/MarkFormProperties/add.php:53
+#: ./templates/MarkFormProperties/edit.php:56
 #: ./templates/Varieties/index.php:16
 #: ./templates/element/Variety/nav.php:2
 #: ./templates/element/top_nav.php:4
@@ -1047,8 +1047,8 @@ msgstr "Sorten"
 #: ./src/Model/Table/BatchesViewTable.php:53
 #: ./src/Model/Table/QueriesTable.php:224
 #: ./templates/Batches/index.php:14
-#: ./templates/MarkFormProperties/add.php:49
-#: ./templates/MarkFormProperties/edit.php:52
+#: ./templates/MarkFormProperties/add.php:54
+#: ./templates/MarkFormProperties/edit.php:57
 #: ./templates/element/Batch/nav.php:2
 #: ./templates/element/top_nav.php:3
 msgid "Batches"
@@ -1308,7 +1308,7 @@ msgid "Boolean"
 msgstr "Boole'scher Wert"
 
 #: ./src/Model/Table/MarkFormPropertiesTable.php:236
-#: ./src/Model/Table/MarksViewTable.php:63
+#: ./src/Model/Table/MarksViewTable.php:64
 #: ./templates/Marks/view.php:28
 #: ./templates/element/Mark/list.php:4
 #: ./templates/element/MarkView/tooltip.php:20
@@ -1356,29 +1356,33 @@ msgstr "Baum und Sorte dürfen nicht ausgewählt sein"
 msgid "Marks"
 msgstr "Bewertungen"
 
-#: ./src/Model/Table/MarksViewTable.php:64
+#: ./src/Model/Table/MarksViewTable.php:63
+msgid "Mark Id"
+msgstr "Bewertungsid"
+
+#: ./src/Model/Table/MarksViewTable.php:65
 #: ./templates/Marks/view.php:32
 #: ./templates/element/Mark/list.php:7
 #: ./templates/element/MarkView/tooltip.php:24
 msgid "Author"
 msgstr "Autor"
 
-#: ./src/Model/Table/MarksViewTable.php:65
+#: ./src/Model/Table/MarksViewTable.php:66
 #: ./src/Model/Table/MotherTreesViewTable.php:75
 msgid "Tree Id"
 msgstr "Baumid"
 
-#: ./src/Model/Table/MarksViewTable.php:66
+#: ./src/Model/Table/MarksViewTable.php:67
 #: ./src/Model/Table/TreesViewTable.php:71
 msgid "Variety Id"
 msgstr "Sortenid"
 
-#: ./src/Model/Table/MarksViewTable.php:67
+#: ./src/Model/Table/MarksViewTable.php:68
 #: ./src/Model/Table/VarietiesViewTable.php:66
 msgid "Batch Id"
 msgstr "Losid"
 
-#: ./src/Model/Table/MarksViewTable.php:68
+#: ./src/Model/Table/MarksViewTable.php:69
 #: ./templates/Marks/view.php:60
 #: ./templates/Settings/index.php:11
 #: ./templates/element/Mark/list.php:6
@@ -1387,24 +1391,24 @@ msgstr "Losid"
 msgid "Value"
 msgstr "Wert"
 
-#: ./src/Model/Table/MarksViewTable.php:69
+#: ./src/Model/Table/MarksViewTable.php:70
 #: ./templates/Marks/view.php:61
 #: ./templates/element/MarkView/tooltip.php:28
 msgid "Exceptional Mark"
 msgstr "Ausserplanmässige Bewertung"
 
-#: ./src/Model/Table/MarksViewTable.php:70
+#: ./src/Model/Table/MarksViewTable.php:71
 #: ./templates/Marks/view.php:59
 #: ./templates/element/Mark/list.php:5
 #: ./templates/element/MarkView/tooltip.php:16
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: ./src/Model/Table/MarksViewTable.php:71
+#: ./src/Model/Table/MarksViewTable.php:72
 msgid "Property Id"
 msgstr "Eigenschaftsid"
 
-#: ./src/Model/Table/MarksViewTable.php:72
+#: ./src/Model/Table/MarksViewTable.php:73
 #: ./templates/MarkFormProperties/add.php:17
 #: ./templates/MarkFormProperties/edit.php:17
 #: ./templates/MarkFormProperties/view.php:21
@@ -1412,7 +1416,7 @@ msgstr "Eigenschaftsid"
 msgid "Data Type"
 msgstr "Datentyp"
 
-#: ./src/Model/Table/MarksViewTable.php:73
+#: ./src/Model/Table/MarksViewTable.php:74
 #: ./templates/MarkFormProperties/add.php:12
 #: ./templates/MarkFormProperties/edit.php:12
 #: ./templates/MarkFormProperties/view.php:12
@@ -1657,8 +1661,8 @@ msgstr "Los hinzufügen"
 #: ./templates/ExperimentSites/edit.php:12
 #: ./templates/Graftings/add.php:12
 #: ./templates/Graftings/edit.php:12
-#: ./templates/MarkFormProperties/add.php:53
-#: ./templates/MarkFormProperties/edit.php:56
+#: ./templates/MarkFormProperties/add.php:58
+#: ./templates/MarkFormProperties/edit.php:61
 #: ./templates/MarkFormPropertyTypes/add.php:12
 #: ./templates/MarkFormPropertyTypes/edit.php:12
 #: ./templates/MarkForms/add.php:35
@@ -2094,6 +2098,21 @@ msgstr "Maximalwert"
 
 #: ./templates/MarkFormProperties/add.php:45
 #: ./templates/MarkFormProperties/edit.php:48
+msgid "You can use the note field to define a legend for ratings (type integer with min >= 0, max <= 9, step = 1). To do so, separate the values with a semicolon."
+msgstr "Du kannst im Notizfeld Legenden zu Sterne-Bewertungen (Ganzzahl mit Minimalwert >= 0, Maximalwert <= 9, Schritt = 1) zu definieren. Trenne dazu die Werte mit einem Semikolon."
+
+#: ./templates/MarkFormProperties/add.php:46
+#: ./templates/MarkFormProperties/edit.php:49
+msgid "Eg.: 0 - 1%; 1 - 4%; 4 - 10%; 10 - 20%; 20 - 30%; 30 - 40%; 40 - 50%; 50 - 70%; > 70%"
+msgstr "Z.B.: 0 - 1%; 1 - 4%; 4 - 10%; 10 - 20%; 20 - 30%; 30 - 40%; 40 - 50%; 50 - 70%; > 70%"
+
+#: ./templates/MarkFormProperties/add.php:47
+#: ./templates/MarkFormProperties/edit.php:50
+msgid "The number of legends must match the number of stars."
+msgstr "Die Anzahl der Legenden muss mit der Anzahl der Sterne übereinstimmen."
+
+#: ./templates/MarkFormProperties/add.php:50
+#: ./templates/MarkFormProperties/edit.php:53
 msgid "This property serves to mark:"
 msgstr "Diese Eigenschaft dient dem Bewerten von:"
 
@@ -2619,11 +2638,15 @@ msgstr "Neue Eigenschaft"
 msgid "List Properties"
 msgstr "Eigenschaften auflisten"
 
-#: ./templates/element/Mark/photos.php:28
+#: ./templates/element/Mark/photos.php:30
 msgid "Photos"
 msgstr "Fotos"
 
-#: ./templates/element/Mark/photos.php:46
+#: ./templates/element/Mark/photos.php:33
+msgid "Download all"
+msgstr "Alle Herunterladen"
+
+#: ./templates/element/Mark/photos.php:54
 msgid "Download"
 msgstr "Herunterladen"
 
