@@ -3,8 +3,9 @@
     <q-card-section class="q-p-xs" horizontal>
       <q-card-section class="col">
         <div class="text-h6">{{ tree?.convar ?? t('components.treeCard.noTree') }}</div>
-        <div v-if="tree" class="text-caption">
-          {{ t('components.treeCard.tree') }}: {{ tree.publicid }}
+        <div v-if="tree" class="text-subtitle1">
+          {{ t('components.treeCard.tree') }}:
+          <span class="text-grey-8">{{ (tree.publicid.match(/^0*/) || [''])[0] }}</span><strong>{{ (tree.publicid.match(/^0*(\d+)$/) || ['',''])[1] }}</strong>
         </div>
       </q-card-section>
       <q-card-actions class="justify-around col-auto" vertical>
