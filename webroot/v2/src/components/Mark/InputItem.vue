@@ -5,7 +5,7 @@
       <div class="row justify-between items-start">
         <q-item-label
           v-if="title"
-          class="text-subtitle1 q-pb-sm"
+          class="text-subtitle1 text-weight-bold q-pb-sm"
         >{{title}}</q-item-label>
         <q-badge
           v-if="value || value === 0"
@@ -19,7 +19,7 @@
 
       <q-item-label
         v-if="note"
-        class="text-caption q-mt-sm mark-input-item__label"
+        class="q-mt-sm mark-input-item__label"
       >{{note}}</q-item-label>
 
     </q-item-section>
@@ -48,6 +48,8 @@ export default defineComponent({
   .mark-input-item__label{
     hyphens: auto;
     overflow-wrap: break-word;
+    font-weight: bolder;
+    font-size: 0.8125rem;
   }
   .mark-input-item__badge {
     font-size: 0.9125rem;
