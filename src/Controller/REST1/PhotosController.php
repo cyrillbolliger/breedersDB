@@ -72,7 +72,7 @@ class PhotosController extends REST1Controller
             . DS . $filename
         );
 
-        if (!ImageEditor::isImage($path)) {
+        if (!$path || !ImageEditor::isImage($path)) {
             return $this->response
                 ->withStatus(404);
         }
