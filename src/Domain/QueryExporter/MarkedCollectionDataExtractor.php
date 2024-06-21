@@ -21,10 +21,10 @@ class MarkedCollectionDataExtractor extends DataExtractor
         'Marks.mark_id',
         'Marks.name',
         'Marks.property_id',
-        'Marks.value',
         'Marks.date',
         'Marks.author',
         'Marks.exceptional_mark',
+        'Marks.value',
     ];
 
     private bool $hasMarkColumns;
