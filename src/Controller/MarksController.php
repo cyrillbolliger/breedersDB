@@ -90,6 +90,10 @@ class MarksController extends AppController {
 				'Batches',
 				'MarkValues',
 				'MarkValues.MarkFormProperties',
+                'MarkValues.Marks',
+                'MarkValues.Marks.Trees',
+                'MarkValues.Marks.Varieties',
+                'MarkValues.Marks.Batches',
 			]
 		] );
 

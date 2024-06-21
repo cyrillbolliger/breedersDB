@@ -35,6 +35,8 @@ class AppView extends View {
 	 * @return void
 	 */
 	public function initialize(): void {
+        parent::initialize();
 		$this->loadHelper( 'LocalizedTime' );
+        $this->loadHelper( 'MarkPhotoProps' );
 	}
 }

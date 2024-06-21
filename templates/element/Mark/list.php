@@ -33,8 +33,9 @@
 		?>
         <?php
         if ('PHOTO' === $mark_value->mark_form_property->field_type) {
-            $imgUrl = $this->Url->build(['prefix' => 'REST1', 'controller' => 'Photos', 'action' => 'view', $mark_value->value]);
-            $value = '<a href="'. $imgUrl .'" target="_blank"><i class="fa fa-picture-o" aria-hidden="true"></i></a>';
+            $imgProps = $this->MarkPhotoProps->getProps($mark_value);
+            $value = '<a href="'. $imgProps['url'] .'" target="_blank">'. __( 'Show' ).' <i class="fa fa-picture-o" aria-hidden="true"></i></a><br>';
+            $value .= '<a href="'. $imgProps['url'] .'" download="'. $imgProps['downloadName'].'">'. __( 'Download' ).' <i class="fa fa-picture-o" aria-hidden="true"></i></a>';
         } else {
             $value = h( $mark_value->value );
         }

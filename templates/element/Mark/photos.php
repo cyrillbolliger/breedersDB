@@ -9,18 +9,7 @@ $photoMarks = array_filter($allMarks, function ($m) {
     return $m->mark_form_property->field_type === 'PHOTO';
 });
 $imgs = array_map(function ($m) {
-    $url = $this->Url->build(['prefix' => 'REST1', 'controller' => 'Photos', 'action' => 'view', $m->value]);
-    $fileExt = pathinfo($url, PATHINFO_EXTENSION);
-    $entityName = $m->mark->tree?->name ?? $m->mark->tree?->publicid ?? $m->mark->variety?->convar ?? $m->mark->batch?->code;
-    return [
-        'url' => $url,
-        'title' => $entityName . ', ' . $m->mark_form_property->name . ', ' . $m->mark->date . ', ' . $m->mark->author,
-        'downloadName' => \Cake\Core\Configure::read('Org.abbreviation')
-            . '-' . $entityName
-            . '-' . $m->mark->created->format('Ymd\THis')
-            . '-' . $m->mark->id
-            . '.' . $fileExt,
-    ];
+    return $this->MarkPhotoProps->getProps($m);
 }, $photoMarks);
 ?>
 
