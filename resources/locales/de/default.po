@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2024-04-26 06:23+0000\n"
-"PO-Revision-Date: 2024-04-26 08:28+0200\n"
+"POT-Creation-Date: 2024-06-21 20:05+0000\n"
+"PO-Revision-Date: 2024-06-21 22:09+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "Language: de_CH\n"
@@ -49,7 +49,7 @@ msgstr "Das Los konnte nicht gelöscht werden. Bitte versuche es erneut."
 #: src/Controller/CrossingsController.php:180
 #: src/Controller/MarkFormPropertiesController.php:173
 #: src/Controller/MarkFormsController.php:240
-#: src/Controller/MarksController.php:355
+#: src/Controller/MarksController.php:359
 #: src/Controller/MarksViewController.php:25
 #: src/Controller/MotherTreesController.php:153
 #: src/Controller/RowsController.php:134
@@ -267,31 +267,31 @@ msgstr ""
 "Der Wert der Bewertung konnte nicht gelöscht werden. Bitte versuche es "
 "erneut."
 
-#: src/Controller/MarksController.php:98
+#: src/Controller/MarksController.php:102
 msgid "You are not allowed to view this mark."
 msgstr "Du hast keine Berechtigung um diese Bewertung zu sehen."
-
-#: src/Controller/MarksController.php:127
-#: src/Controller/MarksController.php:172
-#: src/Controller/MarksController.php:221
-#: src/Controller/MarksController.php:282
-msgid "The mark has been saved."
-msgstr "Die Bewertung wurde gespeichert."
 
 #: src/Controller/MarksController.php:131
 #: src/Controller/MarksController.php:176
 #: src/Controller/MarksController.php:225
 #: src/Controller/MarksController.php:286
+msgid "The mark has been saved."
+msgstr "Die Bewertung wurde gespeichert."
+
+#: src/Controller/MarksController.php:135
+#: src/Controller/MarksController.php:180
+#: src/Controller/MarksController.php:229
+#: src/Controller/MarksController.php:290
 msgid "The mark could not be saved."
 msgstr "Die Bewertung konnte nicht gespeichert werden."
 
-#: src/Controller/MarksController.php:134
+#: src/Controller/MarksController.php:138
 msgid "Please select a tree by public id."
 msgstr "Bitte wähle einen Baum über seine Publicid."
 
-#: src/Controller/MarksController.php:137
-#: src/Controller/MarksController.php:182
-#: src/Controller/MarksController.php:231
+#: src/Controller/MarksController.php:141
+#: src/Controller/MarksController.php:186
+#: src/Controller/MarksController.php:235
 msgid ""
 "One of the mark values violates the validation rules. Please check data "
 "types."
@@ -299,19 +299,19 @@ msgstr ""
 "Einer der Werte der Bewertung verstößt gegen die Regeln der "
 "Gültigkeitsprüfung. Bitte überprüfe die Datentypen."
 
-#: src/Controller/MarksController.php:179
+#: src/Controller/MarksController.php:183
 msgid "Please select a variety."
 msgstr "Bitte wähle eine Sorte aus."
 
-#: src/Controller/MarksController.php:228
+#: src/Controller/MarksController.php:232
 msgid "Please select a batch."
 msgstr "Bitte wähle ein Los aus."
 
-#: src/Controller/MarksController.php:311
+#: src/Controller/MarksController.php:315
 msgid "The mark has been deleted."
 msgstr "Die Bewertung wurde gelöscht."
 
-#: src/Controller/MarksController.php:313
+#: src/Controller/MarksController.php:317
 msgid "The mark could not be deleted. Please, try again."
 msgstr "Die Bewertung konnte nicht gelöscht werden. Bitte versuche es erneut."
 
@@ -525,7 +525,7 @@ msgstr "Die Sorte wurde gelöscht."
 msgid "The variety could not be deleted. Please, try again."
 msgstr "Die Sorte konnte nicht gelöscht werden. Bitte versuche es erneut."
 
-#: src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:293
+#: src/Domain/QueryExporter/MarkedCollectionDataExtractor.php:298
 #: templates/element/Mark/list.php:8 templates/element/MarkView/tooltip.php:37
 #: templates/element/MarkView/tooltip.php:83
 #: templates/element/MarkView/tooltip.php:121
@@ -568,7 +568,7 @@ msgstr "Bitte gib ein Datum und eine Uhrzeit ein"
 msgid "Please enter a time"
 msgstr "Bitte gib eine Uhrzeit ein"
 
-#: src/Model/Behavior/GetFilterDataBehavior.php:226 templates/Marks/view.php:76
+#: src/Model/Behavior/GetFilterDataBehavior.php:226 templates/Marks/view.php:77
 #: templates/MotherTrees/view.php:24 templates/ScionsBundles/view.php:30
 #: templates/Trees/view.php:41 templates/Trees/view.php:71
 #: templates/Trees/view.php:75 templates/element/MarkView/tooltip.php:29
@@ -1035,7 +1035,7 @@ msgid "doesn't have photo"
 msgstr "Hat kein Foto"
 
 #: src/Model/Entity/MarkFormProperty.php:178
-#: templates/element/Mark/field.php:32 templates/element/Mark/list.php:49
+#: templates/element/Mark/field.php:32 templates/element/Mark/list.php:50
 msgid "True"
 msgstr "Wahr"
 
@@ -1056,24 +1056,24 @@ msgstr "Ein"
 
 #: src/Model/Entity/Query.php:232 src/Model/Table/QueriesTable.php:229
 #: src/Model/Table/TreesViewTable.php:54
-#: templates/MarkFormProperties/add.php:47
-#: templates/MarkFormProperties/edit.php:50 templates/Trees/index.php:18
+#: templates/MarkFormProperties/add.php:52
+#: templates/MarkFormProperties/edit.php:55 templates/Trees/index.php:18
 #: templates/element/Tree/nav.php:2 templates/element/top_nav.php:5
 msgid "Trees"
 msgstr "Bäume"
 
 #: src/Model/Entity/Query.php:233 src/Model/Table/QueriesTable.php:230
 #: src/Model/Table/VarietiesViewTable.php:54
-#: templates/MarkFormProperties/add.php:48
-#: templates/MarkFormProperties/edit.php:51 templates/Varieties/index.php:16
+#: templates/MarkFormProperties/add.php:53
+#: templates/MarkFormProperties/edit.php:56 templates/Varieties/index.php:16
 #: templates/element/Variety/nav.php:2 templates/element/top_nav.php:4
 msgid "Varieties"
 msgstr "Sorten"
 
 #: src/Model/Entity/Query.php:234 src/Model/Table/BatchesViewTable.php:53
 #: src/Model/Table/QueriesTable.php:224 templates/Batches/index.php:14
-#: templates/MarkFormProperties/add.php:49
-#: templates/MarkFormProperties/edit.php:52 templates/element/Batch/nav.php:2
+#: templates/MarkFormProperties/add.php:54
+#: templates/MarkFormProperties/edit.php:57 templates/element/Batch/nav.php:2
 #: templates/element/top_nav.php:3
 msgid "Batches"
 msgstr "Lose"
@@ -1100,7 +1100,7 @@ msgstr "Convar"
 #: src/Model/Table/QueryGroupsTable.php:62
 #: src/Model/Table/RootstocksTable.php:56 src/Model/Table/RowsTable.php:64
 #: src/Model/Table/ScionsBundlesTable.php:64 src/Model/Table/TreesTable.php:91
-#: src/Model/Table/UsersTable.php:61 src/Model/Table/VarietiesTable.php:74
+#: src/Model/Table/UsersTable.php:61 src/Model/Table/VarietiesTable.php:75
 msgid "This field is required"
 msgstr "Dieses Feld ist erforderlich"
 
@@ -1308,7 +1308,7 @@ msgid "Boolean"
 msgstr "Boole'scher Wert"
 
 #: src/Model/Table/MarkFormPropertiesTable.php:236
-#: src/Model/Table/MarksViewTable.php:63 templates/Marks/view.php:28
+#: src/Model/Table/MarksViewTable.php:64 templates/Marks/view.php:28
 #: templates/element/Mark/list.php:4 templates/element/MarkView/tooltip.php:20
 msgid "Date"
 msgstr "Datum"
@@ -1355,47 +1355,51 @@ msgstr "Baum und Sorte dürfen nicht ausgewählt sein"
 msgid "Marks"
 msgstr "Bewertungen"
 
-#: src/Model/Table/MarksViewTable.php:64 templates/Marks/view.php:32
+#: src/Model/Table/MarksViewTable.php:63
+msgid "Mark Id"
+msgstr "Bewertungsid"
+
+#: src/Model/Table/MarksViewTable.php:65 templates/Marks/view.php:32
 #: templates/element/Mark/list.php:7 templates/element/MarkView/tooltip.php:24
 msgid "Author"
 msgstr "Autor"
 
-#: src/Model/Table/MarksViewTable.php:65
+#: src/Model/Table/MarksViewTable.php:66
 #: src/Model/Table/MotherTreesViewTable.php:75
 msgid "Tree Id"
 msgstr "Baumid"
 
-#: src/Model/Table/MarksViewTable.php:66 src/Model/Table/TreesViewTable.php:72
+#: src/Model/Table/MarksViewTable.php:67 src/Model/Table/TreesViewTable.php:72
 msgid "Variety Id"
 msgstr "Sortenid"
 
-#: src/Model/Table/MarksViewTable.php:67
+#: src/Model/Table/MarksViewTable.php:68
 #: src/Model/Table/VarietiesViewTable.php:66
 msgid "Batch Id"
 msgstr "Losid"
 
-#: src/Model/Table/MarksViewTable.php:68 templates/Marks/view.php:60
+#: src/Model/Table/MarksViewTable.php:69 templates/Marks/view.php:60
 #: templates/Settings/index.php:11 templates/element/Mark/list.php:6
 #: templates/element/MarkView/tooltip.php:11
 #: templates/element/Query/mark_results_table.php:54
 msgid "Value"
 msgstr "Wert"
 
-#: src/Model/Table/MarksViewTable.php:69 templates/Marks/view.php:61
+#: src/Model/Table/MarksViewTable.php:70 templates/Marks/view.php:61
 #: templates/element/MarkView/tooltip.php:28
 msgid "Exceptional Mark"
 msgstr "Ausserplanmässige Bewertung"
 
-#: src/Model/Table/MarksViewTable.php:70 templates/Marks/view.php:59
+#: src/Model/Table/MarksViewTable.php:71 templates/Marks/view.php:59
 #: templates/element/Mark/list.php:5 templates/element/MarkView/tooltip.php:16
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: src/Model/Table/MarksViewTable.php:71
+#: src/Model/Table/MarksViewTable.php:72
 msgid "Property Id"
 msgstr "Eigenschaftsid"
 
-#: src/Model/Table/MarksViewTable.php:72
+#: src/Model/Table/MarksViewTable.php:73
 #: templates/MarkFormProperties/add.php:17
 #: templates/MarkFormProperties/edit.php:17
 #: templates/MarkFormProperties/view.php:21
@@ -1403,13 +1407,26 @@ msgstr "Eigenschaftsid"
 msgid "Data Type"
 msgstr "Datentyp"
 
-#: src/Model/Table/MarksViewTable.php:73
+#: src/Model/Table/MarksViewTable.php:74
 #: templates/MarkFormProperties/add.php:12
 #: templates/MarkFormProperties/edit.php:12
 #: templates/MarkFormProperties/view.php:12
 #: templates/element/MarkFormProperty/index_table.php:7
 msgid "Property Type"
 msgstr "Eigenschaftstyp"
+
+#: src/Model/Table/MarksViewTable.php:75 templates/Batches/view.php:50
+#: templates/Crossings/view.php:22 templates/MarkFormProperties/view.php:43
+#: templates/MarkForms/view.php:12 templates/Marks/view.php:45
+#: templates/MotherTrees/view.php:55 templates/Rows/view.php:20
+#: templates/ScionsBundles/view.php:33 templates/Trees/view.php:78
+#: templates/Users/view.php:24 templates/Varieties/view.php:41
+msgid "Created"
+msgstr "Erstellt"
+
+#: src/Model/Table/MarksViewTable.php:76
+msgid "Form Id"
+msgstr "Formular Id"
 
 #: src/Model/Table/MotherTreesTable.php:98
 msgid ""
@@ -1598,7 +1615,7 @@ msgstr "Veredelung"
 msgid "Rootstock"
 msgstr "Unterlage"
 
-#: src/Model/Table/VarietiesTable.php:109
+#: src/Model/Table/VarietiesTable.php:110
 msgid "A variety with this code and the same batch already exists."
 msgstr "Eine Sorte mit diesem und dem gleichen Los ist bereits vorhanden."
 
@@ -1635,8 +1652,8 @@ msgstr "Los hinzufügen"
 #: templates/Crossings/add.php:25 templates/Crossings/edit.php:23
 #: templates/ExperimentSites/add.php:12 templates/ExperimentSites/edit.php:12
 #: templates/Graftings/add.php:12 templates/Graftings/edit.php:12
-#: templates/MarkFormProperties/add.php:53
-#: templates/MarkFormProperties/edit.php:56
+#: templates/MarkFormProperties/add.php:58
+#: templates/MarkFormProperties/edit.php:61
 #: templates/MarkFormPropertyTypes/add.php:12
 #: templates/MarkFormPropertyTypes/edit.php:12 templates/MarkForms/add.php:35
 #: templates/MarkForms/edit.php:36 templates/MarkValues/edit.php:17
@@ -1675,15 +1692,6 @@ msgstr "Etikette drucken"
 #: templates/element/Mark/index_table.php:21
 msgid "Batch:"
 msgstr "Los:"
-
-#: templates/Batches/view.php:50 templates/Crossings/view.php:22
-#: templates/MarkFormProperties/view.php:43 templates/MarkForms/view.php:12
-#: templates/Marks/view.php:45 templates/MotherTrees/view.php:55
-#: templates/Rows/view.php:20 templates/ScionsBundles/view.php:33
-#: templates/Trees/view.php:78 templates/Users/view.php:24
-#: templates/Varieties/view.php:41
-msgid "Created"
-msgstr "Erstellt"
 
 #: templates/Batches/view.php:54 templates/Crossings/view.php:26
 #: templates/MarkFormProperties/view.php:47
@@ -1734,7 +1742,7 @@ msgstr "Aktionen"
 #: templates/Rootstocks/index.php:21 templates/Users/index.php:27
 #: templates/Varieties/view.php:77 templates/element/Batch/index_table.php:26
 #: templates/element/Crossing/index_table.php:32
-#: templates/element/Mark/index_table.php:49 templates/element/Mark/list.php:53
+#: templates/element/Mark/index_table.php:50 templates/element/Mark/list.php:54
 #: templates/element/MarkForm/index_table.php:21
 #: templates/element/MarkFormProperty/index_table.php:26
 #: templates/element/MotherTree/index_table.php:33
@@ -1751,12 +1759,12 @@ msgstr "Anzeigen"
 #: templates/ExperimentSites/view.php:35 templates/Graftings/index.php:23
 #: templates/MarkFormProperties/view.php:76
 #: templates/MarkFormPropertyTypes/index.php:25
-#: templates/MarkFormPropertyTypes/view.php:37 templates/Marks/view.php:88
+#: templates/MarkFormPropertyTypes/view.php:37 templates/Marks/view.php:89
 #: templates/Rootstocks/index.php:23 templates/Settings/index.php:21
 #: templates/Users/index.php:29 templates/Varieties/view.php:80
 #: templates/element/Batch/index_table.php:28
 #: templates/element/Crossing/index_table.php:34
-#: templates/element/Mark/index_table.php:51 templates/element/Mark/list.php:57
+#: templates/element/Mark/index_table.php:52 templates/element/Mark/list.php:58
 #: templates/element/MarkForm/index_table.php:23
 #: templates/element/MarkFormProperty/index_table.php:29
 #: templates/element/MotherTree/index_table.php:35
@@ -1773,11 +1781,11 @@ msgstr "Bearbeiten"
 #: templates/Crossings/view.php:110 templates/ExperimentSites/index.php:29
 #: templates/Graftings/index.php:27
 #: templates/MarkFormPropertyTypes/index.php:29
-#: templates/MarkFormPropertyTypes/view.php:42 templates/Marks/view.php:93
+#: templates/MarkFormPropertyTypes/view.php:42 templates/Marks/view.php:94
 #: templates/Rootstocks/index.php:27 templates/Users/index.php:33
 #: templates/Varieties/view.php:84 templates/element/Batch/index_table.php:32
 #: templates/element/Crossing/index_table.php:38
-#: templates/element/Mark/index_table.php:55 templates/element/Mark/list.php:62
+#: templates/element/Mark/index_table.php:56 templates/element/Mark/list.php:63
 #: templates/element/MarkForm/index_table.php:27
 #: templates/element/MarkFormProperty/index_table.php:33
 #: templates/element/MotherTree/index_table.php:39
@@ -1794,7 +1802,7 @@ msgstr "Löschen"
 #: templates/Crossings/view.php:111 templates/ExperimentSites/index.php:30
 #: templates/Graftings/index.php:28
 #: templates/MarkFormPropertyTypes/index.php:30
-#: templates/MarkFormPropertyTypes/view.php:43 templates/Marks/view.php:94
+#: templates/MarkFormPropertyTypes/view.php:43 templates/Marks/view.php:95
 #: templates/Rootstocks/index.php:28 templates/Varieties/view.php:85
 #: templates/element/Batch/index_table.php:33
 #: templates/element/Crossing/index_table.php:39
@@ -1863,7 +1871,7 @@ msgstr "Versuchsorte"
 #: templates/Rootstocks/index.php:38 templates/Users/index.php:43
 #: templates/element/Batch/index_table.php:43
 #: templates/element/Crossing/index_table.php:49
-#: templates/element/Mark/index_table.php:65
+#: templates/element/Mark/index_table.php:66
 #: templates/element/MarkForm/index_table.php:38
 #: templates/element/MarkFormProperty/index_table.php:45
 #: templates/element/MotherTree/index_table.php:50
@@ -1881,7 +1889,7 @@ msgstr "erste"
 #: templates/Rootstocks/index.php:39 templates/Users/index.php:44
 #: templates/element/Batch/index_table.php:44
 #: templates/element/Crossing/index_table.php:50
-#: templates/element/Mark/index_table.php:66
+#: templates/element/Mark/index_table.php:67
 #: templates/element/MarkForm/index_table.php:39
 #: templates/element/MarkFormProperty/index_table.php:46
 #: templates/element/MotherTree/index_table.php:51
@@ -1899,7 +1907,7 @@ msgstr "zurück"
 #: templates/Rootstocks/index.php:41 templates/Users/index.php:46
 #: templates/element/Batch/index_table.php:46
 #: templates/element/Crossing/index_table.php:52
-#: templates/element/Mark/index_table.php:68
+#: templates/element/Mark/index_table.php:69
 #: templates/element/MarkForm/index_table.php:41
 #: templates/element/MarkFormProperty/index_table.php:48
 #: templates/element/MotherTree/index_table.php:53
@@ -1917,7 +1925,7 @@ msgstr "weiter"
 #: templates/Rootstocks/index.php:42 templates/Users/index.php:47
 #: templates/element/Batch/index_table.php:47
 #: templates/element/Crossing/index_table.php:53
-#: templates/element/Mark/index_table.php:69
+#: templates/element/Mark/index_table.php:70
 #: templates/element/MarkForm/index_table.php:42
 #: templates/element/MarkFormProperty/index_table.php:49
 #: templates/element/MotherTree/index_table.php:54
@@ -1935,7 +1943,7 @@ msgstr "letzte"
 #: templates/Rootstocks/index.php:44 templates/Users/index.php:49
 #: templates/element/Batch/index_table.php:49
 #: templates/element/Crossing/index_table.php:55
-#: templates/element/Mark/index_table.php:71
+#: templates/element/Mark/index_table.php:72
 #: templates/element/MarkForm/index_table.php:44
 #: templates/element/MarkFormProperty/index_table.php:51
 #: templates/element/MotherTree/index_table.php:56
@@ -2006,27 +2014,37 @@ msgstr "Maximalwert"
 
 #: templates/MarkFormProperties/add.php:45
 #: templates/MarkFormProperties/edit.php:48
+msgid ""
+"You can use the note field to define a legend for ratings (type integer with "
+"min >= 0, max <= 9, step = 1). To do so, separate the values with a "
+"semicolon."
+msgstr ""
+"Du kannst im Notizfeld Legenden zu Sterne-Bewertungen (Ganzzahl mit "
+"Minimalwert >= 0, Maximalwert <= 9, Schritt = 1) zu definieren. Trenne dazu "
+"die Werte mit einem Semikolon."
+
+#: templates/MarkFormProperties/add.php:46
+#: templates/MarkFormProperties/edit.php:49
+msgid ""
+"Eg.: 0 - 1%; 1 - 4%; 4 - 10%; 10 - 20%; 20 - 30%; 30 - 40%; 40 - 50%; 50 - "
+"70%; > 70%"
+msgstr ""
+"Z.B.: 0 - 1%; 1 - 4%; 4 - 10%; 10 - 20%; 20 - 30%; 30 - 40%; 40 - 50%; 50 - "
+"70%; > 70%"
+
+#: templates/MarkFormProperties/add.php:47
+#: templates/MarkFormProperties/edit.php:50
+msgid "The number of legends must match the number of stars."
+msgstr "Die Anzahl der Legenden muss mit der Anzahl der Sterne übereinstimmen."
+
+#: templates/MarkFormProperties/add.php:50
+#: templates/MarkFormProperties/edit.php:53
 msgid "This property serves to mark:"
 msgstr "Diese Eigenschaft dient dem Bewerten von:"
 
 #: templates/MarkFormProperties/edit.php:7
 msgid "Add Mark Form Property"
 msgstr "Eigenschaft des Bewertungsformulars hinzufügen"
-
-#: ./templates/MarkFormProperties/add.php:45
-#: ./templates/MarkFormProperties/edit.php:48
-msgid "You can use the note field to define a legend for ratings (type integer with min >= 0, max <= 9, step = 1). To do so, separate the values with a semicolon."
-msgstr "Du kannst im Notizfeld Legenden zu Sterne-Bewertungen (Ganzzahl mit Minimalwert >= 0, Maximalwert <= 9, Schritt = 1) zu definieren. Trenne dazu die Werte mit einem Semikolon."
-
-#: ./templates/MarkFormProperties/add.php:46
-#: ./templates/MarkFormProperties/edit.php:49
-msgid "Eg.: 0 - 1%; 1 - 4%; 4 - 10%; 10 - 20%; 20 - 30%; 30 - 40%; 40 - 50%; 50 - 70%; > 70%"
-msgstr "Z.B.: 0 - 1%; 1 - 4%; 4 - 10%; 10 - 20%; 20 - 30%; 30 - 40%; 40 - 50%; 50 - 70%; > 70%"
-
-#: ./templates/MarkFormProperties/add.php:47
-#: ./templates/MarkFormProperties/edit.php:50
-msgid "The number of legends must match the number of stars."
-msgstr "Die Anzahl der Legenden muss mit der Anzahl der Sterne übereinstimmen."
 
 #: templates/MarkFormProperties/index.php:14
 msgid "Mark Form Properties"
@@ -2178,6 +2196,16 @@ msgstr "Objekt"
 msgid "Values"
 msgstr "Werte"
 
+#: templates/Marks/view.php:69 templates/element/Mark/index_table.php:31
+#: templates/element/Mark/list.php:37
+msgid "Show"
+msgstr "Anzeigen"
+
+#: templates/Marks/view.php:70 templates/element/Mark/index_table.php:32
+#: templates/element/Mark/list.php:38 templates/element/Mark/photos.php:43
+msgid "Download"
+msgstr "Herunterladen"
+
 #: templates/MotherTrees/add.php:17
 msgid "Add Mother Tree"
 msgstr "Mutterbaum hinzufügen"
@@ -2305,7 +2333,7 @@ msgstr "%s bearbeiten"
 msgid "Save"
 msgstr "Speichern"
 
-#: templates/Settings/index.php:6 templates/layout/default-v1.php:87
+#: templates/Settings/index.php:6 templates/layout/default-v1.php:89
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -2466,7 +2494,7 @@ msgstr ""
 "Gib \"{now}\" (wörtlich) ein, um einen Scannercode zu erhalten, der immer "
 "das aktuelle Datum erzeugt."
 
-#: templates/element/Mark/index_table.php:56
+#: templates/element/Mark/index_table.php:57
 msgid "Are you sure you want to delete the Mark with the id {0}?"
 msgstr "Bewertung mit der id {0} wirklich löschen?"
 
@@ -2474,7 +2502,7 @@ msgstr "Bewertung mit der id {0} wirklich löschen?"
 msgid "Exceptional"
 msgstr "Ausserplanmässig"
 
-#: templates/element/Mark/list.php:64
+#: templates/element/Mark/list.php:65
 msgid "Are you sure you want to delete \"{0}\" (id: {1,number,integer})?"
 msgstr "\"{0}\" wirklich löschen (id: {1,number,integer})?"
 
@@ -2517,6 +2545,14 @@ msgstr "Neue Eigenschaft"
 #: templates/element/Mark/nav.php:19
 msgid "List Properties"
 msgstr "Eigenschaften auflisten"
+
+#: templates/element/Mark/photos.php:19
+msgid "Photos"
+msgstr "Fotos"
+
+#: templates/element/Mark/photos.php:22
+msgid "Download all"
+msgstr "Alle Herunterladen"
 
 #: templates/element/MarkForm/index_table.php:16
 #: templates/element/MarkFormProperty/index_table.php:20
@@ -2742,44 +2778,44 @@ msgstr "Ettikette drucken?"
 msgid "Don't print"
 msgstr "Nicht drucken"
 
-#: templates/layout/default-v1.php:53
+#: templates/layout/default-v1.php:55
 msgid "Searching..."
 msgstr "Suche..."
 
-#: templates/layout/default-v1.php:54
+#: templates/layout/default-v1.php:56
 msgid "Loading..."
 msgstr "Suche..."
 
-#: templates/layout/default-v1.php:56
+#: templates/layout/default-v1.php:58
 msgid "Nothing found. Create new covar of:"
 msgstr "Nichts gefunden. Erzeuge neues Convar aus:"
 
-#: templates/layout/default-v1.php:58
+#: templates/layout/default-v1.php:60
 msgid "NEW"
 msgstr "NEU"
 
-#: templates/layout/default-v1.php:59
+#: templates/layout/default-v1.php:61
 msgid "Automatically prefilled"
 msgstr "Automatisch eingefüllt"
 
-#: templates/layout/default-v1.php:62
+#: templates/layout/default-v1.php:64
 msgid "{0} matching elements for this mark were found."
 msgstr "{0} passende Elemente für für diese Bewertung gefunden."
 
-#: templates/layout/default-v1.php:63
+#: templates/layout/default-v1.php:65
 msgid "No tree could be found"
 msgstr "Kein Baum gefunden"
 
-#: templates/layout/default-v1.php:66
+#: templates/layout/default-v1.php:68
 msgid ""
 "Please wait, while your report is generated. This may take up to few minutes."
 msgstr "Der Bericht wird generiert. Dies kann einige Minuten dauern."
 
-#: templates/layout/default-v1.php:67
+#: templates/layout/default-v1.php:69
 msgid "Sorry, your report couldn't be generated. Please try again."
 msgstr "Der Bericht konnte nicht generiert werden. Bitte versuche es erneut."
 
-#: templates/layout/default-v1.php:68
+#: templates/layout/default-v1.php:70
 msgid ""
 "There were invalid rules in the query builder we could not restore. Please "
 "rebuild the ruleset."
@@ -2787,48 +2823,48 @@ msgstr ""
 "Es gab ungültige Regeln im Abfrage-Generator, die nicht wiederhergestellt "
 "werden konnten. Erstellen den Regelsatz neu."
 
-#: templates/layout/default-v1.php:69
+#: templates/layout/default-v1.php:71
 msgid "If marks are your main table, you must select some marks to display."
 msgstr ""
 "Wenn Bewertungen als Haupttabelle ausgewählt ist, musst du auch Bewertungen "
 "auswählen, die angezeigt werden sollen."
 
-#: templates/layout/default-v1.php:70
+#: templates/layout/default-v1.php:72
 msgid ""
 "There are multiple forms on this page. Submitting by scanner does not work!"
 msgstr ""
 "Es gibt mehrere Formulare auf dieser Seite. Es kann darum nicht mit dem "
 "Scanner abgeschickt werden!"
 
-#: templates/layout/default-v1.php:84
+#: templates/layout/default-v1.php:86
 msgid "Location: {0}"
 msgstr "Standort: {0}"
 
-#: templates/layout/default-v1.php:88
+#: templates/layout/default-v1.php:90
 msgid "Logout"
 msgstr "Abmelden"
 
-#: templates/layout/default-v1.php:52
+#: templates/layout/default-v1.php:54
 msgctxt "Date format"
 msgid "dd.mm.yy"
 msgstr "dd.mm.yy"
 
-#: templates/layout/default-v1.php:55
+#: templates/layout/default-v1.php:57
 msgctxt "{0} is replaced by an entity name."
 msgid "There was an error loading {0}"
 msgstr "{0} konnte nicht geladen werden"
 
-#: templates/layout/default-v1.php:57
+#: templates/layout/default-v1.php:59
 msgctxt "The entitiy"
 msgid "mark"
 msgstr "Bewertung"
 
-#: templates/layout/default-v1.php:60
+#: templates/layout/default-v1.php:62
 msgctxt "after the : the name of the element to delete is inserted"
 msgid "Are you sure you want to delete:"
 msgstr "Folgendes Element wirklich löschen:"
 
-#: templates/layout/default-v1.php:64
+#: templates/layout/default-v1.php:66
 msgctxt "Query builder. {0} is replaced by the table name."
 msgid ""
 "{0} will be deselected, since they aren't connected to the other selected "
@@ -2844,19 +2880,3 @@ msgstr "Fehler"
 #: templates/layout/error.php:43
 msgid "Back"
 msgstr "Zurück"
-
-#: ./templates/element/Mark/photos.php:28
-msgid "Photos"
-msgstr "Fotos"
-
-#: ./templates/element/Mark/photos.php:33
-msgid "Download all"
-msgstr "Alle Herunterladen"
-
-#: ./templates/element/Mark/photos.php:46
-msgid "Download"
-msgstr "Herunterladen"
-
-#: ./src/Model/Table/MarksViewTable.php:63
-msgid "Mark Id"
-msgstr "Bewertungsid"

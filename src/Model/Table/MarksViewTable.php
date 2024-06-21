@@ -72,6 +72,8 @@ class MarksViewTable extends Table {
             'property_id' => __('Property Id'),
             'field_type' => __('Data Type'),
             'property_type' => __('Property Type'),
+            'created' => __('Created'),
+            'mark_form_id' => __('Form Id'),
         ];
 
         return $columns[$column] ?? null;

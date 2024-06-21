@@ -19,9 +19,11 @@ class MarkedCollectionDataExtractor extends DataExtractor
         // 'marked_obj'  <-- this is added manually and only here for documentation
         //                   only used for varieties
         'Marks.mark_id',
-        'Marks.name',
+        'Marks.mark_form_id',
         'Marks.property_id',
+        'Marks.name',
         'Marks.date',
+        'Marks.created',
         'Marks.author',
         'Marks.exceptional_mark',
         'Marks.value',

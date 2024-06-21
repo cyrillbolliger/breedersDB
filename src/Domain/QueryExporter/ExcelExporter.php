@@ -86,11 +86,21 @@ class ExcelExporter
     private function addCell(int $row, int $col, mixed $val): void
     {
         if ($this->isDate($val)) {
-            $excelTimestamp = Date::timestampToExcel($val->getTimestamp());
+            $excelTimestamp = Date::PHPToExcel($val);
             $this->worksheet->setCellValueByColumnAndRow($col, $row, $excelTimestamp);
             $this->worksheet->getStyle([$col, $row, $col, $row])
                 ->getNumberFormat()
-                ->setBuiltInFormatCode(14);
+                ->setFormatCode('dd.mm.yyyy');
+
+            return;
+        }
+
+        if ($this->isDateTime($val)) {
+            $excelTimestamp = Date::PHPToExcel($val);
+            $this->worksheet->setCellValueByColumnAndRow($col, $row, $excelTimestamp);
+            $this->worksheet->getStyle([$col, $row, $col, $row])
+                ->getNumberFormat()
+                ->setFormatCode('dd.mm.yyyy hh:mm:ss');
 
             return;
         }
@@ -107,8 +117,15 @@ class ExcelExporter
     private function isDate(mixed $val): bool
     {
         return match (true) {
-            $val instanceof \DateTime,
-                $val instanceof \DateTimeImmutable,
+            $val instanceof FrozenDate => true,
+            default => false,
+        };
+    }
+
+    private function isDateTime(mixed $val): bool
+    {
+        return match (true) {
+            $val instanceof \DateTimeImmutable,
                 $val instanceof FrozenTime,
                 $val instanceof FrozenDate => true,
             default => false,
