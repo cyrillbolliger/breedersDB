@@ -11,6 +11,7 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property string $validation_rule
  * @property string $field_type
+ * @property string $default_value
  * @property string $note
  * @property array $aggregation_functions
  * @property string $input_type

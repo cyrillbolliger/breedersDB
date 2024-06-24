@@ -39,6 +39,7 @@
 			'required' => 'required',
 		] );
 		$this->Form->unlockField( 'step' );
+        echo $this->Form->control( 'default_value' );
 		echo $this->Form->control( 'note', ['style' => 'margin-bottom: 0'] );
 		?>
         <p style="color: #777777; font-size: 0.875rem;">

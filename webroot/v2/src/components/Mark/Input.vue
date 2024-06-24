@@ -98,7 +98,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue'
+import {computed, defineComponent, onMounted, PropType} from 'vue'
 import {MarkFormFieldNumberConstraint, MarkFormFieldType} from 'src/models/form';
 import MarkInputItem from 'components/Mark/InputItem.vue'
 import {useI18n} from 'vue-i18n';
@@ -137,6 +137,10 @@ export default defineComponent({
       type: String as PropType<MarkFormFieldType>,
       required: true
     },
+    defaultValue: {
+      type: String,
+      default: '',
+    },
     note: {
       type: String,
     },
@@ -162,6 +166,12 @@ export default defineComponent({
         } else {
           emit('update:modelValue', val)
         }
+      }
+    })
+
+    onMounted(() => {
+      if (props.fieldType !== MarkFormFieldType.Photo && typeof props.modelValue === 'undefined' && props.defaultValue) {
+        emit('update:modelValue', castedDefaultValue.value)
       }
     })
 
@@ -214,6 +224,34 @@ export default defineComponent({
         default:
           return FieldTypes.String
       }
+    })
+
+    const castedDefaultValue = computed(() => {
+      if (props.fieldType === MarkFormFieldType.Boolean) {
+        return !!props.defaultValue
+      }
+
+      if (props.fieldType === MarkFormFieldType.Date) {
+        const date = props.defaultValue.match(/^(\d{1,2})\.(\d{1,2})\.(\d{2}|\d{4})/)
+          ? new Date(props.defaultValue.replace(/(\d{1,2})\.(\d{1,2})\.(\d{2}|\d{4})/, '$2/$1/$3'))
+          : new Date(props.defaultValue)
+
+        return date.valueOf() ? date.toISOString().split('T')[0] : ''
+      }
+
+      if (props.fieldType === MarkFormFieldType.Integer) {
+        return parseInt(props.defaultValue)
+      }
+
+      if (props.fieldType === MarkFormFieldType.Float) {
+        return parseFloat(props.defaultValue)
+      }
+
+      if (props.fieldType === MarkFormFieldType.Photo) {
+        return null
+      }
+
+      return props.defaultValue
     })
 
     const noteIsLegend = computed<boolean>(() => {

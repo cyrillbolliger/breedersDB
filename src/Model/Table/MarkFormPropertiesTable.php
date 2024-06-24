@@ -199,6 +199,11 @@ class MarkFormPropertiesTable extends Table {
 
 	public function beforeMarshal( Event $event, ArrayObject $data, ArrayObject $options ) {
 		$data['validation_rule'] = $this->buildValidationRuleFieldData( $data );
+
+        if (isset($data['default_value']) && $data['default_value'] !== null) {
+            $data['default_value'] = trim($data['default_value']);
+            $data['default_value'] = $data['default_value'] === '' ? null : $data['default_value'];
+        }
 	}
 
 	/**

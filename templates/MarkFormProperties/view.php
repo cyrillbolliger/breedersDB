@@ -40,6 +40,10 @@
             </tr>
 		<?php endif; ?>
         <tr>
+            <th scope="row"><?= __( 'Default Value' ) ?></th>
+            <td><?= h( $markFormProperty->default_value ) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __( 'Created' ) ?></th>
             <td><?= h( $this->LocalizedTime->getUserTime( $markFormProperty->created ) ) ?></td>
         </tr>

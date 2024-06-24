@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: breedersdb\n"
-"POT-Creation-Date: 2024-06-21 20:05+0000\n"
-"PO-Revision-Date: 2024-06-21 22:09+0200\n"
+"POT-Creation-Date: 2024-06-24 09:10+0000\n"
+"PO-Revision-Date: 2024-06-24 11:11+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German, Switzerland\n"
 "Language: de_CH\n"
@@ -49,7 +49,7 @@ msgstr "Das Los konnte nicht gelöscht werden. Bitte versuche es erneut."
 #: src/Controller/CrossingsController.php:180
 #: src/Controller/MarkFormPropertiesController.php:173
 #: src/Controller/MarkFormsController.php:240
-#: src/Controller/MarksController.php:359
+#: src/Controller/MarksController.php:363
 #: src/Controller/MarksViewController.php:25
 #: src/Controller/MotherTreesController.php:153
 #: src/Controller/RowsController.php:134
@@ -267,31 +267,31 @@ msgstr ""
 "Der Wert der Bewertung konnte nicht gelöscht werden. Bitte versuche es "
 "erneut."
 
-#: src/Controller/MarksController.php:102
+#: src/Controller/MarksController.php:106
 msgid "You are not allowed to view this mark."
 msgstr "Du hast keine Berechtigung um diese Bewertung zu sehen."
-
-#: src/Controller/MarksController.php:131
-#: src/Controller/MarksController.php:176
-#: src/Controller/MarksController.php:225
-#: src/Controller/MarksController.php:286
-msgid "The mark has been saved."
-msgstr "Die Bewertung wurde gespeichert."
 
 #: src/Controller/MarksController.php:135
 #: src/Controller/MarksController.php:180
 #: src/Controller/MarksController.php:229
 #: src/Controller/MarksController.php:290
+msgid "The mark has been saved."
+msgstr "Die Bewertung wurde gespeichert."
+
+#: src/Controller/MarksController.php:139
+#: src/Controller/MarksController.php:184
+#: src/Controller/MarksController.php:233
+#: src/Controller/MarksController.php:294
 msgid "The mark could not be saved."
 msgstr "Die Bewertung konnte nicht gespeichert werden."
 
-#: src/Controller/MarksController.php:138
+#: src/Controller/MarksController.php:142
 msgid "Please select a tree by public id."
 msgstr "Bitte wähle einen Baum über seine Publicid."
 
-#: src/Controller/MarksController.php:141
-#: src/Controller/MarksController.php:186
-#: src/Controller/MarksController.php:235
+#: src/Controller/MarksController.php:145
+#: src/Controller/MarksController.php:190
+#: src/Controller/MarksController.php:239
 msgid ""
 "One of the mark values violates the validation rules. Please check data "
 "types."
@@ -299,19 +299,19 @@ msgstr ""
 "Einer der Werte der Bewertung verstößt gegen die Regeln der "
 "Gültigkeitsprüfung. Bitte überprüfe die Datentypen."
 
-#: src/Controller/MarksController.php:183
+#: src/Controller/MarksController.php:187
 msgid "Please select a variety."
 msgstr "Bitte wähle eine Sorte aus."
 
-#: src/Controller/MarksController.php:232
+#: src/Controller/MarksController.php:236
 msgid "Please select a batch."
 msgstr "Bitte wähle ein Los aus."
 
-#: src/Controller/MarksController.php:315
+#: src/Controller/MarksController.php:319
 msgid "The mark has been deleted."
 msgstr "Die Bewertung wurde gelöscht."
 
-#: src/Controller/MarksController.php:317
+#: src/Controller/MarksController.php:321
 msgid "The mark could not be deleted. Please, try again."
 msgstr "Die Bewertung konnte nicht gelöscht werden. Bitte versuche es erneut."
 
@@ -934,146 +934,146 @@ msgstr "Sorten -> Beschreibung"
 msgid "Varieties -> Batch Id"
 msgstr "Sorten -> Los Id"
 
-#: src/Model/Entity/MarkFormProperty.php:59
+#: src/Model/Entity/MarkFormProperty.php:60
 msgid "Count"
 msgstr "Anzahl"
 
-#: src/Model/Entity/MarkFormProperty.php:60
+#: src/Model/Entity/MarkFormProperty.php:61
 msgid "Average"
 msgstr "Durchschnitt"
 
-#: src/Model/Entity/MarkFormProperty.php:61
+#: src/Model/Entity/MarkFormProperty.php:62
 msgid "Min"
 msgstr "Min"
 
-#: src/Model/Entity/MarkFormProperty.php:62
+#: src/Model/Entity/MarkFormProperty.php:63
 msgid "Max"
 msgstr "Max"
 
-#: src/Model/Entity/MarkFormProperty.php:63
+#: src/Model/Entity/MarkFormProperty.php:64
 msgid "Median"
 msgstr "Median"
 
-#: src/Model/Entity/MarkFormProperty.php:64
+#: src/Model/Entity/MarkFormProperty.php:65
 msgid "Standard deviation"
 msgstr "Standardabweichung"
-
-#: src/Model/Entity/MarkFormProperty.php:129
-#: src/Model/Entity/MarkFormProperty.php:142
-#: src/Model/Entity/MarkFormProperty.php:156
-msgid "equal"
-msgstr "gleich"
 
 #: src/Model/Entity/MarkFormProperty.php:130
 #: src/Model/Entity/MarkFormProperty.php:143
 #: src/Model/Entity/MarkFormProperty.php:157
+msgid "equal"
+msgstr "gleich"
+
+#: src/Model/Entity/MarkFormProperty.php:131
+#: src/Model/Entity/MarkFormProperty.php:144
+#: src/Model/Entity/MarkFormProperty.php:158
 msgid "not equal"
 msgstr "nicht gleich"
 
-#: src/Model/Entity/MarkFormProperty.php:131
+#: src/Model/Entity/MarkFormProperty.php:132
 msgid "less"
 msgstr "kleiner"
 
-#: src/Model/Entity/MarkFormProperty.php:132
+#: src/Model/Entity/MarkFormProperty.php:133
 msgid "less or equal"
 msgstr "kleiner oder gleich"
 
-#: src/Model/Entity/MarkFormProperty.php:133
+#: src/Model/Entity/MarkFormProperty.php:134
 msgid "greater"
 msgstr "grösser"
 
-#: src/Model/Entity/MarkFormProperty.php:134
+#: src/Model/Entity/MarkFormProperty.php:135
 msgid "greater or equal"
 msgstr "grösser oder gleich"
 
-#: src/Model/Entity/MarkFormProperty.php:135
+#: src/Model/Entity/MarkFormProperty.php:136
 msgid "is null"
 msgstr "ist leer"
 
-#: src/Model/Entity/MarkFormProperty.php:136
+#: src/Model/Entity/MarkFormProperty.php:137
 msgid "is not null"
 msgstr "ist nicht leer"
 
-#: src/Model/Entity/MarkFormProperty.php:144
+#: src/Model/Entity/MarkFormProperty.php:145
 msgid "begins with"
 msgstr "beginnt mit"
 
-#: src/Model/Entity/MarkFormProperty.php:145
+#: src/Model/Entity/MarkFormProperty.php:146
 msgid "doesn't begin with"
 msgstr "beginnt nicht mit"
 
-#: src/Model/Entity/MarkFormProperty.php:146
+#: src/Model/Entity/MarkFormProperty.php:147
 msgid "contains"
 msgstr "enthält"
 
-#: src/Model/Entity/MarkFormProperty.php:147
+#: src/Model/Entity/MarkFormProperty.php:148
 msgid "doesn't contain"
 msgstr "enthält nicht"
 
-#: src/Model/Entity/MarkFormProperty.php:148
+#: src/Model/Entity/MarkFormProperty.php:149
 msgid "end with"
 msgstr "endet mit"
 
-#: src/Model/Entity/MarkFormProperty.php:149
+#: src/Model/Entity/MarkFormProperty.php:150
 msgid "doesn't end with"
 msgstr "endet nicht mit"
 
-#: src/Model/Entity/MarkFormProperty.php:150
+#: src/Model/Entity/MarkFormProperty.php:151
 msgid "is empty"
 msgstr "ist leer"
 
-#: src/Model/Entity/MarkFormProperty.php:151
+#: src/Model/Entity/MarkFormProperty.php:152
 msgid "is not empty"
 msgstr "ist nicht leer"
 
-#: src/Model/Entity/MarkFormProperty.php:162
+#: src/Model/Entity/MarkFormProperty.php:163
 msgid "has photo"
 msgstr "Hat Foto"
 
-#: src/Model/Entity/MarkFormProperty.php:163
+#: src/Model/Entity/MarkFormProperty.php:164
 msgid "doesn't have photo"
 msgstr "Hat kein Foto"
 
-#: src/Model/Entity/MarkFormProperty.php:178
+#: src/Model/Entity/MarkFormProperty.php:179
 #: templates/element/Mark/field.php:32 templates/element/Mark/list.php:50
 msgid "True"
 msgstr "Wahr"
 
-#: src/Model/Entity/MarkFormProperty.php:178
+#: src/Model/Entity/MarkFormProperty.php:179
 #: templates/element/Mark/field.php:33
 msgid "False"
 msgstr "Falsch"
 
-#: src/Model/Entity/MarkFormProperty.php:69
+#: src/Model/Entity/MarkFormProperty.php:70
 msgctxt "every"
 msgid "Every"
 msgstr "Jedes"
 
-#: src/Model/Entity/MarkFormProperty.php:70
+#: src/Model/Entity/MarkFormProperty.php:71
 msgctxt "at least one"
 msgid "Any"
 msgstr "Ein"
 
 #: src/Model/Entity/Query.php:232 src/Model/Table/QueriesTable.php:229
 #: src/Model/Table/TreesViewTable.php:54
-#: templates/MarkFormProperties/add.php:52
-#: templates/MarkFormProperties/edit.php:55 templates/Trees/index.php:18
+#: templates/MarkFormProperties/add.php:53
+#: templates/MarkFormProperties/edit.php:56 templates/Trees/index.php:18
 #: templates/element/Tree/nav.php:2 templates/element/top_nav.php:5
 msgid "Trees"
 msgstr "Bäume"
 
 #: src/Model/Entity/Query.php:233 src/Model/Table/QueriesTable.php:230
 #: src/Model/Table/VarietiesViewTable.php:54
-#: templates/MarkFormProperties/add.php:53
-#: templates/MarkFormProperties/edit.php:56 templates/Varieties/index.php:16
+#: templates/MarkFormProperties/add.php:54
+#: templates/MarkFormProperties/edit.php:57 templates/Varieties/index.php:16
 #: templates/element/Variety/nav.php:2 templates/element/top_nav.php:4
 msgid "Varieties"
 msgstr "Sorten"
 
 #: src/Model/Entity/Query.php:234 src/Model/Table/BatchesViewTable.php:53
 #: src/Model/Table/QueriesTable.php:224 templates/Batches/index.php:14
-#: templates/MarkFormProperties/add.php:54
-#: templates/MarkFormProperties/edit.php:57 templates/element/Batch/nav.php:2
+#: templates/MarkFormProperties/add.php:55
+#: templates/MarkFormProperties/edit.php:58 templates/element/Batch/nav.php:2
 #: templates/element/top_nav.php:3
 msgid "Batches"
 msgstr "Lose"
@@ -1127,7 +1127,7 @@ msgstr "Ein Los mit diesem Code und dieser Kreuzung ist bereits vorhanden."
 #: templates/Crossings/view.php:39 templates/Crossings/view.php:82
 #: templates/ExperimentSites/view.php:8 templates/ExperimentSites/view.php:21
 #: templates/Graftings/view.php:8 templates/MarkFormProperties/view.php:8
-#: templates/MarkFormProperties/view.php:60
+#: templates/MarkFormProperties/view.php:64
 #: templates/MarkFormPropertyTypes/view.php:8
 #: templates/MarkFormPropertyTypes/view.php:21 templates/MarkForms/view.php:8
 #: templates/MarkForms/view.php:29 templates/Marks/view.php:24
@@ -1188,7 +1188,7 @@ msgstr "Beet"
 #: src/Model/Table/MotherTreesViewTable.php:69
 #: src/Model/Table/ScionsBundlesViewTable.php:63
 #: src/Model/Table/TreesViewTable.php:71 templates/Batches/view.php:59
-#: templates/MarkFormProperties/view.php:52 templates/MotherTrees/view.php:64
+#: templates/MarkFormProperties/view.php:56 templates/MotherTrees/view.php:64
 #: templates/Rows/view.php:29 templates/ScionsBundles/view.php:42
 #: templates/Trees/view.php:87 templates/element/MarkView/tooltip.php:74
 #: templates/element/MarkView/tooltip.php:156
@@ -1291,29 +1291,29 @@ msgstr ""
 msgid "Select at least one domain"
 msgstr "Wähle mindestens eine Domäne"
 
-#: src/Model/Table/MarkFormPropertiesTable.php:232
+#: src/Model/Table/MarkFormPropertiesTable.php:237
 msgid "Integer"
 msgstr "Ganzzahl"
 
-#: src/Model/Table/MarkFormPropertiesTable.php:233
+#: src/Model/Table/MarkFormPropertiesTable.php:238
 msgid "Floating-point number"
 msgstr "Gleitkommazahl"
 
-#: src/Model/Table/MarkFormPropertiesTable.php:234
+#: src/Model/Table/MarkFormPropertiesTable.php:239
 msgid "Text ( < 255 characters)"
 msgstr "Text (< 255 Zeichen)"
 
-#: src/Model/Table/MarkFormPropertiesTable.php:235
+#: src/Model/Table/MarkFormPropertiesTable.php:240
 msgid "Boolean"
 msgstr "Boole'scher Wert"
 
-#: src/Model/Table/MarkFormPropertiesTable.php:236
+#: src/Model/Table/MarkFormPropertiesTable.php:241
 #: src/Model/Table/MarksViewTable.php:64 templates/Marks/view.php:28
 #: templates/element/Mark/list.php:4 templates/element/MarkView/tooltip.php:20
 msgid "Date"
 msgstr "Datum"
 
-#: src/Model/Table/MarkFormPropertiesTable.php:237
+#: src/Model/Table/MarkFormPropertiesTable.php:242
 msgid "Photo"
 msgstr "Foto"
 
@@ -1416,7 +1416,7 @@ msgid "Property Type"
 msgstr "Eigenschaftstyp"
 
 #: src/Model/Table/MarksViewTable.php:75 templates/Batches/view.php:50
-#: templates/Crossings/view.php:22 templates/MarkFormProperties/view.php:43
+#: templates/Crossings/view.php:22 templates/MarkFormProperties/view.php:47
 #: templates/MarkForms/view.php:12 templates/Marks/view.php:45
 #: templates/MotherTrees/view.php:55 templates/Rows/view.php:20
 #: templates/ScionsBundles/view.php:33 templates/Trees/view.php:78
@@ -1652,8 +1652,8 @@ msgstr "Los hinzufügen"
 #: templates/Crossings/add.php:25 templates/Crossings/edit.php:23
 #: templates/ExperimentSites/add.php:12 templates/ExperimentSites/edit.php:12
 #: templates/Graftings/add.php:12 templates/Graftings/edit.php:12
-#: templates/MarkFormProperties/add.php:58
-#: templates/MarkFormProperties/edit.php:61
+#: templates/MarkFormProperties/add.php:59
+#: templates/MarkFormProperties/edit.php:62
 #: templates/MarkFormPropertyTypes/add.php:12
 #: templates/MarkFormPropertyTypes/edit.php:12 templates/MarkForms/add.php:35
 #: templates/MarkForms/edit.php:36 templates/MarkValues/edit.php:17
@@ -1694,8 +1694,8 @@ msgid "Batch:"
 msgstr "Los:"
 
 #: templates/Batches/view.php:54 templates/Crossings/view.php:26
-#: templates/MarkFormProperties/view.php:47
-#: templates/MarkFormProperties/view.php:62
+#: templates/MarkFormProperties/view.php:51
+#: templates/MarkFormProperties/view.php:66
 #: templates/MarkFormPropertyTypes/view.php:23 templates/MarkForms/view.php:16
 #: templates/MarkForms/view.php:32 templates/Marks/view.php:49
 #: templates/Marks/view.php:62 templates/MotherTrees/view.php:59
@@ -1713,7 +1713,7 @@ msgstr "Verwandte Sorten"
 #: templates/Batches/view.php:69 templates/Crossings/view.php:46
 #: templates/Crossings/view.php:89 templates/ExperimentSites/index.php:11
 #: templates/ExperimentSites/view.php:23 templates/Graftings/index.php:11
-#: templates/MarkFormProperties/view.php:63
+#: templates/MarkFormProperties/view.php:67
 #: templates/MarkFormPropertyTypes/index.php:11
 #: templates/MarkFormPropertyTypes/view.php:24 templates/Marks/view.php:63
 #: templates/Rootstocks/index.php:11 templates/Settings/index.php:12
@@ -1736,7 +1736,7 @@ msgstr "Aktionen"
 #: templates/Batches/view.php:78 templates/Crossings/view.php:60
 #: templates/Crossings/view.php:103 templates/ExperimentSites/index.php:22
 #: templates/ExperimentSites/view.php:32 templates/Graftings/index.php:21
-#: templates/MarkFormProperties/view.php:73
+#: templates/MarkFormProperties/view.php:77
 #: templates/MarkFormPropertyTypes/index.php:22
 #: templates/MarkFormPropertyTypes/view.php:34
 #: templates/Rootstocks/index.php:21 templates/Users/index.php:27
@@ -1757,7 +1757,7 @@ msgstr "Anzeigen"
 #: templates/Batches/view.php:81 templates/Crossings/view.php:63
 #: templates/Crossings/view.php:106 templates/ExperimentSites/index.php:25
 #: templates/ExperimentSites/view.php:35 templates/Graftings/index.php:23
-#: templates/MarkFormProperties/view.php:76
+#: templates/MarkFormProperties/view.php:80
 #: templates/MarkFormPropertyTypes/index.php:25
 #: templates/MarkFormPropertyTypes/view.php:37 templates/Marks/view.php:89
 #: templates/Rootstocks/index.php:23 templates/Settings/index.php:21
@@ -2012,8 +2012,8 @@ msgstr "Minimalwert"
 msgid "Maximum Value"
 msgstr "Maximalwert"
 
-#: templates/MarkFormProperties/add.php:45
-#: templates/MarkFormProperties/edit.php:48
+#: templates/MarkFormProperties/add.php:46
+#: templates/MarkFormProperties/edit.php:49
 msgid ""
 "You can use the note field to define a legend for ratings (type integer with "
 "min >= 0, max <= 9, step = 1). To do so, separate the values with a "
@@ -2023,8 +2023,8 @@ msgstr ""
 "Minimalwert >= 0, Maximalwert <= 9, Schritt = 1) zu definieren. Trenne dazu "
 "die Werte mit einem Semikolon."
 
-#: templates/MarkFormProperties/add.php:46
-#: templates/MarkFormProperties/edit.php:49
+#: templates/MarkFormProperties/add.php:47
+#: templates/MarkFormProperties/edit.php:50
 msgid ""
 "Eg.: 0 - 1%; 1 - 4%; 4 - 10%; 10 - 20%; 20 - 30%; 30 - 40%; 40 - 50%; 50 - "
 "70%; > 70%"
@@ -2032,13 +2032,13 @@ msgstr ""
 "Z.B.: 0 - 1%; 1 - 4%; 4 - 10%; 10 - 20%; 20 - 30%; 30 - 40%; 40 - 50%; 50 - "
 "70%; > 70%"
 
-#: templates/MarkFormProperties/add.php:47
-#: templates/MarkFormProperties/edit.php:50
+#: templates/MarkFormProperties/add.php:48
+#: templates/MarkFormProperties/edit.php:51
 msgid "The number of legends must match the number of stars."
 msgstr "Die Anzahl der Legenden muss mit der Anzahl der Sterne übereinstimmen."
 
-#: templates/MarkFormProperties/add.php:50
-#: templates/MarkFormProperties/edit.php:53
+#: templates/MarkFormProperties/add.php:51
+#: templates/MarkFormProperties/edit.php:54
 msgid "This property serves to mark:"
 msgstr "Diese Eigenschaft dient dem Bewerten von:"
 
@@ -2063,11 +2063,15 @@ msgstr "Eigenschaft des Bewertungsformulars:"
 msgid "Step"
 msgstr "Schritt"
 
-#: templates/MarkFormProperties/view.php:56
+#: templates/MarkFormProperties/view.php:43
+msgid "Default Value"
+msgstr "Standardwert"
+
+#: templates/MarkFormProperties/view.php:60
 msgid "Related Mark Forms"
 msgstr "Verwandte Bewertungsformulare"
 
-#: templates/MarkFormProperties/view.php:61 templates/Marks/view.php:36
+#: templates/MarkFormProperties/view.php:65 templates/Marks/view.php:36
 msgid "Mark Form"
 msgstr "Bewertungsformular"
 

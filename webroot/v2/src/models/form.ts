@@ -17,6 +17,7 @@ export interface MarkFormProperty {
   name: string
   number_constraints: MarkFormFieldNumberConstraint
   field_type: MarkFormFieldType
+  default_value: null | string
   note: string | null
   mark_form_property_type_id: number
   created: string|null

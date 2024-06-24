@@ -29,6 +29,7 @@
       :id="property.id"
       :field-type="property.field_type"
       :model-value="markValues.get(property.id)?.value"
+      :default-value="property.default_value || ''"
       :name="property.name"
       :note="property.note || undefined"
       :number-constraints="property.number_constraints"

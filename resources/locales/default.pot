@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-06-21 20:05+0000\n"
+"POT-Creation-Date: 2024-06-24 09:10+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -46,7 +46,7 @@ msgstr ""
 #: ./src/Controller/CrossingsController.php:180
 #: ./src/Controller/MarkFormPropertiesController.php:173
 #: ./src/Controller/MarkFormsController.php:240
-#: ./src/Controller/MarksController.php:359
+#: ./src/Controller/MarksController.php:363
 #: ./src/Controller/MarksViewController.php:25
 #: ./src/Controller/MotherTreesController.php:153
 #: ./src/Controller/RowsController.php:134
@@ -243,47 +243,47 @@ msgstr ""
 msgid "The mark value could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/MarksController.php:102
+#: ./src/Controller/MarksController.php:106
 msgid "You are not allowed to view this mark."
-msgstr ""
-
-#: ./src/Controller/MarksController.php:131
-#: ./src/Controller/MarksController.php:176
-#: ./src/Controller/MarksController.php:225
-#: ./src/Controller/MarksController.php:286
-msgid "The mark has been saved."
 msgstr ""
 
 #: ./src/Controller/MarksController.php:135
 #: ./src/Controller/MarksController.php:180
 #: ./src/Controller/MarksController.php:229
 #: ./src/Controller/MarksController.php:290
+msgid "The mark has been saved."
+msgstr ""
+
+#: ./src/Controller/MarksController.php:139
+#: ./src/Controller/MarksController.php:184
+#: ./src/Controller/MarksController.php:233
+#: ./src/Controller/MarksController.php:294
 msgid "The mark could not be saved."
 msgstr ""
 
-#: ./src/Controller/MarksController.php:138
+#: ./src/Controller/MarksController.php:142
 msgid "Please select a tree by public id."
 msgstr ""
 
-#: ./src/Controller/MarksController.php:141
-#: ./src/Controller/MarksController.php:186
-#: ./src/Controller/MarksController.php:235
+#: ./src/Controller/MarksController.php:145
+#: ./src/Controller/MarksController.php:190
+#: ./src/Controller/MarksController.php:239
 msgid "One of the mark values violates the validation rules. Please check data types."
 msgstr ""
 
-#: ./src/Controller/MarksController.php:183
+#: ./src/Controller/MarksController.php:187
 msgid "Please select a variety."
 msgstr ""
 
-#: ./src/Controller/MarksController.php:232
+#: ./src/Controller/MarksController.php:236
 msgid "Please select a batch."
 msgstr ""
 
-#: ./src/Controller/MarksController.php:315
+#: ./src/Controller/MarksController.php:319
 msgid "The mark has been deleted."
 msgstr ""
 
-#: ./src/Controller/MarksController.php:317
+#: ./src/Controller/MarksController.php:321
 msgid "The mark could not be deleted. Please, try again."
 msgstr ""
 
@@ -906,123 +906,123 @@ msgstr ""
 msgid "Varieties -> Batch Id"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:59
+#: ./src/Model/Entity/MarkFormProperty.php:60
 msgid "Count"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:60
+#: ./src/Model/Entity/MarkFormProperty.php:61
 msgid "Average"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:61
+#: ./src/Model/Entity/MarkFormProperty.php:62
 msgid "Min"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:62
+#: ./src/Model/Entity/MarkFormProperty.php:63
 msgid "Max"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:63
+#: ./src/Model/Entity/MarkFormProperty.php:64
 msgid "Median"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:64
+#: ./src/Model/Entity/MarkFormProperty.php:65
 msgid "Standard deviation"
-msgstr ""
-
-#: ./src/Model/Entity/MarkFormProperty.php:129
-#: ./src/Model/Entity/MarkFormProperty.php:142
-#: ./src/Model/Entity/MarkFormProperty.php:156
-msgid "equal"
 msgstr ""
 
 #: ./src/Model/Entity/MarkFormProperty.php:130
 #: ./src/Model/Entity/MarkFormProperty.php:143
 #: ./src/Model/Entity/MarkFormProperty.php:157
-msgid "not equal"
+msgid "equal"
 msgstr ""
 
 #: ./src/Model/Entity/MarkFormProperty.php:131
-msgid "less"
+#: ./src/Model/Entity/MarkFormProperty.php:144
+#: ./src/Model/Entity/MarkFormProperty.php:158
+msgid "not equal"
 msgstr ""
 
 #: ./src/Model/Entity/MarkFormProperty.php:132
-msgid "less or equal"
+msgid "less"
 msgstr ""
 
 #: ./src/Model/Entity/MarkFormProperty.php:133
-msgid "greater"
+msgid "less or equal"
 msgstr ""
 
 #: ./src/Model/Entity/MarkFormProperty.php:134
-msgid "greater or equal"
+msgid "greater"
 msgstr ""
 
 #: ./src/Model/Entity/MarkFormProperty.php:135
-msgid "is null"
+msgid "greater or equal"
 msgstr ""
 
 #: ./src/Model/Entity/MarkFormProperty.php:136
+msgid "is null"
+msgstr ""
+
+#: ./src/Model/Entity/MarkFormProperty.php:137
 msgid "is not null"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:144
+#: ./src/Model/Entity/MarkFormProperty.php:145
 msgid "begins with"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:145
+#: ./src/Model/Entity/MarkFormProperty.php:146
 msgid "doesn't begin with"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:146
+#: ./src/Model/Entity/MarkFormProperty.php:147
 msgid "contains"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:147
+#: ./src/Model/Entity/MarkFormProperty.php:148
 msgid "doesn't contain"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:148
+#: ./src/Model/Entity/MarkFormProperty.php:149
 msgid "end with"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:149
+#: ./src/Model/Entity/MarkFormProperty.php:150
 msgid "doesn't end with"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:150
+#: ./src/Model/Entity/MarkFormProperty.php:151
 msgid "is empty"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:151
+#: ./src/Model/Entity/MarkFormProperty.php:152
 msgid "is not empty"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:162
+#: ./src/Model/Entity/MarkFormProperty.php:163
 msgid "has photo"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:163
+#: ./src/Model/Entity/MarkFormProperty.php:164
 msgid "doesn't have photo"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:178
+#: ./src/Model/Entity/MarkFormProperty.php:179
 #: ./templates/element/Mark/field.php:32
 #: ./templates/element/Mark/list.php:50
 msgid "True"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:178
+#: ./src/Model/Entity/MarkFormProperty.php:179
 #: ./templates/element/Mark/field.php:33
 msgid "False"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:69
+#: ./src/Model/Entity/MarkFormProperty.php:70
 msgctxt "every"
 msgid "Every"
 msgstr ""
 
-#: ./src/Model/Entity/MarkFormProperty.php:70
+#: ./src/Model/Entity/MarkFormProperty.php:71
 msgctxt "at least one"
 msgid "Any"
 msgstr ""
@@ -1030,8 +1030,8 @@ msgstr ""
 #: ./src/Model/Entity/Query.php:232
 #: ./src/Model/Table/QueriesTable.php:229
 #: ./src/Model/Table/TreesViewTable.php:54
-#: ./templates/MarkFormProperties/add.php:52
-#: ./templates/MarkFormProperties/edit.php:55
+#: ./templates/MarkFormProperties/add.php:53
+#: ./templates/MarkFormProperties/edit.php:56
 #: ./templates/Trees/index.php:18
 #: ./templates/element/Tree/nav.php:2
 #: ./templates/element/top_nav.php:5
@@ -1041,8 +1041,8 @@ msgstr ""
 #: ./src/Model/Entity/Query.php:233
 #: ./src/Model/Table/QueriesTable.php:230
 #: ./src/Model/Table/VarietiesViewTable.php:54
-#: ./templates/MarkFormProperties/add.php:53
-#: ./templates/MarkFormProperties/edit.php:56
+#: ./templates/MarkFormProperties/add.php:54
+#: ./templates/MarkFormProperties/edit.php:57
 #: ./templates/Varieties/index.php:16
 #: ./templates/element/Variety/nav.php:2
 #: ./templates/element/top_nav.php:4
@@ -1053,8 +1053,8 @@ msgstr ""
 #: ./src/Model/Table/BatchesViewTable.php:53
 #: ./src/Model/Table/QueriesTable.php:224
 #: ./templates/Batches/index.php:14
-#: ./templates/MarkFormProperties/add.php:54
-#: ./templates/MarkFormProperties/edit.php:57
+#: ./templates/MarkFormProperties/add.php:55
+#: ./templates/MarkFormProperties/edit.php:58
 #: ./templates/element/Batch/nav.php:2
 #: ./templates/element/top_nav.php:3
 msgid "Batches"
@@ -1118,7 +1118,7 @@ msgstr ""
 #: ./templates/ExperimentSites/view.php:21
 #: ./templates/Graftings/view.php:8
 #: ./templates/MarkFormProperties/view.php:8
-#: ./templates/MarkFormProperties/view.php:60
+#: ./templates/MarkFormProperties/view.php:64
 #: ./templates/MarkFormPropertyTypes/view.php:8
 #: ./templates/MarkFormPropertyTypes/view.php:21
 #: ./templates/MarkForms/view.php:8
@@ -1201,7 +1201,7 @@ msgstr ""
 #: ./src/Model/Table/ScionsBundlesViewTable.php:63
 #: ./src/Model/Table/TreesViewTable.php:71
 #: ./templates/Batches/view.php:59
-#: ./templates/MarkFormProperties/view.php:52
+#: ./templates/MarkFormProperties/view.php:56
 #: ./templates/MotherTrees/view.php:64
 #: ./templates/Rows/view.php:29
 #: ./templates/ScionsBundles/view.php:42
@@ -1299,23 +1299,23 @@ msgstr ""
 msgid "Select at least one domain"
 msgstr ""
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:232
+#: ./src/Model/Table/MarkFormPropertiesTable.php:237
 msgid "Integer"
 msgstr ""
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:233
+#: ./src/Model/Table/MarkFormPropertiesTable.php:238
 msgid "Floating-point number"
 msgstr ""
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:234
+#: ./src/Model/Table/MarkFormPropertiesTable.php:239
 msgid "Text ( < 255 characters)"
 msgstr ""
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:235
+#: ./src/Model/Table/MarkFormPropertiesTable.php:240
 msgid "Boolean"
 msgstr ""
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:236
+#: ./src/Model/Table/MarkFormPropertiesTable.php:241
 #: ./src/Model/Table/MarksViewTable.php:64
 #: ./templates/Marks/view.php:28
 #: ./templates/element/Mark/list.php:4
@@ -1323,7 +1323,7 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: ./src/Model/Table/MarkFormPropertiesTable.php:237
+#: ./src/Model/Table/MarkFormPropertiesTable.php:242
 msgid "Photo"
 msgstr ""
 
@@ -1435,7 +1435,7 @@ msgstr ""
 #: ./src/Model/Table/MarksViewTable.php:75
 #: ./templates/Batches/view.php:50
 #: ./templates/Crossings/view.php:22
-#: ./templates/MarkFormProperties/view.php:43
+#: ./templates/MarkFormProperties/view.php:47
 #: ./templates/MarkForms/view.php:12
 #: ./templates/Marks/view.php:45
 #: ./templates/MotherTrees/view.php:55
@@ -1702,8 +1702,8 @@ msgstr ""
 #: ./templates/ExperimentSites/edit.php:12
 #: ./templates/Graftings/add.php:12
 #: ./templates/Graftings/edit.php:12
-#: ./templates/MarkFormProperties/add.php:58
-#: ./templates/MarkFormProperties/edit.php:61
+#: ./templates/MarkFormProperties/add.php:59
+#: ./templates/MarkFormProperties/edit.php:62
 #: ./templates/MarkFormPropertyTypes/add.php:12
 #: ./templates/MarkFormPropertyTypes/edit.php:12
 #: ./templates/MarkForms/add.php:35
@@ -1759,8 +1759,8 @@ msgstr ""
 
 #: ./templates/Batches/view.php:54
 #: ./templates/Crossings/view.php:26
-#: ./templates/MarkFormProperties/view.php:47
-#: ./templates/MarkFormProperties/view.php:62
+#: ./templates/MarkFormProperties/view.php:51
+#: ./templates/MarkFormProperties/view.php:66
 #: ./templates/MarkFormPropertyTypes/view.php:23
 #: ./templates/MarkForms/view.php:16
 #: ./templates/MarkForms/view.php:32
@@ -1787,7 +1787,7 @@ msgstr ""
 #: ./templates/ExperimentSites/index.php:11
 #: ./templates/ExperimentSites/view.php:23
 #: ./templates/Graftings/index.php:11
-#: ./templates/MarkFormProperties/view.php:63
+#: ./templates/MarkFormProperties/view.php:67
 #: ./templates/MarkFormPropertyTypes/index.php:11
 #: ./templates/MarkFormPropertyTypes/view.php:24
 #: ./templates/Marks/view.php:63
@@ -1817,7 +1817,7 @@ msgstr ""
 #: ./templates/ExperimentSites/index.php:22
 #: ./templates/ExperimentSites/view.php:32
 #: ./templates/Graftings/index.php:21
-#: ./templates/MarkFormProperties/view.php:73
+#: ./templates/MarkFormProperties/view.php:77
 #: ./templates/MarkFormPropertyTypes/index.php:22
 #: ./templates/MarkFormPropertyTypes/view.php:34
 #: ./templates/Rootstocks/index.php:21
@@ -1844,7 +1844,7 @@ msgstr ""
 #: ./templates/ExperimentSites/index.php:25
 #: ./templates/ExperimentSites/view.php:35
 #: ./templates/Graftings/index.php:23
-#: ./templates/MarkFormProperties/view.php:76
+#: ./templates/MarkFormProperties/view.php:80
 #: ./templates/MarkFormPropertyTypes/index.php:25
 #: ./templates/MarkFormPropertyTypes/view.php:37
 #: ./templates/Marks/view.php:89
@@ -2124,23 +2124,23 @@ msgstr ""
 msgid "Maximum Value"
 msgstr ""
 
-#: ./templates/MarkFormProperties/add.php:45
-#: ./templates/MarkFormProperties/edit.php:48
-msgid "You can use the note field to define a legend for ratings (type integer with min >= 0, max <= 9, step = 1). To do so, separate the values with a semicolon."
-msgstr ""
-
 #: ./templates/MarkFormProperties/add.php:46
 #: ./templates/MarkFormProperties/edit.php:49
-msgid "Eg.: 0 - 1%; 1 - 4%; 4 - 10%; 10 - 20%; 20 - 30%; 30 - 40%; 40 - 50%; 50 - 70%; > 70%"
+msgid "You can use the note field to define a legend for ratings (type integer with min >= 0, max <= 9, step = 1). To do so, separate the values with a semicolon."
 msgstr ""
 
 #: ./templates/MarkFormProperties/add.php:47
 #: ./templates/MarkFormProperties/edit.php:50
+msgid "Eg.: 0 - 1%; 1 - 4%; 4 - 10%; 10 - 20%; 20 - 30%; 30 - 40%; 40 - 50%; 50 - 70%; > 70%"
+msgstr ""
+
+#: ./templates/MarkFormProperties/add.php:48
+#: ./templates/MarkFormProperties/edit.php:51
 msgid "The number of legends must match the number of stars."
 msgstr ""
 
-#: ./templates/MarkFormProperties/add.php:50
-#: ./templates/MarkFormProperties/edit.php:53
+#: ./templates/MarkFormProperties/add.php:51
+#: ./templates/MarkFormProperties/edit.php:54
 msgid "This property serves to mark:"
 msgstr ""
 
@@ -2166,11 +2166,15 @@ msgstr ""
 msgid "Step"
 msgstr ""
 
-#: ./templates/MarkFormProperties/view.php:56
+#: ./templates/MarkFormProperties/view.php:43
+msgid "Default Value"
+msgstr ""
+
+#: ./templates/MarkFormProperties/view.php:60
 msgid "Related Mark Forms"
 msgstr ""
 
-#: ./templates/MarkFormProperties/view.php:61
+#: ./templates/MarkFormProperties/view.php:65
 #: ./templates/Marks/view.php:36
 msgid "Mark Form"
 msgstr ""
