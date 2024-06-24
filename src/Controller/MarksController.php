@@ -54,7 +54,11 @@ class MarksController extends AppController {
 			'Varieties',
 			'Batches',
 			'MarkValues',
-			'MarkValues.MarkFormProperties'
+			'MarkValues.MarkFormProperties',
+            'MarkValues.Marks',
+            'MarkValues.Marks.Trees',
+            'MarkValues.Marks.Varieties',
+            'MarkValues.Marks.Batches'
 		];
 		$marks                     = $this->paginate(
             $this->Marks->find()
