@@ -27,9 +27,9 @@
   >
     <mark-input
       :id="property.id"
+      :default-value="property.default_value || ''"
       :field-type="property.field_type"
       :model-value="markValues.get(property.id)?.value"
-      :default-value="property.default_value || ''"
       :name="property.name"
       :note="property.note || undefined"
       :number-constraints="property.number_constraints"
@@ -79,7 +79,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from 'vue'
+import {computed, nextTick, ref} from 'vue'
 import {useI18n} from 'vue-i18n';
 import {Mark, MarkFormProperty, MarkValue, MarkValueValue} from 'src/models/form';
 import {useRouter} from 'vue-router'
@@ -94,6 +94,10 @@ import {Tree} from 'src/models/tree';
 import {Batch} from 'src/models/batch';
 import {Variety} from 'src/models/variety';
 import useMarkCounter from 'src/composables/marks/markCounter';
+import {resizeImageFile} from 'src/composables/imageResizer';
+
+const MAX_IMAGE_SIZE = 3840; // longest side, 4k
+const IMAGE_QUALITY = 0.9; // 0.0 - 1.0 (jpeg)
 
 const emit = defineEmits<{
   (e: 'saved'): void,
@@ -218,9 +222,11 @@ function save() {
       uploading.value = true
       uploadProgress.value.set(val.mark_form_property_id, 0.01)
       uploads.push(
-        upload(val.value, val.mark_form_property_id)
-          .then(resp => val.value = resp ? resp.filename : '')
-      );
+        nextTick().then(() =>
+          resizeImageFile(val.value as File, MAX_IMAGE_SIZE, MAX_IMAGE_SIZE, IMAGE_QUALITY, 'image/jpeg')
+            .then(resized => upload(resized, val.mark_form_property_id)
+              .then(resp => val.value = resp ? resp.filename : ''))
+        ));
     }
   })
 
