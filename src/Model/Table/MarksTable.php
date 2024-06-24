@@ -225,6 +225,10 @@ class MarksTable extends Table {
 			              'MarkValues',
 			              'Batches.Crossings' => [ 'joinType' => 'LEFT' ],
 			              'MarkValues.MarkFormProperties',
+                          'MarkValues.Marks',
+                          'MarkValues.Marks.Trees',
+                          'MarkValues.Marks.Varieties',
+                          'MarkValues.Marks.Batches',
 		              ] );
 		if ( $term ) {
 			$query->matching( 'MarkValues.MarkFormProperties', function ( $q ) use ( $term ) {
