@@ -1,3 +1,8 @@
+# Superseeded
+
+> [!NOTE]  
+> BreedersDB was rewritten from scratch and moved to a new repository, which you can find [here](https://github.com/bolliger-tech/breedersdb.com).
+
 # Breeders Database
 Stores your plants data and facilitates evaluation. Enables data based plant breeding.
 
